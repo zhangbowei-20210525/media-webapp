@@ -14,6 +14,8 @@
     "app.lang": "简体中文",
     "app.login": "登录",
     "app.login.get-captcha": "获取验证码",
+    "app.login.regain-captcha": "{{ count }}s 后可重新获取",
+    "app.login.get-captcha-success": "获取验证码成功",
     "app.login.remember-me": "记住我",
     "app.login.forget-password": "忘记密码",
     "app.login.login": "登 录",

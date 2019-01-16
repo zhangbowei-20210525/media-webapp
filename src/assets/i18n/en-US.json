@@ -14,6 +14,8 @@
     "app.lang": "English",
     "app.login": "Login",
     "app.login.get-captcha": "Get captcha",
+    "app.login.regain-captcha": "Retrieve in {{ count }}s",
+    "app.login.get-captcha-success": "captcha has been sent",
     "app.login.remember-me": "Remember me",
     "app.login.forget-password": "Forget your password?",
     "app.login.login": "Log in",

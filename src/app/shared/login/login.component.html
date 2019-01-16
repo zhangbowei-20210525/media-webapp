@@ -30,7 +30,7 @@
         [nzLoading]="isLoadingCaptcha" 
         [disabled]="isCaptchaSended"
         >
-        {{ isCaptchaSended ? captchaSendCountDown + 's' : ('app.login.get-captcha' | translate) }}
+        {{ isCaptchaSended ? ('app.login.regain-captcha' | translate:{'count': captchaSendCountDown}) : ('app.login.get-captcha' | translate) }}
         </button>
       </nz-form-control>
     </nz-form-item>

@@ -51,6 +51,7 @@ import { DelonAuthModule, SimpleInterceptor } from '@delon/auth';
 const INTERCEPTOR_PROVIDES = [
   { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
   // { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: I18nInterceptor, multi: true }
 ];
 // #endregion
 
@@ -76,6 +77,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core';
 import { DelonModule } from './delon.module';
+import { I18nInterceptor } from './core/net/i18n.interceptor';
 
 @NgModule({
   declarations: [

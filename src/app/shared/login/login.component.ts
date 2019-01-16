@@ -11,6 +11,7 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { LoginService } from 'src/app/shared';
 import { SettingsService } from 'src/app/core';
 import { MessageService } from '../message/message.service';
+import { TranslateService } from '@ngx-translate/core';
 
 declare const WxLogin: any;
 
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private settings: SettingsService,
     private message: MessageService,
+    private translate: TranslateService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
     this.$close = new Subject();
@@ -80,7 +82,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           }),
           finalize(() => this.isLoadingCaptcha = false))
         .subscribe(message => {
-          this.message.success(message);
+          // this.translate.instant('app.login.get-captcha-success');
+          this.message.success(message || this.translate.instant('app.login.get-captcha-success'));
           this.freezeGetCaptchaButton(60);
         }, error => {
           if (error.message) {
@@ -152,6 +155,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             token: result.token,
             time: +new Date
           });
+          this.close();
         }, error => {
           if (error.message) {
             this.message.error(error.message);

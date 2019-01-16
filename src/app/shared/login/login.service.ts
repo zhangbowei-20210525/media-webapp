@@ -35,17 +35,17 @@ export class LoginService {
   }
 
   getCaptcha(phone: string) {
-    return this.http.get<any>('/api/v1/sms', { params: { phone: phone, _allow_anonymous: '' } });
+    return this.http.get<any>('/api/v1/sms', { params: { phone, _allow_anonymous: '' } });
     // return of(654321);
   }
 
   phoneValidate(phone: string, code: string) {
-    return this.http.post<any>('/api/v1/login/phone', { phone: phone, code: code });
+    return this.http.post<any>('/api/v1/login/phone', { phone, code });
     // return of('ok');
   }
 
   wechatValidate(code: string) {
-    return this.http.post<{ token: string }>('/api/v1/login/wechat', { code: code });
+    return this.http.post<{ token: string }>('/api/v1/login/wechat', { code });
     // return of('ok');
   }
 }

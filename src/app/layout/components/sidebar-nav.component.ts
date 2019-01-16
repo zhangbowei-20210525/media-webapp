@@ -1,6 +1,7 @@
 import { LoginService } from 'src/app/shared';
-import { Component, OnInit } from '@angular/core';
-import { SettingsService, I18nService } from 'src/app/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { SettingsService, I18nService, AuthService } from 'src/app/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -16,14 +17,19 @@ export class SidebarNavComponent implements OnInit {
     private loginService: LoginService,
     private settings: SettingsService,
     private i18n: I18nService,
+    private auth: AuthService,
+    @Inject(DOCUMENT) private doc: any
   ) { }
 
   ngOnInit() {
     this.langs = this.i18n.getLangs();
+    this.isLoggedIn = this.auth.isLoggedIn;
+    this.auth.notify.subscribe(status => {
+      this.isLoggedIn = status;
+    });
   }
 
   openLogin() {
-    // this.isLoggedIn = true;
     this.loginService.open();
   }
 

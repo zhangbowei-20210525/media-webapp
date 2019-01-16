@@ -62,7 +62,7 @@ export class I18nService {
     private nzI18nService: NzI18nService,
     private translate: TranslateService,
   ) {
-    const defaultLan = settings.lang || translate.getBrowserLang();
+    const defaultLan = settings.lang || translate.getBrowserCultureLang();
     // `@ngx-translate/core` 预先知道支持哪些语言
     const lans = this._langs.map(item => item.code);
     translate.addLangs(lans);
