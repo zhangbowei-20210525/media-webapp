@@ -1,6 +1,6 @@
-import { LoginService } from 'src/app/shared';
+import { LoginService } from '@shared';
 import { Component, OnInit, Inject } from '@angular/core';
-import { SettingsService, I18nService, AuthService } from 'src/app/core';
+import { SettingsService, I18nService, AuthService } from '@core';
 import { DOCUMENT } from '@angular/common';
 
 @Component({

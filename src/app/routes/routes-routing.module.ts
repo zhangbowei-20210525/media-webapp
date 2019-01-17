@@ -5,6 +5,7 @@ import { LayoutComponent } from '../layout/layout.component';
 import { MarketComponent } from './market/market.component';
 import { ManageComponent } from './manage/manage.component';
 import { DashboardComponent } from './manage/dashboard/dashboard.component';
+import { PersonalCenterComponent } from './manage/personal-center/personal-center.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,7 @@ const routes: Routes = [
           // { path: 'series', loadChildren: './manage/series.module#SeriesModule' },
           // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
-          // { path: 'personal-center', loadChildren: './manage/personal-center.module#PersonalCenterModule' },
+          { path: 'personal-center', component: PersonalCenterComponent },
           // { path: 'teams', loadChildren: './manage/team.module#TeamModule' }
         ]
       }

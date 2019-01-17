@@ -8,8 +8,8 @@ import {
 import { Subject } from 'rxjs';
 import { delay, finalize, map } from 'rxjs/operators';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
-import { LoginService } from 'src/app/shared';
-import { SettingsService } from 'src/app/core';
+import { LoginService } from '@shared';
+import { SettingsService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 

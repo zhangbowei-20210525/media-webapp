@@ -1,4 +1,4 @@
-import { LoginService } from 'src/app/shared';
+import { LoginService } from '@shared';
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'rxjs/operators';
