@@ -4,11 +4,11 @@ import { SettingsService, I18nService, AuthService } from 'src/app/core';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
-  selector: 'app-sidebar-nav',
-  templateUrl: './sidebar-nav.component.html',
-  styleUrls: ['./sidebar.less']
+  selector: 'app-top-bar',
+  templateUrl: './top-bar.component.html',
+  styleUrls: ['../layout.less']
 })
-export class SidebarNavComponent implements OnInit {
+export class TopBarComponent implements OnInit {
 
   isLoggedIn = false;
   langs: any[];

@@ -1,7 +1,12 @@
 @import '~src/styles/theme.less';
 
 a {
-    color: @color-content;
+    color: @color-subhead; //@color-content;
+    text-decoration: none;
+}
+
+a:link {
+    text-decoration: none;
 }
 
 .main-header {
@@ -69,4 +74,58 @@ a {
 
 .login-link {
     color: @color-link;
+}
+
+.main {
+    margin-top: 20px;
+    // margin-bottom: 6rem;
+    width: 1280px;
+}
+
+.default-content {
+    width: 1140px;
+}
+
+.sidebar-nav-box {
+    position: fixed;
+    width: 64px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+}
+
+.sidebar-nav {
+    width: 64px;
+    height: auto;
+    box-shadow: 1px 1px 5px 0px #DBDBDB
+}
+
+.sidebar-nav-item {
+    display: block;
+    width:64px;
+    height: 72px;
+    margin-top: 1px;
+    background-color: #fff;
+}
+
+.sidebar-nav-item.router-active {
+    color: @color-link;
+}
+
+.sidebar-nav-item:first {
+    margin-top: 0;
+}
+
+.sidebar-nav-item > .nav-icon {
+    margin-top: 0.5rem;
+    width: 100%;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.sidebar-nav-item > .nav-title {
+    width: 100%;
+    font-size: 1rem;
+    text-align: center;
 }

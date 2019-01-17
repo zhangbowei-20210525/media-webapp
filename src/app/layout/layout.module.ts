@@ -1,23 +1,26 @@
 import { LayoutComponent } from './layout.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarNavComponent } from './components/sidebar-nav.component';
-import { SidebarFooterComponent } from './components/sidebar-footer.component';
 import { LayoutRoutingModule } from './layout-routing.module';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { SharedModule } from '../shared';
+import { TopBarComponent } from './top-bar/top-barcomponent';
+import { FooterComponent } from './footer/footer.component';
+import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
+    TopBarComponent,
+    FooterComponent,
     SidebarNavComponent,
-    SidebarFooterComponent,
   ],
   imports: [
     CommonModule,
-    LayoutRoutingModule,
-    NgZorroAntdModule,
+    // LayoutRoutingModule,
     SharedModule
+  ],
+  exports: [
+    SidebarNavComponent
   ]
 })
 export class LayoutModule { }

@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // #region 设置默认语言
 import { registerLocaleData } from '@angular/common';
 import { default as ngLang } from '@angular/common/locales/zh';
-import { NgZorroAntdModule, NZ_I18N, zh_CN as zorroLang } from 'ng-zorro-antd';
+import { NZ_I18N, zh_CN as zorroLang } from 'ng-zorro-antd';
 
 const LANG = {
   abbr: 'zh',
@@ -47,6 +47,7 @@ const I18NSERVICE_PROVIDES = [
 
 // #region Http 拦截器
 import { DelonAuthModule, SimpleInterceptor } from '@delon/auth';
+import { I18nInterceptor } from './core/net/i18n.interceptor';
 // import { DefaultInterceptor } from '@core/net/default.interceptor';
 const INTERCEPTOR_PROVIDES = [
   { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
@@ -73,11 +74,13 @@ const APPINIT_PROVIDES = [
 ];
 // #endregion
 
-import { AppRoutingModule } from './app-routing.module';
+// import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core';
+import { SharedModule } from './shared';
+// import { LayoutModule } from './layout/layout.module';
+import { RoutesModule } from './routes/routes.module';
 import { DelonModule } from './delon.module';
-import { I18nInterceptor } from './core/net/i18n.interceptor';
 
 @NgModule({
   declarations: [
@@ -85,9 +88,11 @@ import { I18nInterceptor } from './core/net/i18n.interceptor';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    // AppRoutingModule,
     CoreModule,
-    NgZorroAntdModule,
+    SharedModule,
+    // LayoutModule,
+    RoutesModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,

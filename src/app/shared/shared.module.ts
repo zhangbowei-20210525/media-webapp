@@ -1,30 +1,70 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginService } from './login/login.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './login/login.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { TranslateModule } from '@ngx-translate/core';
+
+// #region services 服务
+import { LoginService } from './login/login.service';
 import { MessageService } from './message/message.service';
 
+const SERVICES = [
+  LoginService,
+  MessageService
+];
+// #endregion
+
+// #region third libs 第三方模块
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+
+const THIRD_MODULES = [
+  NgZorroAntdModule
+];
+// #endregion
+
+// #region your componets & directives 组件&指令
+import { LoginComponent } from './login/login.component';
+import { RouterModule } from '@angular/router';
+
+const INSIDE_COMPONENTS = [
+  LoginComponent
+];
+const COMPONENTS = [];
+const DIRECTIVES = [];
+// #endregion
+
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [
+    ...INSIDE_COMPONENTS,
+    ...COMPONENTS,
+    ...DIRECTIVES,
+  ],
   imports: [
     CommonModule,
     OverlayModule,
     FormsModule,
     ReactiveFormsModule,
-    NgZorroAntdModule,
-    TranslateModule
+    TranslateModule,
+    // third libs
+    ...THIRD_MODULES,
   ],
-  exports: [TranslateModule],
+  exports: [
+    RouterModule,
+    TranslateModule,
+    // third libs
+    ...THIRD_MODULES,
+    // export components
+    ...COMPONENTS,
+    // export directives
+    ...DIRECTIVES,
+  ],
   providers: [
-    LoginService,
-    MessageService
+    // servises
+    ...SERVICES
   ],
   entryComponents: [
-    LoginComponent
+    // inside components
+    ...INSIDE_COMPONENTS
   ]
 })
 export class SharedModule { }
