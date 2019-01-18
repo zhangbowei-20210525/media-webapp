@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PersonalCenterService } from './personal-center.service';
+import { PersonalCenterDto } from './personal-center.dto';
 
 @Component({
   selector: 'app-personal-center',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PersonalCenterComponent implements OnInit {
 
-  constructor() { }
+  info: PersonalCenterDto;
+
+  constructor(
+    private pcs: PersonalCenterService
+  ) { }
 
   ngOnInit() {
+    this.pcs.getUserInfo()
+      .subscribe(result => {
+        this.info = result;
+      });
+  }
+
+  bindWechat() {
+
   }
 
 }
+
+

@@ -1,12 +1,31 @@
 @import '~styles/theme';
 
 .block {
+    margin-bottom: 20px;
     background-color: #fff;
     width: 100%;
 }
 
-.block > .block-content {
+.block.transparent-block {
+    background-color: transparent;
+}
+
+.block>.block-content {
     margin: 2rem;
+}
+
+.block>.block-content.full {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.explain {
+    color: @color-content;
+    font-size: 1.2rem;
+}
+
+.explain>i {
+    margin-right: 0.5rem;
 }
 
 .user-info-pane {
@@ -21,9 +40,28 @@
 
 .user-info {
     flex: 1 1 auto;
-    // justify-content: flex-end;
-    padding: 0.5rem 0;
-    // color: @color-content;
+}
+
+.bind {
+    color: @color-icon;
+    vertical-align: middle;
+}
+
+.bind>i {
+    margin-right: 0.5rem;
+}
+
+.bind .empty {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.bind.active {
+    color: @color-content;
+}
+
+.bind-wechat {
+    margin-top: 0.3rem;
 }
 
 .address {

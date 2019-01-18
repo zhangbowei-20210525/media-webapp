@@ -24,14 +24,22 @@ const THIRD_MODULES = [
 
 // #region your componets & directives 组件&指令
 import { LoginComponent } from './login/login.component';
-import { RouterModule } from '@angular/router';
+import { BindPhoneComponent } from './login/bind-phone.component';
+import { BindWechatComponent } from './login/bind-wechat.component';
+import { EmptyComponent } from './components/empty/empty.component';
 
 const INSIDE_COMPONENTS = [
-  LoginComponent
+  LoginComponent,
+  BindPhoneComponent,
+  BindWechatComponent
 ];
-const COMPONENTS = [];
+const COMPONENTS = [
+  EmptyComponent
+];
 const DIRECTIVES = [];
 // #endregion
+
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [

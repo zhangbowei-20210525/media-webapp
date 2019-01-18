@@ -2,16 +2,33 @@
     <div class="block-content">
         <div class="user-info-pane">
             <div class="avatar">
-                <nz-avatar [nzText]="'刘靖'" [nzSize]="64" style="background-color: #f0f0f0;"></nz-avatar>
+                <nz-avatar [nzText]="(info.avatar ? '' : (info.nickname || info.username))" [nzSize]="64" [nzSrc]="info.avatar" style="background-color: #f0f0f0;"></nz-avatar>
             </div>
             <div class="user-info">
-                <h3 class="text-blod">刘靖</h3>
-                <div>15710171696</div>
+                <h3 class="text-blod">{{ info.nickname || info.username }}</h3>
+                <div class="bind bind-mobile active">
+                    <i nz-icon type="mobile" theme="outline"></i>{{ info.phone }}
+                </div>
+                <div class="bind bind-wechat">
+                    <i nz-icon type="wechat" theme="outline"></i>
+                    <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+                </div>
             </div>
-            <div class="address">
-                <i nz-icon type="home" theme="outline"></i>北丞科技
+            <div class="address" *ngIf="info.company_name">
+                <i nz-icon type="home" theme="outline"></i>{{ info.company_name }}
             </div>
         </div>
-        <div class="edit-button"><a><i nz-icon type="edit" theme="outline"></i>修改</a></div>
+        <!-- <div class="edit-button"><a><i nz-icon type="edit" theme="outline"></i>修改</a></div> -->
     </div>
+</section>
+
+<div class="block transparent-block">
+    <div class="explain">
+        <i nz-icon type="star" theme="fill"></i>
+        <span>{{ 'app.account.my-favorite' | translate }}</span>
+    </div>
+</div>
+
+<section class="block transparent-block">
+    <app-empty></app-empty>
 </section>

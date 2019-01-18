@@ -6,6 +6,7 @@ import { MarketComponent } from './market/market.component';
 import { ManageComponent } from './manage/manage.component';
 import { DashboardComponent } from './manage/dashboard/dashboard.component';
 import { PersonalCenterComponent } from './manage/personal-center/personal-center.component';
+import { SimpleGuard } from '@delon/auth';
 
 const routes: Routes = [
   {
@@ -19,7 +20,9 @@ const routes: Routes = [
       {
         path: 'manage',
         component: ManageComponent,
+        canActivate: [SimpleGuard],
         children: [
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
           {
             path: 'dashboard',
             component: DashboardComponent
