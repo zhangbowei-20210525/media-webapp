@@ -5,11 +5,11 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { TranslateModule } from '@ngx-translate/core';
 
 // #region services 服务
-import { LoginService } from './login/login.service';
+import { AccountService } from './account/account.service';
 import { MessageService } from './message/message.service';
 
 const SERVICES = [
-  LoginService,
+  AccountService,
   MessageService
 ];
 // #endregion
@@ -23,9 +23,9 @@ const THIRD_MODULES = [
 // #endregion
 
 // #region your componets & directives 组件&指令
-import { LoginComponent } from './login/login.component';
-import { BindPhoneComponent } from './login/bind-phone.component';
-import { BindWechatComponent } from './login/bind-wechat.component';
+import { LoginComponent } from './account/login.component';
+import { BindPhoneComponent } from './account/bind-phone.component';
+import { BindWechatComponent } from './account/bind-wechat.component';
 import { EmptyComponent } from './components/empty/empty.component';
 
 const INSIDE_COMPONENTS = [

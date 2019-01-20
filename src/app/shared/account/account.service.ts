@@ -10,14 +10,14 @@ import { BindWechatComponent } from './bind-wechat.component';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AccountService {
 
   constructor(
     private overlay: Overlay,
     private http: HttpClient
   ) { }
 
-  open() {
+  openLoginModal() {
     const config = this.getCustomerOverlayConfig();
     let overlayRef = this.overlay.create(config);
     let modalRef = overlayRef.attach(new ComponentPortal(LoginComponent));
@@ -31,7 +31,7 @@ export class LoginService {
     });
   }
 
-  openBindPhone() {
+  openBindPhoneModal() {
     const config = this.getCustomerOverlayConfig();
     let overlayRef = this.overlay.create(config);
     let modalRef = overlayRef.attach(new ComponentPortal(BindPhoneComponent));
@@ -45,7 +45,7 @@ export class LoginService {
     });
   }
 
-  openBindWechat() {
+  openBindWechatModal() {
     const config = this.getCustomerOverlayConfig();
     let overlayRef = this.overlay.create(config);
     let modalRef = overlayRef.attach(new ComponentPortal(BindWechatComponent));

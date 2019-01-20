@@ -1,4 +1,4 @@
-import { LoginService } from '@shared';
+import { AccountService } from '@shared';
 import { Component, OnInit, Inject } from '@angular/core';
 import { SettingsService, I18nService, AuthService } from '@core';
 import { DOCUMENT } from '@angular/common';
@@ -14,7 +14,7 @@ export class TopBarComponent implements OnInit {
   langs: any[];
 
   constructor(
-    private loginService: LoginService,
+    private accountService: AccountService,
     private settings: SettingsService,
     private i18n: I18nService,
     private auth: AuthService,
@@ -23,14 +23,15 @@ export class TopBarComponent implements OnInit {
 
   ngOnInit() {
     this.langs = this.i18n.getLangs();
-    this.isLoggedIn = this.auth.isLoggedIn;
-    this.auth.notify.subscribe(status => {
-      this.isLoggedIn = status;
-    });
+    this.isLoggedIn = true;
+    // this.isLoggedIn = this.auth.isLoggedIn;
+    // this.auth.notify.subscribe(status => {
+    //   this.isLoggedIn = status;
+    // });
   }
 
   openLogin() {
-    this.loginService.open();
+    this.accountService.openLoginModal();
   }
 
   changeLanguage(lang: string) {

@@ -6,8 +6,12 @@
             </div>
             <div class="user-info">
                 <h3 class="text-blod">{{ info.nickname || info.username }}</h3>
-                <div class="bind bind-mobile active">
-                    <i nz-icon type="mobile" theme="outline"></i>{{ info.phone }}
+                <div class="bind bind-mobile active" [ngClass]="{ 'active': info.phone }">
+                    <i nz-icon type="mobile" theme="outline"></i>
+                    <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
+                    <ng-template #unboundPhone>
+                        <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
+                    </ng-template>
                 </div>
                 <div class="bind bind-wechat">
                     <i nz-icon type="wechat" theme="outline"></i>

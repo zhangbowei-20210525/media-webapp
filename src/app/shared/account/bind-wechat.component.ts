@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { LoginService } from '@shared';
+import { AccountService } from '@shared';
 
 declare const WxLogin: any;
 
@@ -12,7 +12,7 @@ declare const WxLogin: any;
 export class BindWechatComponent implements OnInit {
 
   $close: Subject<never>;
-  service: LoginService;
+  service: AccountService;
 
   constructor() {
     this.$close = new Subject();

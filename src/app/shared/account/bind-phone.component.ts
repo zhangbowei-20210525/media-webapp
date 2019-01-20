@@ -8,24 +8,21 @@ import {
 import { Subject } from 'rxjs';
 import { delay, finalize, map } from 'rxjs/operators';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
-import { LoginService } from '@shared';
+import { AccountService } from '@shared';
 import { SettingsService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 
-declare const WxLogin: any;
-
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
+  selector: 'app-bind-phone',
+  templateUrl: './bind-phone.component.html',
   styleUrls: ['./login.component.less']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class BindPhoneComponent implements OnInit, OnDestroy {
 
   $close: Subject<never>;
-  service: LoginService;
+  service: AccountService;
   form: FormGroup;
-  mode: 'phone' | 'wx' | string = 'phone';
   isLoadingCaptcha = false;
   isCaptchaSended = false;
   captchaSendCountDown: number;
@@ -67,7 +64,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   getCaptcha(e: MouseEvent) {
-    console.log(this.token.get());
     this.phone.markAsDirty();
     this.phone.updateValueAndValidity();
     if (this.phone.valid) {
@@ -104,28 +100,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         clearInterval(this.interval$);
       }
     }, 1000);
-  }
-
-  switchLoginMode(mode: string) {
-    this.mode = mode;
-    if (mode === 'wx') {
-      setTimeout(() => {
-        this.createWxLoginQRCode();
-      }, 0);
-    }
-  }
-
-  createWxLoginQRCode() {
-    const obj = new WxLogin({
-      self_redirect: true,
-      id: 'wx_login_container',
-      appid: 'wxfbe18062a4d62486',
-      scope: 'snsapi_login',
-      redirect_uri: 'http://vip.bctop.net/oauth2/wx',
-      state: 'STATE',
-      style: '',
-      // href: 'http://localhost/assets/css/wx_login.css'
-    });
   }
 
   validation(): boolean {
