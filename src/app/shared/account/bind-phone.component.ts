@@ -115,20 +115,17 @@ export class BindPhoneComponent implements OnInit, OnDestroy {
   submit() {
     if (this.validation()) {
       this.isLoggingIn = true;
-      this.service.phoneValidate(this.phone.value, this.captcha.value)
+      this.service.bindPhoneValidate(this.phone.value, this.captcha.value)
         .pipe(
           map(body => {
             if (body.code <= 0) {
-              return body.data;
+              return body.message;
             }
             throw new Error(body.message);
           }),
           finalize(() => this.isLoggingIn = false))
-        .subscribe(result => {
-          this.token.set({
-            token: result.token,
-            time: +new Date
-          });
+        .subscribe(message => {
+          this.message.success(message);
           this.close();
         }, error => {
           if (error.message) {

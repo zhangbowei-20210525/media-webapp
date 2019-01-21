@@ -1,6 +1,7 @@
 {
     "menu.account.not-logged": "Not logged in",
     "menu.account.login": "Login",
+    "menu.account.logout": "Log out",
     "menu.search.placeholder": "search...",
     "menu.market": "Market",
     "menu.manage": "Manage",

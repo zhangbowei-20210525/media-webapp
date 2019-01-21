@@ -11,6 +11,7 @@ import { PersonalCenterDto } from './personal-center.dto';
 export class PersonalCenterComponent implements OnInit {
 
   info: PersonalCenterDto;
+  employees: [];
 
   constructor(
     private pcs: PersonalCenterService,
@@ -18,14 +19,16 @@ export class PersonalCenterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.pcs.getUserInfo()
-    //   .subscribe(result => {
-    //     this.info = result;
-    //   });
-    this.info = {
-      username: 'Jing Liu',
-      avatar: 'https://vip.bctop.net/static/img/headimage/oG-uI0dPmKgMiFviNJcDIbObBHDk.jpeg'
-    } as PersonalCenterDto;
+    this.pcs.getUserInfo()
+      .subscribe(result => {
+        this.info = result;
+      });
+
+    this.pcs.getUserEmployees()
+      .subscribe(result => {
+        console.log(result);
+        this.employees = result;
+      });
   }
 
   bindPhone() {

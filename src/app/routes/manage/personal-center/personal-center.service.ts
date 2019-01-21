@@ -16,4 +16,8 @@ export class PersonalCenterService {
   getUserInfo() {
     return this.http.get<ResponseDto<PersonalCenterDto>>('/api/v1/users/info').pipe(dtoMap(e => e.data), dtoCatchError());
   }
+
+  getUserEmployees() {
+    return this.http.get<ResponseDto<any>>('/api/v1/users/info/employees').pipe(dtoMap(e => e.data), dtoCatchError());
+  }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/router';
-// import { NProgress } from 'nprogress';
-import NProgress from 'nprogress'
+
+declare const NProgress: any;
 
 @Component({
   selector: 'app-root',
@@ -13,11 +13,12 @@ export class AppComponent {
   constructor(private router: Router) {
     console.log(NProgress);
     router.events.subscribe(event => {
-      if(event instanceof RouteConfigLoadStart) {
-        
-        
-      } else if(event instanceof RouteConfigLoadEnd) {
-        //
+      if (event instanceof RouteConfigLoadStart) {
+        console.log('懒加载开始', event);
+        NProgress.start();
+      } else if (event instanceof RouteConfigLoadEnd) {
+        console.log('懒加载结束', event);
+        NProgress.done();
       }
     });
   }

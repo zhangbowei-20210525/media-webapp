@@ -1,4 +1,5 @@
-import { Injectable, ComponentRef } from '@angular/core';
+import { ResponseDto } from '@shared';
+import { Injectable, ComponentRef, Inject } from '@angular/core';
 import { LoginComponent } from './login.component';
 import { Overlay, OverlayRef, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -6,16 +7,32 @@ import { observable, Observable, of, Observer, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BindPhoneComponent } from './bind-phone.component';
 import { BindWechatComponent } from './bind-wechat.component';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
+  static KEY = '_accountService';
+
+  loginRef: {
+    modalRef: ComponentRef<{ close: () => void, createWxLoginQRCode: () => void }>
+  };
+
   constructor(
     private overlay: Overlay,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    @Inject(DOCUMENT) private doc: any
+  ) { console.log(+new Date); }
+
+  attach() {
+    this.doc[AccountService.KEY] = this;
+  }
+
+  detach() {
+    this.doc[AccountService.KEY] = undefined;
+  }
 
   openLoginModal() {
     const config = this.getCustomerOverlayConfig();
@@ -27,8 +44,12 @@ export class AccountService {
         overlayRef.dispose();
         overlayRef = null;
         modalRef = null;
+        this.loginRef = null;
+        this.detach();
       }
     });
+    this.loginRef = { modalRef: modalRef };
+    this.attach();
   }
 
   openBindPhoneModal() {
@@ -87,12 +108,16 @@ export class AccountService {
   }
 
   phoneValidate(phone: string, code: string) {
-    return this.http.post<any>('/api/v1/login/phone', { phone, code });
+    return this.http.post<ResponseDto<any>>('/api/v1/login/phone', { phone, code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
   }
 
   wechatValidate(code: string) {
-    return this.http.post<{ token: string }>('/api/v1/login/wechat', { code });
+    return this.http.post<ResponseDto<{ token: string }>>('/api/v1/login/wechat', { code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
+  }
+
+  bindPhoneValidate(phone: string, code: string) {
+    return this.http.post<ResponseDto<any>>('/api/v1/users/login_info/phone', { phone, code });
   }
 }

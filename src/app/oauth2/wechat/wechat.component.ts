@@ -1,4 +1,4 @@
-import { AccountService } from '@shared';
+import { AccountService, dtoMap, dtoCatchError } from '@shared';
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'rxjs/operators';
@@ -21,8 +21,8 @@ import { SocialService, ITokenModel, ITokenService, DA_SERVICE_TOKEN } from '@de
     <div class="container">
       <ng-container [ngSwitch]="validateStatus">
         <p *ngSwitchCase="'loading'">正在登录...</p>
-        <p *ngSwitchCase="'successful'">登录成功，如未自动跳转请点击<a>跳转</a></p>
-        <p *ngSwitchCase="'failure'">登录失败，请重试</p>
+        <p *ngSwitchCase="'successful'">登录成功，正在跳转...</p>
+        <p *ngSwitchCase="'failure'">登录失败，请 <a (click)="reset()">重试</a></p>
         <p *ngSwitchCase="'error'">登录参数异常</p>
       </ng-container>
     </div>
@@ -49,7 +49,7 @@ export class WechatComponent implements OnInit {
 
   wxloginRequest(code: string) {
     this.accountervice.wechatValidate(code)
-      .pipe(delay(1000))
+      .pipe(dtoMap(e => e.data), dtoCatchError())
       .subscribe(result => {
         console.log(result);
         this.tokenService.set({
@@ -57,10 +57,14 @@ export class WechatComponent implements OnInit {
           time: +new Date
         });
         this.validateStatus = 'successful';
-        // window.parent.location.reload();
+        window.parent.location.reload();
       }, error => {
         this.validateStatus = 'failure';
       });
   }
 
+  reset() {
+    const service = window.parent.document[AccountService.KEY] as AccountService;
+    service.loginRef.modalRef.instance.createWxLoginQRCode();
+  }
 }

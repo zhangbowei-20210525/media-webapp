@@ -151,6 +151,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           }),
           finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
+          console.log(result);
           this.token.set({
             token: result.token,
             time: +new Date

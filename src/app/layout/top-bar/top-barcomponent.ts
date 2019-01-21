@@ -23,15 +23,19 @@ export class TopBarComponent implements OnInit {
 
   ngOnInit() {
     this.langs = this.i18n.getLangs();
-    this.isLoggedIn = true;
-    // this.isLoggedIn = this.auth.isLoggedIn;
-    // this.auth.notify.subscribe(status => {
-    //   this.isLoggedIn = status;
-    // });
+    // this.isLoggedIn = true;
+    this.isLoggedIn = this.auth.isLoggedIn;
+    this.auth.notify.subscribe(status => {
+      this.isLoggedIn = status;
+    });
   }
 
   openLogin() {
     this.accountService.openLoginModal();
+  }
+
+  logout() {
+    this.auth.setLogout();
   }
 
   changeLanguage(lang: string) {

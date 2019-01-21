@@ -16,14 +16,6 @@ export class AuthService {
   constructor(
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
-    const tk = this.token.get() as TokenModel;
-    this._isLoggedIn = this.checkSimple(tk);
-    if (this._isLoggedIn) {
-      if (tk.time + TERM < +new Date) {
-        this._isLoggedIn = false;
-        this.token.clear();
-      }
-    }
     this.token.change().subscribe(t => {
       if (t) {
         this.isLoggedIn = true;
@@ -35,12 +27,23 @@ export class AuthService {
     });
   }
 
-  checkSimple(model: SimpleTokenModel): boolean {
+  private checkSimple(model: SimpleTokenModel): boolean {
     return model != null && typeof model.token === 'string' && model.token.length > 0;
   }
 
-  checkToken(): boolean {
+  private checkToken(): boolean {
     return this.checkSimple(this.token.get());
+  }
+
+  CheckTokenValid() {
+    const tk = this.token.get() as TokenModel;
+    this._isLoggedIn = this.checkSimple(tk);
+    if (this._isLoggedIn) {
+      if (tk.time + TERM < +new Date) {
+        this._isLoggedIn = false;
+        this.token.clear();
+      }
+    }
   }
 
   get notify() {
@@ -57,5 +60,9 @@ export class AuthService {
   set isLoggedIn(value: boolean) {
     this._isLoggedIn = value;
     this._notify$.next(value);
+  }
+
+  setLogout() {
+    this.token.clear();
   }
 }

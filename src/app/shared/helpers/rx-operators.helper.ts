@@ -11,7 +11,7 @@ export function dtoMap<T, R>(project: (value: T, index: number) => R): OperatorF
     return map<T, R>((value: T, index: number) => {
         if (value instanceof HttpErrorResponse) {
             if (value.error && value.error.code && value.error.code > 0) {
-                throw Error(value.error.message);
+                throw Error(value.error.message || value.message);
             } else {
                 throw Error(value.message);
             }

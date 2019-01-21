@@ -43,7 +43,7 @@
           </nz-dropdown>
         </li>
         <li class="nav-item">
-          <a *ngIf="isLoggedIn; else loginLink" nz-popover nzTrigger="click" [nzContent]="contentTemplate">
+          <a *ngIf="isLoggedIn; else loginLink" nz-popover nzTrigger="click" nzPlacement="bottom" [nzContent]="contentTemplate">
             <nz-avatar nzIcon="user" nzSrc="https://vip.bctop.net/static/img/headimage/oG-uI0dPmKgMiFviNJcDIbObBHDk.jpeg"></nz-avatar>
           </a>
           <ng-template #loginLink>
@@ -52,7 +52,7 @@
             <a (click)="openLogin()" class="login-link">{{ 'menu.account.login' | translate }}</a>
           </ng-template>
           <ng-template #contentTemplate>
-            <a (click)='clickMe()'>Close</a>
+            <a (click)='logout()'>{{ 'menu.account.logout' | translate }}</a>
           </ng-template>
         </li>
       </ul>

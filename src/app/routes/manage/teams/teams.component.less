@@ -1,0 +1,44 @@
+@import '~styles/theme';
+
+.block {
+    margin-bottom: 20px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.block.transparent-block {
+    background-color: transparent;
+}
+
+.block>.block-header {
+    padding: 0 2rem;
+    height: 4.6rem;
+    border-bottom: 1px solid @color-border;
+    box-sizing: border-box;
+}
+
+.block>.block-header>.block-title {
+    line-height: 4.2rem;
+    color: @color-subhead;
+}
+
+.block>.block-content {
+    margin: 2rem;
+    min-height: 1rem;
+}
+
+.block>.block-content.full {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.structure {
+    width: 22rem;
+    min-height: 10rem;
+    border-right: 1px solid @color-border;
+}
+
+.employees {
+    flex: 1;
+    min-height: 10rem;
+}
