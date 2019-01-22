@@ -59,6 +59,8 @@ import { RouterModule } from '@angular/router';
   exports: [
     RouterModule,
     TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
     // third libs
     ...THIRD_MODULES,
     // export components

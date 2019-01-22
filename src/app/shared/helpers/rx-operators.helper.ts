@@ -10,11 +10,7 @@ import { ResponseDto } from '@shared';
 export function dtoMap<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R> {
     return map<T, R>((value: T, index: number) => {
         if (value instanceof HttpErrorResponse) {
-            if (value.error && value.error.code && value.error.code > 0) {
-                throw Error(value.error.message || value.message);
-            } else {
-                throw Error(value.message);
-            }
+            throw value;
         } else {
             const response = value as any as ResponseDto<R>;
             if (response && response.code === 0) {
@@ -27,20 +23,21 @@ export function dtoMap<T, R>(project: (value: T, index: number) => R): OperatorF
 
 /**
  * Dto 错误请求捕获转换
- * @param error 默认错误提示
+ * @param errorMessage 默认错误提示
  */
-export function dtoCatchError<T>(error: string = 'server error'): OperatorFunction<T, T> {
+export function dtoCatchError<T>(errorMessage: string = 'server error'): OperatorFunction<T, T> {
     return catchError<T, T>(err => {
         if (err instanceof HttpErrorResponse) {
             if (typeof err.error !== 'string') {
                 throw Error(err.error.message);
             } else {
-                throw Error(error);
+                console.error(err.message);
+                throw Error(errorMessage);
             }
         } else if (err instanceof Error) {
             throw err;
         } else {
-            throw Error(error);
+            throw Error(errorMessage);
         }
     });
 }

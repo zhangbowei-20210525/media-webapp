@@ -113,7 +113,7 @@ export class AccountService {
   }
 
   wechatValidate(code: string) {
-    return this.http.post<ResponseDto<{ token: string }>>('/api/v1/login/wechat', { code }, { params: { _allow_anonymous: '' } });
+    return this.http.post<ResponseDto<any>>('/api/v1/login/wechat', { code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
   }
 

@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'rxjs/operators';
 import { SocialService, ITokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { SettingsService } from '@core';
 
 @Component({
   selector: 'app-wechat',
@@ -35,6 +36,7 @@ export class WechatComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private accountervice: AccountService,
+    private settings: SettingsService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService
   ) { }
 
@@ -51,9 +53,11 @@ export class WechatComponent implements OnInit {
     this.accountervice.wechatValidate(code)
       .pipe(dtoMap(e => e.data), dtoCatchError())
       .subscribe(result => {
-        console.log(result);
+        const token = result.token;
+        delete result.token;
+        this.settings.user = result;
         this.tokenService.set({
-          token: result.token,
+          token: token,
           time: +new Date
         });
         this.validateStatus = 'successful';

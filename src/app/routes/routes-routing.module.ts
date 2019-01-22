@@ -30,7 +30,7 @@ const routes: Routes = [
           // { path: 'series', loadChildren: './manage/series.module#SeriesModule' },
           // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
-          { path: 'personal-center', component: PersonalCenterComponent },
+          { path: 'account-center', component: PersonalCenterComponent },
           { path: 'teams', loadChildren: './manage/teams/teams.module#TeamsModule' }
         ]
       }

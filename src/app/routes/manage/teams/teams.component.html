@@ -4,7 +4,31 @@
   </div>
   <div class="block-content">
     <div class="container">
-      <div class="structure"></div>
+      <div class="structure">
+        <nz-tree #treeCom nzDraggable="true" [nzData]="nodes" (nzClick)="activeNode($event)">
+          <ng-template #nzTreeTemplate let-node>
+            <span class="custom-node" [class.active]="activedNode?.key===node.key">
+              <span>
+                <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+                <span class="folder-name">{{node.title}}</span>
+                <nz-dropdown [nzTrigger]="'click'">
+                  <!-- <a nz-dropdown>
+                    Click me <i nz-icon type="down"></i>
+                  </a> -->
+                  <span nz-dropdown class="folder-operation"><i nz-icon type="ellipsis" theme="outline"></i></span>
+                  <ul nz-menu>
+                    <li nz-menu-item (click)="addDepartment(node.key)">添加子部门</li>
+                    <li nz-menu-item>修改名称</li>
+                    <li nz-menu-item>删除</li>
+                    <li nz-menu-item nzDisabled>id: {{ node.key }}</li>
+                  </ul>
+                </nz-dropdown>
+                <!-- <span class="folder-operation"><i nz-icon type="ellipsis" theme="outline"></i></span> -->
+              </span>
+            </span>
+          </ng-template>
+        </nz-tree>
+      </div>
       <div class="employees">
         <app-empty></app-empty>
       </div>

@@ -1,49 +1,50 @@
 <section class="block clearfix">
-    <div class="block-content">
-        <div class="user-info-pane">
-            <div class="avatar">
-                <nz-avatar [nzSize]="64" [nzSrc]="info?.avatar" style="background-color: #f0f0f0;"></nz-avatar>
-            </div>
-            <div class="user-info">
-                <h3 class="text-blod">{{ info?.nickname || info?.username }}</h3>
-                <div class="bind bind-mobile active" [ngClass]="{ 'active': info?.phone }">
-                    <i nz-icon type="mobile" theme="outline"></i>
-                    <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
-                    <ng-template #unboundPhone>
-                        <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
-                    </ng-template>
-                </div>
-                <div class="bind bind-wechat">
-                    <i nz-icon type="wechat" theme="outline"></i>
-                    <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
-                </div>
-            </div>
-            <div class="address" *ngIf="info?.company_name">
-                <i nz-icon type="home" theme="outline"></i>
-
-                <nz-dropdown [nzTrigger]="'click'">
-                    <a nz-dropdown>
-                        {{ info.company_name }} <i nz-icon type="down"></i>
-                    </a>
-                    <ul nz-menu nzSelectable>
-                        <li nz-menu-item *ngFor="let emp of employees" [nzDisabled]="emp.company_name === info.company_name">
-                            <a>{{ emp.company_name }}</a>
-                        </li>
-                    </ul>
-                </nz-dropdown>
-            </div>
+  <div class="block-content">
+    <nz-skeleton [nzLoading]="loading" [nzActive]="true">
+      <div class="user-info-pane">
+        <div class="avatar">
+          <nz-avatar [nzSize]="64" [nzSrc]="info?.avatar" style="background-color: #f0f0f0;"></nz-avatar>
         </div>
-        <!-- <div class="edit-button"><a><i nz-icon type="edit" theme="outline"></i>修改</a></div> -->
-    </div>
+        <div class="user-info">
+          <h3 class="text-blod">{{ info?.nickname || info?.username }}</h3>
+          <div class="bind bind-mobile active" [ngClass]="{ 'active': info?.phone }">
+            <i nz-icon type="mobile" theme="outline"></i>
+            <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
+            <ng-template #unboundPhone>
+              <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
+            </ng-template>
+          </div>
+          <div class="bind bind-wechat">
+            <i nz-icon type="wechat" theme="outline"></i>
+            <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+          </div>
+        </div>
+        <div class="address" *ngIf="info?.company_name">
+          <i nz-icon type="home" theme="outline"></i>
+          <nz-dropdown [nzTrigger]="'click'">
+            <a nz-dropdown>
+              {{ info.company_name }} <i nz-icon type="down"></i>
+            </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item *ngFor="let emp of employees" [nzDisabled]="emp.company_name === info.company_name">
+                <a>{{ emp.company_name }}</a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </div>
+      </div>
+    </nz-skeleton>
+    <!-- <div class="edit-button"><a><i nz-icon type="edit" theme="outline"></i>修改</a></div> -->
+  </div>
 </section>
 
 <div class="block transparent-block">
-    <div class="explain">
-        <i nz-icon type="star" theme="fill"></i>
-        <span>{{ 'app.account.my-favorite' | translate }}</span>
-    </div>
+  <div class="explain">
+    <i nz-icon type="star" theme="fill"></i>
+    <span>{{ 'app.account.my-favorite' | translate }}</span>
+  </div>
 </div>
 
 <section class="block transparent-block">
-    <app-empty></app-empty>
+  <app-empty></app-empty>
 </section>

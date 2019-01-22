@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { I18nService } from '../i18n/i18n.service';
-import { AuthService } from '@core/auth/auth.service';
+// import { AuthService } from '@core/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class StartupService {
     private httpClient: HttpClient,
     private i18n: I18nService,
     private translate: TranslateService,
-    private auth: AuthService
+    // private auth: AuthService
   ) { }
 
   load(): Promise<any> {
@@ -29,7 +29,7 @@ export class StartupService {
       .subscribe(langData => {
         this.translate.setTranslation(this.i18n.defaultLang, langData);
         this.translate.setDefaultLang(this.i18n.defaultLang);
-        this.auth.CheckTokenValid();
+        // this.auth.CheckTokenValid();
       },
       () => {},
       () => {

@@ -1,5 +1,4 @@
 @import '~styles/theme';
-
 .block {
     margin-bottom: 20px;
     background-color: #fff;
@@ -34,6 +33,7 @@
 
 .structure {
     width: 22rem;
+    padding-right: 2rem;
     min-height: 10rem;
     border-right: 1px solid @color-border;
 }
@@ -41,4 +41,50 @@
 .employees {
     flex: 1;
     min-height: 10rem;
+}
+
+// :host ::ng-deep .draggable-tree .ant-tree-node-content-wrapper {
+//     width: calc(100% - 42px);
+// }
+
+:host ::ng-deep .ant-tree {
+    overflow: hidden;
+    // margin: 0 -24px;
+    // padding: 0 24px;
+}
+
+:host ::ng-deep .ant-tree li {
+    padding: 4px 0 0 0;
+}
+
+.custom-node {
+    display: block;
+    float: right;
+    width: calc(100% - 24px - 4px);
+    height: 24px;
+    padding-left: 4px;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.custom-node:hover {
+    background: #f8f8f9;
+}
+
+.custom-node.active {
+    background: #5cadff;
+    color: #fff;
+}
+
+.folder-name {
+    margin-left: 4px;
+}
+
+.folder-operation {
+    padding: 0 8px; // display: inline-block;
+    // background: #87CEFF;
+    // color: #FFFFFF;
+    // position: relative;
+    // left: 12px;
+    float: right;
 }
