@@ -3,6 +3,16 @@
     <div class="block-title">我的团队</div>
   </div>
   <div class="block-content">
+    <nz-skeleton [nzLoading]="true" [nzActive]="true">
+    </nz-skeleton>
+  </div>
+</section>
+
+<section class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">部门管理</div>
+  </div>
+  <div class="block-content">
     <div class="container">
       <div class="structure">
         <nz-tree #treeCom nzDraggable="true" [nzData]="nodes" (nzClick)="activeNode($event)">
