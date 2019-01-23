@@ -22,6 +22,10 @@ export class AddDepartmentComponent implements OnInit {
   @Input() id: string;
   form: FormGroup;
 
+  get departmentName() {
+    return this.form.controls['departmentName'];
+  }
+
   constructor(
     private fb: FormBuilder,
     private service: TeamsService
@@ -44,7 +48,7 @@ export class AddDepartmentComponent implements OnInit {
   }
 
   submit() {
-    return this.service.addDepartment(this.id, this.form.value['departmentName']);
+    return this.service.addDepartment(this.id, this.departmentName.value);
   }
 
 }

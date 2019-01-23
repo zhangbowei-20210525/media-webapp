@@ -4,16 +4,18 @@ import { TeamsComponent } from './teams.component';
 import { TeamsRoutingModule } from './teams-routing.module';
 import { SharedModule } from '@shared';
 import { AddDepartmentComponent } from './components/add-department.component';
+import { AddCompanyComponent } from './components/add-company.component';
 
 @NgModule({
-  declarations: [TeamsComponent, AddDepartmentComponent],
+  declarations: [TeamsComponent, AddDepartmentComponent, AddCompanyComponent],
   imports: [
     CommonModule,
     TeamsRoutingModule,
     SharedModule
   ],
   entryComponents: [
-    AddDepartmentComponent
+    AddDepartmentComponent,
+    AddCompanyComponent
   ]
 })
 export class TeamsModule { }

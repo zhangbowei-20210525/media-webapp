@@ -30,6 +30,48 @@ ul {
     float: right;
 }
 
+.block {
+    margin-bottom: 20px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.block.transparent-block {
+    background-color: transparent;
+}
+
+.block>.block-header {
+    padding: 0 2rem;
+    height: 4.6rem;
+    border-bottom: 1px solid @color-border;
+    box-sizing: border-box;
+}
+
+.block>.block-header>.block-title {
+    float: left;
+    line-height: 4.2rem;
+    color: @color-subhead;
+}
+
+.block>.block-header>.block-options {
+    float: right;
+    line-height: 4.2rem;
+}
+
+.block>.block-header>.block-options>* {
+    margin-left: 1rem;
+}
+
+.block>.block-content {
+    margin: 2rem;
+    min-height: 1rem;
+}
+
+.block>.block-content.full {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 // .clearfix {
 //     overflow: auto;
 //     zoom: 1;

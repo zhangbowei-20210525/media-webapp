@@ -53,11 +53,9 @@ export class WechatComponent implements OnInit {
     this.accountervice.wechatValidate(code)
       .pipe(dtoMap(e => e.data), dtoCatchError())
       .subscribe(result => {
-        const token = result.token;
-        delete result.token;
-        this.settings.user = result;
+        this.settings.user = result.auth;
         this.tokenService.set({
-          token: token,
+          token: result.token,
           time: +new Date
         });
         this.validateStatus = 'successful';

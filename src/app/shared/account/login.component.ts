@@ -151,12 +151,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           }),
           finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
-          console.log(result);
-          const token = result.token;
-          delete result.token;
-          this.settings.user = result;
+          this.settings.user = result.auth;
           this.token.set({
-            token: token,
+            token: result.token,
             time: +new Date
           });
           this.close();
