@@ -7,9 +7,10 @@ import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
 import { AddEmployeeComponent } from './employees/add-employee.component';
 import { EmployeesComponent } from './employees/employees.component';
+import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 
 @NgModule({
-  declarations: [TeamsComponent, AddDepartmentComponent, AddCompanyComponent, AddEmployeeComponent, EmployeesComponent],
+  declarations: [TeamsComponent, AddDepartmentComponent, AddCompanyComponent, AddEmployeeComponent, EmployeesComponent, EmployeeDetailsComponent],
   imports: [
     CommonModule,
     TeamsRoutingModule,

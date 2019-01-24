@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SimpleGuard } from '@delon/auth';
 import { TeamsComponent } from './teams.component';
 import { EmployeesComponent } from './employees/employees.component';
+import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
     {
       path: 'employees/:id',
       component: EmployeesComponent
+    },
+    {
+      path: 'employee-details/:id',
+      component: EmployeeDetailsComponent
     }]
   }
 ];
