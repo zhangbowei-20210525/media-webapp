@@ -5,9 +5,11 @@ import { TeamsRoutingModule } from './teams-routing.module';
 import { SharedModule } from '@shared';
 import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
+import { AddEmployeeComponent } from './employees/add-employee.component';
+import { EmployeesComponent } from './employees/employees.component';
 
 @NgModule({
-  declarations: [TeamsComponent, AddDepartmentComponent, AddCompanyComponent],
+  declarations: [TeamsComponent, AddDepartmentComponent, AddCompanyComponent, AddEmployeeComponent, EmployeesComponent],
   imports: [
     CommonModule,
     TeamsRoutingModule,
@@ -15,7 +17,8 @@ import { AddCompanyComponent } from './components/add-company.component';
   ],
   entryComponents: [
     AddDepartmentComponent,
-    AddCompanyComponent
+    AddCompanyComponent,
+    AddEmployeeComponent
   ]
 })
 export class TeamsModule { }

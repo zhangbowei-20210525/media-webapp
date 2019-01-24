@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResponseDto, dtoMap, dtoCatchError } from '@shared';
+import { ResponseDto, ListResponseDto, dtoMap, dtoCatchError } from '@shared';
 import { DepartmentDto } from './dtos';
 
 @Injectable({

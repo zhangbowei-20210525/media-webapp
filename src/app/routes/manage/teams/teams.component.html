@@ -35,8 +35,8 @@
             <ng-template #nzTreeTemplate let-node>
               <span class="custom-node" [class.active]="activedNode?.key===node.key">
                 <span>
-                  <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
-                  <span class="folder-name">{{node.title}}</span>
+                  <i nz-icon class="folder-icon" [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+                  <span class="folder-name text-ellipsis">{{node.title}}</span>
                   <nz-dropdown [nzTrigger]="'click'">
                     <!-- <a nz-dropdown>
                       Click me <i nz-icon type="down"></i>
@@ -56,7 +56,36 @@
           </nz-tree>
         </div>
         <div class="employees">
-          <app-empty></app-empty>
+          <!-- <div class="table-operations">
+            <button nz-button (click)="addEmployee()">添加成员</button>
+            <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()">删除</button>
+          </div>
+          <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>
+            <nz-table #employeesTable [nzData]="dataset" [nzSize]="'middle'" [nzNoResult]="noResult">
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" [nzDisabled]="dataset.length < 1" (nzCheckedChange)="checkAll($event)"></th>
+                  <th>姓名</th>
+                  <th>部门</th>
+                  <th>手机</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of employeesTable.data">
+                  <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()" [nzDisabled]="data.disabled"></td>
+                  <td>{{data.name}}</td>
+                  <td>{{data.department}}</td>
+                  <td>{{data.phone}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <ng-template #noResult>
+              <app-empty></app-empty>
+            </ng-template>
+          </nz-spin> -->
+          <router-outlet></router-outlet>
+
+          <!-- <app-empty></app-empty> -->
         </div>
       </div>
     </div>

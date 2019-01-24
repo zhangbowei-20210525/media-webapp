@@ -7,6 +7,7 @@ import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
 import { dtoMap, dtoCatchError } from '@shared';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-teams',
@@ -25,12 +26,21 @@ export class TeamsComponent implements OnInit {
     private service: TeamsService,
     private modal: NzModalService,
     private message: NzMessageService,
+    private router: Router,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) { }
 
   ngOnInit() {
     this.fetchCompanys();
     this.fetchDepartment();
+  }
+
+  get activedNodeKey() {
+    return this.activedNode ? this.activedNode.key : '';
+  }
+
+  navigateToEmployees() {
+    this.router.navigateByUrl(`/manage/teams/employees/${this.activedNodeKey}`); // 必须后端存在默认部门
   }
 
   addCompany() {
@@ -51,7 +61,7 @@ export class TeamsComponent implements OnInit {
           this.fetchCompanys();
           resolve();
         }, error => {
-          this.message.success('新建失败');
+          this.message.error('新建失败');
           resolve(false);
         });
     } else {
@@ -77,6 +87,8 @@ export class TeamsComponent implements OnInit {
           time: +new Date
         });
         this.fetchDepartment();
+        // this.fetchEmployees(this.activedNodeKey);
+        this.navigateToEmployees();
         this.message.success(`已切换到 ${companyName}`);
       });
   }
@@ -88,9 +100,9 @@ export class TeamsComponent implements OnInit {
         const children = this.getNodes(departments);
         this.nodes = [{
           title: this.settings.user.company_full_name,
-          key: this.settings.user.company_id + '',
-          expanded: true,
+          key: null,
           isLeaf: false,
+          expanded: true,
           children: children
         }];
       });
@@ -122,7 +134,19 @@ export class TeamsComponent implements OnInit {
     this.activedNode = data.node;
     // add selectedNodeList
     this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode);
+    // this.fetchEmployees(data.node.key);
+    this.navigateToEmployees();
   }
+
+  // fetchEmployees(departmentId: any) {
+  //   this.isDatasetLoading = true;
+  //   this.service.getEmployees(departmentId, '', '')
+  //     .pipe(dtoMap(e => e.data), dtoCatchError(), finalize(() => this.isDatasetLoading = false))
+  //     .subscribe(result => {
+  //       this.dataset = result.list;
+  //       this.refreshStatus();
+  //     });
+  // }
 
   addDepartment(key: string) {
     this.modal.create({
@@ -142,14 +166,13 @@ export class TeamsComponent implements OnInit {
                 {
                   title: component.departmentName.value,
                   key: result.id,
-                  isLeaf: false,
+                  isLeaf: true,
                   expanded: true,
                   children: []
                 });
-              console.log(added);
               resolve();
             }, error => {
-              this.message.success('新增失败');
+              this.message.error('新增失败');
               resolve(false);
             });
         } else {
@@ -167,10 +190,12 @@ export class TeamsComponent implements OnInit {
           .pipe(dtoMap(e => e.data), dtoCatchError())
           .subscribe(result => {
             this.message.success(`已删除 ${name}`);
-            this.removeNode(this.treeCom.getTreeNodes(), key);
+            const deleted = this.removeNode(this.nodes, key);
+            this.nodes = JSON.parse(JSON.stringify(this.nodes));
             resolve();
           }, error => {
-            reject();
+            this.message.success(error.message || '删除失败');
+            resolve();
           });
       })
     });
@@ -182,6 +207,8 @@ export class TeamsComponent implements OnInit {
       if (nodes.hasOwnProperty(i)) {
         const node = nodes[i];
         if (node.key === parentKey) {
+          node.isLeaf = false;
+          node.isExpanded = true;
           node.addChildren([options]);
           added = true;
         } else if (node.children.length > 0) {
@@ -195,14 +222,77 @@ export class TeamsComponent implements OnInit {
     return added;
   }
 
-  removeNode(nodes: NzTreeNode[], key: string) {
+  removeNode(nodes: NzTreeNodeOptions[], key: string) {
+    let deleted = false;
     for (const i in nodes) {
       if (nodes.hasOwnProperty(i)) {
         const node = nodes[i];
         if (node.key === key) {
-          // node
+          nodes.splice(i as any, 1);
+          deleted = true;
+        } else if (node.children.length > 0) {
+          deleted = this.removeNode(node.children, key);
+        }
+        if (deleted) {
+          break;
         }
       }
     }
+    return deleted;
   }
+
+  // refreshStatus(): void {
+  //   const allChecked = this.dataset.length > 0 ? this.dataset.every(value => value.checked === true) : false;
+  //   const allUnChecked = this.dataset.every(value => !value.checked);
+  //   this.allChecked = allChecked;
+  //   this.indeterminate = (!allChecked) && (!allUnChecked);
+  //   this.disabledButton = !this.dataset.some(value => value.checked);
+  // }
+
+  // checkAll(value: boolean): void {
+  //   this.dataset.forEach(data => data.checked = value);
+  //   this.refreshStatus();
+  // }
+
+  // addEmployee() {
+  //   this.modal.create({
+  //     nzTitle: '新增员工',
+  //     nzContent: AddEmployeeComponent,
+  //     nzComponentParams: { id: this.activedNode ? this.activedNode.key : '' },
+  //     nzWidth: 800,
+  //     nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve) => {
+  //       if (component.validation()) {
+  //         component.submit()
+  //           .pipe(dtoMap(e => e.data), dtoCatchError())
+  //           .subscribe(result => {
+  //             this.message.success('新增成功');
+  //             this.fetchEmployees(this.activedNodeKey);
+  //             resolve();
+  //           }, error => {
+  //             this.message.error('新增失败');
+  //             resolve(false);
+  //           });
+  //       } else {
+  //         resolve(false);
+  //       }
+  //     })
+  //   });
+  // }
+
+  // deleteEmployees() {
+  //   this.modal.confirm({
+  //     nzTitle: `若员工在多个部门中，则只将员工从该部门中移除`,
+  //     nzOnOk: () => new Promise((resolve, reject) => {
+  //       this.service.deleteEmployees(this.dataset.filter(value => value.checked).map(value => value.id))
+  //         .pipe(dtoMap(e => e.data), dtoCatchError())
+  //         .subscribe(result => {
+  //           this.message.success('删除成功');
+  //           this.fetchEmployees(this.activedNodeKey);
+  //           resolve();
+  //         }, error => {
+  //           reject();
+  //         });
+  //     })
+  //   });
+  // }
 }

@@ -1,5 +1,4 @@
 @import '~styles/theme';
-
 .company-full-name {
     margin-bottom: 1rem;
 }
@@ -14,15 +13,14 @@
 .employees {
     flex: 1;
     min-height: 30rem;
+    padding-left: 2rem;
 }
 
 // :host ::ng-deep .draggable-tree .ant-tree-node-content-wrapper {
 //     width: calc(100% - 42px);
 // }
-
 :host ::ng-deep .ant-tree {
-    overflow: hidden;
-    // margin: 0 -24px;
+    overflow: hidden; // margin: 0 -24px;
     // padding: 0 24px;
 }
 
@@ -49,7 +47,13 @@
     color: #fff;
 }
 
+.folder-icon {
+    vertical-align: super;
+}
+
 .folder-name {
+    display: inline-block;
+    width: calc(100% - 14px - 4px - 30px);
     margin-left: 4px;
 }
 
