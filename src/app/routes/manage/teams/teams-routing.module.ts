@@ -4,6 +4,8 @@ import { SimpleGuard } from '@delon/auth';
 import { TeamsComponent } from './teams.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
+import { RolesComponent } from './roles/roles.component';
+import { TeamInfoComponent } from './team-info.component';
 
 const routes: Routes = [
   {
@@ -11,8 +13,7 @@ const routes: Routes = [
     component: TeamsComponent,
     children: [{
       path: '',
-      redirectTo: 'employees/null',
-      pathMatch: 'full'
+      component: TeamInfoComponent
     },
     {
       path: 'employees/:id',
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
       path: 'employee-details/:id',
       component: EmployeeDetailsComponent
+    },
+    {
+      path: 'roles',
+      component: RolesComponent
     }]
   }
 ];

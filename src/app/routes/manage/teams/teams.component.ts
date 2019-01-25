@@ -39,6 +39,10 @@ export class TeamsComponent implements OnInit {
     return this.activedNode ? this.activedNode.key : '';
   }
 
+  navigateToTeams() {
+    this.router.navigateByUrl(`/manage/teams`); // 必须后端存在默认部门
+  }
+
   navigateToEmployees() {
     this.router.navigateByUrl(`/manage/teams/employees/${this.activedNodeKey}`); // 必须后端存在默认部门
   }
@@ -88,7 +92,8 @@ export class TeamsComponent implements OnInit {
         });
         this.fetchDepartment();
         // this.fetchEmployees(this.activedNodeKey);
-        this.navigateToEmployees();
+        // this.navigateToEmployees();
+        this.navigateToTeams();
         this.message.success(`已切换到 ${companyName}`);
       });
   }
@@ -97,14 +102,15 @@ export class TeamsComponent implements OnInit {
     this.service.getDepartments()
       .pipe(dtoMap(e => e.data), dtoCatchError())
       .subscribe(departments => {
-        const children = this.getNodes(departments);
-        this.nodes = [{
-          title: this.settings.user.company_full_name,
-          key: null,
-          isLeaf: false,
-          expanded: true,
-          children: children
-        }];
+        this.nodes = this.getNodes(departments);
+        // const children = this.getNodes(departments);
+        // this.nodes = [{
+        //   title: this.settings.user.company_full_name,
+        //   key: null,
+        //   isLeaf: false,
+        //   expanded: true,
+        //   children: children
+        // }];
       });
   }
 
@@ -239,6 +245,10 @@ export class TeamsComponent implements OnInit {
       }
     }
     return deleted;
+  }
+
+  settingRoles() {
+
   }
 
   // refreshStatus(): void {

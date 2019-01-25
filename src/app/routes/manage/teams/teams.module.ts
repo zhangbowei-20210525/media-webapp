@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamsComponent } from './teams.component';
+import { TeamInfoComponent } from './team-info.component';
 import { TeamsRoutingModule } from './teams-routing.module';
 import { SharedModule } from '@shared';
 import { AddDepartmentComponent } from './components/add-department.component';
@@ -8,9 +9,19 @@ import { AddCompanyComponent } from './components/add-company.component';
 import { AddEmployeeComponent } from './employees/add-employee.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
+import { RolesComponent } from './roles/roles.component';
 
 @NgModule({
-  declarations: [TeamsComponent, AddDepartmentComponent, AddCompanyComponent, AddEmployeeComponent, EmployeesComponent, EmployeeDetailsComponent],
+  declarations: [
+    TeamsComponent,
+    TeamInfoComponent,
+    AddDepartmentComponent,
+    AddCompanyComponent,
+    AddEmployeeComponent,
+    EmployeesComponent,
+    EmployeeDetailsComponent,
+    RolesComponent,
+  ],
   imports: [
     CommonModule,
     TeamsRoutingModule,

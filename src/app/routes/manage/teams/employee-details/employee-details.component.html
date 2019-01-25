@@ -4,9 +4,7 @@
   <nz-tag *ngFor="let department of employee?.departments; let i = index;" [nzMode]="'closeable'" (nzAfterClose)="handleClose(department)">
     {{ sliceTagName(department.name) }}
   </nz-tag>
-  <nz-tag
-      class="editable-tag"
-      (click)="addDepartments()">
-      <i nz-icon type="plus"></i> 添加部门
-    </nz-tag>
+  <nz-tag class="editable-tag" (click)="addDepartments()">
+    <i nz-icon type="plus"></i> 添加部门
+  </nz-tag>
 </p>
