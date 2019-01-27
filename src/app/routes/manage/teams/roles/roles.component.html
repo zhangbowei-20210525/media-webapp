@@ -25,13 +25,14 @@
     </nz-tag>
     <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue" class="add-input"
       (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()">
-    <span class="rf" [hidden]="editMode">
+    <span class="rf" [hidden]="equalsArray(finalCheckedKeys, originCheckedKeys)">
       <button nz-button nzType="primary" nzSize="small" (click)="savePermissions()">保存</button>
       <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelSavePermissions()">取消</button>
     </span>
   </div>
   <div class="permission">
-    <nz-tree #authTreeCom [nzData]="permissionNodes" nzCheckable="true" nzMultiple="true" [nzCheckedKeys]="originCheckedKeys" (nzCheckBoxChange)="nzPermissionCheck($event)">
+    <nz-tree #permissionTreeCom [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+      (nzCheckBoxChange)="nzPermissionCheck($event)" nzCheckStrictly="true">
     </nz-tree>
   </div>
 </div>

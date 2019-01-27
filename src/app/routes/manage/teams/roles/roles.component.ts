@@ -1,7 +1,8 @@
+import { finalize } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { RolesService } from './roles.service';
 import { dtoMap, dtoCatchError } from '@shared';
-import { NzMessageService, NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd';
+import { NzMessageService, NzFormatEmitEvent, NzTreeNodeOptions, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 import { RoleDto, PermissionDto } from './dtos';
 
 @Component({
@@ -12,7 +13,7 @@ import { RoleDto, PermissionDto } from './dtos';
 export class RolesComponent implements OnInit {
 
   @ViewChild('inputElement') inputElement: ElementRef;
-  @ViewChild('authTreeCom') authTreeCom;
+  @ViewChild('permissionTreeCom') permissionTreeCom: NzTreeComponent;
   roles: RoleDto[];
   inputVisible = false;
   inputValue = '';
@@ -20,6 +21,10 @@ export class RolesComponent implements OnInit {
   originCheckedKeys = [];
   finalCheckedKeys = [];
   editMode = false;
+
+  equalsArray(a, b) {
+    return this.service.equalsArrayItems(a, b);
+  }
 
   constructor(
     private service: RolesService,
@@ -73,6 +78,9 @@ export class RolesComponent implements OnInit {
   }
 
   handleRoleChange(name: string) {
+    this.permissionNodes = [];
+    this.originCheckedKeys = [];
+    this.finalCheckedKeys = [];
     const role = this.roles.find(e => e.name === name);
     this.service.getRolePermissions(role.id)
       .pipe(dtoMap(e => e.data), dtoCatchError())
@@ -84,8 +92,11 @@ export class RolesComponent implements OnInit {
   }
 
   nzPermissionCheck(event: NzFormatEmitEvent): void {
-    console.log(event.checkedKeys);
+    console.log(event.node.key);
     this.finalCheckedKeys = event.keys;
+    if (event.node.isChecked) {
+      this.backCheckNodes(event.node.key);
+    }
   }
 
   savePermissions() {
@@ -93,7 +104,45 @@ export class RolesComponent implements OnInit {
   }
 
   cancelSavePermissions() {
+    this.finalCheckedKeys = this.originCheckedKeys;
+  }
 
+  backCheckNodes(key: string) {
+    const node = this.getNodeByKey(this.permissionTreeCom.getTreeNodes(), key);
+    if (node) {
+      this.checkParentNodes(node);
+    }
+  }
+
+  getNodeByKey(nodes: NzTreeNode[], key: string): NzTreeNode {
+    for (const i in nodes) {
+      if (nodes.hasOwnProperty(i)) {
+        const element = nodes[i];
+        if (element.key === key) {
+          return element;
+        } else {
+          if (element.children && element.children.length > 0) {
+            const node = this.getNodeByKey(element.children, key);
+            if (node) {
+              return node;
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  checkParentNodes(node: NzTreeNode) {
+    console.log('递归', node.key);
+    const parent = node.getParentNode();
+    if (parent) {
+      if (!parent.isChecked) {
+        // console.log(node.key, 'set checked');
+        parent.setChecked(true);
+        this.checkParentNodes(parent);
+      }
+    }
   }
 
 }
