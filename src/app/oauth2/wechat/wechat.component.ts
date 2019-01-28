@@ -51,7 +51,6 @@ export class WechatComponent implements OnInit {
 
   wxloginRequest(code: string) {
     this.accountervice.wechatValidate(code)
-      .pipe(dtoMap(e => e.data), dtoCatchError())
       .subscribe(result => {
         this.settings.user = result.auth;
         this.tokenService.set({

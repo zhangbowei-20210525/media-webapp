@@ -31,8 +31,8 @@
     </span>
   </div>
   <div class="permission">
-    <nz-tree #permissionTreeCom [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
-      (nzCheckBoxChange)="nzPermissionCheck($event)" nzCheckStrictly="true">
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+      (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
     </nz-tree>
   </div>
 </div>

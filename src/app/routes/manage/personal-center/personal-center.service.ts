@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResponseDto, dtoCatchError } from '@shared';
-import { dtoMap } from '@shared';
 import { PersonalCenterDto } from './personal-center.dto';
 
 @Injectable({
@@ -14,10 +12,10 @@ export class PersonalCenterService {
   ) { }
 
   getUserInfo() {
-    return this.http.get<ResponseDto<PersonalCenterDto>>('/api/v1/users/info').pipe(dtoMap(e => e.data), dtoCatchError());
+    return this.http.get<PersonalCenterDto>('/api/v1/users/info');
   }
 
   getUserEmployees() {
-    return this.http.get<ResponseDto<any>>('/api/v1/users/info/employees').pipe(dtoMap(e => e.data), dtoCatchError());
+    return this.http.get<any>('/api/v1/users/info/employees');
   }
 }

@@ -1,10 +1,42 @@
-<h3>{{ employee?.name }}</h3>
-<p>{{ employee?.phone }}</p>
-<p>
-  <nz-tag *ngFor="let department of employee?.departments; let i = index;" [nzMode]="'closeable'" (nzAfterClose)="handleClose(department)">
-    {{ sliceTagName(department.name) }}
-  </nz-tag>
-  <nz-tag class="editable-tag" (click)="addDepartments()">
-    <i nz-icon type="plus"></i> 添加部门
-  </nz-tag>
-</p>
+<nz-tabset>
+  <nz-tab [nzTitle]="'基本信息'">
+    <nz-skeleton [nzLoading]="isInfoLoading">
+      <h3>{{ employee?.name }}</h3>
+      <p>{{ employee?.phone }}</p>
+      <p>
+        <nz-tag *ngFor="let department of employee?.department; let i = index;">
+          {{ sliceTagName(department.name) }}
+        </nz-tag>
+        <nz-tag class="editable-tag" (click)="editDepartments()">
+          <i nz-icon type="edit"></i> 修改部门
+        </nz-tag>
+      </p>
+    </nz-skeleton>
+  </nz-tab>
+  <nz-tab [nzTitle]="'角色/权限'">
+    <p>
+      <i nz-icon type="user" style="margin-right: 0.5rem;"></i>
+      <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomCenter'" [nzDisabled]="isRolesLoading">
+        <a nz-dropdown>
+          <span *ngIf="selectedRole; else noRole">{{ selectedRole.name }}</span>
+          <ng-template #noRole>
+            <span class="text-hint">无角色</span>
+          </ng-template>
+          <span>[切换]</span>
+        </a>
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item *ngFor="let role of roles">
+            <a (click)="selectRole(role)">{{ role.name }}</a>
+          </li>
+        </ul>
+      </nz-dropdown>
+      <span class="rf">
+        <button nz-button nzType="primary" nzSize="small" (click)="saveRoleAndPermissions()">保存</button>
+        <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelsaveRoleAndPermissions()">取消</button>
+      </span>
+    </p>
+  </nz-tab>
+  <nz-tab [nzTitle]="'节目权限'">
+    Content of Tab Pane 2
+  </nz-tab>
+</nz-tabset>

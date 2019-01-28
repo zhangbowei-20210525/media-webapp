@@ -4,7 +4,7 @@ interface IResponseDto {
     detail: string;
 }
 
-interface PaginationResponseDto<T> {
+export interface PaginationResponseDto<T> {
     list: T[];
     pagination: PaginationDto;
 }

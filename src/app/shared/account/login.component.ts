@@ -73,22 +73,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.phone.valid) {
       this.isLoadingCaptcha = true;
       this.service.getCaptcha(this.phone.value)
-        .pipe(
-          map(body => {
-            if (body.code <= 0) {
-              return body.message;
-            }
-            throw new Error(body.message);
-          }),
-          finalize(() => this.isLoadingCaptcha = false))
-        .subscribe(message => {
+        .pipe(finalize(() => this.isLoadingCaptcha = false))
+        .subscribe(() => {
           // this.translate.instant('app.login.get-captcha-success');
-          this.message.success(message || this.translate.instant('app.login.get-captcha-success'));
+          this.message.success(this.translate.instant('app.login.get-captcha-success'));
           this.freezeGetCaptchaButton(60);
         }, error => {
-          if (error.message) {
-            this.message.error(error.message);
-          }
+
         });
     }
     e.preventDefault();
@@ -142,14 +133,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.validation()) {
       this.isLoggingIn = true;
       this.service.phoneValidate(this.phone.value, this.captcha.value)
-        .pipe(
-          map(body => {
-            if (body.code <= 0) {
-              return body.data;
-            }
-            throw new Error(body.message);
-          }),
-          finalize(() => this.isLoggingIn = false))
+        .pipe(finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
           this.settings.user = result.auth;
           this.token.set({
@@ -158,9 +142,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           });
           this.close();
         }, error => {
-          if (error.message) {
-            this.message.error(error.message);
-          }
+
         });
     }
   }

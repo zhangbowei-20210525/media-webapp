@@ -37,7 +37,7 @@ export class EmployeesComponent implements OnInit {
   fetchEmployees() {
     this.isDatasetLoading = true;
     this.service.getEmployees(this.department, '', '')
-      .pipe(dtoMap(e => e.data), dtoCatchError(), finalize(() => this.isDatasetLoading = false))
+      .pipe(finalize(() => this.isDatasetLoading = false))
       .subscribe(result => {
         this.dataset = result.list;
         this.refreshStatus();
@@ -69,16 +69,14 @@ export class EmployeesComponent implements OnInit {
       nzWidth: 800,
       nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve) => {
         if (component.validation()) {
-          component.submit()
-            .pipe(dtoMap(e => e.data), dtoCatchError())
-            .subscribe(result => {
-              this.message.success('新增成功');
-              this.refreshDataSet();
-              resolve();
-            }, error => {
-              this.message.error('新增失败');
-              resolve(false);
-            });
+          component.submit().subscribe(result => {
+            this.message.success('新增成功');
+            this.refreshDataSet();
+            resolve();
+          }, error => {
+            this.message.error('新增失败');
+            resolve(false);
+          });
         } else {
           resolve(false);
         }
@@ -91,7 +89,6 @@ export class EmployeesComponent implements OnInit {
       nzTitle: `若员工在多个部门中，则只将员工从该部门中移除`,
       nzOnOk: () => new Promise((resolve, reject) => {
         this.service.deleteEmployees(this.dataset.filter(value => value.checked).map(value => value.id))
-          .pipe(dtoMap(e => e.data), dtoCatchError())
           .subscribe(result => {
             this.message.success('删除成功');
             this.refreshDataSet();

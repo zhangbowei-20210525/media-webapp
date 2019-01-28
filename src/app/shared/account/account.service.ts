@@ -108,16 +108,16 @@ export class AccountService {
   }
 
   phoneValidate(phone: string, code: string) {
-    return this.http.post<ResponseDto<any>>('/api/v1/login/phone', { phone, code }, { params: { _allow_anonymous: '' } });
+    return this.http.post<any>('/api/v1/login/phone', { phone, code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
   }
 
   wechatValidate(code: string) {
-    return this.http.post<ResponseDto<any>>('/api/v1/login/wechat', { code }, { params: { _allow_anonymous: '' } });
+    return this.http.post<any>('/api/v1/login/wechat', { code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
   }
 
   bindPhoneValidate(phone: string, code: string) {
-    return this.http.post<ResponseDto<any>>('/api/v1/users/login_info/phone', { phone, code });
+    return this.http.post<any>('/api/v1/users/login_info/phone', { phone, code });
   }
 }

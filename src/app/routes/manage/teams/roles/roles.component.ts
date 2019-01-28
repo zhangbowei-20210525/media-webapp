@@ -13,16 +13,16 @@ import { RoleDto, PermissionDto } from './dtos';
 export class RolesComponent implements OnInit {
 
   @ViewChild('inputElement') inputElement: ElementRef;
-  @ViewChild('permissionTreeCom') permissionTreeCom: NzTreeComponent;
+  @ViewChild('permissionTree') permissionTreeCom: NzTreeComponent;
   roles: RoleDto[];
+  selectedRole: RoleDto;
   inputVisible = false;
   inputValue = '';
   permissionNodes: NzTreeNodeOptions[];
   originCheckedKeys = [];
   finalCheckedKeys = [];
-  editMode = false;
 
-  equalsArray(a, b) {
+  equalsArray(a: [], b: []) {
     return this.service.equalsArrayItems(a, b);
   }
 
@@ -32,12 +32,9 @@ export class RolesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.service.getRoles()
-      .pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(result => {
-        console.log(result);
-        this.roles = result;
-      });
+    this.service.getRoles().subscribe(result => {
+      this.roles = result;
+    });
   }
 
   showInput(): void {
@@ -49,7 +46,6 @@ export class RolesComponent implements OnInit {
 
   handleInputConfirm(): void {
     if (this.inputValue) {
-      console.log(this.roles.findIndex(e => e.name === this.inputValue));
       if (this.roles.findIndex(e => e.name === this.inputValue) < 0) {
         this.addRole(this.inputValue);
       } else {
@@ -66,33 +62,27 @@ export class RolesComponent implements OnInit {
       name: name,
       loading: true
     }];
-    this.service.addRole(name)
-      .pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(result => {
-        const role = this.roles.find(e => e.name === name);
-        role.id = result.id;
-        result.loading = false;
-      }, error => {
-        this.roles = this.roles.filter(e => e.name !== name);
-      });
+    this.service.addRole(name).subscribe(result => {
+      const role = this.roles.find(e => e.name === name);
+      role.id = result.id;
+      role.loading = false;
+    }, error => {
+      this.roles = this.roles.filter(e => e.name !== name);
+    });
   }
 
   handleRoleChange(name: string) {
     this.permissionNodes = [];
     this.originCheckedKeys = [];
     this.finalCheckedKeys = [];
-    const role = this.roles.find(e => e.name === name);
-    this.service.getRolePermissions(role.id)
-      .pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(permissions => {
-        console.log(permissions);
-        this.permissionNodes = this.service.getNzTreeNodes(permissions);
-        this.originCheckedKeys = this.service.getOwnedPermissionKeys(permissions);
-      });
+    this.selectedRole = this.roles.find(e => e.name === name);
+    this.service.getRolePermissions(this.selectedRole.id).subscribe(permissions => {
+      this.permissionNodes = this.service.getNzTreeNodes(permissions);
+      this.finalCheckedKeys = this.originCheckedKeys = this.service.getOwnedPermissionKeys(permissions);
+    });
   }
 
-  nzPermissionCheck(event: NzFormatEmitEvent): void {
-    console.log(event.node.key);
+  permissionCheck(event: NzFormatEmitEvent): void {
     this.finalCheckedKeys = event.keys;
     if (event.node.isChecked) {
       this.backCheckNodes(event.node.key);
@@ -100,11 +90,31 @@ export class RolesComponent implements OnInit {
   }
 
   savePermissions() {
-    // this.finalCheckedKeys;
+    if (this.validationNodes()) {
+      this.service.updateRolePermissions(this.selectedRole.id, this.finalCheckedKeys).subscribe(result => {
+        this.originCheckedKeys = this.finalCheckedKeys;
+        this.message.success('修改成功');
+      }, error => {
+        this.message.success('修改失败');
+      });
+    }
   }
 
   cancelSavePermissions() {
     this.finalCheckedKeys = this.originCheckedKeys;
+    this.setCheckedByKeys(this.permissionTreeCom.getTreeNodes(), this.originCheckedKeys);
+  }
+
+  setCheckedByKeys(nodes: NzTreeNode[], keys: string[]) {
+    for (const i in nodes) {
+      if (nodes.hasOwnProperty(i)) {
+        const element = nodes[i];
+        element.isChecked = !!keys.find(e => e === element.key);
+        if (element.children && element.children.length > 0) {
+          this.setCheckedByKeys(element.children, keys);
+        }
+      }
+    }
   }
 
   backCheckNodes(key: string) {
@@ -134,15 +144,47 @@ export class RolesComponent implements OnInit {
   }
 
   checkParentNodes(node: NzTreeNode) {
-    console.log('递归', node.key);
     const parent = node.getParentNode();
     if (parent) {
       if (!parent.isChecked) {
-        // console.log(node.key, 'set checked');
         parent.setChecked(true);
+        if (!this.finalCheckedKeys.find(e => e === parent.key)) {
+          this.finalCheckedKeys.push(parent.key);
+        }
         this.checkParentNodes(parent);
       }
     }
+  }
+
+  validationNodes(): boolean {
+    const invalid = this.findInvalidNode(this.permissionTreeCom.getTreeNodes());
+    if (invalid) {
+      this.message.warning(`${invalid.title} 需要前置权限 ${invalid.parentNode.title}`);
+      return false;
+    }
+    return true;
+  }
+
+  findInvalidNode(nodes: NzTreeNode[]): NzTreeNode {
+    for (const key in nodes) {
+      if (nodes.hasOwnProperty(key)) {
+        const element = nodes[key];
+        if (element.isChecked) {
+          if (element.parentNode) {
+            if (!element.parentNode.isChecked) {
+              return element;
+            }
+          }
+        }
+        if (element.children && element.children.length > 0) {
+          const result = this.findInvalidNode(element.children);
+          if (result) {
+            return result;
+          }
+        }
+      }
+    }
+    return null;
   }
 
 }

@@ -58,60 +58,42 @@ export class TeamsComponent implements OnInit {
 
   addCompanyAgreed = (component: AddCompanyComponent) => new Promise((resolve) => {
     if (component.validation()) {
-      component.submit()
-        .pipe(dtoMap(e => e.data), dtoCatchError())
-        .subscribe(result => {
-          this.message.success('新建成功');
-          this.fetchCompanys();
-          resolve();
-        }, error => {
-          this.message.error('新建失败');
-          resolve(false);
-        });
+      component.submit().subscribe(result => {
+        this.message.success('新建成功');
+        this.fetchCompanys();
+        resolve();
+      }, error => {
+        this.message.error('新建失败');
+        resolve(false);
+      });
     } else {
       resolve(false);
     }
   })
 
   fetchCompanys() {
-    this.service.getCompanys()
-      .pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(result => {
-        this.companys = result;
-      });
+    this.service.getCompanys().subscribe(result => {
+      this.companys = result;
+    });
   }
 
   switchCompany(id: number, companyName: string) {
-    this.service.switchCompany(id)
-      .pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(result => {
-        this.settings.user = result.auth;
-        this.token.set({
-          token: result.token,
-          time: +new Date
-        });
-        this.fetchDepartment();
-        // this.fetchEmployees(this.activedNodeKey);
-        // this.navigateToEmployees();
-        this.navigateToTeams();
-        this.message.success(`已切换到 ${companyName}`);
+    this.service.switchCompany(id).subscribe(result => {
+      this.settings.user = result.auth;
+      this.token.set({
+        token: result.token,
+        time: +new Date
       });
+      this.fetchDepartment();
+      this.navigateToTeams();
+      this.message.success(`已切换到 ${companyName}`);
+    });
   }
 
   fetchDepartment() {
-    this.service.getDepartments()
-      .pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(departments => {
-        this.nodes = this.getNodes(departments);
-        // const children = this.getNodes(departments);
-        // this.nodes = [{
-        //   title: this.settings.user.company_full_name,
-        //   key: null,
-        //   isLeaf: false,
-        //   expanded: true,
-        //   children: children
-        // }];
-      });
+    this.service.getDepartments().subscribe(departments => {
+      this.nodes = this.getNodes(departments);
+    });
   }
 
   getNodes(departments: DepartmentDto[]): NzTreeNodeOptions[] {
@@ -140,19 +122,8 @@ export class TeamsComponent implements OnInit {
     this.activedNode = data.node;
     // add selectedNodeList
     this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode);
-    // this.fetchEmployees(data.node.key);
     this.navigateToEmployees();
   }
-
-  // fetchEmployees(departmentId: any) {
-  //   this.isDatasetLoading = true;
-  //   this.service.getEmployees(departmentId, '', '')
-  //     .pipe(dtoMap(e => e.data), dtoCatchError(), finalize(() => this.isDatasetLoading = false))
-  //     .subscribe(result => {
-  //       this.dataset = result.list;
-  //       this.refreshStatus();
-  //     });
-  // }
 
   addDepartment(key: string) {
     this.modal.create({
@@ -162,25 +133,20 @@ export class TeamsComponent implements OnInit {
       nzWidth: 800,
       nzOnOk: (component: AddDepartmentComponent) => new Promise((resolve) => {
         if (component.validation()) {
-          component.submit()
-            .pipe(dtoMap(e => e.data), dtoCatchError())
-            .subscribe(result => {
-              this.message.success('新增成功');
-              const added = this.addNode(
-                this.treeCom.getTreeNodes(),
-                key,
-                {
-                  title: component.departmentName.value,
-                  key: result.id,
-                  isLeaf: true,
-                  expanded: true,
-                  children: []
-                });
-              resolve();
-            }, error => {
-              this.message.error('新增失败');
-              resolve(false);
+          component.submit().subscribe(result => {
+            this.message.success('新增成功');
+            const added = this.addNode(this.treeCom.getTreeNodes(), key, {
+              title: component.departmentName.value,
+              key: result.id,
+              isLeaf: true,
+              expanded: true,
+              children: []
             });
+            resolve();
+          }, error => {
+            this.message.error('新增失败');
+            resolve(false);
+          });
         } else {
           resolve(false);
         }
@@ -192,17 +158,15 @@ export class TeamsComponent implements OnInit {
     this.modal.confirm({
       nzTitle: `是否删除 ${name}`,
       nzOnOk: () => new Promise((resolve, reject) => {
-        this.service.deleteDepartment(key)
-          .pipe(dtoMap(e => e.data), dtoCatchError())
-          .subscribe(result => {
-            this.message.success(`已删除 ${name}`);
-            const deleted = this.removeNode(this.nodes, key);
-            this.nodes = JSON.parse(JSON.stringify(this.nodes));
-            resolve();
-          }, error => {
-            this.message.success(error.message || '删除失败');
-            resolve();
-          });
+        this.service.deleteDepartment(key).subscribe(result => {
+          this.message.success(`已删除 ${name}`);
+          const deleted = this.removeNode(this.nodes, key);
+          this.nodes = JSON.parse(JSON.stringify(this.nodes));
+          resolve();
+        }, error => {
+          this.message.success(error.message || '删除失败');
+          resolve();
+        });
       })
     });
   }
@@ -250,59 +214,4 @@ export class TeamsComponent implements OnInit {
   settingRoles() {
 
   }
-
-  // refreshStatus(): void {
-  //   const allChecked = this.dataset.length > 0 ? this.dataset.every(value => value.checked === true) : false;
-  //   const allUnChecked = this.dataset.every(value => !value.checked);
-  //   this.allChecked = allChecked;
-  //   this.indeterminate = (!allChecked) && (!allUnChecked);
-  //   this.disabledButton = !this.dataset.some(value => value.checked);
-  // }
-
-  // checkAll(value: boolean): void {
-  //   this.dataset.forEach(data => data.checked = value);
-  //   this.refreshStatus();
-  // }
-
-  // addEmployee() {
-  //   this.modal.create({
-  //     nzTitle: '新增员工',
-  //     nzContent: AddEmployeeComponent,
-  //     nzComponentParams: { id: this.activedNode ? this.activedNode.key : '' },
-  //     nzWidth: 800,
-  //     nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve) => {
-  //       if (component.validation()) {
-  //         component.submit()
-  //           .pipe(dtoMap(e => e.data), dtoCatchError())
-  //           .subscribe(result => {
-  //             this.message.success('新增成功');
-  //             this.fetchEmployees(this.activedNodeKey);
-  //             resolve();
-  //           }, error => {
-  //             this.message.error('新增失败');
-  //             resolve(false);
-  //           });
-  //       } else {
-  //         resolve(false);
-  //       }
-  //     })
-  //   });
-  // }
-
-  // deleteEmployees() {
-  //   this.modal.confirm({
-  //     nzTitle: `若员工在多个部门中，则只将员工从该部门中移除`,
-  //     nzOnOk: () => new Promise((resolve, reject) => {
-  //       this.service.deleteEmployees(this.dataset.filter(value => value.checked).map(value => value.id))
-  //         .pipe(dtoMap(e => e.data), dtoCatchError())
-  //         .subscribe(result => {
-  //           this.message.success('删除成功');
-  //           this.fetchEmployees(this.activedNodeKey);
-  //           resolve();
-  //         }, error => {
-  //           reject();
-  //         });
-  //     })
-  //   });
-  // }
 }

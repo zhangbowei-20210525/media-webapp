@@ -14,15 +14,19 @@ export class RolesService {
   ) { }
 
   getRoles() {
-    return this.http.get<ResponseDto<RoleDto[]>>('/api/v1/roles');
+    return this.http.get<RoleDto[]>('/api/v1/roles');
   }
 
   addRole(name: string) {
-    return this.http.post<ResponseDto<any>>('/api/v1/roles', { name, permission_data: [] });
+    return this.http.post<any>('/api/v1/roles', { name, permission_data: [] });
   }
 
   getRolePermissions(id: number) {
-    return this.http.get<ResponseDto<PermissionDto[]>>(`/api/v1/roles/${id}`);
+    return this.http.get<PermissionDto[]>(`/api/v1/roles/${id}`);
+  }
+
+  updateRolePermissions(roleId: number, permission_data: string[]) {
+    return this.http.put(`/api/v1/roles/${roleId}`, { permission_data });
   }
 
   getNzTreeNodes(origins: PermissionDto[]): NzTreeNodeOptions[] {
@@ -61,23 +65,18 @@ export class RolesService {
   }
 
   equalsArrayItems(a: Array<any>, b: Array<any>) {
-    // if the other array is a falsy value, return
-    if (!a || !b)
+    if (!a || !b) {
       return false;
-
-    // compare lengths - can save a lot of time 
-    if (a.length != b.length)
+    }
+    if (a.length !== b.length) {
       return false;
-
-    for (var i = 0, l = a.length; i < l; i++) {
-      // Check if we have nested arrays
+    }
+    for (let i = 0, l = a.length; i < l; i++) {
       if (a[i] instanceof Array && b[i] instanceof Array) {
-        // recurse into the nested arrays
-        if (!a[i].equals(b[i]))
+        if (!a[i].equals(b[i])) {
           return false;
-      }
-      else if (a[i] != b[i]) {
-        // Warning - two different object instances will never be equal: {x:20} != {x:20}
+        }
+      } else if (a[i] !== b[i]) {
         return false;
       }
     }

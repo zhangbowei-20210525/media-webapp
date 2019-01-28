@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResponseDto } from '@shared';
-import { of } from 'rxjs';
-import { EmployeeDetailsDto } from './dtos';
+import { EmployeeDetailsDto, EmployeeDepartmentDto, RoleDto } from './dtos';
+import { NzTreeNodeOptions } from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'
@@ -13,32 +12,57 @@ export class EmployeeDetailsService {
     private http: HttpClient
   ) { }
 
-  getEmployeeDetails(id: string) {
-    return this.http.get<ResponseDto<any>>(`/api/v1/employees/${id}`);
+  getEmployeeDetails(id: number) {
+    return this.http.get<EmployeeDetailsDto>(`/api/v1/employees/${id}`);
   }
 
-  getEmployeeDetailsMock(id: string) {
-    return of(this.okResponse({
-      name: 'Jing Liu',
-      phone: '15710171696',
-      isActivated: false,
-      departments: [{
-        id: 1,
-        name: '销售部'
-      },
-      {
-        id: 2,
-        name: '法务部'
-      }]
-    } as EmployeeDetailsDto));
+  getEmployeeDepartments(id: number) {
+    return this.http.get<EmployeeDepartmentDto[]>(`/api/v1/employees/${id}/department`);
   }
 
-  okResponse<T>(data: T) {
-    return {
-      code: 0,
-      detail: '',
-      message: 'ok',
-      data: data
-    } as ResponseDto<T>;
+  updateEmployeeDepartments(id: number, department_ids: string[]) {
+    return this.http.post<EmployeeDepartmentDto[]>(`/api/v1/employees/${id}/department`, { department_ids });
+  }
+
+  getSelectionRoles() {
+    return this.http.get<RoleDto[]>('/api/v1/roles');
+  }
+
+  updateEmployeeRole(role: number) {
+    return this.http.post('/api/v1/employee_roles', {});
+  }
+
+  getNzTreeNodes(origins: EmployeeDepartmentDto[]): NzTreeNodeOptions[] {
+    const nodes: NzTreeNodeOptions[] = [];
+    for (const key in origins) {
+      if (origins.hasOwnProperty(key)) {
+        const element = origins[key];
+        nodes.push({
+          title: element.name,
+          key: element.id + '',
+          isLeaf: !!element.children && element.children.length < 1,
+          selectable: false,
+          expanded: true,
+          children: this.getNzTreeNodes(element.children)
+        });
+      }
+    }
+    return nodes;
+  }
+
+  getOwnedDepartmentKeys(origins: EmployeeDepartmentDto[]) {
+    const keys: string[] = [];
+    for (const key in origins) {
+      if (origins.hasOwnProperty(key)) {
+        const element = origins[key];
+        if (element.status) {
+          keys.push(element.id + '');
+        }
+        if (element.children) {
+          keys.push(...this.getOwnedDepartmentKeys(element.children));
+        }
+      }
+    }
+    return keys;
   }
 }

@@ -10,6 +10,7 @@ import { AddEmployeeComponent } from './employees/add-employee.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 import { RolesComponent } from './roles/roles.component';
+import { EmployeeDepartmentComponent } from './employee-details/components/employee-department.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { RolesComponent } from './roles/roles.component';
     EmployeesComponent,
     EmployeeDetailsComponent,
     RolesComponent,
+    EmployeeDepartmentComponent,
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { RolesComponent } from './roles/roles.component';
   entryComponents: [
     AddDepartmentComponent,
     AddCompanyComponent,
-    AddEmployeeComponent
+    AddEmployeeComponent,
+    EmployeeDepartmentComponent
   ]
 })
 export class TeamsModule { }
