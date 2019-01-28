@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // #region 设置默认语言
 import { registerLocaleData } from '@angular/common';
 import { default as ngLang } from '@angular/common/locales/zh';
-import { NZ_I18N, zh_CN as zorroLang } from 'ng-zorro-antd';
+import { NZ_I18N, zh_CN as zorroLang, NgZorroAntdModule, en_US } from 'ng-zorro-antd';
 
 const LANG = {
   abbr: 'zh',
@@ -81,6 +81,7 @@ import { SharedModule } from './shared';
 // import { LayoutModule } from './layout/layout.module';
 import { RoutesModule } from './routes/routes.module';
 import { DelonModule } from './delon.module';
+import en from '@angular/common/locales/en';
 
 @NgModule({
   declarations: [
@@ -98,13 +99,15 @@ import { DelonModule } from './delon.module';
     BrowserAnimationsModule,
     DelonAuthModule,
     DelonModule.forRoot(),
-    ...I18NSERVICE_MODULES
+    ...I18NSERVICE_MODULES,
+    NgZorroAntdModule
   ],
   providers: [
     ...LANG_PROVIDES,
     ...INTERCEPTOR_PROVIDES,
     ...I18NSERVICE_PROVIDES,
     ...APPINIT_PROVIDES,
+    { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent]
 })

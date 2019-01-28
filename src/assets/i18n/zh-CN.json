@@ -11,6 +11,10 @@
     "menu.manage.contracts": "合同",
     "menu.manage.personal-center": "个人中心",
     "menu.manage.teams": "我的团队",
+    "menu.recommend": "bctop影业助手平台专注为传媒电视行业解决困扰提升价值，成就行业新模式。",
+    "menu.aboutUs": "关于我们",
+    "menu.batchNumber": "沪ICP备000000001号",
+    "menu.wx": "微信小程序",
     "app.lang": "简体中文",
     "app.login": "登录",
     "app.login.get-captcha": "获取验证码",
@@ -21,8 +25,12 @@
     "app.login.login": "登 录",
     "app.login.sign-in-with-wechat": "使用微信登录",
     "app.login.sign-in-with-mobile": "使用手机号登录",
+    "app.home-page.purchase-expire": "",
     "validation.phone-number": "请输入手机号",
     "validation.captcha": "请输入验证码",
     "validation.phone-number.required": "请输入手机号！",
-    "validation.captcha.required": "请输入验证码！"
+    "validation.captcha.required": "请输入验证码！",
+    "global.add-success": "添加成功",
+    "global.delete-success": "删除成功",
+    "global.no-valid-file": "无有效文件"
 }

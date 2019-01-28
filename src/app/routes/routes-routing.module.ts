@@ -23,7 +23,8 @@ const routes: Routes = [
             path: 'dashboard',
             component: DashboardComponent
           },
-          // { path: 'series', loadChildren: './manage/series.module#SeriesModule' },
+          { path: 'series', loadChildren: './manage/series/series.module#SeriesModule' },
+           // { path: 'transmission', loadChildren: './manage/series.module#SeriesModule' },
           // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
           // { path: 'personal-center', loadChildren: './manage/personal-center.module#PersonalCenterModule' },

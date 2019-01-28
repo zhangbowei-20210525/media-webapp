@@ -1,0 +1,73 @@
+<div class="program-details-tape-details-box">
+  <div class="program-details-tape-details-wk">
+    <nz-tabset nzSize="large">
+      <nz-tab nzTitle="母带文件">
+        <nz-table #basicTable [nzData]="dataSet">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.age}}</td>
+              <td style="text-align: center">{{data.age}}</td>
+              <td style="text-align: center">{{data.address}}</td>
+              <td style="text-align: center">{{data.address}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="母带发行">
+        <nz-table #basicTable1 [nzData]="dataSet">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable1.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.age}}</td>
+              <td style="text-align: center">{{data.age}}</td>
+              <td style="text-align: center">{{data.address}}</td>
+              <td style="text-align: center">{{data.address}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="私钥授权">
+        <nz-table #basicTable2 [nzData]="dataSet">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable2.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.age}}</td>
+              <td style="text-align: center">{{data.age}}</td>
+              <td style="text-align: center">{{data.address}}</td>
+              <td style="text-align: center">{{data.address}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>
+

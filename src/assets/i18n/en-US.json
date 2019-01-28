@@ -11,6 +11,10 @@
     "menu.manage.contracts": "Contracts",
     "menu.manage.personal-center": "Personal Center",
     "menu.manage.teams": "Teams",
+    "menu.recommend": "Bctop film assistant platform focuses on solving problems and enhancing value for the media and TV industry to achieve new industry models.",
+    "menu.aboutUs": "About Us",
+    "menu.batchNumber": "Shanghai ICP number 000000001",
+    "menu.wx": "Micro letter application",
     "app.lang": "English",
     "app.login": "Login",
     "app.login.get-captcha": "Get captcha",
@@ -24,5 +28,8 @@
     "validation.phone-number": "mobile number",
     "validation.captcha": "captcha",
     "validation.phone-number.required": "Please enter your phone number!",
-    "validation.captcha.required": "Please enter your captcha code!"
+    "validation.captcha.required": "Please enter your captcha code!",
+    "global.add-success": "Add Success",
+    "global.delete-success": "Delete Success",
+    "global.no-valid-file": "No valid file"
 }
