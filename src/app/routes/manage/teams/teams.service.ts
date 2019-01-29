@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DepartmentDto } from './dtos';
+import { DepartmentDto, CompanyDto } from './dtos';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,19 @@ export class TeamsService {
   ) { }
 
   getCompanys() {
-    return this.http.get<any>('/api/v1/users/info/employees');
+    return this.http.get<CompanyDto[]>('/api/v1/users/info/employees');
+  }
+
+  getCurrentCompany() {
+    return this.http.get<CompanyDto>('/api/v1/auth/company');
   }
 
   addCompany(name: string, full_name: string, introduction: string) {
     return this.http.post<any>('/api/v1/companies', { name, full_name, introduction });
+  }
+
+  editCompany(name: string, full_name: string, introduction: string) {
+    return this.http.put<any>('/api/v1/companies', { name, full_name, introduction });
   }
 
   switchCompany(employeeId: number) {

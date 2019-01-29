@@ -1,7 +1,7 @@
 import { finalize } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { RolesService } from './roles.service';
-import { dtoMap, dtoCatchError } from '@shared';
+import { dtoMap, dtoCatchError, TreeService } from '@shared';
 import { NzMessageService, NzFormatEmitEvent, NzTreeNodeOptions, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 import { RoleDto, PermissionDto } from './dtos';
 
@@ -22,19 +22,20 @@ export class RolesComponent implements OnInit {
   originCheckedKeys = [];
   finalCheckedKeys = [];
 
-  equalsArray(a: [], b: []) {
-    return this.service.equalsArrayItems(a, b);
-  }
-
   constructor(
     private service: RolesService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private ts: TreeService
   ) { }
 
   ngOnInit() {
     this.service.getRoles().subscribe(result => {
       this.roles = result;
     });
+  }
+
+  equalsArray(a: [], b: []): boolean {
+    return a && b && a.filter(key => !b.includes(key)).length === 0 && b.filter(key => !a.includes(key)).length === 0;
   }
 
   showInput(): void {
@@ -77,9 +78,25 @@ export class RolesComponent implements OnInit {
     this.finalCheckedKeys = [];
     this.selectedRole = this.roles.find(e => e.name === name);
     this.service.getRolePermissions(this.selectedRole.id).subscribe(permissions => {
-      this.permissionNodes = this.service.getNzTreeNodes(permissions);
-      this.finalCheckedKeys = this.originCheckedKeys = this.service.getOwnedPermissionKeys(permissions);
+      this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
+      this.finalCheckedKeys = this.originCheckedKeys = this.getOwnedPermissionKeys(permissions);
     });
+  }
+
+  getNzTreeNodesByPermissions(origins: PermissionDto[]): NzTreeNodeOptions[] {
+    return this.ts.getNzTreeNodes(origins, item => ({
+      title: item.name,
+      key: item.code,
+      isLeaf: !!item.children && item.children.length < 1,
+      selectable: false,
+      expanded: true,
+      disableCheckbox: true,
+      checked: item.status
+    }));
+  }
+
+  getOwnedPermissionKeys(origins: PermissionDto[]) {
+    return this.ts.getKeysWithStatus(origins, item => item.code + '');
   }
 
   permissionCheck(event: NzFormatEmitEvent): void {
@@ -118,29 +135,10 @@ export class RolesComponent implements OnInit {
   }
 
   backCheckNodes(key: string) {
-    const node = this.getNodeByKey(this.permissionTreeCom.getTreeNodes(), key);
+    const node = this.ts.getNodeByKey(this.permissionTreeCom.getTreeNodes(), key);
     if (node) {
       this.checkParentNodes(node);
     }
-  }
-
-  getNodeByKey(nodes: NzTreeNode[], key: string): NzTreeNode {
-    for (const i in nodes) {
-      if (nodes.hasOwnProperty(i)) {
-        const element = nodes[i];
-        if (element.key === key) {
-          return element;
-        } else {
-          if (element.children && element.children.length > 0) {
-            const node = this.getNodeByKey(element.children, key);
-            if (node) {
-              return node;
-            }
-          }
-        }
-      }
-    }
-    return null;
   }
 
   checkParentNodes(node: NzTreeNode) {
@@ -149,7 +147,7 @@ export class RolesComponent implements OnInit {
       if (!parent.isChecked) {
         parent.setChecked(true);
         if (!this.finalCheckedKeys.find(e => e === parent.key)) {
-          this.finalCheckedKeys.push(parent.key);
+          this.finalCheckedKeys = [...this.finalCheckedKeys, parent.key];
         }
         this.checkParentNodes(parent);
       }
@@ -157,34 +155,12 @@ export class RolesComponent implements OnInit {
   }
 
   validationNodes(): boolean {
-    const invalid = this.findInvalidNode(this.permissionTreeCom.getTreeNodes());
+    const invalid = this.ts.findInvalidNode(this.permissionTreeCom.getTreeNodes());
     if (invalid) {
       this.message.warning(`${invalid.title} 需要前置权限 ${invalid.parentNode.title}`);
       return false;
     }
     return true;
-  }
-
-  findInvalidNode(nodes: NzTreeNode[]): NzTreeNode {
-    for (const key in nodes) {
-      if (nodes.hasOwnProperty(key)) {
-        const element = nodes[key];
-        if (element.isChecked) {
-          if (element.parentNode) {
-            if (!element.parentNode.isChecked) {
-              return element;
-            }
-          }
-        }
-        if (element.children && element.children.length > 0) {
-          const result = this.findInvalidNode(element.children);
-          if (result) {
-            return result;
-          }
-        }
-      }
-    }
-    return null;
   }
 
 }

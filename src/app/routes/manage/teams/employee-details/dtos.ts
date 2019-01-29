@@ -24,3 +24,10 @@ export interface RoleDto {
     id: number;
     name: string;
 }
+
+export interface PermissionDto {
+    code: string;
+    name: string;
+    status: boolean;
+    children: PermissionDto[];
+}

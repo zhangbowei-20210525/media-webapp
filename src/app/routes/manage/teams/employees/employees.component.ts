@@ -67,7 +67,7 @@ export class EmployeesComponent implements OnInit {
       nzContent: AddEmployeeComponent,
       nzComponentParams: { id: this.department + '' },
       nzWidth: 800,
-      nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve) => {
+      nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve, reject) => {
         if (component.validation()) {
           component.submit().subscribe(result => {
             this.message.success('新增成功');
@@ -75,10 +75,10 @@ export class EmployeesComponent implements OnInit {
             resolve();
           }, error => {
             this.message.error('新增失败');
-            resolve(false);
+            reject(false);
           });
         } else {
-          resolve(false);
+          reject(false);
         }
       })
     });

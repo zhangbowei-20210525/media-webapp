@@ -1,4 +1,5 @@
-import { DepartmentDto } from './dtos';
+import { finalize } from 'rxjs/operators';
+import { DepartmentDto, CompanyDto } from './dtos';
 import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
 import { TeamsService } from './teams.service';
 import { SettingsService } from '@core';
@@ -8,6 +9,7 @@ import { AddCompanyComponent } from './components/add-company.component';
 import { dtoMap, dtoCatchError } from '@shared';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { Router } from '@angular/router';
+import { EditCompanyComponent } from './components/edit-company.component';
 
 @Component({
   selector: 'app-teams',
@@ -17,7 +19,9 @@ import { Router } from '@angular/router';
 export class TeamsComponent implements OnInit {
 
   @ViewChild('treeCom') treeCom: NzTreeComponent;
-  companys: [];
+  isCommpanyLoading: boolean;
+  currentCompany: CompanyDto;
+  companys: CompanyDto[];
   nodes: NzTreeNodeOptions[];
   activedNode: NzTreeNode;
 
@@ -31,6 +35,7 @@ export class TeamsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.fetchCompany();
     this.fetchCompanys();
     this.fetchDepartment();
   }
@@ -47,6 +52,13 @@ export class TeamsComponent implements OnInit {
     this.router.navigateByUrl(`/manage/teams/employees/${this.activedNodeKey}`); // 必须后端存在默认部门
   }
 
+  fetchCompany() {
+    this.isCommpanyLoading = true;
+    this.service.getCurrentCompany().pipe(finalize(() => this.isCommpanyLoading = false)).subscribe(company => {
+      this.currentCompany = company;
+    });
+  }
+
   addCompany() {
     this.modal.create({
       nzTitle: '新建企业',
@@ -61,6 +73,34 @@ export class TeamsComponent implements OnInit {
       component.submit().subscribe(result => {
         this.message.success('新建成功');
         this.fetchCompanys();
+        resolve();
+      }, error => {
+        this.message.error('新建失败');
+        resolve(false);
+      });
+    } else {
+      resolve(false);
+    }
+  })
+
+  editCompany() {
+    this.modal.create({
+      nzTitle: '修改企业',
+      nzContent: EditCompanyComponent,
+      nzComponentParams: {
+        name: this.settings.user.company_name,
+        fullName: this.settings.user.company_full_name,
+        introduction: this.settings.user.in
+      },
+      nzWidth: 800,
+      nzOnOk: this.editCompanyAgreed
+    });
+  }
+
+  editCompanyAgreed = (component: EditCompanyComponent) => new Promise((resolve) => {
+    if (component.validation()) {
+      component.submit().subscribe(result => {
+        this.message.success('新建成功');
         resolve();
       }, error => {
         this.message.error('新建失败');
@@ -211,7 +251,4 @@ export class TeamsComponent implements OnInit {
     return deleted;
   }
 
-  settingRoles() {
-
-  }
 }

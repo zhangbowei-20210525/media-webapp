@@ -3,3 +3,4 @@ export { ResponseDto, ListResponseDto, PaginationResponseDto } from './dtos/resp
 export { SharedModule } from './shared.module';
 export { AccountService } from './account/account.service';
 export { MessageService } from './message/message.service';
+export { TreeService } from './components/tree.service';

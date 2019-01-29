@@ -12,15 +12,18 @@
             </li>
           </ul>
         </nz-dropdown>
+        <button nz-button (click)="editCompany()">编辑</button>
         <button nz-button (click)="addCompany()">新建</button>
       </div>
     </div>
     <div class="block-content">
-      <div class="company-info">
-        <h2 class="company-full-name">{{ settings.user.company_full_name }}</h2>
-        <p>企业简称：</p>
-        <p>企业简介：</p>
-      </div>
+      <nz-skeleton [nzLoading]="isCommpanyLoading">
+        <div class="company-info">
+          <h2 class="company-full-name">{{ currentCompany?.company_full_name }}</h2>
+          <p>企业简称：{{ currentCompany?.company_name }}</p>
+          <p>企业简介：{{ currentCompany?.company_introduction }}</p>
+        </div>
+      </nz-skeleton>
     </div>
   </section>
 

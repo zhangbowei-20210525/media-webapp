@@ -1,20 +1,4 @@
 <div>
-  <!-- <div class="roles">
-    <nz-radio-group [(ngModel)]="radioValue">
-      <label nz-radio [ngStyle]="style" [nzValue]="role.name" *ngFor="let role of roles">{{ role.name }}</label>
-    </nz-radio-group>
-    <nz-tag *ngIf="!inputVisible" class="editable-tag" (click)="showInput()">
-      添加角色
-    </nz-tag>
-    <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue" style="width: 10rem;"
-      (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()">
-  </div>
-  <div class="authority">
-    <nz-tree #authTreeCom [nzData]="authNodes" nzCheckable="true" nzMultiple="true" [nzCheckedKeys]="defaultCheckedKeys"
-      [nzExpandedKeys]="defaultExpandedKeys" [nzSelectedKeys]="defaultSelectedKeys" (nzClick)="nzClick($event)"
-      (nzSelectedKeysChange)="nzSelect($event)" (nzCheckBoxChange)="nzCheck($event)">
-    </nz-tree>
-  </div> -->
   <div class="roles">
     <nz-radio-group [(ngModel)]="radioValue" [nzButtonStyle]="'solid'" [nzSize]="'small'" (ngModelChange)="handleRoleChange($event)">
       <label nz-radio-button [nzValue]="role.name" [nzDisabled]="role.loading" class="role-radio" *ngFor="let role of roles">{{

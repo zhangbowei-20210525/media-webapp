@@ -7,10 +7,12 @@ import { TranslateModule } from '@ngx-translate/core';
 // #region services 服务
 import { AccountService } from './account/account.service';
 import { MessageService } from './message/message.service';
+import { TreeService } from './components/tree.service';
 
 const SERVICES = [
   AccountService,
-  MessageService
+  MessageService,
+  TreeService
 ];
 // #endregion
 

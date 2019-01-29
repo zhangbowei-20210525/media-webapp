@@ -1,10 +1,19 @@
 import { finalize } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeDetailsService } from './employee-details.service';
-import { EmployeeDetailsDto, RoleDto } from './dtos';
-import { NzModalService, NzMessageService } from 'ng-zorro-antd';
+import { EmployeeDetailsDto, RoleDto, PermissionDto } from './dtos';
+import {
+  NzModalService,
+  NzMessageService,
+  NzTreeNodeOptions,
+  NzTreeComponent,
+  NzTreeNode,
+  NzFormatEmitEvent,
+  NzTreeService
+} from 'ng-zorro-antd';
 import { EmployeeDepartmentComponent } from './components/employee-department.component';
+import { TreeService } from '@shared';
 
 @Component({
   selector: 'app-employee-details',
@@ -13,18 +22,23 @@ import { EmployeeDepartmentComponent } from './components/employee-department.co
 })
 export class EmployeeDetailsComponent implements OnInit {
 
+  @ViewChild('permissionTree') permissionTreeCom: NzTreeComponent;
   employeeId: number;
   employee: EmployeeDetailsDto;
   isInfoLoading: boolean;
   roles: RoleDto[];
   selectedRole: RoleDto;
-  isRolesLoading: boolean;
+  permissionNodes: NzTreeNodeOptions[];
+  originCheckedKeys = [];
+  finalCheckedKeys = [];
+  editMode: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private service: EmployeeDetailsService,
     private modal: NzModalService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private ts: TreeService
   ) { }
 
   ngOnInit() {
@@ -32,7 +46,16 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeId = +params.get('id');
       this.fetchEmployeeDetails();
       this.fetchSelectionRoles();
+      this.fetchPermissions();
     });
+  }
+
+  equalsArray(a: [], b: []) {
+    return a && b && a.filter(key => !b.includes(key)).length === 0 && b.filter(key => !a.includes(key)).length === 0;
+  }
+
+  sliceTagName(tag: string) {
+    return tag.length > 20 ? `${tag.slice(0, 20)}...` : tag;
   }
 
   fetchEmployeeDetails() {
@@ -48,17 +71,17 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   fetchSelectionRoles() {
-    this.isRolesLoading = true;
-    this.service.getSelectionRoles()
-      .pipe(finalize(() => this.isRolesLoading = false))
-      .subscribe(roles => {
-        this.roles = roles;
-      });
+    this.service.getSelectionRoles().subscribe(roles => {
+      this.roles = roles;
+    });
   }
 
-  sliceTagName(tag: string): string {
-    const isLongTag = tag.length > 20;
-    return isLongTag ? `${tag.slice(0, 20)}...` : tag;
+  fetchPermissions() {
+    this.service.getEmployeePermissions(this.employeeId).subscribe(permissions => {
+      this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
+      this.finalCheckedKeys = this.originCheckedKeys = this.getOwnedPermissionKeys(permissions);
+      console.log(this.finalCheckedKeys);
+    });
   }
 
   editDepartments() {
@@ -87,17 +110,104 @@ export class EmployeeDetailsComponent implements OnInit {
 
   selectRole(role: RoleDto) {
     this.selectedRole = role;
-    this.service.updateEmployeeRole(role.id).subscribe(permissions => {
-      // permissions
+    this.modal.confirm({
+      nzTitle: `使用使用 ${role.name} 覆盖当前权限？`,
+      nzOnOk: () => {
+        this.setEmployeeRole(role.id, true);
+      },
+      nzOnCancel: () => {
+        this.setEmployeeRole(role.id, false);
+      }
     });
   }
 
-  saveRoleAndPermissions() {
+  setEmployeeRole(role: number, isCover: boolean) {
+    this.service.updateEmployeeRole(this.employeeId, role, isCover).subscribe(permissions => {
+      if (isCover) {
+        this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
+        this.finalCheckedKeys = this.getOwnedPermissionKeys(permissions);
+      }
+    });
+  }
 
+  getNzTreeNodesByPermissions(origins: PermissionDto[]): NzTreeNodeOptions[] {
+    return this.ts.getNzTreeNodes(origins, item => ({
+      title: item.name,
+      key: item.code,
+      isLeaf: !!item.children && item.children.length < 1,
+      selectable: false,
+      expanded: true,
+      disableCheckbox: true,
+      checked: item.status
+    }));
+  }
+
+  getOwnedPermissionKeys(origins: PermissionDto[]) {
+    return this.ts.getKeysWithStatus(origins, item => item.code + '');
+  }
+
+  enterEditMode() {
+    this.editMode = true;
+    this.ts.setDisableCheckbox(this.permissionTreeCom.getTreeNodes(), false);
+  }
+
+  outEditMode() {
+    this.editMode = false;
+    this.ts.setDisableCheckbox(this.permissionTreeCom.getTreeNodes(), true);
+  }
+
+  permissionCheck(event: NzFormatEmitEvent): void {
+    this.finalCheckedKeys = event.keys;
+    if (event.node.isChecked) {
+      this.backCheckNodes(event.node.key);
+    }
+  }
+
+  backCheckNodes(key: string) {
+    const node = this.ts.getNodeByKey(this.permissionTreeCom.getTreeNodes(), key);
+    if (node) {
+      this.checkParentNodes(node);
+    }
+  }
+
+  checkParentNodes(node: NzTreeNode) {
+    const parent = node.getParentNode();
+    if (parent) {
+      if (!parent.isChecked) {
+        parent.setChecked(true);
+        if (!this.finalCheckedKeys.find(e => e === parent.key)) {
+          this.finalCheckedKeys.push(parent.key);
+        }
+        this.checkParentNodes(parent);
+      }
+    }
+  }
+
+  saveRoleAndPermissions() {
+    if (this.validationNodes()) {
+      this.service.updateEmployeePermissions(this.employeeId, this.finalCheckedKeys).subscribe(result => {
+        this.originCheckedKeys = this.finalCheckedKeys;
+        this.message.success('修改成功');
+        this.outEditMode();
+      }, error => {
+        this.message.success('修改失败');
+      });
+    }
   }
 
   cancelsaveRoleAndPermissions() {
+    this.finalCheckedKeys = this.originCheckedKeys;
+    this.ts.setCheckedByKeys(this.permissionTreeCom.getTreeNodes(), this.originCheckedKeys);
+    this.outEditMode();
+  }
 
+  validationNodes(): boolean {
+    const invalid = this.ts.findInvalidNode(this.permissionTreeCom.getTreeNodes());
+    if (invalid) {
+      this.message.warning(`${invalid.title} 需要前置权限 ${invalid.parentNode.title}`);
+      return false;
+    }
+    return true;
   }
 
 }
