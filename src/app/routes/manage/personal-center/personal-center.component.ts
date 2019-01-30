@@ -10,7 +10,7 @@ import { PersonalCenterDto } from './personal-center.dto';
 })
 export class PersonalCenterComponent implements OnInit {
 
-  loading = true;
+  loading: boolean;
   info: PersonalCenterDto;
   employees: [];
 
@@ -20,6 +20,7 @@ export class PersonalCenterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loading = true;
     this.pcs.getUserInfo()
       .subscribe(result => {
         this.loading = false;

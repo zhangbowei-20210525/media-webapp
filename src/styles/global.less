@@ -1,13 +1,12 @@
 @import 'theme.less';
 @import '~@angular/cdk/overlay-prebuilt.css';
 // angular/cdk/overlay cover
-
 .cdk-overlay-dark-backdrop {
     background-color: transparent;
 }
 
 .cdk-overlay-dark-backdrop-customer {
-    background: rgba(0,0,0,.32);
+    background: rgba(0, 0, 0, .32);
 }
 
 // init
@@ -15,8 +14,11 @@ html {
     font-size: 12px;
 }
 
-// layout
+body {
+    overflow-y: scroll;
+}
 
+// layout
 ul {
     margin: 0;
     padding: 0;
@@ -76,7 +78,6 @@ ul {
 //     overflow: auto;
 //     zoom: 1;
 // }
-
 // .push-5 {
 //     margin-top: 5px;
 // }
@@ -227,8 +228,7 @@ ul.list.rf-list>li {
 
 // flex
 .container {
-    display: flex;
-    // -webkit-box-align: center;
+    display: flex; // -webkit-box-align: center;
     // align-items: center;
     height: 100%;
 }

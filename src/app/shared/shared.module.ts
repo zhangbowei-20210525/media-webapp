@@ -29,6 +29,7 @@ import { LoginComponent } from './account/login.component';
 import { BindPhoneComponent } from './account/bind-phone.component';
 import { BindWechatComponent } from './account/bind-wechat.component';
 import { EmptyComponent } from './components/empty/empty.component';
+import { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
 
 const INSIDE_COMPONENTS = [
   LoginComponent,
@@ -36,12 +37,16 @@ const INSIDE_COMPONENTS = [
   BindWechatComponent
 ];
 const COMPONENTS = [
-  EmptyComponent
+  EmptyComponent,
+  SeriesSelectorComponent
 ];
-const DIRECTIVES = [];
+
+import { SeriesTypePipe } from './pipes/series-type.pipe';
+const DIRECTIVES = [SeriesTypePipe];
 // #endregion
 
 import { RouterModule } from '@angular/router';
+
 
 @NgModule({
   declarations: [
