@@ -1,3 +1,4 @@
+import { DashboardComponent } from './manage/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouteRoutingModule } from './routes-routing.module';
@@ -13,7 +14,7 @@ import { LayoutModule } from '../layout/layout.module';
     // LayoutModule,
     RouteRoutingModule,
     SharedModule,
-    ManageModule
+    ManageModule,
   ]
 })
 export class RoutesModule { }
