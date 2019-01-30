@@ -52,12 +52,15 @@
     </nz-tab>
     <ng-template #extraTemplate>
       <div>
-        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px">新增节目(批量)</button>
+        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px" *ngIf="type=='series'">新增节目(批量)</button>
+        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px" *ngIf="type=='copyright'">新增发行版权</button>
+        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 10px" *ngIf="type=='copyright'" (click)="addOwnRight()">新增自有版权</button>
         <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 10px"
           (click)="addSeries()">新增节目</button>
       </div>
     </ng-template>
-    <nz-tab nzTitle="版权">
+    <nz-tab nzTitle="版权" (nzClick)="copyrightRefresh()">
+      <app-copyrights></app-copyrights>
     </nz-tab>
     <nz-tab nzTitle="母带">
 

@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from './series.service';
 import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
 import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
+import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
 
 @Component({
   selector: 'app-series',
@@ -19,6 +20,7 @@ export class SeriesComponent implements OnInit {
   indeterminate = false;
   displayData = [];
   seriesList = [];
+  type: string;
   seriesPagination: PaginationDto;
 
   constructor(
@@ -30,6 +32,7 @@ export class SeriesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.type = 'series';
     this.seriesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
       this.seriesList = res.list;
@@ -38,6 +41,7 @@ export class SeriesComponent implements OnInit {
   }
 
   seriesRefresh() {
+    this.type = 'series';
     this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
       this.seriesList = res.list;
       this.seriesPagination = res.pagination;
@@ -45,7 +49,13 @@ export class SeriesComponent implements OnInit {
   }
 
   publicitiesRefresh() {
+    this.type = 'publicity';
     this.seriesService.eventEmit.emit('publicitiesRefresh');
+  }
+
+  copyrightRefresh() {
+    this.type = 'copyright';
+    this.seriesService.eventEmit.emit('copyrightRefresh');
   }
 
   // tslint:disable-next-line:max-line-length
@@ -149,6 +159,32 @@ export class SeriesComponent implements OnInit {
       }
       resolve(false);
     });
+  })
+
+  addOwnRight() {
+    this.modalService.create({
+      nzTitle: `新增自有版权`,
+      nzContent: AddOwnCopyrightComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.addCopyrightAgreed
+    });
+  }
+
+  addCopyrightAgreed = (component: AddOwnCopyrightComponent) => new Promise((resolve) => {
+    // if (component.checkContractForm()) {
+    //   component.submitContractForm().subscribe(res => {
+    //     this.messageService.success('添加版权成功');
+    //     this.refreshCurrent();
+    //     resolve();
+    //   }, err => {
+    //     this.messageService.error('添加版权失败：' + (typeof err.message === 'string' ? err.message : '服务器错误'));
+    //     resolve(false);
+    //   });
+    // } else {
+    //   resolve(false);
+    // }
   })
 
 }

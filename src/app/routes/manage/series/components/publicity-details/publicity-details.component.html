@@ -1,7 +1,7 @@
 <div class="content-container theme-text">
   <div class="left-view">
     <div class="player-panel">
-      <div *ngIf="type == 'video'">
+      <div [hidden]="ishidden">
         <div class="video-box">
           <video id="video_player" class="video-js vjs-default-skin vjs-big-play-centered" type="application/x-mpegURL"
             preload="none" data-setup="{}" controls autoplay></video>
@@ -9,9 +9,9 @@
         <div class="video-title">
           <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
             <span>{{publicityName}}：</span>
-            <span *ngIf="videoType == 'sample'">{{sampleName}}</span>
-            <span *ngIf="videoType == 'feature'">{{featureName}}</span>
-            <span *ngIf="videoType == 'trailer'">{{trailerName}}</span>
+            <span *ngIf="publicityType == 'sample'">{{sampleName}}</span>
+            <span *ngIf="publicityType == 'feature'">{{featureName}}</span>
+            <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
           </div>
           <span style="position:absolute;right: 30px"><a><i class="anticon anticon-share-alt text-info" nz-popover
                 [nzTitle]="titleTemplate" [nzContent]="contentTemplate" nzTrigger="click"></i></a></span>
@@ -25,16 +25,16 @@
           <div style="text-align: center">{{fixationInfo.series_name}}</div>
         </ng-template>
       </div>
-      <div *ngIf="type == 'image'">
+      <div *ngIf="publicityType == 'poster'">
         <div class="video-box" style="position: relative;text-align: center;">
           <img [src]="posterSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
           <a>
             <i class="anticon anticon-left-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="lastImage()"></i>
+              (click)="lastPoster()"></i>
           </a>
           <a>
             <i class="anticon anticon-right-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="nextImage()"></i>
+              (click)="nextPoster()"></i>
           </a>
         </div>
         <div class="video-title">
@@ -59,9 +59,43 @@
         </ng-template>
       </div>
 
-      <div *ngIf="type == 'pdf'">
+      <div *ngIf="publicityType == 'still'">
+          <div class="video-box" style="position: relative;text-align: center;">
+            <img [src]="stillSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
+            <a>
+              <i class="anticon anticon-left-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="lastStill()"></i>
+            </a>
+            <a>
+              <i class="anticon anticon-right-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="nextStill()"></i>
+            </a>
+          </div>
+          <div class="video-title">
+            <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+              <span>{{publicityName}}：</span>
+              <span>{{stillName}}</span>
+            </div>
+            <div class="fixationInfo-info">
+              <a>
+                <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
+                  nzTrigger="click"></i>
+              </a>
+            </div>
+          </div>
+          <ng-template #titleTemplate>
+            <div class="centerContent">微信扫码分享</div>
+          </ng-template>
+          <ng-template #contentTemplate>
+            <div class="centerContent">{{fixationInfo?.area?.name}}</div>
+            <div class="centerContent"><img src="{{twoDimensionalCode}}" class="twoDimensionalCodeSize"></div>
+            <div class="centerContent">{{fixationInfo.series_name}}</div>
+          </ng-template>
+        </div>
+
+      <div *ngIf="publicityType == 'pdf'">
         <div class="video-box" style="position: relative;text-align: center; display: table-cell;vertical-align: middle;">
-          <pdf-viewer [src]="pdfImgUrl" [page]="pdfPage" [zoom]="0.6" [show-all]="false" [original-size]="true"></pdf-viewer>
+          <pdf-viewer [src]="pdfSrc" [page]="pdfPage" [zoom]="0.6" [show-all]="false" [original-size]="true"></pdf-viewer>
           <a>
             <i class="anticon anticon-left-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
               (click)="lastPdf()"></i>
@@ -73,7 +107,7 @@
         </div>
         <div class="video-title">
           <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-            <span *ngIf="fixationInfo">{{fixationInfo.series_name}}：</span>
+            <span *ngIf="fixationInfo">{{publicityName}}：</span>
             <span *ngIf="detail">{{pdfName}}</span>
           </div>
           <div class="fixationInfo-info">
@@ -124,44 +158,31 @@
               </div>
         </nz-tab>
         <nz-tab nzTitle="海报" (nzClick)="poster()">
-
-          <div class="program-panel" *ngIf="typeTab == 2">
-            <ul class="program-list">
-              <li>
-                <a (click)="additionalPoster()">
-                  <div style="height: 100%; width: 100%;">
-                    <i class="anticon anticon-plus" nz-tooltip nzTitle="上传图片" nzPlacement="top"></i>
-                  </div>
-                </a>
-              </li>
-            </ul>
-            <!-- <div class="video-pagination">
-            <app-pagination [total]="detail?.pdf_list?.length" [pageSize]="20" (pageChange)="pdfPageChange($event)"></app-pagination>
-          </div> -->
-          </div>
-
+          <div class="program-panel">
+              <ul class="program-list">
+                <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i)">
+                  <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+                </li>
+              </ul>
+            </div>
         </nz-tab>
         <nz-tab nzTitle="剧照" (nzClick)="still()">
+            <div class="program-panel">
+                <ul class="program-list">
+                  <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i)">
+                    <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+                  </li>
+                </ul>
+              </div>
 
         </nz-tab>
         <nz-tab nzTitle="PDF" (nzClick)="pdf()">
-
-          <div class="program-panel" *ngIf="typeTab == 2">
+          <div class="program-panel">
             <ul class="program-list">
-              <li *ngFor="let pdf of pdfPostersList;let i = index" (click)="pdfNavigateToDetail(i)">
-                <div style="height: 100%; width: 100%;">{{i + 1}}</div>
-              </li>
-              <li>
-                <a (click)="additionalPdf()">
-                  <div style="height: 100%; width: 100%;">
-                    <i class="anticon anticon-plus" nz-tooltip nzTitle="上传PDF" nzPlacement="top"></i>
-                  </div>
-                </a>
+              <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i)">
+                <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
               </li>
             </ul>
-            <!-- <div class="video-pagination">
-                <app-pagination [total]="detail?.pdf_list?.length" [pageSize]="20" (pageChange)="pdfPageChange($event)"></app-pagination>
-              </div> -->
           </div>
         </nz-tab>
       </nz-tabset>

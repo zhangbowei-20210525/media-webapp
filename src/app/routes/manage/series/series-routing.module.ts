@@ -8,6 +8,7 @@ import { SeriesDetailsCopyrightComponent } from './components/series-details-cop
 import { TapeDetailsComponent } from './components/tape-details/tape-details.component';
 import { PublicityDetailsComponent } from './components/publicity-details/publicity-details.component';
 
+
 const routes: Routes = [
   {
     path: '',

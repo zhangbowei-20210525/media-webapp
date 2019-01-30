@@ -1,3 +1,64 @@
-<p>
-  copyrights works!
-</p>
+
+  <nz-table #borderedTable nzBordered [nzTitle]="Header" [nzData]="copyrightsList"  [nzPageSize]="copyrightsPagination.page_size" [nzFrontPagination]="false" 
+  [nzPageIndex]="copyrightsPagination.page" [nzTotal]="copyrightsPagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
+    <thead>
+      <tr>
+        <!-- <th>#</th> -->
+        <th>项目名称</th>
+        <th>投资类型</th>
+        <th>品类</th>
+        <th>集数</th>
+        <th>播映权（到期）</th>
+        <th>信息网络传播权（到期）</th>
+        <th>出版发行权（到期）</th>
+        <th>公播权（到期）</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of borderedTable.data">
+        <td><a routerLink="/tapes-management/copyrights/copyright-details/{{data.id}}">{{data.series_name}}</a></td>
+        <td>{{data.investment_type}}</td>
+        <td>{{data.series_type}}</td>
+        <td>{{data.episodes_num}}</td>
+        <td>{{data.broadcast}}</td>
+        <td>{{data.network}}</td>
+        <td>{{data.publish}}</td>
+        <td>{{data.public}}</td>
+        <td>
+          <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+          <a><i class="text-info" nz-icon type="delete" theme="outline" (click)="deleteCopyright(data?.id)"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #Header>
+    <div>
+      <span class="push-r-10">到期天数:</span>
+      <nz-radio-group [(ngModel)]="copyrightDate" nzSize="small" (click)="filtrate()">
+        <label nz-radio-button nzValue="">所有</label>
+        <label nz-radio-button nzValue="365">1年</label>
+        <label nz-radio-button nzValue="180">180天</label>
+        <label nz-radio-button nzValue="30">30天</label>
+      </nz-radio-group>
+    </div>
+    <div class="push-10">
+      <span class="push-r-10">发行地域:</span>
+      <nz-radio-group [(ngModel)]="copyrightArea" nzSize="small" (click)="filtrate()">
+        <label nz-radio-button nzValue="">所有</label>
+        <label nz-radio-button nzValue="0100">大陆</label>
+        <label nz-radio-button nzValue="0200">港澳台</label>
+        <label nz-radio-button nzValue="xx00">海外</label>
+      </nz-radio-group>
+    </div>
+    <div class="push-10">
+      <span class="push-r-10">发行权利:</span>
+      <nz-radio-group [(ngModel)]="copyrightItem" nzSize="small" (click)="filtrate()">
+        <label nz-radio-button nzValue="">所有</label>
+        <label nz-radio-button nzValue="broadcast">播映权</label>
+        <label nz-radio-button nzValue="network">信息网络传播权</label>
+        <label nz-radio-button nzValue="publish">出版发行权</label>
+        <label nz-radio-button nzValue="public">公播权</label>
+      </nz-radio-group>
+    </div>
+  </ng-template>

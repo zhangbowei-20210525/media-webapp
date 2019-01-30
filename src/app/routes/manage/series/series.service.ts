@@ -1,8 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
-import { PublicityDetailsDto } from './dtos/publicity-details.dto';
-import { PublicityDto } from './dtos/publicity.dto';
 import { ResponseDto } from 'src/app/shared/dtos/response.dto';
 import { toFormData } from 'src/app/helpers/request.helper';
 
@@ -31,12 +29,6 @@ export class SeriesService {
       '/api/v1/media/update_media_status', toFormData({ filmId: contentId, status: status ? 'publish' : 'private' }));
   }
 
-  getSampleDetail(mediaId: number, programId: number) {
-    return this.http.get<PublicityDetailsDto>(`/api/v1/media/index1?series_id=${mediaId}&program_id=${programId}`);
-  }
-  deleteContentCard(content: PublicityDto) {
-    return this.http.post<ResponseDto<PublicityDto>>('/api/v1/media/delete_series', toFormData({ sid: content.id }));
-  }
   updateSubtitle(id: number, programId: number, frame_num: number, text: string) {
     return this.http.
     get(`/api/v1/media/edit_program_subtitle?series_id=${id}&program_id=${programId}&frame_num=${frame_num}&subtitle=${text}`);

@@ -17,6 +17,9 @@ import { PublicityDetailsComponent } from './components/publicity-details/public
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
+import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
+
+
 
 
 @NgModule({
@@ -31,7 +34,8 @@ import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
     SeriesDetailsCopyrightComponent,
     TapeDetailsComponent,
     PublicityDetailsComponent,
-    AddSeriesInfoComponent
+    AddSeriesInfoComponent,
+    AddOwnCopyrightComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +48,7 @@ import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
   ],
   entryComponents: [
     AddSeriesInfoComponent,
+    AddOwnCopyrightComponent,
   ]
 })
 export class SeriesModule { }
