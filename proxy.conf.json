@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "http://114.94.3.66:8000",
+        "target": "http://test.api.bctop.net/",
         "secure": false
     }
 }

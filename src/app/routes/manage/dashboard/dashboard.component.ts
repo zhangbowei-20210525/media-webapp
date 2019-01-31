@@ -110,10 +110,41 @@ export class DashboardComponent implements OnInit {
     count: 9,
     percent: 0.09
   }];
+
+ options = [{
+    value: 'zhejiang',
+    label: '中国',
+    children: [{
+      value: 'hangzhou',
+      label: '辽宁省',
+      children: [{
+        value: 'xihu',
+        label: '沈阳市',
+        isLeaf: true
+      }]
+    }, {
+      value: 'ningbo',
+      label: '香港特别行政区',
+      isLeaf: true
+    }]
+  }, {
+    value: 'jiangsu',
+    label: '日本',
+    children: [{
+      value: 'nanjing',
+      label: '东京',
+      children: [{
+        value: 'zhonghuamen',
+        label: '新宿区',
+        isLeaf: true
+      }]
+    }]
+  }];
+
+values: any[] = null;
   ngOnInit() {
    const  aa = { page: 1, count: 10, page_size: 10 } as any;
     this.seriesService.getSeries(aa).subscribe(res => {
-      console.log('123');
       // this.seriesList = res.list;
       // this.seriesPagination = res.pagination;
     });
@@ -274,6 +305,55 @@ export class DashboardComponent implements OnInit {
       stroke: '#fff'
     });
     chart3.render();
+
+
+    const dvv = new DataSet.View().source(this.data1);
+    dv.transform({
+     type: 'sort',
+     callback: function callback(a, b) {
+       return a.year - b.year;
+     }
+   });
+
+    const chart4 = new G2.Chart({
+      container:  'mountNode4',
+      forceFit:  true,
+      width: 1000,
+      height: 425,
+      padding:  [10,  30,  80,  30]
+    });
+    chart4.source(dvv);
+    chart4.scale('year',  {
+      range:  [0,  1]
+    });
+    chart4.axis('year',  {
+      label:  {
+        textStyle:  {
+          fill:  '#aaaaaa'
+        }
+      }
+    });
+    chart4.axis('value',  {
+      label:  {
+        textStyle:  {
+          fill:  '#aaaaaa'
+        }
+      }
+    });
+    chart4.tooltip({
+      shared:  true,
+    });
+    chart4.line().position('year*value').color('country').size('country',  function(val) {
+      return 2;
+    }).opacity('country',  function(val) {
+      return 0.7;
+    });
+    chart1.point().position('year*value').color('country').size('country',  function(val) {
+      return 0;
+    }).style({
+      lineWidth:  2
+    });
+    chart4.render();
 
 
 }

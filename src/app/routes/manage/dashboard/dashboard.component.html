@@ -96,6 +96,39 @@
     </div>
   </div>
 
+  <div class="all-statistics-box">
+    <div class="all-statistics-title-wk">
+      <span class="all-statistics-title">季度统计分析</span>
+      <nz-cascader
+      [nzTriggerAction]="'hover'"
+      [nzExpandTrigger]="'hover'"
+      [nzOptions]="options"
+      [(ngModel)]="values"
+      nzPlaceHolder="请选择数据统计地区"
+      style="
+      width: 180px;
+      line-height: 55px;
+      margin-right: 20px;
+      font-family: SourceHanSansSC-regular;
+      font-size: 14px;
+      color: #939393;
+      float: right"
+    >
+    </nz-cascader>
+    </div>
+    <div class="all-statistics-info-box">
+        <div class="all-statistics-info-one">
+            
+          </div>
+          <div class="all-statistics-info-two">
+              <div id="mountNode4"></div>
+            </div>
+      </div>
+  </div>
+
+
+
+
   <div class="active-project-box">
     <div class="active-project-title-wk">
       <span class="active-project-title">活跃项目</span>
