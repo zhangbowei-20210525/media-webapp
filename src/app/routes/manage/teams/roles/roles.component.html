@@ -1,0 +1,22 @@
+<div>
+  <div class="roles">
+    <nz-radio-group [(ngModel)]="radioValue" [nzButtonStyle]="'solid'" [nzSize]="'small'" (ngModelChange)="handleRoleChange($event)">
+      <label nz-radio-button [nzValue]="role.name" [nzDisabled]="role.loading" class="role-radio" *ngFor="let role of roles">{{
+        role.name }}</label>
+    </nz-radio-group>
+    <nz-tag *ngIf="!inputVisible" class="editable-tag" (click)="showInput()">
+      添加角色
+    </nz-tag>
+    <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue" class="add-input"
+      (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()">
+    <span class="rf" [hidden]="equalsArray(finalCheckedKeys, originCheckedKeys)">
+      <button nz-button nzType="primary" nzSize="small" (click)="savePermissions()">保存</button>
+      <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelSavePermissions()">取消</button>
+    </span>
+  </div>
+  <div class="permission">
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+      (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
+    </nz-tree>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+.editable-tag ::ng-deep .ant-tag {
+    background: rgb(255, 255, 255);
+    border-style: dashed;
+}
+
+:host ::ng-deep .ant-tree {
+    overflow: hidden; 
+    margin: 0 -24px;
+    padding: 0 24px;
+}
+
+:host ::ng-deep .ant-tree li {
+    padding: 4px 0 0 0;
+}
+
+.custom-node {
+    cursor: pointer;
+    line-height: 24px;
+    display: inline-block;
+    margin: 0 -1000px;
+    padding: 0 1000px;
+    vertical-align: sub;
+}
+
+.custom-node:hover {
+    background: #f8f8f9;
+}
+
+.custom-node.active {
+    background: #5cadff;
+    color: #fff;
+}
+
+.custom-node > span {
+    margin-left: 8px;
+}

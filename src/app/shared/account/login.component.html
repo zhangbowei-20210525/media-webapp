@@ -1,0 +1,63 @@
+<div class="login-panel">
+  <div class="title-bar">
+    <h1 class="title lf">{{ 'app.login' | translate }}</h1>
+    <i nz-icon type="close" theme="outline" class="rf" (click)="close()"></i>
+  </div>
+  <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()" *ngIf="mode == 'phone'; else wxLoginMode">
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group>
+          <input type="text" nz-input formControlName="phone" [placeholder]="'validation.phone-number' | translate">
+        </nz-input-group>
+        <nz-form-explain *ngIf="phone.dirty && phone.errors">{{ 'validation.phone-number.required' | translate }}</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="12">
+        <!-- <nz-input-group [nzPrefix]="prefixLock">
+          <input type="password" nz-input formControlName="password" placeholder="请输入密码">
+        </nz-input-group>
+        <nz-form-explain *ngIf="loginForm.get('password').dirty && loginForm.get('password').errors">请输入密码</nz-form-explain> -->
+        <nz-input-group>
+          <input type="text" nz-input formControlName="captcha" [placeholder]="'validation.captcha' | translate" id="captcha">
+        </nz-input-group>
+        <nz-form-explain *ngIf="captcha.dirty && captcha.errors">{{ 'validation.captcha.required' | translate }}</nz-form-explain>
+      </nz-form-control>
+      <nz-form-control [nzSpan]="10" [nzOffset]="2">
+        <button nz-button 
+        (click)="getCaptcha($event)" 
+        [nzBlock]="true" 
+        [nzLoading]="isLoadingCaptcha" 
+        [disabled]="isCaptchaSended"
+        >
+        {{ isCaptchaSended ? ('app.login.regain-captcha' | translate:{'count': captchaSendCountDown}) : ('app.login.get-captcha' | translate) }}
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <label nz-checkbox formControlName="remember">
+          <span>{{ 'app.login.remember-me' | translate }}</span>
+        </label>
+        <a class="login-form-forgot" class="login-form-forgot">{{ 'app.login.forget-password' | translate }}</a>
+        <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isLoggingIn">{{ 'app.login.login' | translate }}</button>
+        <!-- Or
+        <a href="">register now!</a> -->
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <ng-template #wxLoginMode>
+    <div id="wx_login_container"></div>
+  </ng-template>
+  <a class="swicth-wxLogin" (click)="switchLoginMode('wx')" [hidden]="mode == 'wx'">
+    <i nz-icon type="wechat" theme="outline"></i>
+    <span>{{ 'app.login.sign-in-with-wechat' | translate }}</span>
+  </a>
+  <a class="swicth-wxLogin" (click)="switchLoginMode('phone')" [hidden]="mode == 'phone'">
+    <i nz-icon type="mobile" theme="outline"></i>
+    <span>{{ 'app.login.sign-in-with-mobile' | translate }}</span>
+  </a>
+  <!-- <div id="wx_login_container"></div> -->
+</div>
+<ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
+<ng-template #prefixLock><i nz-icon type="lock"></i></ng-template>

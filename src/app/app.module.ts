@@ -47,11 +47,12 @@ const I18NSERVICE_PROVIDES = [
 
 // #region Http 拦截器
 import { DelonAuthModule, SimpleInterceptor } from '@delon/auth';
-import { I18nInterceptor } from './core/net/i18n.interceptor';
-// import { DefaultInterceptor } from '@core/net/default.interceptor';
+import { I18nInterceptor } from '@core/net/i18n.interceptor';
+import { DefaultInterceptor } from '@core/net/default.interceptor';
+
 const INTERCEPTOR_PROVIDES = [
   { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
-  // { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: I18nInterceptor, multi: true }
 ];
 // #endregion
@@ -81,6 +82,7 @@ import { SharedModule } from './shared';
 // import { LayoutModule } from './layout/layout.module';
 import { RoutesModule } from './routes/routes.module';
 import { DelonModule } from './delon.module';
+import en from '@angular/common/locales/en';
 
 @NgModule({
   declarations: [
@@ -98,7 +100,7 @@ import { DelonModule } from './delon.module';
     BrowserAnimationsModule,
     DelonAuthModule,
     DelonModule.forRoot(),
-    ...I18NSERVICE_MODULES
+    ...I18NSERVICE_MODULES,
   ],
   providers: [
     ...LANG_PROVIDES,

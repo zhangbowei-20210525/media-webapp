@@ -1,0 +1,102 @@
+<div class="program-details-wrap">
+  <div class="program-details-title-wk">
+    <div>
+      <div class="program-details-name">{{seriesInfo?.name}}</div>
+      <div class="program-details-type">
+        <span *ngIf="seriesInfo.program_type == 'tv'">电影</span>
+        <span *ngIf="seriesInfo.program_type == 'film'">电视剧</span>
+        <span *ngIf="seriesInfo.program_type == 'variety'">综艺</span>
+        <span *ngIf="seriesInfo.program_type == 'other'">其他</span>
+      </div>
+      <div class="program-details-switcher">
+        <nz-radio-group [(ngModel)]="category" nzSize="small" (click)="categories()">
+          <label nz-radio-button nzValue="publicities">宣发</label>
+          <label nz-radio-button nzValue="tapes">母带</label>
+          <label nz-radio-button nzValue="copyrights">版权</label>
+        </nz-radio-group>
+      </div>
+    </div>
+    <!-- <div class="program-details-EnglishName">Brotherhood of Blades II: The Infernal Battlefield</div> -->
+  </div>
+  <div class="program-details-info-box">
+    <div class="program-details-info-wk-one">
+      <span class="program-details-info-title">基本信息</span>
+      <a><i nz-icon type="form" theme="outline" style="margin-left: 6px;font-size: 14px;float: left;margin-top: 18px"></i></a>
+    </div>
+    <div>
+      <div class="program-details-info-wk-two">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">节目名称：</span>
+          <span class="program-details-info-three">{{seriesInfo?.name}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">节目别名：</span>
+          <span class="program-details-info-three">{{seriesInfo?.nickname}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">节目类型：</span>
+          <span class="program-details-info-three">{{seriesInfo?.program_type}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">主题：</span>
+          <span class="program-details-info-three">{{seriesInfo?.theme}}</span>
+        </div>
+      </div>
+      <div class="program-details-info-wk-three">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">集数：</span>
+          <span class="program-details-info-three">{{seriesInfo?.episode}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">语言：</span>
+          <span class="program-details-info-three">{{seriesInfo?.language}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">导演：</span>
+          <span class="program-details-info-three">{{seriesInfo?.director}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">编剧：</span>
+          <span class="program-details-info-three">{{seriesInfo?.screen_writer}}</span>
+        </div>
+      </div>
+      <div class="program-details-info-wk-four">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">主演：</span>
+          <span class="program-details-info-three">{{seriesInfo?.protagonist}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">监制：</span>
+          <span class="program-details-info-three">{{seriesInfo?.supervisor}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">总制片人：</span>
+          <span class="program-details-info-three">{{seriesInfo?.general_producer}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">出品人：</span>
+          <span class="program-details-info-three">{{seriesInfo?.producer}}</span>
+        </div>
+      </div>
+      <div class="program-details-info-wk-five">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">出品方：</span>
+          <span class="program-details-info-three">{{seriesInfo?.product_company}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">发行时间：</span>
+          <span class="program-details-info-three">{{seriesInfo?.release_date}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">简介：</span>
+          <span class="program-details-info-three" nzPlacement="topLeft" [nzTitle]="si" nz-tooltip>{{seriesInfo?.introduction}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two"></span>
+          <span class="program-details-info-three"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>

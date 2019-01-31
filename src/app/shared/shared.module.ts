@@ -5,12 +5,14 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { TranslateModule } from '@ngx-translate/core';
 
 // #region services 服务
-import { LoginService } from './login/login.service';
+import { AccountService } from './account/account.service';
 import { MessageService } from './message/message.service';
+import { TreeService } from './components/tree.service';
 
 const SERVICES = [
-  LoginService,
-  MessageService
+  AccountService,
+  MessageService,
+  TreeService
 ];
 // #endregion
 
@@ -22,22 +24,51 @@ const THIRD_MODULES = [
 ];
 // #endregion
 
-// #region your componets & directives 组件&指令
-import { LoginComponent } from './login/login.component';
-import { RouterModule } from '@angular/router';
+// #region your componets & directives & pipes 组件&指令&管道
+import { LoginComponent } from './account/login.component';
+import { BindPhoneComponent } from './account/bind-phone.component';
+import { BindWechatComponent } from './account/bind-wechat.component';
+import { EmptyComponent } from './components/empty/empty.component';
+import { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
 
 const INSIDE_COMPONENTS = [
-  LoginComponent
+  LoginComponent,
+  BindPhoneComponent,
+  BindWechatComponent
 ];
-const COMPONENTS = [];
+const COMPONENTS = [
+  EmptyComponent,
+  SeriesSelectorComponent
+];
+
 const DIRECTIVES = [];
+
+import { SeriesTypePipe } from './pipes/series-type.pipe';
+import { PointFormatPipe } from './pipes/point-format.pipe';
+import { SrcToUrlPipe } from './pipes/src-to-url.pipe';
+import { ProgressFormatPipe } from './pipes/progress-format.pipe';
+import { ByteFormatPipe } from './pipes/byte-format.pipe';
+import { FloorPipe } from './pipes/floor.pipe';
+
+const PIPES = [
+  SeriesTypePipe,
+  PointFormatPipe,
+  SrcToUrlPipe,
+  ProgressFormatPipe,
+  ByteFormatPipe,
+  FloorPipe
+];
 // #endregion
+
+import { RouterModule } from '@angular/router';
+
 
 @NgModule({
   declarations: [
     ...INSIDE_COMPONENTS,
     ...COMPONENTS,
     ...DIRECTIVES,
+    ...PIPES
   ],
   imports: [
     CommonModule,
@@ -51,12 +82,16 @@ const DIRECTIVES = [];
   exports: [
     RouterModule,
     TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
     // third libs
     ...THIRD_MODULES,
     // export components
     ...COMPONENTS,
     // export directives
     ...DIRECTIVES,
+    // export pipes
+    ...PIPES
   ],
   providers: [
     // servises

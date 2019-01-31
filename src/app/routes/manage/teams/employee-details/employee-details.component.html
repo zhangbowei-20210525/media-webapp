@@ -1,0 +1,53 @@
+<nz-tabset nzAnimated="false">
+  <nz-tab [nzTitle]="'基本信息'">
+    <nz-skeleton [nzLoading]="isInfoLoading">
+      <h3>{{ employee?.name }}</h3>
+      <p>{{ employee?.phone }}</p>
+      <p>
+        <nz-tag *ngFor="let department of employee?.department; let i = index;">
+          {{ sliceTagName(department.name) }}
+        </nz-tag>
+        <nz-tag class="editable-tag" (click)="editDepartments()">
+          <i nz-icon type="edit"></i> 修改部门
+        </nz-tag>
+      </p>
+    </nz-skeleton>
+  </nz-tab>
+  <nz-tab [nzTitle]="'角色/权限'">
+    <p>
+      <!-- <i nz-icon type="user" style="margin-right: 0.5rem;"></i> -->
+      <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomCenter'" [nzDisabled]="editMode">
+        <a nz-dropdown>
+          <span *ngIf="selectedRole; else noRole">{{ selectedRole.name }}</span>
+          <ng-template #noRole>
+            <span class="text-hint">无角色</span>
+          </ng-template>
+          <span>[切换]</span>
+        </a>
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item *ngFor="let role of roles">
+            <a (click)="selectRole(role)">{{ role.name }}</a>
+          </li>
+        </ul>
+      </nz-dropdown>
+    </p>
+    <p>
+      <button nz-button nzSize="small" (click)="enterEditMode()" [disabled]="editMode">编辑权限</button>
+      <span [hidden]="!editMode" style="margin-left: 1rem;">
+        <button nz-button nzSize="small" nzType="primary" (click)="saveRoleAndPermissions()" [disabled]="equalsArray(finalCheckedKeys, originCheckedKeys)">保存</button>
+        <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelsaveRoleAndPermissions()">取消</button>
+      </span>
+    </p>
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+      (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
+      <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node">
+          <span>{{ node.title }}</span>
+        </span>
+      </ng-template>
+    </nz-tree>
+  </nz-tab>
+  <nz-tab [nzTitle]="'节目权限'">
+    <app-series-selector></app-series-selector>
+  </nz-tab>
+</nz-tabset>

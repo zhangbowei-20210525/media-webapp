@@ -1,0 +1,81 @@
+@import '~styles/theme';
+.block {
+    margin-bottom: 20px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.block.transparent-block {
+    background-color: transparent;
+}
+
+.block>.block-content {
+    margin: 2rem;
+}
+
+.block>.block-content.full {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.explain {
+    color: @color-content;
+    font-size: 1.2rem;
+}
+
+.explain>i {
+    margin-right: 0.5rem;
+}
+
+.user-info-pane {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.avatar {
+    // padding-left: 1rem;
+    // padding-right: 3rem;
+    padding-right: 2rem;
+}
+
+.user-info {
+    flex: 1 1 auto;
+}
+
+.bind {
+    color: @color-icon;
+    vertical-align: middle;
+}
+
+.bind>i {
+    margin-right: 0.5rem;
+}
+
+.bind .empty {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.bind.active {
+    color: @color-content;
+}
+
+.bind-wechat {
+    margin-top: 0.3rem;
+}
+
+.other-info {
+    padding-top: 0.5rem;
+}
+
+.other-info i {
+    margin-right: 1rem;
+}
+
+.company-name {
+    text-align: right;
+}
+
+.edit-button {
+    margin-top: 3rem;
+}

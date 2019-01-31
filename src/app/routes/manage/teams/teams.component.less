@@ -1,0 +1,67 @@
+@import '~styles/theme';
+.company-full-name {
+    margin-bottom: 1rem;
+}
+
+.structure {
+    width: 22rem;
+    padding-right: 2rem;
+    min-height: 30rem;
+    border-right: 1px solid @color-border;
+}
+
+.employees {
+    flex: 1;
+    min-height: 30rem;
+    padding-left: 2rem;
+}
+
+// :host ::ng-deep .draggable-tree .ant-tree-node-content-wrapper {
+//     width: calc(100% - 42px);
+// }
+:host ::ng-deep .ant-tree {
+    overflow: hidden; // margin: 0 -24px;
+    // padding: 0 24px;
+}
+
+:host ::ng-deep .ant-tree li {
+    padding: 4px 0 0 0;
+}
+
+.custom-node {
+    display: block;
+    float: right;
+    width: calc(100% - 24px - 4px);
+    height: 24px;
+    padding-left: 4px;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.custom-node:hover {
+    background: #f8f8f9;
+}
+
+.custom-node.active {
+    background: #5cadff;
+    color: #fff;
+}
+
+.folder-icon {
+    vertical-align: super;
+}
+
+.folder-name {
+    display: inline-block;
+    width: calc(100% - 14px - 4px - 30px);
+    margin-left: 4px;
+}
+
+.folder-operation {
+    padding: 0 8px; // display: inline-block;
+    // background: #87CEFF;
+    // color: #FFFFFF;
+    // position: relative;
+    // left: 12px;
+    float: right;
+}
