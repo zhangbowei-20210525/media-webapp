@@ -1,4 +1,4 @@
-export function toFormData(obj: object) {
+export function formData(obj: object) {
     const f = new FormData();
     Object.keys(obj).forEach(key => {
         if (obj[key]) {

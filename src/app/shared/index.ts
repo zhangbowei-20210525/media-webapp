@@ -1,4 +1,4 @@
-export { dtoMap, dtoCatchError } from './helpers/rx-operators.helper';
+export { formData } from './helpers/request.helper';
 export { ResponseDto, ListResponseDto, PaginationResponseDto } from './dtos/response.dto';
 export { SharedModule } from './shared.module';
 export { AccountService } from './account/account.service';
