@@ -24,7 +24,7 @@ const THIRD_MODULES = [
 ];
 // #endregion
 
-// #region your componets & directives 组件&指令
+// #region your componets & directives & pipes 组件&指令&管道
 import { LoginComponent } from './account/login.component';
 import { BindPhoneComponent } from './account/bind-phone.component';
 import { BindWechatComponent } from './account/bind-wechat.component';
@@ -41,8 +41,23 @@ const COMPONENTS = [
   SeriesSelectorComponent
 ];
 
+const DIRECTIVES = [];
+
 import { SeriesTypePipe } from './pipes/series-type.pipe';
-const DIRECTIVES = [SeriesTypePipe];
+import { PointFormatPipe } from './pipes/point-format.pipe';
+import { SrcToUrlPipe } from './pipes/src-to-url.pipe';
+import { ProgressFormatPipe } from './pipes/progress-format.pipe';
+import { ByteFormatPipe } from './pipes/byte-format.pipe';
+import { FloorPipe } from './pipes/floor.pipe';
+
+const PIPES = [
+  SeriesTypePipe,
+  PointFormatPipe,
+  SrcToUrlPipe,
+  ProgressFormatPipe,
+  ByteFormatPipe,
+  FloorPipe
+];
 // #endregion
 
 import { RouterModule } from '@angular/router';
@@ -53,6 +68,7 @@ import { RouterModule } from '@angular/router';
     ...INSIDE_COMPONENTS,
     ...COMPONENTS,
     ...DIRECTIVES,
+    ...PIPES
   ],
   imports: [
     CommonModule,
@@ -74,6 +90,8 @@ import { RouterModule } from '@angular/router';
     ...COMPONENTS,
     // export directives
     ...DIRECTIVES,
+    // export pipes
+    ...PIPES
   ],
   providers: [
     // servises

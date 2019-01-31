@@ -1,8 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ResponseDto } from 'src/app/shared/dtos/response.dto';
 import { MarketDetailsDto } from './dtos/market-details.dto';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
+import { PaginationDto } from '@shared';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +55,11 @@ export class MarketService {
 //   }
 
   getTypeInfoDetail(programId: number) {
+<<<<<<< HEAD
+      return this.http.get<MarketDetailsDto>(`/api/v1/medias/series/${programId}`);
+=======
       return this.http.get<ResponseDto<MarketDetailsDto>>(`/api/v1/medias/series/${programId}`);
+>>>>>>> 06603bf04129e3b6761476a2f67678c17c1bbe30
   }
 
   getMediaDetailKeyframe(mediaId: number, programId: number) {
@@ -80,6 +83,17 @@ export class MarketService {
   }
 
   getTwoDimensionalCode(programId: number) {
+<<<<<<< HEAD
+    return this.http.get<string>(`api/v1/series/${programId}/share_code`);
+  }
+
+  getCollect(id: number) {
+    return this.http.get<string>(`api/v1/media/fav_series?sid=${id}`);
+  }
+
+  like(id: number) {
+    return this.http.get<string>(`api/v1/media/digg_series/${id}`);
+=======
     return this.http.get<ResponseDto<string>>(`api/v1/series/${programId}/share_code`);
   }
 
@@ -89,5 +103,6 @@ export class MarketService {
 
   like(id: number) {
     return this.http.get<ResponseDto<string>>(`api/v1/media/digg_series/${id}`);
+>>>>>>> 06603bf04129e3b6761476a2f67678c17c1bbe30
   }
 }

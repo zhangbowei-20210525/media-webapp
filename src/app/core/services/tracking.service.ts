@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { toFormData } from 'src/app/helpers/request.helper';
-import { AuthService } from '..';
+import { formData } from '@shared';
 
 @Injectable({
   providedIn: 'root'
@@ -9,16 +8,11 @@ import { AuthService } from '..';
 export class TrackingService {
 
   constructor(
-    private httpWithoutAuth: HttpClient,
-    private auth: AuthService
+    private http: HttpClient
   ) { }
 
-  private get http() {
-    return this.auth.checkSimple ? this.httpWithoutAuth : this.httpWithoutAuth;
-  }
-
   private collectOperation(sampleId: number, operationType: string, operationLabel: string, operationContent: string) {
-    return this.http.post('/api/v1/operation/collect_record', toFormData({
+    return this.http.post('/api/v1/operation/collect_record', formData({
       sid: sampleId,
       o_type: operationType,
       o_label: operationLabel,

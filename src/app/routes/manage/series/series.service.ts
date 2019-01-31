@@ -1,20 +1,19 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
-import { ResponseDto } from 'src/app/shared/dtos/response.dto';
-import { toFormData } from 'src/app/helpers/request.helper';
+import { formData, PaginationDto } from '@shared';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeriesService {
-  eventEmit: any;
+
+  // eventEmit: any;
 
   constructor(
     protected http: HttpClient,
   ) {
-    this.eventEmit = new EventEmitter();
-   }
+    // this.eventEmit = new EventEmitter();
+  }
 
   // getUserSamples(pagination: PaginationDto) {
   //   return this.auth1.http.get<any>(`/api/v1/media/get_medialist_of_user?page=${pagination.page}&limit=${pagination.page_size}`);
@@ -26,32 +25,37 @@ export class SeriesService {
 
   changeStatus(contentId: number, status: boolean) {
     return this.http.post(
-      '/api/v1/media/update_media_status', toFormData({ filmId: contentId, status: status ? 'publish' : 'private' }));
+      '/api/v1/media/update_media_status', formData({ filmId: contentId, status: status ? 'publish' : 'private' }));
   }
 
   updateSubtitle(id: number, programId: number, frame_num: number, text: string) {
     return this.http.
-    get(`/api/v1/media/edit_program_subtitle?series_id=${id}&program_id=${programId}&frame_num=${frame_num}&subtitle=${text}`);
+      get(`/api/v1/media/edit_program_subtitle?series_id=${id}&program_id=${programId}&frame_num=${frame_num}&subtitle=${text}`);
   }
+
   updateField(id: number, key: string, value: string) {
     return this.http.get(`/api/v1/media/edit_series_info?series_id=${id}&field_key=${key}&field_value=${value}`);
   }
 
   interceptionVideo(id: number, programId: number,
-    segment_start_num: number, startFrame: number, segment_end_num: number , endFrame: number) {
-    return this.http.post<ResponseDto<any>>(`/api/v1/medias/add_segment/${id}/${programId}`,
-    { segment_start_num: segment_start_num, segment_start_frame: startFrame,
-      segment_end_num: segment_end_num, segment_end_frame: endFrame});
+    segment_start_num: number, startFrame: number, segment_end_num: number, endFrame: number) {
+    return this.http.post<any>(`/api/v1/medias/add_segment/${id}/${programId}`,
+      {
+        segment_start_num: segment_start_num, segment_start_frame: startFrame,
+        segment_end_num: segment_end_num, segment_end_frame: endFrame
+      });
   }
 
   getSubsection(id: number, programId: number) {
-    return this.http.get<ResponseDto<any>>(`/api/v1/medias/get_segment_list/${id}/${programId}`);
+    return this.http.get<any>(`/api/v1/medias/get_segment_list/${id}/${programId}`);
   }
 
-  addSeriesInfo(newSeriesInfo: { name: string, nickname: string, program_type: string, theme: string, episode: number,
+  addSeriesInfo(newSeriesInfo: {
+    name: string, nickname: string, program_type: string, theme: string, episode: number,
     introduction: string, director: string, screen_writer: string, protagonist: string, product_company: string, supervisor: string,
-    general_producer: string, producer: string, release_date: string, language: string, }) {
-      return this.http.post<ResponseDto<any>>('/api/v1/program', newSeriesInfo);
+    general_producer: string, producer: string, release_date: string, language: string,
+  }) {
+    return this.http.post<any>('/api/v1/program', newSeriesInfo);
   }
 
   getSeries(pagination: PaginationDto) {
@@ -63,34 +67,34 @@ export class SeriesService {
   }
 
   deleteSeries(id: number) {
-    return this.http.delete<ResponseDto<any>>(`/api/v1/program/${id}`);
+    return this.http.delete<any>(`/api/v1/program/${id}`);
   }
 
   getUploadVideoId(file: File) {
     const formdata = new FormData();
     formdata.append('file', file);
-    return this.http.post<ResponseDto<any>>('/api/v1/upload/video', formdata);
+    return this.http.post<any>('/api/v1/upload/video', formdata);
   }
 
   getUploadImageId(file: File) {
     const formdata = new FormData();
     formdata.append('file', file);
-    return this.http.post<ResponseDto<any>>('/api/v1/upload/image', formdata);
+    return this.http.post<any>('/api/v1/upload/image', formdata);
   }
 
   getUploadPdfId(file: File) {
     const formdata = new FormData();
     formdata.append('file', file);
-    return this.http.post<ResponseDto<any>>('/api/v1/upload/document', formdata);
+    return this.http.post<any>('/api/v1/upload/document', formdata);
   }
 
   addUpload(publicity_id: number, material_id: number, material_type: string) {
     // tslint:disable-next-line:max-line-length
-    return this.http.post<ResponseDto<any>>(`/api/v1/publicity/${publicity_id}`, { material_id: material_id, material_type: material_type});
+    return this.http.post<any>(`/api/v1/publicity/${publicity_id}`, { material_id: material_id, material_type: material_type });
   }
 
   getPublicitiesList(id: number) {
-    return this.http.get<any>('/api/v1/publicity', { params: { program_id: id + '' }});
+    return this.http.get<any>('/api/v1/publicity', { params: { program_id: id + '' } });
   }
 
   getPublicitiesTypeList(pagination: PaginationDto, id: number, type: string) {

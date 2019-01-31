@@ -1,10 +1,8 @@
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SeriesRoutingModule } from './series-routing.module';
 import { CopyrightsComponent } from './components/copyrights/copyrights.component';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { TapesComponent } from './components/tapes/tapes.component';
 import { PublicitiesComponent } from './components/publicities/publicities.component';
 import { SeriesComponent } from './series.component';
@@ -16,8 +14,8 @@ import { TapeDetailsComponent } from './components/tape-details/tape-details.com
 import { PublicityDetailsComponent } from './components/publicity-details/publicity-details.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
-import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
 import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
+import { SharedModule } from '@shared';
 
 
 
@@ -40,11 +38,8 @@ import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own
   imports: [
     CommonModule,
     SeriesRoutingModule,
-    NgZorroAntdModule,
-    FormsModule,
     PdfViewerModule,
-    ReactiveFormsModule,
-    SharedPipesModule,
+    SharedModule
   ],
   entryComponents: [
     AddSeriesInfoComponent,
