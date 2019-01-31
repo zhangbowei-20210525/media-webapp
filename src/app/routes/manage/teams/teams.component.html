@@ -1,0 +1,100 @@
+<div>
+
+  <section class="block clearfix">
+    <div class="block-header">
+      <div class="block-title">我的团队</div>
+      <div class="block-options">
+        <nz-dropdown>
+          <button nz-button nz-dropdown>切换企业<i nz-icon type="down"></i></button>
+          <ul nz-menu>
+            <li nz-menu-item *ngFor="let cmp of companys">
+              <a (click)="switchCompany(cmp.id, cmp.company_name)">{{ cmp.company_name }}</a>
+            </li>
+          </ul>
+        </nz-dropdown>
+        <button nz-button (click)="editCompany()">编辑</button>
+        <button nz-button (click)="addCompany()">新建</button>
+      </div>
+    </div>
+    <div class="block-content">
+      <nz-skeleton [nzLoading]="isCommpanyLoading">
+        <div class="company-info">
+          <h2 class="company-full-name">{{ currentCompany?.company_full_name }}</h2>
+          <p>企业简称：{{ currentCompany?.company_name }}</p>
+          <p>企业简介：{{ currentCompany?.company_introduction }}</p>
+        </div>
+      </nz-skeleton>
+    </div>
+  </section>
+
+  <section class="block clearfix">
+    <div class="block-header">
+      <div class="block-title">部门管理</div>
+      <div class="block-options">
+        <button nz-button [routerLink]="'/manage/teams/roles'"><i nz-icon type="setting" theme="outline"></i> 配置角色</button>
+      </div>
+    </div>
+    <div class="block-content">
+      <div class="container">
+        <div class="structure">
+          <nz-tree #treeCom nzDraggable="true" [nzData]="nodes" (nzClick)="activeNode($event)">
+            <ng-template #nzTreeTemplate let-node>
+              <span class="custom-node" [class.active]="activedNode?.key===node.key">
+                <span>
+                  <i nz-icon class="folder-icon" [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+                  <span class="folder-name text-ellipsis">{{node.title}}</span>
+                  <nz-dropdown [nzTrigger]="'click'">
+                    <!-- <a nz-dropdown>
+                      Click me <i nz-icon type="down"></i>
+                    </a> -->
+                    <span nz-dropdown class="folder-operation"><i nz-icon type="ellipsis" theme="outline"></i></span>
+                    <ul nz-menu>
+                      <li nz-menu-item (click)="addDepartment(node.key)">添加子部门</li>
+                      <li nz-menu-item>修改名称</li>
+                      <li nz-menu-item (click)="deleteDepartment(node.key, node.title)">删除</li>
+                      <li nz-menu-item nzDisabled>id: {{ node.key }}</li>
+                    </ul>
+                  </nz-dropdown>
+                  <!-- <span class="folder-operation"><i nz-icon type="ellipsis" theme="outline"></i></span> -->
+                </span>
+              </span>
+            </ng-template>
+          </nz-tree>
+        </div>
+        <div class="employees">
+          <!-- <div class="table-operations">
+            <button nz-button (click)="addEmployee()">添加成员</button>
+            <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()">删除</button>
+          </div>
+          <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>
+            <nz-table #employeesTable [nzData]="dataset" [nzSize]="'middle'" [nzNoResult]="noResult">
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" [nzDisabled]="dataset.length < 1" (nzCheckedChange)="checkAll($event)"></th>
+                  <th>姓名</th>
+                  <th>部门</th>
+                  <th>手机</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of employeesTable.data">
+                  <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()" [nzDisabled]="data.disabled"></td>
+                  <td>{{data.name}}</td>
+                  <td>{{data.department}}</td>
+                  <td>{{data.phone}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <ng-template #noResult>
+              <app-empty></app-empty>
+            </ng-template>
+          </nz-spin> -->
+          <router-outlet></router-outlet>
+
+          <!-- <app-empty></app-empty> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

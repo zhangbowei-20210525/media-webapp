@@ -1,0 +1,54 @@
+<div>
+  <section class="block clearfix" [hidden]="loading">
+    <div class="block-content" style="height: 8rem;">
+      <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="true">
+        <div class="user-info-pane">
+          <div class="avatar">
+            <nz-avatar [nzSize]="90" [nzSrc]="info?.avatar" style="background-color: #f0f0f0;"></nz-avatar>
+          </div>
+          <div class="user-info">
+            <h2 class="text-blod">{{ info?.nickname || info?.username }}</h2>
+            <div class="bind bind-mobile active" [ngClass]="{ 'active': info?.phone }">
+              <i nz-icon type="mobile" theme="outline"></i>
+              <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
+              <ng-template #unboundPhone>
+                <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
+              </ng-template>
+            </div>
+            <div class="bind bind-wechat">
+              <i nz-icon type="wechat" theme="outline"></i>
+              <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+            </div>
+          </div>
+          <div class="other-info">
+            <div class="company-name">
+              [{{ info?.company_name }}]
+            </div>
+            <div class="edit-button">
+              <button nz-button>编辑个人信息</button>
+            </div>
+          </div>
+        </div>
+      </nz-skeleton>
+
+      <!-- <div class="edit-button"><a><i nz-icon type="edit" theme="outline"></i>修改</a></div> -->
+    </div>
+  </section>
+
+  <div class="block clearfix" [hidden]="loading">
+    <!-- <div class="explain">
+      <i nz-icon type="star" theme="fill"></i>
+      <span>{{ 'app.account.my-favorite' | translate }}</span>
+    </div> -->
+    <div class="block-header">
+      <div class="block-title">{{ 'app.account.my-favorite' | translate }}</div>
+    </div>
+    <div class="block-body">
+      <app-empty></app-empty>
+    </div>
+  </div>
+
+  <!-- <section class="block transparent-block">
+    <app-empty></app-empty>
+  </section> -->
+</div>

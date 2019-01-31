@@ -1,0 +1,36 @@
+<div>
+  <nz-skeleton [nzActive]="'true'" [nzLoading]="isSeriesLoading">
+    <div>
+      <p>
+        <nz-input-group nzSearch  [nzSuffix]="suffixIconSearch" style="width: 22rem;">
+          <input type="text" nz-input placeholder="输入名称关键字搜索" [(ngModel)]="searchText">
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <!-- <i nz-icon type="search"></i> -->
+          <button nz-button nzType="default" nzSearch (click)="search()"><i nz-icon type="search"></i></button>
+        </ng-template>
+      </p>
+    </div>
+    <div>
+      <p>
+        <nz-radio-group [(ngModel)]="selectedType" (ngModelChange)="handleTypeChange($event)" [nzButtonStyle]="'solid'" [nzSize]="'small'">
+          <label nz-radio-button [nzValue]="type.code" *ngFor="let type of programTypes">{{ type.name }}</label>
+        </nz-radio-group>
+      </p>
+      <p>
+        <nz-radio-group [(ngModel)]="selectedYear" (ngModelChange)="handleYearChange($event)" [nzButtonStyle]="'solid'" [nzSize]="'small'">
+          <label nz-radio-button [nzValue]="year.code" *ngFor="let year of releaseYears">{{ year.name }}</label>
+        </nz-radio-group>
+      </p>
+    </div>
+    <div>
+      <strong style="margin-right: 0.5rem;">节目: </strong>
+      <nz-tag *ngFor="let tag of series" [nzMode]="'checkable'" [nzChecked]="tag.status"
+        (nzCheckedChange)="handleChange($event, tag)">
+        <!-- <i nz-icon type="loading" theme="outline"></i> -->
+        <!-- <i nz-icon [type]="'sync'" [spin]="true" *ngIf="tag.loading"></i> -->
+        {{ tag.name }} / {{ tag.program_type | seriesType }}
+      </nz-tag>
+    </div>
+  </nz-skeleton>
+</div>
