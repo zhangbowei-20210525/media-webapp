@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "http://i358.net:8000",
+        "target": "http://test.api.bctop.net",
         "secure": false
     }
 }

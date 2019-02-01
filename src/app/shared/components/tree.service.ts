@@ -32,7 +32,7 @@ export class TreeService {
    * @param nodes 节点
    * @param cb 回调
    */
-  recursionNodes<T extends { children: T[] }>(nodes: T[], cb: (node: T) => void) {
+  recursionNodes<T extends { children?: T[] }>(nodes: T[], cb: (node: T) => void) {
     for (const i in nodes) {
       if (nodes.hasOwnProperty(i)) {
         const element = nodes[i];
@@ -49,11 +49,11 @@ export class TreeService {
    * @param nodes 节点
    * @param selector 条件回调
    */
-  recursionNodesFindBy<T extends { children: T[] }>(nodes: T[], selector: (node: T) => boolean): T {
+  recursionNodesFindBy<T extends { children?: T[] }>(nodes: T[], selector: (node: T, index?: any) => boolean): T {
     for (const i in nodes) {
       if (nodes.hasOwnProperty(i)) {
         const element = nodes[i];
-        if (selector(element)) {
+        if (selector(element, i)) {
           return element;
         }
         if (element.children && element.children.length > 0) {
@@ -73,7 +73,7 @@ export class TreeService {
    * @param map 映射回调
    * @param selector 条件回调
    */
-  recursionNodesMapArray<T extends { children: T[] }, TResult>
+  recursionNodesMapArray<T extends { children?: T[] }, TResult>
     (nodes: T[], map: (node: T) => TResult, selector?: (node: T) => boolean): TResult[] {
     const result = [];
     for (const i in nodes) {
@@ -100,7 +100,7 @@ export class TreeService {
    * @param map 映射回调
    * @param selector 条件回调
    */
-  recursionNodesMapNodes<T extends { children: T[] }, TResult extends { children?: TResult[] }>
+  recursionNodesMapNodes<T extends { children?: T[] }, TResult extends { children?: TResult[] }>
     (nodes: T[], map: (node: T) => TResult, selector?: (node: T) => boolean): TResult[] {
     const result: TResult[] = [];
     for (const i in nodes) {

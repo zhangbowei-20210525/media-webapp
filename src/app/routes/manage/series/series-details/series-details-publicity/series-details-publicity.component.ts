@@ -156,9 +156,8 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         uploadStatus: `${this.uploadStatus}`
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.data.id;
+        const id = res.id;
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
-          // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
             this.sampleList = s.list;
             this.sampleList.forEach(f => {
@@ -204,7 +203,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         uploadStatus: `${this.uploadStatus}`
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.data.id;
+        const id = res.id;
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(f => {
@@ -252,7 +251,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         uploadStatus: `${this.uploadStatus}`
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.data.id;
+        const id = res.id;
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(t => {
@@ -298,8 +297,8 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         size: `${fileList[0].size}`,
         uploadStatus: `${this.uploadStatus}`
       }];
-      this.seriesService.getUploadImageId(fileList[0]).subscribe(res => {
-        const id = res.data.id;
+      this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
+        const id = result.id;
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(p => {
@@ -346,7 +345,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         uploadStatus: `${this.uploadStatus}`
       }];
       this.seriesService.getUploadImageId(fileList[0]).subscribe(res => {
-        const id = res.data.id;
+        const id = res.id;
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(s => {
@@ -394,7 +393,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         uploadStatus: `${this.uploadStatus}`
       }];
       this.seriesService.getUploadPdfId(fileList[0]).subscribe(res => {
-        const id = res.data.id;
+        const id = res.id;
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(p => {

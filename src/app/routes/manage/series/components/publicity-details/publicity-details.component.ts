@@ -132,6 +132,16 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.dispose();
   }
 
+  playerSource(src: string, poster?: string) {
+    this.player.pause();
+    if (poster) {
+      this.player.poster(poster);
+    }
+    // this.player.src('http://media.html5media.info/video.mp4');
+    this.player.src(src);
+    this.player.load();
+  }
+
   getSampleInfo() {
     // tslint:disable-next-line:max-line-length
     this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
@@ -147,9 +157,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.sampleSrc = this.sampleList[this.sampleIndex].src;
         this.samplePoster = this.sampleList[this.sampleIndex].poster;
         this.samplePageChange({ page: 1, pageSize: 20 });
-        this.player.pause();
-        this.player.poster(this.samplePoster);
-        this.player.src('http://media.html5media.info/video.mp4');
+        this.playerSource(this.sampleSrc, this.samplePoster);
       }
     });
   }
@@ -169,10 +177,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.featureSrc = this.featureList[this.featureIndex].src;
         this.featurePoster = this.featureList[this.featureIndex].poster;
         this.featurePageChange({ page: 1, pageSize: 20 });
-        this.player.pause();
-        this.player.poster(this.featurePoster);
-        this.player.src('http://vjs.zencdn.net/v/oceans.mp4');
-        this.player.load();
+        this.playerSource(this.featureSrc, this.featurePoster);
       }
     });
   }
@@ -192,10 +197,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.trailerSrc = this.trailerList[this.trailerIndex].src;
         this.trailerPoster = this.trailerList[this.trailerIndex].poster;
         this.trailerPageChange({ page: 1, pageSize: 20 });
-        this.player.pause();
-        this.player.poster(this.trailerPoster);
-        this.player.src('http://media.html5media.info/video.mp4');
-        this.player.load();
+        this.playerSource(this.trailerSrc, this.trailerPoster);
       }
     });
   }
