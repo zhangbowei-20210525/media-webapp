@@ -6,12 +6,11 @@ import { animation, style, animate, trigger, transition, useAnimation } from '@a
 export const fadeInAnimation = animation([
     // start
     style({
-        opacity: 0,
-        'border-radius': '5px'
+        opacity: 0
     }),
     // end
     animate(
-        '1000ms',
+        '200ms',
         style({
             opacity: 1,
         })
@@ -20,7 +19,7 @@ export const fadeInAnimation = animation([
 
 export const fadeOutAnimation = animation(
     animate(
-        '500ms',
+        '200ms',
         style({ opacity: 0 })
     )
 );

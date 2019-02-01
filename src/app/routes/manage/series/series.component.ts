@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
-import { MessageService } from 'src/app/shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from './series.service';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
+import { MessageService, PaginationDto } from '@shared';
 import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
 
 @Component({
@@ -34,7 +32,7 @@ export class SeriesComponent implements OnInit {
   ngOnInit() {
     this.type = 'series';
     this.seriesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
       this.seriesList = res.list;
       this.seriesPagination = res.pagination;
     });
@@ -42,7 +40,7 @@ export class SeriesComponent implements OnInit {
 
   seriesRefresh() {
     this.type = 'series';
-    this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
       this.seriesList = res.list;
       this.seriesPagination = res.pagination;
     });
@@ -69,7 +67,7 @@ export class SeriesComponent implements OnInit {
 
   refreshStatus(page: number): void {
     this.seriesPagination.page = page;
-    this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
       this.seriesList = res.list;
       this.seriesPagination = res.pagination;
     });
@@ -123,7 +121,7 @@ export class SeriesComponent implements OnInit {
     component.formSubmit()
       .subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
-        this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(s => {
+        this.seriesService.getSeries(this.seriesPagination).subscribe(s => {
           this.seriesList = s.list;
           this.seriesPagination = s.pagination;
         });
@@ -147,7 +145,7 @@ export class SeriesComponent implements OnInit {
 
   deleteSeriesAgreed = (id: number) => new Promise((resolve) => {
     this.seriesService.deleteSeries(id).subscribe(res => {
-      this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(s => {
+      this.seriesService.getSeries(this.seriesPagination).subscribe(s => {
         this.seriesList = s.list;
         this.seriesPagination = s.pagination;
       });

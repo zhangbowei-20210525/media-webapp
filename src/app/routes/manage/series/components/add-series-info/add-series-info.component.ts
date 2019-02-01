@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SeriesService } from '../../series.service';
 import { Observable } from 'rxjs';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
 
 @Component({
   selector: 'app-add-series-info',
@@ -65,7 +64,7 @@ export class AddSeriesInfoComponent implements OnInit {
         language: form.value['language'] || null,
       };
       if (form.valid === true) {
-        return this.seriesService.addSeriesInfo(data).pipe(dtoMap(e => e.data), dtoCatchError());
+        return this.seriesService.addSeriesInfo(data);
       } else {
         return Observable.create(() => { throw Error('form invalid'); });
       }

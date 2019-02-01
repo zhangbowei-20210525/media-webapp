@@ -1,12 +1,9 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { MessageService } from 'src/app/shared';
+import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from '../../series.service';
-import { dtoMap, dtoCatchError, oldDtoMap, oldDtoCatchError } from 'src/app/core/rxjs-pipe-handles';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
-
 
 @Component({
   selector: 'app-series-details-publicity',
@@ -62,10 +59,10 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');
         return this.seriesService.getPublicitiesList(this.id);
-      })).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      })).subscribe(res => {
         this.publicityId = res.list[0].id;
         // tslint:disable-next-line:max-line-length
-        this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(s => {
+        this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
           this.sampleList = s.list;
           this.samplePagination = s.pagination;
         });
@@ -76,7 +73,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     if (type === 'sample') {
       this.type = 'sample';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(res => {
         this.sampleList = res.list;
         this.samplePagination = res.pagination;
       });
@@ -84,7 +81,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     if (type === 'feature') {
       this.type = 'feature';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(res => {
         this.featureList = res.list;
         this.featurePagination = res.pagination;
       });
@@ -92,7 +89,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     if (type === 'trailer') {
       this.type = 'trailer';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(res => {
         this.trailerList = res.list;
         this.trailerPagination = res.pagination;
       });
@@ -100,7 +97,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     if (type === 'poster') {
       this.type = 'poster';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(res => {
         this.posterList = res.list;
         this.posterPagination = res.pagination;
       });
@@ -108,7 +105,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     if (type === 'still') {
       this.type = 'still';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(res => {
         this.stillList = res.list;
         this.stillPagination = res.pagination;
       });
@@ -116,7 +113,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     if (type === 'pdf') {
       this.type = 'pdf';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(res => {
         this.pdfList = res.list;
         this.pdfPagination = res.pagination;
       });
@@ -160,9 +157,9 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(s => {
+          this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
             this.sampleList = s.list;
             this.sampleList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -208,9 +205,9 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(f => {
+          this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(f => {
             this.featureList = f.list;
             this.featureList.forEach(ff => {
               ff.uploadStatus = '上传成功';
@@ -256,9 +253,9 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(t => {
+          this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(t => {
             this.trailerList = t.list;
             this.trailerList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -303,9 +300,9 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadImageId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(p => {
+          this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(p => {
             this.posterList = p.list;
             this.posterList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -350,9 +347,9 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadImageId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(s => {
+          this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(s => {
             this.stillList = s.list;
             this.stillList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -398,9 +395,9 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadPdfId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(p => {
+          this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(p => {
             this.pdfList = p.list;
             this.pdfList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -416,7 +413,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   samplePageChange(page: number) {
     this.samplePagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(res => {
       this.sampleList = res.list;
       this.samplePagination = res.pagination;
     });
@@ -425,7 +422,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   featurePageChange(page: number) {
     this.featurePagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(res => {
       this.featureList = res.list;
       this.featurePagination = res.pagination;
     });
@@ -434,7 +431,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   trailerPageChange(page: number) {
     this.trailerPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(res => {
       this.trailerList = res.list;
       this.trailerPagination = res.pagination;
     });
@@ -443,7 +440,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   posterPageChange(page: number) {
     this.posterPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(res => {
       this.posterList = res.list;
       this.posterPagination = res.pagination;
     });
@@ -452,7 +449,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   stillPageChange(page: number) {
     this.stillPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(res => {
       this.stillList = res.list;
       this.stillPagination = res.pagination;
     });
@@ -461,7 +458,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   pdfPageChange(page: number) {
     this.pdfPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(res => {
       this.pdfList = res.list;
       this.pdfPagination = res.pagination;
     });

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SeriesService } from '../../series.service';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
+import { SeriesService } from '../series.service';
+import { PaginationDto } from '@shared';
 
 @Component({
   selector: 'app-publicities',
@@ -26,13 +25,13 @@ export class PublicitiesComponent implements OnInit {
     this.publicitiesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.seriesService.eventEmit.subscribe((value: any) => {
       if (value === 'publicitiesRefresh') {
-        this.seriesService.getPublicities(this.publicitiesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
+        this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
           this.publicitiesList = res.list;
           this.publicitiesPagination = res.pagination;
         });
       }
     });
-    this.seriesService.getPublicities(this.publicitiesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
       this.publicitiesList = res.list;
       this.publicitiesPagination = res.pagination;
     });
@@ -50,7 +49,7 @@ export class PublicitiesComponent implements OnInit {
 
   refreshStatus(page: number): void {
     this.publicitiesPagination.page = page;
-    this.seriesService.getPublicities(this.publicitiesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
+    this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
       this.publicitiesList = res.list;
       this.publicitiesPagination = res.pagination;
     });

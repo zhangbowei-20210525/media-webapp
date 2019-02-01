@@ -50,7 +50,7 @@ export class EmployeeDetailsComponent implements OnInit {
     });
   }
 
-  equalsArray(a: [], b: []) {
+  equalsArray(a: any[], b: any[]) {
     return a && b && a.filter(key => !b.includes(key)).length === 0 && b.filter(key => !a.includes(key)).length === 0;
   }
 

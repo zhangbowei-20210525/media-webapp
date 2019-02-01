@@ -1,0 +1,53 @@
+<div>
+  <p class="clearfix">
+    <button nz-button nzType="default" class="rf" (click)="addSeries()">新增节目</button>
+  </p>
+</div>
+<nz-table 
+  #table 
+  [nzData]="dataset" 
+  (nzPageIndexChange)="pageChange($event)"
+  [nzPageSize]="pagination?.page_size" 
+  [nzFrontPagination]="false" 
+  [nzPageIndex]="pagination?.page" 
+  [nzTotal]="pagination?.count"
+  >
+  <thead>
+    <tr>
+      <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+      <th style="text-align: center">节目</th>
+      <th style="text-align: center">节目类型</th>
+      <th style="text-align: center">主题</th>
+      <th style="text-align: center">集数</th>
+      <th style="text-align: center">语言</th>
+      <th style="text-align: center">发行时间</th>
+      <th style="text-align: center">详细</th>
+      <th style="text-align: center">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of table.data">
+      <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
+      <td style="text-align: center">{{ data.name }}</td>
+      <td style="text-align: center">
+        <!-- <span *ngIf="data.program_type == 'tv'">电影</span>
+        <span *ngIf="data.program_type == 'film'">电视剧</span>
+        <span *ngIf="data.program_type == 'variety'">综艺</span>
+        <span *ngIf="data.program_type == 'other'">其他</span> -->
+        {{ data.program_type | seriesType }}
+      </td>
+      <td style="text-align: center">{{ data.theme }}</td>
+      <td style="text-align: center">{{ data.episode }}</td>
+      <td style="text-align: center">{{ data.language }}</td>
+      <td style="text-align: center">{{ data.release_date }}</td>
+      <td style="text-align: center">
+        <a [routerLink]="['/manage/series/details', data.id, 'publicity']">宣发</a>
+        <!-- <a (click)="tape(data.id)" style="margin-left: 10px">母带</a>
+        <a (click)="copyright(data.id)" style="margin-left: 10px">版权</a> -->
+      </td>
+      <td style="text-align: center">
+        <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

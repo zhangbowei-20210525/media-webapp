@@ -1,7 +1,6 @@
-import { AddOwnCopyrightComponent } from './../add-own-copyright/add-own-copyright.component';
 import { Component, OnInit } from '@angular/core';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
-import { SeriesService } from '../../series.service';
+import { PaginationDto } from '@shared';
+import { SeriesService } from '../series.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 
@@ -181,9 +180,9 @@ export class CopyrightsComponent implements OnInit {
   //   }
   // })
 
-  // filtrate() {
-  //   this.refreshCurrent();
-  // }
+  filtrate() {
+    // this.refreshCurrent();
+  }
 
   // refreshCurrent() {
   //   this.fetchCopyrights(this.copyrightDate, this.copyrightArea, this.copyrightItem);
@@ -280,10 +279,10 @@ export class CopyrightsComponent implements OnInit {
   //     });
   // }
 
-  // copyrightsPageChange(page: number) {
-  //   this.copyrightsPagination.page = page;
-  //   this.getCopyrightsList();
-  // }
+  copyrightsPageChange(page: number) {
+    this.copyrightsPagination.page = page;
+    // this.getCopyrightsList();
+  }
 
   // deleteCopyright(rightId: number) {
   //   this.modalService.confirm({

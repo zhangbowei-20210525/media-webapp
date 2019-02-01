@@ -90,7 +90,7 @@ export class AddOwnCopyrightComponent implements OnInit {
       contractName: [null, [Validators.required]],
       contractNumber: [null, [Validators.required]]
     });
-    this.copyrightService.getCopyrightsType().pipe(dtoMap(e => e.data), dtoCatchError())
+    this.copyrightService.getCopyrightsType()
       .subscribe(res => {
         this.copyrightsType = res;
         console.log(this.copyrightsType);
@@ -114,7 +114,6 @@ export class AddOwnCopyrightComponent implements OnInit {
     // });
 
     this.copyrightService.getCopyrightAreaOptions()
-      .pipe(dtoMap(e => e.data), dtoCatchError())
       .subscribe(res => {
         this.copyrightAreaOptions = res;
       });
@@ -274,7 +273,7 @@ export class AddOwnCopyrightComponent implements OnInit {
       });
       contract.series_list.push(series);
     });
-    return this.copyrightService.addCopyrights(contract).pipe(dtoMap(e => e.data), dtoCatchError());
+    return this.copyrightService.addCopyrights(contract);
   }
 
   groupBy(array: any[], f: (object: any) => any) {

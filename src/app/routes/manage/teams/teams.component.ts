@@ -6,7 +6,6 @@ import { SettingsService } from '@core';
 import { NzTreeNodeOptions, NzTreeNode, NzTreeComponent, NzFormatEmitEvent, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
-import { dtoMap, dtoCatchError } from '@shared';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { Router } from '@angular/router';
 import { EditCompanyComponent } from './components/edit-company.component';
@@ -35,6 +34,7 @@ export class TeamsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getCompanyInfo();
     this.fetchCompany();
     this.fetchCompanys();
     this.fetchDepartment();
@@ -50,6 +50,17 @@ export class TeamsComponent implements OnInit {
 
   navigateToEmployees() {
     this.router.navigateByUrl(`/manage/teams/employees/${this.activedNodeKey}`); // 必须后端存在默认部门
+  }
+
+  getCompanyInfo() {
+    const user = this.settings.user;
+    this.currentCompany = {
+      company_id: user.company_id,
+      company_name: user.company_name,
+      company_full_name: user.company_full_name,
+      company_introduction: user.introduction,
+      is_default_company: user.is_default_company
+    };
   }
 
   fetchCompany() {
@@ -88,9 +99,9 @@ export class TeamsComponent implements OnInit {
       nzTitle: '修改企业',
       nzContent: EditCompanyComponent,
       nzComponentParams: {
-        name: this.settings.user.company_name,
-        fullName: this.settings.user.company_full_name,
-        introduction: this.settings.user.in
+        name: this.currentCompany.company_name,
+        fullName: this.currentCompany.company_full_name,
+        introduction: this.currentCompany.company_introduction
       },
       nzWidth: 800,
       nzOnOk: this.editCompanyAgreed
@@ -124,6 +135,7 @@ export class TeamsComponent implements OnInit {
         token: result.token,
         time: +new Date
       });
+      this.getCompanyInfo();
       this.fetchDepartment();
       this.navigateToTeams();
       this.message.success(`已切换到 ${companyName}`);

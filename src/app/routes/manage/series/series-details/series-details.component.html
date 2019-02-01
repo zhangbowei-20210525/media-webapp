@@ -1,4 +1,4 @@
-<div class="program-details-wrap">
+<!-- <div class="program-details-wrap">
   <div class="program-details-title-wk">
     <div>
       <div class="program-details-name">{{seriesInfo?.name}}</div>
@@ -16,7 +16,6 @@
         </nz-radio-group>
       </div>
     </div>
-    <!-- <div class="program-details-EnglishName">Brotherhood of Blades II: The Infernal Battlefield</div> -->
   </div>
   <div class="program-details-info-box">
     <div class="program-details-info-wk-one">
@@ -99,4 +98,101 @@
     </div>
   </div>
   <router-outlet></router-outlet>
+</div> -->
+
+<div class="block clearfix">
+  <div class="block-content">
+    <div class="container series-head-info">
+      <h2 style="margin: 0;">{{ seriesInfo?.name }}</h2>
+      <nz-tag class="type-tag" style="margin-left: 1rem;">{{ seriesInfo?.program_type | seriesType }}</nz-tag>
+      <div class="flex-none"></div>
+      <span>
+        <nz-radio-group [(ngModel)]="category" nzSize="small" (click)="categories()">
+          <label nz-radio-button nzValue="publicities">宣发</label>
+          <label nz-radio-button nzValue="tapes">母带</label>
+          <label nz-radio-button nzValue="copyrights">版权</label>
+        </nz-radio-group>
+      </span>
+    </div>
+  </div>
 </div>
+
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">基本信息</div>
+  </div>
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">节目名称</span>
+        <span>{{ seriesInfo?.name }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">集数</span>
+        <span>{{ seriesInfo?.episode }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">题材</span>
+        <span>{{ seriesInfo?.theme }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">语言</span>
+        <span>{{ seriesInfo?.language }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">节目别名</span>
+        <span>{{ seriesInfo?.nickname }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">发行时间</span>
+        <span>{{ seriesInfo?.release_date }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">监制</span>
+        <span>{{ seriesInfo?.supervisor }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">总制片人</span>
+        <span>{{ seriesInfo?.general_producer }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">节目类型</span>
+        <span>{{ seriesInfo?.program_type | seriesType }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">导演</span>
+        <span>{{ seriesInfo?.director }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">编剧</span>
+        <span>{{ seriesInfo?.screen_writer }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">出品人</span>
+        <span>{{ seriesInfo?.producer }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">主演</span>
+        <span>{{ seriesInfo?.protagonist }}</span>
+      </div>
+      <div nz-col nzSpan="18">
+        <span class="info-filed">出品方</span>
+        <span>{{ seriesInfo?.product_company }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="24">
+        <span class="info-filed">简介</span>
+        <span>{{ seriesInfo?.introduction }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

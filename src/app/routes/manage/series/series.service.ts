@@ -7,7 +7,7 @@ import { formData, PaginationDto } from '@shared';
 })
 export class SeriesService {
 
-  // eventEmit: any;
+  eventEmit: any;
 
   constructor(
     protected http: HttpClient,

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { SeriesService } from '../../series.service';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
-import { MessageService } from 'src/app/shared';
+import { SeriesService } from '../series.service';
+import { MessageService } from '@shared';
 
 @Component({
   selector: 'app-series-details',
@@ -38,7 +37,7 @@ export class SeriesDetailsComponent implements OnInit {
 
   id: number;
   seriesType: string;
-  seriesInfo = [];
+  seriesInfo: any;
 
   constructor(
     private router: Router,
@@ -53,7 +52,7 @@ export class SeriesDetailsComponent implements OnInit {
         this.id = +params.get('sid');
         return this.seriesService.getSeriesDetailsInfo(this.id);
       })
-    ).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+    ).subscribe(res => {
       this.seriesInfo = res;
       this.si = res.introduction;
     }, error => {

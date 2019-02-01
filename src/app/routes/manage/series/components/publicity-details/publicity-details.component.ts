@@ -2,8 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series.service';
 import { switchMap, tap } from 'rxjs/operators';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
+import { PaginationDto } from '@shared';
 
 declare function videojs(selector: string);
 
@@ -69,6 +68,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   ishidden: boolean;
   publicityType: string;
 
+  fixationInfo: any; // 可能是用户信息
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -93,7 +94,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
         return this.seriesService.publicityDetail(this.id);
-      })).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
+      })).subscribe(res => {
         this.publicityName = res.name;
         if (!this.publicityType || this.publicityType === 'sample') {
           this.publicityType = 'sample';
@@ -133,7 +134,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getSampleInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -155,7 +156,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getFeatureInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -178,7 +179,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getTrailerInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -201,7 +202,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getPosterInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -222,7 +223,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getStillInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -243,7 +244,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getPdfInfo() {
      // tslint:disable-next-line:max-line-length
-     this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+     this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
