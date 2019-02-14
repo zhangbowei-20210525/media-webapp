@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/router';
+
+declare const NProgress: any;
 
 @Component({
   selector: 'app-root',
@@ -6,4 +9,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'aimedia-webapp';
+
+  constructor(private router: Router) {
+    router.events.subscribe(event => {
+      if (event instanceof RouteConfigLoadStart) {
+        NProgress.start();
+      } else if (event instanceof RouteConfigLoadEnd) {
+        NProgress.done();
+      }
+    });
+  }
 }

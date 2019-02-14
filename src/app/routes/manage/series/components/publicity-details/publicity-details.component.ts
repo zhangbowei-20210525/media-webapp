@@ -2,8 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series.service';
 import { switchMap, tap } from 'rxjs/operators';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
+import { PaginationDto } from '@shared';
 
 declare function videojs(selector: string);
 
@@ -93,8 +92,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
         return this.seriesService.publicityDetail(this.id);
-      })).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.publicityName = res.name;
+      })).subscribe(res => {
+        this.publicityName = res.data.name;
         if (!this.publicityType || this.publicityType === 'sample') {
           this.publicityType = 'sample';
           this.getSampleInfo();
@@ -133,14 +132,14 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getSampleInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
       let index = 1;
-      x.list.forEach(f => {
+      x.data.list.forEach(f => {
         f.displayText = index++;
       });
     })).subscribe(s => {
-      this.sampleList = s.list;
-      this.samplePagination = s.pagination;
+      this.sampleList = s.data.list;
+      this.samplePagination = s.data.pagination;
       if (this.sampleList.length > 0) {
         this.sampleName = this.sampleList[this.sampleIndex].name;
         this.sampleSrc = this.sampleList[this.sampleIndex].src;
@@ -155,14 +154,14 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getFeatureInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
       let index = 1;
-      x.list.forEach(f => {
+      x.data.list.forEach(f => {
         f.displayText = index++;
       });
     })).subscribe(s => {
-      this.featureList = s.list;
-      this.featurePagination = s.pagination;
+      this.featureList = s.data.list;
+      this.featurePagination = s.data.pagination;
       if (this.featureList.length > 0) {
         this.featureName = this.featureList[this.featureIndex].name;
         this.featureSrc = this.featureList[this.featureIndex].src;
@@ -178,14 +177,14 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getTrailerInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
       let index = 1;
-      x.list.forEach(f => {
+      x.data.list.forEach(f => {
         f.displayText = index++;
       });
     })).subscribe(s => {
-      this.trailerList = s.list;
-      this.trailerPagination = s.pagination;
+      this.trailerList = s.data.list;
+      this.trailerPagination = s.data.pagination;
       if (this.trailerList.length > 0) {
         this.trailerName = this.trailerList[this.trailerIndex].name;
         this.trailerSrc = this.trailerList[this.trailerIndex].src;
@@ -201,17 +200,17 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getPosterInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
       let index = 1;
-      x.list.forEach(f => {
+      x.data.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/1.jpg';
-      x.list[1].src = '/assets/imaaa/2.jpg';
-      x.list[2].src = '/assets/imaaa/3.jpg';
+      x.data.list[0].src = '/assets/imaaa/1.jpg';
+      x.data.list[1].src = '/assets/imaaa/2.jpg';
+      x.data.list[2].src = '/assets/imaaa/3.jpg';
     })).subscribe(s => {
-      this.posterList = s.list;
-      this.trailerPagination = s.pagination;
+      this.posterList = s.data.list;
+      this.trailerPagination = s.data.pagination;
       if (this.posterList.length > 0) {
         this.posterName = this.posterList[this.posterIndex].name;
         this.posterSrc = this.posterList[this.posterIndex].src;
@@ -222,17 +221,17 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getStillInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
       let index = 1;
-      x.list.forEach(f => {
+      x.data.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/4.jpg';
-      x.list[1].src = '/assets/imaaa/5.jpg';
-      x.list[2].src = '/assets/imaaa/6.jpg';
+      x.data.list[0].src = '/assets/imaaa/4.jpg';
+      x.data.list[1].src = '/assets/imaaa/5.jpg';
+      x.data.list[2].src = '/assets/imaaa/6.jpg';
     })).subscribe(s => {
-      this.stillList = s.list;
-      this.stillPagination = s.pagination;
+      this.stillList = s.data.list;
+      this.stillPagination = s.data.pagination;
       if (this.stillList.length > 0) {
         this.stillName = this.stillList[this.stillIndex].name;
         this.stillSrc = this.stillList[this.stillIndex].src;
@@ -243,16 +242,16 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getPdfInfo() {
      // tslint:disable-next-line:max-line-length
-     this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(dtoMap(e => e.data), dtoCatchError()).pipe(tap(x => {
+     this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
       let index = 1;
-      x.list.forEach(f => {
+      x.data.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/bc.pdf';
-      x.list[1].src = '/assets/imaaa/xx.pdf';
+      x.data.list[0].src = '/assets/imaaa/bc.pdf';
+      x.data.list[1].src = '/assets/imaaa/xx.pdf';
     })).subscribe(s => {
-      this.pdfList = s.list;
-      this.pdfPagination = s.pagination;
+      this.pdfList = s.data.list;
+      this.pdfPagination = s.data.pagination;
       if (this.pdfList.length > 0) {
         this.pdfName = this.pdfList[this.pdfIndex].name;
         this.pdfSrc = this.pdfList[this.pdfIndex].src;

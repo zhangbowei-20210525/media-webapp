@@ -10,10 +10,10 @@
         <li>
           <ul class="list menu">
             <li class="nav-item">
-              <a>{{ 'menu.market' | translate }}</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/market'">{{ 'menu.market' | translate }}</a>
             </li>
             <li class="nav-item">
-              <a routerLink="/manage">{{ 'menu.manage' | translate }}</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage'">{{ 'menu.manage' | translate }}</a>
             </li>
           </ul>
         </li>
@@ -43,14 +43,48 @@
           </nz-dropdown>
         </li>
         <li class="nav-item">
-          <a *ngIf="isLoggedIn; else loginLink">
-            <nz-avatar nzIcon="user" nzSrc="https://vip.bctop.net/static/img/headimage/oG-uI0dPmKgMiFviNJcDIbObBHDk.jpeg"></nz-avatar>
+          <ng-container *ngIf="isLoggedIn; else loginLink">
+            <nz-dropdown nzPlacement="bottom" [nzTrigger]="'click'">
+              <a nz-dropdown class="avatar-link">
+                <nz-avatar [nzSrc]="settings.user.avatar"></nz-avatar>
+              </a>
+              <ul nz-menu class="account-menu">
+                <li nz-menu-item class="text-ellipsis" nzDisabled style="cursor: default;">
+                    {{ settings.user.nickname || settings.user.username }}
+                </li>
+                <li nz-menu-divider></li>
+                <li nz-menu-item>
+                  <a routerLink="/manage/account-center">
+                    <i nz-icon type="user"></i>
+                    {{ 'menu.account.center' | translate }}
+                  </a>
+                </li>
+                <li nz-menu-divider></li>
+                <li nz-menu-item>
+                  <div (click)="logout()">
+                    <i nz-icon type="logout"></i>
+                    {{ 'menu.account.logout' | translate }}
+                  </div>
+                </li>
+              </ul>
+            </nz-dropdown>
+          </ng-container>
+          <ng-template #loginLink>
+            <span>{{ 'menu.account.not-logged' | translate }}</span>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="login()" class="login-link">{{ 'menu.account.login' | translate }}</a>
+          </ng-template>
+          <!-- <a *ngIf="isLoggedIn; else loginLink" nz-popover nzTrigger="click" nzPlacement="bottom" [nzContent]="contentTemplate">
+            <nz-avatar nzIcon="user" [nzSrc]="settings.user.avatar"></nz-avatar>
           </a>
           <ng-template #loginLink>
             <span>{{ 'menu.account.not-logged' | translate }}</span>
             <nz-divider nzType="vertical"></nz-divider>
-            <a (click)="openLogin()" class="login-link">{{ 'menu.account.login' | translate }}</a>
+            <a (click)="login()" class="login-link">{{ 'menu.account.login' | translate }}</a>
           </ng-template>
+          <ng-template #contentTemplate>
+            <a (click)='logout()'>{{ 'menu.account.logout' | translate }}</a>
+          </ng-template> -->
         </li>
       </ul>
     </nav>

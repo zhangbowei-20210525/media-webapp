@@ -1,11 +1,9 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { MessageService } from 'src/app/shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from '../../series.service';
-import { dtoMap, dtoCatchError, oldDtoMap, oldDtoCatchError } from 'src/app/core/rxjs-pipe-handles';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
+import { MessageService, PaginationDto } from '@shared';
 
 
 @Component({
@@ -62,12 +60,12 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');
         return this.seriesService.getPublicitiesList(this.id);
-      })).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.publicityId = res.list[0].id;
+      })).subscribe(res => {
+        this.publicityId = res.data.list[0].id;
         // tslint:disable-next-line:max-line-length
-        this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(s => {
-          this.sampleList = s.list;
-          this.samplePagination = s.pagination;
+        this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
+          this.sampleList = s.data.list;
+          this.samplePagination = s.data.pagination;
         });
       });
   }
@@ -76,49 +74,49 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     if (type === 'sample') {
       this.type = 'sample';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.sampleList = res.list;
-        this.samplePagination = res.pagination;
+      this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(res => {
+        this.sampleList = res.data.list;
+        this.samplePagination = res.data.pagination;
       });
     }
     if (type === 'feature') {
       this.type = 'feature';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.featureList = res.list;
-        this.featurePagination = res.pagination;
+      this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(res => {
+        this.featureList = res.data.list;
+        this.featurePagination = res.data.pagination;
       });
     }
     if (type === 'trailer') {
       this.type = 'trailer';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.trailerList = res.list;
-        this.trailerPagination = res.pagination;
+      this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(res => {
+        this.trailerList = res.data.list;
+        this.trailerPagination = res.data.pagination;
       });
     }
     if (type === 'poster') {
       this.type = 'poster';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.posterList = res.list;
-        this.posterPagination = res.pagination;
+      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(res => {
+        this.posterList = res.data.list;
+        this.posterPagination = res.data.pagination;
       });
     }
     if (type === 'still') {
       this.type = 'still';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.stillList = res.list;
-        this.stillPagination = res.pagination;
+      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(res => {
+        this.stillList = res.data.list;
+        this.stillPagination = res.data.pagination;
       });
     }
     if (type === 'pdf') {
       this.type = 'pdf';
       // tslint:disable-next-line:max-line-length
-      this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-        this.pdfList = res.list;
-        this.pdfPagination = res.pagination;
+      this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(res => {
+        this.pdfList = res.data.list;
+        this.pdfPagination = res.data.pagination;
       });
     }
   }
@@ -160,10 +158,10 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(s => {
-            this.sampleList = s.list;
+          this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
+            this.sampleList = s.data.list;
             this.sampleList.forEach(f => {
               f.uploadStatus = '上传成功';
             });
@@ -208,14 +206,14 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(f => {
-            this.featureList = f.list;
+          this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(f => {
+            this.featureList = f.data.list;
             this.featureList.forEach(ff => {
               ff.uploadStatus = '上传成功';
             });
-            this.featurePagination = f.pagination;
+            this.featurePagination = f.data.pagination;
           });
         });
       });
@@ -256,14 +254,14 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(t => {
-            this.trailerList = t.list;
+          this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(t => {
+            this.trailerList = t.data.list;
             this.trailerList.forEach(f => {
               f.uploadStatus = '上传成功';
             });
-            this.trailerPagination = t.pagination;
+            this.trailerPagination = t.data.pagination;
           });
         });
       });
@@ -303,14 +301,14 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadImageId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(p => {
-            this.posterList = p.list;
+          this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(p => {
+            this.posterList = p.data.list;
             this.posterList.forEach(f => {
               f.uploadStatus = '上传成功';
             });
-            this.posterPagination = p.pagination;
+            this.posterPagination = p.data.pagination;
           });
         });
       });
@@ -350,14 +348,14 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadImageId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(s => {
-            this.stillList = s.list;
+          this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(s => {
+            this.stillList = s.data.list;
             this.stillList.forEach(f => {
               f.uploadStatus = '上传成功';
             });
-            this.stillPagination = s.pagination;
+            this.stillPagination = s.data.pagination;
           });
         });
       });
@@ -398,14 +396,14 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       }];
       this.seriesService.getUploadPdfId(fileList[0]).subscribe(res => {
         const id = res.data.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(i => {
+        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(p => {
-            this.pdfList = p.list;
+          this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(p => {
+            this.pdfList = p.data.list;
             this.pdfList.forEach(f => {
               f.uploadStatus = '上传成功';
             });
-            this.pdfPagination = p.pagination;
+            this.pdfPagination = p.data.pagination;
           });
         });
       });
@@ -416,54 +414,54 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   samplePageChange(page: number) {
     this.samplePagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-      this.sampleList = res.list;
-      this.samplePagination = res.pagination;
+    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(res => {
+      this.sampleList = res.data.list;
+      this.samplePagination = res.data.pagination;
     });
   }
 
   featurePageChange(page: number) {
     this.featurePagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-      this.featureList = res.list;
-      this.featurePagination = res.pagination;
+    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(res => {
+      this.featureList = res.data.list;
+      this.featurePagination = res.data.pagination;
     });
   }
 
   trailerPageChange(page: number) {
     this.trailerPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-      this.trailerList = res.list;
-      this.trailerPagination = res.pagination;
+    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(res => {
+      this.trailerList = res.data.list;
+      this.trailerPagination = res.data.pagination;
     });
   }
 
   posterPageChange(page: number) {
     this.posterPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-      this.posterList = res.list;
-      this.posterPagination = res.pagination;
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(res => {
+      this.posterList = res.data.list;
+      this.posterPagination = res.data.pagination;
     });
   }
 
   stillPageChange(page: number) {
     this.stillPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-      this.stillList = res.list;
-      this.stillPagination = res.pagination;
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(res => {
+      this.stillList = res.data.list;
+      this.stillPagination = res.data.pagination;
     });
   }
 
   pdfPageChange(page: number) {
     this.pdfPagination.page = page;
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).pipe(dtoMap(e => e.data), dtoCatchError()).subscribe(res => {
-      this.pdfList = res.list;
-      this.pdfPagination = res.pagination;
+    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(res => {
+      this.pdfList = res.data.list;
+      this.pdfPagination = res.data.pagination;
     });
   }
 

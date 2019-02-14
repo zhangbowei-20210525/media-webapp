@@ -8,9 +8,10 @@ import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
 import { AddEmployeeComponent } from './employees/add-employee.component';
 import { EmployeesComponent } from './employees/employees.component';
-import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 import { RolesComponent } from './roles/roles.component';
 import { EmployeeDepartmentComponent } from './employee-details/components/employee-department.component';
+import { EditCompanyComponent } from './components/edit-company.component';
+import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { EmployeeDepartmentComponent } from './employee-details/components/emplo
     EmployeeDetailsComponent,
     RolesComponent,
     EmployeeDepartmentComponent,
+    EditCompanyComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,7 @@ import { EmployeeDepartmentComponent } from './employee-details/components/emplo
     AddDepartmentComponent,
     AddCompanyComponent,
     AddEmployeeComponent,
-    EmployeeDepartmentComponent
+    EmployeeDepartmentComponent,
   ]
 })
 export class TeamsModule { }

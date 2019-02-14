@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ResponseDto } from '@shared';
 import { RoleDto, PermissionDto } from './dtos';
 import { NzTreeNodeOptions } from 'ng-zorro-antd';
 

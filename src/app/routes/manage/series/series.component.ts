@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
-import { MessageService } from 'src/app/shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from './series.service';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
 import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
+import { PaginationDto, MessageService } from '@shared';
 
 @Component({
   selector: 'app-series',
@@ -34,17 +32,17 @@ export class SeriesComponent implements OnInit {
   ngOnInit() {
     this.type = 'series';
     this.seriesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
-      this.seriesList = res.list;
-      this.seriesPagination = res.pagination;
+    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
+      this.seriesList = res.data.list;
+      this.seriesPagination = res.data.pagination;
     });
   }
 
   seriesRefresh() {
     this.type = 'series';
-    this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
-      this.seriesList = res.list;
-      this.seriesPagination = res.pagination;
+    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
+      this.seriesList = res.data.list;
+      this.seriesPagination = res.data.pagination;
     });
   }
 
@@ -69,9 +67,9 @@ export class SeriesComponent implements OnInit {
 
   refreshStatus(page: number): void {
     this.seriesPagination.page = page;
-    this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(res => {
-      this.seriesList = res.list;
-      this.seriesPagination = res.pagination;
+    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
+      this.seriesList = res.data.list;
+      this.seriesPagination = res.data.pagination;
     });
     const allChecked = this.displayData.every(value => value.checked === true);
     const allUnChecked = this.displayData.every(value => !value.checked);
@@ -123,9 +121,9 @@ export class SeriesComponent implements OnInit {
     component.formSubmit()
       .subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
-        this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(s => {
-          this.seriesList = s.list;
-          this.seriesPagination = s.pagination;
+        this.seriesService.getSeries(this.seriesPagination).subscribe(s => {
+          this.seriesList = s.data.list;
+          this.seriesPagination = s.data.pagination;
         });
         resolve();
       }, error => {
@@ -147,9 +145,9 @@ export class SeriesComponent implements OnInit {
 
   deleteSeriesAgreed = (id: number) => new Promise((resolve) => {
     this.seriesService.deleteSeries(id).subscribe(res => {
-      this.seriesService.getSeries(this.seriesPagination).pipe(dtoMap(x => x.data), dtoCatchError()).subscribe(s => {
-        this.seriesList = s.list;
-        this.seriesPagination = s.pagination;
+      this.seriesService.getSeries(this.seriesPagination).subscribe(s => {
+        this.seriesList = s.data.list;
+        this.seriesPagination = s.data.pagination;
       });
       this.message.success(this.translate.instant('global.delete-success'));
       resolve();

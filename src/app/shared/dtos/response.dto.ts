@@ -1,25 +1,23 @@
-/**
- * 返回结构Dto (所有接口)
- */
-export class ResponseDto<TData> {
-
-    /**
-     * 业务代码，成功：0
-     */
+interface IResponseDto {
     code: number;
-
-    /**
-     * 用于用户显示的提示语
-     */
     message: string;
-
-    /**
-     * 用于开发人员调试的详细信息
-     */
     detail: string;
-
-    /**
-     * 具体数据
-     */
-    data: TData;
 }
+
+export interface PaginationResponseDto<T> {
+    list: T[];
+    pagination: PaginationDto;
+}
+
+export interface PaginationDto {
+    count: number;
+    page: number;
+    pages: number;
+    page_size: number;
+}
+
+export interface ResponseDto<T> extends IResponseDto {
+    data: T;
+}
+
+export interface ListResponseDto<T> extends ResponseDto<PaginationResponseDto<T>> { }

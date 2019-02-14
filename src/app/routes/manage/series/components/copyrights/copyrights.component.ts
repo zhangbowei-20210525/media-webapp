@@ -1,9 +1,9 @@
 import { AddOwnCopyrightComponent } from './../add-own-copyright/add-own-copyright.component';
 import { Component, OnInit } from '@angular/core';
-import { PaginationDto } from 'src/app/shared/dtos/pagination.dto';
 import { SeriesService } from '../../series.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
+import { PaginationDto } from '@shared';
 
 @Component({
   selector: 'app-copyrights',

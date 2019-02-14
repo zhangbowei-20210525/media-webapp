@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { User, SettingsNotify } from './interface';
 import { Subject, Observable } from 'rxjs';
 
-export const LANG = 'lang';
+export const LANG = '_lang';
 
-export const USER = 'user';
+export const USER = '_user';
 
 @Injectable({
   providedIn: 'root'

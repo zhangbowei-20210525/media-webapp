@@ -1,3 +1,4 @@
+import { ResponseDto } from '@shared';
 import { Injectable, ComponentRef, Inject } from '@angular/core';
 import { LoginComponent } from './login.component';
 import { Overlay, OverlayRef, OverlayConfig } from '@angular/cdk/overlay';

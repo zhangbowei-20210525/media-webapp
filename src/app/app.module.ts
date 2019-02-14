@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // #region 设置默认语言
 import { registerLocaleData } from '@angular/common';
 import { default as ngLang } from '@angular/common/locales/zh';
-import { NZ_I18N, zh_CN as zorroLang, NgZorroAntdModule, en_US } from 'ng-zorro-antd';
+import { NZ_I18N, zh_CN as zorroLang } from 'ng-zorro-antd';
 
 const LANG = {
   abbr: 'zh',
@@ -47,11 +47,12 @@ const I18NSERVICE_PROVIDES = [
 
 // #region Http 拦截器
 import { DelonAuthModule, SimpleInterceptor } from '@delon/auth';
-import { I18nInterceptor } from './core/net/i18n.interceptor';
-// import { DefaultInterceptor } from '@core/net/default.interceptor';
+import { I18nInterceptor } from '@core/net/i18n.interceptor';
+import { DefaultInterceptor } from '@core/net/default.interceptor';
+
 const INTERCEPTOR_PROVIDES = [
   { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
-  // { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: I18nInterceptor, multi: true }
 ];
 // #endregion
@@ -100,14 +101,12 @@ import en from '@angular/common/locales/en';
     DelonAuthModule,
     DelonModule.forRoot(),
     ...I18NSERVICE_MODULES,
-    NgZorroAntdModule
   ],
   providers: [
     ...LANG_PROVIDES,
     ...INTERCEPTOR_PROVIDES,
     ...I18NSERVICE_PROVIDES,
     ...APPINIT_PROVIDES,
-    { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent]
 })

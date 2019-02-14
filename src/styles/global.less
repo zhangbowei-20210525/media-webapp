@@ -1,11 +1,29 @@
 @import 'theme.less';
 @import '~@angular/cdk/overlay-prebuilt.css';
+// angular/cdk/overlay cover
+.cdk-overlay-dark-backdrop {
+    background-color: transparent;
+}
+
+.cdk-overlay-dark-backdrop-customer {
+    background: rgba(0, 0, 0, .32);
+}
+
 // init
 html {
     font-size: 12px;
 }
 
+body {
+    overflow-y: scroll;
+}
+
 // layout
+ul {
+    margin: 0;
+    padding: 0;
+}
+
 .lf {
     float: left;
 }
@@ -14,11 +32,52 @@ html {
     float: right;
 }
 
-.clearfix {
-    overflow: auto;
-    zoom: 1;
+.block {
+    margin-bottom: 20px;
+    background-color: #fff;
+    width: 100%;
 }
 
+.block.transparent-block {
+    background-color: transparent;
+}
+
+.block>.block-header {
+    padding: 0 2rem;
+    height: 4.6rem;
+    border-bottom: 1px solid @color-border;
+    box-sizing: border-box;
+}
+
+.block>.block-header>.block-title {
+    float: left;
+    line-height: 4.2rem;
+    color: @color-subhead;
+}
+
+.block>.block-header>.block-options {
+    float: right;
+    line-height: 4.2rem;
+}
+
+.block>.block-header>.block-options>* {
+    margin-left: 1rem;
+}
+
+.block>.block-content {
+    margin: 2rem;
+    min-height: 1rem;
+}
+
+.block>.block-content.full {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+// .clearfix {
+//     overflow: auto;
+//     zoom: 1;
+// }
 // .push-5 {
 //     margin-top: 5px;
 // }
@@ -117,6 +176,10 @@ h3 {
     white-space: nowrap;
 }
 
+.text-hint {
+    color: @color-subhead;
+}
+
 // .fs-12 {
 //     font-size: 12px;
 // }
@@ -165,8 +228,7 @@ ul.list.rf-list>li {
 
 // flex
 .container {
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
+    display: flex; // -webkit-box-align: center;
+    // align-items: center;
     height: 100%;
 }

@@ -6,7 +6,6 @@ import { SettingsService } from '@core';
 import { NzTreeNodeOptions, NzTreeNode, NzTreeComponent, NzFormatEmitEvent, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
-import { dtoMap, dtoCatchError } from '@shared';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { Router } from '@angular/router';
 import { EditCompanyComponent } from './components/edit-company.component';

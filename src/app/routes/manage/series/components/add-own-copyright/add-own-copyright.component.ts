@@ -3,7 +3,6 @@ import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveBase } from '../../reactive-form/reactive-base';
 import { NzMessageService } from 'ng-zorro-antd';
 import { PaymentControlService } from '../../reactive-form/payment-control.service';
-import { dtoMap, dtoCatchError } from 'src/app/core/rxjs-pipe-handles';
 import { CopyrightsService } from '../../reactive-form/copyrights.service';
 import { DatePipe } from '@angular/common';
 import { ContractCopyrightDto } from '../../dtos/contract-copyright.dto';
@@ -91,11 +90,9 @@ export class AddOwnCopyrightComponent implements OnInit {
       contractName: [null, [Validators.required]],
       contractNumber: [null, [Validators.required]]
     });
-    this.copyrightService.getCopyrightsType().pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(res => {
-        this.copyrightsType = res;
-        console.log(this.copyrightsType);
-      });
+    // this.copyrightService.getCopyrightsType().subscribe(res => {
+    //     this.copyrightsType = res.data;
+    //   });
 
     this.rightForm = this.fb.group({
       copyrights: this.fb.array([null]),
@@ -114,11 +111,10 @@ export class AddOwnCopyrightComponent implements OnInit {
     //   this.customerOptions = res;
     // });
 
-    this.copyrightService.getCopyrightAreaOptions()
-      .pipe(dtoMap(e => e.data), dtoCatchError())
-      .subscribe(res => {
-        this.copyrightAreaOptions = res;
-      });
+    // this.copyrightService.getCopyrightAreaOptions()
+    //   .subscribe(res => {
+    //     this.copyrightAreaOptions = res.data;
+    //   });
   }
 
   createCopyrightCheckbox(defaultStatus: boolean, userdata: any) {
@@ -275,7 +271,7 @@ export class AddOwnCopyrightComponent implements OnInit {
       });
       contract.series_list.push(series);
     });
-    return this.copyrightService.addCopyrights(contract).pipe(dtoMap(e => e.data), dtoCatchError());
+    return this.copyrightService.addCopyrights(contract);
   }
 
   groupBy(array: any[], f: (object: any) => any) {

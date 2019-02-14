@@ -1,6 +1,7 @@
 import { OperatorFunction } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ResponseDto } from '@shared';
 
 /**
  * Dto map
@@ -11,7 +12,7 @@ export function dtoMap<T, R>(project: (value: T, index: number) => R): OperatorF
         if (value instanceof HttpErrorResponse) {
             throw value;
         } else {
-            const response = value as any;
+            const response = value as any as ResponseDto<R>;
             if (response && response.code === 0) {
                 return project(value, index);
             }

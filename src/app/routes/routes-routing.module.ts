@@ -5,6 +5,8 @@ import { LayoutComponent } from '../layout/layout.component';
 import { MarketComponent } from './market/market.component';
 import { ManageComponent } from './manage/manage.component';
 import { DashboardComponent } from './manage/dashboard/dashboard.component';
+import { PersonalCenterComponent } from './manage/personal-center/personal-center.component';
+import { SimpleGuard } from '@delon/auth';
 
 const routes: Routes = [
   {
@@ -18,7 +20,9 @@ const routes: Routes = [
       {
         path: 'manage',
         component: ManageComponent,
+        canActivate: [SimpleGuard],
         children: [
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
           {
             path: 'dashboard',
             component: DashboardComponent
@@ -27,8 +31,8 @@ const routes: Routes = [
            // { path: 'transmission', loadChildren: './manage/series.module#SeriesModule' },
           // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
-          // { path: 'personal-center', loadChildren: './manage/personal-center.module#PersonalCenterModule' },
-          // { path: 'teams', loadChildren: './manage/team.module#TeamModule' }
+          { path: 'account-center', component: PersonalCenterComponent },
+          { path: 'teams', loadChildren: './manage/teams/teams.module#TeamsModule' }
         ]
       }
     ]
