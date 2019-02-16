@@ -14,6 +14,7 @@ import {
 } from 'ng-zorro-antd';
 import { EmployeeDepartmentComponent } from './components/employee-department.component';
 import { TreeService } from '@shared';
+import { SettingsService } from '@core';
 
 @Component({
   selector: 'app-employee-details',
@@ -35,6 +36,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private settings: SettingsService,
     private service: EmployeeDetailsService,
     private modal: NzModalService,
     private message: NzMessageService,
@@ -208,6 +210,15 @@ export class EmployeeDetailsComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  seriesTagChange(event: { checked: boolean, tag: any }) {
+    this.service.updateSeriesPermission(this.settings.user.employee_id, event.checked, [event.tag.id])
+      .subscribe(result => {
+        event.tag.status = event.checked;
+      }, error => {
+        event.tag.status = !event.checked;
+      });
   }
 
 }

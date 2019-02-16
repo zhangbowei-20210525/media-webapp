@@ -17,6 +17,7 @@ import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own
 import { SharedModule } from '@shared';
 import { AllSeriesComponent } from './all-series/all-series.component';
 import { SeriesDetailsPublicityComponent } from './series-details/series-details-publicity/series-details-publicity.component';
+import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrights.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SeriesDetailsPublicityComponent } from './series-details/series-details
     AddSeriesInfoComponent,
     AddOwnCopyrightComponent,
     AllSeriesComponent,
+    AddCopyrightsComponent,
   ],
   imports: [
     CommonModule,

@@ -35,6 +35,12 @@
   </div>
 </div>
 
+<div>
+  <p class="clearfix">
+    <button nz-button nzType="default" class="rf" (click)="addCopyrights()">新增版权</button>
+  </p>
+</div>
+
 <nz-table #borderedTable nzBordered [nzData]="copyrightsList" [nzPageSize]="copyrightsPagination.page_size"
   [nzFrontPagination]="false" [nzPageIndex]="copyrightsPagination.page" [nzTotal]="copyrightsPagination.count"
   (nzPageIndexChange)="copyrightsPageChange($event)">

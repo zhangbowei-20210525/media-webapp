@@ -40,4 +40,8 @@ export class EmployeeDetailsService {
     return this.http.post(`/api/v1/employees/${id}/permissions`, { permission_data });
   }
 
+  updateSeriesPermission(employee: number, status: boolean, program_ids: number[]) {
+    return this.http.post<any>(`/api/v1/employees/${employee}/programs`, { status, program_ids });
+  }
+
 }

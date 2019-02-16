@@ -25,7 +25,7 @@
     </div>
   </section>
 
-  <section class="block clearfix">
+  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany">
     <div class="block-header">
       <div class="block-title">部门管理</div>
       <div class="block-options">
@@ -94,5 +94,18 @@
       </div>
     </div>
   </section>
+
+  <ng-template #defaultCompany>
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">部门管理</div>
+      </div>
+      <div class="block-content">
+        <div style="min-height: 30rem;">
+        <span>使用部门管理请 <a (click)="addCompany()">新建</a> 企业，或切换到其他企业</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 
 </div>

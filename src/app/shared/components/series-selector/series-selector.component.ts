@@ -1,5 +1,5 @@
-import { finalize } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { finalize, delay } from 'rxjs/operators';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SeriesSelectorService } from './series-selector.service';
 import { SeriesBriefDto, SearchMetaDataDto } from './dtos';
 import { SettingsService } from '@core';
@@ -11,6 +11,8 @@ import { SettingsService } from '@core';
 })
 export class SeriesSelectorComponent implements OnInit {
 
+  @Input() autoSelect: boolean;
+  @Output() tagChange = new EventEmitter<{ checked: boolean, tag: SeriesBriefDto }>();
   isSeriesLoading: boolean;
   originSeries: SeriesBriefDto[];
   series: SeriesBriefDto[];
@@ -29,8 +31,11 @@ export class SeriesSelectorComponent implements OnInit {
   ngOnInit() {
     this.isSeriesLoading = true;
     this.service.getSeries(this.settings.user.employee_id)
-      .pipe(finalize(() => this.isSeriesLoading = false))
+      .pipe(finalize(() => this.isSeriesLoading = false), delay(1000))
       .subscribe(result => {
+        if (!this.autoSelect) {
+          result.list.forEach(item => item.status = false);
+        }
         this.series = result.list;
         this.originSeries = result.list;
         this.programTypes = result.meta.program_type_choices;
@@ -42,12 +47,7 @@ export class SeriesSelectorComponent implements OnInit {
   }
 
   handleChange(checked: boolean, tag: SeriesBriefDto): void {
-    this.service.updateSeriesPermission(this.settings.user.employee_id, checked, [tag.id])
-      .subscribe(result => {
-        tag.status = checked;
-      }, error => {
-        tag.status = !checked;
-      });
+    this.tagChange.emit({ checked, tag });
   }
 
   handleTypeChange(type: string) {
@@ -90,7 +90,7 @@ export class SeriesSelectorComponent implements OnInit {
 
   originSeriesfilter(type: string, year: string, searchText: string) {
     return this.originSeries.filter(e =>
-         this.selectType(e, type)
+      this.selectType(e, type)
       && this.selectYear(e, year)
       && this.selectText(e, searchText)
     );

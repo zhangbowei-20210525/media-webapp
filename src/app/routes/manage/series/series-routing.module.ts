@@ -7,6 +7,7 @@ import { SeriesDetailsCopyrightComponent } from './components/series-details-cop
 import { TapeDetailsComponent } from './components/tape-details/tape-details.component';
 import { PublicityDetailsComponent } from './components/publicity-details/publicity-details.component';
 import { SeriesDetailsPublicityComponent } from './series-details/series-details-publicity/series-details-publicity.component';
+import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrights.component';
 
 
 const routes: Routes = [
@@ -14,17 +15,15 @@ const routes: Routes = [
     path: '',
     component: SeriesComponent
   },
-  {
-    path: 'publicity-details/:id',
-    component: PublicityDetailsComponent
-  },
+  { path: 'publicity-details/:id', component: PublicityDetailsComponent },
   {
     path: 'details/:sid',
     component: SeriesDetailsComponent,
     children: [
-      {path: 'publicity', component: SeriesDetailsPublicityComponent},
-      {path: 'copyright', component: SeriesDetailsCopyrightComponent},
-      {path: 'tape', component: SeriesDetailsTapeComponent,
+      { path: 'publicity', component: SeriesDetailsPublicityComponent },
+      { path: 'copyright', component: SeriesDetailsCopyrightComponent },
+      {
+        path: 'tape', component: SeriesDetailsTapeComponent,
         children: [
           {
             path: 'tape-details',
@@ -34,6 +33,7 @@ const routes: Routes = [
       }
     ]
   },
+  { path: 'add-copyrights', component: AddCopyrightsComponent }
 ];
 
 @NgModule({

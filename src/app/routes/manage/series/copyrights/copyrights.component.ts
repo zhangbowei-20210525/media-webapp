@@ -35,8 +35,8 @@ export class CopyrightsComponent implements OnInit {
     // this.getOwnCopyrights();
   }
 
-  addCopyright() {
-    this.router.navigate([`/manage/add-copyright-series-list`]);
+  addCopyrights() {
+    this.router.navigate([`/manage/series/add-copyrights`]);
     // this.modalService.create({
     //   nzTitle: `新增版权`,
     //   nzContent: AddOwnCopyrightComponent,

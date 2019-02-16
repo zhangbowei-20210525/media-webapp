@@ -1,0 +1,25 @@
+<div class="block clearfix">
+  <div class="block-content">
+    <nz-tabset [(nzSelectedIndex)]="tab">
+      <nz-tab nzTitle="1.选择节目">
+        <div class="block-operations clearfix">
+          <button nz-button nzType="primary" class="rf" (click)="next()">选择权利</button>
+        </div>
+        <!-- <nz-alert nzBanner nzType="info" nzMessage="Warning text">
+          <p class="clearfix">
+            <button nz-button nzType="primary" class="rf" (click)="next()">选择权利</button>
+          </p>
+        </nz-alert> -->
+        <app-series-selector (tagChange)="seriesTagChange($event)"></app-series-selector>
+      </nz-tab>
+      <nz-tab nzTitle="2.选择权利">
+        <div>
+          <p class="clearfix">
+            <button nz-button nzType="primary" class="rf" (click)="next()">提交</button>
+          </p>
+        </div>
+        Content of Tab Pane 2
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>
