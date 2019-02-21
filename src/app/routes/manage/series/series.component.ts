@@ -5,7 +5,6 @@ import { AddSeriesInfoComponent } from './components/add-series-info/add-series-
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from './series.service';
 import { MessageService, PaginationDto } from '@shared';
-import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
 
 @Component({
   selector: 'app-series',
@@ -157,32 +156,6 @@ export class SeriesComponent implements OnInit {
       }
       resolve(false);
     });
-  })
-
-  addOwnRight() {
-    this.modalService.create({
-      nzTitle: `新增自有版权`,
-      nzContent: AddOwnCopyrightComponent,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: 800,
-      nzOnOk: this.addCopyrightAgreed
-    });
-  }
-
-  addCopyrightAgreed = (component: AddOwnCopyrightComponent) => new Promise((resolve) => {
-    // if (component.checkContractForm()) {
-    //   component.submitContractForm().subscribe(res => {
-    //     this.messageService.success('添加版权成功');
-    //     this.refreshCurrent();
-    //     resolve();
-    //   }, err => {
-    //     this.messageService.error('添加版权失败：' + (typeof err.message === 'string' ? err.message : '服务器错误'));
-    //     resolve(false);
-    //   });
-    // } else {
-    //   resolve(false);
-    // }
   })
 
 }

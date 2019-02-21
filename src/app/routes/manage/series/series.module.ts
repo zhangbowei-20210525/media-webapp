@@ -13,7 +13,6 @@ import { TapeDetailsComponent } from './components/tape-details/tape-details.com
 import { PublicityDetailsComponent } from './components/publicity-details/publicity-details.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
-import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
 import { SharedModule } from '@shared';
 import { AllSeriesComponent } from './all-series/all-series.component';
 import { SeriesDetailsPublicityComponent } from './series-details/series-details-publicity/series-details-publicity.component';
@@ -32,7 +31,6 @@ import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrigh
     TapeDetailsComponent,
     PublicityDetailsComponent,
     AddSeriesInfoComponent,
-    AddOwnCopyrightComponent,
     AllSeriesComponent,
     AddCopyrightsComponent,
   ],
@@ -43,8 +41,7 @@ import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrigh
     SharedModule
   ],
   entryComponents: [
-    AddSeriesInfoComponent,
-    AddOwnCopyrightComponent,
+    AddSeriesInfoComponent
   ]
 })
 export class SeriesModule { }
