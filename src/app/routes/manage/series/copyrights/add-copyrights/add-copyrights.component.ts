@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { AddCopyrightsService } from './add-copyrights.service';
-import { ReactiveBase, FormControlService } from '@shared';
+import { ReactiveBase, FormControlService, TreeService } from '@shared';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -10,9 +10,8 @@ import { ReactiveBase, FormControlService } from '@shared';
 })
 export class AddCopyrightsComponent implements OnInit {
 
-  private _series: any[];
-
   tab: number;
+  series: any[];
   areaTemplates: any[];
   rightTemplates: any[];
   typeForm: FormGroup;
@@ -20,41 +19,27 @@ export class AddCopyrightsComponent implements OnInit {
   paymentForm: FormGroup;
   rightForm: FormGroup;
   payments: ReactiveBase<any>[][];
-  selectedSeries: any[] = [];
-
-  tempData = [{ id: 1, name: 'abc' }, { id: 2, name: '123' }];
+  indeterminate = false;
+  checkOptions: any;
+  dataSet = [];
 
   constructor(
     private fb: FormBuilder,
     private service: AddCopyrightsService,
-    private fcs: FormControlService
+    private fcs: FormControlService,
+    private ts: TreeService
   ) { }
 
-  get hasContract() {
-    return this.typeForm.value['hasContract'] === 'yes';
+  get contract() {
+    return this.typeForm.get('contract').value;
   }
-
-  get series() {
-    return this._series;
-  }
-
-  set series(value: any[]) {
-    this._series = value;
-    this.selectedSeries = this.series ? this.series.filter(e => e.status) : [];
-    this.projects = this.fb.array([...this.selectedSeries.map(item => this.fb.control(false))]);
-    console.log('set series', this.selectedSeries); // 之后未被触发
-  }
-
-  // get selectedSeries() {
-  //   return this.series ? this.series.filter(e => e.status) : [];
-  // }
 
   get projects() {
-    return this.rightForm.get('projects') as FormArray;
+    return this.rightForm.get('projects') as FormControl;
   }
 
-  set projects(value: any) {
-    this.rightForm['projects'] = value;
+  get projectsAllChecked() {
+    return this.rightForm.get('projectsAllChecked') as FormControl;
   }
 
   ngOnInit() {
@@ -74,7 +59,7 @@ export class AddCopyrightsComponent implements OnInit {
 
     this.typeForm = this.fb.group({
       investmentType: ['homemade', [Validators.required]],
-      hasContract: ['no', Validators.required]
+      contract: ['no', Validators.required]
     });
 
     this.contractForm = this.fb.group({
@@ -87,8 +72,9 @@ export class AddCopyrightsComponent implements OnInit {
     });
 
     this.rightForm = this.fb.group({
-      projects: this.fb.array([]),
-      copyright: [null],
+      projects: [null],
+      projectsAllChecked: [true],
+      copyright: [null, [Validators.required]],
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
       copyrightAreaNote: [null],
@@ -97,16 +83,38 @@ export class AddCopyrightsComponent implements OnInit {
       copyrightValidTermNote: [null],
       note: [null]
     });
-    console.log(this.projects.controls);
   }
 
   seriesTagChange(event: { checked: boolean, tag: any }) {
     event.tag.status = event.checked;
+    const selected = this.series ? this.series.filter(e => e.status) : [];
+    this.checkOptions = selected.map(item => ({ label: item.name, value: item.id, checked: true }));
+    this.projects.setValue(this.checkOptions);
+  }
+
+  updateAllChecked() {
+    this.indeterminate = false;
+    if (this.projectsAllChecked.value) {
+      this.checkOptions.forEach(item => item.checked = true);
+    } else {
+      this.checkOptions.forEach(item => item.checked = false);
+    }
+  }
+
+  updateSingleChecked() {
+    if (this.checkOptions.every(item => item.checked === false)) {
+      this.projectsAllChecked.setValue(false);
+      this.indeterminate = false;
+    } else if (this.checkOptions.every(item => item.checked === true)) {
+      this.projectsAllChecked.setValue(true);
+      this.indeterminate = false;
+    } else {
+      this.indeterminate = true;
+    }
   }
 
   next() {
     this.tab = 1;
-    console.log(this.series);
   }
 
   onPaymentMethodChange(value: string) {
@@ -122,6 +130,57 @@ export class AddCopyrightsComponent implements OnInit {
       }
     });
     this.paymentForm = this.fb.group(fg);
+  }
+
+  validationForm(form: FormGroup) {
+    for (const i in form.controls) {
+      if (form.controls.hasOwnProperty(i)) {
+        const control = form.controls[i];
+        control.markAsDirty();
+        control.updateValueAndValidity();
+      }
+    }
+    return form.valid;
+  }
+
+  addList() {
+    if (this.validationForm(this.rightForm)) {
+      const checkedRights = this.rightForm.get('copyright').value as Array<any>;
+      const right = this.ts.recursionNodesFindBy(this.rightTemplates, node => node.code === checkedRights[checkedRights.length - 1]);
+      const checkedAreas = this.rightForm.get('copyrightArea').value as Array<any>;
+      const area = this.ts.recursionNodesFindBy(this.areaTemplates, node => node.code === checkedAreas[checkedAreas.length - 1]);
+      const term = this.rightForm.get('copyrightValidTerm').value;
+      let startDate, endDate;
+      if (term) {
+        startDate = term[0];
+        endDate = term[1];
+      }
+      const list = this.projects.value.filter(item => item.checked).map(item => {
+        return {
+          id: item.value,
+          name: item.label,
+          right: right.code,
+          area: area.code,
+          term: term,
+          termIsPermanent: this.rightForm.get('copyrightValidTermIsPermanent').value,
+          note: this.rightForm.get('note').value,
+          rightNote: this.rightForm.get('copyrightNote').value,
+          areaNote: this.rightForm.get('copyrightAreaNote').value,
+          termNote: this.rightForm.get('copyrightValidTermNote').value,
+          displayRight: right.name,
+          displayArea: area.name,
+          termStartDate: startDate,
+          termEndDate: endDate
+        };
+      });
+      this.dataSet = [...this.dataSet, ...list];
+    }
+  }
+
+  save() {
+    if (this.typeForm.get('contract').value === 'yes' && this.validationForm(this.contractForm)) {
+
+    }
   }
 
 }
