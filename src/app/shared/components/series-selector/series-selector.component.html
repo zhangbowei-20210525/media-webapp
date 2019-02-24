@@ -26,7 +26,7 @@
     <div>
       <strong style="margin-right: 0.5rem;">节目: </strong>
       <nz-tag *ngFor="let tag of series" [nzMode]="'checkable'" [nzChecked]="tag.status"
-        (nzCheckedChange)="handleChange($event, tag)">
+        (nzCheckedChange)="handleChange($event, tag)" class="series-tag">
         <!-- <i nz-icon type="loading" theme="outline"></i> -->
         <!-- <i nz-icon [type]="'sync'" [spin]="true" *ngIf="tag.loading"></i> -->
         {{ tag.name }} / {{ tag.program_type | seriesType }}

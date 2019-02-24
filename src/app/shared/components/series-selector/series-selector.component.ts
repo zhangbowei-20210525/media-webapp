@@ -33,7 +33,7 @@ export class SeriesSelectorComponent implements OnInit {
   ngOnInit() {
     this.isSeriesLoading = true;
     this.service.getSeries(this.settings.user.employee_id)
-      .pipe(finalize(() => this.isSeriesLoading = false), delay(1000))
+      .pipe(finalize(() => this.isSeriesLoading = false))
       .subscribe(result => {
         if (!this.autoSelect) {
           result.list.forEach(item => item.status = false);

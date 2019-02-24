@@ -88,7 +88,7 @@ export class AddCopyrightsComponent implements OnInit {
   seriesTagChange(event: { checked: boolean, tag: any }) {
     event.tag.status = event.checked;
     const selected = this.series ? this.series.filter(e => e.status) : [];
-    this.checkOptions = selected.map(item => ({ label: item.name, value: item.id, checked: true }));
+    this.checkOptions = selected.map(item => ({ label: item.name, value: item.id, checked: true, episodes: item.episodes }));
     this.projects.setValue(this.checkOptions);
   }
 
@@ -143,6 +143,10 @@ export class AddCopyrightsComponent implements OnInit {
     return form.valid;
   }
 
+  resetCopyrightForm() {
+    this.rightForm.reset();
+  }
+
   addList() {
     if (this.validationForm(this.rightForm)) {
       const checkedRights = this.rightForm.get('copyright').value as Array<any>;
@@ -159,6 +163,7 @@ export class AddCopyrightsComponent implements OnInit {
         return {
           id: item.value,
           name: item.label,
+          episodes: item.episodes,
           right: right.code,
           area: area.code,
           term: term,
@@ -177,9 +182,48 @@ export class AddCopyrightsComponent implements OnInit {
     }
   }
 
-  save() {
-    if (this.typeForm.get('contract').value === 'yes' && this.validationForm(this.contractForm)) {
+  resetList() {
+    this.dataSet = [];
+  }
 
+  save() {
+    // if (this.typeForm.get('contract').value === 'yes' && this.validationForm(this.contractForm) && this.validationForm(this.paymentForm)) {
+
+    // }
+    if (this.typeForm.get('contract').value === 'yes') {
+      if (this.validationForm(this.contractForm)) {
+        if (this.validationForm(this.paymentForm)) {
+          const contract = this.service.toContractData(
+            this.contractForm.value['contractNumber'], 
+            this.contractForm.value['contractName'],
+            null,
+            this.contractForm.value['customer']);
+
+          const orders = this.payments.map(paymentObjArr => {
+            const arr = paymentObjArr.map(item => this.paymentForm.value(item.key));
+            return this.service.toOrderData(arr[1], arr[0], arr[2]);
+          });
+
+          // const programs = this.dataSet.map(item => {
+          //   this.service.toProgramData(
+          //     item.id,
+          //     item.name,
+          //     item.type, // 影片类型，暂无
+          //     item.episodes, // 影片集数，暂无
+          //     this.typeForm.value[''],
+
+          //   );
+          // });
+
+          // 2019-02-24 到这里，以上数据需要聚合
+
+          // this.service.addCopyrights().subscribe(result => {
+
+          // });
+        }
+      } else {
+        this.validationForm(this.paymentForm);
+      }
     }
   }
 
