@@ -33,8 +33,8 @@ export class SeriesComponent implements OnInit {
     this.type = 'series';
     this.seriesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
-      this.seriesList = res.data.list;
-      this.seriesPagination = res.data.pagination;
+      this.seriesList = res.list;
+      this.seriesPagination = res.pagination;
     });
   }
 
@@ -54,6 +54,11 @@ export class SeriesComponent implements OnInit {
   copyrightRefresh() {
     this.type = 'copyright';
     this.seriesService.eventEmit.emit('copyrightRefresh');
+  }
+
+  tapesRefresh() {
+    this.type = 'tape';
+    this.seriesService.eventEmit.emit('tapesRefresh');
   }
 
   // tslint:disable-next-line:max-line-length
@@ -99,7 +104,8 @@ export class SeriesComponent implements OnInit {
   }
 
   tape(id: number) {
-    this.router.navigate([`/manage/series/series-details/series-details-tape`]);
+    console.log(id);
+    this.router.navigate([`/manage/series/series-details/${id}/series-details-tape`]);
   }
 
   copyright(id: number) {
@@ -122,8 +128,8 @@ export class SeriesComponent implements OnInit {
       .subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
         this.seriesService.getSeries(this.seriesPagination).subscribe(s => {
-          this.seriesList = s.data.list;
-          this.seriesPagination = s.data.pagination;
+          this.seriesList = s.list;
+          this.seriesPagination = s.pagination;
         });
         resolve();
       }, error => {

@@ -1,0 +1,30 @@
+<div class="modal-panel">
+  <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>手机号码</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <input nz-input id="name" formControlName="name" placeholder="请输入母带名称">
+            <nz-form-explain *ngIf="onlineTapeForm.get('name').dirty && onlineTapeForm.get('name').errors">请输入母带名称
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>选择上传母带文件夹</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select style="width: 100%" nzPlaceHolder="请选择文件夹" id="folderName" formControlName="folderName" nzMaxMultipleCount = "1">
+              <nz-option *ngFor="let folderName of foldersName" [nzLabel]="folderName" [nzValue]="folderName">
+              </nz-option>
+            </nz-select>
+        <!-- <nz-radio-group *ngIf="foldersName.length > 0; else noneFoldersName" formControlName="folderName">
+          <div *ngFor="let folderName of foldersName; let i = index">
+            <span>{{i + 1}}&nbsp;.</span>
+          <label nz-radio [nzValue]="folderName" [ngStyle]="{'margin-left':'10px'}">{{folderName}}</label>
+          </div>
+        </nz-radio-group> -->
+        <ng-template #noneFoldersName>
+          <nz-form-explain class="text-hint push-10">暂无母带文件</nz-form-explain>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

@@ -1,47 +1,61 @@
 <div class="home-page-wrap">
   <div class="statistics-info-wk">
     <div class="statistics-info-box">
-      <div class="statistics-info-one">8</div>
+      <div class="statistics-info-one">{{right?.count}}</div>
       <div class="statistics-info-two">购入即将到期</div>
       <ul class="statistics-info-three">
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
+        <li class="statistics-info-four" *ngFor="let right of right?.data">
+          <div class="statistics-info-gr-one">{{right?.program_name}}</div>
+          <div class="statistics-info-gr-two">{{right?.custom_name}}</div>
+          <div class="statistics-info-gr-four" *ngIf="right?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-gr-five" *ngIf="right?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-gr-three">{{right?.expire_date}}</div>
+        </li>
       </ul>
     </div>
     <div class="statistics-info-box-mf10">
-      <div class="statistics-info-five">5</div>
+      <div class="statistics-info-five">{{publish_right?.count}}</div>
       <div class="statistics-info-two">发行即将到期</div>
       <ul class="statistics-info-three">
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
+        <li class="statistics-info-four" *ngFor="let publish_right of publish_right?.data">
+          <div class="statistics-info-fx-one">{{publish_right?.program_name}}</div>
+          <div class="statistics-info-fx-two">{{publish_right?.custom_name}}</div>
+          <div class="statistics-info-fx-four" *ngIf="publish_right?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-fx-five" *ngIf="publish_right?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-fx-three">{{publish_right?.expire_date}}</div>
+        </li>
       </ul>
     </div>
     <div class="statistics-info-box-mf10">
-      <div class="statistics-info-six">11</div>
+      <div class="statistics-info-six">{{payment?.count}}</div>
       <div class="statistics-info-two">付款即将到期</div>
       <ul class="statistics-info-three">
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
+        <li class="statistics-info-four" *ngFor="let payment of payment?.data">
+          <div class="statistics-info-fk-one">{{payment?.custom_name}}</div>
+          <div class="statistics-info-fk-three" *ngIf="payment?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-fk-four" *ngIf="payment?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-fk-two">{{payment?.expire_date}}</div>
+        </li>
       </ul>
     </div>
     <div class="statistics-info-box-mf10">
-      <div class="statistics-info-seven">3</div>
+      <div class="statistics-info-seven">{{receipt?.count}}</div>
       <div class="statistics-info-two">收款即将到期</div>
       <ul class="statistics-info-three">
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
-        <li class="statistics-info-four">购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期购入即将到期</li>
+        <li class="statistics-info-four" *ngFor="let receipt of receipt?.data">
+          <div class="statistics-info-sk-one">{{receipt?.custom_name}}</div>
+          <div class="statistics-info-sk-three" *ngIf="receipt?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-sk-four" *ngIf="receipt?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-sk-two">{{receipt?.expire_date}}</div>
+        </li>
       </ul>
     </div>
   </div>
@@ -49,24 +63,35 @@
     <div class="cartogram-box-one">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">节目</div>
-        <div class="cartogram-filtrate-one">权利</div>
+        <!-- <div class="cartogram-filtrate-one">权利</div>
         <div class="cartogram-filtrate-two">品类</div>
-        <div class="cartogram-filtrate-three">投资类型</div>
+        <div class="cartogram-filtrate-three">投资类型</div> -->
+        <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small"
+          style="margin-top: 15px;float: right;margin-right: 20px" (click)="switchoverSeriesCriteria()">
+          <label nz-radio-button nzValue="investment_type">投资类型</label>
+          <label nz-radio-button nzValue="program_type">品类</label>
+        </nz-radio-group>
       </div>
       <div class="cartogram-info-one">
-        <div id="mountNode"></div>
+        <div id="seriesStatistics"></div>
       </div>
     </div>
 
     <div class="cartogram-box-two">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">宣发</div>
-        <div class="cartogram-filtrate-one">收藏</div>
+        <!-- <div class="cartogram-filtrate-one">收藏</div>
         <div class="cartogram-filtrate-two">点赞</div>
-        <div class="cartogram-filtrate-three">浏览量</div>
+        <div class="cartogram-filtrate-three">浏览量</div> -->
+        <nz-radio-group [(ngModel)]="time" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
+          (click)="switchoverTime()">
+          <label nz-radio-button nzValue="day">日</label>
+          <label nz-radio-button nzValue="month">月</label>
+          <label nz-radio-button nzValue="year">年</label>
+        </nz-radio-group>
       </div>
       <div class="cartogram-info-two">
-        <div id="mountNode1"></div>
+        <div id="publicityStatistics"></div>
       </div>
     </div>
   </div>
@@ -74,24 +99,35 @@
     <div class="cartogram-box-one">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">发行</div>
-        <div class="cartogram-filtrate-one">地区</div>
+        <!-- <div class="cartogram-filtrate-one">地区</div>
         <div class="cartogram-filtrate-two">权利</div>
-        <div class="cartogram-filtrate-four">客户</div>
+        <div class="cartogram-filtrate-four">客户</div> -->
+        <nz-radio-group [(ngModel)]="pubType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
+          (click)="switchoverPubType()">
+          <label nz-radio-button nzValue="custom">客户</label>
+          <label nz-radio-button nzValue="right">权利</label>
+          <label nz-radio-button nzValue="area">地区</label>
+        </nz-radio-group>
       </div>
       <div class="cartogram-info-three">
-        <div id="mountNode2"></div>
+        <div id="publishStatistics"></div>
       </div>
     </div>
 
     <div class="cartogram-box-two">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">母带</div>
-        <div class="cartogram-filtrate-five">密钥授权</div>
+        <!-- <div class="cartogram-filtrate-five">密钥授权</div>
         <div class="cartogram-filtrate-six">购入母带</div>
-        <div class="cartogram-filtrate-three">发行母带</div>
+        <div class="cartogram-filtrate-three">发行母带</div> -->
+        <nz-radio-group [(ngModel)]="tapeType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
+          (click)="switchoverTape()">
+          <label nz-radio-button nzValue="publish">发行母带</label>
+          <label nz-radio-button nzValue="purchase">购入母带</label>
+        </nz-radio-group>
       </div>
       <div class="cartogram-info-four">
-        <div id="mountNode3"></div>
+        <div id="tapeStatistics"></div>
       </div>
     </div>
   </div>
@@ -99,135 +135,103 @@
   <div class="all-statistics-box">
     <div class="all-statistics-title-wk">
       <span class="all-statistics-title">季度统计分析</span>
-      <nz-cascader
-      [nzTriggerAction]="'hover'"
-      [nzExpandTrigger]="'hover'"
-      [nzOptions]="options"
-      [(ngModel)]="values"
-      nzPlaceHolder="请选择数据统计地区"
-      style="
-      width: 180px;
-      line-height: 55px;
-      margin-right: 20px;
-      font-family: SourceHanSansSC-regular;
-      font-size: 14px;
-      color: #939393;
-      float: right"
-    >
-    </nz-cascader>
+      <!-- <nz-option *ngFor="let option of customerOptions" [nzLabel]="option.name" [nzValue]="option.name"></nz-option> -->
+      <nz-tree-select style="width: 250px;
+      margin-top: 15px;
+      margin-right: 10px;
+      float: right" [nzNodes]="statisticsSelectorArea" nzShowSearch nzCheckable nzSize="small" nzPlaceHolder="请选择地域"
+        [(ngModel)]="areaFiltrate" (ngModelChange)="areaChange($event)">
+      </nz-tree-select>
+      <nz-select nzSize="small" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
+        <nz-option *ngFor="let statisticsSelectorYear of statisticsSelectorYear" [nzLabel]="statisticsSelectorYear" [nzValue]="statisticsSelectorYear"></nz-option>
+      </nz-select>
     </div>
     <div class="all-statistics-info-box">
-        <div class="all-statistics-info-one">
-            
-          </div>
-          <div class="all-statistics-info-two">
-              <div id="mountNode4"></div>
-            </div>
-      </div>
+      <div id="allStatistics"></div>
+    </div>
   </div>
-
-
-
 
   <div class="active-project-box">
     <div class="active-project-title-wk">
       <span class="active-project-title">活跃项目</span>
     </div>
     <div class="active-project-info">
-      <nz-table
-      #borderedTable
-      [nzTitle]="Header"
-      [nzData]="dataSet"
-     >
-      <thead *ngIf="showTable == 1">
-        <tr>
-          <th style="text-align: center">项目名称</th>
-          <th style="text-align: center">签约客户</th>
-          <th style="text-align: center">权利</th>
-          <th style="text-align: center">范围</th>
-          <th style="text-align: center">授权开始</th>
-          <th style="text-align: center">授权结束</th>
-        </tr>
-      </thead>
-      <tbody *ngIf="showTable == 1">
-        <tr *ngFor="let data of borderedTable.data">
-          <td style="text-align: center">11111</td>
-          <td style="text-align: center">{{data.age}}</td>
-          <td style="text-align: center">{{data.address}}</td>
-          <td style="text-align: center">{{data.name}}</td>
-          <td style="text-align: center">{{data.age}}</td>
-          <td style="text-align: center">{{data.address}}</td>
-        </tr>
-      </tbody>
-      <thead *ngIf="showTable == 2">
+      <nz-table [nzTitle]="Header" nzShowPagination="false">
+        <thead *ngIf="showTable == 1">
           <tr>
-              <th style="text-align: center">项目名称</th>
-              <th style="text-align: center">签约客户</th>
-              <th style="text-align: center">权利</th>
-              <th style="text-align: center">范围</th>
-              <th style="text-align: center">授权开始</th>
-              <th style="text-align: center">授权结束</th>
-        </tr>
+            <th style="text-align: center">节目名称</th>
+            <th style="text-align: center">权利</th>
+            <th style="text-align: center">地域</th>
+            <th style="text-align: center">授权开始</th>
+            <th style="text-align: center">授权结束</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="showTable == 1">
+          <tr *ngFor="let activeProjectRight of activeProjectRight">
+            <td style="text-align: center">{{ activeProjectRight?.program_name }}</td>
+            <td style="text-align: center">{{ activeProjectRight?.right_type }}</td>
+            <td style="text-align: center">{{ activeProjectRight?.area }}</td>
+            <td style="text-align: center">{{ activeProjectRight?.start_date }}</td>
+            <td style="text-align: center">{{ activeProjectRight?.end_date }}</td>
+          </tr>
+        </tbody>
+        <thead *ngIf="showTable == 2">
+          <tr>
+            <th style="text-align: center">节目名称</th>
+            <th style="text-align: center">权利</th>
+            <th style="text-align: center">地域</th>
+            <th style="text-align: center">授权开始</th>
+            <th style="text-align: center">授权结束</th>
+          </tr>
         </thead>
         <tbody *ngIf="showTable == 2">
-          <tr *ngFor="let data of borderedTable.data">
-              <td style="text-align: center">22222</td>
-              <td style="text-align: center">{{data.age}}</td>
-              <td style="text-align: center">{{data.address}}</td>
-              <td style="text-align: center">{{data.name}}</td>
-              <td style="text-align: center">{{data.age}}</td>
-              <td style="text-align: center">{{data.address}}</td>
+          <tr *ngFor="let activeProjectPubRight of activeProjectPubRight">
+            <td style="text-align: center">{{ activeProjectPubRight?.program_name }}</td>
+            <td style="text-align: center">{{ activeProjectPubRight?.right_type }}</td>
+            <td style="text-align: center">{{ activeProjectPubRight?.area }}</td>
+            <td style="text-align: center">{{ activeProjectPubRight?.start_date }}</td>
+            <td style="text-align: center">{{ activeProjectPubRight?.end_date }}</td>
           </tr>
         </tbody>
         <thead *ngIf="showTable == 3">
-            <tr>
-                <th style="text-align: center">项目名称</th>
-                <th style="text-align: center">签约客户</th>
-                <th style="text-align: center">权利</th>
-                <th style="text-align: center">范围</th>
-                <th style="text-align: center">授权开始</th>
-                <th style="text-align: center">授权结束</th>
-            </tr>
-          </thead>
-          <tbody *ngIf="showTable == 3">
-            <tr *ngFor="let data of borderedTable.data">
-                <td style="text-align: center">33333</td>
-                <td style="text-align: center">{{data.age}}</td>
-                <td style="text-align: center">{{data.address}}</td>
-                <td style="text-align: center">{{data.name}}</td>
-                <td style="text-align: center">{{data.age}}</td>
-                <td style="text-align: center">{{data.address}}</td>
-            </tr>
-          </tbody>
-          <thead *ngIf="showTable == 4">
-              <tr>
-                  <th style="text-align: center">项目名称</th>
-                  <th style="text-align: center">签约客户</th>
-                  <th style="text-align: center">权利</th>
-                  <th style="text-align: center">范围</th>
-                  <th style="text-align: center">授权开始</th>
-                  <th style="text-align: center">授权结束</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="showTable == 4">
-              <tr *ngFor="let data of borderedTable.data">
-                  <td style="text-align: center">44444</td>
-                  <td style="text-align: center">{{data.age}}</td>
-                  <td style="text-align: center">{{data.address}}</td>
-                  <td style="text-align: center">{{data.name}}</td>
-                  <td style="text-align: center">{{data.age}}</td>
-                  <td style="text-align: center">{{data.address}}</td>
-              </tr>
-            </tbody>
-    </nz-table>
-    <ng-template #Header>
-      <nz-radio-group [(ngModel)]="activeProject" nzSize="small" (click)="activeProjects()">
-        <label nz-radio-button nzValue="programRights">节目权利</label>
-        <label nz-radio-button nzValue="pubRights">发行权利</label>
-        <label nz-radio-button nzValue="publicitiesMaterial">宣发资料</label>
-        <label nz-radio-button nzValue="tapesManage">母带管理</label>
-      </nz-radio-group>
-    </ng-template>
+          <tr>
+            <th style="text-align: center">节目名称</th>
+            <th style="text-align: center">类型</th>
+            <th style="text-align: center">集数</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="showTable == 3">
+          <tr *ngFor="let activeProjectPublicity of activeProjectPublicity">
+            <td style="text-align: center">{{ activeProjectPublicity?.program_name }}</td>
+            <td style="text-align: center">{{ activeProjectPublicity?.program_type }}</td>
+            <td style="text-align: center">{{ activeProjectPublicity?.episode }}</td>
+          </tr>
+        </tbody>
+        <thead *ngIf="showTable == 4">
+          <tr>
+            <th style="text-align: center">节目名称</th>
+            <th style="text-align: center">类型</th>
+            <th style="text-align: center">版本</th>
+            <th style="text-align: center">集数</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="showTable == 4">
+          <tr *ngFor="let activeProjectSource of activeProjectSource">
+            <td style="text-align: center">{{ activeProjectSource?.program_name }}</td>
+            <td style="text-align: center">{{ activeProjectSource?.program_type }}</td>
+            <td style="text-align: center">{{ activeProjectSource?.name }}</td>
+            <td style="text-align: center">{{ activeProjectSource?.episode }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <ng-template #Header>
+        <nz-radio-group [(ngModel)]="activeProject" nzSize="small" (click)="activeProjects()">
+          <label nz-radio-button nzValue="right">节目权利</label>
+          <label nz-radio-button nzValue="publish_right">发行权利</label>
+          <label nz-radio-button nzValue="publicity">宣发资料</label>
+          <label nz-radio-button nzValue="source">母带管理</label>
+        </nz-radio-group>
+      </ng-template>
     </div>
   </div>
 
@@ -238,7 +242,9 @@
       </div>
       <div class="publicities-dynamic-info-wk">
         <ul class="publicities-dynamic-info-box">
-          <li class="publicities-dynamic-info">动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息</li>
+          <li class="publicities-dynamic-info">
+            动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息
+          </li>
         </ul>
       </div>
     </div>
@@ -248,7 +254,9 @@
       </div>
       <div class="tapes-dynamic-info-wk">
         <ul class="tapes-dynamic-info-box">
-          <li class="tapes-dynamic-info">动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息</li>
+          <li class="tapes-dynamic-info">
+            动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息
+          </li>
         </ul>
       </div>
     </div>

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { formData, PaginationDto } from '@shared';
+import { formData, PaginationDto, ResponseDto } from '@shared';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class SeriesService {
   constructor(
     protected http: HttpClient,
   ) {
-    // this.eventEmit = new EventEmitter();
+    this.eventEmit = new EventEmitter();
   }
 
   // getUserSamples(pagination: PaginationDto) {
@@ -110,5 +110,61 @@ export class SeriesService {
   publicityDetail(id: number) {
     return this.http.get<any>(`/api/v1/publicity/${id}`);
   }
+
+  // tslint:disable-next-line:max-line-length
+  addTape(newTape: { program_id: number; name: string, language: string, subtitle: string, format: string, bit_rate: string, source_type: string,  }) {
+    return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
+  }
+
+  getTapeList(id: number) {
+    return this.http.get<any>(`api/v1/programs/${id}/sources`);
+  }
+
+  getOnlineInfo(id: number) {
+    return this.http.get<any>(`api/v1/sources/${id}`);
+  }
+
+  getAllTapes(pagination: PaginationDto) {
+    return this.http.get<any>(`api/v1/sources?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
+  tapeFileList(id: number, pagination: PaginationDto) {
+    return this.http.get<any>(`api/v1/sources/${id}/files?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
+  getIpAddress() {
+    return this.http.get<ResponseDto<any>>(`api/v1/source_clients/ip`);
+  }
+
+  clientStatus(address: string) {
+    return this.http.get<any>(`http://${address}/status`);
+}
+
+UploadTape(id: number, auth_status: number) {
+  return this.callHttpApp('upload_public', { id: id, companyId: 0, auth_status: auth_status });
+}
+
+private callHttpApp(method: string, param: { id: number | number[], companyId: number, auth_status: number }) {
+  function isArray(o) {
+      return Object.prototype.toString.call(o) === '[object Array]';
+  }
+  let string$;
+  if (isArray(param.id)) {
+      const idArr = param.id as number[];
+      string$ = idArr.join(',');
+  } else {
+      string$ = param.id;
+  }
+  const a = 'http://127.0.0.1:8756/add_task?';
+  const b = `type=${method}&ids=${string$}`;
+  const c = `&area_id=${param.companyId}&auth_status=${param.auth_status}`;
+  return this.http.get(
+      a + b + c
+  );
+}
+
+getCompaniesName() {
+  // return this.http.get<any>(`http://${address}/status`);
+}
 
 }

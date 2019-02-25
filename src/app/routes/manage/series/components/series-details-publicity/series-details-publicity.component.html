@@ -1,4 +1,4 @@
-<div class="program-details-publicity-info-box">
+<!-- <div class="program-details-publicity-info-box">
   <div class="program-details-publicity-info-wk">
     <nz-tabset [nzTabBarExtraContent]="extraTemplate" nzSize="large">
       <nz-tab nzTitle="样片" (nzClick)="publicityType('sample')">
@@ -178,4 +178,204 @@
       <input id="fileUpload" hidden type="file" (change)="upload($event)" multiple="multiple">
     </ng-template>
   </div>
+</div> -->
+
+<div class="block">
+  <nz-tabset [nzTabBarExtraContent]="extraTemplate" nzSize="large" nzAnimated="false">
+    <nz-tab nzTitle="样片" (nzClick)="publicityType('sample')">
+      <div style="margin: 2rem;">
+        <nz-table #basicTable [nzData]="sampleList" [nzPageSize]="samplePagination?.page_size" [nzFrontPagination]="false"
+          [nzShowPagination]="false" [nzPageIndex]="samplePagination?.page" [nzTotal]="samplePagination?.count"
+          (nzPageIndexChange)="samplePageChange($event)">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.extension}}</td>
+              <td style="text-align: center">{{data.size | byteFormat}}</td>
+              <td style="text-align: center">
+                <span *ngIf="data.uploadStatus">{{data.uploadStatus}}</span>
+                <span *ngIf="!data.uploadStatus">上传成功</span>
+              </td>
+              <td style="text-align: center">
+                <a><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="片花" (nzClick)="publicityType('feature')">
+      <div style="margin: 2rem;">
+        <nz-table #basicTable1 [nzData]="featureList" [nzPageSize]="featurePagination?.page_size" [nzFrontPagination]="false"
+          [nzShowPagination]="false" [nzPageIndex]="featurePagination?.page" [nzTotal]="featurePagination?.count"
+          (nzPageIndexChange)="featurePageChange($event)">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable1.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.extension}}</td>
+              <td style="text-align: center">{{data.size | byteFormat}}</td>
+              <td style="text-align: center">
+                <span *ngIf="data.uploadStatus">{{data.uploadStatus}}</span>
+                <span *ngIf="!data.uploadStatus">上传成功</span>
+              </td>
+              <td style="text-align: center">
+                <a><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="先导片" (nzClick)="publicityType('trailer')">
+      <div style="margin: 2rem;">
+        <nz-table #basicTable2 [nzData]="trailerList" [nzPageSize]="trailerPagination?.page_size" [nzFrontPagination]="false"
+          [nzShowPagination]="false" [nzPageIndex]="trailerPagination?.page" [nzTotal]="trailerPagination?.count"
+          (nzPageIndexChange)="trailerPageChange($event)">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable2.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.extension}}</td>
+              <td style="text-align: center">{{data.size | byteFormat}}</td>
+              <td style="text-align: center">
+                <span *ngIf="data.uploadStatus">{{data.uploadStatus}}</span>
+                <span *ngIf="!data.uploadStatus">上传成功</span>
+              </td>
+              <td style="text-align: center">
+                <a><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="海报" (nzClick)="publicityType('poster')">
+      <div style="margin: 2rem;">
+        <nz-table #basicTable3 [nzData]="posterList" [nzPageSize]="posterPagination?.page_size" [nzFrontPagination]="false"
+          [nzShowPagination]="false" [nzPageIndex]="posterPagination?.page" [nzTotal]="posterPagination?.count"
+          (nzPageIndexChange)="posterPageChange($event)">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable3.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.extension}}</td>
+              <td style="text-align: center">{{data.size | byteFormat}}</td>
+              <td style="text-align: center">
+                <span *ngIf="data.uploadStatus">{{data.uploadStatus}}</span>
+                <span *ngIf="!data.uploadStatus">上传成功</span>
+              </td>
+              <td style="text-align: center">
+                <a><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="剧照" (nzClick)="publicityType('still')">
+      <div style="margin: 2rem;">
+        <nz-table #basicTable4 [nzData]="stillList" [nzPageSize]="stillPagination?.page_size" [nzFrontPagination]="false"
+          [nzShowPagination]="false" [nzPageIndex]="stillPagination?.page" [nzTotal]="stillPagination?.count"
+          (nzPageIndexChange)="stillPageChange($event)">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable4.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.extension}}</td>
+              <td style="text-align: center">{{data.size | byteFormat}}</td>
+              <td style="text-align: center">
+                <span *ngIf="data.uploadStatus">{{data.uploadStatus}}</span>
+                <span *ngIf="!data.uploadStatus">上传成功</span>
+              </td>
+              <td style="text-align: center">
+                <a><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="PDF" (nzClick)="publicityType('pdf')">
+      <div style="margin: 2rem;">
+        <nz-table #basicTable5 [nzData]="pdfList" [nzPageSize]="pdfPagination?.page_size" [nzFrontPagination]="false"
+          [nzShowPagination]="false" [nzPageIndex]="pdfPagination?.page" [nzTotal]="pdfPagination?.count"
+          (nzPageIndexChange)="pdfPageChange($event)">
+          <thead>
+            <tr>
+              <th style="text-align: center">文件名</th>
+              <th style="text-align: center">格式</th>
+              <th style="text-align: center">大小</th>
+              <th style="text-align: center">状态</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable5.data">
+              <td style="text-align: center">{{data.name}}</td>
+              <td style="text-align: center">{{data.extension}}</td>
+              <td style="text-align: center">{{data.size | byteFormat}}</td>
+              <td style="text-align: center">
+                <span *ngIf="data.uploadStatus">{{data.uploadStatus}}</span>
+                <span *ngIf="!data.uploadStatus">上传成功</span>
+              </td>
+              <td style="text-align: center">
+                <a><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+  <ng-template #extraTemplate>
+    <div style="margin-right: 2rem;">
+      <button nz-button nzType="primary" nzSize="small" style="margin-right: 10px;margin-top: 15px" (click)="publicityDetails()">查看视频</button>
+      <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
+        上传
+      </label>
+      <input id="fileUpload" hidden type="file" (change)="upload($event)" multiple="multiple">
+    </div>
+  </ng-template>
 </div>

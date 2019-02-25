@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { SeriesRoutingModule } from './series-routing.module';
 import { CopyrightsComponent } from './components/copyrights/copyrights.component';
-import { TapesComponent } from './components/tapes/tapes.component';
 import { PublicitiesComponent } from './components/publicities/publicities.component';
 import { SeriesComponent } from './series.component';
 import { SeriesDetailsComponent } from './components/series-details/series-details.component';
@@ -16,6 +15,10 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
 import { AddOwnCopyrightComponent } from './components/add-own-copyright/add-own-copyright.component';
 import { SharedModule } from '@shared';
+import { AddTapeComponent } from './components/add-tape/add-tape.component';
+import { TapesComponent } from './components/tapes/tapes.component';
+import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.component';
+
 
 
 
@@ -34,16 +37,19 @@ import { SharedModule } from '@shared';
     PublicityDetailsComponent,
     AddSeriesInfoComponent,
     AddOwnCopyrightComponent,
+    AddTapeComponent,
+    AddPubTapeComponent,
   ],
   imports: [
     CommonModule,
     SeriesRoutingModule,
     PdfViewerModule,
-    SharedModule
+    SharedModule,
   ],
   entryComponents: [
     AddSeriesInfoComponent,
     AddOwnCopyrightComponent,
+    AddTapeComponent
   ]
 })
 export class SeriesModule { }
