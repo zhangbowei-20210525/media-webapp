@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PaginationDto } from '@shared';
-import { SeriesService } from '../series.service';
+import { PaginationDto, MessageService } from '@shared';
 import { NzModalService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
+import { CopyrightsService } from './copyrights.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-copyrights',
@@ -11,40 +12,76 @@ import { Router } from '@angular/router';
 })
 export class CopyrightsComponent implements OnInit {
 
-  copyrightDate: string;
-  copyrightArea: string;
-  copyrightItem: string;
-  is_permanentb: boolean;
-  is_permanentn: boolean;
-  is_permanentnph: boolean;
-  is_permanentnpc: boolean;
-  copyrightsList = [];
-  copyrightsPagination: PaginationDto;
+  selectedDate: string;
+  selectedArea: string;
+  selectedRight: string;
+  dataSet = [];
+  pagination = { page: 1, page_size: 10 } as PaginationDto;
 
   constructor(
-    private seriesService: SeriesService,
-    private modalService: NzModalService,
+    private service: CopyrightsService,
     private router: Router,
+    private message: MessageService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
-    this.copyrightDate = '';
-    this.copyrightArea = '';
-    this.copyrightItem = '';
-    this.copyrightsPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    // this.getOwnCopyrights();
+    this.selectedDate = this.selectedArea = this.selectedRight = 'all';
+    this.fetchCopyrights();
   }
 
   addCopyrights() {
     this.router.navigate([`/manage/series/add-copyrights`]);
-    // this.modalService.create({
-    //   nzTitle: `新增版权`,
-    //   nzContent: AddOwnCopyrightComponent,
-    //   nzMaskClosable: false,
-    //   nzClosable: false,
-    //   nzWidth: 800,
-    //   nzOnOk: this.addCopyrightAgreed
-    // });
+  }
+
+  fetchCopyrights() {
+    this.service.getSeries(this.pagination).subscribe(result => {
+      const list = result.list;
+      const rights = [];
+      let itemIndex = 0;
+      list.forEach(item => {
+        let index = 0;
+        item.rights.forEach(right => {
+          rights.push({
+            index: index++,
+            itemIndex: itemIndex,
+            pid: item.id,
+            rid: right.id,
+            project: item.name,
+            investmentType: item.investment_type,
+            type: item.program_type,
+            episode: item.episode,
+            right: right.right_type_label,
+            area: right.area_label,
+            term: right.start_date && right.end_date,
+            termIsPermanent: right.permanent_date,
+            termStartDate: right.start_date,
+            termEndDate: right.end_date,
+            termNote: right.date_remark,
+            count: item.rights.length
+          });
+        });
+        itemIndex++;
+      });
+      this.dataSet = rights;
+      this.pagination = result.pagination;
+    });
+  }
+
+  copyrightsPageChange(page: number) {
+    this.pagination.page = page;
+    this.fetchCopyrights();
+  }
+
+  filtrate() {
+    this.fetchCopyrights();
+  }
+
+  deleteSeriesCopyright(pid: number) {
+    this.service.deleteCopyrights(pid).subscribe(result => {
+      this.message.success(this.translate.instant('global.delete-successfully'));
+      this.filtrate();
+    });
   }
 
   // getOwnCopyrights() {
@@ -180,9 +217,9 @@ export class CopyrightsComponent implements OnInit {
   //   }
   // })
 
-  filtrate() {
-    // this.refreshCurrent();
-  }
+  // filtrate() {
+  //   // this.refreshCurrent();
+  // }
 
   // refreshCurrent() {
   //   this.fetchCopyrights(this.copyrightDate, this.copyrightArea, this.copyrightItem);
@@ -278,11 +315,6 @@ export class CopyrightsComponent implements OnInit {
   //       this.copyrightsPagination = res.pagination;
   //     });
   // }
-
-  copyrightsPageChange(page: number) {
-    this.copyrightsPagination.page = page;
-    // this.getCopyrightsList();
-  }
 
   // deleteCopyright(rightId: number) {
   //   this.modalService.confirm({

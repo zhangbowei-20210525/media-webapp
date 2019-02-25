@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { AddCopyrightsService } from './add-copyrights.service';
-import { ReactiveBase, FormControlService, TreeService } from '@shared';
+import { ReactiveBase, FormControlService, TreeService, MessageService } from '@shared';
+import { DatePipe } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -12,6 +14,7 @@ export class AddCopyrightsComponent implements OnInit {
 
   tab: number;
   series: any[];
+  customerOptions: any[];
   areaTemplates: any[];
   rightTemplates: any[];
   typeForm: FormGroup;
@@ -27,7 +30,9 @@ export class AddCopyrightsComponent implements OnInit {
     private fb: FormBuilder,
     private service: AddCopyrightsService,
     private fcs: FormControlService,
-    private ts: TreeService
+    private ts: TreeService,
+    private translate: TranslateService,
+    private message: MessageService
   ) { }
 
   get contract() {
@@ -43,6 +48,10 @@ export class AddCopyrightsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.service.getCustomerOptions().subscribe(result => {
+      this.customerOptions = result.list;
+    });
+
     this.service.getCopyrightTemplates().subscribe(result => {
       if (result) {
         this.service.setLeafNode(result);
@@ -186,45 +195,76 @@ export class AddCopyrightsComponent implements OnInit {
     this.dataSet = [];
   }
 
+  getDatePipe() {
+    return new DatePipe('zh-CN');
+  }
+
+  formatDate(pipe: DatePipe, date: Date) {
+    return date ? pipe.transform(date, 'yyyy-MM-dd') : null;
+  }
+
+  hasContract() {
+    return this.typeForm.get('contract').value === 'yes';
+  }
+
   save() {
-    // if (this.typeForm.get('contract').value === 'yes' && this.validationForm(this.contractForm) && this.validationForm(this.paymentForm)) {
-
-    // }
-    if (this.typeForm.get('contract').value === 'yes') {
-      if (this.validationForm(this.contractForm)) {
-        if (this.validationForm(this.paymentForm)) {
-          const contract = this.service.toContractData(
-            this.contractForm.value['contractNumber'], 
-            this.contractForm.value['contractName'],
-            null,
-            this.contractForm.value['customer']);
-
-          const orders = this.payments.map(paymentObjArr => {
-            const arr = paymentObjArr.map(item => this.paymentForm.value(item.key));
-            return this.service.toOrderData(arr[1], arr[0], arr[2]);
-          });
-
-          // const programs = this.dataSet.map(item => {
-          //   this.service.toProgramData(
-          //     item.id,
-          //     item.name,
-          //     item.type, // 影片类型，暂无
-          //     item.episodes, // 影片集数，暂无
-          //     this.typeForm.value[''],
-
-          //   );
-          // });
-
-          // 2019-02-24 到这里，以上数据需要聚合
-
-          // this.service.addCopyrights().subscribe(result => {
-
-          // });
-        }
-      } else {
-        this.validationForm(this.paymentForm);
+    if (this.hasContract()) {
+      const contract = this.validationForm(this.contractForm);
+      const payment = this.validationForm(this.paymentForm);
+      if (contract && payment) {
+        this.saveCopyrights(true);
       }
+    } else {
+      this.saveCopyrights(false);
     }
+  }
+
+  saveCopyrights(hasContract: boolean) {
+    const datePipe = this.getDatePipe();
+    let contract = null, orders = null, programs = null;
+
+    if (hasContract) {
+      contract = this.service.toContractData(
+        this.contractForm.value['contractNumber'],
+        this.contractForm.value['contractName'],
+        null,
+        this.contractForm.value['customer']);
+
+      orders = this.payments.map(paymentObjArr => {
+        const arr = paymentObjArr.map(item => this.paymentForm.value[item.key]);
+        return this.service.toOrderData(+arr[1], this.formatDate(datePipe, arr[0]), arr[2]); // 来自页面字段顺序
+      });
+    }
+
+    const groupData = this.service.groupBy(this.dataSet, item => item.id);
+    programs = groupData.map(group => {
+      const first = group[0];
+      const program = this.service.toProgramData(
+        first.id,
+        first.name,
+        first.type,
+        first.episodes,
+        this.typeForm.value['investmentType'],
+        group.map(item => {
+          return this.service.toCopyrightData(
+            item.right,
+            item.rightNote,
+            item.area,
+            item.areaNote,
+            item.termIsPermanent,
+            this.formatDate(datePipe, item.termStartDate),
+            this.formatDate(datePipe, item.termEndDate),
+            item.termNote,
+            item.note);
+        })
+      );
+      return program;
+    });
+
+    this.service.addCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
+      .subscribe(result => {
+        this.message.success(this.translate.instant('global.save-successfully'));
+      });
   }
 
 }

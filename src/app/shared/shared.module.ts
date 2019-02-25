@@ -49,6 +49,8 @@ import { SrcToUrlPipe } from './pipes/src-to-url.pipe';
 import { ProgressFormatPipe } from './pipes/progress-format.pipe';
 import { ByteFormatPipe } from './pipes/byte-format.pipe';
 import { FloorPipe } from './pipes/floor.pipe';
+import { InvestmentTypePipe } from './pipes/investment-type.pipe';
+import { DefaultCharPipe } from './pipes/default-char.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -56,7 +58,9 @@ const PIPES = [
   SrcToUrlPipe,
   ProgressFormatPipe,
   ByteFormatPipe,
-  FloorPipe
+  FloorPipe,
+  InvestmentTypePipe,
+  DefaultCharPipe
 ];
 // #endregion
 
@@ -68,7 +72,7 @@ import { RouterModule } from '@angular/router';
     ...INSIDE_COMPONENTS,
     ...COMPONENTS,
     ...DIRECTIVES,
-    ...PIPES
+    ...PIPES,
   ],
   imports: [
     CommonModule,

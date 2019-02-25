@@ -18,8 +18,12 @@ export class AddCopyrightsService {
     return this.http.get<any[]>('/api/v1/rights/template/right_types');
   }
 
-  addCopyrights(contract_data: any) {
-    return this.http.post('/api/v1/rights', contract_data);
+  addCopyrights(copyrightData: AddCopyrightsDto) {
+    return this.http.post('/api/v1/rights', copyrightData);
+  }
+
+  getCustomerOptions() {
+    return this.http.get<any>('/api/v1/custom');
   }
 
   setLeafNode(nodes: any[]) {
@@ -84,7 +88,8 @@ export class AddCopyrightsService {
     } as OrderPayDto;
   }
 
-  toProgramData(program_id: number, program_name: string, program_type: string, episodes: number, investment_type: string, right_data: CopyrightDto[]) {
+  toProgramData(program_id: number, program_name: string, program_type: string, episodes: number,
+    investment_type: string, right_data: CopyrightDto[]) {
     return {
       program_id,
       program_name,
@@ -117,80 +122,16 @@ export class AddCopyrightsService {
       program_data
     } as AddCopyrightsDto;
   }
-}
 
-const data = {
-  "contract_data": {
-    "contract_number": "SINFU79902857",
-    "contract_name": "测试合同一",
-    "remark": "测试合同备注一",
-    "custom_id": 1
-  },
-  "order_data": [
-    {
-      "pay_amount": 100000,
-      "pay_date": "2019-6-1",
-      "pay_remark": "测试账单备注一"
-    },
-    {
-      "pay_amount": 100000,
-      "pay_date": "2020-6-1",
-      "pay_remark": "测试账单备注二"
-    }
-  ],
-  "program_data": [
-    {
-      "program_id": null,
-      "program_name": "测试节目一",
-      "program_type": "tv",
-      "episodes": 40,
-      "investment_type": "purchase",
-      "right_data": [
-        {
-          "right_type": "network",
-          "right_remark": "测试权利类型备注一",
-          "area_number": "010000",
-          "area_remark": "测试区域备注一",
-          "permanent_date": false,
-          "start_date": "2019-3-1",
-          "end_date": "2021-3-1",
-          "date_remark": "测试时间备注一",
-          "remark": "测试权利备注一"
-        },
-        {
-          "right_type": "broadcast",
-          "right_remark": "测试权利类型备注二",
-          "area_number": "010000",
-          "area_remark": "测试区域备注二",
-          "permanent_date": false,
-          "start_date": "2019-3-1",
-          "end_date": "2021-3-1",
-          "date_remark": "测试时间备注二",
-          "remark": "测试权利备注二"
-        },
-        {
-          "right_type": "publish",
-          "right_remark": "测试权利类型备注三",
-          "area_number": "010000",
-          "area_remark": "测试区域备注三",
-          "permanent_date": false,
-          "start_date": "2019-3-1",
-          "end_date": "2021-3-1",
-          "date_remark": "测试时间备注三",
-          "remark": "测试权利备注三"
-        },
-        {
-          "right_type": "public",
-          "right_remark": "测试权利类型备注四",
-          "area_number": "010000",
-          "area_remark": "测试区域备注四",
-          "permanent_date": false,
-          "start_date": "2019-3-1",
-          "end_date": "2021-3-1",
-          "date_remark": "测试时间备注四",
-          "remark": "测试权利备注四"
-        }
-      ]
-    }
-  ]
+  groupBy(array: any[], f: (object: any) => any) {
+    const groups = {};
+    array.forEach(function (o) {
+      const group = JSON.stringify(f(o));
+      groups[group] = groups[group] || [];
+      groups[group].push(o);
+    });
+    return Object.keys(groups).map(function (group) {
+      return groups[group];
+    });
+  }
 }

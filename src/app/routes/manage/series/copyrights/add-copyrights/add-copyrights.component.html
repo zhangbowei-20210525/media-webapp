@@ -63,7 +63,7 @@
             <nz-form-label [nzSm]="2" nzFor="customer">签约客户</nz-form-label>
             <nz-form-control [nzSm]="10">
               <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择客户" formControlName="customer">
-                <nz-option *ngFor="let option of customerOptions" [nzLabel]="option.name" [nzValue]="option.name">
+                <nz-option *ngFor="let option of customerOptions" [nzLabel]="option.name" [nzValue]="option.id">
                 </nz-option>
               </nz-select>
               <nz-form-explain *ngIf="contractForm.get('customer').dirty && contractForm.get('customer').errors">请输入签约客户

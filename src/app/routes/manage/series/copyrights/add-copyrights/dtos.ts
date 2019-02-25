@@ -35,5 +35,5 @@ export interface CopyrightDto {
     start_date: string;
     end_date: string;
     date_remark: string;
-    remark: string
+    remark: string;
 }
