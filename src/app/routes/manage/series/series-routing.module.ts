@@ -1,3 +1,6 @@
+import { CopyrightsComponent } from './copyrights/copyrights.component';
+import { PublicitiesComponent } from './publicities/publicities.component';
+import { AllSeriesComponent } from './all-series/all-series.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SeriesComponent } from './series.component';
@@ -13,7 +16,26 @@ import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrigh
 const routes: Routes = [
   {
     path: '',
-    component: SeriesComponent
+    component: SeriesComponent,
+    children: [
+      { path: '', redirectTo: 'all', pathMatch: 'full' },
+      {
+        path: 'all',
+        component: AllSeriesComponent
+      },
+      {
+        path: 'publicity',
+        component: PublicitiesComponent
+      },
+      // {
+      //   path: 'tapes',
+      //   component: AllSeriesComponent
+      // },
+      {
+        path: 'rights',
+        component: CopyrightsComponent
+      }
+    ]
   },
   { path: 'publicity-details/:id', component: PublicityDetailsComponent },
   {

@@ -86,19 +86,22 @@
     <nav class="s-nav">
       <ul class="list s-nav-list">
         <li class="nav-item">
-          <span>全部</span>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'all'">全部</a>
         </li>
         <li class="nav-item">
-          <span>宣发</span>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'">宣发</a>
         </li>
         <li class="nav-item">
-          <span>母带</span>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'">母带</a>
         </li>
         <li class="nav-item">
-          <span>版权</span>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'">版权</a>
         </li>
       </ul>
     </nav>
+  </div>
+  <div class="block-content">
+    <router-outlet></router-outlet>
   </div>
 </div>
 <!-- <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
