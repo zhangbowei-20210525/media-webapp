@@ -7,8 +7,8 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-series-details-publicity',
-  templateUrl: './series-details-publicity.component.html',
-  styleUrls: ['./series-details-publicity.component.less']
+  templateUrl: './publicity.component.html',
+  styleUrls: ['./publicity.component.less']
 })
 export class SeriesDetailsPublicityComponent implements OnInit {
 

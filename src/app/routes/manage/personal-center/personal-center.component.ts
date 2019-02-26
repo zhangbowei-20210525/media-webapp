@@ -2,7 +2,7 @@ import { AccountService } from '@shared';
 import { Component, OnInit } from '@angular/core';
 import { PersonalCenterService } from './personal-center.service';
 import { PersonalCenterDto } from './personal-center.dto';
-import { fadeIn } from '@shared/animations/fade.animation';
+import { fadeIn } from '@shared/animations';
 
 @Component({
   selector: 'app-personal-center',

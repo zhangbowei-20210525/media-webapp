@@ -10,7 +10,7 @@ export const fadeInAnimation = animation([
     }),
     // end
     animate(
-        '200ms',
+        '450ms ease',
         style({
             opacity: 1,
         })
@@ -19,7 +19,7 @@ export const fadeInAnimation = animation([
 
 export const fadeOutAnimation = animation(
     animate(
-        '200ms',
+        '200ms ease',
         style({ opacity: 0 })
     )
 );

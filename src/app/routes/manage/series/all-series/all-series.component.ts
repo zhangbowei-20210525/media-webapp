@@ -6,15 +6,18 @@ import { PaginationDto } from '@shared';
 import { finalize } from 'rxjs/operators';
 import { AddSeriesInfoComponent } from '../components/add-series-info/add-series-info.component';
 import { SeriesDto } from './dtos';
+import { fadeIn } from '@shared/animations';
 
 @Component({
   selector: 'app-all-series',
   templateUrl: './all-series.component.html',
-  styleUrls: ['./all-series.component.less']
+  styleUrls: ['./all-series.component.less'],
+  animations: [fadeIn]
 })
 export class AllSeriesComponent implements OnInit {
 
   dataset: SeriesDto[] = [];
+  isLoaded = false;
   isLoading: boolean;
   pagination = { page: 1, page_size: 10 } as PaginationDto;
   allChecked: boolean;
@@ -29,7 +32,21 @@ export class AllSeriesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchSeries();
+    this.loadSeries();
+  }
+
+  loadSeries() {
+    this.isLoading = true;
+    this.service.getSeries(this.pagination)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        this.isLoaded = true;
+      }))
+      .subscribe(res => {
+        this.dataset = res.list;
+        this.pagination = res.pagination;
+        this.refreshStatus();
+      });
   }
 
   fetchSeries() {
@@ -59,6 +76,7 @@ export class AllSeriesComponent implements OnInit {
   }
 
   pageChange(page: number) {
+    this.pagination.page = page;
     this.refreshDataSet();
   }
 
@@ -73,20 +91,22 @@ export class AllSeriesComponent implements OnInit {
     });
   }
 
-  addSeriesAgreed = (component: AddSeriesInfoComponent) => new Promise((resolve) => {
-    component.formSubmit()
-      .subscribe(res => {
+  addSeriesAgreed = (component: AddSeriesInfoComponent) => new Promise((resolve, reject) => {
+    console.log(0);
+    if (component.validation()) {
+      component.submit().subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
-        this.service.getSeries(this.pagination).subscribe(s => {
-          this.dataset = s.list;
-          this.pagination = s.pagination;
-        });
+        this.refreshDataSet();
+        console.log(1);
         resolve();
       }, error => {
-        if (error.message) {
-          this.message.error(error.message);
-        }
+        console.log(2);
+        reject(false);
       });
+    } else {
+      console.log(3);
+      reject(false);
+    }
   })
 
   deleteSeries(id: number) {

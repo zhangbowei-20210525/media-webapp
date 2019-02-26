@@ -2,13 +2,13 @@
   <div class="block-content">
     <div class="container series-head-info">
       <h2 style="margin: 0;">{{ seriesInfo?.name }}</h2>
-      <nz-tag class="type-tag" style="margin-left: 1rem;">{{ seriesInfo?.program_type | seriesType }}</nz-tag>
+      <nz-tag style="margin-left: 1rem;" class="type-tag">{{ seriesInfo?.program_type | seriesType }}</nz-tag>
       <div class="flex-none"></div>
       <span>
-        <nz-radio-group [(ngModel)]="category" nzSize="small" (click)="categories()">
-          <label nz-radio-button nzValue="publicities">宣发</label>
-          <label nz-radio-button nzValue="tapes">母带</label>
-          <label nz-radio-button nzValue="copyrights">版权</label>
+        <nz-radio-group [(ngModel)]="category" nzSize="small">
+          <label nz-radio-button nzValue="publicities" [routerLink]="'publicity'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">宣发</label>
+          <label nz-radio-button nzValue="tapes" [routerLink]="'tape'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">母带</label>
+          <label nz-radio-button nzValue="copyrights" [routerLink]="'right'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">版权</label>
         </nz-radio-group>
       </span>
     </div>

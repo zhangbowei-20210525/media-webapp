@@ -1,78 +1,132 @@
-<div class="clearfix" style="margin: 1rem 0;">
-  <div>
-    <p>
-      <span style="margin-right: 1rem;">到期天数:</span>
-      <nz-radio-group [(ngModel)]="selectedDate" nzSize="small" (click)="filtrate()">
-        <label nz-radio-button nzValue="all">所有</label>
-        <label nz-radio-button nzValue="365">1年</label>
-        <label nz-radio-button nzValue="180">180天</label>
-        <label nz-radio-button nzValue="30">30天</label>
-      </nz-radio-group>
-    </p>
-  </div>
-  <div>
-    <p>
-      <span style="margin-right: 1rem;">发行地域:</span>
-      <nz-radio-group [(ngModel)]="selectedArea" nzSize="small" (click)="filtrate()">
-        <label nz-radio-button nzValue="all">所有</label>
-        <label nz-radio-button nzValue="0100">大陆</label>
-        <label nz-radio-button nzValue="0200">港澳台</label>
-        <label nz-radio-button nzValue="xx00">海外</label>
-      </nz-radio-group>
-    </p>
-  </div>
-  <div>
-    <p>
-      <span style="margin-right: 1rem;">发行权利:</span>
-      <nz-radio-group [(ngModel)]="selectedRight" nzSize="small" (click)="filtrate()">
-        <label nz-radio-button nzValue="all">所有</label>
-        <label nz-radio-button nzValue="broadcast">播映权</label>
-        <label nz-radio-button nzValue="network">信息网络传播权</label>
-        <label nz-radio-button nzValue="publish">出版发行权</label>
-        <label nz-radio-button nzValue="public">公播权</label>
-      </nz-radio-group>
-    </p>
-  </div>
-</div>
+<div *ngIf="isLoaded" [@fadeIn]>
+  <!-- <div class="clearfix" style="margin: 1rem 0;">
+    <div>
+      <p>
+        <span style="margin-right: 1rem;">到期天数:</span>
+        <nz-radio-group [(ngModel)]="selectedDate" nzSize="small" (click)="filtrate()">
+          <label nz-radio-button nzValue="all">所有</label>
+          <label nz-radio-button nzValue="365">1年</label>
+          <label nz-radio-button nzValue="180">180天</label>
+          <label nz-radio-button nzValue="30">30天</label>
+        </nz-radio-group>
+      </p>
+    </div>
+    <div>
+      <p>
+        <span style="margin-right: 1rem;">发行地域:</span>
+        <nz-radio-group [(ngModel)]="selectedArea" nzSize="small" (click)="filtrate()">
+          <label nz-radio-button nzValue="all">所有</label>
+          <label nz-radio-button nzValue="0100">大陆</label>
+          <label nz-radio-button nzValue="0200">港澳台</label>
+          <label nz-radio-button nzValue="xx00">海外</label>
+        </nz-radio-group>
+      </p>
+    </div>
+    <div>
+      <p>
+        <span style="margin-right: 1rem;">发行权利:</span>
+        <nz-radio-group [(ngModel)]="selectedRight" nzSize="small" (click)="filtrate()">
+          <label nz-radio-button nzValue="all">所有</label>
+          <label nz-radio-button nzValue="broadcast">播映权</label>
+          <label nz-radio-button nzValue="network">信息网络传播权</label>
+          <label nz-radio-button nzValue="publish">出版发行权</label>
+          <label nz-radio-button nzValue="public">公播权</label>
+        </nz-radio-group>
+      </p>
+    </div>
+  </div> -->
 
-<div>
-  <p class="clearfix">
-    <button nz-button nzType="default" class="rf" (click)="addCopyrights()">新增版权</button>
-  </p>
-</div>
+  <div nz-row style="margin-bottom: 1.5rem;">
+    <div nz-col nzSpan="18">
+      <div class="left-options">
+        <form nz-form [formGroup]="filtrateForm" style="width: 100%;">
+          <nz-form-item style="margin-bottom: 1rem;">
 
-<nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
-  [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>项目名称</th>
-      <th>投资类型</th>
-      <th>品类</th>
-      <th>集数</th>
-      <th>权利</th>
-      <th>范围</th>
-      <th>期限</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of dataTable.data">
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0"><a [routerLink]="['details', data.pid, 'publicity']">{{ data.project }}</a></td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
-      <td>{{ data.right }}</td>
-      <td>{{ data.area }}</td>
-      <td>
-        {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
-        (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
-      </td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
-        <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
-        <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid)"><i class="text-info" nz-icon type="delete" theme="outline"></i></a>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
+            <nz-form-label nzFor="days" [nzSm]="2">到期天数</nz-form-label>
+            <nz-form-control [nzSm]="8">
+              <nz-select formControlName="days" (ngModelChange)="onDaysChange($event)">
+                <nz-option nzValue="all" nzLabel="所有"></nz-option>
+                <nz-option nzValue="365" nzLabel="一年"></nz-option>
+                <nz-option nzValue="180" nzLabel="180天"></nz-option>
+                <nz-option nzValue="30" nzLabel="30天"></nz-option>
+              </nz-select>
+            </nz-form-control>
+
+            <nz-form-label nzFor="area" [nzSm]="2" [nzOffset]="1">发行地区</nz-form-label>
+            <nz-form-control [nzSm]="8">
+              <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
+                nzValueProperty="code" nzPlaceHolder="" nzChangeOnSelect (ngModelChange)="onAreaChange($event)">
+              </nz-cascader>
+            </nz-form-control>
+
+          </nz-form-item>
+
+          <nz-form-item style="margin-bottom: 1rem;">
+            <nz-form-label nzFor="right" [nzSm]="2">权利</nz-form-label>
+            <nz-form-control [nzSm]="8">
+              <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name"
+                nzValueProperty="code" nzPlaceHolder="" nzChangeOnSelect (ngModelChange)="onRightChange($event)">
+              </nz-cascader>
+            </nz-form-control>
+
+            <nz-form-label nzFor="date" [nzSm]="2" [nzOffset]="1">期限</nz-form-label>
+            <nz-form-control [nzSm]="8">
+                <nz-range-picker formControlName="date" (ngModelChange)="onDateChange($event)"></nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+        <!-- <nz-select style="width: 10rem;" [(ngModel)]="selectedDate" nzAllowClear nzPlaceHolder="到期天数">
+          <nz-option nzValue="all" nzLabel="所有"></nz-option>
+          <nz-option nzValue="365" nzLabel="一年"></nz-option>
+          <nz-option nzValue="180" nzLabel="180天"></nz-option>
+          <nz-option nzValue="30" nzLabel="30天"></nz-option>
+        </nz-select> -->
+      </div>
+    </div>
+    <div nz-col nzSpan="6">
+      <div class="right-options">
+        <button nz-button nzType="default" (click)="addPublishConpyrights()">新增发行</button>
+        <button nz-button nzType="default" (click)="addCopyrights()">新增版权</button>
+      </div>
+    </div>
+  </div>
+
+  <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
+    [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>项目名称</th>
+        <th>投资类型</th>
+        <th>品类</th>
+        <th>集数</th>
+        <th>权利</th>
+        <th>范围</th>
+        <th>期限</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of dataTable.data">
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+          <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
+        </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
+        <td>{{ data.right }}</td>
+        <td>{{ data.area }}</td>
+        <td>
+          {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+          (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+        </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+          <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+          <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid)"><i class="text-info"
+              nz-icon type="delete" theme="outline"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ReactiveBase, FormControlService, TreeService, MessageService } from '@shared';
-import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 import { finalize } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 
 @Component({
-  selector: 'app-add-copyrights',
-  templateUrl: './add-copyrights.component.html',
+  selector: 'app-publish-rights',
+  templateUrl: './publish-rights.component.html',
   styles: [`
     .block-operations {
       width: 100%;
@@ -18,7 +18,7 @@ import { CopyrightsService } from '../copyrights.service';
     }
   `]
 })
-export class AddCopyrightsComponent implements OnInit {
+export class PublishRightsComponent implements OnInit {
 
   tab: number;
   series: any[];
@@ -139,7 +139,7 @@ export class AddCopyrightsComponent implements OnInit {
 
   onPaymentMethodChange(value: string) {
     const count = parseInt(value, 10);
-    this.payments = this.service.getCopyrightPaymentReactives(count);
+    this.payments = this.service.getPublishRightsPaymentReactives(count);
     const fg = {};
     this.payments.map(p => this.fcs.toFormGroup(p)).forEach(p => {
       const c = p.controls;
@@ -275,13 +275,13 @@ export class AddCopyrightsComponent implements OnInit {
     });
 
     if (programs.length > 0) {
-      this.service.addCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
-        .pipe(finalize(() => this.isSaving = false))
-        .subscribe(result => {
-          this.isSaved = true;
-          this.dataSet = [];
-          this.message.success(this.translate.instant('global.save-successfully'));
-        });
+      this.service.publishRights(this.service.toPublishRightsData(contract, orders, programs))
+      .pipe(finalize(() => this.isSaving = false))
+      .subscribe(result => {
+        this.isSaved = true;
+        this.dataSet = [];
+        this.message.success(this.translate.instant('global.save-successfully'));
+      });
     } else {
       this.isSaving = false;
     }

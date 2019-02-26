@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router';
+import { switchMap, filter } from 'rxjs/operators';
 import { SeriesService } from '../series.service';
 import { MessageService } from '@shared';
 
 @Component({
   selector: 'app-series-details',
-  templateUrl: './series-details.component.html',
-  styleUrls: ['./series-details.component.less']
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.less']
 })
 export class SeriesDetailsComponent implements OnInit {
 
@@ -23,6 +23,9 @@ export class SeriesDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      console.log(event);
+    });
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');
