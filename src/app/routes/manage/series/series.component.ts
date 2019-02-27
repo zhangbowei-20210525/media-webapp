@@ -1,10 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd';
-import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
-import { TranslateService } from '@ngx-translate/core';
-import { SeriesService } from './series.service';
-import { MessageService, PaginationDto } from '@shared';
 
 @Component({
   selector: 'app-series',
@@ -13,96 +7,8 @@ import { MessageService, PaginationDto } from '@shared';
 })
 export class SeriesComponent implements OnInit {
 
-  allChecked = false;
-  indeterminate = false;
-  displayData = [];
-  seriesList = [];
-  type: string;
-  seriesPagination: PaginationDto;
-
-  constructor(
-    private router: Router,
-    private modalService: NzModalService,
-    private message: MessageService,
-    private translate: TranslateService,
-    private seriesService: SeriesService,
-  ) { }
+  constructor() { }
 
   ngOnInit() {
-    this.type = 'series';
-    this.seriesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
-      this.seriesList = res.list;
-      this.seriesPagination = res.pagination;
-    });
   }
-
-  seriesRefresh() {
-    this.type = 'series';
-    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
-      this.seriesList = res.list;
-      this.seriesPagination = res.pagination;
-    });
-  }
-
-  publicitiesRefresh() {
-    this.type = 'publicity';
-    this.seriesService.eventEmit.emit('publicitiesRefresh');
-  }
-
-  copyrightRefresh() {
-    this.type = 'copyright';
-    this.seriesService.eventEmit.emit('copyrightRefresh');
-  }
-
-  // tslint:disable-next-line:max-line-length
-  currentPageDataChange($event: Array<{ name: string; program_type: string; theme: string; episode: number; language: string; release_date: string; checked: boolean }>): void {
-    this.displayData = $event;
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-  }
-
-  refreshStatus(page: number): void {
-    this.seriesPagination.page = page;
-    this.seriesService.getSeries(this.seriesPagination).subscribe(res => {
-      this.seriesList = res.list;
-      this.seriesPagination = res.pagination;
-    });
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-  }
-
-  checkedChange() {
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-  }
-
-  checkAll(value: boolean): void {
-    this.displayData.forEach(data => {
-      data.checked = value;
-    });
-    const allChecked = this.displayData.every(x => x.checked === true);
-    const allUnChecked = this.displayData.every(x => !x.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-  }
-
-  publicity(id: number) {
-    this.router.navigate([`/manage/series/series-details/${id}/series-details-publicity`]);
-  }
-
-  tape(id: number) {
-    this.router.navigate([`/manage/series/series-details/series-details-tape`]);
-  }
-
-  copyright(id: number) {
-    this.router.navigate([`/manage/series/series-details/series-details-copyright`]);
-  }
-
 }

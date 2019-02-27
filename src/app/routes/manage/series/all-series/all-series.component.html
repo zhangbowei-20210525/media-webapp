@@ -33,11 +33,11 @@
         <td style="text-align: center">{{ data.release_date }}</td>
         <td style="text-align: center">
           <a [routerLink]="['/manage/series/d', data.id, 'publicity']">宣发</a>
-          <!-- <a (click)="tape(data.id)" style="margin-left: 10px">母带</a>
-          <a (click)="copyright(data.id)" style="margin-left: 10px">版权</a> -->
+          <a [routerLink]="['/manage/series/d', data.id, 'tape']" style="margin-left: 1rem">母带</a>
+          <a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a>
         </td>
         <td style="text-align: center">
-          <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+          <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline"></i></a>
         </td>
       </tr>
     </tbody>

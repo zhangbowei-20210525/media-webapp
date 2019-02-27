@@ -1,33 +1,26 @@
 <div class="program-details-tapes-box">
   <div class="program-details-tapes-title-wk">
     <span class="program-details-tapes-title">母带信息</span>
-    <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px">新增母带</button>
+    <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px" (click)="addTape()">新增母带</button>
   </div>
   <div class="program-details-tapes">
-    <nz-table #basicTable3 [nzData]="dataSet">
+    <nz-table #basicTable [nzData]="tapesList" nzShowPagination="false">
       <thead>
         <tr>
-          <th style="text-align: center">母带版本</th>
-          <th style="text-align: center">语言</th>
-          <th style="text-align: center">码率</th>
-          <th style="text-align: center">格式</th>
-          <th style="text-align: center">状态</th>
-          <th style="text-align: center">所有被下载次数</th>
-          <th style="text-align: center">文件</th>
+          <th style="text-align: center">母带名称</th>
+          <th style="text-align: center">母带类型</th>
           <th style="text-align: center">详情</th>
           <th style="text-align: center">操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable3.data">
+        <tr *ngFor="let data of basicTable.data" [ngClass]="{'selected': isId == data.id}">
           <td style="text-align: center">{{data.name}}</td>
-          <td style="text-align: center">{{data.age}}</td>
-          <td style="text-align: center">{{data.address}}</td>
-          <td style="text-align: center">{{data.name}}</td>
-          <td style="text-align: center">{{data.age}}</td>
-          <td style="text-align: center">{{data.address}}</td>
-          <td style="text-align: center">{{data.address}}</td>
-          <td style="text-align: center"><a routerLink="tape-details">查看</a></td>
+          <td style="text-align: center">
+            <span *ngIf="data.source_type == 'online'">在线</span>
+            <span *ngIf="data.source_type == 'entity'">实体</span>
+          </td>
+          <td style="text-align: center"><a (click)="pitchOn(data.id, data.source_type)">查看</a></td>
           <td style="text-align: center">
             <a><i nz-icon type="form" theme="outline" style="font-size: 14px"></i></a>
           </td>

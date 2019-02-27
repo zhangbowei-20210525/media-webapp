@@ -141,8 +141,8 @@ export class CopyrightsComponent implements OnInit {
     const area = this.filtrateForm.value['area'] as string[];
     const right = this.filtrateForm.value['right'] as string[];
     const trem = this.filtrateForm.value['date'] as Date[];
-    const termStart = trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '';
-    const termEnd = trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '';
+    const termStart = trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '';
+    const termEnd = trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '';
     const areaValue = area.length > 0 ? area[area.length - 1] : '';
     const rightValue = right.length > 0 ? right[right.length - 1] : '';
     console.log(termStart, termEnd);

@@ -1,0 +1,197 @@
+<!-- <div class="program-details-wrap">
+  <div class="program-details-title-wk">
+    <div>
+      <div class="program-details-name">{{seriesInfo?.name}}</div>
+      <div class="program-details-type">
+        <span *ngIf="seriesInfo.program_type == 'tv'">电影</span>
+        <span *ngIf="seriesInfo.program_type == 'film'">电视剧</span>
+        <span *ngIf="seriesInfo.program_type == 'variety'">综艺</span>
+        <span *ngIf="seriesInfo.program_type == 'other'">其他</span>
+      </div>
+      <div class="program-details-switcher">
+        <nz-radio-group [(ngModel)]="category" nzSize="small" (click)="categories()">
+          <label nz-radio-button nzValue="publicities">宣发</label>
+          <label nz-radio-button nzValue="tapes">母带</label>
+          <label nz-radio-button nzValue="copyrights">版权</label>
+        </nz-radio-group>
+      </div>
+    </div>
+  </div>
+  <div class="program-details-info-box">
+    <div class="program-details-info-wk-one">
+      <span class="program-details-info-title">基本信息</span>
+      <a><i nz-icon type="form" theme="outline" style="margin-left: 6px;font-size: 14px;float: left;margin-top: 18px"></i></a>
+    </div>
+    <div>
+      <div class="program-details-info-wk-two">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">节目名称：</span>
+          <span class="program-details-info-three">{{seriesInfo?.name}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">节目别名：</span>
+          <span class="program-details-info-three">{{seriesInfo?.nickname}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">节目类型：</span>
+          <span class="program-details-info-three">{{seriesInfo?.program_type}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">主题：</span>
+          <span class="program-details-info-three">{{seriesInfo?.theme}}</span>
+        </div>
+      </div>
+      <div class="program-details-info-wk-three">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">集数：</span>
+          <span class="program-details-info-three">{{seriesInfo?.episode}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">语言：</span>
+          <span class="program-details-info-three">{{seriesInfo?.language}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">导演：</span>
+          <span class="program-details-info-three">{{seriesInfo?.director}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">编剧：</span>
+          <span class="program-details-info-three">{{seriesInfo?.screen_writer}}</span>
+        </div>
+      </div>
+      <div class="program-details-info-wk-four">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">主演：</span>
+          <span class="program-details-info-three">{{seriesInfo?.protagonist}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">监制：</span>
+          <span class="program-details-info-three">{{seriesInfo?.supervisor}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">总制片人：</span>
+          <span class="program-details-info-three">{{seriesInfo?.general_producer}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">出品人：</span>
+          <span class="program-details-info-three">{{seriesInfo?.producer}}</span>
+        </div>
+      </div>
+      <div class="program-details-info-wk-five">
+        <div class="program-details-info-one">
+          <span class="program-details-info-two">出品方：</span>
+          <span class="program-details-info-three">{{seriesInfo?.product_company}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">发行时间：</span>
+          <span class="program-details-info-three">{{seriesInfo?.release_date}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two">简介：</span>
+          <span class="program-details-info-three" nzPlacement="topLeft" [nzTitle]="si" nz-tooltip>{{seriesInfo?.introduction}}</span>
+        </div>
+        <div class="program-details-info-four">
+          <span class="program-details-info-two"></span>
+          <span class="program-details-info-three"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div> -->
+
+<div class="block clearfix">
+  <div class="block-content">
+    <div class="container series-head-info">
+      <h2 style="margin: 0;">{{ seriesInfo?.name }}</h2>
+      <nz-tag class="type-tag" style="margin-left: 1rem;">{{ seriesInfo?.program_type | seriesType }}</nz-tag>
+      <div class="flex-none"></div>
+      <span>
+        <nz-radio-group [(ngModel)]="category" nzSize="small" (click)="categories()">
+          <label nz-radio-button nzValue="publicities">宣发</label>
+          <label nz-radio-button nzValue="tapes">母带</label>
+          <label nz-radio-button nzValue="copyrights">版权</label>
+        </nz-radio-group>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">基本信息</div>
+  </div>
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">节目名称</span>
+        <span>{{ seriesInfo?.name }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">集数</span>
+        <span>{{ seriesInfo?.episode }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">题材</span>
+        <span>{{ seriesInfo?.theme }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">语言</span>
+        <span>{{ seriesInfo?.language }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">节目别名</span>
+        <span>{{ seriesInfo?.nickname }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">发行时间</span>
+        <span>{{ seriesInfo?.release_date }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">监制</span>
+        <span>{{ seriesInfo?.supervisor }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">总制片人</span>
+        <span>{{ seriesInfo?.general_producer }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">节目类型</span>
+        <span>{{ seriesInfo?.program_type | seriesType }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">导演</span>
+        <span>{{ seriesInfo?.director }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">编剧</span>
+        <span>{{ seriesInfo?.screen_writer }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">出品人</span>
+        <span>{{ seriesInfo?.producer }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">主演</span>
+        <span>{{ seriesInfo?.protagonist }}</span>
+      </div>
+      <div nz-col nzSpan="18">
+        <span class="info-filed">出品方</span>
+        <span>{{ seriesInfo?.product_company }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="24">
+        <span class="info-filed">简介</span>
+        <span>{{ seriesInfo?.introduction }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

@@ -19,6 +19,9 @@ import { SeriesDetailsPublicityComponent } from './details/publicity/publicity.c
 import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrights.component';
 import { RightComponent } from './details/right/right.component';
 import { PublishRightsComponent } from './copyrights/publish-rights/publish-rights.component';
+import { AddTapeComponent } from './components/add-tape/add-tape.component';
+import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.component';
+import { EntityTapeDetailsComponent } from './components/entity-tape-details/entity-tape-details.component';
 
 @NgModule({
   declarations: [
@@ -37,15 +40,20 @@ import { PublishRightsComponent } from './copyrights/publish-rights/publish-righ
     AddCopyrightsComponent,
     RightComponent,
     PublishRightsComponent,
+    AddTapeComponent,
+    AddPubTapeComponent,
+    EntityTapeDetailsComponent,
   ],
   imports: [
     CommonModule,
     SeriesRoutingModule,
     PdfViewerModule,
-    SharedModule
+    SharedModule,
   ],
   entryComponents: [
-    AddSeriesInfoComponent
+    AddSeriesInfoComponent,
+    AddTapeComponent,
+    AddPubTapeComponent
   ]
 })
 export class SeriesModule { }

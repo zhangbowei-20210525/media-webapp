@@ -22,13 +22,13 @@ const routes: Routes = [
         component: ManageComponent,
         canActivate: [SimpleGuard],
         children: [
-          { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
           {
             path: 'dashboard',
             component: DashboardComponent
           },
           { path: 'series', loadChildren: './manage/series/series.module#SeriesModule' },
-           // { path: 'transmission', loadChildren: './manage/series.module#SeriesModule' },
+          { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
           // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
           { path: 'account-center', component: PersonalCenterComponent },

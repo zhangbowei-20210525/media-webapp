@@ -1,0 +1,90 @@
+
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">实体母带</div>
+  </div>
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">母带名称</span>
+        <span>{{ tapeDetailsInfo?.name }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">类型</span>
+        <span>{{ tapeDetailsInfo?.source_type }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">集数</span>
+        <span>{{ tapeDetailsInfo?.episode }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">语言</span>
+        <span>{{ tapeDetailsInfo?.language }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">字幕</span>
+        <span>{{ tapeDetailsInfo?.subtitle }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">清晰度</span>
+        <span>{{ tapeDetailsInfo?.sharpness }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">品牌</span>
+        <span>{{ tapeDetailsInfo?.brand }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨1</span>
+        <span>{{ tapeDetailsInfo?.sound_track[0] }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨2</span>
+        <span>{{ tapeDetailsInfo?.sound_track[1] }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨3</span>
+        <span>{{ tapeDetailsInfo?.sound_track[2] }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨4</span>
+        <span>{{ tapeDetailsInfo?.sound_track[3] }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨5</span>
+        <span>{{ tapeDetailsInfo?.sound_track[4] }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨6</span>
+        <span>{{ tapeDetailsInfo?.sound_track[5] }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">载体</span>
+        <span>{{ tapeDetailsInfo?.carrier }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">载体型号</span>
+        <span>{{ tapeDetailsInfo?.model }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">入库时间</span>
+        <span>{{ tapeDetailsInfo?.storage_date }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">存放地点</span>
+        <span>{{ tapeDetailsInfo?.storage_location }}</span>
+      </div>
+      <div nz-col nzSpan="18">
+        <span class="info-filed">具体位置</span>
+        <span>{{ tapeDetailsInfo?.detail_location }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import * as G2 from '@antv/g2';
 import DataSet from '@antv/data-set';
 import { SeriesService } from '../series/series.service';
+import { DashboardService } from './dashboard.service';
+import { map } from 'rxjs/operators';
+import { NzTreeNodeOptions } from 'ng-zorro-antd';
+import { TreeService } from '@shared';
+import { DashboardDto } from './dtos';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,285 +17,465 @@ export class DashboardComponent implements OnInit {
 
   activeProject: string;
   showTable: number;
+  timeFiltrate: any;
+  areaFiltrate: any;
+  right: any;
+  publish_right: any;
+  payment: any;
+  receipt: any;
+  seriesCriteria: string;
+  time: string;
+  publicityData: any;
+  publicityChart: any;
+  seriesChart: any;
+  pubType: string;
+  publishChart: any;
+  tapeType: string;
+  tapeChart: any;
+  activeProjectRight = [];
+  activeProjectPubRight = [];
+  activeProjectPublicity = [];
+  activeProjectSource = [];
+  statisticsSelectYear = [];
+  statisticsSelectArea = [];
+  allStatisticsChart: any;
+  allStatistics: NzTreeNodeOptions[];
 
   constructor(
-    private seriesService: SeriesService
+    private dashboardService: DashboardService,
+    private ts: TreeService
   ) { }
 
-  dataSet = [
-    {
-      key    : '1',
-      name   : 'John Brown',
-      age    : 32,
-      address: 'New York No. 1 Lake Park'
-    },
-    {
-      key    : '2',
-      name   : 'Jim Green',
-      age    : 42,
-      address: 'London No. 1 Lake Park'
-    },
-    {
-      key    : '3',
-      name   : 'Joe Black',
-      age    : 32,
-      address: 'Sidney No. 1 Lake Park'
-    }
-  ];
-
-   data = [{
-    item:  '事例一',
-    count:  40,
-    percent:  0.4
-  },  {
-    item:  '事例二',
-    count:  21,
-    percent:  0.21
-  },  {
-    item:  '事例三',
-    count:  17,
-    percent:  0.17
-  },  {
-    item:  '事例四',
-    count:  13,
-    percent:  0.13
-  },  {
-    item:  '事例五',
-    count:  9,
-    percent:  0.09
-  }];
-  // tslint:disable-next-line:max-line-length
-  data1 = [{'country': 'Brazil', 'year': '2015', 'value': 1.705}, {'country': 'Brazil', 'year': '2010', 'value': 1.78}, {'country': 'Brazil', 'year': '2005', 'value': 1.86}, {'country': 'Brazil', 'year': '2000', 'value': 2.13}, {'country': 'Brazil', 'year': '1995', 'value': 2.47}, {'country': 'Brazil', 'year': '1990', 'value': 2.72}, {'country': 'Brazil', 'year': '1985', 'value': 3.16}, {'country': 'Brazil', 'year': '1980', 'value': 3.82}, {'country': 'Brazil', 'year': '1975', 'value': 4.28}, {'country': 'Brazil', 'year': '1970', 'value': 4.68}, {'country': 'Brazil', 'year': '1965', 'value': 5.37}, {'country': 'Brazil', 'year': '1960', 'value': 6}, {'country': 'Brazil', 'year': '1955', 'value': 6.05}, {'country': 'Brazil', 'year': '1950', 'value': 6.1}, {'country': 'China', 'year': '2015', 'value': 1.635}, {'country': 'China', 'year': '2010', 'value': 1.6}, {'country': 'China', 'year': '2005', 'value': 1.58}, {'country': 'China', 'year': '2000', 'value': 1.55}, {'country': 'China', 'year': '1995', 'value': 1.51}, {'country': 'China', 'year': '1990', 'value': 1.895}, {'country': 'China', 'year': '1985', 'value': 2.725}, {'country': 'China', 'year': '1980', 'value': 2.55}, {'country': 'China', 'year': '1975', 'value': 3}, {'country': 'China', 'year': '1970', 'value': 4.77}, {'country': 'China', 'year': '1965', 'value': 6.25}, {'country': 'China', 'year': '1960', 'value': 6.2}, {'country': 'China', 'year': '1955', 'value': 5.4}, {'country': 'China', 'year': '1950', 'value': 6.025}, {'country': 'France', 'year': '2015', 'value': 1.973}, {'country': 'France', 'year': '2010', 'value': 1.982}, {'country': 'France', 'year': '2005', 'value': 1.978}, {'country': 'France', 'year': '2000', 'value': 1.882}, {'country': 'France', 'year': '1995', 'value': 1.762}, {'country': 'France', 'year': '1990', 'value': 1.715}, {'country': 'France', 'year': '1985', 'value': 1.805}, {'country': 'France', 'year': '1980', 'value': 1.865}, {'country': 'France', 'year': '1975', 'value': 1.87}, {'country': 'France', 'year': '1970', 'value': 2.3}, {'country': 'France', 'year': '1965', 'value': 2.639}, {'country': 'France', 'year': '1960', 'value': 2.832}, {'country': 'France', 'year': '1955', 'value': 2.689}, {'country': 'France', 'year': '1950', 'value': 2.747}, {'country': 'India', 'year': '2015', 'value': 2.303}, {'country': 'India', 'year': '2010', 'value': 2.438}, {'country': 'India', 'year': '2005', 'value': 2.796}, {'country': 'India', 'year': '2000', 'value': 3.14}, {'country': 'India', 'year': '1995', 'value': 3.483}, {'country': 'India', 'year': '1990', 'value': 3.833}, {'country': 'India', 'year': '1985', 'value': 4.266}, {'country': 'India', 'year': '1980', 'value': 4.682}, {'country': 'India', 'year': '1975', 'value': 4.974}, {'country': 'India', 'year': '1970', 'value': 5.41}, {'country': 'India', 'year': '1965', 'value': 5.723}, {'country': 'India', 'year': '1960', 'value': 5.89}, {'country': 'India', 'year': '1955', 'value': 5.896}, {'country': 'India', 'year': '1950', 'value': 5.903}, {'country': 'Japan', 'year': '2015', 'value': 1.478}, {'country': 'Japan', 'year': '2010', 'value': 1.409}, {'country': 'Japan', 'year': '2005', 'value': 1.339}, {'country': 'Japan', 'year': '2000', 'value': 1.298}, {'country': 'Japan', 'year': '1995', 'value': 1.369}, {'country': 'Japan', 'year': '1990', 'value': 1.476}, {'country': 'Japan', 'year': '1985', 'value': 1.65}, {'country': 'Japan', 'year': '1980', 'value': 1.762}, {'country': 'Japan', 'year': '1975', 'value': 1.831}, {'country': 'Japan', 'year': '1970', 'value': 2.134}, {'country': 'Japan', 'year': '1965', 'value': 2.04}, {'country': 'Japan', 'year': '1960', 'value': 2.03}, {'country': 'Japan', 'year': '1955', 'value': 2.17}, {'country': 'Japan', 'year': '1950', 'value': 2.96}, {'country': 'Nepal', 'year': '2015', 'value': 2.083}, {'country': 'Nepal', 'year': '2010', 'value': 2.318}, {'country': 'Nepal', 'year': '2005', 'value': 2.963}, {'country': 'Nepal', 'year': '2000', 'value': 3.636}, {'country': 'Nepal', 'year': '1995', 'value': 4.407}, {'country': 'Nepal', 'year': '1990', 'value': 4.97}, {'country': 'Nepal', 'year': '1985', 'value': 5.329}, {'country': 'Nepal', 'year': '1980', 'value': 5.62}, {'country': 'Nepal', 'year': '1975', 'value': 5.795}, {'country': 'Nepal', 'year': '1970', 'value': 5.866}, {'country': 'Nepal', 'year': '1965', 'value': 5.959}, {'country': 'Nepal', 'year': '1960', 'value': 5.959}, {'country': 'Nepal', 'year': '1955', 'value': 5.959}, {'country': 'Nepal', 'year': '1950', 'value': 5.959}, {'country': 'Norway', 'year': '2015', 'value': 1.827}, {'country': 'Norway', 'year': '2010', 'value': 1.819}, {'country': 'Norway', 'year': '2005', 'value': 1.924}, {'country': 'Norway', 'year': '2000', 'value': 1.806}, {'country': 'Norway', 'year': '1995', 'value': 1.862}, {'country': 'Norway', 'year': '1990', 'value': 1.886}, {'country': 'Norway', 'year': '1985', 'value': 1.8}, {'country': 'Norway', 'year': '1980', 'value': 1.687}, {'country': 'Norway', 'year': '1975', 'value': 1.81}, {'country': 'Norway', 'year': '1970', 'value': 2.35}, {'country': 'Norway', 'year': '1965', 'value': 2.8}, {'country': 'Norway', 'year': '1960', 'value': 2.898}, {'country': 'Norway', 'year': '1955', 'value': 2.837}, {'country': 'Norway', 'year': '1950', 'value': 2.602}, {'country': 'Spain', 'year': '2015', 'value': 1.391}, {'country': 'Spain', 'year': '2010', 'value': 1.329}, {'country': 'Spain', 'year': '2005', 'value': 1.394}, {'country': 'Spain', 'year': '2000', 'value': 1.29}, {'country': 'Spain', 'year': '1995', 'value': 1.19}, {'country': 'Spain', 'year': '1990', 'value': 1.28}, {'country': 'Spain', 'year': '1985', 'value': 1.46}, {'country': 'Spain', 'year': '1980', 'value': 1.88}, {'country': 'Spain', 'year': '1975', 'value': 2.55}, {'country': 'Spain', 'year': '1970', 'value': 2.85}, {'country': 'Spain', 'year': '1965', 'value': 2.84}, {'country': 'Spain', 'year': '1960', 'value': 2.81}, {'country': 'Spain', 'year': '1955', 'value': 2.7}, {'country': 'Spain', 'year': '1950', 'value': 2.53}, {'country': 'Swaziland', 'year': '2015', 'value': 3.014}, {'country': 'Swaziland', 'year': '2010', 'value': 3.3}, {'country': 'Swaziland', 'year': '2005', 'value': 3.75}, {'country': 'Swaziland', 'year': '2000', 'value': 4}, {'country': 'Swaziland', 'year': '1995', 'value': 4.45}, {'country': 'Swaziland', 'year': '1990', 'value': 5.2}, {'country': 'Swaziland', 'year': '1985', 'value': 6}, {'country': 'Swaziland', 'year': '1980', 'value': 6.5}, {'country': 'Swaziland', 'year': '1975', 'value': 6.733}, {'country': 'Swaziland', 'year': '1970', 'value': 6.866}, {'country': 'Swaziland', 'year': '1965', 'value': 6.849}, {'country': 'Swaziland', 'year': '1960', 'value': 6.75}, {'country': 'Swaziland', 'year': '1955', 'value': 6.7}, {'country': 'Swaziland', 'year': '1950', 'value': 6.7}, {'country': 'U.S.', 'year': '2015', 'value': 1.886}, {'country': 'U.S.', 'year': '2010', 'value': 1.877}, {'country': 'U.S.', 'year': '2005', 'value': 2.05}, {'country': 'U.S.', 'year': '2000', 'value': 2.042}, {'country': 'U.S.', 'year': '1995', 'value': 1.996}, {'country': 'U.S.', 'year': '1990', 'value': 2.03}, {'country': 'U.S.', 'year': '1985', 'value': 1.915}, {'country': 'U.S.', 'year': '1980', 'value': 1.804}, {'country': 'U.S.', 'year': '1975', 'value': 1.772}, {'country': 'U.S.', 'year': '1970', 'value': 2.029}, {'country': 'U.S.', 'year': '1965', 'value': 2.543}, {'country': 'U.S.', 'year': '1960', 'value': 3.234}, {'country': 'U.S.', 'year': '1955', 'value': 3.582}, {'country': 'U.S.', 'year': '1950', 'value': 3.311}, {'country': 'Yemen', 'year': '2015', 'value': 3.837}, {'country': 'Yemen', 'year': '2010', 'value': 4.4}, {'country': 'Yemen', 'year': '2005', 'value': 5}, {'country': 'Yemen', 'year': '2000', 'value': 5.9}, {'country': 'Yemen', 'year': '1995', 'value': 6.8}, {'country': 'Yemen', 'year': '1990', 'value': 8.2}, {'country': 'Yemen', 'year': '1985', 'value': 8.8}, {'country': 'Yemen', 'year': '1980', 'value': 8.8}, {'country': 'Yemen', 'year': '1975', 'value': 8.6}, {'country': 'Yemen', 'year': '1970', 'value': 7.9}, {'country': 'Yemen', 'year': '1965', 'value': 7.8}, {'country': 'Yemen', 'year': '1960', 'value': 7.6}, {'country': 'Yemen', 'year': '1955', 'value': 7.4}, {'country': 'Yemen', 'year': '1950', 'value': 7.35}];
-
-
-  data2 = [{
-    year: '1951 年',
-    sales: 38
-  }, {
-    year: '1952 年',
-    sales: 52
-  }, {
-    year: '1956 年',
-    sales: 61
-  }, {
-    year: '1957 年',
-    sales: 145
-  }, {
-    year: '1958 年',
-    sales: 48
-  }, {
-    year: '1959 年',
-    sales: 38
-  }, {
-    year: '1960 年',
-    sales: 38
-  }, {
-    year: '1962 年',
-    sales: 38
-  }];
-
-  data3 = [{
-    item: '事例一',
-    count: 40,
-    percent: 0.4
-  }, {
-    item: '事例二',
-    count: 21,
-    percent: 0.21
-  }, {
-    item: '事例三',
-    count: 17,
-    percent: 0.17
-  }, {
-    item: '事例四',
-    count: 13,
-    percent: 0.13
-  }, {
-    item: '事例五',
-    count: 9,
-    percent: 0.09
-  }];
   ngOnInit() {
-   const  aa = { page: 1, count: 10, page_size: 10 } as any;
-    this.seriesService.getSeries(aa).subscribe(res => {
-      console.log('123');
-      // this.seriesList = res.list;
-      // this.seriesPagination = res.pagination;
-    });
+    this.seriesCriteria = 'investment_type';
+    this.time = 'day';
+    this.pubType = 'custom';
+    this.tapeType = 'publish';
+    this.activeProject = 'right';
     this.showTable = 1;
-   const chart = new G2.Chart({
-      container:  'mountNode',
-      forceFit:  true,
-      width:  520,
-      height:  360,
-      // padding:  [ 0,  0,  0,  0]
+    this.dashboardService.getExpireInfo().pipe(map(m => {
+      m.data.right.data.length = 5;
+      m.data.publish_right.data.length = 5;
+      m.data.payment.data.length = 5;
+      m.data.receipt.data.length = 5;
+      return m;
+    })).subscribe(res => {
+      this.right = res.data.right;
+      this.publish_right = res.data.publish_right;
+      this.payment = res.data.payment;
+      this.receipt = res.data.receipt;
     });
-    chart.source(this.data,  {
-      percent:  {
-        formatter:  function formatter(val) {
-          val = val * 100 + '%';
-          return val;
-        }
-      }
+    this.getSeriesStatisticsInfo();
+    this.getPublicityStatisticsInfo();
+    this.getPublishStatisticsInfo();
+    this.getTapeStatisticsInfo();
+    this.getAllStatisticsInfo();
+    this.dashboardService.getActiveProject('right').subscribe(res => {
+      this.activeProjectRight = res.data;
     });
-    chart.coord('theta', {
-      radius:  0.75,  // 设置半径，值范围为 0 至 1
-      innerRadius:  0,  // 空心圆的半径，值范围为 0 至 1
-      startAngle:  -1 * Math.PI / 2,  // 极坐标的起始角度，单位为弧度
-      endAngle:  3 * Math.PI / 2 // 极坐标的结束角度，单位为弧度
-    });
-    chart.tooltip({
-      showTitle: false,
-      itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-    });
-    chart.intervalStack().position('percent').color('item').label('percent', {
-      formatter: function formatter(val, item) {
-        return item.point.item + ': ' + val;
-      }
-    }).tooltip('item*percent', function(item, percent) {
-      percent = percent * 100 + '%';
-      return {
-        name: item,
-        value: percent
-      };
-    }).style({
-      lineWidth: 1,
-      stroke: '#fff'
-    });
-    chart.render();
-
-
-
-    const dv = new DataSet.View().source(this.data1);
-     dv.transform({
-      type: 'sort',
-      callback: function callback(a, b) {
-        return a.year - b.year;
-      }
-    });
-
-    const chart1 = new G2.Chart({
-      container:  'mountNode1',
-      forceFit:  true,
-      width: 520.,
-      height: 300,
-      padding:  [10,  30,  80,  30]
-    });
-    chart1.source(dv);
-    chart1.scale('year',  {
-      range:  [0,  1]
-    });
-    chart1.axis('year',  {
-      label:  {
-        textStyle:  {
-          fill:  '#aaaaaa'
-        }
-      }
-    });
-    chart1.axis('value',  {
-      label:  {
-        textStyle:  {
-          fill:  '#aaaaaa'
-        }
-      }
-    });
-    chart1.tooltip({
-      shared:  true,
-    });
-    chart1.line().position('year*value').color('country').size('country',  function(val) {
-      return 2;
-    }).opacity('country',  function(val) {
-      return 0.7;
-    });
-    chart1.point().position('year*value').color('country').size('country',  function(val) {
-      return 0;
-    }).style({
-      lineWidth:  2
-    });
-    chart1.render();
-
-
-    const chart2 = new G2.Chart({
-      container: 'mountNode2',
-      forceFit: true,
-      width: 520,
-      height: 350,
-
-    });
-    chart2.source(this.data2);
-    chart2.scale('sales', {
-      tickInterval: 20
-    });
-    chart2.interval().position('year*sales');
-    chart2.render();
-
-
-
-    const chart3 = new G2.Chart({
-      container: 'mountNode3',
-      forceFit: true,
-      width:  520,
-      height:  360,
-      animate: false
-    });
-    chart3.source(this.data3, {
-      percent: {
-        formatter: function formatter(val) {
-          val = val * 100 + '%';
-          return val;
-        }
-      }
-    });
-    chart3.coord('theta', {
-      radius:  0.75,  // 设置半径，值范围为 0 至 1
-      innerRadius:  0.6,  // 空心圆的半径，值范围为 0 至 1
-      startAngle:  -1 * Math.PI / 2,  // 极坐标的起始角度，单位为弧度
-      endAngle:  3 * Math.PI / 2 // 极坐标的结束角度，单位为弧度
-    });
-    chart3.tooltip({
-      showTitle: false,
-      itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-    });
-    // 辅助文本
-    chart3.guide().html({
-      position: ['50%', '50%'],
-      // tslint:disable-next-line:max-line-length
-      html: '<div style="color:#8c8c8c;font-size: 14px;text-align: center;width: 10em;">主机<br><span style="color:#8c8c8c;font-size:20px">200</span>台</div>',
-      alignX: 'middle',
-      alignY: 'middle'
-    });
-    const interval = chart3.intervalStack().position('percent').color('item').label('percent', {
-      formatter: function formatter(val, item) {
-        return item.point.item + ': ' + val;
-      }
-    }).tooltip('item*percent', function(item, percent) {
-      percent = percent * 100 + '%';
-      return {
-        name: item,
-        value: percent
-      };
-    }).style({
-      lineWidth: 1,
-      stroke: '#fff'
-    });
-    chart3.render();
-
-
-}
-
-activeProjects() {
-  if ( this.activeProject === 'programRights' ) {
-    this.showTable = 1;
   }
-  if ( this.activeProject === 'pubRights' ) {
-    this.showTable = 2;
-  }
-  if ( this.activeProject === 'publicitiesMaterial' ) {
-    this.showTable = 3;
-  }
-  if ( this.activeProject === 'tapesManage' ) {
-    this.showTable = 4;
-  }
-}
 
+  getStatisticsSelectYear(origins: DashboardDto[]): NzTreeNodeOptions[] {
+    return this.ts.getNzTreeNodes(origins, item => ({
+      title: item.name,
+      key: item.code,
+      isLeaf: !!item.children && item.children.length < 1,
+      selectable: true,
+      expanded: true,
+      disableCheckbox: false,
+      checked: false
+    }));
+  }
+
+  getAllStatisticsInfo() {
+    this.dashboardService.getAllStatistics('', '').subscribe(res => {
+      this.statisticsSelectArea = this.getStatisticsSelectYear(res.data.meta.area_number_choices);
+      this.statisticsSelectYear = res.data.meta.year_choices;
+      this.allStatisticsChart = new G2.Chart({
+        container: 'allStatistics',
+        forceFit: true,
+        width: 1100,
+        height: 425,
+        padding: [10, 30, 80, 30]
+      });
+      this.allStatisticsChart.source(res.data.list);
+      // this.allStatisticsChart.scale('value', {
+      //   tickInterval: 20
+      // });
+      // this.allStatisticsChart.interval().position('label*value');
+      // this.allStatisticsChart.render();
+      this.allStatisticsChart.axis('label', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
+          }
+        },
+        tickLine: {
+          alignWithLabel: false,
+          length: 0
+        }
+      });
+      this.allStatisticsChart.axis('value', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
+          }
+        },
+        title: {
+          offset: 50
+        }
+      });
+      this.allStatisticsChart.legend({
+        position: 'top-center'
+      });
+      this.allStatisticsChart.interval().position('label*value').color('line').opacity(1).adjust([{
+        type: 'dodge',
+        marginRatio: 1 / 32
+    }]);
+    this.allStatisticsChart.render();
+      // const dv = new DataSet.View().source(res.data.list);
+      // dv.transform({
+      //   type: 'sort',
+      //   callback: function callback(a, b) {
+      //     return a.label - b.label;
+      //   }
+      // });
+
+      // this.allStatisticsChart = new G2.Chart({
+      //   container: 'allStatistics',
+      //   forceFit: true,
+      //   width: 1100,
+      //   height: 425,
+      //   padding: [10, 30, 80, 30]
+      // });
+      // this.allStatisticsChart.source(dv);
+      // this.allStatisticsChart.scale('label', {
+      //   range: [0, 1]
+      // });
+      // this.allStatisticsChart.axis('label', {
+      //   label: {
+      //     textStyle: {
+      //       fill: '#aaaaaa'
+      //     }
+      //   }
+      // });
+      // this.allStatisticsChart.axis('value', {
+      //   label: {
+      //     textStyle: {
+      //       fill: '#aaaaaa'
+      //     }
+      //   }
+      // });
+      // this.allStatisticsChart.tooltip({
+      //   shared: true,
+      // });
+      // this.allStatisticsChart.line().position('label*value').color('line').size('line', function (val) {
+      //   return 2;
+      // }).opacity('line', function (val) {
+      //   return 0.7;
+      // });
+      // this.allStatisticsChart.point().position('label*value').color('line').size('line', function (val) {
+      //   return 0;
+      // }).style({
+      //   lineWidth: 2
+      // });
+      // this.allStatisticsChart.render();
+    });
+  }
+
+  getSeriesStatisticsInfo() {
+    this.dashboardService.getSeriesStatistics('investment_type').subscribe(res => {
+      this.seriesChart = new G2.Chart({
+        container: 'seriesStatistics',
+        forceFit: true,
+        width: 520,
+        height: 360,
+        // padding:  [ 0,  0,  0,  0]
+      });
+      this.seriesChart.source(res.data, {
+        percent: {
+          formatter: function formatter(val) {
+            val = val * 100 + '%';
+            return val;
+          }
+        }
+      });
+      this.seriesChart.coord('theta', {
+        radius: 0.75,  // 设置半径，值范围为 0 至 1
+        innerRadius: 0,  // 空心圆的半径，值范围为 0 至 1
+        startAngle: -1 * Math.PI / 2,  // 极坐标的起始角度，单位为弧度
+        endAngle: 3 * Math.PI / 2 // 极坐标的结束角度，单位为弧度
+      });
+      this.seriesChart.tooltip({
+        showTitle: false,
+        itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+      });
+      this.seriesChart.intervalStack().position('percent').color('label').label('percent', {
+        formatter: function formatter(val, label) {
+          return label.point.label + ': ' + val;
+        }
+      }).tooltip('label*percent', function (label, percent) {
+        percent = percent * 100 + '%';
+        return {
+          name: label,
+          value: percent
+        };
+      }).style({
+        lineWidth: 1,
+        stroke: '#fff'
+      });
+      this.seriesChart.render();
+    });
+  }
+
+  getPublicityStatisticsInfo() {
+    this.dashboardService.getPublicityStatistics('day').subscribe(res => {
+      const dv = new DataSet.View().source(res.data);
+      dv.transform({
+        type: 'sort',
+        callback: function callback(a, b) {
+          return a.label - b.label;
+        }
+      });
+
+      this.publicityChart = new G2.Chart({
+        container: 'publicityStatistics',
+        forceFit: true,
+        width: 520,
+        height: 300,
+        padding: [10, 30, 80, 30]
+      });
+      this.publicityChart.source(dv);
+      this.publicityChart.scale('label', {
+        range: [0, 1]
+      });
+      this.publicityChart.axis('label', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
+          }
+        }
+      });
+      this.publicityChart.axis('value', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
+          }
+        }
+      });
+      this.publicityChart.tooltip({
+        shared: true,
+      });
+      this.publicityChart.line().position('label*value').color('line').size('line', function (val) {
+        return 2;
+      }).opacity('line', function (val) {
+        return 0.7;
+      });
+      this.publicityChart.point().position('label*value').color('line').size('line', function (val) {
+        return 0;
+      }).style({
+        lineWidth: 2
+      });
+      this.publicityChart.render();
+    });
+  }
+
+  getPublishStatisticsInfo () {
+    this.dashboardService.getPublishStatistics('custom').subscribe(res => {
+      this.publishChart = new G2.Chart({
+        container: 'publishStatistics',
+        forceFit: true,
+        width: 520,
+        height: 350,
+      });
+      this.publishChart.source(res.data);
+      this.publishChart.scale('value', {
+        tickInterval: 20
+      });
+      this.publishChart.interval().position('label*value');
+      this.publishChart.render();
+    });
+  }
+
+  getTapeStatisticsInfo () {
+    this.dashboardService.getTapeStatistics('publish').subscribe(res => {
+      this.tapeChart = new G2.Chart({
+        container: 'tapeStatistics',
+        forceFit: true,
+        width: 520,
+        height: 350,
+      });
+      this.tapeChart.source(res.data);
+      this.tapeChart.scale('value', {
+        tickInterval: 20
+      });
+      this.tapeChart.interval().position('label*value');
+      this.tapeChart.render();
+    });
+  }
+
+  switchoverSeriesCriteria() {
+    if (this.seriesCriteria === 'investment_type') {
+      this.dashboardService.getSeriesStatistics('investment_type').subscribe(res => {
+        this.seriesChart.source(res.data, {
+          percent: {
+            formatter: function formatter(val) {
+              val = val * 100 + '%';
+              return val;
+            }
+          }
+        });
+        this.seriesChart.render();
+      });
+    }
+
+    if (this.seriesCriteria === 'program_type') {
+      this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
+        this.seriesChart.source(res.data, {
+          percent: {
+            formatter: function formatter(val) {
+              val = val * 100 + '%';
+              return val;
+            }
+          }
+        });
+        this.seriesChart.render();
+      });
+    }
+  }
+
+  switchoverTime() {
+    if (this.time === 'day') {
+      this.dashboardService.getPublicityStatistics('day').subscribe(res => {
+        const dv = new DataSet.View().source(res.data);
+        dv.transform({
+          type: 'sort',
+          callback: function callback(a, b) {
+            return a.label - b.label;
+          }
+        });
+        this.publicityChart.source(dv);
+        this.publicityChart.render();
+      });
+    }
+
+    if (this.time === 'month') {
+      this.dashboardService.getPublicityStatistics('month').subscribe(res => {
+        const dv = new DataSet.View().source(res.data);
+        dv.transform({
+          type: 'sort',
+          callback: function callback(a, b) {
+            return a.label - b.label;
+          }
+        });
+        this.publicityChart.source(dv);
+        this.publicityChart.render();
+      });
+    }
+
+    if (this.time === 'year') {
+      this.dashboardService.getPublicityStatistics('year').subscribe(res => {
+        const dv = new DataSet.View().source(res.data);
+        dv.transform({
+          type: 'sort',
+          callback: function callback(a, b) {
+            return a.label - b.label;
+          }
+        });
+        this.publicityChart.source(dv);
+        this.publicityChart.render();
+      });
+    }
+  }
+
+  switchoverPubType() {
+    if (this.pubType === 'custom') {
+      this.dashboardService.getPublishStatistics('custom').subscribe(res => {
+        this.publishChart.source(res.data);
+        this.publishChart.render();
+      });
+    }
+    if (this.pubType === 'right') {
+      this.dashboardService.getPublishStatistics('right').subscribe(res => {
+        this.publishChart.source(res.data);
+        this.publishChart.render();
+      });
+
+    }
+    if (this.pubType === 'area') {
+      this.dashboardService.getPublishStatistics('area').subscribe(res => {
+        this.publishChart.source(res.data);
+        this.publishChart.render();
+      });
+    }
+  }
+
+  switchoverTape() {
+    if (this.tapeType === 'publish') {
+      this.dashboardService.getTapeStatistics('publish').subscribe(res => {
+        this.tapeChart.source(res.data);
+        this.tapeChart.render();
+      });
+    }
+    if (this.tapeType === 'purchase') {
+      this.dashboardService.getTapeStatistics('purchase').subscribe(res => {
+        this.tapeChart.source(res.data);
+        this.tapeChart.render();
+      });
+    }
+  }
+
+  activeProjects() {
+    if (this.activeProject === 'right') {
+      this.showTable = 1;
+      this.dashboardService.getActiveProject('right').subscribe(res => {
+        this.activeProjectRight = res.data;
+      });
+    }
+    if (this.activeProject === 'publish_right') {
+      this.showTable = 2;
+      this.dashboardService.getActiveProject('publish_right').subscribe(res => {
+        this.activeProjectPubRight = res.data;
+      });
+    }
+    if (this.activeProject === 'publicity') {
+      this.showTable = 3;
+      this.dashboardService.getActiveProject('publicity').subscribe(res => {
+        this.activeProjectPublicity = res.data;
+      });
+    }
+    if (this.activeProject === 'source') {
+      this.showTable = 4;
+      this.dashboardService.getActiveProject('source').subscribe(res => {
+        this.activeProjectSource = res.data;
+      });
+    }
+  }
+
+
+  areaChange(event) {
+    this.areaFiltrate = event;
+    if (this.timeFiltrate === undefined) {
+      this.timeFiltrate = '';
+    }
+    this.dashboardService.getAllStatistics(this.timeFiltrate, this.areaFiltrate).subscribe(res => {
+      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.data.meta.area_number_choices);
+      this.statisticsSelectYear = res.data.meta.year_choices;
+      this.allStatisticsChart.source(res.data.list);
+      this.allStatisticsChart.render();
+    });
+  }
+
+  yearChange(event) {
+    this.timeFiltrate = event;
+    if (this.areaFiltrate === undefined) {
+      this.areaFiltrate = '';
+    }
+    this.dashboardService.getAllStatistics(this.timeFiltrate, this.areaFiltrate).subscribe(res => {
+      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.data.meta.area_number_choices);
+      this.statisticsSelectYear = res.data.meta.year_choices;
+      this.allStatisticsChart.source(res.data.list);
+      this.allStatisticsChart.render();
+    });
+  }
 }

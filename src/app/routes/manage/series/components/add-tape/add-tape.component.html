@@ -1,0 +1,252 @@
+<div class="modal-panel">
+
+  <nz-radio-group [(ngModel)]="source_type" style="height: 50px;">
+    <label nz-radio nzValue="online">在线母带</label>
+    <label nz-radio nzValue="entity">实体母带</label>
+  </nz-radio-group>
+
+  <form nz-form [formGroup]="onlineTapeForm" [hidden]="source_type == 'entity'">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>母带名称</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input id="name" formControlName="name" placeholder="请输入母带名称">
+        <nz-form-explain *ngIf="onlineTapeForm.get('name').dirty && onlineTapeForm.get('name').errors">请输入母带名称
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="language">语言</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-select id="language" formControlName="language" nzPlaceHolder="请选择语言种类">
+          <nz-option nzLabel="汉语" nzValue="Chinese"></nz-option>
+          <nz-option nzLabel="英语" nzValue="English"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="onlineTapeForm.get('language').dirty && onlineTapeForm.get('language').errors">请选择语言
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="subtitle">字幕</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-select id="subtitle" formControlName="subtitle" nzPlaceHolder="请选择字幕类型">
+          <nz-option nzLabel="中文" nzValue="Chinese"></nz-option>
+          <nz-option nzLabel="英文" nzValue="English"></nz-option>
+          <nz-option nzLabel="其他" nzValue="other"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="onlineTapeForm.get('subtitle').dirty && onlineTapeForm.get('subtitle').errors">请选择字幕类型</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="format">格式</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-select id="format" formControlName="format" nzPlaceHolder="请选择母带格式">
+          <nz-option nzLabel="AVI" nzValue="AVI"></nz-option>
+          <nz-option nzLabel="WMV" nzValue="WMV"></nz-option>
+          <nz-option nzLabel="RM" nzValue="RM"></nz-option>
+          <nz-option nzLabel="RMVB" nzValue="RMVB"></nz-option>
+          <nz-option nzLabel="MPEG1" nzValue="MPEG1"></nz-option>
+          <nz-option nzLabel="MPEG2" nzValue="MPEG2"></nz-option>
+          <nz-option nzLabel="MPEG4(MP4)" nzValue="MPEG4(MP4)"></nz-option>
+          <nz-option nzLabel="3GP" nzValue="3GP"></nz-option>
+          <nz-option nzLabel="SWF" nzValue="SWF"></nz-option>
+          <nz-option nzLabel="VOB" nzValue="VOB"></nz-option>
+          <nz-option nzLabel="DAT" nzValue="DAT"></nz-option>
+          <nz-option nzLabel="MOV" nzValue="MOV"></nz-option>
+          <nz-option nzLabel="M4V" nzValue="M4V"></nz-option>
+          <nz-option nzLabel="FLV" nzValue="FLV"></nz-option>
+          <nz-option nzLabel="F4V" nzValue="F4V"></nz-option>
+          <nz-option nzLabel="MKV" nzValue="MKV"></nz-option>
+          <nz-option nzLabel="MTS" nzValue="MTS"></nz-option>
+          <nz-option nzLabel="TS" nzValue="TS"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="onlineTapeForm.get('format').dirty && onlineTapeForm.get('format').errors">请选择母带格式
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="bit_rate">码率</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-input-group nzAddOnAfter="kbps">
+          <nz-select id="bit_rate" formControlName="bit_rate" style="width: 100%" nzPlaceHolder="请选择合适的码率或手动输入">
+              <nz-option nzLabel="1000" nzValue="1000"></nz-option>
+              <nz-option nzLabel="2000" nzValue="2000"></nz-option>
+              <nz-option nzLabel="3000" nzValue="3000"></nz-option>
+              <nz-option nzLabel="4000" nzValue="4000"></nz-option>
+              <nz-option nzLabel="5000" nzValue="5000"></nz-option>
+              <nz-option nzLabel="6000" nzValue="6000"></nz-option>
+              <nz-option nzLabel="7000" nzValue="7000"></nz-option>
+              <nz-option nzLabel="8000" nzValue="8000"></nz-option>
+              <nz-option nzLabel="9000" nzValue="9000"></nz-option>
+              <nz-option nzLabel="10000" nzValue="10000"></nz-option>
+            </nz-select>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+
+  <form nz-form [formGroup]="entityTapeForm" [hidden]="source_type == 'online'">
+    <nz-form-item>
+      <nz-form-label [nzSm]="3" nzFor="name" nzRequired>母带名称</nz-form-label>
+      <nz-form-control [nzSm]="9">
+        <input nz-input id="name" formControlName="name" placeholder="请输入母带名称">
+        <nz-form-explain *ngIf="entityTapeForm.get('name').dirty && entityTapeForm.get('name').errors">请输入母带名称
+        </nz-form-explain>
+      </nz-form-control>
+      <nz-form-label [nzSm]="3" nzFor="episode">集数</nz-form-label>
+      <nz-form-control [nzSm]="9">
+        <input nz-input id="episode" formControlName="episode" placeholder="请输入母带集数">
+        <nz-form-explain *ngIf="entityTapeForm.get('episode').dirty && entityTapeForm.get('episode').errors">请输入母带集数
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="3" nzFor="language">语言</nz-form-label>
+      <nz-form-control [nzSm]="9">
+        <nz-select id="language" formControlName="language" nzPlaceHolder="请选择语言种类">
+          <nz-option nzLabel="汉语" nzValue="汉语"></nz-option>
+          <nz-option nzLabel="粤语" nzValue="粤语"></nz-option>
+          <nz-option nzLabel="英语" nzValue="英语"></nz-option>
+          <nz-option nzLabel="法语" nzValue="法语"></nz-option>
+          <nz-option nzLabel="泰语" nzValue="泰语"></nz-option>
+          <nz-option nzLabel="德语" nzValue="德语"></nz-option>
+          <nz-option nzLabel="俄语" nzValue="俄语"></nz-option>
+          <nz-option nzLabel="其他语言" nzValue="其他语言"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="entityTapeForm.get('language').dirty && entityTapeForm.get('language').errors">请选择语言
+        </nz-form-explain>
+      </nz-form-control>
+      <nz-form-label [nzSm]="3" nzFor="subtitle">字幕</nz-form-label>
+      <nz-form-control [nzSm]="9">
+        <nz-select id="subtitle" formControlName="subtitle" nzPlaceHolder="请选择字幕类型">
+          <nz-option nzLabel="中文" nzValue="Chinese"></nz-option>
+          <nz-option nzLabel="英文" nzValue="English"></nz-option>
+          <nz-option nzLabel="其他" nzValue="other"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="entityTapeForm.get('subtitle').dirty && entityTapeForm.get('subtitle').errors">请选择字幕类型
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="3" nzFor="ch1">声轨1</nz-form-label>
+        <nz-form-control [nzSm]="9">
+          <nz-select id="ch1" formControlName="ch1" nzPlaceHolder="请选择声轨类型">
+            <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
+            <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="entityTapeForm.get('ch1').dirty && entityTapeForm.get('ch1').errors">请选择声轨类型</nz-form-explain>
+        </nz-form-control>
+        <nz-form-label [nzSm]="3" nzFor="ch2">声轨2</nz-form-label>
+        <nz-form-control [nzSm]="9">
+          <nz-select id="ch2" formControlName="ch2" nzPlaceHolder="请选择声轨类型">
+            <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
+            <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="entityTapeForm.get('ch2').dirty && entityTapeForm.get('ch2').errors">请选择声轨类型</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+          <nz-form-label [nzSm]="3" nzFor="ch3">声轨3</nz-form-label>
+          <nz-form-control [nzSm]="9">
+            <nz-select id="ch3" formControlName="ch3" nzPlaceHolder="请选择声轨类型">
+              <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
+              <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="entityTapeForm.get('ch3').dirty && entityTapeForm.get('ch3').errors">请选择声轨类型</nz-form-explain>
+          </nz-form-control>
+          <nz-form-label [nzSm]="3" nzFor="ch4">声轨4</nz-form-label>
+          <nz-form-control [nzSm]="9">
+            <nz-select id="ch4" formControlName="ch4" nzPlaceHolder="请选择声轨类型">
+              <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
+              <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="entityTapeForm.get('ch4').dirty && entityTapeForm.get('ch4').errors">请选择声轨类型</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" nzFor="ch5">声轨5</nz-form-label>
+            <nz-form-control [nzSm]="9">
+              <nz-select id="ch5" formControlName="ch5" nzPlaceHolder="请选择声轨类型">
+                <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
+                <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="entityTapeForm.get('ch5').dirty && entityTapeForm.get('ch5').errors">请选择声轨类型</nz-form-explain>
+            </nz-form-control>
+            <nz-form-label [nzSm]="3" nzFor="ch6">声轨6</nz-form-label>
+            <nz-form-control [nzSm]="9">
+              <nz-select id="ch6" formControlName="ch6" nzPlaceHolder="请选择声轨类型">
+                <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
+                <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="entityTapeForm.get('ch6').dirty && entityTapeForm.get('ch6').errors">请选择声轨类型</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+              <nz-form-label [nzSm]="3" nzFor="sharpness">清晰度</nz-form-label>
+              <nz-form-control [nzSm]="9">
+                <nz-select id="sharpness" formControlName="sharpness" nzPlaceHolder="请选择清晰度">
+                  <nz-option nzLabel="标清" nzValue="SD"></nz-option>
+                  <nz-option nzLabel="高清" nzValue="HD"></nz-option>
+                  <nz-option nzLabel="蓝光" nzValue="BL"></nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="entityTapeForm.get('sharpness').dirty && entityTapeForm.get('sharpness').errors">请选择清晰度</nz-form-explain>
+              </nz-form-control>
+              <nz-form-label [nzSm]="3" nzFor="carrier">载体</nz-form-label>
+              <nz-form-control [nzSm]="9">
+                <nz-select id="carrier" formControlName="carrier" nzPlaceHolder="请选择载体类型">
+                  <nz-option nzLabel="磁带" nzValue="tape"></nz-option>
+                  <nz-option nzLabel="光盘" nzValue="CD"></nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="entityTapeForm.get('carrier').dirty && entityTapeForm.get('carrier').errors">请选择载体类型</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="3" nzFor="brand">品牌</nz-form-label>
+                <nz-form-control [nzSm]="9">
+                  <nz-select id="brand" formControlName="brand" nzPlaceHolder="请选择品牌种类">
+                    <nz-option nzLabel="Sony" nzValue="Sony"></nz-option>
+                  </nz-select>
+                  <nz-form-explain *ngIf="entityTapeForm.get('brand').dirty && entityTapeForm.get('brand').errors">请选择品牌种类</nz-form-explain>
+                </nz-form-control>
+                <nz-form-label [nzSm]="3" nzFor="model">载体型号</nz-form-label>
+                <nz-form-control [nzSm]="9">
+                  <nz-select id="model" formControlName="model" nzPlaceHolder="请选择载体型号">
+                    <nz-option nzLabel="D1" nzValue="D1"></nz-option>
+                    <nz-option nzLabel="D2" nzValue="D2"></nz-option>
+                    <nz-option nzLabel="D3" nzValue="D3"></nz-option>
+                  </nz-select>
+                  <nz-form-explain *ngIf="entityTapeForm.get('model').dirty && entityTapeForm.get('model').errors">请选择载体型号</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                  <nz-form-label [nzSm]="3" nzFor="storage_date">入库时间</nz-form-label>
+                  <nz-form-control [nzSm]="9">
+                      <nz-date-picker id="storage_date" formControlName="storage_date" style="width: 282px;"></nz-date-picker>
+                    <nz-form-explain *ngIf="entityTapeForm.get('storage_date').dirty && entityTapeForm.get('storage_date').errors">请选择入库时间</nz-form-explain>
+                  </nz-form-control>
+                  <nz-form-label [nzSm]="3" nzFor="storage_location">存放地点</nz-form-label>
+                  <nz-form-control [nzSm]="9">
+                    <input nz-input id="storage_location" formControlName="storage_location" placeholder="请输入存放地点">
+                    <nz-form-explain *ngIf="entityTapeForm.get('storage_location').dirty && entityTapeForm.get('storage_location').errors">请输入存放地点</nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="3" nzFor="detail_location">具体位置</nz-form-label>
+                    <nz-form-control [nzSm]="9">
+                        <input nz-input id="detail_location" formControlName="detail_location" placeholder="请输入具体位置">
+                      <nz-form-explain *ngIf="entityTapeForm.get('detail_location').dirty && entityTapeForm.get('detail_location').errors">请输入具体位置</nz-form-explain></nz-form-control>
+                  </nz-form-item>
+
+  </form>
+</div>

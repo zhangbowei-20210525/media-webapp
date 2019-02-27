@@ -13,6 +13,7 @@ import { SeriesDetailsPublicityComponent } from './details/publicity/publicity.c
 import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrights.component';
 import { RightComponent } from './details/right/right.component';
 import { PublishRightsComponent } from './copyrights/publish-rights/publish-rights.component';
+import { EntityTapeDetailsComponent } from './components/entity-tape-details/entity-tape-details.component';
 
 
 const routes: Routes = [
@@ -52,7 +53,11 @@ const routes: Routes = [
           {
             path: 'tape-details',
             component: TapeDetailsComponent
-          }
+          },
+          {
+            path: 'entity-tape-details',
+            component: EntityTapeDetailsComponent
+          },
         ]
       }
     ]
