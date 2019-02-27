@@ -28,7 +28,10 @@
           </div>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
-          <a><i nz-icon type="bell" theme="outline"></i></a>
+          <a nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="notifyTemplate" nzTrigger="click" nzPlacement="bottom"><i nz-icon type="bell" theme="outline"></i></a>
+          <ng-template #notifyTemplate>
+            <app-nav-notify></app-nav-notify>
+          </ng-template>
         </li>
         <li class="nav-item">
           <nz-dropdown [nzTrigger]="'click'" nzPlacement="bottomRight">

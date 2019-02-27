@@ -145,7 +145,6 @@ export class CopyrightsComponent implements OnInit {
     const termEnd = trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '';
     const areaValue = area.length > 0 ? area[area.length - 1] : '';
     const rightValue = right.length > 0 ? right[right.length - 1] : '';
-    console.log(termStart, termEnd);
     this.fetchCopyrights(days, areaValue, rightValue, termStart, termEnd);
   }
 
@@ -157,22 +156,18 @@ export class CopyrightsComponent implements OnInit {
   }
 
   onDaysChange(value: string) {
-    console.log(value);
     this.filtrate();
   }
 
   onAreaChange(value: string[]) {
-    console.log(value);
     this.filtrate();
   }
 
   onRightChange(value: string[]) {
-    console.log(value);
     this.filtrate();
   }
 
   onDateChange(value: string[]) {
-    console.log(value);
     this.filtrate();
   }
 

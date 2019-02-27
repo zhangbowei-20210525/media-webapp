@@ -8,7 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: ['../layout.less']
+  styleUrls: ['../layout.less'],
+  styles: [`
+    .notify-popover {
+      padding: 0;
+    }
+  `]
 })
 export class TopBarComponent implements OnInit {
 
