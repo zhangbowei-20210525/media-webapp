@@ -6,15 +6,12 @@ import { formData, PaginationDto, ResponseDto } from '@shared';
   providedIn: 'root'
 })
 export class SeriesService {
-  eventEmit: any;
 
-  // eventEmit: any;
+  eventEmit = new EventEmitter();
 
   constructor(
     protected http: HttpClient,
-  ) {
-    this.eventEmit = new EventEmitter();
-  }
+  ) { }
 
   // getUserSamples(pagination: PaginationDto) {
   //   return this.auth1.http.get<any>(`/api/v1/media/get_medialist_of_user?page=${pagination.page}&limit=${pagination.page_size}`);
@@ -112,12 +109,12 @@ export class SeriesService {
   }
 
   // tslint:disable-next-line:max-line-length
-  addTape(newTape: { program_id: number; name: string, language: string, subtitle: string, format: string, bit_rate: string, source_type: string,  }) {
+  addTape(newTape: { program_id: number; name: string, language: string, subtitle: string, format: string, bit_rate: string, source_type: string, }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
 
   // tslint:disable-next-line:max-line-length
-  addEntityTape(newTape: { program_id: number; name: string, language: string, subtitle: string, source_type: string, episode: any, sharpness: any, carrier: any, brand: any, model: any, storage_date: any, storage_location: any, detail_location: any, sound_track: any  }) {
+  addEntityTape(newTape: { program_id: number; name: string, language: string, subtitle: string, source_type: string, episode: any, sharpness: any, carrier: any, brand: any, model: any, storage_date: any, storage_location: any, detail_location: any, sound_track: any }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
 
@@ -143,45 +140,45 @@ export class SeriesService {
 
   clientStatus(address: string) {
     return this.http.get<any>(`http://${address}/status`);
-}
-
-UploadTape(id: number, auth_status: number) {
-  return this.callHttpApp('upload_public', { id: id, companyId: 0, auth_status: auth_status });
-}
-
-private callHttpApp(method: string, param: { id: number | number[], companyId: number, auth_status: number }) {
-  function isArray(o) {
-      return Object.prototype.toString.call(o) === '[object Array]';
   }
-  let string$;
-  if (isArray(param.id)) {
+
+  UploadTape(id: number, auth_status: number) {
+    return this.callHttpApp('upload_public', { id: id, companyId: 0, auth_status: auth_status });
+  }
+
+  private callHttpApp(method: string, param: { id: number | number[], companyId: number, auth_status: number }) {
+    function isArray(o) {
+      return Object.prototype.toString.call(o) === '[object Array]';
+    }
+    let string$;
+    if (isArray(param.id)) {
       const idArr = param.id as number[];
       string$ = idArr.join(',');
-  } else {
+    } else {
       string$ = param.id;
-  }
-  const a = 'http://127.0.0.1:8756/add_task?';
-  const b = `type=${method}&ids=${string$}`;
-  const c = `&area_id=${param.companyId}&auth_status=${param.auth_status}`;
-  return this.http.get(
+    }
+    const a = 'http://127.0.0.1:8756/add_task?';
+    const b = `type=${method}&ids=${string$}`;
+    const c = `&area_id=${param.companyId}&auth_status=${param.auth_status}`;
+    return this.http.get(
       a + b + c
-  );
-}
+    );
+  }
 
-getCompaniesName(phone: number) {
-  return this.http.get<any>(`api/v1/companies/search_by_phone?phone=${phone}`);
-}
+  getCompaniesName(phone: number) {
+    return this.http.get<any>(`api/v1/companies/search_by_phone?phone=${phone}`);
+  }
 
-addPubTape(id: number, newTape: { auth_company_id: number }) {
-  return this.http.post<ResponseDto<number>>(`api/v1/sources/${id}/publish_auth`, newTape);
-}
+  addPubTape(id: number, newTape: { auth_company_id: number }) {
+    return this.http.post<ResponseDto<number>>(`api/v1/sources/${id}/publish_auth`, newTape);
+  }
 
-pubTapeList(id: number, pagination: PaginationDto) {
-  return this.http.get<any>(`api/v1/sources/${id}/publish_auth?page=${pagination.page}&page_size=${pagination.page_size}`);
-}
+  pubTapeList(id: number, pagination: PaginationDto) {
+    return this.http.get<any>(`api/v1/sources/${id}/publish_auth?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
 
-deletePubTape(id: number, auth_company_id: number) {
-  return this.http.delete<any>(`api/v1/sources/${id}/publish_auth`, { params: { auth_company_id: auth_company_id as any} });
-}
+  deletePubTape(id: number, auth_company_id: number) {
+    return this.http.delete<any>(`api/v1/sources/${id}/publish_auth`, { params: { auth_company_id: auth_company_id as any } });
+  }
 
 }

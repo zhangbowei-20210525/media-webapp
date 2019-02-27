@@ -2,11 +2,13 @@ import { AccountService } from '@shared';
 import { Component, OnInit } from '@angular/core';
 import { PersonalCenterService } from './personal-center.service';
 import { PersonalCenterDto } from './personal-center.dto';
+import { fadeIn } from '@shared/animations';
 
 @Component({
   selector: 'app-personal-center',
   templateUrl: './personal-center.component.html',
-  styleUrls: ['./personal-center.component.less']
+  styleUrls: ['./personal-center.component.less'],
+  animations: [fadeIn]
 })
 export class PersonalCenterComponent implements OnInit {
 

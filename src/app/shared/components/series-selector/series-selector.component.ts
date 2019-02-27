@@ -1,5 +1,5 @@
-import { finalize } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { finalize, delay } from 'rxjs/operators';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SeriesSelectorService } from './series-selector.service';
 import { SeriesBriefDto, SearchMetaDataDto } from './dtos';
 import { SettingsService } from '@core';
@@ -11,9 +11,13 @@ import { SettingsService } from '@core';
 })
 export class SeriesSelectorComponent implements OnInit {
 
+  @Input() autoSelect: boolean;
+  @Output() tagChange = new EventEmitter<{ checked: boolean, tag: SeriesBriefDto }>();
   isSeriesLoading: boolean;
   originSeries: SeriesBriefDto[];
-  series: SeriesBriefDto[];
+  @Input() series: SeriesBriefDto[];
+  @Output() seriesChange = new EventEmitter<SeriesBriefDto[]>();
+  // @Output() selectedSeriesChange = new EventEmitter<SeriesBriefDto[]>();
   programTypes: SearchMetaDataDto[];
   releaseYears: SearchMetaDataDto[];
   selectedType: string;
@@ -31,7 +35,11 @@ export class SeriesSelectorComponent implements OnInit {
     this.service.getSeries(this.settings.user.employee_id)
       .pipe(finalize(() => this.isSeriesLoading = false))
       .subscribe(result => {
+        if (!this.autoSelect) {
+          result.list.forEach(item => item.status = false);
+        }
         this.series = result.list;
+        this.emitSeriesChange();
         this.originSeries = result.list;
         this.programTypes = result.meta.program_type_choices;
         this.releaseYears = result.meta.release_year_choices;
@@ -41,25 +49,28 @@ export class SeriesSelectorComponent implements OnInit {
       });
   }
 
+  emitSeriesChange() {
+    this.seriesChange.emit(this.series);
+    // this.selectedSeriesChange.emit(this.series.filter(e => e.status));
+  }
+
   handleChange(checked: boolean, tag: SeriesBriefDto): void {
-    this.service.updateSeriesPermission(this.settings.user.employee_id, checked, [tag.id])
-      .subscribe(result => {
-        tag.status = checked;
-      }, error => {
-        tag.status = !checked;
-      });
+    this.tagChange.emit({ checked, tag });
   }
 
   handleTypeChange(type: string) {
     this.series = this.originSeriesfilter(type, this.selectedYear, this.searchText);
+    this.emitSeriesChange();
   }
 
   handleYearChange(year: string) {
     this.series = this.originSeriesfilter(this.selectedType, year, this.searchText);
+    this.emitSeriesChange();
   }
 
   search() {
     this.series = this.originSeriesfilter(this.selectedType, this.selectedYear, this.searchText);
+    this.emitSeriesChange();
   }
 
   selectType(s: SeriesBriefDto, type: string): boolean {
@@ -90,7 +101,7 @@ export class SeriesSelectorComponent implements OnInit {
 
   originSeriesfilter(type: string, year: string, searchText: string) {
     return this.originSeries.filter(e =>
-         this.selectType(e, type)
+      this.selectType(e, type)
       && this.selectYear(e, year)
       && this.selectText(e, searchText)
     );

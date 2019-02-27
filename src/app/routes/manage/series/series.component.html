@@ -1,14 +1,9 @@
-<div class="program-wrap">
-  <!-- <div class="program-title-wk">
-    <span class="program-title">节目</span>
-    <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px">新增节目(批量)</button>
-    <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 10px">新增节目</button>
-  </div> -->
+<!-- <div class="program-wrap">
   <nz-tabset [nzTabBarExtraContent]="extraTemplate">
     <nz-tab nzTitle="节目" (nzClick)="seriesRefresh()">
       <div class="program-info">
         <nz-table #rowSelectionTable [nzData]="seriesList" (nzCurrentPageDataChange)="currentPageDataChange($event)"
-          (nzPageIndexChange)="refreshStatus($event)" (nzPageSizeChange)="refreshStatus()" [nzPageSize]="seriesPagination?.page_size"
+          (nzPageIndexChange)="refreshStatus($event)" (nzPageSizeChange)="refreshStatus($event)" [nzPageSize]="seriesPagination?.page_size"
           [nzFrontPagination]="false" [nzPageIndex]="seriesPagination?.page" [nzTotal]="seriesPagination?.count">
           <thead>
             <tr>
@@ -68,4 +63,62 @@
     <nz-tab nzTitle="宣发" (nzClick)="publicitiesRefresh()">
       <app-publicities></app-publicities>
     </nz-tab>
-  </nz-tabset>
+  </nz-tabset> -->
+
+<div class="block clearfix">
+  <!-- <div class="block-content">
+    <nz-tabset [nzTabPosition]="'top'" [nzType]="'line'" [nzAnimated]="'false'">
+      <nz-tab [nzTitle]="'全部'">
+        <app-all-series></app-all-series>
+      </nz-tab>
+      <nz-tab [nzTitle]="'宣发'">
+        <app-publicities></app-publicities>
+      </nz-tab>
+      <nz-tab [nzTitle]="'母带'">
+        Content of Tab Pane Type
+      </nz-tab>
+      <nz-tab [nzTitle]="'版权'">
+        <app-copyrights></app-copyrights>
+      </nz-tab>
+    </nz-tabset>
+  </div> -->
+  <div class="s-nav-wapper">
+    <nav class="s-nav">
+      <ul class="list s-nav-list">
+        <li class="nav-item">
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'all'">全部</a>
+        </li>
+        <li class="nav-item">
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'">宣发</a>
+        </li>
+        <li class="nav-item">
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'">母带</a>
+        </li>
+        <li class="nav-item">
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'">版权</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="block-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<!-- <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+  <nz-tab [nzTitle]="'全部'">
+    Content of Tab Pane All
+  </nz-tab>
+  <nz-tab [nzTitle]="'宣发'">
+    <app-publicities></app-publicities>
+  </nz-tab>
+  <nz-tab [nzTitle]="'母带'">
+    Content of Tab Pane Type
+  </nz-tab>
+  <nz-tab [nzTitle]="'版权'">
+    <div class="block clearfix">
+      <div class="block-content">
+        <app-copyrights></app-copyrights>
+      </div>
+    </div>
+  </nz-tab>
+</nz-tabset> -->

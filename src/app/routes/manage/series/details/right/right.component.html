@@ -1,0 +1,89 @@
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">已有权利</div>
+  </div>
+  <div class="block-content">
+    <div [@fadeIn] *ngIf="isOwnLoaded">
+      <nz-table #ownTable [nzData]="ownDataSet" [nzFrontPagination]="true" [nzHideOnSinglePage]="true">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>权利</th>
+            <th>权利备注</th>
+            <th>权利范围</th>
+            <th>范围备注</th>
+            <th>期限</th>
+            <th>期限备注</th>
+            <th>关联合同</th>
+            <th>备注</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of ownTable.data; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ data.right_type_label }}</td>
+            <td>{{ data.right_remark }}</td>
+            <td>{{ data.area_label }}</td>
+            <td>{{ data.area_remark }}</td>
+            <td>{{ data.permanent_date ? '永久' : ((data.start_date | date:'yyyy/MM/dd') + ' ~ ' +
+                    (data.end_date | date:'yyyy/MM/dd')) }}</td>
+            <td>{{ data.date_remark }}</td>
+            <td>{{ data.contract_number }}</td>
+            <td>{{ data.remark }}</td>
+            <td>
+              <a nz-popconfirm nzTitle="是否删除此权利？" (nzOnConfirm)="deleteOwnRight(data.id)"><i nz-icon type="delete"
+                  theme="outline"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">已发行权利</div>
+  </div>
+  <div class="block-content">
+    <div [@fadeIn] *ngIf="isPublishLoaded">
+      <nz-table #pubTable [nzData]="pubDataSet" [nzFrontPagination]="false" [nzHideOnSinglePage]="true"
+        [nzPageSize]="pagination.page_size" [nzPageIndex]="pagination.page" [nzTotal]="pagination.count"
+        (nzPageIndexChange)="pageChange($event)">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>权利</th>
+            <th>权利备注</th>
+            <th>权利范围</th>
+            <th>范围备注</th>
+            <th>期限</th>
+            <th>期限备注</th>
+            <th>关联合同</th>
+            <th>备注</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of pubTable.data; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ data.right_type_label }}</td>
+            <td>{{ data.right_remark }}</td>
+            <td>{{ data.area_label }}</td>
+            <td>{{ data.area_remark }}</td>
+            <td>{{ data.permanent_date ? '永久' : ((data.start_date | date:'yyyy/MM/dd') + ' ~ ' +
+                  (data.end_date | date:'yyyy/MM/dd')) }}</td>
+            <td>{{ data.date_remark }}</td>
+            <td>{{ data.contract_number }}</td>
+            <td>{{ data.remark }}</td>
+            <td>
+              <a nz-popconfirm nzTitle="是否删除此发行？" (nzOnConfirm)="deletePublishRight(data.id)"><i nz-icon type="delete"
+                  theme="outline"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

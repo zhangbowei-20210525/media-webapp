@@ -1,6 +1,6 @@
 <div>
   <div class="roles">
-    <nz-radio-group [(ngModel)]="radioValue" [nzButtonStyle]="'solid'" [nzSize]="'small'" (ngModelChange)="handleRoleChange($event)">
+    <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRoleName" (ngModelChange)="handleRoleChange($event)">
       <label nz-radio-button [nzValue]="role.name" [nzDisabled]="role.loading" class="role-radio" *ngFor="let role of roles">{{
         role.name }}</label>
     </nz-radio-group>

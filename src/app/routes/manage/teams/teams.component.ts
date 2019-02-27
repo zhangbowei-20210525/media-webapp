@@ -9,6 +9,7 @@ import { AddCompanyComponent } from './components/add-company.component';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { Router } from '@angular/router';
 import { EditCompanyComponent } from './components/edit-company.component';
+import { TreeService } from '@shared';
 
 @Component({
   selector: 'app-teams',
@@ -30,10 +31,12 @@ export class TeamsComponent implements OnInit {
     private modal: NzModalService,
     private message: NzMessageService,
     private router: Router,
+    private ts: TreeService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) { }
 
   ngOnInit() {
+    this.getCompanyInfo();
     this.fetchCompany();
     this.fetchCompanys();
     this.fetchDepartment();
@@ -49,6 +52,17 @@ export class TeamsComponent implements OnInit {
 
   navigateToEmployees() {
     this.router.navigateByUrl(`/manage/teams/employees/${this.activedNodeKey}`); // 必须后端存在默认部门
+  }
+
+  getCompanyInfo() {
+    const user = this.settings.user;
+    this.currentCompany = {
+      company_id: user.company_id,
+      company_name: user.company_name,
+      company_full_name: user.company_full_name,
+      company_introduction: user.introduction,
+      is_default_company: user.is_default_company
+    };
   }
 
   fetchCompany() {
@@ -87,9 +101,9 @@ export class TeamsComponent implements OnInit {
       nzTitle: '修改企业',
       nzContent: EditCompanyComponent,
       nzComponentParams: {
-        name: this.settings.user.company_name,
-        fullName: this.settings.user.company_full_name,
-        introduction: this.settings.user.in
+        name: this.currentCompany.company_name,
+        fullName: this.currentCompany.company_full_name,
+        introduction: this.currentCompany.company_introduction
       },
       nzWidth: 800,
       nzOnOk: this.editCompanyAgreed
@@ -123,6 +137,7 @@ export class TeamsComponent implements OnInit {
         token: result.token,
         time: +new Date
       });
+      this.getCompanyInfo();
       this.fetchDepartment();
       this.navigateToTeams();
       this.message.success(`已切换到 ${companyName}`);
@@ -131,25 +146,17 @@ export class TeamsComponent implements OnInit {
 
   fetchDepartment() {
     this.service.getDepartments().subscribe(departments => {
-      this.nodes = this.getNodes(departments);
+      this.nodes = this.getNzTreeNodesByDepartments(departments);
     });
   }
 
-  getNodes(departments: DepartmentDto[]): NzTreeNodeOptions[] {
-    const nodes: NzTreeNodeOptions[] = [];
-    for (const key in departments) {
-      if (departments.hasOwnProperty(key)) {
-        const element = departments[key];
-        nodes.push({
-          title: element.name,
-          key: element.id + '',
-          isLeaf: !!element.children && element.children.length < 1,
-          expanded: true,
-          children: this.getNodes(element.children)
-        });
-      }
-    }
-    return nodes;
+  getNzTreeNodesByDepartments(origins: DepartmentDto[]): NzTreeNodeOptions[] {
+    return this.ts.getNzTreeNodes(origins, item => ({
+      title: item.name,
+      key: item.id + '',
+      isLeaf: !!item.children && item.children.length < 1,
+      expanded: true
+    }));
   }
 
   activeNode(data: NzFormatEmitEvent) {
@@ -174,7 +181,7 @@ export class TeamsComponent implements OnInit {
         if (component.validation()) {
           component.submit().subscribe(result => {
             this.message.success('新增成功');
-            const added = this.addNode(this.treeCom.getTreeNodes(), key, {
+            this.addNode(key, {
               title: component.departmentName.value,
               key: result.id,
               isLeaf: true,
@@ -210,44 +217,66 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  addNode(nodes: NzTreeNode[], parentKey: string, options: NzTreeNodeOptions) {
-    let added = false;
-    for (const i in nodes) {
-      if (nodes.hasOwnProperty(i)) {
-        const node = nodes[i];
-        if (node.key === parentKey) {
-          node.isLeaf = false;
-          node.isExpanded = true;
-          node.addChildren([options]);
-          added = true;
-        } else if (node.children.length > 0) {
-          added = this.addNode(node.children, parentKey, options);
-        }
-        if (added) {
-          break;
-        }
+  // addNode(nodes: NzTreeNode[], parentKey: string, options: NzTreeNodeOptions) {
+  //   let added = false;
+  //   for (const i in nodes) {
+  //     if (nodes.hasOwnProperty(i)) {
+  //       const node = nodes[i];
+  //       if (node.key === parentKey) {
+  //         node.isLeaf = false;
+  //         node.isExpanded = true;
+  //         node.addChildren([options]);
+  //         added = true;
+  //       } else if (node.children.length > 0) {
+  //         added = this.addNode(node.children, parentKey, options);
+  //       }
+  //       if (added) {
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   return added;
+  // }
+
+  addNode(parentKey: string, options: NzTreeNodeOptions) {
+    return this.ts.recursionNodesFindBy(this.treeCom.getTreeNodes(), item => {
+      if (item.key === parentKey) {
+        item.isLeaf = false;
+        item.isExpanded = true;
+        item.addChildren([options]);
+        return true;
       }
-    }
-    return added;
+      return false;
+    });
   }
 
+  // removeNode(nodes: NzTreeNodeOptions[], key: string) {
+  //   let deleted = false;
+  //   for (const i in nodes) {
+  //     if (nodes.hasOwnProperty(i)) {
+  //       const node = nodes[i];
+  //       if (node.key === key) {
+  //         nodes.splice(i as any, 1);
+  //         deleted = true;
+  //       } else if (node.children.length > 0) {
+  //         deleted = this.removeNode(node.children, key);
+  //       }
+  //       if (deleted) {
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   return deleted;
+  // }
+
   removeNode(nodes: NzTreeNodeOptions[], key: string) {
-    let deleted = false;
-    for (const i in nodes) {
-      if (nodes.hasOwnProperty(i)) {
-        const node = nodes[i];
-        if (node.key === key) {
-          nodes.splice(i as any, 1);
-          deleted = true;
-        } else if (node.children.length > 0) {
-          deleted = this.removeNode(node.children, key);
-        }
-        if (deleted) {
-          break;
-        }
+    return this.ts.recursionNodesFindBy(nodes, (item, index) => {
+      if (item.key === key) {
+        nodes.splice(index, 1);
+        return true;
       }
-    }
-    return deleted;
+      return false;
+    });
   }
 
 }

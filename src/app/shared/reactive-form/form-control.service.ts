@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ReactiveBase } from './reactive-base';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ReactiveBase } from '.';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PaymentControlService {
+export class FormControlService {
 
   constructor() { }
 

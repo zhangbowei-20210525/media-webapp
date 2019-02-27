@@ -1,15 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
+import { SeriesService } from '../../series.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { SeriesService } from '../../series.service';
-
 
 @Component({
   selector: 'app-series-details-publicity',
-  templateUrl: './series-details-publicity.component.html',
-  styleUrls: ['./series-details-publicity.component.less']
+  templateUrl: './publicity.component.html',
+  styleUrls: ['./publicity.component.less']
 })
 export class SeriesDetailsPublicityComponent implements OnInit {
 
@@ -61,8 +60,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         this.id = +params.get('sid');
         return this.seriesService.getPublicitiesList(this.id);
       })).subscribe(res => {
-        // this.publicityId = res.data.list[0].id;
-        // tslint:disable-next-line:max-line-length
+        // this.publicityId = res.list[0].id;
         this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
           this.sampleList = s.list;
           this.samplePagination = s.pagination;
@@ -73,7 +71,6 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   publicityType(type: string) {
     if (type === 'sample') {
       this.type = 'sample';
-      // tslint:disable-next-line:max-line-length
       this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(res => {
         this.sampleList = res.list;
         this.samplePagination = res.pagination;
@@ -81,7 +78,6 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     }
     if (type === 'feature') {
       this.type = 'feature';
-      // tslint:disable-next-line:max-line-length
       this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(res => {
         this.featureList = res.list;
         this.featurePagination = res.pagination;
@@ -89,7 +85,6 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     }
     if (type === 'trailer') {
       this.type = 'trailer';
-      // tslint:disable-next-line:max-line-length
       this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(res => {
         this.trailerList = res.list;
         this.trailerPagination = res.pagination;
@@ -97,7 +92,6 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     }
     if (type === 'poster') {
       this.type = 'poster';
-      // tslint:disable-next-line:max-line-length
       this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(res => {
         this.posterList = res.list;
         this.posterPagination = res.pagination;
@@ -105,7 +99,6 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     }
     if (type === 'still') {
       this.type = 'still';
-      // tslint:disable-next-line:max-line-length
       this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(res => {
         this.stillList = res.list;
         this.stillPagination = res.pagination;
@@ -113,7 +106,6 @@ export class SeriesDetailsPublicityComponent implements OnInit {
     }
     if (type === 'pdf') {
       this.type = 'pdf';
-      // tslint:disable-next-line:max-line-length
       this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(res => {
         this.pdfList = res.list;
         this.pdfPagination = res.pagination;

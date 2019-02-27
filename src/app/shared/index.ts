@@ -5,3 +5,4 @@ export { AccountService } from './account/account.service';
 export { MessageService } from './message/message.service';
 export { TreeService } from './components/tree.service';
 export { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
+export { ReactiveBase, ReactiveDatePicker, ReactiveTextbox, FormControlService } from './reactive-form';

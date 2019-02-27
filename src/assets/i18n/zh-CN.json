@@ -37,6 +37,14 @@
     "app.series.film": "电影",
     "app.series.variety": "综艺",
     "app.series.other": "其它",
+    "app.copyright.homemade": "自制",
+    "app.copyright.purchase": "购入",
+    "app.copyright.proxy": "代理",
+    "app.copyright.main-vote": "主投",
+    "app.copyright.follow": "跟投",
+    "app.copyright.co-production": "合拍",
+    "app.copyright.contract": "承制",
+    "app.copyright.introduction": "引进",
     "app.home-page.purchase-expire": "",
     "validation.phone-number": "请输入手机号",
     "validation.captcha": "请输入验证码",
@@ -44,5 +52,9 @@
     "validation.captcha.required": "请输入验证码！",
     "global.add-success": "添加成功",
     "global.delete-success": "删除成功",
-    "global.no-valid-file": "无有效文件"
+    "global.no-valid-file": "无有效文件",
+    "global.save-successfully": "保存成功",
+    "global.save-failed": "保存失败",
+    "global.delete-successfully": "删除成功",
+    "global.delete-failed": "删除失败"
 }

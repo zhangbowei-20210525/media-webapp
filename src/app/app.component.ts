@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/router';
+import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationError } from '@angular/router';
 
 declare const NProgress: any;
 
@@ -15,6 +15,8 @@ export class AppComponent {
       if (event instanceof RouteConfigLoadStart) {
         NProgress.start();
       } else if (event instanceof RouteConfigLoadEnd) {
+        NProgress.done();
+      } else if (event instanceof NavigationError) {
         NProgress.done();
       }
     });

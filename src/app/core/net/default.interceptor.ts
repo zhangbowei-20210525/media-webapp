@@ -82,10 +82,24 @@ export class DefaultInterceptor implements HttpInterceptor {
                 break;
             case 403:
             case 404:
+                this.errorNotify('请求不存在');
+                return throwError(event);
+                break;
             case 500:
                 // this.goTo(`/${event.status}`);
-                return of(event);
+                this.errorNotify('服务端错误');
+                return throwError(event);
                 break;
+            case 504:
+                this.errorNotify('网络请求失败');
+                return throwError(event);
+                break;
+            // case 403:
+            // case 404:
+            // case 500:
+            //     // this.goTo(`/${event.status}`);
+            //     return of(event);
+            //     break;
             default:
                 if (event instanceof HttpErrorResponse) {
                     console.warn(
@@ -121,7 +135,7 @@ export class DefaultInterceptor implements HttpInterceptor {
                 // 若一切都正常，则后续操作
                 return of(event);
             }),
-            catchError((err: HttpErrorResponse) => this.handleData(err)),
+            catchError((err: HttpErrorResponse) => this.handleData(err)), // 如需将错误往下传递则在handle函数中throw一个新的错误
         );
     }
 }

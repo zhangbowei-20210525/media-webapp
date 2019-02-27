@@ -15,6 +15,7 @@ export class RolesComponent implements OnInit {
   @ViewChild('inputElement') inputElement: ElementRef;
   @ViewChild('permissionTree') permissionTreeCom: NzTreeComponent;
   roles: RoleDto[];
+  selectedRoleName: string;
   selectedRole: RoleDto;
   inputVisible = false;
   inputValue = '';
@@ -34,7 +35,7 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  equalsArray(a: [], b: []): boolean {
+  equalsArray(a: any[], b: any[]): boolean {
     return a && b && a.filter(key => !b.includes(key)).length === 0 && b.filter(key => !a.includes(key)).length === 0;
   }
 
@@ -90,7 +91,7 @@ export class RolesComponent implements OnInit {
       isLeaf: !!item.children && item.children.length < 1,
       selectable: false,
       expanded: true,
-      disableCheckbox: true,
+      disableCheckbox: false,
       checked: item.status
     }));
   }

@@ -1,5 +1,6 @@
-<div>
-  <section class="block clearfix" [hidden]="loading">
+<div [hidden]="loading" [@fadeIn]>
+  
+  <section class="block clearfix">
     <div class="block-content" style="height: 8rem;">
       <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="true">
         <div class="user-info-pane">
@@ -35,7 +36,7 @@
     </div>
   </section>
 
-  <div class="block clearfix" [hidden]="loading">
+  <div class="block clearfix">
     <!-- <div class="explain">
       <i nz-icon type="star" theme="fill"></i>
       <span>{{ 'app.account.my-favorite' | translate }}</span>

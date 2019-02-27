@@ -1,51 +1,179 @@
-import { AddOwnCopyrightComponent } from './../add-own-copyright/add-own-copyright.component';
 import { Component, OnInit } from '@angular/core';
-import { SeriesService } from '../../series.service';
-import { NzModalService } from 'ng-zorro-antd';
+import { PaginationDto, MessageService } from '@shared';
 import { Router } from '@angular/router';
-import { PaginationDto } from '@shared';
+import { CopyrightsService } from './copyrights.service';
+import { TranslateService } from '@ngx-translate/core';
+import { fadeIn } from '@shared/animations';
+import { finalize } from 'rxjs/operators';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-copyrights',
   templateUrl: './copyrights.component.html',
-  styleUrls: ['./copyrights.component.less']
+  styleUrls: ['./copyrights.component.less'],
+  animations: [fadeIn]
 })
 export class CopyrightsComponent implements OnInit {
 
-  copyrightDate: string;
-  copyrightArea: string;
-  copyrightItem: string;
-  is_permanentb: boolean;
-  is_permanentn: boolean;
-  is_permanentnph: boolean;
-  is_permanentnpc: boolean;
-  copyrightsList = [];
-  copyrightsPagination: PaginationDto;
+  isLoaded = false;
+  isLoading = false;
+  dataSet = [];
+  pagination = { page: 1, page_size: 10 } as PaginationDto;
+  filtrateForm: FormGroup;
+  areaOptions: any[];
+  rightOptions: any[];
 
   constructor(
-    private seriesService: SeriesService,
-    private modalService: NzModalService,
+    private service: CopyrightsService,
     private router: Router,
+    private message: MessageService,
+    private translate: TranslateService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.copyrightDate = '';
-    this.copyrightArea = '';
-    this.copyrightItem = '';
-    this.copyrightsPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    // this.getOwnCopyrights();
+    this.loadAreaOptions();
+    this.loadRightsOptions();
+    this.loadCopyrights();
+    this.filtrateForm = this.fb.group({
+      days: ['all'],
+      area: [['000000']],
+      right: [['all']],
+      date: [null]
+    });
   }
 
-  addCopyright() {
-    this.router.navigate([`/manage/add-copyright-series-list`]);
-    // this.modalService.create({
-    //   nzTitle: `新增版权`,
-    //   nzContent: AddOwnCopyrightComponent,
-    //   nzMaskClosable: false,
-    //   nzClosable: false,
-    //   nzWidth: 800,
-    //   nzOnOk: this.addCopyrightAgreed
-    // });
+  addCopyrights() {
+    this.router.navigate([`/manage/series/add-copyrights`]);
+  }
+
+  addPublishConpyrights() {
+    this.router.navigate([`/manage/series/publish-rights`]);
+  }
+
+  loadCopyrights() {
+    this.isLoading = true;
+    this.service.getSeries(this.pagination, '', '', '', '', '').pipe(finalize(() => {
+      this.isLoaded = true;
+      this.isLoading = false;
+    })).subscribe(result => {
+      this.dataSet = this.mapCopyrights(result.list);
+      this.pagination = result.pagination;
+    });
+  }
+
+  loadAreaOptions() {
+    this.service.getCopyrightAreaOptions().subscribe(result => {
+      if (result) {
+        this.service.setLeafNode(result);
+      }
+      this.areaOptions = result;
+    });
+  }
+
+  loadRightsOptions() {
+    this.service.getCopyrightTemplates().subscribe(result => {
+      if (result) {
+        result = [{ code: 'all', name: '所有' }, ...result];
+        this.service.setLeafNode(result);
+      }
+      this.rightOptions = result;
+    });
+  }
+
+  fetchCopyrights(days: string, area: string, right: string, termStart: string, termEnd: string) {
+    this.isLoading = true;
+    this.service.getSeries(this.pagination, days, area, right, termStart, termEnd)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(result => {
+        this.dataSet = this.mapCopyrights(result.list);
+        this.pagination = result.pagination;
+      });
+  }
+
+  mapCopyrights(list: any[]) {
+    const rights = [];
+    let itemIndex = 0;
+    list.forEach(item => {
+      let index = 0;
+      item.rights.forEach(right => {
+        rights.push({
+          index: index++,
+          itemIndex: itemIndex,
+          pid: item.id,
+          rid: right.id,
+          project: item.name,
+          investmentType: item.investment_type,
+          type: item.program_type,
+          episode: item.episode,
+          right: right.right_type_label,
+          area: right.area_label,
+          term: right.start_date && right.end_date,
+          termIsPermanent: right.permanent_date,
+          termStartDate: right.start_date,
+          termEndDate: right.end_date,
+          termNote: right.date_remark,
+          count: item.rights.length
+        });
+      });
+      itemIndex++;
+    });
+    return rights;
+  }
+
+  copyrightsPageChange(page: number) {
+    this.pagination.page = page;
+    this.filtrate();
+  }
+
+  getDatePipe() {
+    return new DatePipe('zh-CN');
+  }
+
+  formatDate(pipe: DatePipe, date: Date) {
+    return date ? pipe.transform(date, 'yyyy-MM-dd') : null;
+  }
+
+  filtrate() {
+    const datePipe = this.getDatePipe();
+    const days = this.filtrateForm.value['days'] as string;
+    const area = this.filtrateForm.value['area'] as string[];
+    const right = this.filtrateForm.value['right'] as string[];
+    const trem = this.filtrateForm.value['date'] as Date[];
+    const termStart = trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '';
+    const termEnd = trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '';
+    const areaValue = area.length > 0 ? area[area.length - 1] : '';
+    const rightValue = right.length > 0 ? right[right.length - 1] : '';
+    console.log(termStart, termEnd);
+    this.fetchCopyrights(days, areaValue, rightValue, termStart, termEnd);
+  }
+
+  deleteSeriesCopyright(pid: number) {
+    this.service.deleteCopyrights(pid).subscribe(result => {
+      this.message.success(this.translate.instant('global.delete-successfully'));
+      this.filtrate();
+    });
+  }
+
+  onDaysChange(value: string) {
+    console.log(value);
+    this.filtrate();
+  }
+
+  onAreaChange(value: string[]) {
+    console.log(value);
+    this.filtrate();
+  }
+
+  onRightChange(value: string[]) {
+    console.log(value);
+    this.filtrate();
+  }
+
+  onDateChange(value: string[]) {
+    console.log(value);
+    this.filtrate();
   }
 
   // getOwnCopyrights() {
@@ -182,7 +310,7 @@ export class CopyrightsComponent implements OnInit {
   // })
 
   // filtrate() {
-  //   this.refreshCurrent();
+  //   // this.refreshCurrent();
   // }
 
   // refreshCurrent() {
@@ -278,11 +406,6 @@ export class CopyrightsComponent implements OnInit {
   //       this.copyrightsList = res.list;
   //       this.copyrightsPagination = res.pagination;
   //     });
-  // }
-
-  // copyrightsPageChange(page: number) {
-  //   this.copyrightsPagination.page = page;
-  //   this.getCopyrightsList();
   // }
 
   // deleteCopyright(rightId: number) {
