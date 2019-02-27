@@ -36,25 +36,31 @@ export class SeriesDetailsTapeComponent implements OnInit {
         return this.seriesService.getTapeList(this.id);
       })
     ).subscribe(res => {
-     this.tapesList = res.data;
+      this.tapesList = res.data;
     });
   }
 
-  pitchOn(id: number) {
-    this.router.navigate([`/manage/series/series-details/${this.id}/series-details-tape/tape-details`, { tapeId: id }]);
-    this.isId = id;
+  pitchOn(id: number, source_type: string) {
+    if (source_type === 'online') {
+      this.router.navigate([`/manage/series/series-details/${this.id}/series-details-tape/tape-details`, { tapeId: id }]);
+      this.isId = id;
+    }
+    if (source_type === 'entity') {
+      this.router.navigate([`/manage/series/series-details/${this.id}/series-details-tape/entity-tape-details`, { tapeId: id }]);
+      this.isId = id;
+    }
   }
 
   addTape() {
-      this.modalService.create({
-        nzTitle: `添加母带`,
-        nzContent: AddTapeComponent,
-        nzComponentParams: { id: this.id },
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzWidth: 800,
-        nzOnOk: this.addTapeAgreed
-      });
+    this.modalService.create({
+      nzTitle: `添加母带`,
+      nzContent: AddTapeComponent,
+      nzComponentParams: { id: this.id },
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.addTapeAgreed
+    });
   }
 
   addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
@@ -62,7 +68,7 @@ export class SeriesDetailsTapeComponent implements OnInit {
       .subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
         this.seriesService.getTapeList(this.id).subscribe(t => {
-         this.tapesList = t.data;
+          this.tapesList = t.data;
         });
         resolve();
       }, error => {

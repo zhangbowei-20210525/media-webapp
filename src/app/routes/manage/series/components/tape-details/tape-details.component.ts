@@ -17,7 +17,9 @@ export class TapeDetailsComponent implements OnInit {
   id: number;
   tapeDetailsInfo: any;
   tapeFileList = [];
+  pubTapeList = [];
   tapeFilePagination: PaginationDto;
+  pubTapePagination: PaginationDto;
   tab: number;
   address: string;
 
@@ -39,6 +41,7 @@ export class TapeDetailsComponent implements OnInit {
      this.tapeDetailsInfo = res.data;
     });
     this.tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
+    this.pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   }
 
   TapeFile() {
@@ -51,11 +54,33 @@ export class TapeDetailsComponent implements OnInit {
 
   pubTape() {
     this.tab = 2;
+    this.seriesService.pubTapeList(this.id, this.pubTapePagination).subscribe(res => {
+      this.pubTapeList = res.data.list;
+      this.pubTapePagination = res.data.pagination;
+    });
+  }
+
+  pubTapePageChange(page: number) {
+    this.pubTapePagination.page = page;
+    this.seriesService.pubTapeList(this.id, this.pubTapePagination).subscribe(res => {
+      this.pubTapeList = res.data.list;
+      this.pubTapePagination = res.data.pagination;
+    });
+  }
+
+  deletePubTape(id: number) {
+    this.seriesService.deletePubTape(this.id, id).subscribe(res => {
+      this.message.success(this.translate.instant('global.delete-success'));
+      this.seriesService.pubTapeList(this.id, this.pubTapePagination).subscribe(p => {
+        this.pubTapeList = p.data.list;
+        this.pubTapePagination = p.data.pagination;
+      });
+    });
   }
 
   publishTape() {
     this.modalService.create({
-      nzTitle: '添加授权',
+      nzTitle: '发行母带',
       nzContent: AddPubTapeComponent,
       nzComponentParams: { id: this.id },
       nzMaskClosable: false,
@@ -66,18 +91,19 @@ export class TapeDetailsComponent implements OnInit {
   }
 
   addPubTapeAgreed = (component: AddPubTapeComponent) => new Promise((resolve) => {
-    // component.formSubmit()
-    //   .subscribe(res => {
-    //     this.message.success(this.translate.instant('global.add-success'));
-    //     this.seriesService.getTapeList(this.id).subscribe(t => {
-    //      this.tapesList = t.data;
-    //     });
-    //     resolve();
-    //   }, error => {
-    //     if (error.message) {
-    //       this.message.error(error.message);
-    //     }
-    //   });
+    component.formSubmit()
+      .subscribe(res => {
+        this.message.success(this.translate.instant('global.add-success'));
+        this.seriesService.pubTapeList(this.id, this.pubTapePagination).subscribe(p => {
+          this.pubTapeList = p.data.list;
+          this.pubTapePagination = p.data.pagination;
+        });
+        resolve();
+      }, error => {
+        if (error.message) {
+          this.message.error(error.message);
+        }
+      });
   })
 
   tapeFilePageChange(page: number) {

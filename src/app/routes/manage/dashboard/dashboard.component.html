@@ -135,15 +135,12 @@
   <div class="all-statistics-box">
     <div class="all-statistics-title-wk">
       <span class="all-statistics-title">季度统计分析</span>
-      <!-- <nz-option *ngFor="let option of customerOptions" [nzLabel]="option.name" [nzValue]="option.name"></nz-option> -->
-      <nz-tree-select style="width: 250px;
-      margin-top: 15px;
-      margin-right: 10px;
-      float: right" [nzNodes]="statisticsSelectorArea" nzShowSearch nzCheckable nzSize="small" nzPlaceHolder="请选择地域"
+      <nz-tree-select style="width: 250px;margin-top: 15px;margin-right: 10px;float: right" 
+      [nzNodes]="statisticsSelectArea" nzShowSearch nzCheckable nzSize="small" nzPlaceHolder="请选择地域"
         [(ngModel)]="areaFiltrate" (ngModelChange)="areaChange($event)">
       </nz-tree-select>
       <nz-select nzSize="small" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
-        <nz-option *ngFor="let statisticsSelectorYear of statisticsSelectorYear" [nzLabel]="statisticsSelectorYear" [nzValue]="statisticsSelectorYear"></nz-option>
+        <nz-option *ngFor="let ss of statisticsSelectYear" [nzLabel]="ss" [nzValue]="ss"></nz-option>
       </nz-select>
     </div>
     <div class="all-statistics-info-box">

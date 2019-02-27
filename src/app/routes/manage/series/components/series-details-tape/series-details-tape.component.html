@@ -20,7 +20,7 @@
             <span *ngIf="data.source_type == 'online'">在线</span>
             <span *ngIf="data.source_type == 'entity'">实体</span>
           </td>
-          <td style="text-align: center"><a (click)="pitchOn(data.id)">查看</a></td>
+          <td style="text-align: center"><a (click)="pitchOn(data.id, data.source_type)">查看</a></td>
           <td style="text-align: center">
             <a><i nz-icon type="form" theme="outline" style="font-size: 14px"></i></a>
           </td>

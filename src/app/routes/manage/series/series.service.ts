@@ -116,6 +116,11 @@ export class SeriesService {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
 
+  // tslint:disable-next-line:max-line-length
+  addEntityTape(newTape: { program_id: number; name: string, language: string, subtitle: string, source_type: string, episode: any, sharpness: any, carrier: any, brand: any, model: any, storage_date: any, storage_location: any, detail_location: any, sound_track: any  }) {
+    return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
+  }
+
   getTapeList(id: number) {
     return this.http.get<any>(`api/v1/programs/${id}/sources`);
   }
@@ -163,8 +168,20 @@ private callHttpApp(method: string, param: { id: number | number[], companyId: n
   );
 }
 
-getCompaniesName() {
-  // return this.http.get<any>(`http://${address}/status`);
+getCompaniesName(phone: number) {
+  return this.http.get<any>(`api/v1/companies/search_by_phone?phone=${phone}`);
+}
+
+addPubTape(id: number, newTape: { auth_company_id: number }) {
+  return this.http.post<ResponseDto<number>>(`api/v1/sources/${id}/publish_auth`, newTape);
+}
+
+pubTapeList(id: number, pagination: PaginationDto) {
+  return this.http.get<any>(`api/v1/sources/${id}/publish_auth?page=${pagination.page}&page_size=${pagination.page_size}`);
+}
+
+deletePubTape(id: number, auth_company_id: number) {
+  return this.http.delete<any>(`api/v1/sources/${id}/publish_auth`, { params: { auth_company_id: auth_company_id as any} });
 }
 
 }

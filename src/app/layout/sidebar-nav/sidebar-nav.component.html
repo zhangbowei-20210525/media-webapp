@@ -8,6 +8,10 @@
       <div class="nav-icon"><i nz-icon type="align-left" theme="outline"></i></div>
       <div class="nav-title text-ellipsis">{{ 'menu.manage.series' | translate }}</div>
     </a>
+    <a class="sidebar-nav-item clearfix" [routerLinkActive]="'router-active'" [routerLink]="'/manage/transmit'">
+      <div class="nav-icon"><i nz-icon type="cloud-upload" theme="outline"></i></div>
+      <div class="nav-title text-ellipsis">{{ 'menu.manage.transmit' | translate }}</div>
+    </a>
     <a class="sidebar-nav-item clearfix" [routerLinkActive]="'router-active'" [routerLink]="'/manage/account-center'">
       <div class="nav-icon"><i nz-icon type="user" theme="outline"></i></div>
       <div class="nav-title text-ellipsis">{{ 'menu.manage.personal-center' | translate }}</div>

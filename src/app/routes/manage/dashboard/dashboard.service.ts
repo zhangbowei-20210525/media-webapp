@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DashboardDto } from './dtos';
+import { ResponseDto } from '@shared';
 
 
 @Injectable({
@@ -36,6 +38,6 @@ export class DashboardService {
   }
 
   getAllStatistics(year: any, areas: any) {
-    return this.http.get<any>(`api/v1/analysis/right/quarter?year=${year}&areas=${areas}`);
+    return this.http.get<any>(`api/v1/analysis/publish_right_contract/quarter?year=${year}&areas=${areas}`);
   }
 }

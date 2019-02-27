@@ -18,6 +18,7 @@ import { SharedModule } from '@shared';
 import { AddTapeComponent } from './components/add-tape/add-tape.component';
 import { TapesComponent } from './components/tapes/tapes.component';
 import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.component';
+import { EntityTapeDetailsComponent } from './components/entity-tape-details/entity-tape-details.component';
 
 
 
@@ -39,6 +40,7 @@ import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.comp
     AddOwnCopyrightComponent,
     AddTapeComponent,
     AddPubTapeComponent,
+    EntityTapeDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -49,7 +51,8 @@ import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.comp
   entryComponents: [
     AddSeriesInfoComponent,
     AddOwnCopyrightComponent,
-    AddTapeComponent
+    AddTapeComponent,
+    AddPubTapeComponent
   ]
 })
 export class SeriesModule { }

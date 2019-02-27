@@ -7,6 +7,7 @@ import { SeriesDetailsTapeComponent } from './components/series-details-tape/ser
 import { SeriesDetailsCopyrightComponent } from './components/series-details-copyright/series-details-copyright.component';
 import { TapeDetailsComponent } from './components/tape-details/tape-details.component';
 import { PublicityDetailsComponent } from './components/publicity-details/publicity-details.component';
+import { EntityTapeDetailsComponent } from './components/entity-tape-details/entity-tape-details.component';
 
 
 const routes: Routes = [
@@ -29,7 +30,11 @@ const routes: Routes = [
           {
             path: 'tape-details',
             component: TapeDetailsComponent
-          }
+          },
+          {
+            path: 'entity-tape-details',
+            component: EntityTapeDetailsComponent
+          },
         ]
       }
     ]

@@ -235,7 +235,7 @@
                       <nz-date-picker id="storage_date" formControlName="storage_date" style="width: 282px;"></nz-date-picker>
                     <nz-form-explain *ngIf="entityTapeForm.get('storage_date').dirty && entityTapeForm.get('storage_date').errors">请选择入库时间</nz-form-explain>
                   </nz-form-control>
-                  <nz-form-label [nzSm]="3" nzFor="storage_location" nzRequired>存放地点</nz-form-label>
+                  <nz-form-label [nzSm]="3" nzFor="storage_location">存放地点</nz-form-label>
                   <nz-form-control [nzSm]="9">
                     <input nz-input id="storage_location" formControlName="storage_location" placeholder="请输入存放地点">
                     <nz-form-explain *ngIf="entityTapeForm.get('storage_location').dirty && entityTapeForm.get('storage_location').errors">请输入存放地点</nz-form-explain>

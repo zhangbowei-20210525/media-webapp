@@ -59,23 +59,26 @@
           </nz-table>
       </nz-tab>
       <nz-tab nzTitle="母带发行"  (nzClick)="pubTape()">
-        <nz-table #basicTable1 [nzData]="dataSet">
+        <nz-table #basicTable1 [nzData]="pubTapeList" nzBordered [nzPageSize]="pubTapePagination.page_size" [nzFrontPagination]="false" 
+        [nzPageIndex]="pubTapePagination.page" [nzTotal]="pubTapePagination.count" (nzPageIndexChange)="pubTapePageChange($event)">
           <thead>
             <tr>
-              <th style="text-align: center">文件名</th>
-              <th style="text-align: center">格式</th>
-              <th style="text-align: center">大小</th>
-              <th style="text-align: center">状态</th>
+              <th style="text-align: center">母带名称</th>
+              <th style="text-align: center">发行时间</th>
+              <th style="text-align: center">公司简称</th>
+              <th style="text-align: center">下载次数</th>
               <th style="text-align: center">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable1.data">
-              <td style="text-align: center">{{data.name}}</td>
-              <td style="text-align: center">{{data.age}}</td>
-              <td style="text-align: center">{{data.age}}</td>
-              <td style="text-align: center">{{data.address}}</td>
-              <td style="text-align: center">{{data.address}}</td>
+              <td style="text-align: center">{{data.created_name}}</td>
+              <td style="text-align: center">{{data.created_at}}</td>
+              <td style="text-align: center">{{data.auth_company_name}}</td>
+              <td style="text-align: center">{{data.download_times}}</td>
+              <td style="text-align: center">
+                <a (click)="deletePubTape(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+            </td>
             </tr>
           </tbody>
         </nz-table>

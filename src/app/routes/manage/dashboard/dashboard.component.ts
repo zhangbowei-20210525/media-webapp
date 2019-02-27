@@ -4,6 +4,9 @@ import DataSet from '@antv/data-set';
 import { SeriesService } from '../series/series.service';
 import { DashboardService } from './dashboard.service';
 import { map } from 'rxjs/operators';
+import { NzTreeNodeOptions } from 'ng-zorro-antd';
+import { TreeService } from '@shared';
+import { DashboardDto } from './dtos';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +17,8 @@ export class DashboardComponent implements OnInit {
 
   activeProject: string;
   showTable: number;
-  timeFiltrate: string;
+  timeFiltrate: any;
+  areaFiltrate: any;
   right: any;
   publish_right: any;
   payment: any;
@@ -32,49 +36,16 @@ export class DashboardComponent implements OnInit {
   activeProjectPubRight = [];
   activeProjectPublicity = [];
   activeProjectSource = [];
-  statisticsSelectorYear = [];
-  statisticsSelectorArea = [];
   statisticsSelectYear = [];
   statisticsSelectArea = [];
   allStatisticsChart: any;
+  allStatistics: NzTreeNodeOptions[];
 
   constructor(
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private ts: TreeService
   ) { }
 
-  areaFiltrate: string[] = ['0-0-0'];
-  nodes = [{
-    title: '中国',
-    value: '中国',
-    key: '中国',
-    children: [{
-      title: '上海',
-      value: '上海',
-      key: '上海',
-      isLeaf: true
-    }]
-  }, {
-    title: '日本',
-    value: '日本',
-    key: '日本',
-    children: [{
-      title: '东京',
-      value: '东京',
-      key: '东京',
-      isLeaf: true
-    }, {
-      title: '北海道',
-      value: '北海道',
-      key: '北海道',
-      isLeaf: true
-    }, {
-      title: '新野',
-      value: '新野',
-      key: '新野',
-      isLeaf: true
-    }]
-  }];
-  values: any[] = null;
   ngOnInit() {
     this.seriesCriteria = 'investment_type';
     this.time = 'day';
@@ -98,21 +69,28 @@ export class DashboardComponent implements OnInit {
     this.getPublicityStatisticsInfo();
     this.getPublishStatisticsInfo();
     this.getTapeStatisticsInfo();
+    this.getAllStatisticsInfo();
     this.dashboardService.getActiveProject('right').subscribe(res => {
       this.activeProjectRight = res.data;
     });
-    this.dashboardService.getAllStatistics(this.statisticsSelectYear, this.statisticsSelectArea).subscribe(res => {
-      console.log(res);
-      this.statisticsSelectorYear = res.data.meta.year_choices;
-      this.statisticsSelectorArea = res.data.meta.area_number_choices;
-      const dv = new DataSet.View().source(res.data.list);
-      dv.transform({
-        type: 'sort',
-        callback: function callback(a, b) {
-          return a.label - b.label;
-        }
-      });
+  }
 
+  getStatisticsSelectYear(origins: DashboardDto[]): NzTreeNodeOptions[] {
+    return this.ts.getNzTreeNodes(origins, item => ({
+      title: item.name,
+      key: item.code,
+      isLeaf: !!item.children && item.children.length < 1,
+      selectable: true,
+      expanded: true,
+      disableCheckbox: false,
+      checked: false
+    }));
+  }
+
+  getAllStatisticsInfo() {
+    this.dashboardService.getAllStatistics('', '').subscribe(res => {
+      this.statisticsSelectArea = this.getStatisticsSelectYear(res.data.meta.area_number_choices);
+      this.statisticsSelectYear = res.data.meta.year_choices;
       this.allStatisticsChart = new G2.Chart({
         container: 'allStatistics',
         forceFit: true,
@@ -120,15 +98,21 @@ export class DashboardComponent implements OnInit {
         height: 425,
         padding: [10, 30, 80, 30]
       });
-      this.allStatisticsChart.source(dv);
-      this.allStatisticsChart.scale('label', {
-        range: [0, 1]
-      });
+      this.allStatisticsChart.source(res.data.list);
+      // this.allStatisticsChart.scale('value', {
+      //   tickInterval: 20
+      // });
+      // this.allStatisticsChart.interval().position('label*value');
+      // this.allStatisticsChart.render();
       this.allStatisticsChart.axis('label', {
         label: {
           textStyle: {
             fill: '#aaaaaa'
           }
+        },
+        tickLine: {
+          alignWithLabel: false,
+          length: 0
         }
       });
       this.allStatisticsChart.axis('value', {
@@ -136,22 +120,66 @@ export class DashboardComponent implements OnInit {
           textStyle: {
             fill: '#aaaaaa'
           }
+        },
+        title: {
+          offset: 50
         }
       });
-      this.allStatisticsChart.tooltip({
-        shared: true,
+      this.allStatisticsChart.legend({
+        position: 'top-center'
       });
-      this.allStatisticsChart.line().position('label*value').color('line').size('line', function (val) {
-        return 2;
-      }).opacity('line', function (val) {
-        return 0.7;
-      });
-      this.allStatisticsChart.point().position('label*value').color('line').size('line', function (val) {
-        return 0;
-      }).style({
-        lineWidth: 2
-      });
-      this.allStatisticsChart.render();
+      this.allStatisticsChart.interval().position('label*value').color('line').opacity(1).adjust([{
+        type: 'dodge',
+        marginRatio: 1 / 32
+    }]);
+    this.allStatisticsChart.render();
+      // const dv = new DataSet.View().source(res.data.list);
+      // dv.transform({
+      //   type: 'sort',
+      //   callback: function callback(a, b) {
+      //     return a.label - b.label;
+      //   }
+      // });
+
+      // this.allStatisticsChart = new G2.Chart({
+      //   container: 'allStatistics',
+      //   forceFit: true,
+      //   width: 1100,
+      //   height: 425,
+      //   padding: [10, 30, 80, 30]
+      // });
+      // this.allStatisticsChart.source(dv);
+      // this.allStatisticsChart.scale('label', {
+      //   range: [0, 1]
+      // });
+      // this.allStatisticsChart.axis('label', {
+      //   label: {
+      //     textStyle: {
+      //       fill: '#aaaaaa'
+      //     }
+      //   }
+      // });
+      // this.allStatisticsChart.axis('value', {
+      //   label: {
+      //     textStyle: {
+      //       fill: '#aaaaaa'
+      //     }
+      //   }
+      // });
+      // this.allStatisticsChart.tooltip({
+      //   shared: true,
+      // });
+      // this.allStatisticsChart.line().position('label*value').color('line').size('line', function (val) {
+      //   return 2;
+      // }).opacity('line', function (val) {
+      //   return 0.7;
+      // });
+      // this.allStatisticsChart.point().position('label*value').color('line').size('line', function (val) {
+      //   return 0;
+      // }).style({
+      //   lineWidth: 2
+      // });
+      // this.allStatisticsChart.render();
     });
   }
 
@@ -426,11 +454,28 @@ export class DashboardComponent implements OnInit {
 
 
   areaChange(event) {
-    this.statisticsSelectYear = event;
+    this.areaFiltrate = event;
+    if (this.timeFiltrate === undefined) {
+      this.timeFiltrate = '';
+    }
+    this.dashboardService.getAllStatistics(this.timeFiltrate, this.areaFiltrate).subscribe(res => {
+      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.data.meta.area_number_choices);
+      this.statisticsSelectYear = res.data.meta.year_choices;
+      this.allStatisticsChart.source(res.data.list);
+      this.allStatisticsChart.render();
+    });
   }
 
   yearChange(event) {
-    this.statisticsSelectArea = event;
+    this.timeFiltrate = event;
+    if (this.areaFiltrate === undefined) {
+      this.areaFiltrate = '';
+    }
+    this.dashboardService.getAllStatistics(this.timeFiltrate, this.areaFiltrate).subscribe(res => {
+      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.data.meta.area_number_choices);
+      this.statisticsSelectYear = res.data.meta.year_choices;
+      this.allStatisticsChart.source(res.data.list);
+      this.allStatisticsChart.render();
+    });
   }
-
 }

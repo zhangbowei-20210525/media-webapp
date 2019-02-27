@@ -24,13 +24,12 @@ export class TapesComponent implements OnInit {
     this.seriesService.eventEmit.subscribe((value: any) => {
       if (value === 'tapesRefresh') {
         this.seriesService.getAllTapes(this.tapesPagination).subscribe(res => {
-          this.tapesList = res.list;
-          this.tapesPagination = res.pagination;
+          this.tapesList = res.data.list;
+          this.tapesPagination = res.data.pagination;
         });
       }
     });
     this.seriesService.getAllTapes(this.tapesPagination).subscribe(res => {
-      console.log(res);
       this.tapesList = res.data.list;
       this.tapesPagination = res.data.pagination;
     });
