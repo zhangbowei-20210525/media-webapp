@@ -133,53 +133,6 @@ export class DashboardComponent implements OnInit {
         marginRatio: 1 / 32
     }]);
     this.allStatisticsChart.render();
-      // const dv = new DataSet.View().source(res.data.list);
-      // dv.transform({
-      //   type: 'sort',
-      //   callback: function callback(a, b) {
-      //     return a.label - b.label;
-      //   }
-      // });
-
-      // this.allStatisticsChart = new G2.Chart({
-      //   container: 'allStatistics',
-      //   forceFit: true,
-      //   width: 1100,
-      //   height: 425,
-      //   padding: [10, 30, 80, 30]
-      // });
-      // this.allStatisticsChart.source(dv);
-      // this.allStatisticsChart.scale('label', {
-      //   range: [0, 1]
-      // });
-      // this.allStatisticsChart.axis('label', {
-      //   label: {
-      //     textStyle: {
-      //       fill: '#aaaaaa'
-      //     }
-      //   }
-      // });
-      // this.allStatisticsChart.axis('value', {
-      //   label: {
-      //     textStyle: {
-      //       fill: '#aaaaaa'
-      //     }
-      //   }
-      // });
-      // this.allStatisticsChart.tooltip({
-      //   shared: true,
-      // });
-      // this.allStatisticsChart.line().position('label*value').color('line').size('line', function (val) {
-      //   return 2;
-      // }).opacity('line', function (val) {
-      //   return 0.7;
-      // });
-      // this.allStatisticsChart.point().position('label*value').color('line').size('line', function (val) {
-      //   return 0;
-      // }).style({
-      //   lineWidth: 2
-      // });
-      // this.allStatisticsChart.render();
     });
   }
 
@@ -290,7 +243,7 @@ export class DashboardComponent implements OnInit {
       });
       this.publishChart.source(res.data);
       this.publishChart.scale('value', {
-        tickInterval: 20
+          tickCount: 10
       });
       this.publishChart.interval().position('label*value');
       this.publishChart.render();
@@ -455,6 +408,8 @@ export class DashboardComponent implements OnInit {
 
   areaChange(event) {
     this.areaFiltrate = event;
+    if (this.areaFiltrate.length > 5) {
+    }
     if (this.timeFiltrate === undefined) {
       this.timeFiltrate = '';
     }
