@@ -36,4 +36,8 @@ export class SeriesDetailsComponent implements OnInit {
     });
   }
 
+  categories() {
+
+  }
+
 }
