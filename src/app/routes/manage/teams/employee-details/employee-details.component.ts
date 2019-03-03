@@ -9,8 +9,7 @@ import {
   NzTreeNodeOptions,
   NzTreeComponent,
   NzTreeNode,
-  NzFormatEmitEvent,
-  NzTreeService
+  NzFormatEmitEvent
 } from 'ng-zorro-antd';
 import { EmployeeDepartmentComponent } from './components/employee-department.component';
 import { TreeService } from '@shared';

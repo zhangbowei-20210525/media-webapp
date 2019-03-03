@@ -65,6 +65,7 @@ const PIPES = [
 // #endregion
 
 import { RouterModule } from '@angular/router';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import { RouterModule } from '@angular/router';
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
     // third libs
     ...THIRD_MODULES,
     // export components
