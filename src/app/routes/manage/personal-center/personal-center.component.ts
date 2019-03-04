@@ -31,7 +31,6 @@ export class PersonalCenterComponent implements OnInit {
 
     this.pcs.getUserEmployees()
       .subscribe(result => {
-        console.log(result);
         this.employees = result;
       });
   }

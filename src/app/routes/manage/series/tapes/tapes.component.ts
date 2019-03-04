@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { PaginationDto } from '@shared';
-import { SeriesService } from '../../series.service';
+import { SeriesService } from '../series.service';
 
 @Component({
   selector: 'app-tapes',
@@ -24,14 +23,14 @@ export class TapesComponent implements OnInit {
     this.seriesService.eventEmit.subscribe((value: any) => {
       if (value === 'tapesRefresh') {
         this.seriesService.getAllTapes(this.tapesPagination).subscribe(res => {
-          this.tapesList = res.data.list;
-          this.tapesPagination = res.data.pagination;
+          this.tapesList = res.list;
+          this.tapesPagination = res.pagination;
         });
       }
     });
     this.seriesService.getAllTapes(this.tapesPagination).subscribe(res => {
-      this.tapesList = res.data.list;
-      this.tapesPagination = res.data.pagination;
+      this.tapesList = res.list;
+      this.tapesPagination = res.pagination;
     });
   }
 
@@ -44,6 +43,6 @@ export class TapesComponent implements OnInit {
   }
 
   tapeDetails(program_id: number, id: number) {
-    this.router.navigate([`/manage/series/series-details/${program_id}/series-details-tape`, {tapeId: id}]);
+    this.router.navigate([`/manage/series/d/${program_id}/tape`, {tapeId: id}]);
   }
 }

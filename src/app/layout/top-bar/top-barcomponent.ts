@@ -29,7 +29,6 @@ export class TopBarComponent implements OnInit {
     this.langs = this.i18n.getLangs();
     this.token.change().subscribe(t => {
       this.isLoggedIn = this.checkSimple(t);
-      // console.log('token changed.', t, this.isLoggedIn);
     });
     this.isLoggedIn = this.checkSimple(this.token.get());
   }

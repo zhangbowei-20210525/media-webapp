@@ -45,6 +45,7 @@
     "app.copyright.co-production": "CO production",
     "app.copyright.contract": "Contract",
     "app.copyright.introduction": "Introduction",
+    "app.home-page.statistics-operation-instruction": "No more than 5 regions can be selected at the same time",
     "validation.phone-number": "mobile number",
     "validation.captcha": "captcha",
     "validation.phone-number.required": "Please enter your phone number!",

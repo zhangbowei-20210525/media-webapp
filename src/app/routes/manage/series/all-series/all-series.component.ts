@@ -92,19 +92,15 @@ export class AllSeriesComponent implements OnInit {
   }
 
   addSeriesAgreed = (component: AddSeriesInfoComponent) => new Promise((resolve, reject) => {
-    console.log(0);
     if (component.validation()) {
       component.submit().subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
         this.refreshDataSet();
-        console.log(1);
         resolve();
       }, error => {
-        console.log(2);
         reject(false);
       });
     } else {
-      console.log(3);
       reject(false);
     }
   })

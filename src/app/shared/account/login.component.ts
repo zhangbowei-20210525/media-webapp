@@ -67,7 +67,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   getCaptcha(e: MouseEvent) {
-    console.log(this.token.get());
     this.phone.markAsDirty();
     this.phone.updateValueAndValidity();
     if (this.phone.valid) {

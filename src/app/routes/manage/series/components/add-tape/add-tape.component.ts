@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TapeDto } from '../../dtos/tape.dto';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SeriesService } from '../../series.service';
 import { MentionOnSearchTypes } from 'ng-zorro-antd';

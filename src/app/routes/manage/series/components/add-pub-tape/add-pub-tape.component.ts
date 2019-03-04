@@ -59,7 +59,7 @@ export class AddPubTapeComponent implements OnInit {
     }
     this.phone = form.value['phone'];
     this.seriesService.getCompaniesName(this.phone).subscribe(res => {
-      this.companiesName = res.data;
+      this.companiesName = res;
     });
   }
 

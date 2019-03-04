@@ -46,6 +46,7 @@
     "app.copyright.contract": "承制",
     "app.copyright.introduction": "引进",
     "app.home-page.purchase-expire": "",
+    "app.home-page.statistics-operation-instruction": "最多只能同时选中5个地域",
     "validation.phone-number": "请输入手机号",
     "validation.captcha": "请输入验证码",
     "validation.phone-number.required": "请输入手机号！",

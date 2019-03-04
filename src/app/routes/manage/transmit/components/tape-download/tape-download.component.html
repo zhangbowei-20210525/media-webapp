@@ -1,0 +1,91 @@
+<div>
+  <div class="tape-card">
+    <div class="cover">
+      <img src="assets/images/tapes.png" alt="">
+    </div>
+    <div class="info">
+      <div class="info-item-grid">
+        <div class="info-item">
+          <span class="info-item-label">节目名：</span>
+          <span class="info-item-text">{{tapeDownloadInfo?.program_name}}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item-label">集数</span>
+          <span class="info-item-text">{{tapeDownloadInfo?.episode}}</span>
+        </div>
+        <!-- <div class="info-item">
+          <span class="info-item-label">字幕：</span>
+          <span class="info-item-text">{{tape?.subtitle}}</span>
+        </div> -->
+        <!-- <div class="info-item">
+          <span class="info-item-label">私钥：</span>
+          <span class="info-item-text">{{tape.private_block}}</span>
+        </div> -->
+        <div class="info-item">
+          <span class="info-item-label">语言：</span>
+          <span class="info-item-text">{{tapeDownloadInfo?.language}}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item-label">被下载次数：</span>
+          <span class="info-item-text">{{tapeDownloadInfo.download_times}} 次</span>
+        </div>
+        <!-- <div class="info-item">
+          <span class="info-item-label">上传人：</span>
+          <span class="info-item-text">{{tape?.uploader_name}}</span>
+        </div>
+        <div class="info-item"></div>
+        <div class="info-item">
+          <span class="info-item-label">上传时间：</span>
+          <span class="info-item-text">{{tape.upload_date}}</span>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="snack-bar">
+    <div class="lf">
+      <span>文件列表：</span>
+      <span>已选中文件：</span>
+      <span>{{checkeds}}</span>
+    </div>
+    <div class="rf">
+      <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">
+        全选
+      </label>
+    </div>
+  </div>
+
+  <nz-divider class="push-10"></nz-divider>
+
+  <div nz-row>
+    <div nz-col nzSpan="2" *ngFor="let source of sources; index as i">
+      <button 
+      nz-button 
+      class="source-button" 
+      [nzType]="sourceCheckOptions[i].checked ? 'primary' : 'default'" 
+      (click)="clickCheck(i)" 
+      nz-tooltip 
+      [nzTitle]="source.source_name"
+      [nzMouseEnterDelay]="0.5"
+      >
+      {{i + 1}}
+    </button>
+    </div>
+    <div [hidden]="true">
+      <nz-checkbox-group [(ngModel)]="sourceCheckOptions" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
+    </div>
+  </div>
+
+  <div *ngIf="isDownloaded" class="download-hint">
+    <span class="rf text-hint push-10">如已进入下载程序，可关闭该页面。&nbsp;点击下载没反应？请先下载安装&nbsp;
+      <nz-tooltip nzTitle="专用文件传输客户端">
+        <a class="text-info" nz-tooltip>
+          客户端
+          <i class="anticon anticon-question-circle-o"></i>
+        </a>
+      </nz-tooltip>
+    </span>
+  </div>
+</div>
