@@ -135,9 +135,9 @@
   <div class="all-statistics-box">
     <div class="all-statistics-title-wk">
       <span class="all-statistics-title">季度统计分析</span>
-      <nz-tree-select style="width: 250px;margin-top: 15px;margin-right: 10px;float: right" 
+      <nz-tree-select #allStatisticsTree style="width: 250px;margin-top: 15px;margin-right: 10px;float: right" 
       [nzNodes]="statisticsSelectArea" nzShowSearch nzCheckable nzSize="small" nzPlaceHolder="请选择地域"
-        [(ngModel)]="areaFiltrate" (ngModelChange)="areaChange($event)">
+        [(ngModel)]="checkedAreaCode" (ngModelChange)="areaChange($event)">
       </nz-tree-select>
       <nz-select nzSize="small" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
         <nz-option *ngFor="let ss of statisticsSelectYear" [nzLabel]="ss" [nzValue]="ss"></nz-option>

@@ -101,7 +101,7 @@ export class SeriesService {
 
 
   getPublicities(pagination: PaginationDto) {
-    return this.http.get<any>(`api/v1/publicity?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<any>(`/api/v1/publicity?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
   publicityDetail(id: number) {
@@ -119,23 +119,23 @@ export class SeriesService {
   }
 
   getTapeList(id: number) {
-    return this.http.get<any>(`api/v1/programs/${id}/sources`);
+    return this.http.get<any>(`/api/v1/programs/${id}/sources`);
   }
 
   getOnlineInfo(id: number) {
-    return this.http.get<any>(`api/v1/sources/${id}`);
+    return this.http.get<any>(`/api/v1/sources/${id}`);
   }
 
   getAllTapes(pagination: PaginationDto) {
-    return this.http.get<any>(`api/v1/sources?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<any>(`/api/v1/sources?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
   tapeFileList(id: number, pagination: PaginationDto) {
-    return this.http.get<any>(`api/v1/sources/${id}/files?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<any>(`/api/v1/sources/${id}/files?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
   getIpAddress() {
-    return this.http.get<ResponseDto<any>>(`api/v1/source_clients/ip`);
+    return this.http.get<ResponseDto<any>>(`/api/v1/source_clients/ip`);
   }
 
   clientStatus(address: string) {
@@ -166,19 +166,22 @@ export class SeriesService {
   }
 
   getCompaniesName(phone: number) {
-    return this.http.get<any>(`api/v1/companies/search_by_phone?phone=${phone}`);
+    return this.http.get<any>(`/api/v1/companies/search_by_phone?phone=${phone}`);
   }
 
   addPubTape(id: number, newTape: { auth_company_id: number }) {
-    return this.http.post<ResponseDto<number>>(`api/v1/sources/${id}/publish_auth`, newTape);
+    return this.http.post<ResponseDto<number>>(`/api/v1/sources/${id}/publish_auth`, newTape);
   }
 
   pubTapeList(id: number, pagination: PaginationDto) {
-    return this.http.get<any>(`api/v1/sources/${id}/publish_auth?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<any>(`/api/v1/sources/${id}/publish_auth?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
   deletePubTape(id: number, auth_company_id: number) {
-    return this.http.delete<any>(`api/v1/sources/${id}/publish_auth`, { params: { auth_company_id: auth_company_id as any } });
+    return this.http.delete<any>(`/api/v1/sources/${id}/publish_auth`, { params: { auth_company_id: auth_company_id as any } });
   }
 
+  purchaseTapes(pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/bought_sources?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
 }

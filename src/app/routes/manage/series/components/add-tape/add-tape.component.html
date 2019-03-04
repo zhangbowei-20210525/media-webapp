@@ -7,10 +7,10 @@
 
   <form nz-form [formGroup]="onlineTapeForm" [hidden]="source_type == 'entity'">
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>母带名称</nz-form-label>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>母带版本</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <input nz-input id="name" formControlName="name" placeholder="请输入母带名称">
-        <nz-form-explain *ngIf="onlineTapeForm.get('name').dirty && onlineTapeForm.get('name').errors">请输入母带名称
+        <input nz-input id="name" formControlName="name" placeholder="请输入母带版本">
+        <nz-form-explain *ngIf="onlineTapeForm.get('name').dirty && onlineTapeForm.get('name').errors">请输入母带版本
         </nz-form-explain>
       </nz-form-control>
     </nz-form-item>
@@ -91,10 +91,10 @@
 
   <form nz-form [formGroup]="entityTapeForm" [hidden]="source_type == 'online'">
     <nz-form-item>
-      <nz-form-label [nzSm]="3" nzFor="name" nzRequired>母带名称</nz-form-label>
+      <nz-form-label [nzSm]="3" nzFor="name" nzRequired>母带版本</nz-form-label>
       <nz-form-control [nzSm]="9">
-        <input nz-input id="name" formControlName="name" placeholder="请输入母带名称">
-        <nz-form-explain *ngIf="entityTapeForm.get('name').dirty && entityTapeForm.get('name').errors">请输入母带名称
+        <input nz-input id="name" formControlName="name" placeholder="请输入母带版本">
+        <nz-form-explain *ngIf="entityTapeForm.get('name').dirty && entityTapeForm.get('name').errors">请输入母带版本
         </nz-form-explain>
       </nz-form-control>
       <nz-form-label [nzSm]="3" nzFor="episode">集数</nz-form-label>

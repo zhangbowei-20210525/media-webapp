@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as G2 from '@antv/g2';
 import DataSet from '@antv/data-set';
 import { SeriesService } from '../series/series.service';
 import { DashboardService } from './dashboard.service';
 import { map } from 'rxjs/operators';
-import { NzTreeNodeOptions } from 'ng-zorro-antd';
-import { TreeService } from '@shared';
+import { NzTreeNodeOptions, NzTreeComponent, NzTreeSelectComponent, NzTreeNode } from 'ng-zorro-antd';
+import { TreeService, MessageService } from '@shared';
 import { DashboardDto } from './dtos';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,6 @@ export class DashboardComponent implements OnInit {
   activeProject: string;
   showTable: number;
   timeFiltrate: any;
-  areaFiltrate: any;
   right: any;
   publish_right: any;
   payment: any;
@@ -40,10 +40,15 @@ export class DashboardComponent implements OnInit {
   statisticsSelectArea = [];
   allStatisticsChart: any;
   allStatistics: NzTreeNodeOptions[];
+  checkedAreaCode = [];
+  oldCheckedAreaCode = [];
+  @ViewChild('allStatisticsTree') allStatisticsTree: NzTreeSelectComponent;
 
   constructor(
     private dashboardService: DashboardService,
-    private ts: TreeService
+    private ts: TreeService,
+    private message: MessageService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -54,16 +59,16 @@ export class DashboardComponent implements OnInit {
     this.activeProject = 'right';
     this.showTable = 1;
     this.dashboardService.getExpireInfo().pipe(map(m => {
-      m.data.right.data.length = 5;
-      m.data.publish_right.data.length = 5;
-      m.data.payment.data.length = 5;
-      m.data.receipt.data.length = 5;
+      m.right.data.length = 5;
+      m.publish_right.data.length = 5;
+      m.payment.data.length = 5;
+      m.receipt.data.length = 5;
       return m;
     })).subscribe(res => {
-      this.right = res.data.right;
-      this.publish_right = res.data.publish_right;
-      this.payment = res.data.payment;
-      this.receipt = res.data.receipt;
+      this.right = res.right;
+      this.publish_right = res.publish_right;
+      this.payment = res.payment;
+      this.receipt = res.receipt;
     });
     this.getSeriesStatisticsInfo();
     this.getPublicityStatisticsInfo();
@@ -71,7 +76,7 @@ export class DashboardComponent implements OnInit {
     this.getTapeStatisticsInfo();
     this.getAllStatisticsInfo();
     this.dashboardService.getActiveProject('right').subscribe(res => {
-      this.activeProjectRight = res.data;
+      this.activeProjectRight = res;
     });
   }
 
@@ -89,8 +94,8 @@ export class DashboardComponent implements OnInit {
 
   getAllStatisticsInfo() {
     this.dashboardService.getAllStatistics('', '').subscribe(res => {
-      this.statisticsSelectArea = this.getStatisticsSelectYear(res.data.meta.area_number_choices);
-      this.statisticsSelectYear = res.data.meta.year_choices;
+      this.statisticsSelectArea = this.getStatisticsSelectYear(res.meta.area_number_choices);
+      this.statisticsSelectYear = res.meta.year_choices;
       this.allStatisticsChart = new G2.Chart({
         container: 'allStatistics',
         forceFit: true,
@@ -98,7 +103,7 @@ export class DashboardComponent implements OnInit {
         height: 425,
         padding: [10, 30, 80, 30]
       });
-      this.allStatisticsChart.source(res.data.list);
+      this.allStatisticsChart.source(res.list);
       // this.allStatisticsChart.scale('value', {
       //   tickInterval: 20
       // });
@@ -133,53 +138,6 @@ export class DashboardComponent implements OnInit {
         marginRatio: 1 / 32
     }]);
     this.allStatisticsChart.render();
-      // const dv = new DataSet.View().source(res.data.list);
-      // dv.transform({
-      //   type: 'sort',
-      //   callback: function callback(a, b) {
-      //     return a.label - b.label;
-      //   }
-      // });
-
-      // this.allStatisticsChart = new G2.Chart({
-      //   container: 'allStatistics',
-      //   forceFit: true,
-      //   width: 1100,
-      //   height: 425,
-      //   padding: [10, 30, 80, 30]
-      // });
-      // this.allStatisticsChart.source(dv);
-      // this.allStatisticsChart.scale('label', {
-      //   range: [0, 1]
-      // });
-      // this.allStatisticsChart.axis('label', {
-      //   label: {
-      //     textStyle: {
-      //       fill: '#aaaaaa'
-      //     }
-      //   }
-      // });
-      // this.allStatisticsChart.axis('value', {
-      //   label: {
-      //     textStyle: {
-      //       fill: '#aaaaaa'
-      //     }
-      //   }
-      // });
-      // this.allStatisticsChart.tooltip({
-      //   shared: true,
-      // });
-      // this.allStatisticsChart.line().position('label*value').color('line').size('line', function (val) {
-      //   return 2;
-      // }).opacity('line', function (val) {
-      //   return 0.7;
-      // });
-      // this.allStatisticsChart.point().position('label*value').color('line').size('line', function (val) {
-      //   return 0;
-      // }).style({
-      //   lineWidth: 2
-      // });
-      // this.allStatisticsChart.render();
     });
   }
 
@@ -193,7 +151,7 @@ export class DashboardComponent implements OnInit {
         height: 360,
         // padding:  [ 0,  0,  0,  0]
       });
-      this.seriesChart.source(res.data, {
+      this.seriesChart.source(res, {
         percent: {
           formatter: function formatter(val) {
             val = val * 100 + '%';
@@ -231,7 +189,7 @@ export class DashboardComponent implements OnInit {
 
   getPublicityStatisticsInfo() {
     this.dashboardService.getPublicityStatistics('day').subscribe(res => {
-      const dv = new DataSet.View().source(res.data);
+      const dv = new DataSet.View().source(res);
       dv.transform({
         type: 'sort',
         callback: function callback(a, b) {
@@ -289,9 +247,9 @@ export class DashboardComponent implements OnInit {
         width: 520,
         height: 350,
       });
-      this.publishChart.source(res.data);
+      this.publishChart.source(res);
       this.publishChart.scale('value', {
-        tickInterval: 20
+          tickCount: 10
       });
       this.publishChart.interval().position('label*value');
       this.publishChart.render();
@@ -306,7 +264,7 @@ export class DashboardComponent implements OnInit {
         width: 520,
         height: 350,
       });
-      this.tapeChart.source(res.data);
+      this.tapeChart.source(res);
       this.tapeChart.scale('value', {
         tickInterval: 20
       });
@@ -318,7 +276,7 @@ export class DashboardComponent implements OnInit {
   switchoverSeriesCriteria() {
     if (this.seriesCriteria === 'investment_type') {
       this.dashboardService.getSeriesStatistics('investment_type').subscribe(res => {
-        this.seriesChart.source(res.data, {
+        this.seriesChart.source(res, {
           percent: {
             formatter: function formatter(val) {
               val = val * 100 + '%';
@@ -332,7 +290,7 @@ export class DashboardComponent implements OnInit {
 
     if (this.seriesCriteria === 'program_type') {
       this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
-        this.seriesChart.source(res.data, {
+        this.seriesChart.source(res, {
           percent: {
             formatter: function formatter(val) {
               val = val * 100 + '%';
@@ -348,7 +306,7 @@ export class DashboardComponent implements OnInit {
   switchoverTime() {
     if (this.time === 'day') {
       this.dashboardService.getPublicityStatistics('day').subscribe(res => {
-        const dv = new DataSet.View().source(res.data);
+        const dv = new DataSet.View().source(res);
         dv.transform({
           type: 'sort',
           callback: function callback(a, b) {
@@ -362,7 +320,7 @@ export class DashboardComponent implements OnInit {
 
     if (this.time === 'month') {
       this.dashboardService.getPublicityStatistics('month').subscribe(res => {
-        const dv = new DataSet.View().source(res.data);
+        const dv = new DataSet.View().source(res);
         dv.transform({
           type: 'sort',
           callback: function callback(a, b) {
@@ -376,7 +334,7 @@ export class DashboardComponent implements OnInit {
 
     if (this.time === 'year') {
       this.dashboardService.getPublicityStatistics('year').subscribe(res => {
-        const dv = new DataSet.View().source(res.data);
+        const dv = new DataSet.View().source(res);
         dv.transform({
           type: 'sort',
           callback: function callback(a, b) {
@@ -392,20 +350,20 @@ export class DashboardComponent implements OnInit {
   switchoverPubType() {
     if (this.pubType === 'custom') {
       this.dashboardService.getPublishStatistics('custom').subscribe(res => {
-        this.publishChart.source(res.data);
+        this.publishChart.source(res);
         this.publishChart.render();
       });
     }
     if (this.pubType === 'right') {
       this.dashboardService.getPublishStatistics('right').subscribe(res => {
-        this.publishChart.source(res.data);
+        this.publishChart.source(res);
         this.publishChart.render();
       });
 
     }
     if (this.pubType === 'area') {
       this.dashboardService.getPublishStatistics('area').subscribe(res => {
-        this.publishChart.source(res.data);
+        this.publishChart.source(res);
         this.publishChart.render();
       });
     }
@@ -414,13 +372,13 @@ export class DashboardComponent implements OnInit {
   switchoverTape() {
     if (this.tapeType === 'publish') {
       this.dashboardService.getTapeStatistics('publish').subscribe(res => {
-        this.tapeChart.source(res.data);
+        this.tapeChart.source(res);
         this.tapeChart.render();
       });
     }
     if (this.tapeType === 'purchase') {
       this.dashboardService.getTapeStatistics('purchase').subscribe(res => {
-        this.tapeChart.source(res.data);
+        this.tapeChart.source(res);
         this.tapeChart.render();
       });
     }
@@ -430,52 +388,55 @@ export class DashboardComponent implements OnInit {
     if (this.activeProject === 'right') {
       this.showTable = 1;
       this.dashboardService.getActiveProject('right').subscribe(res => {
-        this.activeProjectRight = res.data;
+        this.activeProjectRight = res;
       });
     }
     if (this.activeProject === 'publish_right') {
       this.showTable = 2;
       this.dashboardService.getActiveProject('publish_right').subscribe(res => {
-        this.activeProjectPubRight = res.data;
+        this.activeProjectPubRight = res;
       });
     }
     if (this.activeProject === 'publicity') {
       this.showTable = 3;
       this.dashboardService.getActiveProject('publicity').subscribe(res => {
-        this.activeProjectPublicity = res.data;
+        this.activeProjectPublicity = res;
       });
     }
     if (this.activeProject === 'source') {
       this.showTable = 4;
       this.dashboardService.getActiveProject('source').subscribe(res => {
-        this.activeProjectSource = res.data;
+        this.activeProjectSource = res;
       });
     }
   }
 
-
   areaChange(event) {
-    this.areaFiltrate = event;
+    this.checkedAreaCode = event;
     if (this.timeFiltrate === undefined) {
-      this.timeFiltrate = '';
+      this.timeFiltrate = [''];
     }
-    this.dashboardService.getAllStatistics(this.timeFiltrate, this.areaFiltrate).subscribe(res => {
-      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.data.meta.area_number_choices);
-      this.statisticsSelectYear = res.data.meta.year_choices;
-      this.allStatisticsChart.source(res.data.list);
-      this.allStatisticsChart.render();
-    });
+    if (event.length < 6) {
+      this.dashboardService.getAllStatistics(this.timeFiltrate, event).subscribe(res => {
+        this.statisticsSelectYear =  this.getStatisticsSelectYear(res.meta.area_number_choices);
+        this.statisticsSelectYear = res.meta.year_choices;
+        this.allStatisticsChart.source(res.list);
+        this.allStatisticsChart.render();
+      });
+    } else {
+      this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
+      }
   }
 
   yearChange(event) {
     this.timeFiltrate = event;
-    if (this.areaFiltrate === undefined) {
-      this.areaFiltrate = '';
+    if (this.checkedAreaCode === undefined) {
+      this.checkedAreaCode = [''];
     }
-    this.dashboardService.getAllStatistics(this.timeFiltrate, this.areaFiltrate).subscribe(res => {
-      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.data.meta.area_number_choices);
-      this.statisticsSelectYear = res.data.meta.year_choices;
-      this.allStatisticsChart.source(res.data.list);
+    this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode).subscribe(res => {
+      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.meta.area_number_choices);
+      this.statisticsSelectYear = res.meta.year_choices;
+      this.allStatisticsChart.source(res.list);
       this.allStatisticsChart.render();
     });
   }

@@ -19,7 +19,6 @@ export class EmptyComponent implements OnInit {
 
   ngOnInit() {
     this.src = this.sanitizer.bypassSecurityTrustResourceUrl(this.image || this.default);
-    console.log(this.src, this.image, this.default);
   }
 
 }

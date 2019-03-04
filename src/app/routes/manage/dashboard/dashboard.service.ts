@@ -14,30 +14,30 @@ export class DashboardService {
   ) { }
 
   getExpireInfo() {
-    return this.http.get<any>('api/v1/analysis/period');
+    return this.http.get<any>('/api/v1/analysis/period');
   }
 
   getSeriesStatistics(seriesStatisticsType: string) {
-    return this.http.get<any>(`api/v1/analysis/program?title=${seriesStatisticsType}`);
+    return this.http.get<any>(`/api/v1/analysis/program?title=${seriesStatisticsType}`);
   }
 
   getPublicityStatistics(timeStatisticsType: string) {
-    return this.http.get<any>(`api/v1/analysis/publicity?title=${timeStatisticsType}`);
+    return this.http.get<any>(`/api/v1/analysis/publicity?title=${timeStatisticsType}`);
   }
 
   getPublishStatistics(publishStatisticsType: string) {
-    return this.http.get<any>(`api/v1/analysis/publish_right?title=${publishStatisticsType}`);
+    return this.http.get<any>(`/api/v1/analysis/publish_right?title=${publishStatisticsType}`);
   }
 
   getTapeStatistics(tapeStatisticsType: string) {
-    return this.http.get<any>(`api/v1/analysis/source?title=${tapeStatisticsType}`);
+    return this.http.get<any>(`/api/v1/analysis/source?title=${tapeStatisticsType}`);
   }
 
   getActiveProject(type: string) {
-    return this.http.get<any>(`api/v1/analysis/activation?title=${type}`);
+    return this.http.get<any>(`/api/v1/analysis/activation?title=${type}`);
   }
 
   getAllStatistics(year: any, areas: any) {
-    return this.http.get<any>(`api/v1/analysis/publish_right_contract/quarter?year=${year}&areas=${areas}`);
+    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/quarter?year=${year}&areas=${areas}`);
   }
 }

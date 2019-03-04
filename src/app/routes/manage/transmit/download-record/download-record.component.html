@@ -1,0 +1,36 @@
+<div class="block clearfix">
+  <div class="block-content">
+        <div *ngIf="isDownloadRecordLoaded == true">
+          <nz-table #basicTable [nzData]="downloadRecordList" [nzPageSize]="downloadRecordPagination?.page_size"
+            [nzFrontPagination]="false" [nzPageIndex]="downloadRecordPagination?.page" [nzTotal]="downloadRecordPagination?.count"
+            (nzPageIndexChange)="downloadRecordPageChange($event)">
+            <thead>
+              <tr>
+                <th style="text-align: center">节目名称</th>
+                <th style="text-align: center">母带版本</th>
+                <th style="text-align: center">任务数量</th>
+                <th style="text-align: center">状态</th>
+                <th style="text-align: center">下载时间</th>
+                <th style="text-align: center">公司简称</th>
+                <th style="text-align: center">下载进度</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td style="text-align: center">{{data.program_name}}</td>
+                <td style="text-align: center">{{data.source_name}}</td>
+                <td style="text-align: center">{{data.tasks_num}}</td>
+                <td style="text-align: center">
+                  <span *ngIf="data.status == 0">下载中</span>
+                  <span *ngIf="data.status == 1">下载中</span>
+                  <span *ngIf="data.status == 2">已完成</span>
+                </td>
+                <td style="text-align: center">{{data.created_at}}</td>
+                <td style="text-align: center">{{data.company_name}}</td>
+                <td style="text-align: center"><a (click)="transmitSchedule(data.id)">查看</a></td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+  </div>
+</div>

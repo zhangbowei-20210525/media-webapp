@@ -1,3 +1,93 @@
-<p>
-  transmit works!
-</p>
+<div class="block clearfix">
+  <div class="block-content">
+    <nz-tabset>
+      <nz-tab nzTitle="我的母带" (nzClick)="myTapes()">
+        <div *ngIf="isMyTapesLoaded == true">
+          <nz-table #basicTable [nzData]="tapesList" [nzPageSize]="tapesPagination?.page_size"
+            [nzFrontPagination]="false" [nzPageIndex]="tapesPagination?.page" [nzTotal]="tapesPagination?.count"
+            (nzPageIndexChange)="tapesPageChange($event)">
+            <thead>
+              <tr>
+                <th style="text-align: center">节目名称</th>
+                <th style="text-align: center">母带版本</th>
+                <th style="text-align: center">类型</th>
+                <th style="text-align: center">集数</th>
+                <th style="text-align: center">语言</th>
+                <th style="text-align: center">字幕</th>
+                <th style="text-align: center">历史记录</th>
+                <th style="text-align: center">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td style="text-align: center">{{data.program_name}}</td>
+                <td style="text-align: center"><a
+                    (click)="tapeDetails(data.program_id, data.id, data.source_type)">{{data.name}}</a></td>
+                <td style="text-align: center">
+                  <span *ngIf="data.source_type == 'online'">在线</span>
+                  <span *ngIf="data.source_type == 'entity'">实体</span>
+                </td>
+                <td style="text-align: center">{{data.episode}}</td>
+                <td style="text-align: center">
+                  <span *ngIf="data.language == 'Chinese'">中文</span>
+                  <span *ngIf="data.language == 'English'">英语</span>
+                </td>
+                <td style="text-align: center">
+                  <span *ngIf="data.subtitle == 'Chinese'">中文</span>
+                  <span *ngIf="data.subtitle == 'English'">英语</span>
+                </td>
+                <td style="text-align: center"><a routerLink="/manage/transmit/historic-record/{{data.id}}">查看</a></td>
+                <td style="text-align: center">
+                  <a><i nz-icon type="delete" theme="outline" style="font-size: 14px"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="购入母带" (nzClick)="purchaseTapes()">
+        <div *ngIf="isPurchaseTapesLoaded == true">
+          <nz-table #basicTable [nzData]="purchaseTapesList" [nzPageSize]="purchaseTapesPagination?.page_size"
+            [nzFrontPagination]="false" [nzPageIndex]="purchaseTapesPagination?.page" [nzTotal]="purchaseTapesPagination?.count"
+            (nzPageIndexChange)="purchaseTapesPageChange($event)">
+            <thead>
+              <tr>
+                <th style="text-align: center">节目名称</th>
+                <th style="text-align: center">母带版本</th>
+                <th style="text-align: center">类型</th>
+                <th style="text-align: center">集数</th>
+                <th style="text-align: center">语言</th>
+                <th style="text-align: center">字幕</th>
+                <th style="text-align: center">下载记录</th>
+                <th style="text-align: center">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td style="text-align: center">{{data.program_name}}</td>
+                <td style="text-align: center">{{data.name}}</td>
+                <td style="text-align: center">
+                  <span *ngIf="data.source_type == 'online'">在线</span>
+                  <span *ngIf="data.source_type == 'entity'">实体</span>
+                </td>
+                <td style="text-align: center">{{data.episode}}</td>
+                <td style="text-align: center">
+                  <span *ngIf="data.language == 'Chinese'">中文</span>
+                  <span *ngIf="data.language == 'English'">英语</span>
+                </td>
+                <td style="text-align: center">
+                  <span *ngIf="data.subtitle == 'Chinese'">中文</span>
+                  <span *ngIf="data.subtitle == 'English'">英语</span>
+                </td>
+                <td style="text-align: center"><a routerLink="/manage/transmit/download-record/{{data.id}}">查看</a></td>
+                <td style="text-align: center">
+                  <a (click)="judge(data.id)"><i nz-icon type="download" theme="outline" style="font-size: 17px"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>

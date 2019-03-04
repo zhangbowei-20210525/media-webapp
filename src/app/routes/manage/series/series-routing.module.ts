@@ -6,14 +6,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { SeriesComponent } from './series.component';
 import { SeriesDetailsComponent } from './details/details.component';
 import { SeriesDetailsTapeComponent } from './components/series-details-tape/series-details-tape.component';
-// import { SeriesDetailsCopyrightComponent } from './components/series-details-copyright/series-details-copyright.component';
-import { TapeDetailsComponent } from './components/tape-details/tape-details.component';
-import { PublicityDetailsComponent } from './components/publicity-details/publicity-details.component';
-import { SeriesDetailsPublicityComponent } from './details/publicity/publicity.component';
+import { SeriesDetailsCopyrightComponent } from './components/series-details-copyright/series-details-copyright.component';
 import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrights.component';
 import { RightComponent } from './details/right/right.component';
 import { PublishRightsComponent } from './copyrights/publish-rights/publish-rights.component';
-import { EntityTapeDetailsComponent } from './components/entity-tape-details/entity-tape-details.component';
+import { PublicityDetailsComponent } from './publicities/publicity-details/publicity-details.component';
+import { TapesComponent } from './tapes/tapes.component';
+import { SeriesDetailsPublicityComponent } from './components/series-details-publicity/series-details-publicity.component';
 
 
 const routes: Routes = [
@@ -30,10 +29,10 @@ const routes: Routes = [
         path: 'publicity',
         component: PublicitiesComponent
       },
-      // {
-      //   path: 'tapes',
-      //   component: AllSeriesComponent
-      // },
+      {
+        path: 'tapes',
+        component: TapesComponent
+      },
       {
         path: 'rights',
         component: CopyrightsComponent
@@ -45,21 +44,9 @@ const routes: Routes = [
     path: 'd/:sid',
     component: SeriesDetailsComponent,
     children: [
-      { path: 'publicity', component: SeriesDetailsPublicityComponent },
-      { path: 'right', component:  RightComponent},
-      {
-        path: 'tape', component: SeriesDetailsTapeComponent,
-        children: [
-          {
-            path: 'tape-details',
-            component: TapeDetailsComponent
-          },
-          {
-            path: 'entity-tape-details',
-            component: EntityTapeDetailsComponent
-          },
-        ]
-      }
+      { path: 'publicityd', component: SeriesDetailsPublicityComponent },
+      { path: 'right', component: RightComponent },
+      { path: 'tape', component: SeriesDetailsTapeComponent }
     ]
   },
   { path: 'add-copyrights', component: AddCopyrightsComponent },

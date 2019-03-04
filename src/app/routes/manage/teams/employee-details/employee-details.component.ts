@@ -81,7 +81,6 @@ export class EmployeeDetailsComponent implements OnInit {
     this.service.getEmployeePermissions(this.employeeId).subscribe(permissions => {
       this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
       this.finalCheckedKeys = this.originCheckedKeys = this.getOwnedPermissionKeys(permissions);
-      console.log(this.finalCheckedKeys);
     });
   }
 

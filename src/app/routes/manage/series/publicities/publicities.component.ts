@@ -77,7 +77,7 @@ export class PublicitiesComponent implements OnInit {
   }
 
   publicityDetails(id: number) {
-    this.router.navigate([`/manage/series/series-details/${id}/series-details-publicity`]);
+    this.router.navigate([`/manage/series/d/${id}/publicityd`]);
   }
 
 
