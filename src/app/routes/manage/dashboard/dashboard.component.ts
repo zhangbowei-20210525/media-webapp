@@ -143,6 +143,7 @@ export class DashboardComponent implements OnInit {
 
   getSeriesStatisticsInfo() {
     this.dashboardService.getSeriesStatistics('investment_type').subscribe(res => {
+      console.log(res);
       this.seriesChart = new G2.Chart({
         container: 'seriesStatistics',
         forceFit: true,

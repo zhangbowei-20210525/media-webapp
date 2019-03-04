@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { SharedModule } from '../shared';
-import { TopBarComponent } from './top-bar/top-barcomponent';
+import { TopBarComponent } from './top-bar/top-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
+import { NavNotifyComponent } from './components/nav-notify/nav-notify.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
     TopBarComponent,
     FooterComponent,
     SidebarNavComponent,
+    NavNotifyComponent,
   ],
   imports: [
     CommonModule,

@@ -23,8 +23,6 @@ export class SeriesDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-    });
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');

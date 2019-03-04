@@ -20,7 +20,6 @@ export class TopBarComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private i18n: I18nService,
-    // private auth: AuthService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
     @Inject(DOCUMENT) private doc: any
   ) { }

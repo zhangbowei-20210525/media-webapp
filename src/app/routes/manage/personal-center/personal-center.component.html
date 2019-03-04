@@ -9,16 +9,19 @@
           </div>
           <div class="user-info">
             <h2 class="text-blod">{{ info?.nickname || info?.username }}</h2>
-            <div class="bind bind-mobile active" [ngClass]="{ 'active': info?.phone }">
+            <div class="bind bind-mobile" [ngClass]="{ 'active': info?.phone }">
               <i nz-icon type="mobile" theme="outline"></i>
               <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
               <ng-template #unboundPhone>
                 <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
               </ng-template>
             </div>
-            <div class="bind bind-wechat">
+            <div class="bind bind-wechat" [ngClass]="{ 'active': info?.wechat }">
               <i nz-icon type="wechat" theme="outline"></i>
-              <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+              <span *ngIf="info?.wechat?.length > 0; else unboundWechat">{{ info.wechat }}</span>
+              <ng-template #unboundWechat>
+                <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+              </ng-template>
             </div>
           </div>
           <div class="other-info">

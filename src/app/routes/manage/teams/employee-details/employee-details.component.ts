@@ -9,8 +9,7 @@ import {
   NzTreeNodeOptions,
   NzTreeComponent,
   NzTreeNode,
-  NzFormatEmitEvent,
-  NzTreeService
+  NzFormatEmitEvent
 } from 'ng-zorro-antd';
 import { EmployeeDepartmentComponent } from './components/employee-department.component';
 import { TreeService } from '@shared';
@@ -149,12 +148,12 @@ export class EmployeeDetailsComponent implements OnInit {
 
   enterEditMode() {
     this.editMode = true;
-    this.ts.setDisableCheckbox(this.permissionTreeCom.getTreeNodes(), false);
+    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, false);
   }
 
   outEditMode() {
     this.editMode = false;
-    this.ts.setDisableCheckbox(this.permissionTreeCom.getTreeNodes(), true);
+    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, true);
   }
 
   permissionCheck(event: NzFormatEmitEvent): void {
