@@ -128,11 +128,11 @@ export class NavNotifyComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    if (event.index == 1) {
+    if (event.index === 1) {
       if (!this.isSrcLoaded) {
         this.loadSrcNotifys();
       }
-    } else if (event.index == 2) {
+    } else if (event.index === 2) {
       if (!this.isOutLoaded) {
         this.loadOutNotifys();
       }
