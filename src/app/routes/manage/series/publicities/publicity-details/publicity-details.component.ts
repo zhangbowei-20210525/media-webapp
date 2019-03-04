@@ -134,7 +134,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     if (poster) {
       this.player.poster(poster);
     }
-    this.player.src('http://media.html5media.info/video.mp4');
+    // this.player.src('http://media.html5media.info/video.mp4');
     this.player.src(src);
     this.player.load();
   }
@@ -206,9 +206,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       x.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/1.jpg';
-      x.list[1].src = '/assets/imaaa/2.jpg';
-      x.list[2].src = '/assets/imaaa/3.jpg';
     })).subscribe(s => {
       this.posterList = s.list;
       this.trailerPagination = s.pagination;
@@ -227,9 +224,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       x.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/4.jpg';
-      x.list[1].src = '/assets/imaaa/5.jpg';
-      x.list[2].src = '/assets/imaaa/6.jpg';
     })).subscribe(s => {
       this.stillList = s.list;
       this.stillPagination = s.pagination;
@@ -248,8 +242,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       x.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/bc.pdf';
-      x.list[1].src = '/assets/imaaa/xx.pdf';
     })).subscribe(s => {
       this.pdfList = s.list;
       this.pdfPagination = s.pagination;
