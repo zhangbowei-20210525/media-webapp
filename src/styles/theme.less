@@ -46,3 +46,24 @@
 .notify-popover .ant-tabs .ant-tabs-nav-scroll {
     text-align: center;
 }
+
+.scrollbar::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+.scrollbar::-webkit-scrollbar-track,
+.scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 5px solid transparent;
+}
+.scrollbar::-webkit-scrollbar-track {
+    box-shadow: 1px 1px 5px #eee inset;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+    min-height: 20px;
+    background-clip: content-box;
+    box-shadow: 0 0 0 5px rgba(68, 68, 68, .3) inset;
+}
+.scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+}

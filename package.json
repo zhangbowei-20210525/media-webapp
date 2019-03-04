@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 192.168.1.160 --port 80 --disable-host-check --proxy-config proxy.conf.json",
+    "start": "ng serve --host 192.168.1.164 --port 80 --disable-host-check --proxy-config proxy.conf.json",
     "build": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
@@ -25,8 +25,9 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "core-js": "^2.5.4",
-    "ng-zorro-antd": "^7.0.0-rc.3",
+    "ng-zorro-antd": "^7.0.0",
     "ng2-pdf-viewer": "^5.2.3",
+    "ngx-infinite-scroll": "^7.0.1",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
@@ -34,11 +35,11 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.0",
     "@angular/cli": "~7.2.1",
-    "@angular/compiler-cli": "~7.2.0",
+    "@angular/compiler-cli": "^7.2.7",
     "@angular/language-service": "~7.2.0",
-    "@types/node": "~8.9.4",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
