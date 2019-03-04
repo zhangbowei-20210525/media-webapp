@@ -8,12 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: ['../layout.less'],
-  styles: [`
-    .notify-popover {
-      padding: 0;
-    }
-  `]
+  styleUrls: ['../layout.less']
 })
 export class TopBarComponent implements OnInit {
 
@@ -25,7 +20,6 @@ export class TopBarComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private i18n: I18nService,
-    // private auth: AuthService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
     @Inject(DOCUMENT) private doc: any
   ) { }
@@ -34,7 +28,6 @@ export class TopBarComponent implements OnInit {
     this.langs = this.i18n.getLangs();
     this.token.change().subscribe(t => {
       this.isLoggedIn = this.checkSimple(t);
-      // console.log('token changed.', t, this.isLoggedIn);
     });
     this.isLoggedIn = this.checkSimple(this.token.get());
   }

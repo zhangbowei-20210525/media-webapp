@@ -150,12 +150,12 @@ export class EmployeeDetailsComponent implements OnInit {
 
   enterEditMode() {
     this.editMode = true;
-    this.ts.setDisableCheckbox(this.permissionTreeCom.getTreeNodes(), false);
+    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, false);
   }
 
   outEditMode() {
     this.editMode = false;
-    this.ts.setDisableCheckbox(this.permissionTreeCom.getTreeNodes(), true);
+    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, true);
   }
 
   permissionCheck(event: NzFormatEmitEvent): void {

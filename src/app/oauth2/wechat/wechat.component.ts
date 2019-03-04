@@ -42,8 +42,10 @@ export class WechatComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.queryParamMap;
-    if (params.get('state') === 'STATE') { // 验证 STATE 确保结果是正常的
+    if (params.get('state') === 'STATE_LOGIN') { // 验证 STATE 来自登录
       this.wxloginRequest(params.get('code'));
+    } else if (params.get('state') === 'STATE_BINDING') { // 验证 STATE 来自绑定
+      this.wxBindRequest(params.get('code'));
     } else {
       this.validateStatus = 'error';
     }
@@ -51,6 +53,21 @@ export class WechatComponent implements OnInit {
 
   wxloginRequest(code: string) {
     this.accountervice.wechatValidate(code)
+      .subscribe(result => {
+        this.settings.user = result.auth;
+        this.tokenService.set({
+          token: result.token,
+          time: +new Date
+        });
+        this.validateStatus = 'successful';
+        window.parent.location.reload();
+      }, error => {
+        this.validateStatus = 'failure';
+      });
+  }
+
+  wxBindRequest(code: string) {
+    this.accountervice.bindWechatValidate(code)
       .subscribe(result => {
         this.settings.user = result.auth;
         this.tokenService.set({

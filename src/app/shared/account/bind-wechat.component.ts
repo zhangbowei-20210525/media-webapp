@@ -33,7 +33,7 @@ export class BindWechatComponent implements OnInit {
       appid: 'wxfbe18062a4d62486',
       scope: 'snsapi_login',
       redirect_uri: 'http://vip.bctop.net/oauth2/wx',
-      state: 'STATE',
+      state: 'STATE_BINDING',
       style: '',
       // href: 'http://localhost/assets/css/wx_login.css'
     });
