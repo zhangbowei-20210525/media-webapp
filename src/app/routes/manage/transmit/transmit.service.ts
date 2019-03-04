@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ResponseDto, PaginationDto } from '@shared';
+import { ResponseDto, PaginationDto, PaginationResponseDto } from '@shared';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,10 @@ getDownloadRecord(id: number, pagination: PaginationDto) {
 }
 
 getPurchaseDownloadRecord(id: number, pagination: PaginationDto) {
-  return this.http.get<any>(`/api/v1/bought_sources/${id}/task_groups/downloads?page=${pagination.page}&page_size=${pagination.page_size}`);
+  return this.http.get<PaginationResponseDto<any[]>>(`/api/v1/bought_sources/${id}/task_groups/downloads`, { params: {
+    page: pagination.page as any,
+    page_size: pagination.page_size as any
+  }});
 }
 
 getTransmitSchedule(id: number) {

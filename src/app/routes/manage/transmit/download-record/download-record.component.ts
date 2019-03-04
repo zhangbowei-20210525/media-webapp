@@ -13,57 +13,49 @@ import { TransmitScheduleComponent } from '../components/transmit-schedule/trans
 })
 export class DownloadRecordComponent implements OnInit {
 
-  isDownloadRecordLoaded = false;
-  isDownloadRecordLoading: boolean;
-  downloadRecordPagination: PaginationDto;
-  downloadRecordList = [];
+  isLoaded = false;
+  isLoading = false;
+  pgination: PaginationDto;
+  list = [];
   id: number;
 
   constructor(
-    private transmitService: TransmitService,
+    private service: TransmitService,
     private route: ActivatedRoute,
     private modalService: NzModalService,
   ) { }
 
   ngOnInit() {
-    this.isDownloadRecordLoaded = false;
-    this.isDownloadRecordLoading = true;
-    this.downloadRecordPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.id = +params.get('id');
-        return  this.transmitService.getPurchaseDownloadRecord(this.id, this.downloadRecordPagination);
-      })
-    ).pipe(finalize(() => {
-      this.isDownloadRecordLoading = false;
-      this.isDownloadRecordLoaded = true;
-    })).subscribe(res => {
-      this.downloadRecordList = res.list;
-      this.downloadRecordPagination = res.pagination;
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.id = +params.get('id');
+      this.loadDownloadRecords();
     });
   }
 
-  downloadRecord() {
-    this.isDownloadRecordLoaded = false;
-    this.isDownloadRecordLoading = true;
-    this.transmitService.getPurchaseDownloadRecord(this.id, this.downloadRecordPagination).pipe(finalize(() => {
-      this.isDownloadRecordLoading = false;
-      this.isDownloadRecordLoaded = true;
-    })).subscribe(res => {
-      this.downloadRecordList = res.list;
-      this.downloadRecordPagination = res.pagination;
+  loadDownloadRecords() {
+    this.isLoading = true;
+    this.service.getPurchaseDownloadRecord(this.id, this.pgination).pipe(finalize(() => {
+      this.isLoading = false;
+      this.isLoaded = true;
+    })).subscribe(result => {
+      this.list = result.list;
+      this.pgination = result.pagination;
     });
   }
 
-  downloadRecordPageChange(page: number) {
-    this.isDownloadRecordLoading = true;
-    this.downloadRecordPagination.page = page;
-    this.transmitService.getPurchaseDownloadRecord(this.id, this.downloadRecordPagination).pipe(finalize(() => {
-      this.isDownloadRecordLoading = false;
-    })).subscribe(res => {
-      this.downloadRecordList = res.list;
-      this.downloadRecordPagination = res.pagination;
-    });
+  fetchDownloadRecords() {
+    this.isLoading = true;
+    this.service.getPurchaseDownloadRecord(this.id, this.pgination)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(result => {
+        this.list = [...this.list, ...result.list];
+        this.pgination = result.pagination;
+      });
+  }
+
+  onPageChange(page: number) {
+    this.pgination.page = page;
+    this.fetchDownloadRecords();
   }
 
   transmitSchedule(id) {
