@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { SeriesRoutingModule } from './series-routing.module';
 import { CopyrightsComponent } from './copyrights/copyrights.component';
 import { PublicitiesComponent } from './publicities/publicities.component';
 import { SeriesComponent } from './series.component';
 import { SeriesDetailsComponent } from './details/details.component';
-import { SeriesDetailsTapeComponent } from './components/series-details-tape/series-details-tape.component';
-import { SeriesDetailsCopyrightComponent } from './components/series-details-copyright/series-details-copyright.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
 import { SharedModule } from '@shared';
@@ -19,10 +16,11 @@ import { AddTapeComponent } from './components/add-tape/add-tape.component';
 import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.component';
 import { TapesComponent } from './tapes/tapes.component';
 import { PublicityDetailsComponent } from './publicities/publicity-details/publicity-details.component';
-import { SeriesDetailsPublicityComponent } from './components/series-details-publicity/series-details-publicity.component';
 import { AddPublicityComponent } from './components/add-publicity/add-publicity.component';
 import { AddSourceComponent } from './components/add-source/add-source.component';
 import { AddRightComponent } from './components/add-right/add-right.component';
+import { PublicityComponent } from './details/publicity/publicity.component';
+import { TapeComponent } from './details/tape/tape.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +29,6 @@ import { AddRightComponent } from './components/add-right/add-right.component';
     TapesComponent,
     PublicitiesComponent,
     SeriesDetailsComponent,
-    SeriesDetailsPublicityComponent,
-    SeriesDetailsTapeComponent,
-    SeriesDetailsCopyrightComponent,
     PublicityDetailsComponent,
     AddSeriesInfoComponent,
     AllSeriesComponent,
@@ -45,6 +40,8 @@ import { AddRightComponent } from './components/add-right/add-right.component';
     AddPublicityComponent,
     AddSourceComponent,
     AddRightComponent,
+    PublicityComponent,
+    TapeComponent,
   ],
   imports: [
     CommonModule,

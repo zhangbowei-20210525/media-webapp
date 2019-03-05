@@ -5,14 +5,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SeriesComponent } from './series.component';
 import { SeriesDetailsComponent } from './details/details.component';
-import { SeriesDetailsTapeComponent } from './components/series-details-tape/series-details-tape.component';
-import { SeriesDetailsCopyrightComponent } from './components/series-details-copyright/series-details-copyright.component';
 import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrights.component';
 import { RightComponent } from './details/right/right.component';
 import { PublishRightsComponent } from './copyrights/publish-rights/publish-rights.component';
 import { PublicityDetailsComponent } from './publicities/publicity-details/publicity-details.component';
 import { TapesComponent } from './tapes/tapes.component';
-import { SeriesDetailsPublicityComponent } from './components/series-details-publicity/series-details-publicity.component';
+import { PublicityComponent } from './details/publicity/publicity.component';
+import { TapeComponent } from './details/tape/tape.component';
+
 
 
 const routes: Routes = [
@@ -44,9 +44,9 @@ const routes: Routes = [
     path: 'd/:sid',
     component: SeriesDetailsComponent,
     children: [
-      { path: 'publicityd', component: SeriesDetailsPublicityComponent },
+      { path: 'publicityd', component: PublicityComponent },
       { path: 'right', component: RightComponent },
-      { path: 'tape', component: SeriesDetailsTapeComponent }
+      { path: 'tape', component: TapeComponent }
     ]
   },
   { path: 'add-copyrights', component: AddCopyrightsComponent },

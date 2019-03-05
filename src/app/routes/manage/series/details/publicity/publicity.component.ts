@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from '../../series.service';
@@ -6,11 +6,11 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-series-details-publicity',
+  selector: 'app-publicity',
   templateUrl: './publicity.component.html',
   styleUrls: ['./publicity.component.less']
 })
-export class SeriesDetailsPublicityComponent implements OnInit {
+export class PublicityComponent implements OnInit {
 
   type: string;
   id: number;
@@ -60,7 +60,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
         this.id = +params.get('sid');
         return this.seriesService.getPublicitiesList(this.id);
       })).subscribe(res => {
-        // this.publicityId = res.list[0].id;
+        this.publicityId = res.list[0].id;
         this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
           this.sampleList = s.list;
           this.samplePagination = s.pagination;
@@ -189,7 +189,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       const fileNameLength = fileList[0].name.length;
       const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
       const fileName1 = fileList[0].name.split('.');
-      this.sampleList = [...this.sampleList, {
+      this.featureList = [...this.featureList, {
         name: `${fileName1[0]}`,
         extension: `${fileFormat}`,
         size: `${fileList[0].size}`,
@@ -237,7 +237,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       const fileNameLength = fileList[0].name.length;
       const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
       const fileName1 = fileList[0].name.split('.');
-      this.sampleList = [...this.sampleList, {
+      this.trailerList = [...this.trailerList, {
         name: `${fileName1[0]}`,
         extension: `${fileFormat}`,
         size: `${fileList[0].size}`,
@@ -284,7 +284,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       const fileNameLength = fileList[0].name.length;
       const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
       const fileName1 = fileList[0].name.split('.');
-      this.sampleList = [...this.sampleList, {
+      this.posterList = [...this.posterList, {
         name: `${fileName1[0]}`,
         extension: `${fileFormat}`,
         size: `${fileList[0].size}`,
@@ -331,7 +331,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       const fileNameLength = fileList[0].name.length;
       const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
       const fileName1 = fileList[0].name.split('.');
-      this.sampleList = [...this.sampleList, {
+      this.stillList = [...this.stillList, {
         name: `${fileName1[0]}`,
         extension: `${fileFormat}`,
         size: `${fileList[0].size}`,
@@ -379,7 +379,7 @@ export class SeriesDetailsPublicityComponent implements OnInit {
       const fileNameLength = fileList[0].name.length;
       const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
       const fileName1 = fileList[0].name.split('.');
-      this.sampleList = [...this.sampleList, {
+      this.pdfList = [...this.pdfList, {
         name: `${fileName1[0]}`,
         extension: `${fileFormat}`,
         size: `${fileList[0].size}`,
@@ -457,7 +457,8 @@ export class SeriesDetailsPublicityComponent implements OnInit {
   }
 
   publicityDetails() {
-    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`]);
+    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`, {sid: this.id}]);
   }
+
 
 }

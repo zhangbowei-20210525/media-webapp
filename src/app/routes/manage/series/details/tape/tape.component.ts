@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { AddTapeComponent } from '../add-tape/add-tape.component';
 import { NzModalService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
 import { switchMap, timeout } from 'rxjs/operators';
 import { ParamMap, ActivatedRoute, Router } from '@angular/router';
 import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
-import { AddPubTapeComponent } from '../add-pub-tape/add-pub-tape.component';
+import { AddTapeComponent } from '../../components/add-tape/add-tape.component';
+import { AddPubTapeComponent } from '../../components/add-pub-tape/add-pub-tape.component';
 
 @Component({
-  selector: 'app-series-details-tape',
-  templateUrl: './series-details-tape.component.html',
-  styleUrls: ['./series-details-tape.component.less']
+  selector: 'app-tape',
+  templateUrl: './tape.component.html',
+  styleUrls: ['./tape.component.less']
 })
-export class SeriesDetailsTapeComponent implements OnInit {
+export class TapeComponent implements OnInit {
 
   isId: number;
   id: number;
@@ -196,4 +196,5 @@ export class SeriesDetailsTapeComponent implements OnInit {
       });
    });
   }
+
 }
