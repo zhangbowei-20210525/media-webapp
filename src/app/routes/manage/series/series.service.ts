@@ -1,6 +1,7 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { formData, PaginationDto, ResponseDto } from '@shared';
+import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class SeriesService {
 
   constructor(
     protected http: HttpClient,
+    @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
   ) { }
 
   // getUserSamples(pagination: PaginationDto) {

@@ -41,7 +41,6 @@ export class SeriesDetailsTapeComponent implements OnInit {
     this.route.parent.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');
-        console.log(this.id);
         return this.seriesService.getTapeList(this.id);
       })
     ).subscribe(res => {

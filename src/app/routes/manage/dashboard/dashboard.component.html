@@ -67,9 +67,9 @@
         <div class="cartogram-filtrate-two">品类</div>
         <div class="cartogram-filtrate-three">投资类型</div> -->
         <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small"
-          style="margin-top: 15px;float: right;margin-right: 20px" (click)="switchoverSeriesCriteria()">
-          <label nz-radio-button nzValue="investment_type">投资类型</label>
+          style="margin-top: 15px;float: right;margin-right: 20px" (ngModelChange)="switchoverSeriesCriteria()">
           <label nz-radio-button nzValue="program_type">品类</label>
+          <label nz-radio-button nzValue="investment_type">投资类型</label>
         </nz-radio-group>
       </div>
       <div class="cartogram-info-one">
@@ -84,7 +84,7 @@
         <div class="cartogram-filtrate-two">点赞</div>
         <div class="cartogram-filtrate-three">浏览量</div> -->
         <nz-radio-group [(ngModel)]="time" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
-          (click)="switchoverTime()">
+          (ngModelChange)="switchoverTime()">
           <label nz-radio-button nzValue="day">日</label>
           <label nz-radio-button nzValue="month">月</label>
           <label nz-radio-button nzValue="year">年</label>
@@ -103,9 +103,9 @@
         <div class="cartogram-filtrate-two">权利</div>
         <div class="cartogram-filtrate-four">客户</div> -->
         <nz-radio-group [(ngModel)]="pubType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
-          (click)="switchoverPubType()">
+          (ngModelChange)="switchoverPubType()">
           <label nz-radio-button nzValue="custom">客户</label>
-          <label nz-radio-button nzValue="right">权利</label>
+          <!-- <label nz-radio-button nzValue="right">权利</label> -->
           <label nz-radio-button nzValue="area">地区</label>
         </nz-radio-group>
       </div>
@@ -121,7 +121,7 @@
         <div class="cartogram-filtrate-six">购入母带</div>
         <div class="cartogram-filtrate-three">发行母带</div> -->
         <nz-radio-group [(ngModel)]="tapeType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
-          (click)="switchoverTape()">
+          (ngModelChange)="switchoverTape()">
           <label nz-radio-button nzValue="publish">发行母带</label>
           <label nz-radio-button nzValue="purchase">购入母带</label>
         </nz-radio-group>
@@ -222,7 +222,7 @@
         </tbody>
       </nz-table>
       <ng-template #Header>
-        <nz-radio-group [(ngModel)]="activeProject" nzSize="small" (click)="activeProjects()">
+        <nz-radio-group [(ngModel)]="activeProject" nzSize="small" (ngModelChange)="activeProjects()">
           <label nz-radio-button nzValue="right">节目权利</label>
           <label nz-radio-button nzValue="publish_right">发行权利</label>
           <label nz-radio-button nzValue="publicity">宣发资料</label>
@@ -232,7 +232,7 @@
     </div>
   </div>
 
-  <div class="dynamic-wk">
+  <!-- <div class="dynamic-wk">
     <div class="publicities-dynamic-box">
       <div class="publicities-dynamic-title-wk">
         <span class="publicities-dynamic-title">宣发客户动态</span>
@@ -257,5 +257,5 @@
         </ul>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>

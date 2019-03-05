@@ -43,7 +43,8 @@
                   </div>
                   <div nz-col nzSpan="6">
                     <span class="info-filed">类型</span>
-                    <span>{{ tapeDetailsInfo?.source_type }}</span>
+                    <span *ngIf="tapeDetailsInfo?.source_type == 'online'">在线</span>
+                    <span *ngIf="tapeDetailsInfo?.source_type == 'entity'">实体</span>
                   </div>
                   <div nz-col nzSpan="6">
                     <span class="info-filed">集数</span>
@@ -61,11 +62,14 @@
                   </div>
                   <div nz-col nzSpan="6">
                     <span class="info-filed">语言</span>
-                    <span>{{ tapeDetailsInfo?.language }}</span>
+                    <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
+                    <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span>
                   </div>
                   <div nz-col nzSpan="6">
                     <span class="info-filed">字幕</span>
-                    <span>{{ tapeDetailsInfo?.subtitle }}</span>
+                    <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
+                    <span *ngIf="tapeDetailsInfo?.subtitle == 'English'">英语</span>
+                    <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span>
                   </div>
                 </div>
               </div>

@@ -142,8 +142,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getSeriesStatisticsInfo() {
-    this.dashboardService.getSeriesStatistics('investment_type').subscribe(res => {
-      console.log(res);
+    this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
       this.seriesChart = new G2.Chart({
         container: 'seriesStatistics',
         forceFit: true,
@@ -302,7 +301,6 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
-
   switchoverTime() {
     if (this.time === 'day') {
       this.dashboardService.getPublicityStatistics('day').subscribe(res => {

@@ -79,8 +79,7 @@ export class AllSeriesComponent implements OnInit {
   }
 
   seriesDetails(id: number) {
-    console.log(id);
-    this.router.navigate([`/manage/series/d/${id}`, { sif: 'show'}]);
+    this.router.navigate([`/manage/series/d/${id}`, { sif: 'show' }]);
   }
 
   refreshStatus(): void {
@@ -169,233 +168,232 @@ export class AllSeriesComponent implements OnInit {
   tapeDetails(id: number) {
     this.seriesService.getTapeList(id).subscribe(res => {
       const tapeId = res[0].id;
-    this.router.navigate([`/manage/series/d/${id}/tape`, { tapeId: tapeId}]);
-  });
-}
+      this.router.navigate([`/manage/series/d/${id}/tape`, { tapeId: tapeId }]);
+    });
+  }
 
   publicityUpload(event) {
     const component = this.addPublicityModal.getContentComponent();
     if (component.validation()) {
-      console.log(component.submit());
-    if (component.submit() === 'sample') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
-      }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
+      if (component.submit() === 'sample') {
+        let fileList: FileList, folder: string;
+        try {
+          fileList = event.target.files as FileList;
+          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+        } catch (ex) {
+          return;
         }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-          this.publicityId = pl.list[0].id;
-          this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-            this.message.success(this.translate.instant('global.upload-success'));
-            this.addPublicityModal.close();
-            this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.fileFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
+          const id = res.id;
+          this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
+            this.publicityId = pl.list[0].id;
+            this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
+              this.message.success(this.translate.instant('global.upload-success'));
+              this.addPublicityModal.close();
+              this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+            });
           });
         });
-      });
-    }
-    if (component.submit() === 'feature') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
       }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
+      if (component.submit() === 'feature') {
+        let fileList: FileList, folder: string;
+        try {
+          fileList = event.target.files as FileList;
+          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+        } catch (ex) {
+          return;
         }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-          this.publicityId = pl.list[0].id;
-          this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-            this.message.success(this.translate.instant('global.upload-success'));
-            this.addPublicityModal.close();
-            this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.fileFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
+          const id = res.id;
+          this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
+            this.publicityId = pl.list[0].id;
+            this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
+              this.message.success(this.translate.instant('global.upload-success'));
+              this.addPublicityModal.close();
+              this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+            });
           });
         });
-      });
-    }
-    if (component.submit() === 'trailer') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
       }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
+      if (component.submit() === 'trailer') {
+        let fileList: FileList, folder: string;
+        try {
+          fileList = event.target.files as FileList;
+          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+        } catch (ex) {
+          return;
         }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-          this.publicityId = pl.list[0].id;
-          this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-            this.message.success(this.translate.instant('global.upload-success'));
-            this.addPublicityModal.close();
-            this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.fileFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
+          const id = res.id;
+          this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
+            this.publicityId = pl.list[0].id;
+            this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
+              this.message.success(this.translate.instant('global.upload-success'));
+              this.addPublicityModal.close();
+              this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+            });
           });
         });
-      });
-    }
-    if (component.submit() === 'poster') {
-      let fileList: FileList;
-      try {
-        fileList = event.target.files as FileList;
-      } catch (ex) {
-        return;
       }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.imageFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
+      if (component.submit() === 'poster') {
+        let fileList: FileList;
+        try {
+          fileList = event.target.files as FileList;
+        } catch (ex) {
+          return;
         }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
-        const id = result.id;
-        this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-          this.publicityId = pl.list[0].id;
-          this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-            this.message.success(this.translate.instant('global.upload-success'));
-            this.addPublicityModal.close();
-            this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.imageFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
+          const id = result.id;
+          this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
+            this.publicityId = pl.list[0].id;
+            this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
+              this.message.success(this.translate.instant('global.upload-success'));
+              this.addPublicityModal.close();
+              this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+            });
           });
         });
-      });
-    }
-    if (component.submit() === 'still') {
-      let fileList: FileList;
-      try {
-        fileList = event.target.files as FileList;
-      } catch (ex) {
-        return;
       }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.imageFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
+      if (component.submit() === 'still') {
+        let fileList: FileList;
+        try {
+          fileList = event.target.files as FileList;
+        } catch (ex) {
+          return;
         }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
-        const id = result.id;
-        this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-          this.publicityId = pl.list[0].id;
-          this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-            this.message.success(this.translate.instant('global.upload-success'));
-            this.addPublicityModal.close();
-            this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.imageFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
+          const id = result.id;
+          this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
+            this.publicityId = pl.list[0].id;
+            this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
+              this.message.success(this.translate.instant('global.upload-success'));
+              this.addPublicityModal.close();
+              this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+            });
           });
         });
-      });
-    }
-    if (component.submit() === 'pdf') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
       }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.pdfFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
+      if (component.submit() === 'pdf') {
+        let fileList: FileList, folder: string;
+        try {
+          fileList = event.target.files as FileList;
+          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+        } catch (ex) {
+          return;
         }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      this.seriesService.getUploadPdfId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-          this.publicityId = pl.list[0].id;
-          this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-            this.message.success(this.translate.instant('global.upload-success'));
-            this.addPublicityModal.close();
-            this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.pdfFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        this.seriesService.getUploadPdfId(fileList[0]).subscribe(res => {
+          const id = res.id;
+          this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
+            this.publicityId = pl.list[0].id;
+            this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
+              this.message.success(this.translate.instant('global.upload-success'));
+              this.addPublicityModal.close();
+              this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
+            });
           });
         });
-      });
-    }
-   } else { }
+      }
+    } else { }
   }
 
   addSource(id: number) {
-this.id = id;
+    this.id = id;
     this.modal.create({
       nzTitle: `新增母带`,
       nzContent: AddTapeComponent,
@@ -412,8 +410,8 @@ this.id = id;
         this.message.success(this.translate.instant('global.add-success'));
         this.seriesService.getTapeList(this.id).subscribe(tape => {
           const tapeId = tape[0].id;
-        this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: tapeId}]);
-      });
+          this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: tapeId }]);
+        });
         resolve();
       }, error => {
         if (error.message) {

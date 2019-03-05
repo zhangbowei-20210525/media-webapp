@@ -31,7 +31,6 @@ export class SeriesDetailsComponent implements OnInit {
         if (sif === 'show') {
              this.sif = true;
         }
-        console.log(this.sif);
         return this.service.getSeriesDetailsInfo(this.id);
       })
     ).subscribe(result => {
