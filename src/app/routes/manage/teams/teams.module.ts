@@ -36,6 +36,7 @@ import { EmployeeDetailsComponent } from './employee-details/employee-details.co
     AddCompanyComponent,
     AddEmployeeComponent,
     EmployeeDepartmentComponent,
+    EditCompanyComponent
   ]
 })
 export class TeamsModule { }
