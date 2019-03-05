@@ -32,8 +32,9 @@ export class TransmitScheduleComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.refreshInterval = setInterval(() => this.tapePurchaseDownloadRecordDetails(), 10000);
-    this.transmitService.getTransmitSchedule(this.id).subscribe(res =>
-      this.transmitScheduleList = res.data
+    this.transmitService.getTransmitSchedule(this.id).subscribe(res => {
+      this.transmitScheduleList = res;
+    }
     );
   }
 
@@ -56,8 +57,9 @@ export class TransmitScheduleComponent implements OnInit, OnDestroy {
     status = 10;
     this.transmitService.cancelDownloadTask(id).subscribe(
       res => {
-        this.transmitService.getTransmitSchedule(this.id).subscribe(t =>
-          this.transmitScheduleList = t.data
+        this.transmitService.getTransmitSchedule(this.id).subscribe(t => {
+          this.transmitScheduleList = t;
+        }
         );
         // this.message.success(this.translate.instant('global.add-success'));
         // this.nzMessageService.success('已取消下载任务');

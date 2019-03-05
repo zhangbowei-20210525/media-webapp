@@ -14,6 +14,7 @@ export class SeriesDetailsComponent implements OnInit {
   category: string;
   id: number;
   seriesInfo: any;
+  sif: boolean;
 
   constructor(
     private router: Router,
@@ -26,6 +27,11 @@ export class SeriesDetailsComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');
+        const sif = params.get('sif');
+        if (sif === 'show') {
+             this.sif = true;
+        }
+        console.log(this.sif);
         return this.service.getSeriesDetailsInfo(this.id);
       })
     ).subscribe(result => {
@@ -33,8 +39,18 @@ export class SeriesDetailsComponent implements OnInit {
     });
   }
 
-  categories() {
+  tapeDetails () {
+    this.service.getTapeList(this.id).subscribe(res => {
+      const tapeId = res[0].id;
+    this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: tapeId}]);
+  });
+  }
 
+  showInfo() {
+    this.sif = !this.sif;
+  }
+
+  categories() {
   }
 
 }

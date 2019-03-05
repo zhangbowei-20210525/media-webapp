@@ -1,6 +1,6 @@
 <div class="block clearfix">
   <div class="block-content">
-        <div *ngIf="isDownloadRecordLoaded == true">
+        <div *ngIf="isLoaded == true">
           <nz-table #basicTable [nzData]="downloadRecordList" [nzPageSize]="downloadRecordPagination?.page_size"
             [nzFrontPagination]="false" [nzPageIndex]="downloadRecordPagination?.page" [nzTotal]="downloadRecordPagination?.count"
             (nzPageIndexChange)="downloadRecordPageChange($event)">

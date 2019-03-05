@@ -13,8 +13,8 @@
             <span *ngIf="publicityType == 'feature'">{{featureName}}</span>
             <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
           </div>
-          <span style="position:absolute;right: 30px"><a><i class="anticon anticon-share-alt text-info" nz-popover
-                [nzTitle]="titleTemplate" [nzContent]="contentTemplate" nzTrigger="click"></i></a></span>
+          <!-- <span style="position:absolute;right: 30px"><a><i class="anticon anticon-share-alt text-info" nz-popover
+                [nzTitle]="titleTemplate" [nzContent]="contentTemplate" nzTrigger="click"></i></a></span> -->
         </div>
         <ng-template #titleTemplate>
           <div style="text-align: center;">微信扫码分享</div>
@@ -130,7 +130,7 @@
 
 
       <nz-tabset>
-        <nz-tab nzTitle="样片" (nzClick)="sample()">
+        <nz-tab nzTitle="样片" (nzClick)="sample()" [nzDisabled]="sampleDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let sample of sampleNum" (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
@@ -139,7 +139,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="片花" (nzClick)="feature()">
+        <nz-tab nzTitle="片花" (nzClick)="feature()" [nzDisabled]="featureDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
@@ -148,7 +148,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="先导片" (nzClick)="trailer()">
+        <nz-tab nzTitle="先导片" (nzClick)="trailer()" [nzDisabled]="trailerDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
@@ -157,7 +157,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="海报" (nzClick)="poster()">
+        <nz-tab nzTitle="海报" (nzClick)="poster()" [nzDisabled]="posterDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i)">
@@ -166,7 +166,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="剧照" (nzClick)="still()">
+        <nz-tab nzTitle="剧照" (nzClick)="still()" [nzDisabled]="stillDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i)">
@@ -176,7 +176,7 @@
           </div>
 
         </nz-tab>
-        <nz-tab nzTitle="PDF" (nzClick)="pdf()">
+        <nz-tab nzTitle="PDF" (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i)">
@@ -191,29 +191,44 @@
 
   <div class="right-view">
     <div style="display: inline-block;margin-top: 20px; margin-left: 20px; float: left; width: 38px; height: 38px;">
-      <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="fixationInfo?.user?.avatar" style="width: 38px; height: 38px;"></nz-avatar>
+      <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;"></nz-avatar>
     </div>
     <div style="display: inline-block;width: 270px;margin-top: 20px;margin-left: 12px">
       <div style="font-size: 12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-        <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">上传人：张三</span>
+        <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">上传人：{{userinfo?.user?.nickname}}</span>
       </div>
       <div style="font-size: 12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-top: 5px">
-        <span>所属公司：上海北丞科技股份有限公司</span>
+        <span>所属公司：{{userinfo?.company?.full_name}}</span>
+        <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
       </div>
     </div>
     <div class="detail-tabs">
       <nz-tabset>
         <nz-tab nzTitle="基本信息">
-          <div>节目名：</div>
-          <div>节目名：</div>
-
+          <div style="height: 600px;line-height: 26px;margin-left: 50px">
+          <div>节目名称：{{ seriesInfo?.name }}</div>
+          <div>集数：{{ seriesInfo?.episode }}</div>
+          <div>题材：{{ seriesInfo?.theme }}</div>
+          <div>语言：{{ seriesInfo?.language }}</div>
+          <div>节目别名：{{ seriesInfo?.nickname }}</div>
+          <div>发行时间：{{ seriesInfo?.release_date }}</div>
+          <div>监制：{{ seriesInfo?.supervisor }}</div>
+          <div>总制片人：{{ seriesInfo?.general_producer }}</div>
+          <div>节目类型：{{ seriesInfo?.program_type | seriesType }}</div>
+          <div>导演：{{ seriesInfo?.director }}</div>
+          <div>编剧：{{ seriesInfo?.screen_writer }}</div>
+          <div>出品人：{{ seriesInfo?.producer }}</div>
+          <div>主演：{{ seriesInfo?.protagonist }}</div>
+          <div>出品方：{{ seriesInfo?.product_company }}</div>
+          <div>简介：{{ seriesInfo?.introduction }}</div>
+          </div>
         </nz-tab>
-        <nz-tab nzTitle="关键帧">
+        <!-- <nz-tab nzTitle="关键帧">
 
         </nz-tab>
         <nz-tab nzTitle="图集">
 
-        </nz-tab>
+        </nz-tab> -->
       </nz-tabset>
 
     </div>

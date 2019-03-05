@@ -41,6 +41,7 @@ export class SeriesDetailsTapeComponent implements OnInit {
     this.route.parent.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');
+        console.log(this.id);
         return this.seriesService.getTapeList(this.id);
       })
     ).subscribe(res => {
@@ -76,7 +77,7 @@ export class SeriesDetailsTapeComponent implements OnInit {
 
   addTape() {
     this.modalService.create({
-      nzTitle: `添加母带`,
+      nzTitle: `新增母带`,
       nzContent: AddTapeComponent,
       nzComponentParams: { id: this.id },
       nzMaskClosable: false,
@@ -90,7 +91,7 @@ export class SeriesDetailsTapeComponent implements OnInit {
     component.formSubmit()
       .subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
-        this.seriesService.getTapeList(this.isId).subscribe(t => {
+        this.seriesService.getTapeList(this.id).subscribe(t => {
           this.tapesList = t;
         });
         resolve();
@@ -177,7 +178,7 @@ export class SeriesDetailsTapeComponent implements OnInit {
 
   uploadTape() {
     this.seriesService.getIpAddress().subscribe(res => {
-      this.address = res.data.ip;
+      this.address = res.ip;
       this.seriesService.clientStatus(this.address).pipe(timeout(5000)).subscribe(z => {
         if (z.code === 0) {
           if (this.address.charAt(0) === '1' && this.address.charAt(1) === '2' && this.address.charAt(2) === '7') {

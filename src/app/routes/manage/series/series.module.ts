@@ -20,6 +20,9 @@ import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.comp
 import { TapesComponent } from './tapes/tapes.component';
 import { PublicityDetailsComponent } from './publicities/publicity-details/publicity-details.component';
 import { SeriesDetailsPublicityComponent } from './components/series-details-publicity/series-details-publicity.component';
+import { AddPublicityComponent } from './components/add-publicity/add-publicity.component';
+import { AddSourceComponent } from './components/add-source/add-source.component';
+import { AddRightComponent } from './components/add-right/add-right.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { SeriesDetailsPublicityComponent } from './components/series-details-pub
     PublishRightsComponent,
     AddTapeComponent,
     AddPubTapeComponent,
+    AddPublicityComponent,
+    AddSourceComponent,
+    AddRightComponent,
   ],
   imports: [
     CommonModule,
@@ -49,7 +55,10 @@ import { SeriesDetailsPublicityComponent } from './components/series-details-pub
   entryComponents: [
     AddSeriesInfoComponent,
     AddTapeComponent,
-    AddPubTapeComponent
+    AddPubTapeComponent,
+    AddPublicityComponent,
+    AddSourceComponent,
+    AddRightComponent,
   ]
 })
 export class SeriesModule { }

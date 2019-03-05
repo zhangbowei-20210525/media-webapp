@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 192.168.1.164 --port 80 --disable-host-check --proxy-config proxy.conf.json",
+    "start": "ng serve --host 0.0.0.0 --port 80 --disable-host-check --proxy-config proxy.conf.json",
     "build": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
@@ -28,6 +28,9 @@
     "ng-zorro-antd": "^7.0.0",
     "ng2-pdf-viewer": "^5.2.3",
     "ngx-infinite-scroll": "^7.0.1",
+    "pdf.js-viewer": "^0.2.8",
+    "pdfjs": "^2.1.0",
+    "pdfjs-dist": "^2.0.943",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
