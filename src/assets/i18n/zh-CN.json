@@ -57,5 +57,6 @@
     "global.save-successfully": "保存成功",
     "global.save-failed": "保存失败",
     "global.delete-successfully": "删除成功",
-    "global.delete-failed": "删除失败"
+    "global.delete-failed": "删除失败",
+    "global.upload-success": "上传成功"
 }

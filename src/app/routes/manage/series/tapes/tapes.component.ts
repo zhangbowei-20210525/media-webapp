@@ -42,7 +42,12 @@ export class TapesComponent implements OnInit {
     });
   }
 
-  tapeDetails(program_id: number, id: number) {
-    this.router.navigate([`/manage/series/d/${program_id}/tape`, {tapeId: id}]);
+  tapeDetails(program_id: number, id: number, source_type: string) {
+    if (source_type === 'online') {
+      this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: id, source_type: 'online' }]);
+    }
+    if (source_type === 'entity') {
+      this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: id, source_type: 'entity'}]);
+    }
   }
 }

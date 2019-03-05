@@ -29,6 +29,7 @@ export class DownloadRecordComponent implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = +params.get('id');
       this.loadDownloadRecords();
+
     });
   }
 
@@ -63,26 +64,11 @@ export class DownloadRecordComponent implements OnInit {
       nzTitle: `进度信息`,
       nzContent: TransmitScheduleComponent,
       nzComponentParams: { id: id },
-      nzMaskClosable: false,
-      nzClosable: false,
+      nzMaskClosable: true,
+      nzClosable: true,
+      nzCancelText: null,
+      nzOkText: null,
       nzWidth: 800,
-      nzOnOk: this.addTapeAgreed
     });
   }
-
-  addTapeAgreed = (component: TransmitScheduleComponent) => new Promise((resolve) => {
-    // component.formSubmit()
-    //   .subscribe(res => {
-    //     this.message.success(this.translate.instant('global.add-success'));
-    //     this.seriesService.getTapeList(this.id).subscribe(t => {
-    //       this.tapesList = t.data;
-    //     });
-    //     resolve();
-    //   }, error => {
-    //     if (error.message) {
-    //       this.message.error(error.message);
-    //     }
-    //   });
-  })
-
 }

@@ -135,7 +135,7 @@ export class SeriesService {
   }
 
   getIpAddress() {
-    return this.http.get<ResponseDto<any>>(`/api/v1/source_clients/ip`);
+    return this.http.get<any>(`/api/v1/source_clients/ip`);
   }
 
   clientStatus(address: string) {
@@ -183,5 +183,9 @@ export class SeriesService {
 
   purchaseTapes(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/bought_sources?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
+  getUserinfo(id: number) {
+    return this.http.get<any>(`/api/v1/publicity/${id}`);
   }
 }

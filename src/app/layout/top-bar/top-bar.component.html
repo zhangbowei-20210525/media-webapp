@@ -9,9 +9,9 @@
       <ul class="nav-list list">
         <li>
           <ul class="list menu">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/market'">{{ 'menu.market' | translate }}</a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage'">{{ 'menu.manage' | translate }}</a>
             </li>
@@ -33,18 +33,18 @@
             <app-nav-notify></app-nav-notify>
           </ng-template>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <nz-dropdown [nzTrigger]="'click'" nzPlacement="bottomRight">
             <a nz-dropdown>
               <i nz-icon type="global"></i>
-              <!-- {{ 'app.lang' | translate }}
-              <i nz-icon type="down"></i> -->
+               {{ 'app.lang' | translate }}
+              <i nz-icon type="down"></i> 
             </a>
             <ul nz-menu>
               <li nz-menu-item *ngFor="let item of langs" [nzSelected]="item.code === settings.lang" (click)="changeLanguage(item.code)">{{item.text}}</li>
             </ul>
           </nz-dropdown>
-        </li>
+        </li> -->
         <li class="nav-item">
           <ng-container *ngIf="isLoggedIn; else loginLink">
             <nz-dropdown nzPlacement="bottom" [nzTrigger]="'click'">

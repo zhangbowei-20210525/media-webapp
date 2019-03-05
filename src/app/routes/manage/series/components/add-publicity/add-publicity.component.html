@@ -1,0 +1,16 @@
+<form nz-form [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type">类型</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select id="type" formControlName="type" nzPlaceHolder="请选择宣发类型">
+        <nz-option nzLabel="样片" nzValue="sample"></nz-option>
+        <nz-option nzLabel="片花" nzValue="feature"></nz-option>
+        <nz-option nzLabel="先导片" nzValue="trailer"></nz-option>
+        <nz-option nzLabel="海报" nzValue="poster"></nz-option>
+        <nz-option nzLabel="剧照" nzValue="still"></nz-option>
+        <nz-option nzLabel="PDF" nzValue="pdf"></nz-option>
+      </nz-select>
+      <nz-form-explain *ngIf="validateForm.get('type').dirty && validateForm.get('type').errors">请选择宣发类型</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>

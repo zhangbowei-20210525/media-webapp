@@ -67,6 +67,15 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   pdfList = [];
   ishidden: boolean;
   publicityType: string;
+  userinfo: any;
+  sid: number;
+  seriesInfo: any;
+  sampleDisabled: boolean;
+  featureDisabled: boolean;
+  trailerDisabled: boolean;
+  posterDisabled: boolean;
+  stillDisabled: boolean;
+  pdfDisabled: boolean;
 
   fixationInfo: any; // 可能是用户信息
 
@@ -87,6 +96,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('id');
+        this.sid = +params.get('sid');
         this.sampleIndex = +params.get('sampleIndex');
         this.featureIndex = +params.get('featureIndex');
         this.trailerIndex = +params.get('trailerIndex');
@@ -95,6 +105,30 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.pdfIndex = +params.get('pdfIndex');
         return this.seriesService.publicityDetail(this.id);
       })).subscribe(res => {
+        this.seriesService.getUserinfo(this.id).subscribe(cpd => {
+          this.userinfo = cpd;
+          if (this.userinfo.material.sample === 0) {
+            this.sampleDisabled = true;
+          }
+          if (this.userinfo.material.feature === 0) {
+            this.featureDisabled = true;
+          }
+          if (this.userinfo.material.trailer === 0) {
+            this.trailerDisabled = true;
+          }
+          if (this.userinfo.material.poster === 0) {
+            this.posterDisabled = true;
+          }
+          if (this.userinfo.material.still === 0) {
+            this.stillDisabled = true;
+          }
+          if (this.userinfo.material.pdf === 0) {
+            this.pdfDisabled = true;
+          }
+        });
+        this.seriesService.getSeriesDetailsInfo(this.sid).subscribe(cpd => {
+          this.seriesInfo = cpd;
+        });
         this.publicityName = res.name;
         if (!this.publicityType || this.publicityType === 'sample') {
           this.publicityType = 'sample';
@@ -134,7 +168,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     if (poster) {
       this.player.poster(poster);
     }
-    this.player.src('http://media.html5media.info/video.mp4');
+    // this.player.src('http://media.html5media.info/video.mp4');
     this.player.src(src);
     this.player.load();
   }
@@ -206,9 +240,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       x.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/1.jpg';
-      x.list[1].src = '/assets/imaaa/2.jpg';
-      x.list[2].src = '/assets/imaaa/3.jpg';
     })).subscribe(s => {
       this.posterList = s.list;
       this.trailerPagination = s.pagination;
@@ -227,9 +258,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       x.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/4.jpg';
-      x.list[1].src = '/assets/imaaa/5.jpg';
-      x.list[2].src = '/assets/imaaa/6.jpg';
     })).subscribe(s => {
       this.stillList = s.list;
       this.stillPagination = s.pagination;
@@ -242,25 +270,24 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   getPdfInfo() {
-     // tslint:disable-next-line:max-line-length
-     this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
       });
-      x.list[0].src = '/assets/imaaa/bc.pdf';
-      x.list[1].src = '/assets/imaaa/xx.pdf';
     })).subscribe(s => {
       this.pdfList = s.list;
       this.pdfPagination = s.pagination;
       if (this.pdfList.length > 0) {
         this.pdfName = this.pdfList[this.pdfIndex].name;
         this.pdfSrc = this.pdfList[this.pdfIndex].src;
+        // this.pdfSrc = 'http://192.168.1.109:8000/media_files/720fa654-3d79-11e9-91a9-685b35a5b556.pdf';
         this.pdfPage = 1;
         this.pdfPageChange({ page: 1, pageSize: 20 });
       }
     });
-   }
+  }
 
   samplePageChange(pageData) {
     const list = this.sampleList;
@@ -383,47 +410,53 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.ishidden = false;
     this.player.pause();
     this.publicityType = 'sample';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { sampleIndex: this.sampleIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getSampleInfo();
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { sampleIndex: this.sampleIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   feature() {
     this.ishidden = false;
     this.player.pause();
     this.publicityType = 'feature';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { featureIndex: this.featureIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getFeatureInfo();
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { featureIndex: this.featureIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   trailer() {
     this.ishidden = false;
     this.player.pause();
     this.publicityType = 'trailer';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { trailerIndex: this.trailerIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getTrailerInfo();
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { trailerIndex: this.trailerIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   poster() {
     this.ishidden = true;
     this.player.pause();
     this.publicityType = 'poster';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { posterIndex: this.posterIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getPosterInfo();
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { posterIndex: this.posterIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
   still() {
     this.ishidden = true;
     this.player.pause();
     this.publicityType = 'still';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { stillIndex: this.stillIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getStillInfo();
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { stillIndex: this.stillIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   pdf() {
     this.ishidden = true;
     this.player.pause();
     this.publicityType = 'pdf';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { pdfIndex: this.pdfIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getPdfInfo();
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { pdfIndex: this.pdfIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
 }
