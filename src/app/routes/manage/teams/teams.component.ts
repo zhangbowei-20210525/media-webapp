@@ -207,6 +207,7 @@ export class TeamsComponent implements OnInit {
         this.service.deleteDepartment(key).subscribe(result => {
           this.message.success(`已删除 ${name}`);
           const deleted = this.removeNode(this.nodes, key);
+          console.log(this.nodes);
           this.nodes = JSON.parse(JSON.stringify(this.nodes));
           resolve();
         }, error => {
@@ -250,29 +251,9 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  // removeNode(nodes: NzTreeNodeOptions[], key: string) {
-  //   let deleted = false;
-  //   for (const i in nodes) {
-  //     if (nodes.hasOwnProperty(i)) {
-  //       const node = nodes[i];
-  //       if (node.key === key) {
-  //         nodes.splice(i as any, 1);
-  //         deleted = true;
-  //       } else if (node.children.length > 0) {
-  //         deleted = this.removeNode(node.children, key);
-  //       }
-  //       if (deleted) {
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   return deleted;
-  // }
-
   removeNode(nodes: NzTreeNodeOptions[], key: string) {
-    return this.ts.recursionNodesFindBy(nodes, (item, index) => {
+    this.ts.removeNode(nodes, (item, index) => {
       if (item.key === key) {
-        nodes.splice(index, 1);
         return true;
       }
       return false;
