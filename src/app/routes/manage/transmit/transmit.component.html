@@ -1,6 +1,6 @@
 <div class="block clearfix">
   <div class="block-content">
-    <nz-tabset>
+    <nz-tabset nzAnimated="false">
       <nz-tab nzTitle="我的母带" (nzClick)="myTapes()">
         <div *ngIf="isMyTapesLoaded == true">
           <nz-table #basicTable [nzData]="tapesList" [nzPageSize]="tapesPagination?.page_size"
