@@ -114,6 +114,25 @@ export class TreeService {
     return result;
   }
 
+  removeNode<T extends { children?: T[] }>(nodes: T[], selector: (node: T, index?: any) => boolean): boolean {
+    for (const i in nodes) {
+      if (nodes.hasOwnProperty(i)) {
+        const element = nodes[i];
+        if (selector(element, i)) {
+          nodes.splice(i as any, 1);
+          return true;
+        }
+        if (element.children && element.children.length > 0) {
+          const result = this.removeNode(element.children, selector);
+          if (result) {
+            return result;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   findInvalidNode(nodes: NzTreeNode[]): NzTreeNode {
     return this.recursionNodesFindBy(nodes, item => {
       return item.isChecked && item.parentNode && !item.parentNode.isChecked;
