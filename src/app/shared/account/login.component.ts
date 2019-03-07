@@ -12,6 +12,7 @@ import { AccountService } from '@shared';
 import { SettingsService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 declare const WxLogin: any;
 
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private settings: SettingsService,
     private message: MessageService,
     private translate: TranslateService,
@@ -140,6 +142,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             time: +new Date
           });
           this.close();
+          this.router.navigate([`/manage/series`]);
         }, error => {
 
         });

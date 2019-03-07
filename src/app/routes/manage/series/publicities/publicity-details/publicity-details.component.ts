@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, map } from 'rxjs/operators';
 import { PaginationDto } from '@shared';
 
 declare function videojs(selector: string);
@@ -369,42 +369,42 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.sampleIndex = i - 1;
     this.publicityType = 'sample';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { sampleIndex: this.sampleIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    { sampleIndex: this.sampleIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   featureNavigateToDetail(i: number, id: number) {
     this.featureIndex = i - 1;
     this.publicityType = 'feature';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { featureIndex: this.featureIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid}], { relativeTo: this.route });
   }
 
   trailerNavigateToDetail(i: number, id: number) {
     this.trailerIndex = i - 1;
     this.publicityType = 'trailer';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { trailerIndex: this.trailerIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    { trailerIndex: this.trailerIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   posterNavigateToDetail(i: number) {
     this.posterIndex = i;
     this.publicityType = 'poster';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { posterIndex: this.posterIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    { posterIndex: this.posterIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   stillNavigateToDetail(i: number) {
     this.stillIndex = i;
     this.publicityType = 'still';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { stillIndex: this.stillIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   pdfNavigateToDetail(i: number) {
     this.pdfIndex = i;
     this.publicityType = 'pdf';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { pdfIndex: this.pdfIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    { pdfIndex: this.pdfIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
   sample() {
     this.ishidden = false;
@@ -457,6 +457,14 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.getPdfInfo();
     // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
     // { pdfIndex: this.pdfIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+  }
+
+  getTwoDimensionalCode() {
+    this.seriesService.getTwoDimensionalCode(this.id)
+    .pipe(map(x => x = `data:image/png;base64,${x}`))
+      .subscribe(res => {
+        this.twoDimensionalCode = res;
+      });
   }
 
 }

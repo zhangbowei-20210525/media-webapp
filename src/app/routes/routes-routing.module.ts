@@ -7,6 +7,7 @@ import { ManageComponent } from './manage/manage.component';
 import { DashboardComponent } from './manage/dashboard/dashboard.component';
 import { PersonalCenterComponent } from './manage/personal-center/personal-center.component';
 import { SimpleGuard } from '@delon/auth';
+import { SeriesComponent } from './manage/series/series.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,7 @@ const routes: Routes = [
         component: ManageComponent,
         canActivate: [SimpleGuard],
         children: [
-          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          { path: '', redirectTo: 'series', pathMatch: 'full' },
           {
             path: 'dashboard',
             component: DashboardComponent

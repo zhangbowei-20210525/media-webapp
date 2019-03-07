@@ -60,7 +60,7 @@ export class TeamsComponent implements OnInit {
       company_id: user.company_id,
       company_name: user.company_name,
       company_full_name: user.company_full_name,
-      company_introduction: user.introduction,
+      introduction: user.introduction,
       is_default_company: user.is_default_company
     };
   }
@@ -103,7 +103,7 @@ export class TeamsComponent implements OnInit {
       nzComponentParams: {
         name: this.currentCompany.company_name,
         fullName: this.currentCompany.company_full_name,
-        introduction: this.currentCompany.company_introduction
+        introduction: this.currentCompany.introduction
       },
       nzWidth: 800,
       nzOnOk: this.editCompanyAgreed
@@ -113,10 +113,11 @@ export class TeamsComponent implements OnInit {
   editCompanyAgreed = (component: EditCompanyComponent) => new Promise((resolve) => {
     if (component.validation()) {
       component.submit().subscribe(result => {
-        this.message.success('新建成功');
+        this.message.success('编辑成功');
+        this.fetchCompany();
         resolve();
       }, error => {
-        this.message.error('新建失败');
+        this.message.error('编辑失败');
         resolve(false);
       });
     } else {

@@ -24,7 +24,7 @@ export class TeamsService {
   }
 
   editCompany(name: string, full_name: string, introduction: string) {
-    return this.http.put<any>('/api/v1/companies', { name, full_name, introduction });
+    return this.http.post<any>('/api/v1/auth/company', { name, full_name, introduction });
   }
 
   switchCompany(employeeId: number) {

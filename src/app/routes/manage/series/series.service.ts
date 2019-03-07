@@ -7,13 +7,14 @@ import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
   providedIn: 'root'
 })
 export class SeriesService {
-
-  eventEmit = new EventEmitter();
+  public eventEmit: any;
 
   constructor(
     protected http: HttpClient,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
-  ) { }
+  ) {
+    this.eventEmit = new EventEmitter();
+  }
 
   // getUserSamples(pagination: PaginationDto) {
   //   return this.auth1.http.get<any>(`/api/v1/media/get_medialist_of_user?page=${pagination.page}&limit=${pagination.page_size}`);
@@ -142,7 +143,8 @@ export class SeriesService {
 
   clientStatus(address: string) {
     return this.http.get<any>(`http://${address}/status`);
-  }
+}
+
 
   UploadTape(id: number, auth_status: number) {
     return this.callHttpApp('upload_public', { id: id, companyId: 0, auth_status: auth_status });
@@ -189,5 +191,9 @@ export class SeriesService {
 
   getUserinfo(id: number) {
     return this.http.get<any>(`/api/v1/publicity/${id}`);
+  }
+
+  getTwoDimensionalCode(id: number) {
+    return this.http.get<any>(`/api/v1/wechat/share_code/${id}`);
   }
 }

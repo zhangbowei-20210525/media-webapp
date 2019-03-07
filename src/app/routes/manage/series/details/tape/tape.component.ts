@@ -27,6 +27,7 @@ export class TapeComponent implements OnInit {
   tab: number;
   address: string;
   source_type: string;
+  showTape: boolean;
 
   constructor(
     private modalService: NzModalService,
@@ -58,7 +59,7 @@ export class TapeComponent implements OnInit {
     });
     this.tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
     this.pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
-
+    this.seriesService.eventEmit.emit('tapes');
   }
 
   pitchOn(id: number, source_type: string) {

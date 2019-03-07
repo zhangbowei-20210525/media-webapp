@@ -15,25 +15,31 @@
           </div>
           <!-- <span style="position:absolute;right: 30px"><a><i class="anticon anticon-share-alt text-info" nz-popover
                 [nzTitle]="titleTemplate" [nzContent]="contentTemplate" nzTrigger="click"></i></a></span> -->
+                <div class="fixationInfo-info">
+                  <a (click)="getTwoDimensionalCode()">
+                    <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
+                      nzTrigger="click"></i>
+                  </a>
+                </div>
         </div>
         <ng-template #titleTemplate>
           <div style="text-align: center;">微信扫码分享</div>
         </ng-template>
         <ng-template #contentTemplate>
-          <div style="text-align: center;">{{fixationInfo?.area?.name}}</div>
+          <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
           <div style="text-align: center;"><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
-          <div style="text-align: center">{{fixationInfo.series_name}}</div>
+          <div style="text-align: center">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
       <div *ngIf="publicityType == 'poster'">
         <div class="video-box" style="position: relative;text-align: center;">
           <img [src]="posterSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
           <a>
-            <i class="anticon anticon-left-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+            <i class="anticon anticon-left-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
               (click)="lastPoster()"></i>
           </a>
           <a>
-            <i class="anticon anticon-right-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+            <i class="anticon anticon-right-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
               (click)="nextPoster()"></i>
           </a>
         </div>
@@ -53,9 +59,9 @@
           <div class="centerContent">微信扫码分享</div>
         </ng-template>
         <ng-template #contentTemplate>
-          <div class="centerContent">{{fixationInfo?.area?.name}}</div>
-          <div class="centerContent"><img src="{{twoDimensionalCode}}" class="twoDimensionalCodeSize"></div>
-          <div class="centerContent">{{fixationInfo.series_name}}</div>
+          <div class="centerContent">{{ userinfo?.company?.name }}</div>
+          <div style="text-align: center;"><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+          <div class="centerContent">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
 
@@ -63,11 +69,11 @@
         <div class="video-box" style="position: relative;text-align: center;">
           <img [src]="stillSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
           <a>
-            <i class="anticon anticon-left-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+            <i class="anticon anticon-left-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
               (click)="lastStill()"></i>
           </a>
           <a>
-            <i class="anticon anticon-right-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+            <i class="anticon anticon-right-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
               (click)="nextStill()"></i>
           </a>
         </div>
@@ -87,9 +93,9 @@
           <div class="centerContent">微信扫码分享</div>
         </ng-template>
         <ng-template #contentTemplate>
-          <div class="centerContent">{{fixationInfo?.area?.name}}</div>
-          <div class="centerContent"><img src="{{twoDimensionalCode}}" class="twoDimensionalCodeSize"></div>
-          <div class="centerContent">{{fixationInfo.series_name}}</div>
+          <div class="centerContent">{{ userinfo?.company?.name }}</div>
+          <div style="text-align: center;"><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+          <div class="centerContent">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
 
@@ -97,11 +103,11 @@
         <div class="video-box" style="position: relative;text-align: center; display: table-cell;vertical-align: middle;">
           <pdf-viewer [src]="pdfSrc" [page]="pdfPage" [zoom]="0.6" [show-all]="false" [original-size]="true"></pdf-viewer>
           <a>
-            <i class="anticon anticon-left-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+            <i class="anticon anticon-left-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
               (click)="lastPdf()"></i>
           </a>
           <a>
-            <i class="anticon anticon-right-circle-o" style="z-index: 99999;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+            <i class="anticon anticon-right-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
               (click)="nextPdf()"></i>
           </a>
         </div>
@@ -121,16 +127,16 @@
           <div class="centerContent">微信扫码分享</div>
         </ng-template>
         <ng-template #contentTemplate>
-          <div class="centerContent">{{fixationInfo?.area?.name}}</div>
-          <div class="centerContent"><img src="{{twoDimensionalCode}}" style=" width: 200px;height: 200px;"></div>
-          <div class="centerContent">{{fixationInfo.series_name}}</div>
+          <div class="centerContent">{{ userinfo?.company?.name }}</div>
+          <div style="text-align: center;"><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+          <div class="centerContent">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
 
 
 
       <nz-tabset>
-        <nz-tab nzTitle="样片" (nzClick)="sample()" [nzDisabled]="sampleDisabled">
+        <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="sample()" [nzDisabled]="sampleDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let sample of sampleNum" (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
@@ -139,7 +145,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="片花" (nzClick)="feature()" [nzDisabled]="featureDisabled">
+        <nz-tab  [nzTitle]="'片花' + '(' +userinfo?.material?.feature + ')'" (nzClick)="feature()" [nzDisabled]="featureDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
@@ -148,7 +154,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="先导片" (nzClick)="trailer()" [nzDisabled]="trailerDisabled">
+        <nz-tab [nzTitle]="'先导片' + '(' +userinfo?.material?.trailer + ')'" (nzClick)="trailer()" [nzDisabled]="trailerDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
@@ -157,7 +163,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="海报" (nzClick)="poster()" [nzDisabled]="posterDisabled">
+        <nz-tab [nzTitle]="'海报' + '(' +userinfo?.material?.poster + ')'" (nzClick)="poster()" [nzDisabled]="posterDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i)">
@@ -166,7 +172,7 @@
             </ul>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="剧照" (nzClick)="still()" [nzDisabled]="stillDisabled">
+        <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="still()" [nzDisabled]="stillDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i)">
@@ -176,7 +182,7 @@
           </div>
 
         </nz-tab>
-        <nz-tab nzTitle="PDF" (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
+        <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'"  (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
           <div class="program-panel">
             <ul class="program-list">
               <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i)">

@@ -37,6 +37,7 @@ export class PublicityComponent implements OnInit {
   extension: string;
   size: string;
   uploadStatus: string;
+  userinfo: any;
 
   constructor(
     private message: MessageService,
@@ -65,7 +66,11 @@ export class PublicityComponent implements OnInit {
           this.sampleList = s.list;
           this.samplePagination = s.pagination;
         });
+        this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
+          this.userinfo = cpd;
+        });
       });
+      this.seriesService.eventEmit.emit('publicities');
   }
 
   publicityType(type: string) {
@@ -152,6 +157,9 @@ export class PublicityComponent implements OnInit {
         const id = res.id;
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
+            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
+              this.userinfo = cpd;
+            });
             this.sampleList = s.list;
             this.sampleList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -200,6 +208,9 @@ export class PublicityComponent implements OnInit {
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(f => {
+            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
+              this.userinfo = cpd;
+            });
             this.featureList = f.list;
             this.featureList.forEach(ff => {
               ff.uploadStatus = '上传成功';
@@ -248,6 +259,9 @@ export class PublicityComponent implements OnInit {
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(t => {
+            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
+              this.userinfo = cpd;
+            });
             this.trailerList = t.list;
             this.trailerList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -295,6 +309,9 @@ export class PublicityComponent implements OnInit {
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(p => {
+            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
+              this.userinfo = cpd;
+            });
             this.posterList = p.list;
             this.posterList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -342,6 +359,9 @@ export class PublicityComponent implements OnInit {
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(s => {
+            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
+              this.userinfo = cpd;
+            });
             this.stillList = s.list;
             this.stillList.forEach(f => {
               f.uploadStatus = '上传成功';
@@ -390,6 +410,9 @@ export class PublicityComponent implements OnInit {
         this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
           // tslint:disable-next-line:max-line-length
           this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(p => {
+            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
+              this.userinfo = cpd;
+            });
             this.pdfList = p.list;
             this.pdfList.forEach(f => {
               f.uploadStatus = '上传成功';

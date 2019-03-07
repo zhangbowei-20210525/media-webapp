@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.seriesCriteria = 'investment_type';
+    this.seriesCriteria = 'program_type';
     this.time = 'day';
     this.pubType = 'custom';
     this.tapeType = 'publish';
