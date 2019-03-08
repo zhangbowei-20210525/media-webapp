@@ -2,7 +2,7 @@
   <div class="block-content">
     <nz-tabset>
       <nz-tab nzTitle="上载记录" (nzClick)="uploadRecord()">
-        <div *ngIf="isUploadRecordLoaded == true">
+        <div>
           <nz-table #basicTable [nzData]="uploadRecordList" [nzPageSize]="uploadRecordPagination?.page_size"
             [nzFrontPagination]="false" [nzPageIndex]="uploadRecordPagination?.page" [nzTotal]="uploadRecordPagination?.count"
             (nzPageIndexChange)="uploadRecordPageChange($event)">
