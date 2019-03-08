@@ -103,10 +103,8 @@ ul {
 }
 
 .clearfix {
-    zoom: 1;
-    // 借用 zorro 样式
+    zoom: 1; // 借用 zorro 样式
 }
-
 
 // font
 h1,
@@ -162,4 +160,19 @@ ul.list.rf-list>li {
     display: flex; // -webkit-box-align: center;
     // align-items: center;
     height: 100%;
+}
+
+.fade-in-up {
+    animation: fadeInUp .5s;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
