@@ -6,6 +6,36 @@
   </nz-radio-group>
 
   <form nz-form [formGroup]="onlineTapeForm" [hidden]="source_type == 'entity'">
+      <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_name" nzRequired>节目名称</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <!-- <input nz-input id="program_name" formControlName="program_name" placeholder="请输入节目名称"> -->
+
+                <input placeholder="input here" nz-input id="program_name" formControlName="program_name" (input)="onInput($event.target?.value)" [nzAutocomplete]="auto">
+                <nz-autocomplete nzBackfill #auto>
+                <nz-auto-option *ngFor="let option of options" [nzValue]="option">
+                {{option}}
+                </nz-auto-option>
+                </nz-autocomplete>
+        
+            <nz-form-explain *ngIf="onlineTapeForm.get('program_name').dirty && onlineTapeForm.get('program_name').errors">请输入节目名称
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_type" nzRequired>节目类型</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+              <nz-select id="program_type" formControlName="program_type" nzPlaceHolder="请选择节目类型">
+                  <nz-option nzValue="film" nzLabel="电影"></nz-option>
+                  <nz-option nzValue="tv" nzLabel="电视剧"></nz-option>
+                  <nz-option nzValue="variety" nzLabel="综艺"></nz-option>
+                  <nz-option nzValue="other" nzLabel="其他"></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="onlineTapeForm.get('program_type').dirty && onlineTapeForm.get('program_type').errors">请选择节目类型</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>母带版本</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">

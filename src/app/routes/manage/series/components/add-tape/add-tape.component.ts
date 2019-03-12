@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 export class AddTapeComponent implements OnInit {
 
   @Input() id: number;
+  options = [];
   onlineTapeForm: FormGroup;
   entityTapeForm: FormGroup;
   source_type: string;
@@ -41,6 +42,8 @@ export class AddTapeComponent implements OnInit {
     ];
 
     this.onlineTapeForm = this.fb.group({
+      program_name: [null, [Validators.required]],
+      program_type: [null, [Validators.required]],
       name: [null, [Validators.required]],
       language: [null],
       subtitle: [null],
@@ -133,5 +136,13 @@ export class AddTapeComponent implements OnInit {
         return Observable.create(() => { throw Error('etForm invalid'); });
       }
     }
+  }
+
+  onInput(value: string): void {
+    this.options = value ? [
+      value,
+      value + value,
+      value + value + value
+    ] : [];
   }
 }

@@ -59,6 +59,16 @@ export class SeriesService {
     return this.http.post<any>('/api/v1/program', newSeriesInfo);
   }
 
+  addSeries(newSeriesInfo: {
+    name: string, program_type: string
+  }) {
+    return this.http.post<any>('/api/v1/program', newSeriesInfo);
+  }
+
+  fuzzySearch(name: string ) {
+    return this.http.get<any>(`/api/v1/programs/brief?q=${name}`);
+  }
+
   getSeries(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/program?page=${pagination.page}&page_size=${pagination.page_size}`);
   }

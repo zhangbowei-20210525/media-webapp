@@ -62,9 +62,11 @@ export class SeriesDetailsComponent implements OnInit {
 
   tapeDetails () {
       if (this.seriesInfo.has_source === false) {
+        this.sif = false;
         this.addSource(this.id);
       }
       if (this.seriesInfo.has_source === true) {
+        this.sif = false;
         this.seriesService.getTapeList(this.id).subscribe(res => {
           const tapeId = res[0].id;
         this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: tapeId}]);
@@ -106,9 +108,11 @@ export class SeriesDetailsComponent implements OnInit {
 
   publicity() {
     if (this.seriesInfo.has_publicity === false) {
+      this.sif = false;
       this.addPublicity(this.id);
     }
     if (this.seriesInfo.has_publicity === true) {
+      this.sif = false;
       this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
     }
   }

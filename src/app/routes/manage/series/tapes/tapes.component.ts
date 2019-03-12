@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PaginationDto } from '@shared';
 import { SeriesService } from '../series.service';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
+import { AddTapeComponent } from '../components/add-tape/add-tape.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tapes',
@@ -16,6 +19,9 @@ export class TapesComponent implements OnInit {
   constructor(
     private router: Router,
     private seriesService: SeriesService,
+    private modal: NzModalService,
+    private message: NzMessageService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -50,4 +56,27 @@ export class TapesComponent implements OnInit {
       this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: id, source_type: 'entity'}]);
     }
   }
+
+  addTape() {
+    this.modal.create({
+      nzTitle: `新增母带`,
+      nzContent: AddTapeComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.addTapeAgreed
+    });
+  }
+
+  addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
+    component.formSubmit()
+      .subscribe(res => {
+        this.message.success(this.translate.instant('global.add-success'));
+        resolve();
+      }, error => {
+        if (error.message) {
+          this.message.error(error.message);
+        }
+      });
+  })
 }

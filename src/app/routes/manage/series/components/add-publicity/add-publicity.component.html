@@ -1,4 +1,32 @@
 <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_name" nzRequired>节目名称</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <!-- <input nz-input id="name" formControlName="name" placeholder="请输入节目名称" (input)="input($event)" > -->
+          <input placeholder="请输入节目名称" nz-input id="program_name" formControlName="program_name" (ngModelChange)="onInput()" [nzAutocomplete]="auto">
+          <nz-autocomplete nzBackfill #auto>
+          <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">
+          {{program.name}}
+          </nz-auto-option>
+          </nz-autocomplete>
+  
+          <nz-form-explain *ngIf="validateForm.get('program_name').dirty && validateForm.get('program_name').errors">请输入节目名称
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_type" nzRequired>节目类型</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-select id="program_type" formControlName="program_type" nzPlaceHolder="请选择节目类型" [nzDisabled]="disabled">
+                <nz-option nzValue="film" nzLabel="电影"></nz-option>
+                <nz-option nzValue="tv" nzLabel="电视剧"></nz-option>
+                <nz-option nzValue="variety" nzLabel="综艺"></nz-option>
+                <nz-option nzValue="other" nzLabel="其他"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请选择节目类型</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type">类型</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">

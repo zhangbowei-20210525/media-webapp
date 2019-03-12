@@ -1,3 +1,14 @@
+<div>
+    <p class="clearfix">
+      <button nz-button nzType="default" class="rf" (click)="addPublicity()">新增宣发</button>
+    </p>
+  </div>
+  <ng-template #publicityOk>
+      <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
+          上传
+        </label>
+        <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
+    </ng-template>
 <nz-table #rowSelectionTable [nzData]="publicitiesList" (nzCurrentPageDataChange)="currentPageDataChange($event)"
   (nzPageIndexChange)="refreshStatus($event)" (nzPageSizeChange)="refreshStatus($event)" [nzPageSize]="publicitiesPagination?.page_size"
   [nzFrontPagination]="false" [nzPageIndex]="publicitiesPagination?.page" [nzTotal]="publicitiesPagination?.count">
