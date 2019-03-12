@@ -3,14 +3,16 @@ import { HttpResponse, HttpEvent, HttpEventType, HttpRequest, HttpClient } from 
 import { formData } from '@shared';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueueUploader {
 
-  queue = [] as UploadInfo[];
-  current = null;
+  readonly change$ = new BehaviorSubject(0);
+  private readonly queue = [] as UploadInfo[];
+  private current = null;
 
   constructor(
     private http: HttpClient,
@@ -43,6 +45,7 @@ export class QueueUploader {
   private reset() {
     this.current = null;
     this.set();
+    this.notifyChnages();
   }
 
   /**
@@ -127,7 +130,24 @@ export class QueueUploader {
   enqueue(upload: UploadInfo) {
     this.queue.unshift(upload);
     this.set();
+    this.notifyChnages();
     return upload;
+  }
+
+  private notifyChnages() {
+    try {
+      let base = 0;
+      if (this.current) {
+        base = 1;
+      }
+      this.change$.next(this.queue.length + base);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  getList() {
+    return this.current ? this.queue.concat([this.current]) : this.queue.concat();
   }
 }
 
@@ -136,8 +156,10 @@ export interface UploadInfo {
   url: string;
   name: string;
   size: number;
+  extension: string;
   progress: number;
   file: File;
+  createAt?: Date;
   status?: UploadStatus;
   success?: (upload?: UploadInfo, result?: any) => boolean;
   fail?: (upload?: UploadInfo, error?: any) => boolean;

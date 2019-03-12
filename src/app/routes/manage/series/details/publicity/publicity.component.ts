@@ -29,7 +29,6 @@ export class PublicityComponent implements OnInit {
     private notification: NzNotificationService,
     private translate: TranslateService,
     private service: PublicityService,
-    private seriesService: SeriesService,
     private route: ActivatedRoute,
     private router: Router,
     private uploader: QueueUploader
@@ -122,14 +121,17 @@ export class PublicityComponent implements OnInit {
     if (list.length < 1) {
       this.message.warning('无有效文件，请重新选择');
     }
-    list.forEach(item => {
-      this.uploader.enqueue({
+    const uploads = list.map(item => {
+      const dotIndex = item.name.lastIndexOf('.');
+      return this.uploader.enqueue({
         target: this.publicityId,
         url: this.service.getUploadUrl(materielType),
         file: item,
-        name: item.name,
+        name: item.name.substring(0, dotIndex),
+        extension: item.name.substring(dotIndex + 1, item.name.length),
         size: item.size,
         progress: 0,
+        createAt: new Date,
         success: (upload, data) => {
           this.service.bindingMateriel(upload.target, data.id, materielType).subscribe(result => {
             this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
@@ -137,6 +139,16 @@ export class PublicityComponent implements OnInit {
           return true;
         }
       });
+    });
+    // const listString = this.getListString(materielType);
+    // this[listString] = [...this[listString], ...uploads];
+  }
+
+  requestClick() {
+    this.service.requestGithub().subscribe(result => {
+      console.log(result);
+    }, error => {
+      console.log(error);
     });
   }
 

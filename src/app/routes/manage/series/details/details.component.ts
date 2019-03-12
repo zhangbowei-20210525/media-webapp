@@ -38,14 +38,14 @@ export class SeriesDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.seriesService.eventEmit.subscribe((value: any) => {
-      if (value === 'publicities') {
-        this.category = 'publicities';
-      }
-      if (value === 'tapes') {
-        this.category = 'tapes';
-      }
-   });
+  //   this.seriesService.eventEmit.subscribe((value: any) => {
+  //     if (value === 'publicities') {
+  //       this.category = 'publicities';
+  //     }
+  //     if (value === 'tapes') {
+  //       this.category = 'tapes';
+  //     }
+  //  });
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');

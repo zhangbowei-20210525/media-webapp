@@ -7,6 +7,7 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidebarNavComponent } from './sidebar-nav/sidebar-nav.component';
 import { NavNotifyComponent } from './components/nav-notify/nav-notify.component';
+import { NavTasksComponent } from './components/nav-tasks/nav-tasks.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { NavNotifyComponent } from './components/nav-notify/nav-notify.component
     FooterComponent,
     SidebarNavComponent,
     NavNotifyComponent,
+    NavTasksComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,25 @@
+<div class="tasks-box">
+  <div class="tasks-tab-panel">
+    <nz-tabset nzAnimated="false" (nzSelectChange)="onTabChange($event)">
+      <nz-tab nzTitle="物料上传">
+        <div class="tasks">
+          <div class="t-list scrollbar" *ngIf="uploads.length > 0; else none">
+            <div class="t-card" *ngFor="let item of uploads">
+              <div class="clearfix">
+                <div class="t-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
+                  {{ item.name }}</div>
+                <div class="t-time">{{ item.createAt | date:'yyyy-MM-dd' }}</div>
+              </div>
+              <div class="t-contont">
+                <nz-progress [nzPercent]="item.progress" nzStatus="active"></nz-progress>
+              </div>
+            </div>
+          </div>
+          <ng-template #none>
+            <div class="text-hint none">暂无上传物料</div>
+          </ng-template>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>
