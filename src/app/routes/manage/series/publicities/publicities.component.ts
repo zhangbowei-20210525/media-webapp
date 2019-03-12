@@ -2,78 +2,69 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeriesService } from '../series.service';
 import { PaginationDto } from '@shared';
+import { fadeIn } from '@shared/animations';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-publicities',
   templateUrl: './publicities.component.html',
-  styleUrls: ['./publicities.component.less']
+  styleUrls: ['./publicities.component.less'],
+  animations: [fadeIn]
 })
 export class PublicitiesComponent implements OnInit {
 
-  constructor(
-    private router: Router,
-    private seriesService: SeriesService,
-  ) { }
-
   allChecked = false;
   indeterminate = false;
-  displayData = [];
-  publicitiesPagination: PaginationDto;
-  publicitiesList = [];
+  disabledButton = false;
+  isLoaded = false;
+  isLoading = false;
+  dataset = [];
+  pagination = { page: 1, page_size: 10 } as PaginationDto;
+
+  constructor(
+    private router: Router,
+    private service: SeriesService,
+  ) { }
 
   ngOnInit() {
-    this.publicitiesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.seriesService.eventEmit.subscribe((value: any) => {
-      if (value === 'publicitiesRefresh') {
-        this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
-          this.publicitiesList = res.list;
-          this.publicitiesPagination = res.pagination;
-        });
-      }
-    });
-    this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
-      this.publicitiesList = res.list;
-      this.publicitiesPagination = res.pagination;
-    });
-  }
-  currentPageDataChange($event: Array<{
-    name: string; sample: number; feature: number; trailer: number;
-    poster: number; still: number; pdf: number; checked: boolean
-  }>): void {
-    this.displayData = $event;
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.fetchPublicities();
   }
 
-  refreshStatus(page: number): void {
-    this.publicitiesPagination.page = page;
-    this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
-      this.publicitiesList = res.list;
-      this.publicitiesPagination = res.pagination;
-    });
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
+  fetchPublicities() {
+    this.isLoading = true;
+    this.service.getPublicities(this.pagination)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        if (!this.isLoaded) {
+          this.isLoaded = true;
+        }
+      }))
+      .subscribe(result => {
+        this.dataset = result.list;
+        this.pagination = result.pagination;
+      });
+  }
+
+  pageChnage(page: number) {
+    this.pagination.page = page;
+    this.fetchPublicities();
+  }
+
+  refreshStatus(): void {
+    const allChecked = this.dataset.every(value => value.checked === true);
+    const allUnChecked = this.dataset.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.disabledButton = !this.dataset.some(value => value.checked);
   }
 
   checkedChange() {
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.refreshStatus();
   }
 
   checkAll(value: boolean): void {
-    this.displayData.forEach(data => {
-      data.checked = value;
-    });
-    const allChecked = this.displayData.every(x => x.checked === true);
-    const allUnChecked = this.displayData.every(x => !x.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.dataset.forEach(data => data.checked = value);
+    this.refreshStatus();
   }
 
   publicityDetails(id: number) {

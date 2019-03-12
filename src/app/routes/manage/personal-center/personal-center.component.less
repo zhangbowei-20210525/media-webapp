@@ -1,21 +1,29 @@
 @import '~styles/theme';
-.block {
-    margin-bottom: 20px;
-    background-color: #fff;
-    width: 100%;
+.profile-userpic img {
+    float: none;
+    margin: 0 auto;
+    width: 42%;
+    height: 42%;
+    border-radius: 50% !important;
 }
 
-.block.transparent-block {
-    background-color: transparent;
+.profile-usertitle {
+    text-align: center;
+    margin-top: 2rem;
 }
 
-.block>.block-content {
-    margin: 2rem;
+.profile-usertitle>p {
+    margin-bottom: 0.5rem !important;
 }
 
-.block>.block-content.full {
-    margin-left: 0;
-    margin-right: 0;
+.profile-usertitle-name {
+    font-size: 1.3rem;
+    margin-bottom: .5rem;
+}
+
+.profile-usermenu {
+    margin-top: 30px;
+    padding-bottom: 20px;
 }
 
 .explain {
@@ -43,8 +51,7 @@
 }
 
 .bind {
-    color: @color-icon;
-    vertical-align: middle;
+    color: @color-icon; // vertical-align: middle;
 }
 
 .bind>i {
@@ -58,10 +65,6 @@
 
 .bind.active {
     color: @color-content;
-}
-
-.bind-wechat {
-    margin-top: 0.3rem;
 }
 
 .other-info {

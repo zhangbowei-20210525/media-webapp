@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-manage',
   template: `
   <!-- 左边栏导航 <sidebar-nav></sidebar-nav> -->
-  <app-sidebar-nav></app-sidebar-nav>
+  <!-- <app-sidebar-nav></app-sidebar-nav> -->
   <router-outlet></router-outlet>
   `,
 })

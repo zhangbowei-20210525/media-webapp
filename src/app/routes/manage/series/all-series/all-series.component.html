@@ -4,8 +4,8 @@
       <button nz-button nzType="default" class="rf" (click)="addSeries()">新增节目</button>
     </p>
   </div>
-  <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzPageSize]="pagination?.page_size"
-    [nzFrontPagination]="false" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
+  <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
+    [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
       <tr>
         <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
@@ -32,16 +32,20 @@
         <td style="text-align: center">{{ data.language }}</td>
         <td style="text-align: center">{{ data.release_date }}</td>
         <td style="text-align: center">
-          <span *ngIf="data.has_publicity == false"><a style="color:slategray" (click)="addPublicity(data.id)">宣发</a></span>
-            <ng-template #publicityOk>
-                <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
-                    上传
-                  </label>
-                  <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
-              </ng-template>
-          <span *ngIf="data.has_publicity == true"><a [routerLink]="['/manage/series/d', data.id, 'publicityd']">宣发</a></span>
-          <span *ngIf="data.has_source == false"><a style="color: slategray;margin-left: 1rem" (click)="addSource(data.id)">母带</a></span>
-          <span *ngIf="data.has_source == true"><a (click)="tapeDetails(data.id)" style="margin-left: 1rem">母带</a></span>
+          <span *ngIf="data.has_publicity == false"><a style="color:slategray"
+              (click)="addPublicity(data.id)">宣发</a></span>
+          <ng-template #publicityOk>
+            <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
+              上传
+            </label>
+            <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
+          </ng-template>
+          <span *ngIf="data.has_publicity == true"><a
+              [routerLink]="['/manage/series/d', data.id, 'publicityd']">宣发</a></span>
+          <span *ngIf="data.has_source == false"><a style="color: slategray;margin-left: 1rem"
+              (click)="addSource(data.id)">母带</a></span>
+          <span *ngIf="data.has_source == true"><a (click)="tapeDetails(data.id)"
+              style="margin-left: 1rem">母带</a></span>
           <!-- <span *ngIf="data.has_right == false"><a style="color: slategray;margin-left: 1rem" (click)="addRight()">版权</a></span>
           <span *ngIf="data.has_right == true"><a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span> -->
         </td>

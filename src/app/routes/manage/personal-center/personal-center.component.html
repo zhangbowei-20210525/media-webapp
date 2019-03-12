@@ -1,6 +1,8 @@
 <div [hidden]="loading" class="fade-in-up">
-  
-  <section class="block clearfix">
+  <div>
+    <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
+  </div>
+  <!-- <section class="block clearfix">
     <div class="block-content" style="height: 8rem;">
       <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="true">
         <div class="user-info-pane">
@@ -34,25 +36,69 @@
           </div>
         </div>
       </nz-skeleton>
-
-      <!-- <div class="edit-button"><a><i nz-icon type="edit" theme="outline"></i>修改</a></div> -->
     </div>
   </section>
 
   <div class="block clearfix">
-    <!-- <div class="explain">
-      <i nz-icon type="star" theme="fill"></i>
-      <span>{{ 'app.account.my-favorite' | translate }}</span>
-    </div> -->
+
     <div class="block-header">
       <div class="block-title">{{ 'app.account.my-favorite' | translate }}</div>
     </div>
     <div class="block-body">
       <app-empty></app-empty>
     </div>
+  </div> -->
+
+
+  <div class="block-container">
+    <div class="main-block block">
+      <div class="s-nav-wapper">
+        <nav class="s-nav">
+          <ul class="list s-nav-list">
+            <li class="nav-item">
+              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'favorites'">收藏</a>
+            </li>
+            <li class="nav-item">
+              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'history'">历史记录</a>
+            </li>
+            <li class="nav-item">
+              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'notifies'">消息</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="block-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <div class="sidebar-block block">
+      <div class="profile-userpic">
+        <img [src]="info?.avatar" class="img-responsive" />
+      </div>
+      <div class="profile-usertitle">
+        <p class="profile-usertitle-name text-blod">{{ info?.nickname || info?.username }}</p>
+        <p class="profile-usertitle-company">[{{ info?.company_name }}]</p>
+        <p>
+          <span class="bind bind-mobile" [ngClass]="{ 'active': info?.phone }">
+            <i nz-icon type="mobile" theme="outline"></i>
+            <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
+            <ng-template #unboundPhone>
+              <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
+            </ng-template>
+          </span>
+        </p>
+        <p>
+          <span class="bind bind-wechat" [ngClass]="{ 'active': info?.wechat }">
+            <i nz-icon type="wechat" theme="outline"></i>
+            <span *ngIf="info?.wechat?.length > 0; else unboundWechat">{{ info.wechat }}</span>
+            <ng-template #unboundWechat>
+              <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+            </ng-template>
+          </span>
+        </p>
+      </div>
+      <div class="profile-usermenu"></div>
+    </div>
   </div>
 
-  <!-- <section class="block transparent-block">
-    <app-empty></app-empty>
-  </section> -->
 </div>

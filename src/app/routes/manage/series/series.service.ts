@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { formData, PaginationDto, ResponseDto } from '@shared';
+import { formData, PaginationDto, ResponseDto, PaginationResponseDto } from '@shared';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
 @Injectable({
@@ -104,7 +104,7 @@ export class SeriesService {
 
 
   getPublicities(pagination: PaginationDto) {
-    return this.http.get<any>(`/api/v1/publicity?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<PaginationResponseDto<any[]>>('/api/v1/publicity', { params: pagination as any});
   }
 
   publicityDetail(id: number) {

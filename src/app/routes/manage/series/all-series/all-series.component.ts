@@ -100,6 +100,10 @@ export class AllSeriesComponent implements OnInit {
     this.refreshDataSet();
   }
 
+  checkedChange() {
+    this.refreshStatus();
+  }
+
   addSeries() {
     this.modal.create({
       nzTitle: '新增节目',
