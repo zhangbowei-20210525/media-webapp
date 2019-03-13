@@ -7,6 +7,7 @@ import { switchMap, finalize } from 'rxjs/operators';
 import { PublicityService } from './publicity.service';
 import { NzTabChangeEvent, NzNotificationService } from 'ng-zorro-antd';
 import { QueueUploader } from '@shared/upload';
+import { LocalRequestService } from '@shared/locals';
 
 declare type MaterielType = 'sample' | 'feature' | 'trailer' | 'poster' | 'still' | 'pdf';
 
@@ -31,7 +32,8 @@ export class PublicityComponent implements OnInit {
     private service: PublicityService,
     private route: ActivatedRoute,
     private router: Router,
-    private uploader: QueueUploader
+    private uploader: QueueUploader,
+    private local: LocalRequestService
   ) {
     this.materielTypes.forEach(item => {
       this[this.getLoadedString(item)] = false;
@@ -145,7 +147,7 @@ export class PublicityComponent implements OnInit {
   }
 
   requestClick() {
-    this.service.requestGithub().subscribe(result => {
+    this.local.status('127.0.0.1:8756').subscribe(result => {
       console.log(result);
     }, error => {
       console.log(error);

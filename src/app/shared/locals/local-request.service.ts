@@ -16,7 +16,7 @@ export class LocalRequestService {
     return this.token.get().token;
   }
 
-  status(address: string, port: string) {
-    return this.http.get(`http://${address}:${port}/status`, { params: { _allow_anonymous: '' } });
+  status(address: string) {
+    return this.http.get(`http://${address}/status`, { params: { _allow_anonymous: '' } });
   }
 }
