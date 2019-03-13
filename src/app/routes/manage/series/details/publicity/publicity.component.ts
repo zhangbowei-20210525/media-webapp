@@ -3,7 +3,12 @@ import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from '../../series.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, finalize } from 'rxjs/operators';
+import { PublicityService } from './publicity.service';
+import { NzTabChangeEvent, NzNotificationService } from 'ng-zorro-antd';
+import { QueueUploader } from '@shared/upload';
+
+declare type MaterielType = 'sample' | 'feature' | 'trailer' | 'poster' | 'still' | 'pdf';
 
 @Component({
   selector: 'app-publicity',
@@ -12,476 +17,127 @@ import { switchMap } from 'rxjs/operators';
 })
 export class PublicityComponent implements OnInit {
 
-  type: string;
-  id: number;
-  publicityId: number;
-  seriesType: string;
-  samplePagination: PaginationDto;
-  featurePagination: PaginationDto;
-  trailerPagination: PaginationDto;
-  posterPagination: PaginationDto;
-  stillPagination: PaginationDto;
-  pdfPagination: PaginationDto;
+  readonly materielTypes = ['sample', 'feature', 'trailer', 'poster', 'still', 'pdf'] as MaterielType[]; // 根据视图的顺序
 
-  readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
-  readonly imageFilters = ['.jpg', '.jpeg', '.png'];
-  readonly pdfFilters = ['.pdf'];
-  sampleList = [];
-  featureList = [];
-  trailerList = [];
-  posterList = [];
-  stillList = [];
-  pdfList = [];
-  i = 1;
-  name: string;
-  extension: string;
-  size: string;
-  uploadStatus: string;
-  userinfo: any;
+  selectedIndex = 0;
+  seriesId: number;
+  publicityId: number;
+  publicity: any;
 
   constructor(
     private message: MessageService,
+    private notification: NzNotificationService,
     private translate: TranslateService,
+    private service: PublicityService,
     private seriesService: SeriesService,
     private route: ActivatedRoute,
     private router: Router,
-  ) { }
+    private uploader: QueueUploader
+  ) {
+    this.materielTypes.forEach(item => {
+      this[this.getLoadedString(item)] = false;
+      this[this.getLoadingString(item)] = false;
+      this[this.getListString(item)] = [];
+      this[this.getPaginationString(item)] = { page: 1, page_size: 99999 } as PaginationDto;
+    });
+  }
+
+  getLoadedString(type: string) {
+    return 'is' + type[0].toUpperCase() + type.substring(1, type.length - 1) + 'Loaded';
+  }
+
+  getLoadingString(type: string) {
+    return 'is' + type[0].toUpperCase() + type.substring(1, type.length - 1) + 'Loading';
+  }
+
+  getListString(type: string) {
+    return type + 'List';
+  }
+
+  getPaginationString(type: string) {
+    return type + 'Pagination';
+  }
 
   ngOnInit() {
-    this.uploadStatus = '正在上传中...';
-    this.type = 'sample';
-    this.samplePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
-    this.featurePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
-    this.trailerPagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
-    this.posterPagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
-    this.stillPagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
-    this.pdfPagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
     this.route.parent.paramMap.pipe(
       switchMap((params: ParamMap) => {
-        this.id = +params.get('sid');
-        return this.seriesService.getPublicitiesList(this.id);
-      })).subscribe(res => {
-        this.publicityId = res.list[0].id;
-        this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
-          this.sampleList = s.list;
-          this.samplePagination = s.pagination;
-        });
-        this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
-          this.userinfo = cpd;
-        });
+        this.seriesId = +params.get('sid');
+        return this.service.getPublicities(this.seriesId);
+      })).subscribe(result => {
+        this.publicityId = result.list[0].id;
+        this.fetchPublicity();
+        this.fetchMateriels(this.materielTypes[0]);
       });
-      this.seriesService.eventEmit.emit('publicities');
   }
 
-  publicityType(type: string) {
-    if (type === 'sample') {
-      this.type = 'sample';
-      this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(res => {
-        this.sampleList = res.list;
-        this.samplePagination = res.pagination;
-      });
-    }
-    if (type === 'feature') {
-      this.type = 'feature';
-      this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(res => {
-        this.featureList = res.list;
-        this.featurePagination = res.pagination;
-      });
-    }
-    if (type === 'trailer') {
-      this.type = 'trailer';
-      this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(res => {
-        this.trailerList = res.list;
-        this.trailerPagination = res.pagination;
-      });
-    }
-    if (type === 'poster') {
-      this.type = 'poster';
-      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(res => {
-        this.posterList = res.list;
-        this.posterPagination = res.pagination;
-      });
-    }
-    if (type === 'still') {
-      this.type = 'still';
-      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(res => {
-        this.stillList = res.list;
-        this.stillPagination = res.pagination;
-      });
-    }
-    if (type === 'pdf') {
-      this.type = 'pdf';
-      this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(res => {
-        this.pdfList = res.list;
-        this.pdfPagination = res.pagination;
-      });
-    }
-  }
-
-  upload(event) {
-    if (this.type === 'sample') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
-      }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      const fileName = fileList[0].name.lastIndexOf('.');
-      const fileNameLength = fileList[0].name.length;
-      const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
-      const fileName1 = fileList[0].name.split('.');
-      this.sampleList = [...this.sampleList, {
-        name: `${fileName1[0]}`,
-        extension: `${fileFormat}`,
-        size: `${fileList[0].size}`,
-        uploadStatus: `${this.uploadStatus}`
-      }];
-      this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
-          this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(s => {
-            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
-              this.userinfo = cpd;
-            });
-            this.sampleList = s.list;
-            this.sampleList.forEach(f => {
-              f.uploadStatus = '上传成功';
-            });
-            this.samplePagination = s.pagination;
-          });
-        });
-      });
-    }
-    if (this.type === 'feature') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
-      }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      const fileName = fileList[0].name.lastIndexOf('.');
-      const fileNameLength = fileList[0].name.length;
-      const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
-      const fileName1 = fileList[0].name.split('.');
-      this.featureList = [...this.featureList, {
-        name: `${fileName1[0]}`,
-        extension: `${fileFormat}`,
-        size: `${fileList[0].size}`,
-        uploadStatus: `${this.uploadStatus}`
-      }];
-      this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
-          // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(f => {
-            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
-              this.userinfo = cpd;
-            });
-            this.featureList = f.list;
-            this.featureList.forEach(ff => {
-              ff.uploadStatus = '上传成功';
-            });
-            this.featurePagination = f.pagination;
-          });
-        });
-      });
-    }
-    if (this.type === 'trailer') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
-      }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      const fileName = fileList[0].name.lastIndexOf('.');
-      const fileNameLength = fileList[0].name.length;
-      const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
-      const fileName1 = fileList[0].name.split('.');
-      this.trailerList = [...this.trailerList, {
-        name: `${fileName1[0]}`,
-        extension: `${fileFormat}`,
-        size: `${fileList[0].size}`,
-        uploadStatus: `${this.uploadStatus}`
-      }];
-      this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
-          // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(t => {
-            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
-              this.userinfo = cpd;
-            });
-            this.trailerList = t.list;
-            this.trailerList.forEach(f => {
-              f.uploadStatus = '上传成功';
-            });
-            this.trailerPagination = t.pagination;
-          });
-        });
-      });
-    }
-    if (this.type === 'poster') {
-      let fileList: FileList;
-      try {
-        fileList = event.target.files as FileList;
-      } catch (ex) {
-        return;
-      }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.imageFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      const fileName = fileList[0].name.lastIndexOf('.');
-      const fileNameLength = fileList[0].name.length;
-      const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
-      const fileName1 = fileList[0].name.split('.');
-      this.posterList = [...this.posterList, {
-        name: `${fileName1[0]}`,
-        extension: `${fileFormat}`,
-        size: `${fileList[0].size}`,
-        uploadStatus: `${this.uploadStatus}`
-      }];
-      this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
-        const id = result.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
-          // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(p => {
-            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
-              this.userinfo = cpd;
-            });
-            this.posterList = p.list;
-            this.posterList.forEach(f => {
-              f.uploadStatus = '上传成功';
-            });
-            this.posterPagination = p.pagination;
-          });
-        });
-      });
-    }
-    if (this.type === 'still') {
-      let fileList: FileList;
-      try {
-        fileList = event.target.files as FileList;
-      } catch (ex) {
-        return;
-      }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.imageFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      const fileName = fileList[0].name.lastIndexOf('.');
-      const fileNameLength = fileList[0].name.length;
-      const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
-      const fileName1 = fileList[0].name.split('.');
-      this.stillList = [...this.stillList, {
-        name: `${fileName1[0]}`,
-        extension: `${fileFormat}`,
-        size: `${fileList[0].size}`,
-        uploadStatus: `${this.uploadStatus}`
-      }];
-      this.seriesService.getUploadImageId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
-          // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(s => {
-            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
-              this.userinfo = cpd;
-            });
-            this.stillList = s.list;
-            this.stillList.forEach(f => {
-              f.uploadStatus = '上传成功';
-            });
-            this.stillPagination = s.pagination;
-          });
-        });
-      });
-    }
-    if (this.type === 'pdf') {
-      let fileList: FileList, folder: string;
-      try {
-        fileList = event.target.files as FileList;
-        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      } catch (ex) {
-        return;
-      }
-      const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.pdfFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-      if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
-        return;
-      }
-      const fileName = fileList[0].name.lastIndexOf('.');
-      const fileNameLength = fileList[0].name.length;
-      const fileFormat = fileList[0].name.substring(fileName + 1, fileNameLength);
-      const fileName1 = fileList[0].name.split('.');
-      this.pdfList = [...this.pdfList, {
-        name: `${fileName1[0]}`,
-        extension: `${fileFormat}`,
-        size: `${fileList[0].size}`,
-        uploadStatus: `${this.uploadStatus}`
-      }];
-      this.seriesService.getUploadPdfId(fileList[0]).subscribe(res => {
-        const id = res.id;
-        this.seriesService.addUpload(this.publicityId, id, this.type).subscribe(i => {
-          // tslint:disable-next-line:max-line-length
-          this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(p => {
-            this.seriesService.getUserinfo(this.publicityId).subscribe(cpd => {
-              this.userinfo = cpd;
-            });
-            this.pdfList = p.list;
-            this.pdfList.forEach(f => {
-              f.uploadStatus = '上传成功';
-            });
-            this.pdfPagination = p.pagination;
-          });
-        });
-      });
-
-    }
-  }
-
-  samplePageChange(page: number) {
-    this.samplePagination.page = page;
-    // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.publicityId, this.type).subscribe(res => {
-      this.sampleList = res.list;
-      this.samplePagination = res.pagination;
+  fetchPublicity() {
+    this.service.getPublicity(this.publicityId).subscribe(result => {
+      this.publicity = result;
     });
   }
 
-  featurePageChange(page: number) {
-    this.featurePagination.page = page;
-    // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.publicityId, this.type).subscribe(res => {
-      this.featureList = res.list;
-      this.featurePagination = res.pagination;
+  fetchMateriels(type: string) {
+    const loadingString = this.getLoadingString(type);
+    const paginationString = this.getPaginationString(type);
+    this[loadingString] = true;
+    this.service.getMateriels(this.publicityId, type, this[paginationString])
+      .pipe(finalize(() => {
+        this[loadingString] = false;
+        this[this.getLoadedString(type)] = true;
+      })).subscribe(result => {
+        this[this.getListString(type)] = result.list;
+        this[paginationString] = result.pagination;
+      });
+  }
+
+  publicityViews() {
+    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`, { sid: this.seriesId }]);
+  }
+
+  pageChange(page: number, type: MaterielType) {
+    this[this.getPaginationString(type)].page = page;
+    this.fetchMateriels(type);
+  }
+
+  tabSelectChange(event: NzTabChangeEvent) {
+    this.fetchMateriels(this.materielTypes[event.index]);
+  }
+
+  filesChange(event: Event) {
+    const materielType = this.materielTypes[this.selectedIndex];
+    const filters = this.service.getFilters(materielType);
+    const files = event.target['files'] as FileList;
+    const list = [] as File[];
+    for (const key in files) {
+      if (files.hasOwnProperty(key)) {
+        const element = files[key];
+        filters.forEach(filter => {
+          if (element.name.toLowerCase().endsWith(filter)) {
+            list.push(element);
+            return;
+          }
+        });
+      }
+    }
+    if (list.length < 1) {
+      this.message.warning('无有效文件，请重新选择');
+    }
+    list.forEach(item => {
+      this.uploader.enqueue({
+        target: this.publicityId,
+        url: this.service.getUploadUrl(materielType),
+        file: item,
+        name: item.name,
+        size: item.size,
+        progress: 0,
+        success: (upload, data) => {
+          this.service.bindingMateriel(upload.target, data.id, materielType).subscribe(result => {
+            this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+          });
+          return true;
+        }
+      });
     });
   }
-
-  trailerPageChange(page: number) {
-    this.trailerPagination.page = page;
-    // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.publicityId, this.type).subscribe(res => {
-      this.trailerList = res.list;
-      this.trailerPagination = res.pagination;
-    });
-  }
-
-  posterPageChange(page: number) {
-    this.posterPagination.page = page;
-    // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.publicityId, this.type).subscribe(res => {
-      this.posterList = res.list;
-      this.posterPagination = res.pagination;
-    });
-  }
-
-  stillPageChange(page: number) {
-    this.stillPagination.page = page;
-    // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.publicityId, this.type).subscribe(res => {
-      this.stillList = res.list;
-      this.stillPagination = res.pagination;
-    });
-  }
-
-  pdfPageChange(page: number) {
-    this.pdfPagination.page = page;
-    // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.publicityId, this.type).subscribe(res => {
-      this.pdfList = res.list;
-      this.pdfPagination = res.pagination;
-    });
-  }
-
-  publicityDetails() {
-    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`, {sid: this.id}]);
-  }
-
 
 }

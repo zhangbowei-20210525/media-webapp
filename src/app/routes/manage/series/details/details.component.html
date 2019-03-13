@@ -6,8 +6,8 @@
       <div class="flex-none"></div>
       <span>
         <nz-radio-group [(ngModel)]="category" nzSize="small">
-          <label nz-radio-button nzValue="publicities" (click)="publicity()" [routerLinkActive]="'ant-radio-button-wrapper-checked'">宣发</label>
-          <label nz-radio-button nzValue="tapes" (click)="tapeDetails()" [routerLinkActive]="'ant-radio-button-wrapper-checked'">母带</label>
+          <label nz-radio-button nzValue="publicities" [routerLink]="'publicityd'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">宣发</label>
+          <label nz-radio-button nzValue="tapes" [routerLink]="'tape'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">母带</label>
           <!-- <label nz-radio-button nzValue="copyrights" [routerLink]="'right'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">版权</label> -->
         </nz-radio-group>
         <ng-template #publicityOk>

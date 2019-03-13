@@ -28,7 +28,6 @@ export class TapeComponent implements OnInit {
   address: string;
   source_type: string;
   showTape: boolean;
-
   constructor(
     private modalService: NzModalService,
     private seriesService: SeriesService,
@@ -48,18 +47,22 @@ export class TapeComponent implements OnInit {
       this.tapesList = res;
     });
 
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.isId = +params.get('tapeId');
-        this.source_type = params.get('source_type');
-        return this.seriesService.getOnlineInfo(this.isId);
-      })
-    ).subscribe(res => {
-     this.tapeDetailsInfo = res;
-    });
+      this.route.paramMap.pipe(
+        switchMap((params: ParamMap) => {
+          this.isId = +params.get('tapeId');
+          this.source_type = params.get('source_type');
+          if ( this.isId === 0 ) {
+            return null;
+          } else {
+            return this.seriesService.getOnlineInfo(this.isId);
+          }
+        })
+      ).subscribe(t => {
+       this.tapeDetailsInfo = t;
+      });
+
     this.tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
     this.pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
-    this.seriesService.eventEmit.emit('tapes');
   }
 
   pitchOn(id: number, source_type: string) {

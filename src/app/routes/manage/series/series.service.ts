@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { formData, PaginationDto, ResponseDto } from '@shared';
+import { formData, PaginationDto, ResponseDto, PaginationResponseDto } from '@shared';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
 @Injectable({
@@ -62,6 +62,7 @@ export class SeriesService {
   addSeries(newSeriesInfo: {
     name: string, program_type: string
   }) {
+    console.log(newSeriesInfo);
     return this.http.post<any>('/api/v1/program', newSeriesInfo);
   }
 
@@ -114,7 +115,7 @@ export class SeriesService {
 
 
   getPublicities(pagination: PaginationDto) {
-    return this.http.get<any>(`/api/v1/publicity?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<PaginationResponseDto<any[]>>('/api/v1/publicity', { params: pagination as any});
   }
 
   publicityDetail(id: number) {
@@ -127,7 +128,16 @@ export class SeriesService {
   }
 
   // tslint:disable-next-line:max-line-length
+  addTape1(newTape: {  program_name: string, program_type: string, name: string, language: string, subtitle: string, format: string, bit_rate: string, source_type: string, }) {
+    return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
+  }
+  // tslint:disable-next-line:max-line-length
   addEntityTape(newTape: { program_id: number; name: string, language: string, subtitle: string, source_type: string, episode: any, sharpness: any, carrier: any, brand: any, model: any, storage_date: any, storage_location: any, detail_location: any, sound_track: any }) {
+    return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
+  }
+
+  // tslint:disable-next-line:max-line-length
+  addEntityTape1(newTape: {  program_name: string, program_type: string, name: string, language: string, subtitle: string, source_type: string, episode: any, sharpness: any, carrier: any, brand: any, model: any, storage_date: any, storage_location: any, detail_location: any, sound_track: any }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
 

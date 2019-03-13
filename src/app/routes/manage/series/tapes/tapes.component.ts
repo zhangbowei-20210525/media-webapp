@@ -5,56 +5,54 @@ import { SeriesService } from '../series.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tapes',
   templateUrl: './tapes.component.html',
-  styleUrls: ['./tapes.component.less']
+  styleUrls: ['./tapes.component.less'],
 })
 export class TapesComponent implements OnInit {
 
-  tapesPagination: PaginationDto;
-  tapesList = [];
+  isLoaded = false;
+  isLoading = false;
+  pagination = { page: 1, page_size: 10 } as PaginationDto;
+  dataset = [];
 
   constructor(
     private router: Router,
-    private seriesService: SeriesService,
+    private service: SeriesService,
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,
   ) { }
 
   ngOnInit() {
-    this.tapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.seriesService.eventEmit.subscribe((value: any) => {
-      if (value === 'tapesRefresh') {
-        this.seriesService.getAllTapes(this.tapesPagination).subscribe(res => {
-          this.tapesList = res.list;
-          this.tapesPagination = res.pagination;
-        });
-      }
-    });
-    this.seriesService.getAllTapes(this.tapesPagination).subscribe(res => {
-      this.tapesList = res.list;
-      this.tapesPagination = res.pagination;
-    });
+    this.fetchPublicities();
   }
 
-  tapesPageChange(page: number) {
-    this.tapesPagination.page = page;
-    this.seriesService.getAllTapes(this.tapesPagination).subscribe(res => {
-      this.tapesList = res.list;
-      this.tapesPagination = res.pagination;
-    });
+  fetchPublicities() {
+    this.isLoading = true;
+    this.service.getAllTapes(this.pagination)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        if (!this.isLoaded) {
+          this.isLoaded = true;
+        }
+      }))
+      .subscribe(result => {
+        this.dataset = result.list;
+        this.pagination = result.pagination;
+      });
   }
 
-  tapeDetails(program_id: number, id: number, source_type: string) {
-    if (source_type === 'online') {
-      this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: id, source_type: 'online' }]);
-    }
-    if (source_type === 'entity') {
-      this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: id, source_type: 'entity'}]);
-    }
+  pageChange(page: number) {
+    this.pagination.page = page;
+    this.fetchPublicities();
+  }
+
+  tapeDetails(program_id: number, tapeId: number, source_type: string) {
+    this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: tapeId, source_type: source_type}]);
   }
 
   addTape() {
@@ -72,6 +70,7 @@ export class TapesComponent implements OnInit {
     component.formSubmit()
       .subscribe(res => {
         this.message.success(this.translate.instant('global.add-success'));
+        this.fetchPublicities();
         resolve();
       }, error => {
         if (error.message) {

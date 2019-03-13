@@ -5,11 +5,14 @@ import { PaginationDto } from '@shared';
 import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
+import { finalize } from 'rxjs/operators';
+import { fadeIn } from '@shared/animations';
 
 @Component({
   selector: 'app-publicities',
   templateUrl: './publicities.component.html',
-  styleUrls: ['./publicities.component.less']
+  styleUrls: ['./publicities.component.less'],
+  animations: [fadeIn]
 })
 export class PublicitiesComponent implements OnInit {
   @ViewChild('publicityOk') publicityOk: any;
@@ -19,72 +22,62 @@ export class PublicitiesComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   displayData = [];
-  publicitiesPagination: PaginationDto;
+  pagination: PaginationDto;
   publicitiesList = [];
   addPublicityModal: NzModalRef;
   publicityId: number;
+  isLoading: boolean;
+  isLoaded: boolean;
+  dataset: any;
+  disabledButton: any;
 
   constructor(
     private router: Router,
-    private seriesService: SeriesService,
+    private service: SeriesService,
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,
   ) { }
 
   ngOnInit() {
-    this.publicitiesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.seriesService.eventEmit.subscribe((value: any) => {
-      if (value === 'publicitiesRefresh') {
-        this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
-          this.publicitiesList = res.list;
-          this.publicitiesPagination = res.pagination;
-        });
-      }
-    });
-    this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
-      this.publicitiesList = res.list;
-      this.publicitiesPagination = res.pagination;
-    });
-  }
-  currentPageDataChange($event: Array<{
-    name: string; sample: number; feature: number; trailer: number;
-    poster: number; still: number; pdf: number; checked: boolean
-  }>): void {
-    this.displayData = $event;
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.fetchPublicities();
   }
 
-  refreshStatus(page: number): void {
-    this.publicitiesPagination.page = page;
-    this.seriesService.getPublicities(this.publicitiesPagination).subscribe(res => {
-      this.publicitiesList = res.list;
-      this.publicitiesPagination = res.pagination;
-    });
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
+  fetchPublicities() {
+    this.isLoading = true;
+    this.service.getPublicities(this.pagination)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        if (!this.isLoaded) {
+          this.isLoaded = true;
+        }
+      }))
+      .subscribe(result => {
+        this.dataset = result.list;
+        this.pagination = result.pagination;
+      });
+  }
+
+  pageChnage(page: number) {
+    this.pagination.page = page;
+    this.fetchPublicities();
+  }
+
+  refreshStatus(): void {
+    const allChecked = this.dataset.every(value => value.checked === true);
+    const allUnChecked = this.dataset.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.disabledButton = !this.dataset.some(value => value.checked);
   }
 
   checkedChange() {
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.refreshStatus();
   }
 
   checkAll(value: boolean): void {
-    this.displayData.forEach(data => {
-      data.checked = value;
-    });
-    const allChecked = this.displayData.every(x => x.checked === true);
-    const allUnChecked = this.displayData.every(x => !x.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.dataset.forEach(data => data.checked = value);
+    this.refreshStatus();
   }
 
   publicityDetails(id: number) {
@@ -131,14 +124,14 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-        const data = { name: component.submit().name, program_type: component.submit().program_type };
-        this.seriesService.addSeries(data).subscribe(s => {
+        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(data).subscribe(s => {
           const sid = s.id;
-          this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
+          this.service.getUploadVideoId(fileList[0]).subscribe(res => {
             const id = res.id;
-            this.seriesService.getPublicitiesList(sid).subscribe(pl => {
+            this.service.getPublicitiesList(sid).subscribe(pl => {
               this.publicityId = pl.list[0].id;
-              this.seriesService.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
+              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
                 this.message.success(this.translate.instant('global.upload-success'));
                 this.addPublicityModal.close();
                 this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
@@ -147,184 +140,205 @@ export class PublicitiesComponent implements OnInit {
           });
         });
       }
-      // if (component.submit() === 'feature') {
-      //   let fileList: FileList, folder: string;
-      //   try {
-      //     fileList = event.target.files as FileList;
-      //     folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      //   } catch (ex) {
-      //     return;
-      //   }
-      //   const list = [] as File[];
-      //   for (const key in fileList) {
-      //     if (fileList.hasOwnProperty(key)) {
-      //       const element = fileList[key];
-      //       this.fileFilters.forEach(filter => {
-      //         if (element.name.toLowerCase().endsWith(filter)) {
-      //           list.push(element);
-      //           return;
-      //         }
-      //       });
-      //     }
-      //   }
-      //   if (list.length < 1) {
-      //     this.message.success(this.translate.instant('global.no-valid-file'));
-      //     return;
-      //   }
-      //   this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-      //     const id = res.id;
-      //     this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-      //       this.publicityId = pl.list[0].id;
-      //       this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-      //         this.message.success(this.translate.instant('global.upload-success'));
-      //         this.addPublicityModal.close();
-      //         this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
-      //       });
-      //     });
-      //   });
-      // }
-      // if (component.submit() === 'trailer') {
-      //   let fileList: FileList, folder: string;
-      //   try {
-      //     fileList = event.target.files as FileList;
-      //     folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      //   } catch (ex) {
-      //     return;
-      //   }
-      //   const list = [] as File[];
-      //   for (const key in fileList) {
-      //     if (fileList.hasOwnProperty(key)) {
-      //       const element = fileList[key];
-      //       this.fileFilters.forEach(filter => {
-      //         if (element.name.toLowerCase().endsWith(filter)) {
-      //           list.push(element);
-      //           return;
-      //         }
-      //       });
-      //     }
-      //   }
-      //   if (list.length < 1) {
-      //     this.message.success(this.translate.instant('global.no-valid-file'));
-      //     return;
-      //   }
-      //   this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
-      //     const id = res.id;
-      //     this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-      //       this.publicityId = pl.list[0].id;
-      //       this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-      //         this.message.success(this.translate.instant('global.upload-success'));
-      //         this.addPublicityModal.close();
-      //         this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
-      //       });
-      //     });
-      //   });
-      // }
-      // if (component.submit() === 'poster') {
-      //   let fileList: FileList;
-      //   try {
-      //     fileList = event.target.files as FileList;
-      //   } catch (ex) {
-      //     return;
-      //   }
-      //   const list = [] as File[];
-      //   for (const key in fileList) {
-      //     if (fileList.hasOwnProperty(key)) {
-      //       const element = fileList[key];
-      //       this.imageFilters.forEach(filter => {
-      //         if (element.name.toLowerCase().endsWith(filter)) {
-      //           list.push(element);
-      //           return;
-      //         }
-      //       });
-      //     }
-      //   }
-      //   if (list.length < 1) {
-      //     this.message.success(this.translate.instant('global.no-valid-file'));
-      //     return;
-      //   }
-      //   this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
-      //     const id = result.id;
-      //     this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-      //       this.publicityId = pl.list[0].id;
-      //       this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-      //         this.message.success(this.translate.instant('global.upload-success'));
-      //         this.addPublicityModal.close();
-      //         this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
-      //       });
-      //     });
-      //   });
-      // }
-      // if (component.submit() === 'still') {
-      //   let fileList: FileList;
-      //   try {
-      //     fileList = event.target.files as FileList;
-      //   } catch (ex) {
-      //     return;
-      //   }
-      //   const list = [] as File[];
-      //   for (const key in fileList) {
-      //     if (fileList.hasOwnProperty(key)) {
-      //       const element = fileList[key];
-      //       this.imageFilters.forEach(filter => {
-      //         if (element.name.toLowerCase().endsWith(filter)) {
-      //           list.push(element);
-      //           return;
-      //         }
-      //       });
-      //     }
-      //   }
-      //   if (list.length < 1) {
-      //     this.message.success(this.translate.instant('global.no-valid-file'));
-      //     return;
-      //   }
-      //   this.seriesService.getUploadImageId(fileList[0]).subscribe(result => {
-      //     const id = result.id;
-      //     this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-      //       this.publicityId = pl.list[0].id;
-      //       this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-      //         this.message.success(this.translate.instant('global.upload-success'));
-      //         this.addPublicityModal.close();
-      //         this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
-      //       });
-      //     });
-      //   });
-      // }
-      // if (component.submit() === 'pdf') {
-      //   let fileList: FileList, folder: string;
-      //   try {
-      //     fileList = event.target.files as FileList;
-      //     folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-      //   } catch (ex) {
-      //     return;
-      //   }
-      //   const list = [] as File[];
-      //   for (const key in fileList) {
-      //     if (fileList.hasOwnProperty(key)) {
-      //       const element = fileList[key];
-      //       this.pdfFilters.forEach(filter => {
-      //         if (element.name.toLowerCase().endsWith(filter)) {
-      //           list.push(element);
-      //           return;
-      //         }
-      //       });
-      //     }
-      //   }
-      //   if (list.length < 1) {
-      //     this.message.success(this.translate.instant('global.no-valid-file'));
-      //     return;
-      //   }
-      //   this.seriesService.getUploadPdfId(fileList[0]).subscribe(res => {
-      //     const id = res.id;
-      //     this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
-      //       this.publicityId = pl.list[0].id;
-      //       this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {
-      //         this.message.success(this.translate.instant('global.upload-success'));
-      //         this.addPublicityModal.close();
-      //         this.router.navigate([`/manage/series/d/${this.id}/publicityd`]);
-      //       });
-      //     });
-      //   });
-      // }
+      if (component.submit().type === 'feature') {
+        let fileList: FileList, folder: string;
+        try {
+          fileList = event.target.files as FileList;
+          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+        } catch (ex) {
+          return;
+        }
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.fileFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(data).subscribe(s => {
+          const sid = s.id;
+          this.service.getUploadVideoId(fileList[0]).subscribe(res => {
+            const id = res.id;
+            this.service.getPublicitiesList(sid).subscribe(pl => {
+              this.publicityId = pl.list[0].id;
+              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
+                this.message.success(this.translate.instant('global.upload-success'));
+                this.addPublicityModal.close();
+                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              });
+            });
+          });
+        });
+      }
+      if (component.submit().type === 'trailer') {
+        let fileList: FileList, folder: string;
+        try {
+          fileList = event.target.files as FileList;
+          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+        } catch (ex) {
+          return;
+        }
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.fileFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(data).subscribe(s => {
+          const sid = s.id;
+          this.service.getUploadVideoId(fileList[0]).subscribe(res => {
+            const id = res.id;
+            this.service.getPublicitiesList(sid).subscribe(pl => {
+              this.publicityId = pl.list[0].id;
+              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
+                this.message.success(this.translate.instant('global.upload-success'));
+                this.addPublicityModal.close();
+                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              });
+            });
+          });
+        });
+      }
+      if (component.submit().type === 'poster') {
+        let fileList: FileList;
+        try {
+          fileList = event.target.files as FileList;
+        } catch (ex) {
+          return;
+        }
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.imageFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(data).subscribe(s => {
+          const sid = s.id;
+          this.service.getUploadImageId(fileList[0]).subscribe(result => {
+            const id = result.id;
+            this.service.getPublicitiesList(sid).subscribe(pl => {
+              this.publicityId = pl.list[0].id;
+              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
+                this.message.success(this.translate.instant('global.upload-success'));
+                this.addPublicityModal.close();
+                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              });
+            });
+          });
+        });
+      }
+      if (component.submit().type === 'still') {
+        let fileList: FileList;
+        try {
+          fileList = event.target.files as FileList;
+        } catch (ex) {
+          return;
+        }
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.imageFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        console.log(component.submit().name);
+        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(data).subscribe(s => {
+          const sid = s.id;
+          this.service.getUploadImageId(fileList[0]).subscribe(result => {
+            const id = result.id;
+            this.service.getPublicitiesList(sid).subscribe(pl => {
+              this.publicityId = pl.list[0].id;
+              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
+                this.message.success(this.translate.instant('global.upload-success'));
+                this.addPublicityModal.close();
+                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              });
+            });
+          });
+        });
+      }
+      if (component.submit().type === 'pdf') {
+        let fileList: FileList, folder: string;
+        try {
+          fileList = event.target.files as FileList;
+          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+        } catch (ex) {
+          return;
+        }
+        const list = [] as File[];
+        for (const key in fileList) {
+          if (fileList.hasOwnProperty(key)) {
+            const element = fileList[key];
+            this.pdfFilters.forEach(filter => {
+              if (element.name.toLowerCase().endsWith(filter)) {
+                list.push(element);
+                return;
+              }
+            });
+          }
+        }
+        if (list.length < 1) {
+          this.message.success(this.translate.instant('global.no-valid-file'));
+          return;
+        }
+        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(data).subscribe(s => {
+          const sid = s.id;
+          this.service.getUploadPdfId(fileList[0]).subscribe(res => {
+            const id = res.id;
+            this.service.getPublicitiesList(sid).subscribe(pl => {
+              this.publicityId = pl.list[0].id;
+              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
+                this.message.success(this.translate.instant('global.upload-success'));
+                this.addPublicityModal.close();
+                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              });
+            });
+          });
+        });
+      }
     } else { }
   }
 

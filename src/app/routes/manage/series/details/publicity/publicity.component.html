@@ -1,6 +1,6 @@
 <div class="block">
-  <nz-tabset [nzTabBarExtraContent]="extraTemplate" nzSize="large" nzAnimated="false">
-    <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="publicityType('sample')">
+  <nz-tabset [nzTabBarExtraContent]="extraTemplate" nzSize="large" nzAnimated="false" [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="tabSelectChange($event)">
+    <nz-tab [nzTitle]="'样片' + '(' + publicity?.material?.sample + ')'">
       <div style="margin: 2rem;">
         <nz-table #basicTable [nzData]="sampleList" [nzPageSize]="samplePagination?.page_size" [nzFrontPagination]="false"
           [nzShowPagination]="false" [nzPageIndex]="samplePagination?.page" [nzTotal]="samplePagination?.count"
@@ -31,7 +31,7 @@
         </nz-table>
       </div>
     </nz-tab>
-    <nz-tab [nzTitle]="'片花' + '(' +userinfo?.material?.feature + ')'" (nzClick)="publicityType('feature')">
+    <nz-tab [nzTitle]="'片花' + '(' + publicity?.material?.feature + ')'">
       <div style="margin: 2rem;">
         <nz-table #basicTable1 [nzData]="featureList" [nzPageSize]="featurePagination?.page_size" [nzFrontPagination]="false"
           [nzShowPagination]="false" [nzPageIndex]="featurePagination?.page" [nzTotal]="featurePagination?.count"
@@ -62,7 +62,7 @@
         </nz-table>
       </div>
     </nz-tab>
-    <nz-tab [nzTitle]="'先导片' + '(' +userinfo?.material?.trailer + ')'" (nzClick)="publicityType('trailer')">
+    <nz-tab [nzTitle]="'先导片' + '(' + publicity?.material?.trailer + ')'">
       <div style="margin: 2rem;">
         <nz-table #basicTable2 [nzData]="trailerList" [nzPageSize]="trailerPagination?.page_size" [nzFrontPagination]="false"
           [nzShowPagination]="false" [nzPageIndex]="trailerPagination?.page" [nzTotal]="trailerPagination?.count"
@@ -93,7 +93,7 @@
         </nz-table>
       </div>
     </nz-tab>
-    <nz-tab [nzTitle]="'海报' + '(' +userinfo?.material?.poster + ')'" (nzClick)="publicityType('poster')">
+    <nz-tab [nzTitle]="'海报' + '(' + publicity?.material?.poster + ')'">
       <div style="margin: 2rem;">
         <nz-table #basicTable3 [nzData]="posterList" [nzPageSize]="posterPagination?.page_size" [nzFrontPagination]="false"
           [nzShowPagination]="false" [nzPageIndex]="posterPagination?.page" [nzTotal]="posterPagination?.count"
@@ -124,7 +124,7 @@
         </nz-table>
       </div>
     </nz-tab>
-    <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="publicityType('still')">
+    <nz-tab [nzTitle]="'剧照' + '(' + publicity?.material?.still + ')'">
       <div style="margin: 2rem;">
         <nz-table #basicTable4 [nzData]="stillList" [nzPageSize]="stillPagination?.page_size" [nzFrontPagination]="false"
           [nzShowPagination]="false" [nzPageIndex]="stillPagination?.page" [nzTotal]="stillPagination?.count"
@@ -155,7 +155,7 @@
         </nz-table>
       </div>
     </nz-tab>
-    <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'" (nzClick)="publicityType('pdf')">
+    <nz-tab [nzTitle]="'PDF' + '(' + publicity?.material?.pdf + ')'">
       <div style="margin: 2rem;">
         <nz-table #basicTable5 [nzData]="pdfList" [nzPageSize]="pdfPagination?.page_size" [nzFrontPagination]="false"
           [nzShowPagination]="false" [nzPageIndex]="pdfPagination?.page" [nzTotal]="pdfPagination?.count"
@@ -189,11 +189,11 @@
   </nz-tabset>
   <ng-template #extraTemplate>
     <div style="margin-right: 2rem;">
-      <button nz-button nzType="primary" nzSize="small" style="margin-right: 10px;margin-top: 15px" (click)="publicityDetails()">查看</button>
+      <button nz-button nzType="primary" nzSize="small" style="margin-right: 10px;margin-top: 15px" (click)="publicityViews()">查看</button>
       <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
         上传
       </label>
-      <input id="fileUpload" hidden type="file" (change)="upload($event)" multiple="multiple">
+      <input id="fileUpload" hidden type="file" (change)="filesChange($event)" multiple="multiple">
     </div>
   </ng-template>
 </div>

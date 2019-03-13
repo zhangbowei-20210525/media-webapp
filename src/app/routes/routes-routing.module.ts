@@ -13,6 +13,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    data: { breadcrumb: 'home' },
     children: [
       {
         path: 'market',
@@ -21,6 +22,7 @@ const routes: Routes = [
       {
         path: 'manage',
         component: ManageComponent,
+        data: { breadcrumb: 'manage' },
         canActivate: [SimpleGuard],
         children: [
           { path: '', redirectTo: 'series', pathMatch: 'full' },
@@ -32,7 +34,7 @@ const routes: Routes = [
           { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
           // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
-          { path: 'account-center', component: PersonalCenterComponent },
+          { path: 'account-center', component: PersonalCenterComponent, data: { breadcrumb: 'account' }, },
           { path: 'teams', loadChildren: './manage/teams/teams.module#TeamsModule' }
         ]
       }
