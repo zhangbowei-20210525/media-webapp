@@ -57,5 +57,6 @@
     "global.save-failed": "Save failed",
     "global.delete-successfully": "Delete successfully",
     "global.delete-failed": "Delete failed",
-    "global.upload-success": "Upload Success"
+    "global.upload-success": "Upload Success",
+    "global.edit-success": "Edit Success"
 }

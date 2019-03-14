@@ -59,4 +59,12 @@ export class PublicityService {
   bindingMateriel(publicity_id: number, material_id: number, material_type: string) {
     return this.http.post<any>(`/api/v1/publicity/${publicity_id}`, { material_id, material_type });
   }
+
+  request() {
+    return this.http.get('http://127.0.0.1:8756/status');
+  }
+
+  requestGithub() {
+    return this.http.get('https://api.github.com', { headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' } });
+  }
 }

@@ -34,7 +34,7 @@
               <span *ngIf="data?.subtitle == 'English'">英语</span>
               <span *ngIf="data?.subtitle == 'other'">其他</span>
           </td>
-          <td><a><i nz-icon type="delete" theme="outline" style="font-size: 14px"></i></a></td>
+          <td><a (click)="deleteTape(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px"></i></a></td>
         </tr>
       </tbody>
     </nz-table>

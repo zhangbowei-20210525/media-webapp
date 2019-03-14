@@ -1,7 +1,8 @@
 <div class="program-details-tapes-box">
   <div class="program-details-tapes-title-wk">
     <span class="program-details-tapes-title">母带信息</span>
-    <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px" (click)="addTape()">新增母带</button>
+    <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px"
+      (click)="addTape()">新增母带</button>
   </div>
   <div class="program-details-tapes">
     <nz-table #basicTable [nzData]="tapesList" nzShowPagination="false" style="padding-bottom: 20px">
@@ -22,7 +23,8 @@
           </td>
           <td style="text-align: center"><a (click)="pitchOn(data.id, data.source_type)">查看</a></td>
           <td style="text-align: center">
-            <a><i nz-icon type="form" theme="outline" style="font-size: 14px"></i></a>
+            <a (click)="editTape(data.id, data.source_type)"><i nz-icon type="form" theme="outline"
+                style="font-size: 14px"></i></a>
           </td>
         </tr>
       </tbody>
@@ -31,193 +33,208 @@
 </div>
 
 <div class="program-details-tape-details-box" *ngIf="source_type == 'online'">
-    <div class="program-details-tape-details-wk">
-      <nz-tabset nzSize="large" [nzTabBarExtraContent]="extraTemplate">
-          <nz-tab nzTitle="母带信息" (nzClick)="tapeInfo()">
-            <div class="block clearfix">
-              <div class="block-content">
-                <div nz-row class="series-info-row">
-                  <div nz-col nzSpan="6">
-                    <span class="info-filed">母带版本</span>
-                    <span>{{ tapeDetailsInfo?.name }}</span>
-                  </div>
-                  <div nz-col nzSpan="6">
-                    <span class="info-filed">类型</span>
-                    <span *ngIf="tapeDetailsInfo?.source_type == 'online'">在线</span>
-                    <span *ngIf="tapeDetailsInfo?.source_type == 'entity'">实体</span>
-                  </div>
-                  <div nz-col nzSpan="6">
-                    <span class="info-filed">集数</span>
-                    <span>{{ tapeDetailsInfo?.episode }}</span>
-                  </div>
-                  <div nz-col nzSpan="6">
-                    <span class="info-filed">格式</span>
-                    <span>{{ tapeDetailsInfo?.format }}</span>
-                  </div>
-                </div>
-                <div nz-row class="series-info-row">
-                  <div nz-col nzSpan="6">
-                    <span class="info-filed">码率</span>
-                    <span>{{ tapeDetailsInfo?.bit_rate }}</span>
-                  </div>
-                  <div nz-col nzSpan="6">
-                    <span class="info-filed">语言</span>
-                    <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
-                    <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span>
-                  </div>
-                  <div nz-col nzSpan="6">
-                    <span class="info-filed">字幕</span>
-                    <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
-                    <span *ngIf="tapeDetailsInfo?.subtitle == 'English'">英语</span>
-                    <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span>
-                  </div>
-                </div>
+  <div class="program-details-tape-details-wk">
+    <nz-tabset nzSize="large" [nzTabBarExtraContent]="extraTemplate">
+      <nz-tab nzTitle="母带信息" (nzClick)="tapeInfo()">
+        <div class="block clearfix">
+          <div class="block-content">
+            <div nz-row class="series-info-row">
+              <div nz-col nzSpan="6">
+                <span class="info-filed">母带版本</span>
+                <span>{{ tapeDetailsInfo?.name }}</span>
+              </div>
+              <div nz-col nzSpan="6">
+                <span class="info-filed">类型</span>
+                <span *ngIf="tapeDetailsInfo?.source_type == 'online'">在线</span>
+                <span *ngIf="tapeDetailsInfo?.source_type == 'entity'">实体</span>
+              </div>
+              <div nz-col nzSpan="6">
+                <span class="info-filed">集数</span>
+                <span>{{ tapeDetailsInfo?.episode }}</span>
+              </div>
+              <div nz-col nzSpan="6">
+                <span class="info-filed">格式</span>
+                <span>{{ tapeDetailsInfo?.format }}</span>
               </div>
             </div>
-            </nz-tab>
-        <nz-tab nzTitle="母带文件" (nzClick)="TapeFile()">
-          <nz-table #basicTable [nzData]="tapeFileList" nzBordered [nzPageSize]="tapeFilePagination.page_size" [nzFrontPagination]="false" 
-          [nzPageIndex]="tapeFilePagination.page" [nzTotal]="tapeFilePagination.count" (nzPageIndexChange)="tapeFilePageChange($event)">
-              <thead>
-                <tr>
-                  <th>文件名</th>
-                  <th>大小</th>
-                  <th>创建日期</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let data of basicTable.data">
-                  <td>{{data.name}}</td>
-                  <td>{{data.size}}</td>
-                  <td>{{data.created_at}}</td>
-                </tr>
-              </tbody>
-            </nz-table>
-        </nz-tab>
-        <nz-tab nzTitle="母带发行"  (nzClick)="pubTape()">
-          <nz-table #basicTable1 [nzData]="pubTapeList" nzBordered [nzPageSize]="pubTapePagination.page_size" [nzFrontPagination]="false" 
-          [nzPageIndex]="pubTapePagination.page" [nzTotal]="pubTapePagination.count" (nzPageIndexChange)="pubTapePageChange($event)">
-            <thead>
-              <tr>
-                <th style="text-align: center">母带版本</th>
-                <th style="text-align: center">发行时间</th>
-                <th style="text-align: center">公司简称</th>
-                <th style="text-align: center">下载次数</th>
-                <th style="text-align: center">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of basicTable1.data">
-                <td style="text-align: center">{{data.created_name}}</td>
-                <td style="text-align: center">{{data.created_at}}</td>
-                <td style="text-align: center">{{data.auth_company_name}}</td>
-                <td style="text-align: center">{{data.download_times}}</td>
-                <td style="text-align: center">
-                  <a (click)="deletePubTape(data.auth_company_id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+            <div nz-row class="series-info-row">
+              <div nz-col nzSpan="6">
+                <span class="info-filed">码率</span>
+                <span>{{ tapeDetailsInfo?.bit_rate }}</span>
+              </div>
+              <div nz-col nzSpan="6">
+                <span class="info-filed">语言</span>
+                <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
+                <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span>
+              </div>
+              <div nz-col nzSpan="6">
+                <span class="info-filed">字幕</span>
+                <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
+                <span *ngIf="tapeDetailsInfo?.subtitle == 'English'">英语</span>
+                <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="母带文件" (nzClick)="TapeFile()">
+        <nz-table #basicTable [nzData]="tapeFileList" nzBordered [nzPageSize]="tapeFilePagination.page_size"
+          [nzFrontPagination]="false" [nzPageIndex]="tapeFilePagination.page" [nzTotal]="tapeFilePagination.count"
+          (nzPageIndexChange)="tapeFilePageChange($event)">
+          <thead>
+            <tr>
+              <th>文件名</th>
+              <th>大小</th>
+              <th>创建日期</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data">
+              <td>{{data.name}}</td>
+              <td>{{data.size}}</td>
+              <td>{{data.created_at}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="母带发行" (nzClick)="pubTape()">
+        <nz-table #basicTable1 [nzData]="pubTapeList" nzBordered [nzPageSize]="pubTapePagination.page_size"
+          [nzFrontPagination]="false" [nzPageIndex]="pubTapePagination.page" [nzTotal]="pubTapePagination.count"
+          (nzPageIndexChange)="pubTapePageChange($event)">
+          <thead>
+            <tr>
+              <th style="text-align: center">母带版本</th>
+              <th style="text-align: center">发行时间</th>
+              <th style="text-align: center">公司简称</th>
+              <th style="text-align: center">下载次数</th>
+              <th style="text-align: center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable1.data">
+              <td style="text-align: center">{{data.created_name}}</td>
+              <td style="text-align: center">{{data.created_at}}</td>
+              <td style="text-align: center">{{data.auth_company_name}}</td>
+              <td style="text-align: center">{{data.download_times}}</td>
+              <td style="text-align: center">
+                <a (click)="deletePubTape(data.auth_company_id)"><i nz-icon type="delete" theme="outline"
+                    style="font-size: 14px;"></i></a>
               </td>
-              </tr>
-            </tbody>
-          </nz-table>
-        </nz-tab>
-      </nz-tabset>
-      <ng-template #extraTemplate>
-        <button nz-button nzType="primary" nzSize="small" *ngIf="tab == 1" style="margin-top: 15px;" (click)="uploadTape()">上传母带</button>
-        <button nz-button nzType="primary" nzSize="small" *ngIf="tab == 2" style="margin-top: 15px;" (click)="publishTape()">发行母带</button>
-      </ng-template>
-    </div>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+    <ng-template #extraTemplate>
+      <button nz-button nzType="primary" nzSize="small" *ngIf="tab == 1" style="margin-top: 15px;"
+        (click)="uploadTape()">上传母带</button>
+      <button nz-button nzType="primary" nzSize="small" *ngIf="tab == 2" style="margin-top: 15px;"
+        (click)="publishTape()">发行母带</button>
+    </ng-template>
   </div>
+</div>
 
 
-  
+
 <div class="block clearfix" *ngIf="source_type == 'entity'">
-    <div class="block-header">
-      <div class="block-title">实体母带</div>
+  <div class="block-header">
+    <div class="block-title">实体母带</div>
+  </div>
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">母带版本</span>
+        <span>{{ tapeDetailsInfo?.name }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">类型</span>
+        <span *ngIf="tapeDetailsInfo?.source_type == 'online'">在线</span>
+        <span *ngIf="tapeDetailsInfo?.source_type == 'entity'">实体</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">集数</span>
+        <span>{{ tapeDetailsInfo?.episode }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">语言</span>
+        <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
+        <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span>
+      </div>
     </div>
-    <div class="block-content">
-      <div nz-row class="series-info-row">
-        <div nz-col nzSpan="6">
-          <span class="info-filed">母带版本</span>
-          <span>{{ tapeDetailsInfo?.name }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">类型</span>
-          <span>{{ tapeDetailsInfo?.source_type }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">集数</span>
-          <span>{{ tapeDetailsInfo?.episode }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">语言</span>
-          <span>{{ tapeDetailsInfo?.language }}</span>
-        </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">字幕</span>
+        <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
+        <span *ngIf="tapeDetailsInfo?.subtitle == 'English'">英语</span>
+        <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span>
       </div>
-      <div nz-row class="series-info-row">
-        <div nz-col nzSpan="6">
-          <span class="info-filed">字幕</span>
-          <span>{{ tapeDetailsInfo?.subtitle }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">清晰度</span>
-          <span>{{ tapeDetailsInfo?.sharpness }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">品牌</span>
-          <span>{{ tapeDetailsInfo?.brand }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">声轨1</span>
-          <span>{{ tapeDetailsInfo?.sound_track[0] }}</span>
-        </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">清晰度</span>
+        <span *ngIf="tapeDetailsInfo?.sharpness == 'SD'">标清</span>
+        <span *ngIf="tapeDetailsInfo?.sharpness == 'HD'">高清</span>
+        <span *ngIf="tapeDetailsInfo?.sharpness == 'BL'">蓝光</span>
       </div>
-      <div nz-row class="series-info-row">
-        <div nz-col nzSpan="6">
-          <span class="info-filed">声轨2</span>
-          <span>{{ tapeDetailsInfo?.sound_track[1] }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">声轨3</span>
-          <span>{{ tapeDetailsInfo?.sound_track[2] }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">声轨4</span>
-          <span>{{ tapeDetailsInfo?.sound_track[3] }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">声轨5</span>
-          <span>{{ tapeDetailsInfo?.sound_track[4] }}</span>
-        </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">品牌</span>
+        <span>{{ tapeDetailsInfo?.brand }}</span>
       </div>
-      <div nz-row class="series-info-row">
-        <div nz-col nzSpan="6">
-          <span class="info-filed">声轨6</span>
-          <span>{{ tapeDetailsInfo?.sound_track[5] }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">载体</span>
-          <span>{{ tapeDetailsInfo?.carrier }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">载体型号</span>
-          <span>{{ tapeDetailsInfo?.model }}</span>
-        </div>
-        <div nz-col nzSpan="6">
-          <span class="info-filed">入库时间</span>
-          <span>{{ tapeDetailsInfo?.storage_date }}</span>
-        </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨1</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'mixture'">混合</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'vocal'">人声</span>
       </div>
-      <div nz-row class="series-info-row">
-        <div nz-col nzSpan="6">
-          <span class="info-filed">存放地点</span>
-          <span>{{ tapeDetailsInfo?.storage_location }}</span>
-        </div>
-        <div nz-col nzSpan="18">
-          <span class="info-filed">具体位置</span>
-          <span>{{ tapeDetailsInfo?.detail_location }}</span>
-        </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨2</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'mixture'">混合</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'vocal'">人声</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨3</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'mixture'">混合</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'vocal'">人声</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨4</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'mixture'">混合</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'vocal'">人声</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨5</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'mixture'">混合</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'vocal'">人声</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">声轨6</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'mixture'">混合</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'vocal'">人声</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">载体</span>
+        <span *ngIf="tapeDetailsInfo?.carrier == 'tape'">磁带</span>
+        <span *ngIf="tapeDetailsInfo?.carrier == 'CD'">光盘</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">载体型号</span>
+        <span>{{ tapeDetailsInfo?.model }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">入库时间</span>
+        <span>{{ tapeDetailsInfo?.storage_date }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">存放地点</span>
+        <span>{{ tapeDetailsInfo?.storage_location }}</span>
+      </div>
+      <div nz-col nzSpan="18">
+        <span class="info-filed">具体位置</span>
+        <span>{{ tapeDetailsInfo?.detail_location }}</span>
       </div>
     </div>
   </div>
-  
-
-
+</div>

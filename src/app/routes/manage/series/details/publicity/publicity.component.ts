@@ -5,7 +5,7 @@ import { SeriesService } from '../../series.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap, finalize } from 'rxjs/operators';
 import { PublicityService } from './publicity.service';
-import { NzTabChangeEvent, NzNotificationService } from 'ng-zorro-antd';
+import { NzTabChangeEvent, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { QueueUploader } from '@shared/upload';
 
 declare type MaterielType = 'sample' | 'feature' | 'trailer' | 'poster' | 'still' | 'pdf';
@@ -29,10 +29,11 @@ export class PublicityComponent implements OnInit {
     private notification: NzNotificationService,
     private translate: TranslateService,
     private service: PublicityService,
-    private seriesService: SeriesService,
     private route: ActivatedRoute,
     private router: Router,
-    private uploader: QueueUploader
+    private uploader: QueueUploader,
+    private modal: NzModalService,
+    private seriesService: SeriesService,
   ) {
     this.materielTypes.forEach(item => {
       this[this.getLoadedString(item)] = false;
@@ -122,14 +123,17 @@ export class PublicityComponent implements OnInit {
     if (list.length < 1) {
       this.message.warning('无有效文件，请重新选择');
     }
-    list.forEach(item => {
-      this.uploader.enqueue({
+    const uploads = list.map(item => {
+      const dotIndex = item.name.lastIndexOf('.');
+      return this.uploader.enqueue({
         target: this.publicityId,
         url: this.service.getUploadUrl(materielType),
         file: item,
-        name: item.name,
+        name: item.name.substring(0, dotIndex),
+        extension: item.name.substring(dotIndex + 1, item.name.length),
         size: item.size,
         progress: 0,
+        createAt: new Date,
         success: (upload, data) => {
           this.service.bindingMateriel(upload.target, data.id, materielType).subscribe(result => {
             this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
@@ -138,6 +142,39 @@ export class PublicityComponent implements OnInit {
         }
       });
     });
+    // const listString = this.getListString(materielType);
+    // this[listString] = [...this[listString], ...uploads];
   }
+
+  requestClick() {
+    this.service.requestGithub().subscribe(result => {
+      console.log(result);
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  deletePublicity(id: number) {
+    this.modal.confirm({
+      nzTitle: '是否删除本条节目信息?',
+      nzOkText: '删除',
+      nzCancelText: '取消',
+      nzOkType: 'danger',
+      nzOnOk: () => this.deletePublicityAgreed(id)
+    });
+  }
+
+  deletePublicityAgreed = (id: number) => new Promise((resolve) => {
+    this.seriesService.deletePublicity(this.publicityId,  this.materielTypes[this.selectedIndex], id).subscribe(res => {
+      this.message.success(this.translate.instant('global.delete-success'));
+      this.fetchMateriels(this.materielTypes[this.selectedIndex]);
+      resolve();
+    }, error => {
+      if (error.message) {
+        this.message.error(error.message);
+      }
+      resolve(false);
+    });
+  })
 
 }

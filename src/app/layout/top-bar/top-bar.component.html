@@ -40,7 +40,17 @@
           </div>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
-          <a nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="notifyTemplate" nzTrigger="click" nzPlacement="bottom"><i nz-icon type="bell" theme="outline"></i></a>
+          <a class="nav-item-link" nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="taskTemplate"
+            nzTrigger="click" nzPlacement="bottom">
+            <nz-badge [nzCount]="uploads"><i nz-icon type="thunderbolt" theme="outline"></i></nz-badge>
+          </a>
+          <ng-template #taskTemplate>
+            <app-nav-tasks></app-nav-tasks>
+          </ng-template>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a class="nav-item-link" nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="notifyTemplate"
+            nzTrigger="click" nzPlacement="bottom"><i nz-icon type="bell" theme="outline"></i></a>
           <ng-template #notifyTemplate>
             <app-nav-notify></app-nav-notify>
           </ng-template>
@@ -65,7 +75,7 @@
               </a>
               <ul nz-menu class="account-menu">
                 <li nz-menu-item class="text-ellipsis" nzDisabled style="cursor: default;">
-                    {{ settings.user.nickname || settings.user.username }}
+                  {{ settings.user.nickname || settings.user.username }}
                 </li>
                 <li nz-menu-divider></li>
                 <li nz-menu-item>

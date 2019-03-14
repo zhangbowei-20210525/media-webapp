@@ -1,9 +1,9 @@
 <div class="block clearfix">
   <div class="block-content">
         <div *ngIf="isLoaded == true">
-          <nz-table #basicTable [nzData]="downloadRecordList" [nzPageSize]="downloadRecordPagination?.page_size"
-            [nzFrontPagination]="false" [nzPageIndex]="downloadRecordPagination?.page" [nzTotal]="downloadRecordPagination?.count"
-            (nzPageIndexChange)="downloadRecordPageChange($event)">
+          <nz-table #basicTable [nzData]="list" [nzPageSize]="pgination?.page_size"
+            [nzFrontPagination]="false" [nzPageIndex]="pgination?.page" [nzTotal]="pgination?.count"
+            (nzPageIndexChange)="onPageChange($event)">
             <thead>
               <tr>
                 <th style="text-align: center">节目名称</th>

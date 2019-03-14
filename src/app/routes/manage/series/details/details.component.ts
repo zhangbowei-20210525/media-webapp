@@ -7,6 +7,7 @@ import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
+import { EditSeriesInfoComponent } from '../components/edit-series-info/edit-series-info.component';
 
 @Component({
   selector: 'app-series-details',
@@ -43,7 +44,7 @@ export class SeriesDetailsComponent implements OnInit {
         this.id = +params.get('sid');
         const sif = params.get('sif');
         if (sif === 'show') {
-             this.sif = true;
+          this.sif = true;
         }
         return this.seriesService.getSeriesDetailsInfo(this.id);
       })
@@ -84,8 +85,8 @@ export class SeriesDetailsComponent implements OnInit {
     component.formSubmit()
       .subscribe(res => {
         this.seriesService.getSeriesDetailsInfo(this.id).subscribe(result => {
-      this.seriesInfo = result;
-    });
+          this.seriesInfo = result;
+        });
         this.message.success(this.translate.instant('global.add-success'));
         this.seriesService.getTapeList(this.id).subscribe(tape => {
           const tapeId = tape[0].id;
@@ -352,4 +353,31 @@ export class SeriesDetailsComponent implements OnInit {
   categories() {
   }
 
+  editSeries() {
+    this.modal.create({
+      nzTitle: '编辑节目信息',
+      nzContent: EditSeriesInfoComponent,
+      nzComponentParams: { id: this.id },
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.editSeriesAgreed
+    });
+  }
+
+  editSeriesAgreed = (component: EditSeriesInfoComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      component.submit().subscribe(res => {
+        this.message.success(this.translate.instant('global.edit-success'));
+        this.seriesService.getSeriesDetailsInfo(this.id).subscribe(result => {
+          this.seriesInfo = result;
+        });
+        resolve();
+      }, error => {
+        reject(false);
+      });
+    } else {
+      reject(false);
+    }
+  })
 }

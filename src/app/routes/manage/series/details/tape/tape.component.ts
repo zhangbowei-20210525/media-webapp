@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
@@ -7,6 +8,8 @@ import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { AddTapeComponent } from '../../components/add-tape/add-tape.component';
 import { AddPubTapeComponent } from '../../components/add-pub-tape/add-pub-tape.component';
+import { LocalRequestService } from '@shared/locals';
+import { EditTapeInfoComponent } from '../../components/edit-tape-info/edit-tape-info.component';
 
 @Component({
   selector: 'app-tape',
@@ -35,6 +38,7 @@ export class TapeComponent implements OnInit {
     private message: MessageService,
     private translate: TranslateService,
     private router: Router,
+    private localRequestService: LocalRequestService
   ) { }
 
   ngOnInit() {
@@ -47,19 +51,19 @@ export class TapeComponent implements OnInit {
       this.tapesList = res;
     });
 
-      this.route.paramMap.pipe(
-        switchMap((params: ParamMap) => {
-          this.isId = +params.get('tapeId');
-          this.source_type = params.get('source_type');
-          if ( this.isId === 0 ) {
-            return null;
-          } else {
-            return this.seriesService.getOnlineInfo(this.isId);
-          }
-        })
-      ).subscribe(t => {
-       this.tapeDetailsInfo = t;
-      });
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.isId = +params.get('tapeId');
+        this.source_type = params.get('source_type');
+        if (this.isId === 0) {
+          return null;
+        } else {
+          return this.seriesService.getOnlineInfo(this.isId);
+        }
+      })
+    ).subscribe(t => {
+      this.tapeDetailsInfo = t;
+    });
 
     this.tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
     this.pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
@@ -73,7 +77,7 @@ export class TapeComponent implements OnInit {
     }
     if (source_type === 'entity') {
       this.source_type = 'entity';
-      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity'}]);
+      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }]);
       this.isId = id;
     }
   }
@@ -134,15 +138,30 @@ export class TapeComponent implements OnInit {
   }
 
   deletePubTape(id: number) {
+    this.modalService.confirm({
+      nzTitle: '是否删除本条节目信息?',
+      nzOkText: '删除',
+      nzCancelText: '取消',
+      nzOkType: 'danger',
+      nzOnOk: () => this.deletePubTapeAgreed(id)
+    });
+  }
+
+  deletePubTapeAgreed = (id: number) => new Promise((resolve) => {
     this.seriesService.deletePubTape(this.isId, id).subscribe(res => {
       this.message.success(this.translate.instant('global.delete-success'));
       this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
         this.pubTapeList = p.list;
         this.pubTapePagination = p.pagination;
       });
+      resolve();
+    }, error => {
+      if (error.message) {
+        this.message.error(error.message);
+      }
+      resolve(false);
     });
-  }
-
+  })
   publishTape() {
     this.modalService.create({
       nzTitle: '发行母带',
@@ -182,23 +201,51 @@ export class TapeComponent implements OnInit {
   uploadTape() {
     this.seriesService.getIpAddress().subscribe(res => {
       this.address = res.ip;
-      this.seriesService.clientStatus(this.address).pipe(timeout(5000)).subscribe(z => {
-        if (z.code === 0) {
-          if (this.address.charAt(0) === '1' && this.address.charAt(1) === '2' && this.address.charAt(2) === '7') {
-            this.seriesService.UploadTape(this.isId, 0).subscribe();
-          } else {
-            // this.localApplicationService.getUploadFoldersName(this.address).subscribe(c => {
-            //   this.foldersName = c;
-            //   this.uploadFoldersNameList();
-            // });
-          }
+
+      this.localRequestService.status(this.address).pipe(timeout(5000)).subscribe(z => {
+        console.log(z);
+        if (this.address.charAt(0) === '1' && this.address.charAt(1) === '2' && this.address.charAt(2) === '7') {
+          // this.seriesService.UploadTape(this.isId, 0).subscribe();
         } else {
-          // this.message.success(this.translate.instant('请先启动客户端'));
+          // this.localApplicationService.getUploadFoldersName(this.address).subscribe(c => {
+          //   this.foldersName = c;
+          //   this.uploadFoldersNameList();
+          // });
         }
       }, err => {
         // this.message.success('warning', `链接已超时请重新启动客户端`);
       });
-   });
+    });
   }
+
+  editTape(id: number, source_type: string) {
+    this.modalService.create({
+      nzTitle: '编辑节目信息',
+      nzContent: EditTapeInfoComponent,
+      nzComponentParams: { id: id, source_type: source_type },
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.editTapeAgreed
+    });
+  }
+
+  editTapeAgreed = (component: EditTapeInfoComponent) => new Promise((resolve) => {
+    component.formSubmit()
+      .subscribe(res => {
+        this.seriesService.getTapeList(this.id).subscribe(tl => {
+          this.tapesList = tl;
+        });
+        this.seriesService.getOnlineInfo(this.isId).subscribe(t => {
+          this.tapeDetailsInfo = t;
+          this.message.success(this.translate.instant('global.edit-success'));
+          resolve();
+        });
+      }, error => {
+        if (error.message) {
+          this.message.error(error.message);
+        }
+      });
+  })
 
 }

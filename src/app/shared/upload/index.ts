@@ -1,1 +1,1 @@
-export { QueueUploader } from './queue-uploader';
+export { QueueUploader, UploadInfo } from './queue-uploader';

@@ -78,4 +78,27 @@ export class TapesComponent implements OnInit {
         }
       });
   })
+
+  deleteTape(id: number) {
+    this.modal.confirm({
+      nzTitle: '是否删除本条节目信息?',
+      nzOkText: '删除',
+      nzCancelText: '取消',
+      nzOkType: 'danger',
+      nzOnOk: () => this.deleteTapeAgreed(id)
+    });
+  }
+
+  deleteTapeAgreed = (id: number) => new Promise((resolve) => {
+    this.service.deleteTape(id).subscribe(res => {
+      this.fetchPublicities();
+      this.message.success(this.translate.instant('global.delete-success'));
+      resolve();
+    }, error => {
+      if (error.message) {
+        this.message.error(error.message);
+      }
+      resolve(false);
+    });
+  })
 }

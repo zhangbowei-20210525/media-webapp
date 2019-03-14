@@ -15,7 +15,7 @@
                 <th style="text-align: center">语言</th>
                 <th style="text-align: center">字幕</th>
                 <th style="text-align: center">历史记录</th>
-                <th style="text-align: center">操作</th>
+                <!-- <th style="text-align: center">操作</th> -->
               </tr>
             </thead>
             <tbody>
@@ -37,9 +37,9 @@
                   <span *ngIf="data.subtitle == 'English'">英语</span>
                 </td>
                 <td style="text-align: center"><a routerLink="/manage/transmit/historic-record/{{data.id}}">查看</a></td>
-                <td style="text-align: center">
+                <!-- <td style="text-align: center">
                   <a><i nz-icon type="delete" theme="outline" style="font-size: 14px"></i></a>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </nz-table>
