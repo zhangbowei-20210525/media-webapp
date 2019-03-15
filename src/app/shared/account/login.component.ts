@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   service: AccountService;
   form: FormGroup;
   emailRegisterForm: FormGroup;
+  emailLogInForm: FormGroup;
   mode: 'phone' | 'wx' | 'email' | 'emailRegister' | 'emailLogIn' |string = 'phone';
   isLoadingCaptcha = false;
   isCaptchaSended = false;
@@ -65,6 +66,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.emailRegisterForm = this.fb.group({
       nickname: [null, [Validators.required]],
+      emailAddress: [null, [Validators.required]],
+      emailPassword: [null, [Validators.required]],
+    });
+
+    this.emailLogInForm = this.fb.group({
       emailAddress: [null, [Validators.required]],
       emailPassword: [null, [Validators.required]],
     });
@@ -148,6 +154,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     }
     return this.emailRegisterForm.valid;
+  }
+
+  emailLogInValidation(): boolean {
+    for (const i in this.emailLogInForm.controls) {
+      if (this.emailLogInForm.controls.hasOwnProperty(i)) {
+        this.emailLogInForm.controls[i].markAsDirty();
+        this.emailLogInForm.controls[i].updateValueAndValidity();
+      }
+    }
+    return this.emailLogInForm.valid;
   }
 
   submit() {
