@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PaginationDto } from '@shared';
+import { PaginationDto, AccountService } from '@shared';
 import { SeriesService } from '../series.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';

@@ -1,3 +1,5 @@
+import { DataSet } from '@antv/data-set';
+import { SeriesService } from 'app/routes/manage/series/series.service';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {
   AbstractControl,
@@ -5,10 +7,10 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { delay, finalize, map } from 'rxjs/operators';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
-import { AccountService } from '@shared';
+import { AccountService, PaginationDto } from '@shared';
 import { SettingsService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,12 +28,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   $close: Subject<never>;
   service: AccountService;
   form: FormGroup;
-  mode: 'phone' | 'wx' | string = 'phone';
+  emailRegisterForm: FormGroup;
+  mode: 'phone' | 'wx' | 'email' | 'emailRegister' | 'emailLogIn' |string = 'phone';
   isLoadingCaptcha = false;
   isCaptchaSended = false;
   captchaSendCountDown: number;
   isLoggingIn = false;
   interval$: any;
+  pagination = { page: 1, page_size: 10 } as PaginationDto;
 
   constructor(
     private fb: FormBuilder,
@@ -57,6 +61,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       phone: [null, [Validators.required]],
       captcha: [null, [Validators.required]],
       remember: [true]
+    });
+
+    this.emailRegisterForm = this.fb.group({
+      nickname: [null, [Validators.required]],
+      emailAddress: [null, [Validators.required]],
+      emailPassword: [null, [Validators.required]],
     });
   }
 
@@ -130,6 +140,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     return this.form.valid;
   }
 
+  emailRegisterValidation(): boolean {
+    for (const i in this.emailRegisterForm.controls) {
+      if (this.emailRegisterForm.controls.hasOwnProperty(i)) {
+        this.emailRegisterForm.controls[i].markAsDirty();
+        this.emailRegisterForm.controls[i].updateValueAndValidity();
+      }
+    }
+    return this.emailRegisterForm.valid;
+  }
+
   submit() {
     if (this.validation()) {
       this.isLoggingIn = true;
@@ -146,6 +166,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         }, error => {
 
         });
+    }
+  }
+
+  emailRegisterSubmit() {
+    if (this.emailRegisterValidation()) {
+      const data = {
+        nickname: this.emailRegisterForm.value['nickname'] || null,
+        email: this.emailRegisterForm.value['emailAddress'] || null,
+        password: this.emailRegisterForm.value['emailPassword'] || null,
+      };
+    this.service.emailRegister(data).subscribe();
     }
   }
 }

@@ -3,7 +3,7 @@
     <h1 class="title lf">{{ 'app.login' | translate }}</h1>
     <i nz-icon type="close" theme="outline" class="rf" (click)="close()"></i>
   </div>
-  <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()" *ngIf="mode == 'phone'; else wxLoginMode">
+  <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()" *ngIf="mode == 'phone'">
     <nz-form-item>
       <nz-form-control>
         <nz-input-group>
@@ -14,10 +14,6 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-control [nzSpan]="12">
-        <!-- <nz-input-group [nzPrefix]="prefixLock">
-          <input type="password" nz-input formControlName="password" placeholder="请输入密码">
-        </nz-input-group>
-        <nz-form-explain *ngIf="loginForm.get('password').dirty && loginForm.get('password').errors">请输入密码</nz-form-explain> -->
         <nz-input-group>
           <input type="text" nz-input formControlName="captcha" [placeholder]="'validation.captcha' | translate" id="captcha">
         </nz-input-group>
@@ -41,22 +37,70 @@
         </label>
         <a class="login-form-forgot" class="login-form-forgot">{{ 'app.login.forget-password' | translate }}</a>
         <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isLoggingIn">{{ 'app.login.login' | translate }}</button>
-        <!-- Or
-        <a href="">register now!</a> -->
       </nz-form-control>
     </nz-form-item>
   </form>
-  <ng-template #wxLoginMode>
+
+  <form nz-form [formGroup]="emailRegisterForm" class="login-form" (ngSubmit)="emailRegisterSubmit()" *ngIf="mode == 'emailRegister'">
+      <nz-form-item>
+          <nz-form-label nzFor="nickname" [nzSm]="4" nzRequired>昵称</nz-form-label>
+          <nz-form-control [nzSm]="20">
+              <input nz-input placeholder="请输入昵称" id="nickname" formControlName="nickname">
+              <nz-form-explain *ngIf="emailRegisterForm.get('nickname').dirty && emailRegisterForm.get('nickname').errors">请输入昵称</nz-form-explain>
+          </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+          <nz-form-label nzFor="emailAddress" [nzSm]="4" nzRequired>邮箱</nz-form-label>
+          <nz-form-control [nzSm]="20">
+              <input nz-input placeholder="请输入邮箱地址" id="emailAddress" formControlName="emailAddress">
+              <nz-form-explain *ngIf="emailRegisterForm.get('emailAddress').dirty && emailRegisterForm.get('emailAddress').errors">请输入邮箱地址</nz-form-explain>
+          </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+          <nz-form-label nzFor="emailPassword" [nzSm]="4" nzRequired>密码</nz-form-label>
+          <nz-form-control [nzSm]="20">
+              <input nz-input placeholder="请输入密码" id="emailPassword" formControlName="emailPassword">
+              <nz-form-explain *ngIf="emailRegisterForm.get('emailPassword').dirty && emailRegisterForm.get('emailPassword').errors">请输入密码</nz-form-explain>
+          </nz-form-control>
+      </nz-form-item>
+  </form>
+  <!-- <form nz-form [formGroup]="emailLogInForm" class="login-form" (ngSubmit)="submit()" *ngIf="mode == 'emailLogIn'">
+    <nz-form-item>
+        <nz-form-label nzFor="emailAddress" [nzSm]="4" nzRequired>邮箱</nz-form-label>
+        <nz-form-control [nzSm]="20">
+            <input nz-input placeholder="请输入邮箱地址" id="emailAddress" formControlName="emailAddress">
+            <nz-form-explain *ngIf="emailForm.get('emailAddress').dirty && emailForm.get('emailAddress').errors">请输入邮箱地址</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzFor="emailPassword" [nzSm]="4" nzRequired>密码</nz-form-label>
+        <nz-form-control [nzSm]="20">
+            <input nz-input placeholder="请输入密码" id="emailPassword" formControlName="emailPassword">
+            <nz-form-explain *ngIf="emailForm.get('emailPassword').dirty && emailForm.get('emailPassword').errors">请输入密码</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+</form> -->
+  <div style="text-align: center;" *ngIf="mode == 'emailRegister'">
+      <!-- <button nz-button nzType="primary">登录</button> -->
+      <button nz-button nzType="primary" (click)="emailRegister()">立即注册</button>
+      <div style="margin-top: 2rem">已有账号？<a>登录</a></div>
+  </div>
+
+  <div *ngIf="mode == 'wx'">
     <div id="wx_login_container"></div>
-  </ng-template>
-  <a class="swicth-wxLogin" (click)="switchLoginMode('wx')" [hidden]="mode == 'wx'">
+  </div>
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('wx')" [hidden]="mode == 'wx'">
     <i nz-icon type="wechat" theme="outline"></i>
     <span>{{ 'app.login.sign-in-with-wechat' | translate }}</span>
   </a>
-  <a class="swicth-wxLogin" (click)="switchLoginMode('phone')" [hidden]="mode == 'phone'">
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('phone')" [hidden]="mode == 'phone'">
     <i nz-icon type="mobile" theme="outline"></i>
     <span>{{ 'app.login.sign-in-with-mobile' | translate }}</span>
   </a>
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('emailRegister')" [hidden]="mode == 'email'">
+      <i nz-icon type="mail" theme="outline"></i>
+      <span>{{ 'app.login.sign-in-with-email' | translate }}</span>
+    </a>
   <!-- <div id="wx_login_container"></div> -->
 </div>
 <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>

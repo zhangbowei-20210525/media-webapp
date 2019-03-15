@@ -28,6 +28,7 @@
     "app.login.login": "登 录",
     "app.login.sign-in-with-wechat": "使用微信登录",
     "app.login.sign-in-with-mobile": "使用手机号登录",
+    "app.login.sign-in-with-email": "使用邮箱登录",
     "app.login.bind-phone": "绑定手机号",
     "app.login.bind-phone-submit": "确认绑定",
     "app.login.bind-wechat": "绑定微信",

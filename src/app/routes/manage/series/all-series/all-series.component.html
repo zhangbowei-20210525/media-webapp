@@ -29,7 +29,10 @@
         </td>
         <td style="text-align: center">{{ data.theme }}</td>
         <td style="text-align: center">{{ data.episode }}</td>
-        <td style="text-align: center">{{ data.language }}</td>
+        <td style="text-align: center">
+            <span *ngIf="data?.language == 'Chinese'">中文</span>
+            <span *ngIf="data?.language == 'English'">英语</span>
+      </td>
         <td style="text-align: center">{{ data.release_date }}</td>
         <td style="text-align: center">
           <span><a [routerLink]="['/manage/series/d', data.id, 'publicityd']">宣发</a></span>
@@ -38,7 +41,7 @@
         </td>
         <td style="text-align: center">
           <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline"></i></a>
-        </td>
+        </td> 
       </tr>
     </tbody>
   </nz-table>
