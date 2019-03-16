@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
   emailRegisterForm: FormGroup;
   emailLogInForm: FormGroup;
-  mode: 'phone' | 'wx' | 'email' | 'emailRegister' | 'emailLogIn' |string = 'phone';
+  mode: 'phone' | 'wx' | 'email' | 'emailRegister' | 'emailLogIn' | string = 'phone';
   isLoadingCaptcha = false;
   isCaptchaSended = false;
   captchaSendCountDown: number;
@@ -71,8 +71,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.emailLogInForm = this.fb.group({
-      emailAddress: [null, [Validators.required]],
-      emailPassword: [null, [Validators.required]],
+      email: [null, [Validators.required]],
+      password: [null, [Validators.required]],
     });
   }
 
@@ -136,38 +136,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  validation(): boolean {
-    for (const i in this.form.controls) {
-      if (this.form.controls.hasOwnProperty(i)) {
-        this.form.controls[i].markAsDirty();
-        this.form.controls[i].updateValueAndValidity();
+  validation(form: FormGroup): boolean {
+    for (const i in form.controls) {
+      if (form.controls.hasOwnProperty(i)) {
+        form.controls[i].markAsDirty();
+        form.controls[i].updateValueAndValidity();
       }
     }
     return this.form.valid;
   }
 
-  emailRegisterValidation(): boolean {
-    for (const i in this.emailRegisterForm.controls) {
-      if (this.emailRegisterForm.controls.hasOwnProperty(i)) {
-        this.emailRegisterForm.controls[i].markAsDirty();
-        this.emailRegisterForm.controls[i].updateValueAndValidity();
-      }
-    }
-    return this.emailRegisterForm.valid;
-  }
-
-  emailLogInValidation(): boolean {
-    for (const i in this.emailLogInForm.controls) {
-      if (this.emailLogInForm.controls.hasOwnProperty(i)) {
-        this.emailLogInForm.controls[i].markAsDirty();
-        this.emailLogInForm.controls[i].updateValueAndValidity();
-      }
-    }
-    return this.emailLogInForm.valid;
-  }
-
   submit() {
-    if (this.validation()) {
+    if (this.validation(this.form)) {
       this.isLoggingIn = true;
       this.service.phoneValidate(this.phone.value, this.captcha.value)
         .pipe(finalize(() => this.isLoggingIn = false))
@@ -186,13 +166,23 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   emailRegisterSubmit() {
-    if (this.emailRegisterValidation()) {
+    if (this.validation(this.emailRegisterForm)) {
       const data = {
         nickname: this.emailRegisterForm.value['nickname'] || null,
         email: this.emailRegisterForm.value['emailAddress'] || null,
         password: this.emailRegisterForm.value['emailPassword'] || null,
       };
-    this.service.emailRegister(data).subscribe();
+    // this.service.emailRegister(data).subscribe();
+    }
+  }
+
+  emailLoginSubmit() {
+    if (this.validation(this.emailLogInForm)) {
+      this.service.emailValidate(this.emailLogInForm.value['email'], this.emailLogInForm.value['password']).subscribe(result => {
+        console.log(result);
+      }, error => {
+        console.error(error);
+      });
     }
   }
 }

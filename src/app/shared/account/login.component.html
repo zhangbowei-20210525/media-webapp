@@ -66,17 +66,17 @@
   </form>
   <form nz-form [formGroup]="emailLogInForm" class="login-form" *ngIf="mode == 'emailLogIn'">
     <nz-form-item>
-        <nz-form-label nzFor="emailAddress" [nzSm]="4" nzRequired>邮箱</nz-form-label>
+        <nz-form-label nzFor="email" [nzSm]="4" nzRequired>邮箱</nz-form-label>
         <nz-form-control [nzSm]="20">
-            <input nz-input placeholder="请输入邮箱地址" id="emailAddress" formControlName="emailAddress">
-            <nz-form-explain *ngIf="emailLogInForm.get('emailAddress').dirty && emailLogInForm.get('emailAddress').errors">请输入邮箱地址</nz-form-explain>
+            <input nz-input placeholder="请输入邮箱地址" id="email" formControlName="email">
+            <nz-form-explain *ngIf="emailLogInForm.get('email').dirty && emailLogInForm.get('email').errors">请输入邮箱地址</nz-form-explain>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <nz-form-label nzFor="emailPassword" [nzSm]="4" nzRequired>密码</nz-form-label>
+        <nz-form-label nzFor="password" [nzSm]="4" nzRequired>密码</nz-form-label>
         <nz-form-control [nzSm]="20">
-            <input nz-input placeholder="请输入密码" id="emailPassword" formControlName="emailPassword">
-            <nz-form-explain *ngIf="emailLogInForm.get('emailPassword').dirty && emailLogInForm.get('emailPassword').errors">请输入密码</nz-form-explain>
+            <input nz-input placeholder="请输入密码" id="password" formControlName="password">
+            <nz-form-explain *ngIf="emailLogInForm.get('password').dirty && emailLogInForm.get('password').errors">请输入密码</nz-form-explain>
         </nz-form-control>
     </nz-form-item>
 </form>
@@ -87,7 +87,7 @@
   </div>
   <div style="text-align: center;" *ngIf="mode == 'emailLogIn'">
     <!-- <button nz-button nzType="primary">登录</button> -->
-    <button nz-button nzType="primary" style="width:17rem" (click)="emailRegister()">立即登录</button>
+    <button nz-button nzType="primary" style="width:17rem" (click)="emailLoginSubmit()">立即登录</button>
     <div style="margin-top: 2rem">没有账号？<a (click)="switchLoginMode('emailRegister')">注册</a></div>
 </div>
 
