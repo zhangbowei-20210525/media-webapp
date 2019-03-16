@@ -6,12 +6,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SharedModule } from '@shared';
 import { LayoutModule } from 'app/layout/layout.module';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
+import { BrowseRecordComponent } from './personal-center/browse-record/browse-record.component';
 
 @NgModule({
   declarations: [
     ManageComponent,
     DashboardComponent,
     PersonalCenterComponent,
+    BrowseRecordComponent,
    ],
   imports: [
     CommonModule,

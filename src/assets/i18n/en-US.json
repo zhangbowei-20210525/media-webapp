@@ -31,6 +31,8 @@
     "app.login.bind-phone": "Binding Mobile",
     "app.login.bind-phone-submit": "Binding",
     "app.login.bind-wechat": "Binding Wechat",
+    "app.login.email-registered-successfully": "Registered Successfully, Please activate the email",
+    "app.login.email-login-successfully": "Email Login Successfully",
     "app.account.unbound": "unbound",
     "app.account.my-favorite": "My favorite",
     "app.series.tv": "TV",

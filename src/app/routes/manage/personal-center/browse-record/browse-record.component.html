@@ -1,0 +1,21 @@
+<div *ngIf="isLoaded == true">
+    <nz-table #basicTable [nzData]="list" [nzPageSize]="pagination?.page_size"
+      [nzFrontPagination]="false" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count"
+      (nzPageIndexChange)="pageChange($event)">
+      <thead>
+        <tr>
+          <th style="text-align: center">节目名称</th>
+          <th style="text-align: center">节目类型</th>
+          <th style="text-align: center">所属公司</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td style="text-align: center">{{data?.name}}</td>
+          <td style="text-align: center">{{ data.program_type | seriesType }}</td>
+          <td style="text-align: center">{{data?.company?.full_name}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  

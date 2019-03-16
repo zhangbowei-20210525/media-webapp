@@ -3,7 +3,7 @@
     <h1 class="title lf">{{ 'app.login' | translate }}</h1>
     <i nz-icon type="close" theme="outline" class="rf" (click)="close()"></i>
   </div>
-  <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()" *ngIf="mode == 'phone'">
+  <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()" *ngIf="mode == 'phone' && languageVersion == 'zh-CN'">
     <nz-form-item>
       <nz-form-control>
         <nz-input-group>
@@ -82,7 +82,7 @@
 </form>
   <div style="text-align: center;" *ngIf="mode == 'emailRegister'">
       <!-- <button nz-button nzType="primary">登录</button> -->
-      <button nz-button nzType="primary" style="width:17rem" (click)="emailRegister()">立即注册</button>
+      <button nz-button nzType="primary" style="width:17rem" (click)="emailRegisterSubmit()">立即注册</button>
       <div style="margin-top: 2rem">已有账号？<a (click)="switchLoginMode('emailLogIn')">登录</a></div>
   </div>
   <div style="text-align: center;" *ngIf="mode == 'emailLogIn'">
@@ -94,15 +94,15 @@
   <div *ngIf="mode == 'wx'">
     <div id="wx_login_container"></div>
   </div>
-  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('wx')" [hidden]="mode == 'wx'">
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('wx')" [hidden]="mode == 'wx'"  *ngIf="languageVersion == 'zh-CN'">
     <i nz-icon type="wechat" theme="outline"></i>
     <span>{{ 'app.login.sign-in-with-wechat' | translate }}</span>
   </a>
-  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('phone')" [hidden]="mode == 'phone'">
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('phone')" [hidden]="mode == 'phone'"  *ngIf="languageVersion == 'zh-CN'">
     <i nz-icon type="mobile" theme="outline"></i>
     <span>{{ 'app.login.sign-in-with-mobile' | translate }}</span>
   </a>
-  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('emailRegister')" [hidden]="mode == 'emailRegister' || mode == 'emailLogIn'">
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('emailRegister')" [hidden]="mode == 'emailRegister' || mode == 'emailLogIn'" *ngIf="languageVersion == 'zh-CN'">
       <i nz-icon type="mail" theme="outline"></i>
       <span>{{ 'app.login.sign-in-with-email' | translate }}</span>
     </a>
