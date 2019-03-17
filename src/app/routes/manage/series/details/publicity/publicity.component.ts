@@ -18,6 +18,8 @@ declare type MaterielType = 'sample' | 'feature' | 'trailer' | 'poster' | 'still
 })
 export class PublicityComponent implements OnInit {
 
+  [key: string]: any;
+
   readonly materielTypes = ['sample', 'feature', 'trailer', 'poster', 'still', 'pdf'] as MaterielType[]; // 根据视图的顺序
 
   selectedIndex = 0;

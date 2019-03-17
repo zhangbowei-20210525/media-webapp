@@ -125,18 +125,15 @@ export class AccountService {
     return this.http.post<any>('/api/v1/users/login_info/wechat', { code });
   }
 
-  // emailRegister(newEmail?: {  nickname: string, email: string, password: string }) {
-  //   console.log('5555');
-  //   console.log(newEmail);
-  //   // console.log(this.http.post<any>('/api/v1/register/email', newEmail));
-  //   return this.http.post<any>('/api/v1/register/email', { params: { _allow_anonymous: '' } });
-  // }
-
   emailRegister(email: string, password: string, nickname: string) {
     return this.http.post('/api/v1/register/email', { email, password, nickname }, { params: { _allow_anonymous: '' } });
   }
 
   emailValidate(email: string, password: string) {
-    return this.http.post('/api/v1/login/email', { email, password }, { params: { _allow_anonymous: '' } });
+    return this.http.post<any>('/api/v1/login/email', { email, password }, { params: { _allow_anonymous: '' } });
+  }
+
+  emailActivate(token: string) {
+    return this.http.post<any>('/api/v1/activate/email', { email_token: token }, { params: { _allow_anonymous: '' } });
   }
 }

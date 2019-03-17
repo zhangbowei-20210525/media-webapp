@@ -8,6 +8,7 @@ import { DashboardComponent } from './manage/dashboard/dashboard.component';
 import { PersonalCenterComponent } from './manage/personal-center/personal-center.component';
 import { SimpleGuard } from '@delon/auth';
 import { SeriesComponent } from './manage/series/series.component';
+import { BrowseRecordComponent } from './manage/personal-center/browse-record/browse-record.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,11 @@ const routes: Routes = [
           { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
           // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
-          { path: 'account-center', component: PersonalCenterComponent, data: { breadcrumb: 'account' }, },
+          { path: 'account-center', component: PersonalCenterComponent, data: { breadcrumb: 'account' },
+          children: [
+            { path: 'history', component: BrowseRecordComponent, },
+          ]
+        },
           { path: 'teams', loadChildren: './manage/teams/teams.module#TeamsModule' }
         ]
       }
@@ -43,6 +48,10 @@ const routes: Routes = [
   {
     path: 'oauth2',
     loadChildren: '../oauth2/oauth2.module#Oauth2Module',
+  },
+  {
+    path: 'auth',
+    loadChildren: '../auth/auth.module#AuthModule',
   }
 ];
 

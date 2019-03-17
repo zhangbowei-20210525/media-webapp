@@ -11,7 +11,7 @@ import { Subject, Observable } from 'rxjs';
 import { delay, finalize, map } from 'rxjs/operators';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { AccountService, PaginationDto } from '@shared';
-import { SettingsService } from '@core';
+import { SettingsService, I18nService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -30,12 +30,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
   emailRegisterForm: FormGroup;
   emailLogInForm: FormGroup;
+  passwordVisible = false;
+  password: string;
   mode: 'phone' | 'wx' | 'email' | 'emailRegister' | 'emailLogIn' | string = 'phone';
   isLoadingCaptcha = false;
   isCaptchaSended = false;
   captchaSendCountDown: number;
   isLoggingIn = false;
   interval$: any;
+  languageVersion: string;
   pagination = { page: 1, page_size: 10 } as PaginationDto;
 
   constructor(
@@ -44,6 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private settings: SettingsService,
     private message: MessageService,
     private translate: TranslateService,
+    private i18n: I18nService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
     this.$close = new Subject();
@@ -58,6 +62,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // zh-CN en-US
+   this.languageVersion = this.i18n.currentLang;
+   if (this.languageVersion === 'en-US') {
+    this.mode = 'emailLogIn';
+   }
     this.form = this.fb.group({
       phone: [null, [Validators.required]],
       captcha: [null, [Validators.required]],
@@ -143,7 +152,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         form.controls[i].updateValueAndValidity();
       }
     }
-    return this.form.valid;
+    return form.valid;
   }
 
   submit() {
@@ -167,19 +176,25 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   emailRegisterSubmit() {
     if (this.validation(this.emailRegisterForm)) {
-      const data = {
-        nickname: this.emailRegisterForm.value['nickname'] || null,
-        email: this.emailRegisterForm.value['emailAddress'] || null,
-        password: this.emailRegisterForm.value['emailPassword'] || null,
-      };
-    // this.service.emailRegister(data).subscribe();
+    // tslint:disable-next-line:max-line-length
+    this.service.emailRegister(this.emailRegisterForm.value['emailAddress'], this.emailRegisterForm.value['emailPassword'], this.emailRegisterForm.value['nickname']).subscribe(result => {
+      this.message.success(this.translate.instant('app.login.email-registered-successfully'));
+     this.mode = 'emailLogIn';
+    });
     }
   }
 
   emailLoginSubmit() {
     if (this.validation(this.emailLogInForm)) {
       this.service.emailValidate(this.emailLogInForm.value['email'], this.emailLogInForm.value['password']).subscribe(result => {
-        console.log(result);
+        this.message.success(this.translate.instant('app.login.email-login-successfully'));
+        this.settings.user = result.auth.username;
+        this.token.set({
+          token: result.token,
+          time: +new Date
+        });
+        this.close();
+        this.router.navigate([`/manage/series`]);
       }, error => {
         console.error(error);
       });

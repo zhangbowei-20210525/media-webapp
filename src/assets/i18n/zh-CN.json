@@ -32,6 +32,8 @@
     "app.login.bind-phone": "绑定手机号",
     "app.login.bind-phone-submit": "确认绑定",
     "app.login.bind-wechat": "绑定微信",
+    "app.login.email-registered-successfully": "注册成功, 请去邮箱激活",
+    "app.login.email-login-successfully": "邮箱登陆成功",
     "app.account.unbound": "未绑定",
     "app.account.my-favorite": "我的收藏",
     "app.series.tv": "电视剧",

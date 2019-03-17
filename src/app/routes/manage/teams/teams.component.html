@@ -48,7 +48,7 @@
                     <span nz-dropdown class="folder-operation"><i nz-icon type="ellipsis" theme="outline"></i></span>
                     <ul nz-menu>
                       <li nz-menu-item (click)="addDepartment(node.key)">添加子部门</li>
-                      <li nz-menu-item>修改名称</li>
+                      <!-- <li nz-menu-item>修改名称</li> -->
                       <li nz-menu-item (click)="deleteDepartment(node.key, node.title)">删除</li>
                       <li nz-menu-item nzDisabled>id: {{ node.key }}</li>
                     </ul>
