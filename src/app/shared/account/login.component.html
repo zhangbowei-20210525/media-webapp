@@ -89,12 +89,12 @@
 </form>
   <div style="text-align: center;" *ngIf="mode == 'emailRegister'">
       <!-- <button nz-button nzType="primary">登录</button> -->
-      <button nz-button nzType="primary" style="width:17rem" (click)="emailRegisterSubmit()">立即注册</button>
+      <button nz-button nzType="primary" class="login-form-button" (click)="emailRegisterSubmit()">立即注册</button>
       <div style="margin-top: 2rem">已有账号？<a (click)="switchLoginMode('emailLogIn')">登录</a></div>
   </div>
   <div style="text-align: center;" *ngIf="mode == 'emailLogIn'">
     <!-- <button nz-button nzType="primary">登录</button> -->
-    <button nz-button nzType="primary" style="width:17rem" (click)="emailLoginSubmit()">立即登录</button>
+    <button nz-button nzType="primary" class="login-form-button" (click)="emailLoginSubmit()">立即登录</button>
     <div style="margin-top: 2rem">没有账号？<a (click)="switchLoginMode('emailRegister')">注册</a></div>
 </div>
 
