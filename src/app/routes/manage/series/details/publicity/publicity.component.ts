@@ -33,12 +33,9 @@ export class PublicityComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private uploader: QueueUploader,
-<<<<<<< HEAD
     private modal: NzModalService,
     private seriesService: SeriesService,
-=======
     private local: LocalRequestService
->>>>>>> aili
   ) {
     this.materielTypes.forEach(item => {
       this[this.getLoadedString(item)] = false;
