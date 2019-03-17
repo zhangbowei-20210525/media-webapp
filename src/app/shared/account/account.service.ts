@@ -134,6 +134,6 @@ export class AccountService {
   }
 
   emailActivate(token: string) {
-    return this.http.post('/api/v1/activate/email', { email_token: token }, { params: { _allow_anonymous: '' } });
+    return this.http.post<any>('/api/v1/activate/email', { email_token: token }, { params: { _allow_anonymous: '' } });
   }
 }

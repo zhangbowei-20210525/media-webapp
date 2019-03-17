@@ -30,6 +30,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
   emailRegisterForm: FormGroup;
   emailLogInForm: FormGroup;
+  passwordVisible = false;
+  password: string;
   mode: 'phone' | 'wx' | 'email' | 'emailRegister' | 'emailLogIn' | string = 'phone';
   isLoadingCaptcha = false;
   isCaptchaSended = false;

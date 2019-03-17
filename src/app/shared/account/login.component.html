@@ -74,8 +74,15 @@
     </nz-form-item>
     <nz-form-item>
         <nz-form-label nzFor="password" [nzSm]="4" nzRequired>密码</nz-form-label>
+
         <nz-form-control [nzSm]="20">
-            <input nz-input placeholder="请输入密码" id="password" formControlName="password">
+            <nz-input-group [nzSuffix]="suffixTemplate">
+                <input [type]="passwordVisible?'text':'password'" nz-input placeholder="请输入密码" id="password" formControlName="password">
+              </nz-input-group>
+              <ng-template #suffixTemplate>
+                <i nz-icon [nzType]="passwordVisible? 'eye-invisible':'eye'" (click)="passwordVisible = !passwordVisible"></i>
+              </ng-template>
+            <!-- <input nz-input placeholder="请输入密码" id="password" formControlName="password"> -->
             <nz-form-explain *ngIf="emailLogInForm.get('password').dirty && emailLogInForm.get('password').errors">请输入密码</nz-form-explain>
         </nz-form-control>
     </nz-form-item>
