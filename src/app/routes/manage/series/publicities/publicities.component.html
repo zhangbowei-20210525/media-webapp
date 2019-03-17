@@ -1,11 +1,11 @@
 <div>
     <p class="clearfix">
-      <button nz-button nzType="default" class="rf" (click)="addPublicity()">新增宣发</button>
+      <button nz-button nzType="default" class="rf" (click)="addPublicity()">{{ 'app.series.add-publicity' | translate }}</button>
     </p>
   </div>
   <ng-template #publicityOk>
       <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
-          上传
+          {{ 'app.series.upload-publicity' | translate }}
         </label>
         <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
     </ng-template>
@@ -16,13 +16,13 @@
       <tr>
         <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
-        <th style="text-align: center">节目</th>
-        <th style="text-align: center">样片</th>
-        <th style="text-align: center">片花</th>
-        <th style="text-align: center">先导片</th>
-        <th style="text-align: center">海报</th>
-        <th style="text-align: center">剧照</th>
-        <th style="text-align: center">PDF</th>
+        <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.sample' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.feature' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.trailer' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.poster' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.still' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.pdf' | translate }}</th>
         <!-- <th style="text-align: center">操作</th> -->
       </tr>
     </thead>

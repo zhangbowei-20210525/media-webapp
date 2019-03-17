@@ -13,31 +13,31 @@
               <a [routerLinkActive]="'router-active'" [routerLink]="'/market'">{{ 'menu.market' | translate }}</a>
             </li>
             <li class="nav-item">
-              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/dashboard'">首页</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/dashboard'">{{ 'menu.manage.dashboard' | translate }}</a>
             </li>
             <li class="nav-item">
-              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series'">节目</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series'">{{ 'menu.manage.series' | translate }}</a>
             </li>
             <li class="nav-item">
-              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/transmit'">传输</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/transmit'">{{ 'menu.manage.transmit' | translate }}</a>
             </li>
             <li class="nav-item">
-              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/account-center'">个人</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/account-center'">{{ 'menu.manage.personal-center' | translate }}</a>
             </li>
             <li class="nav-item">
-              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/teams'">团队</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/teams'">{{ 'menu.manage.teams' | translate }}</a>
             </li>
           </ul>
         </li>
         <li class="nav-item search">
-          <div style="width: 16rem;">
+          <!-- <div style="width: 16rem;">
             <nz-input-group [nzSuffix]="suffixIconSearch">
               <input type="text" nz-input [placeholder]="'menu.search.placeholder' | translate">
             </nz-input-group>
             <ng-template #suffixIconSearch>
               <i nz-icon type="search"></i>
             </ng-template>
-          </div>
+          </div> -->
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
           <a class="nav-item-link" nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="taskTemplate"
