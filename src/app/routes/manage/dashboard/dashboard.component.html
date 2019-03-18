@@ -2,7 +2,7 @@
   <div class="statistics-info-wk">
     <div class="statistics-info-box">
       <div class="statistics-info-one">{{right?.count}}</div>
-      <div class="statistics-info-two">购入即将到期</div>
+      <div class="statistics-info-two">{{ 'app.dashboard.purchase-imminent' | translate }}</div>
       <ul class="statistics-info-three">
         <li class="statistics-info-four" *ngFor="let right of right?.data">
           <div class="statistics-info-gr-one">{{right?.program_name}}</div>
@@ -17,7 +17,7 @@
     </div>
     <div class="statistics-info-box-mf10">
       <div class="statistics-info-five">{{publish_right?.count}}</div>
-      <div class="statistics-info-two">发行即将到期</div>
+      <div class="statistics-info-two">{{ 'app.dashboard.publish-imminent' | translate }}</div>
       <ul class="statistics-info-three">
         <li class="statistics-info-four" *ngFor="let publish_right of publish_right?.data">
           <div class="statistics-info-fx-one">{{publish_right?.program_name}}</div>
@@ -32,7 +32,7 @@
     </div>
     <div class="statistics-info-box-mf10">
       <div class="statistics-info-six">{{payment?.count}}</div>
-      <div class="statistics-info-two">付款即将到期</div>
+      <div class="statistics-info-two">{{ 'app.dashboard.payment-imminent' | translate }}</div>
       <ul class="statistics-info-three">
         <li class="statistics-info-four" *ngFor="let payment of payment?.data">
           <div class="statistics-info-fk-one">{{payment?.custom_name}}</div>
@@ -46,7 +46,7 @@
     </div>
     <div class="statistics-info-box-mf10">
       <div class="statistics-info-seven">{{receipt?.count}}</div>
-      <div class="statistics-info-two">收款即将到期</div>
+      <div class="statistics-info-two">{{ 'app.dashboard.receivables-imminent' | translate }}</div>
       <ul class="statistics-info-three">
         <li class="statistics-info-four" *ngFor="let receipt of receipt?.data">
           <div class="statistics-info-sk-one">{{receipt?.custom_name}}</div>
@@ -62,14 +62,14 @@
   <div class="cartogram-wk-one">
     <div class="cartogram-box-one">
       <div class="cartogram-wk-two">
-        <div class="cartogram-title">节目</div>
+        <div class="cartogram-title">{{ 'app.dashboard.series' | translate }}</div>
         <!-- <div class="cartogram-filtrate-one">权利</div>
         <div class="cartogram-filtrate-two">品类</div>
         <div class="cartogram-filtrate-three">投资类型</div> -->
         <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small"
           style="margin-top: 15px;float: right;margin-right: 20px" (ngModelChange)="switchoverSeriesCriteria()">
-          <label nz-radio-button nzValue="program_type">品类</label>
-          <label nz-radio-button nzValue="investment_type">投资类型</label>
+          <label nz-radio-button nzValue="program_type">{{ 'app.dashboard.program-type' | translate }}</label>
+          <label nz-radio-button nzValue="investment_type">{{ 'app.dashboard.investment-type' | translate }}</label>
         </nz-radio-group>
       </div>
       <div class="cartogram-info-one">
@@ -79,15 +79,15 @@
 
     <div class="cartogram-box-two">
       <div class="cartogram-wk-two">
-        <div class="cartogram-title">宣发</div>
+        <div class="cartogram-title">{{ 'app.dashboard.publicity' | translate }}</div>
         <!-- <div class="cartogram-filtrate-one">收藏</div>
         <div class="cartogram-filtrate-two">点赞</div>
         <div class="cartogram-filtrate-three">浏览量</div> -->
         <nz-radio-group [(ngModel)]="time" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
           (ngModelChange)="switchoverTime()">
-          <label nz-radio-button nzValue="day">日</label>
-          <label nz-radio-button nzValue="month">月</label>
-          <label nz-radio-button nzValue="year">年</label>
+          <label nz-radio-button nzValue="day">{{ 'app.dashboard.day' | translate }}</label>
+          <label nz-radio-button nzValue="month">{{ 'app.dashboard.month' | translate }}</label>
+          <label nz-radio-button nzValue="year">{{ 'app.dashboard.year' | translate }}</label>
         </nz-radio-group>
       </div>
       <div class="cartogram-info-two">
@@ -98,15 +98,15 @@
   <div class="cartogram-wk-one">
     <div class="cartogram-box-one">
       <div class="cartogram-wk-two">
-        <div class="cartogram-title">发行</div>
+        <div class="cartogram-title">{{ 'app.dashboard.publish' | translate }}</div>
         <!-- <div class="cartogram-filtrate-one">地区</div>
         <div class="cartogram-filtrate-two">权利</div>
         <div class="cartogram-filtrate-four">客户</div> -->
         <nz-radio-group [(ngModel)]="pubType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
           (ngModelChange)="switchoverPubType()">
-          <label nz-radio-button nzValue="custom">客户</label>
+          <label nz-radio-button nzValue="custom">{{ 'app.dashboard.custom' | translate }}</label>
           <!-- <label nz-radio-button nzValue="right">权利</label> -->
-          <label nz-radio-button nzValue="area">地区</label>
+          <label nz-radio-button nzValue="area">{{ 'app.dashboard.area' | translate }}</label>
         </nz-radio-group>
       </div>
       <div class="cartogram-info-three">
@@ -116,14 +116,14 @@
 
     <div class="cartogram-box-two">
       <div class="cartogram-wk-two">
-        <div class="cartogram-title">母带</div>
+        <div class="cartogram-title">{{ 'app.dashboard.source' | translate }}</div>
         <!-- <div class="cartogram-filtrate-five">密钥授权</div>
         <div class="cartogram-filtrate-six">购入母带</div>
         <div class="cartogram-filtrate-three">发行母带</div> -->
         <nz-radio-group [(ngModel)]="tapeType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
           (ngModelChange)="switchoverTape()">
-          <label nz-radio-button nzValue="publish">发行母带</label>
-          <label nz-radio-button nzValue="purchase">购入母带</label>
+          <label nz-radio-button nzValue="publish">{{ 'app.dashboard.publish-source' | translate }}</label>
+          <label nz-radio-button nzValue="purchase">{{ 'app.dashboard.purchase-source' | translate }}</label>
         </nz-radio-group>
       </div>
       <div class="cartogram-info-four">
@@ -134,7 +134,7 @@
 
   <div class="all-statistics-box">
     <div class="all-statistics-title-wk">
-      <span class="all-statistics-title">季度统计分析</span>
+      <span class="all-statistics-title">{{ 'app.dashboard.quarterly-statistical-analysis' | translate }}</span>
       <nz-tree-select #allStatisticsTree style="width: 250px;margin-top: 15px;margin-right: 10px;float: right" 
       [nzNodes]="statisticsSelectArea" nzShowSearch nzCheckable nzSize="small" nzPlaceHolder="请选择地域"
         [(ngModel)]="checkedAreaCode" (ngModelChange)="areaChange($event)">

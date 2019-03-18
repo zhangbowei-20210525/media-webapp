@@ -1,7 +1,7 @@
 <div class="notity-box">
   <div class="notitys-tab-panel">
     <nz-tabset nzAnimated="false" (nzSelectChange)="onTabChange($event)">
-      <nz-tab nzTitle="系统">
+      <nz-tab [nzTitle]="'menu.notify.system' | translate">
         <div class="notitys">
           <nz-skeleton [nzLoading]="!isSysLoaded" class="notify-skeleton">
             <div class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
@@ -21,7 +21,7 @@
           </nz-skeleton>
         </div>
       </nz-tab>
-      <nz-tab nzTitle="母带">
+      <nz-tab [nzTitle]="'menu.notify.source' | translate">
         <div class="notitys">
           <nz-skeleton [nzLoading]="!isSrcLoaded" class="notify-skeleton">
             <div class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
@@ -41,7 +41,7 @@
           </nz-skeleton>
         </div>
       </nz-tab>
-      <nz-tab nzTitle="外部">
+      <nz-tab [nzTitle]="'menu.notify.outside' | translate">
         <div class="notitys">
           <nz-skeleton [nzLoading]="!isOutLoaded" class="notify-skeleton">
             <div class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
@@ -64,7 +64,7 @@
     </nz-tabset>
   </div>
   <div class="n-operations">
-    <div class="n-operations-button"><a>清空消息</a></div>
-    <div class="n-operations-button"><a>全部</a></div>
+    <!-- <div class="n-operations-button"><a>清空消息</a></div>
+    <div class="n-operations-button"><a>全部</a></div> -->
   </div>
 </div>

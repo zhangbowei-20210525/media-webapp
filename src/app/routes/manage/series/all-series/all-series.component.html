@@ -1,7 +1,7 @@
 <div *ngIf="isLoaded" [@fadeIn]>
   <div>
     <p class="clearfix">
-      <button nz-button nzType="default" class="rf" (click)="addSeries()">新增节目</button>
+      <button nz-button nzType="default" class="rf" (click)="addSeries()">{{ 'app.series.add-series' | translate }}</button>
     </p>
   </div>
   <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
@@ -10,14 +10,14 @@
       <tr>
         <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
-        <th style="text-align: center">节目</th>
-        <th style="text-align: center">节目类型</th>
-        <th style="text-align: center">题材</th>
-        <th style="text-align: center">集数</th>
-        <th style="text-align: center">语言</th>
-        <th style="text-align: center">发行时间</th>
-        <th style="text-align: center">详细</th>
-        <th style="text-align: center">操作</th>
+        <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.program-type' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.theme' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.episode' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.language' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.release-date' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.detailed' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.operation' | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -30,13 +30,13 @@
         <td style="text-align: center">{{ data.theme }}</td>
         <td style="text-align: center">{{ data.episode }}</td>
         <td style="text-align: center">
-            <span *ngIf="data?.language == 'Chinese'">中文</span>
-            <span *ngIf="data?.language == 'English'">英语</span>
+            <span *ngIf="data?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+            <span *ngIf="data?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
       </td>
         <td style="text-align: center">{{ data.release_date }}</td>
         <td style="text-align: center">
-          <span><a [routerLink]="['/manage/series/d', data.id, 'publicityd']">宣发</a></span>
-          <span><a [routerLink]="['/manage/series/d', data.id, 'tape']" style="margin-left: 1rem">母带</a></span>
+          <span><a [routerLink]="['/manage/series/d', data.id, 'publicityd']">{{ 'app.series.publicity' | translate }}</a></span>
+          <span><a [routerLink]="['/manage/series/d', data.id, 'tape']" style="margin-left: 1rem">{{ 'app.series.source' | translate }}</a></span>
           <!-- <span><a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span> -->
         </td>
         <td style="text-align: center">

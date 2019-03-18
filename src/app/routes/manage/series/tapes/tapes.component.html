@@ -2,7 +2,7 @@
   <div class="tapes-info">
     <div>
       <p class="clearfix">
-        <button nz-button nzType="default" class="rf" (click)="addTape()">新增母带</button>
+        <button nz-button nzType="default" class="rf" (click)="addTape()">{{ 'app.series.add-source' | translate }}</button>
       </p>
     </div>
     <nz-table #basicTable [nzData]="dataset" [nzPageSize]="pagination?.page_size" [nzFrontPagination]="false"
@@ -10,22 +10,24 @@
       (nzPageIndexChange)="pageChange($event)">
       <thead>
         <tr>
-          <th>节目名称</th>
-          <th>母带版本</th>
-          <th>类型</th>
-          <th>集数</th>
-          <th>语言</th>
-          <th>字幕</th>
-          <th>操作</th>
+          <th>{{ 'app.series.series-name' | translate }}</th>
+          <th>{{ 'app.series.source-name' | translate }}</th>
+          <th>{{ 'app.series.source-type' | translate }}</th>
+          <th>{{ 'app.series.episode' | translate }}</th>
+          <th>{{ 'app.series.language' | translate }}</th>
+          <th>{{ 'app.series.subtitle' | translate }}</th>
+          <th>{{ 'app.series.operation' | translate }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
           <td>{{ data.program_name }}</td>
           <td><a (click)="tapeDetails(data.program_id, data.id, data.source_type)">{{ data.name }}</a></td>
-          <td>{{ data.source_type == 'online' ? '在线' : '实体' }}</td>
+          <td>{{ data.source_type == 'online' ? ('app.series.source-type-online' | translate) : ('app.series.source-type-entity' | translate) }}</td>
           <td>{{ data.episode }}</td>
-          <td>
+          <td>{{ data.language }}</td>
+          <td>{{ data.subtitle }}</td>
+          <!-- <td>
               <span *ngIf="data?.language == 'Chinese'">中文</span>
               <span *ngIf="data?.language == 'English'">英语</span>
           </td>
@@ -33,7 +35,7 @@
               <span *ngIf="data?.subtitle == 'Chinese'">中文</span>
               <span *ngIf="data?.subtitle == 'English'">英语</span>
               <span *ngIf="data?.subtitle == 'other'">其他</span>
-          </td>
+          </td> -->
           <td><a (click)="deleteTape(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px"></i></a></td>
         </tr>
       </tbody>
