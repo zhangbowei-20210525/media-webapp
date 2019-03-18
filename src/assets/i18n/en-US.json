@@ -35,6 +35,8 @@
     "app.login.email-login-successfully": "Email Login Successfully",
     "app.account.unbound": "unbound",
     "app.account.my-favorite": "My favorite",
+    "app.login.email-login-account-number": "Email",
+    "app.login.email-login-password": "Password",
     "app.series.tv": "TV",
     "app.series.film": "Film",
     "app.series.variety": "Variety",
