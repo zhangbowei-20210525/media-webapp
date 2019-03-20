@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series.service';
 import { switchMap, tap, map } from 'rxjs/operators';
 import { PaginationDto } from '@shared';
+import { I18nService } from '@core';
 
 declare function videojs(selector: string);
 
@@ -76,13 +77,16 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   posterDisabled: boolean;
   stillDisabled: boolean;
   pdfDisabled: boolean;
-
+  languageVersion: string;
+  emailAddress: string;
+  tabIndex: number;
   fixationInfo: any; // 可能是用户信息
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private seriesService: SeriesService,
+    private i18n: I18nService,
   ) { }
 
   ngOnInit() {
@@ -97,6 +101,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       switchMap((params: ParamMap) => {
         this.id = +params.get('id');
         this.sid = +params.get('sid');
+        this.tabIndex = +params.get('tabIndex');
+        console.log(this.tabIndex);
         this.sampleIndex = +params.get('sampleIndex');
         this.featureIndex = +params.get('featureIndex');
         this.trailerIndex = +params.get('trailerIndex');
@@ -460,11 +466,24 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   getTwoDimensionalCode() {
-    this.seriesService.getTwoDimensionalCode(this.id)
-    .pipe(map(x => x = `data:image/png;base64,${x}`))
-      .subscribe(res => {
-        this.twoDimensionalCode = res;
-      });
+       // zh-CN en-US
+       this.languageVersion = this.i18n.currentLang;
+       console.log(this.languageVersion);
+       if (this.languageVersion === 'zh-CN') {
+        this.seriesService.getTwoDimensionalCode(this.id)
+        .pipe(map(x => x = `data:image/png;base64,${x}`))
+          .subscribe(res => {
+            this.twoDimensionalCode = res;
+          });
+       }
+       if (this.languageVersion === 'en-US') {
+       }
+
+  }
+
+  shareEmail() {
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.shareEmail(this.emailAddress, `http://192.168.1.156/manage/series/publicity-details/${this.id}`, this.publicityName, this.sid).subscribe();
   }
 
 }

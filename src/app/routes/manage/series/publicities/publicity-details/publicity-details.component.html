@@ -15,6 +15,7 @@
           </div>
           <!-- <span style="position:absolute;right: 30px"><a><i class="anticon anticon-share-alt text-info" nz-popover
                 [nzTitle]="titleTemplate" [nzContent]="contentTemplate" nzTrigger="click"></i></a></span> -->
+                <!-- *ngIf ="languageVersion == 'zh-CN'" -->
                 <div class="fixationInfo-info">
                   <a (click)="getTwoDimensionalCode()">
                     <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
@@ -23,12 +24,17 @@
                 </div>
         </div>
         <ng-template #titleTemplate>
-          <div style="text-align: center;">微信扫码分享</div>
+          <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+          <div *ngIf ="languageVersion == 'en-US'" style="text-align: center;">{{ 'app.series.publicity-share-email' | translate }}</div>
         </ng-template>
         <ng-template #contentTemplate>
           <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
-          <div style="text-align: center;"><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
-          <div style="text-align: center">{{ seriesInfo?.name }}</div>
+          <div style="text-align: center;margin-top: 1.5rem" *ngIf ="languageVersion == 'zh-CN'" ><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+          <div style="text-align: center;" *ngIf ="languageVersion == 'en-US'" >
+            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small" style="margin-top: 1.5rem">
+            <button nz-button nzType="primary"  nzSize="small" style="margin-top: 1.5rem" (click)="shareEmail()">Share</button>
+          </div>
+          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
       <div *ngIf="publicityType == 'poster'">
@@ -135,7 +141,7 @@
 
 
 
-      <nz-tabset>
+      <nz-tabset [nzSelectedIndex]="tabIndex">
         <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="sample()" [nzDisabled]="sampleDisabled">
           <div class="program-panel">
             <ul class="program-list">

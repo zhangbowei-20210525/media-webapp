@@ -23,6 +23,7 @@ import { PublicityComponent } from './details/publicity/publicity.component';
 import { TapeComponent } from './details/tape/tape.component';
 import { EditTapeInfoComponent } from './components/edit-tape-info/edit-tape-info.component';
 import { EditSeriesInfoComponent } from './components/edit-series-info/edit-series-info.component';
+import { HttpClientJsonpModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { EditSeriesInfoComponent } from './components/edit-series-info/edit-seri
     SeriesRoutingModule,
     PdfViewerModule,
     SharedModule,
+    HttpClientJsonpModule,
   ],
   entryComponents: [
     AddSeriesInfoComponent,
