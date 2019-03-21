@@ -124,4 +124,16 @@ export class AccountService {
   bindWechatValidate(code: string) {
     return this.http.post<any>('/api/v1/users/login_info/wechat', { code });
   }
+
+  emailRegister(email: string, password: string, nickname: string) {
+    return this.http.post('/api/v1/register/email', { email, password, nickname }, { params: { _allow_anonymous: '' } });
+  }
+
+  emailValidate(email: string, password: string) {
+    return this.http.post<any>('/api/v1/login/email', { email, password }, { params: { _allow_anonymous: '' } });
+  }
+
+  emailActivate(token: string) {
+    return this.http.post<any>('/api/v1/activate/email', { email_token: token }, { params: { _allow_anonymous: '' } });
+  }
 }

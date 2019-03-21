@@ -2,34 +2,35 @@
 
   <section class="block clearfix">
     <div class="block-header">
-      <div class="block-title">我的团队</div>
+      <div class="block-title">{{ 'app.teams.my-teams' | translate }}</div>
       <div class="block-options">
         <nz-dropdown>
-          <button nz-button nz-dropdown>切换企业<i nz-icon type="down"></i></button>
+          <button nz-button nz-dropdown>{{ 'app.teams.switch-teams' | translate }}<i nz-icon type="down"></i></button>
           <ul nz-menu>
             <li nz-menu-item *ngFor="let cmp of companys">
               <a (click)="switchCompany(cmp.id, cmp.company_name)">{{ cmp.company_name }}</a>
             </li>
           </ul>
         </nz-dropdown>
-        <button nz-button (click)="editCompany()">编辑</button>
-        <button nz-button (click)="addCompany()">新建</button>
+        <button nz-button (click)="editCompany()">{{ 'global.edit' | translate }}</button>
+        <button nz-button (click)="addCompany()">{{ 'global.create' | translate }}</button>
       </div>
     </div>
     <div class="block-content">
       <div class="company-info">
         <h2 class="company-full-name">{{ currentCompany?.company_full_name }}</h2>
-        <p>企业简称：{{ currentCompany?.company_name }}</p>
-        <p>企业简介：{{ currentCompany?.introduction }}</p>
+        <p>{{ 'app.teams.company-abbreviation' | translate }}：{{ currentCompany?.company_name }}</p>
+        <p>{{ 'app.teams.company-desc' | translate }}：{{ currentCompany?.introduction }}</p>
       </div>
     </div>
   </section>
 
   <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany">
     <div class="block-header">
-      <div class="block-title">部门管理</div>
+      <div class="block-title">{{ 'app.teams.department-manage' | translate }}</div>
       <div class="block-options">
-        <button nz-button [routerLink]="'/manage/teams/roles'"><i nz-icon type="setting" theme="outline"></i> 配置角色</button>
+        <button nz-button [routerLink]="'/manage/teams/roles'"><i nz-icon type="setting"
+            theme="outline"></i>{{ 'app.teams.option-role' | translate }}</button>
       </div>
     </div>
     <div class="block-content">
@@ -39,7 +40,8 @@
             <ng-template #nzTreeTemplate let-node>
               <span class="custom-node" [class.active]="activedNode?.key===node.key">
                 <span>
-                  <i nz-icon class="folder-icon" [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+                  <i nz-icon class="folder-icon" [type]="node.isExpanded ? 'folder-open' : 'folder'"
+                    (click)="openFolder(node)"></i>
                   <span class="folder-name text-ellipsis">{{node.title}}</span>
                   <nz-dropdown [nzTrigger]="'click'">
                     <!-- <a nz-dropdown>
@@ -47,9 +49,11 @@
                     </a> -->
                     <span nz-dropdown class="folder-operation"><i nz-icon type="ellipsis" theme="outline"></i></span>
                     <ul nz-menu>
-                      <li nz-menu-item (click)="addDepartment(node.key)">添加子部门</li>
-                      <li nz-menu-item>修改名称</li>
-                      <li nz-menu-item (click)="deleteDepartment(node.key, node.title)">删除</li>
+                      <li nz-menu-item (click)="addDepartment(node.key)">
+                        {{ 'app.teams.add-department' | translate }}</li>
+                      <!-- <li nz-menu-item>修改名称</li> -->
+                      <li nz-menu-item (click)="deleteDepartment(node.key, node.title)">
+                        {{ 'global.delete' | translate }}</li>
                       <li nz-menu-item nzDisabled>id: {{ node.key }}</li>
                     </ul>
                   </nz-dropdown>
@@ -98,11 +102,12 @@
   <ng-template #defaultCompany>
     <div class="block">
       <div class="block-header">
-        <div class="block-title">部门管理</div>
+        <div class="block-title">{{ 'app.teams.department-manage' | translate }}</div>
       </div>
       <div class="block-content">
         <div style="min-height: 30rem;">
-        <span>使用部门管理请 <a (click)="addCompany()">新建</a> 企业，或切换到其他企业</span>
+          <!-- <span>使用部门管理请 <a (click)="addCompany()">新建</a> 企业，或切换到其他企业</span> -->
+          <span>{{ 'app.teams.add-department-remind' | translate }}</span>
         </div>
       </div>
     </div>

@@ -21,6 +21,8 @@ import { AddSourceComponent } from './components/add-source/add-source.component
 import { AddRightComponent } from './components/add-right/add-right.component';
 import { PublicityComponent } from './details/publicity/publicity.component';
 import { TapeComponent } from './details/tape/tape.component';
+import { EditTapeInfoComponent } from './components/edit-tape-info/edit-tape-info.component';
+import { EditSeriesInfoComponent } from './components/edit-series-info/edit-series-info.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { TapeComponent } from './details/tape/tape.component';
     AddRightComponent,
     PublicityComponent,
     TapeComponent,
+    EditTapeInfoComponent,
+    EditSeriesInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +60,8 @@ import { TapeComponent } from './details/tape/tape.component';
     AddPublicityComponent,
     AddSourceComponent,
     AddRightComponent,
+    EditTapeInfoComponent,
+    EditSeriesInfoComponent,
   ]
 })
 export class SeriesModule { }

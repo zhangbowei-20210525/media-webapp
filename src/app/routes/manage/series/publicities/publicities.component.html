@@ -1,3 +1,14 @@
+<div>
+    <p class="clearfix">
+      <button nz-button nzType="default" class="rf" (click)="addPublicity()">{{ 'app.series.add-publicity' | translate }}</button>
+    </p>
+  </div>
+  <ng-template #publicityOk>
+      <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
+          {{ 'app.series.upload-publicity' | translate }}
+        </label>
+        <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
+    </ng-template>
 <div *ngIf="isLoaded" [@fadeIn]>
   <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
     [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
@@ -5,14 +16,14 @@
       <tr>
         <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
-        <th style="text-align: center">节目</th>
-        <th style="text-align: center">样片</th>
-        <th style="text-align: center">片花</th>
-        <th style="text-align: center">先导片</th>
-        <th style="text-align: center">海报</th>
-        <th style="text-align: center">剧照</th>
-        <th style="text-align: center">PDF</th>
-        <th style="text-align: center">操作</th>
+        <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.sample' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.feature' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.trailer' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.poster' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.still' | translate }}</th>
+        <th style="text-align: center">{{ 'app.series.pdf' | translate }}</th>
+        <!-- <th style="text-align: center">操作</th> -->
       </tr>
     </thead>
     <tbody>
@@ -27,9 +38,9 @@
         <td style="text-align: center">{{ data.poster }}</td>
         <td style="text-align: center">{{ data.still }}</td>
         <td style="text-align: center">{{ data.pdf }}</td>
-        <td style="text-align: center">
+        <!-- <td style="text-align: center">
           <a><i nz-icon type="delete" theme="outline" style="font-size: 14px"></i></a>
-        </td>
+        </td> -->
       </tr>
     </tbody>
   </nz-table>

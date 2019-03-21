@@ -9,6 +9,7 @@ import { TapeDownloadComponent } from './components/tape-download/tape-download.
 import { HistoricRecordComponent } from './historic-record/historic-record.component';
 import { TransmitScheduleComponent } from './components/transmit-schedule/transmit-schedule.component';
 import { DownloadRecordComponent } from './download-record/download-record.component';
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DownloadRecordComponent } from './download-record/download-record.compo
     TransmitRoutingModule,
     NgZorroAntdModule,
     FormsModule,
+    SharedModule
   ],
   entryComponents: [
     TapeDownloadComponent,

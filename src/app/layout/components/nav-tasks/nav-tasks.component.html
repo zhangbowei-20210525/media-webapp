@@ -1,7 +1,7 @@
 <div class="tasks-box">
   <div class="tasks-tab-panel">
-    <nz-tabset nzAnimated="false" (nzSelectChange)="onTabChange($event)">
-      <nz-tab nzTitle="物料上传">
+    <nz-tabset nzAnimated="false">
+      <nz-tab [nzTitle]="'app.task.material-upload' | translate">
         <div class="tasks">
           <div class="t-list scrollbar" *ngIf="uploads.length > 0; else none">
             <div class="t-card" *ngFor="let item of uploads">
@@ -16,7 +16,7 @@
             </div>
           </div>
           <ng-template #none>
-            <div class="text-hint none">暂无上传物料</div>
+            <div class="text-hint none">{{ 'global.no-data' | translate }}</div>
           </ng-template>
         </div>
       </nz-tab>

@@ -26,6 +26,7 @@ export class DownloadRecordComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.pgination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = +params.get('id');
       this.loadDownloadRecords();

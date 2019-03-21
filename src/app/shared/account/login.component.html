@@ -3,34 +3,30 @@
     <h1 class="title lf">{{ 'app.login' | translate }}</h1>
     <i nz-icon type="close" theme="outline" class="rf" (click)="close()"></i>
   </div>
-  <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()" *ngIf="mode == 'phone'; else wxLoginMode">
+  <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()"
+    *ngIf="mode == 'phone' && languageVersion == 'zh-CN'">
     <nz-form-item>
       <nz-form-control>
         <nz-input-group>
           <input type="text" nz-input formControlName="phone" [placeholder]="'validation.phone-number' | translate">
         </nz-input-group>
-        <nz-form-explain *ngIf="phone.dirty && phone.errors">{{ 'validation.phone-number.required' | translate }}</nz-form-explain>
+        <nz-form-explain *ngIf="phone.dirty && phone.errors">{{ 'validation.phone-number.required' | translate }}
+        </nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-control [nzSpan]="12">
-        <!-- <nz-input-group [nzPrefix]="prefixLock">
-          <input type="password" nz-input formControlName="password" placeholder="请输入密码">
-        </nz-input-group>
-        <nz-form-explain *ngIf="loginForm.get('password').dirty && loginForm.get('password').errors">请输入密码</nz-form-explain> -->
         <nz-input-group>
-          <input type="text" nz-input formControlName="captcha" [placeholder]="'validation.captcha' | translate" id="captcha">
+          <input type="text" nz-input formControlName="captcha" [placeholder]="'validation.captcha' | translate"
+            id="captcha">
         </nz-input-group>
-        <nz-form-explain *ngIf="captcha.dirty && captcha.errors">{{ 'validation.captcha.required' | translate }}</nz-form-explain>
+        <nz-form-explain *ngIf="captcha.dirty && captcha.errors">{{ 'validation.captcha.required' | translate }}
+        </nz-form-explain>
       </nz-form-control>
       <nz-form-control [nzSpan]="10" [nzOffset]="2">
-        <button nz-button 
-        (click)="getCaptcha($event)" 
-        [nzBlock]="true" 
-        [nzLoading]="isLoadingCaptcha" 
-        [disabled]="isCaptchaSended"
-        >
-        {{ isCaptchaSended ? ('app.login.regain-captcha' | translate:{'count': captchaSendCountDown}) : ('app.login.get-captcha' | translate) }}
+        <button nz-button (click)="getCaptcha($event)" [nzBlock]="true" [nzLoading]="isLoadingCaptcha"
+          [disabled]="isCaptchaSended">
+          {{ isCaptchaSended ? ('app.login.regain-captcha' | translate:{'count': captchaSendCountDown}) : ('app.login.get-captcha' | translate) }}
         </button>
       </nz-form-control>
     </nz-form-item>
@@ -40,22 +36,94 @@
           <span>{{ 'app.login.remember-me' | translate }}</span>
         </label>
         <a class="login-form-forgot" class="login-form-forgot">{{ 'app.login.forget-password' | translate }}</a>
-        <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isLoggingIn">{{ 'app.login.login' | translate }}</button>
-        <!-- Or
-        <a href="">register now!</a> -->
+        <button nz-button class="login-form-button" [nzType]="'primary'"
+          [nzLoading]="isLoggingIn">{{ 'app.login.login' | translate }}</button>
       </nz-form-control>
     </nz-form-item>
   </form>
-  <ng-template #wxLoginMode>
+
+  <form nz-form [formGroup]="emailRegisterForm" class="login-form" *ngIf="mode == 'emailRegister'">
+    <nz-form-item>
+      <nz-form-control [nzSm]="24">
+        <input nz-input [placeholder]="'validation.nickname' | translate" id="nickname" formControlName="nickname">
+        <nz-form-explain *ngIf="emailRegisterForm.get('nickname').dirty && emailRegisterForm.get('nickname').errors">
+          {{ 'validation.nickname' | translate }}</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzSm]="24">
+        <input nz-input [placeholder]="'validation.email' | translate" id="emailAddress" formControlName="emailAddress">
+        <nz-form-explain
+          *ngIf="emailRegisterForm.get('emailAddress').dirty && emailRegisterForm.get('emailAddress').errors">
+          {{ 'validation.email' | translate }}
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzSm]="24">
+        <input nz-input [placeholder]="'validation.password' | translate" id="emailPassword" formControlName="emailPassword">
+        <nz-form-explain
+          *ngIf="emailRegisterForm.get('emailPassword').dirty && emailRegisterForm.get('emailPassword').errors">
+          {{ 'validation.password' | translate }}
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <form nz-form [formGroup]="emailLogInForm" class="login-form" *ngIf="mode == 'emailLogIn'">
+    <nz-form-item>
+      <nz-form-control [nzSm]="24">
+        <input nz-input id="email" formControlName="email" [placeholder]="'validation.email' | translate">
+        <nz-form-explain *ngIf="emailLogInForm.get('email').dirty && emailLogInForm.get('email').errors">
+          {{ 'validation.email' | translate }}</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzSm]="24">
+        <nz-input-group [nzSuffix]="suffixTemplate">
+          <input [type]="passwordVisible?'text':'password'" nz-input [placeholder]="'validation.password' | translate"
+            id="password" formControlName="password">
+        </nz-input-group>
+        <ng-template #suffixTemplate>
+          <i nz-icon [nzType]="passwordVisible? 'eye-invisible':'eye'" (click)="passwordVisible = !passwordVisible"></i>
+        </ng-template>
+        <!-- <input nz-input placeholder="请输入密码" id="password" formControlName="password"> -->
+        <nz-form-explain *ngIf="emailLogInForm.get('password').dirty && emailLogInForm.get('password').errors">
+          {{ 'validation.password' | translate }}</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <div style="text-align: center;" *ngIf="mode == 'emailRegister'">
+    <!-- <button nz-button nzType="primary">登录</button> -->
+    <button nz-button nzType="primary" class="login-form-button"
+      (click)="emailRegisterSubmit()">{{ 'app.login.register' | translate }}</button>
+    <div style="margin-top: 2rem">{{ 'app.login.account-exist' | translate }}<a
+        (click)="switchLoginMode('emailLogIn')">{{ 'app.login.login-now' | translate }}</a></div>
+  </div>
+  <div style="text-align: center;" *ngIf="mode == 'emailLogIn'">
+    <!-- <button nz-button nzType="primary">登录</button> -->
+    <button nz-button nzType="primary" class="login-form-button"
+      (click)="emailLoginSubmit()">{{ 'app.login.login' | translate }}</button>
+    <div style="margin-top: 2rem">{{ 'app.login.account-no-exist' | translate }}<a
+        (click)="switchLoginMode('emailRegister')">{{ 'app.login.register' | translate }}</a></div>
+  </div>
+
+  <div *ngIf="mode == 'wx'">
     <div id="wx_login_container"></div>
-  </ng-template>
-  <a class="swicth-wxLogin" (click)="switchLoginMode('wx')" [hidden]="mode == 'wx'">
+  </div>
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('wx')" [hidden]="mode == 'wx'"
+    *ngIf="languageVersion == 'zh-CN'">
     <i nz-icon type="wechat" theme="outline"></i>
     <span>{{ 'app.login.sign-in-with-wechat' | translate }}</span>
   </a>
-  <a class="swicth-wxLogin" (click)="switchLoginMode('phone')" [hidden]="mode == 'phone'">
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('phone')" [hidden]="mode == 'phone'"
+    *ngIf="languageVersion == 'zh-CN'">
     <i nz-icon type="mobile" theme="outline"></i>
     <span>{{ 'app.login.sign-in-with-mobile' | translate }}</span>
+  </a>
+  <a class="swicth-wxLogin" style="margin-top: 1rem" (click)="switchLoginMode('emailRegister')"
+    [hidden]="mode == 'emailRegister' || mode == 'emailLogIn'" *ngIf="languageVersion == 'zh-CN'">
+    <i nz-icon type="mail" theme="outline"></i>
+    <span>{{ 'app.login.sign-in-with-email' | translate }}</span>
   </a>
   <!-- <div id="wx_login_container"></div> -->
 </div>

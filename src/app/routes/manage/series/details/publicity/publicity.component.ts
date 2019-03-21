@@ -5,7 +5,7 @@ import { SeriesService } from '../../series.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap, finalize } from 'rxjs/operators';
 import { PublicityService } from './publicity.service';
-import { NzTabChangeEvent, NzNotificationService } from 'ng-zorro-antd';
+import { NzTabChangeEvent, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { QueueUploader } from '@shared/upload';
 import { LocalRequestService } from '@shared/locals';
 
@@ -17,6 +17,8 @@ declare type MaterielType = 'sample' | 'feature' | 'trailer' | 'poster' | 'still
   styleUrls: ['./publicity.component.less']
 })
 export class PublicityComponent implements OnInit {
+
+  [key: string]: any;
 
   readonly materielTypes = ['sample', 'feature', 'trailer', 'poster', 'still', 'pdf'] as MaterielType[]; // 根据视图的顺序
 
@@ -33,6 +35,8 @@ export class PublicityComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private uploader: QueueUploader,
+    private modal: NzModalService,
+    private seriesService: SeriesService,
     private local: LocalRequestService
   ) {
     this.materielTypes.forEach(item => {
@@ -153,5 +157,28 @@ export class PublicityComponent implements OnInit {
       console.log(error);
     });
   }
+
+  deletePublicity(id: number) {
+    this.modal.confirm({
+      nzTitle: '是否删除本条节目信息?',
+      nzOkText: '删除',
+      nzCancelText: '取消',
+      nzOkType: 'danger',
+      nzOnOk: () => this.deletePublicityAgreed(id)
+    });
+  }
+
+  deletePublicityAgreed = (id: number) => new Promise((resolve) => {
+    this.seriesService.deletePublicity(this.publicityId,  this.materielTypes[this.selectedIndex], id).subscribe(res => {
+      this.message.success(this.translate.instant('global.delete-success'));
+      this.fetchMateriels(this.materielTypes[this.selectedIndex]);
+      resolve();
+    }, error => {
+      if (error.message) {
+        this.message.error(error.message);
+      }
+      resolve(false);
+    });
+  })
 
 }
