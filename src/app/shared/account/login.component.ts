@@ -189,7 +189,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.service.emailValidate(this.emailLogInForm.value['email'], this.emailLogInForm.value['password']).subscribe(result => {
         this.message.success(this.translate.instant('app.login.email-login-successfully'));
         this.settings.user = result.auth;
-        console.log(this.settings.user);
         this.token.set({
           token: result.token,
           time: +new Date

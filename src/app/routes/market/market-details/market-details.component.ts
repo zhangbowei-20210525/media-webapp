@@ -1,19 +1,20 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { SeriesService } from '../../series.service';
 import { switchMap, tap, map } from 'rxjs/operators';
-import { PaginationDto } from '@shared';
+import { PaginationDto, AccountService } from '@shared';
 import { I18nService } from '@core';
-import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { ITokenService, DA_SERVICE_TOKEN, SimpleTokenModel } from '@delon/auth';
+import { SeriesService } from 'app/routes/manage/series/series.service';
+import { MarketService } from '../market.service';
 
 declare function videojs(selector: string);
 
 @Component({
-  selector: 'app-publicity-details',
-  templateUrl: './publicity-details.component.html',
-  styleUrls: ['./publicity-details.component.less']
+  selector: 'app-market-details',
+  templateUrl: './market-details.component.html',
+  styleUrls: ['./market-details.component.less']
 })
-export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   id: number;
   player: any;
@@ -82,12 +83,15 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   emailAddress: string;
   tabIndex: number;
   fixationInfo: any; // 可能是用户信息
+  isLoggedIn = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private seriesService: SeriesService,
+    private marketService: MarketService,
     private i18n: I18nService,
+    private accountService: AccountService,
+    @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) { }
 
   ngOnInit() {
@@ -109,30 +113,9 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.posterIndex = +params.get('posterIndex');
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
-        return this.seriesService.publicityDetail(this.id);
+        return this.marketService.publicityDetail(this.id);
       })).subscribe(res => {
-        this.seriesService.getUserinfo(this.id).subscribe(cpd => {
-          this.userinfo = cpd;
-          if (this.userinfo.material.sample === 0) {
-            this.sampleDisabled = true;
-          }
-          if (this.userinfo.material.feature === 0) {
-            this.featureDisabled = true;
-          }
-          if (this.userinfo.material.trailer === 0) {
-            this.trailerDisabled = true;
-          }
-          if (this.userinfo.material.poster === 0) {
-            this.posterDisabled = true;
-          }
-          if (this.userinfo.material.still === 0) {
-            this.stillDisabled = true;
-          }
-          if (this.userinfo.material.pdf === 0) {
-            this.pdfDisabled = true;
-          }
-        });
-        this.seriesService.getSeriesDetailsInfo(this.sid).subscribe(cpd => {
+        this.marketService.getSeriesDetailsInfo(this.sid).subscribe(cpd => {
           this.seriesInfo = cpd;
         });
         this.publicityName = res.name;
@@ -181,7 +164,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getSampleInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
+    this.marketService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -201,7 +184,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getFeatureInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
+    this.marketService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -221,7 +204,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getTrailerInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
+    this.marketService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -241,7 +224,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getPosterInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+    this.marketService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -259,7 +242,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getStillInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+    this.marketService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -277,7 +260,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   getPdfInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
+    this.marketService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -466,19 +449,24 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   getTwoDimensionalCode() {
+    this.token.change().subscribe(t => {
+      this.isLoggedIn = this.checkSimple(t);
+    });
        // zh-CN en-US
-       this.languageVersion = this.i18n.currentLang;
-       console.log(this.languageVersion);
-       if (this.languageVersion === 'zh-CN') {
-        this.seriesService.getTwoDimensionalCode(this.id)
-        .pipe(map(x => x = `data:image/png;base64,${x}`))
-          .subscribe(res => {
-            this.twoDimensionalCode = res;
-          });
-       }
-       if (this.languageVersion === 'en-US') {
-       }
-
+       if (this.isLoggedIn == false) {
+        this.accountService.openLoginModal();
+        this.router.navigate([`/d/${this.id}`, { publicityName: this.publicityName, sid: this.sid, tabIndex: this.tabIndex}]);
+      } else {
+        this.languageVersion = this.i18n.currentLang;
+        console.log(this.languageVersion);
+        if (this.languageVersion === 'zh-CN') {
+         this.marketService.getTwoDimensionalCode(this.id)
+         .pipe(map(x => x = `data:image/png;base64,${x}`))
+           .subscribe(res => {
+             this.twoDimensionalCode = res;
+           });
+        }
+      }
   }
 
   tabSelectChange(event) {
@@ -486,9 +474,25 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   shareEmail() {
-    console.log(this.tabIndex);
+    this.token.change().subscribe(t => {
+      this.isLoggedIn = this.checkSimple(t);
+    });
+    if (this.isLoggedIn == false) {
+      this.accountService.openLoginModal();
+    }
+    this.accountService.openLoginModal();
     // tslint:disable-next-line:max-line-length
-    this.seriesService.shareEmail(this.emailAddress, `http://192.168.1.118:8888/d/${this.id}`, this.publicityName, this.sid, this.tabIndex).subscribe();
+    this.marketService.shareEmail(this.emailAddress, `http://192.168.1.118:8888/d/${this.id}`, this.publicityName, this.sid, this.tabIndex).subscribe(result => {
+      this.accountService.openLoginModal();
+    }
+
+    
+      
+    );
+  }
+
+  checkSimple(model: SimpleTokenModel): boolean {
+    return model != null && typeof model.token === 'string' && model.token.length > 0;
   }
 
 }

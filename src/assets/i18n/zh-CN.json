@@ -163,7 +163,7 @@
     "validation.phone-number.required": "请输入手机号！",
     "validation.captcha.required": "请输入验证码！",
     "validation.email": "请输入邮箱地址",
-    "validation.password": "请输入验证码",
+    "validation.password": "请输入密码",
     "validation.nickname": "请输入昵称",
     "global.create": "新建",
     "global.edit": "编辑",

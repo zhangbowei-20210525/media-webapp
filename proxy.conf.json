@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "http://i358.net:8000",
+        "target": "http://192.168.1.123:8000",
         "secure": false
     }
 }

@@ -59,7 +59,6 @@
               <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
                 nzTrigger="click"></i>
             </a>
-          </div>
         </div>
         <ng-template #titleTemplate>
           <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
@@ -98,7 +97,6 @@
               <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
                 nzTrigger="click"></i>
             </a>
-          </div>
         </div>
         <ng-template #titleTemplate>
           <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
@@ -137,7 +135,6 @@
               <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
                 nzTrigger="click"></i>
             </a>
-          </div>
         </div>
         <ng-template #titleTemplate>
           <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
@@ -217,7 +214,7 @@
   </div>
 
   <div class="right-view">
-    <div style="display: inline-block;margin-top: 20px; margin-left: 20px; float: left; width: 38px; height: 38px;">
+    <!-- <div style="display: inline-block;margin-top: 20px; margin-left: 20px; float: left; width: 38px; height: 38px;">
       <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;"></nz-avatar>
     </div>
     <div style="display: inline-block;width: 270px;margin-top: 20px;margin-left: 12px">
@@ -228,7 +225,7 @@
         <span>所属公司：{{userinfo?.company?.full_name}}</span>
         <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
       </div>
-    </div>
+    </div> -->
     <div class="detail-tabs">
       <nz-tabset>
         <nz-tab nzTitle="基本信息">
