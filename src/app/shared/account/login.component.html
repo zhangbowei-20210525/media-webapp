@@ -1,7 +1,7 @@
 <div class="login-panel">
   <div class="title-bar">
     <h1 class="title lf">{{ 'app.login' | translate }}</h1>
-    <i nz-icon type="close" theme="outline" class="rf" (click)="close()"></i>
+    <i nz-icon type="close" theme="outline" class="rf" (click)="close(false)"></i>
   </div>
   <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submit()"
     *ngIf="mode == 'phone' && languageVersion == 'zh-CN'">
