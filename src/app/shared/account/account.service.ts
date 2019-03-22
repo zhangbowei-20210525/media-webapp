@@ -17,7 +17,7 @@ export class AccountService {
   static KEY = '_accountService';
 
   loginRef: {
-    modalRef: ComponentRef<{ close: () => void, createWxLoginQRCode: () => void }>
+    modalRef: ComponentRef<{ close: (state: boolean) => void, createWxLoginQRCode: () => void }>
   };
 
   constructor(
@@ -35,21 +35,28 @@ export class AccountService {
   }
 
   openLoginModal() {
-    const config = this.getCustomerOverlayConfig();
-    let overlayRef = this.overlay.create(config);
-    let modalRef = overlayRef.attach(new ComponentPortal(LoginComponent));
-    modalRef.instance.service = this;
-    modalRef.instance.$close.subscribe(() => {
-      if (modalRef) {
-        overlayRef.dispose();
-        overlayRef = null;
-        modalRef = null;
-        this.loginRef = null;
-        this.detach();
-      }
+    return new Promise((resolve, reject) => {
+      const config = this.getCustomerOverlayConfig();
+      let overlayRef = this.overlay.create(config);
+      let modalRef = overlayRef.attach(new ComponentPortal(LoginComponent));
+      modalRef.instance.service = this;
+      modalRef.instance.$close.subscribe(state => {
+        if (modalRef) {
+          overlayRef.dispose();
+          overlayRef = null;
+          modalRef = null;
+          this.loginRef = null;
+          this.detach();
+        }
+        if (state) {
+          resolve();
+        } else {
+          reject();
+        }
+      });
+      this.loginRef = { modalRef: modalRef };
+      this.attach();
     });
-    this.loginRef = { modalRef: modalRef };
-    this.attach();
   }
 
   openBindPhoneModal() {

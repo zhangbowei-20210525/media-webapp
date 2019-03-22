@@ -57,7 +57,7 @@ export class DefaultInterceptor implements HttpInterceptor {
                 if (event instanceof HttpResponse) {
                     const body: any = event.body;
                     if (body && body.code !== 0) {
-                        if (body.code === 11001) {
+                        if (body.code === 10101) { // 11001
                             if (body.message) {
                                 this.errorNotify(body.message);
                             }

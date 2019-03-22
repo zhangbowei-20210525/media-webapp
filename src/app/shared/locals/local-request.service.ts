@@ -17,6 +17,6 @@ export class LocalRequestService {
   }
 
   status(address: string) {
-    return this.http.get(`http://${address}/status`, { params: { _allow_anonymous: '' } });
+    return this.http.get(`http://${address}/status`, { params: { _allow_anonymous: '', _allow_no_language: '' } });
   }
 }

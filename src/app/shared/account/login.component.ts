@@ -25,7 +25,7 @@ declare const WxLogin: any;
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  $close: Subject<never>;
+  $close: Subject<boolean>;
   service: AccountService;
   form: FormGroup;
   emailRegisterForm: FormGroup;
@@ -89,8 +89,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.interval$) { clearInterval(this.interval$); }
   }
 
-  close() {
-    this.$close.next();
+  close(state: boolean) {
+    this.$close.next(state);
   }
 
   getCaptcha(e: MouseEvent) {
@@ -166,8 +166,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             token: result.token,
             time: +new Date
           });
-          this.close();
-          this.router.navigate([`/manage/series`]);
+          this.close(true);
+          // this.router.navigate([`/manage/series`]);
         }, error => {
 
         });
@@ -193,8 +193,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           token: result.token,
           time: +new Date
         });
-        this.close();
-        this.router.navigate([`/manage/series`]);
+        this.close(true);
+        // this.router.navigate([`/manage/series`]);
       }, error => {
         console.error(error);
       });
