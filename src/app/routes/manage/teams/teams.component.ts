@@ -254,10 +254,7 @@ export class TeamsComponent implements OnInit {
 
   removeNode(nodes: NzTreeNodeOptions[], key: string) {
     this.ts.removeNode(nodes, (item, index) => {
-      if (item.key === key) {
-        return true;
-      }
-      return false;
+      return item.key === key;
     });
   }
 
