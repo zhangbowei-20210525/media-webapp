@@ -488,7 +488,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   shareEmail() {
     console.log(this.tabIndex);
     // tslint:disable-next-line:max-line-length
-    this.seriesService.shareEmail(this.emailAddress, `http://192.168.1.118:8888/d/${this.id}`, this.publicityName, this.sid, this.tabIndex).subscribe();
+    this.seriesService.shareEmail(this.emailAddress, `http://test1.bctop.net/d/${this.id}`, this.publicityName, this.sid).subscribe();
   }
 
 }

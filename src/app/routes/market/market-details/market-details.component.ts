@@ -95,6 +95,7 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
   ) { }
 
   ngOnInit() {
+    this.languageVersion = this.i18n.currentLang;
     this.ishidden = false;
     this.samplePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
     this.featurePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
@@ -106,7 +107,6 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
       switchMap((params: ParamMap) => {
         this.id = +params.get('id');
         this.sid = +params.get('sid');
-        this.tabIndex = +params.get('tabIndex');
         this.sampleIndex = +params.get('sampleIndex');
         this.featureIndex = +params.get('featureIndex');
         this.trailerIndex = +params.get('trailerIndex');
@@ -115,6 +115,8 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
         this.pdfIndex = +params.get('pdfIndex');
         return this.marketService.publicityDetail(this.id);
       })).subscribe(res => {
+        console.log(res);
+        this.userinfo = res;
         this.marketService.getSeriesDetailsInfo(this.sid).subscribe(cpd => {
           this.seriesInfo = cpd;
         });
@@ -365,7 +367,7 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
     this.featureIndex = i - 1;
     this.publicityType = 'feature';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid}], { relativeTo: this.route });
+    { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   trailerNavigateToDetail(i: number, id: number) {
@@ -452,21 +454,22 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
     this.token.change().subscribe(t => {
       this.isLoggedIn = this.checkSimple(t);
     });
-       // zh-CN en-US
-       if (this.isLoggedIn == false) {
-        this.accountService.openLoginModal();
-        this.router.navigate([`/d/${this.id}`, { publicityName: this.publicityName, sid: this.sid, tabIndex: this.tabIndex}]);
-      } else {
-        this.languageVersion = this.i18n.currentLang;
-        console.log(this.languageVersion);
-        if (this.languageVersion === 'zh-CN') {
-         this.marketService.getTwoDimensionalCode(this.id)
-         .pipe(map(x => x = `data:image/png;base64,${x}`))
-           .subscribe(res => {
-             this.twoDimensionalCode = res;
-           });
-        }
+    // zh-CN en-US
+    if (this.isLoggedIn == false) {
+      this.accountService.openLoginModal().then(() => {
+        this.router.navigate([`/d/${this.id}`, { publicityName: this.publicityName, sid: this.sid }]);
+      });
+    } else {
+      this.languageVersion = this.i18n.currentLang;
+      console.log(this.languageVersion);
+      if (this.languageVersion === 'zh-CN') {
+        this.marketService.getTwoDimensionalCode(this.id)
+          .pipe(map(x => x = `data:image/png;base64,${x}`))
+          .subscribe(res => {
+            this.twoDimensionalCode = res;
+          });
       }
+    }
   }
 
   tabSelectChange(event) {
@@ -478,17 +481,13 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
       this.isLoggedIn = this.checkSimple(t);
     });
     if (this.isLoggedIn == false) {
-      this.accountService.openLoginModal();
+      this.accountService.openLoginModal().then(() => {
+        this.router.navigate([`/d/${this.id}`, { publicityName: this.publicityName, sid: this.sid }]);
+      });
+    } else {
+      // tslint:disable-next-line:max-line-length
+      this.marketService.shareEmail(this.emailAddress, `http://test1.bctop.net/d/${this.id}`, this.publicityName, this.sid).subscribe();
     }
-    this.accountService.openLoginModal();
-    // tslint:disable-next-line:max-line-length
-    this.marketService.shareEmail(this.emailAddress, `http://192.168.1.118:8888/d/${this.id}`, this.publicityName, this.sid, this.tabIndex).subscribe(result => {
-      this.accountService.openLoginModal();
-    }
-
-    
-      
-    );
   }
 
   checkSimple(model: SimpleTokenModel): boolean {

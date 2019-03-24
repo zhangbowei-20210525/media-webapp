@@ -215,10 +215,8 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/wechat/share_code/${id}`);
   }
 
-  shareEmail(email: string, url: string, publicity_name: string, sid: number, tabIndex: number) {
-    console.log(email);
-    console.log(url);
+  shareEmail(email: string, url: string, publicity_name: string, sid: number) {
     // tslint:disable-next-line:max-line-length
-    return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any, tabIndex: tabIndex as any} });
+    return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any} });
   }
 }

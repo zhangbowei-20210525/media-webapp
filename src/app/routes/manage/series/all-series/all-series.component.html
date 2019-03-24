@@ -38,7 +38,7 @@
         <td style="text-align: center">
           <span><a [routerLink]="['/manage/series/d', data.id, 'publicityd']">{{ 'app.series.publicity' | translate }}</a></span>
           <span><a [routerLink]="['/manage/series/d', data.id, 'tape']" style="margin-left: 1rem">{{ 'app.series.source' | translate }}</a></span>
-          <!-- <span><a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span> -->
+          <span><a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span>
         </td>
         <td style="text-align: center">
           <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline"></i></a>

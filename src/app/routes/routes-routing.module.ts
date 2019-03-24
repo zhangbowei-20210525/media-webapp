@@ -35,7 +35,7 @@ const routes: Routes = [
           },
           { path: 'series', loadChildren: './manage/series/series.module#SeriesModule' },
           { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
-          // { path: 'customers', loadChildren: './manage/customer.module#CustomerModule' },
+          { path: 'customers', loadChildren: './manage/customers/customers.module#CustomersModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
           { path: 'account-center', component: PersonalCenterComponent, data: { breadcrumb: 'account' },
           children: [

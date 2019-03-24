@@ -1,0 +1,45 @@
+<div class="block clearfix fade-in-up">
+  <div class="block-content">
+        <div *ngIf="isLoaded == true">
+            <div>
+                <p class="clearfix">
+                  <button nz-button nzType="default" class="rf" (click)="addCustomer()">新增客商</button>
+                </p>
+              </div>
+          <nz-table #basicTable [nzData]="dataset" [nzPageSize]="pagination?.page_size"
+            [nzFrontPagination]="false" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count"
+            (nzPageIndexChange)="pageChange($event)">
+            <thead>
+              <tr>
+                <th>公司/个人</th>
+                <th>联系人</th>
+                <th>手机号码</th>
+                <th>客户类型</th>
+                <th>客户标签</th>
+                <!-- <th>已发行</th>
+                <th>合同总金额（元）</th> -->
+                <th>备注</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td><a routerLink="/manage/customers/d/{{data.id}}">{{data.name}}</a></td>
+                <td>{{data.license_name}}</td>
+                <td>{{data.telephone}}</td>
+                <td *ngIf="data.custom_type == 0">企业</td>
+                <td *ngIf="data.custom_type == 1">个人</td>
+                <td>{{data.tag}}</td>
+                <!-- <td>{{data.publish_num}}</td>
+                <td>{{data.total_amount}}</td> -->
+                <td>{{data.remark}}</td>
+                <td>
+                  <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+                  <a><i class="text-info" nz-icon type="delete" theme="outline" (click)="deleteCustomers(data.id)"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+  </div>
+</div>

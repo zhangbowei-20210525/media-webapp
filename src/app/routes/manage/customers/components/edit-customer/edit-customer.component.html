@@ -1,0 +1,74 @@
+<form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+        <nz-form-label nzFor="custom_type" [nzSm]="3">客商类型</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <nz-radio-group id="custom_type" formControlName="custom_type">
+                <label nz-radio nzValue="0">企业</label>
+                <label nz-radio nzValue="1">个人</label>
+            </nz-radio-group>
+            <nz-form-explain *ngIf="validateForm.get('custom_type').dirty && validateForm.get('custom_type').errors">请选择客商类型</nz-form-explain>
+        </nz-form-control>
+        <nz-form-label nzFor="tag" [nzSm]="3" nzRequired>客户标签</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入客户标签" id="tag" formControlName="tag">
+            <nz-form-explain *ngIf="validateForm.get('tag').dirty && validateForm.get('tag').errors">请输入客户标签</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzFor="name " [nzSm]="3" nzRequired>公司/个人</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入公司/个人名称" id="name" formControlName="name">
+            <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">请输入公司/个人名称</nz-form-explain>
+        </nz-form-control>
+        <nz-form-label nzFor="abbreviation" [nzSm]="3">公司简称</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入公司简称" id="abbreviation" formControlName="abbreviation">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nzFor="telephone" [nzSm]="3">联系电话</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入联系电话" id="telephone" formControlName="telephone">
+        </nz-form-control>
+        <nz-form-label nzFor="liaison_name" [nzSm]="3" nzRequired>公司联系人</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入公司联系人" id="liaison_name" formControlName="liaison_name">
+            <nz-form-explain *ngIf="validateForm.get('liaison_name').dirty && validateForm.get('liaison_name').errors">请输入公司联系人</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nzFor="phone" [nzSm]="3" nzRequired>手机号码</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入手机号码" id="phone" formControlName="phone">
+            <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors">请输入手机号码</nz-form-explain>
+        </nz-form-control>
+        <nz-form-label nzFor="wx_id" [nzSm]="3">微信</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入微信号" id="wx_id" formControlName="wx_id">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nzFor="email" [nzSm]="3">邮箱地址</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入邮箱地址" id="email" formControlName="email">
+        </nz-form-control>
+        <nz-form-label nzFor="department" [nzSm]="3">所属部门</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入所属部门" id="department" formControlName="department">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nzFor="position" [nzSm]="3">所在职位</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入所在职位" id="position" formControlName="position">
+        </nz-form-control>
+        <nz-form-label nzFor="remark" [nzSm]="3">备注</nz-form-label>
+        <nz-form-control [nzSm]="9">
+            <input nz-input placeholder="请输入备注信息" id="remark" formControlName="remark">
+        </nz-form-control>
+    </nz-form-item>
+</form>

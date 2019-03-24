@@ -105,9 +105,9 @@ getTwoDimensionalCode(id: number) {
   return this.http.get<any>(`/api/v1/wechat/share_code/${id}`, { params: { _allow_anonymous: '' } });
 }
 
-shareEmail(email: string, url: string, publicity_name: string, sid: number, tabIndex: number) {
+shareEmail(email: string, url: string, publicity_name: string, sid: number) {
   // tslint:disable-next-line:max-line-length
-  return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any, tabIndex: tabIndex as any, _allow_anonymous: ''} });
+  return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any, _allow_anonymous: ''} });
 }
 
 }
