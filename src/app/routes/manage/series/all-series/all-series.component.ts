@@ -3,7 +3,7 @@ import { NzModalService, NzMessageService, NzModalRef } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from '../series.service';
 import { PaginationDto } from '@shared';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { AddSeriesInfoComponent } from '../components/add-series-info/add-series-info.component';
 import { SeriesDto } from './dtos';
 import { fadeIn } from '@shared/animations';
@@ -53,10 +53,16 @@ export class AllSeriesComponent implements OnInit {
 
   loadSeries() {
     this.isLoading = true;
-    this.seriesService.getSeries(this.pagination)
-      .pipe(finalize(() => {
+    this.seriesService.getSeries(this.pagination).
+      pipe(finalize(() => {
         this.isLoading = false;
         this.isLoaded = true;
+      })).pipe(tap(x => {
+        x.list.forEach(f => {
+          if(f.release_date) {
+            f.release_date = f.release_date.substring(0, 10);
+          }
+        });
       }))
       .subscribe(res => {
         this.dataset = res.list;
@@ -67,7 +73,13 @@ export class AllSeriesComponent implements OnInit {
 
   fetchSeries() {
     this.isLoading = true;
-    this.seriesService.getSeries(this.pagination).pipe(finalize(() => this.isLoading = false)).subscribe(res => {
+    this.seriesService.getSeries(this.pagination).pipe(finalize(() => this.isLoading = false)).pipe(tap(x => {
+      x.list.forEach(f => {
+        if(f.release_date) {
+          f.release_date = f.release_date.substring(0, 10);
+        }
+      });
+    })).subscribe(res => {
       this.dataset = res.list;
       this.pagination = res.pagination;
       this.refreshStatus();
@@ -141,7 +153,13 @@ export class AllSeriesComponent implements OnInit {
 
   deleteSeriesAgreed = (id: number) => new Promise((resolve) => {
     this.seriesService.deleteSeries(id).subscribe(res => {
-      this.seriesService.getSeries(this.pagination).subscribe(s => {
+      this.seriesService.getSeries(this.pagination).pipe(tap(x => {
+        x.list.forEach(f => {
+          if(f.release_date) {
+            f.release_date = f.release_date.substring(0, 10);
+          }
+        });
+      })).subscribe(s => {
         this.dataset = s.list;
         this.pagination = s.pagination;
       });

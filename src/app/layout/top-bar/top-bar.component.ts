@@ -41,7 +41,9 @@ export class TopBarComponent implements OnInit {
   }
 
   login() {
-    this.accountService.openLoginModal();
+    this.accountService.openLoginModal().then(() => {
+      this.router.navigate([`/manage/series`]);
+    });
   }
 
   logout() {

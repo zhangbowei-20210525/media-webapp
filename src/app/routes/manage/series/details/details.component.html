@@ -8,7 +8,7 @@
         <nz-radio-group [(ngModel)]="category" nzSize="small">
           <label nz-radio-button nzValue="publicities" [routerLink]="'publicityd'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">{{ 'app.series.publicity' | translate }}</label>
           <label nz-radio-button nzValue="tapes" [routerLink]="'tape'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">{{ 'app.series.source' | translate }}</label>
-          <!-- <label nz-radio-button nzValue="copyrights" [routerLink]="'right'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">版权</label> -->
+          <label nz-radio-button nzValue="copyrights" [routerLink]="'right'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">版权</label>
         </nz-radio-group>
         <ng-template #publicityOk>
           <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">

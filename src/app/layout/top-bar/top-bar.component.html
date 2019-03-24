@@ -27,6 +27,9 @@
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/teams'">{{ 'menu.manage.teams' | translate }}</a>
             </li>
+            <li class="nav-item">
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/customers'">客商</a>
+            </li>
           </ul>
         </li>
         <li class="nav-item search">
@@ -55,7 +58,7 @@
             <app-nav-notify></app-nav-notify>
           </ng-template>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <nz-dropdown [nzTrigger]="'click'" nzPlacement="bottomRight">
             <a nz-dropdown>
               <i nz-icon type="global"></i>
@@ -66,7 +69,7 @@
               <li nz-menu-item *ngFor="let item of langs" [nzSelected]="item.code === settings.lang" (click)="changeLanguage(item.code)">{{item.text}}</li>
             </ul>
           </nz-dropdown>
-        </li>
+        </li> -->
         <li class="nav-item">
           <ng-container *ngIf="isLoggedIn; else loginLink">
             <nz-dropdown nzPlacement="bottom" [nzTrigger]="'click'">

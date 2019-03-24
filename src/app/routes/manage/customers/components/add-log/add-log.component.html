@@ -1,0 +1,16 @@
+<form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+        <nz-form-label nzFor="content" [nzSm]="4" nzRequired>内容</nz-form-label>
+        <nz-form-control [nzSm]="20">
+            <textarea nz-input placeholder="请输入日志内容"  id="content" formControlName="content" [nzAutosize]="{ minRows: 3, maxRows: 10 }"></textarea>
+            <nz-form-explain *ngIf="validateForm.get('content').dirty && validateForm.get('content').errors">请输入日志内容</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzFor="title" [nzSm]="4">要点</nz-form-label>
+        <nz-form-control [nzSm]="20">
+            <textarea nz-input placeholder="请输入日志要点"  id="title" formControlName="title" ngModel nzAutosize></textarea>
+             <nz-form-explain *ngIf="validateForm.get('title').dirty && validateForm.get('title').errors">日志要点不得超过6个字</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+</form>
