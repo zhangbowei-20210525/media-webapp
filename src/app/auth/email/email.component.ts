@@ -29,7 +29,7 @@ export class EmailComponent implements OnInit {
         return  this.accountervice.emailActivate(token);
       })
     ).subscribe((result => {
-      this.settings.user = result.auth.username;
+      this.settings.user = result.auth;
       this.tokenService.set({
         token: result.token,
         time: +new Date

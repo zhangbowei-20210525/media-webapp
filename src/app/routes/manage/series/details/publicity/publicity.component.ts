@@ -26,6 +26,7 @@ export class PublicityComponent implements OnInit {
   seriesId: number;
   publicityId: number;
   publicity: any;
+  tabIndex: number;
 
   constructor(
     private message: MessageService,
@@ -96,7 +97,7 @@ export class PublicityComponent implements OnInit {
   }
 
   publicityViews() {
-    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`, { sid: this.seriesId }]);
+    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`, { sid: this.seriesId, tabIndex: this.tabIndex  }]);
   }
 
   pageChange(page: number, type: MaterielType) {
@@ -105,6 +106,7 @@ export class PublicityComponent implements OnInit {
   }
 
   tabSelectChange(event: NzTabChangeEvent) {
+    this.tabIndex  =  event.index;
     this.fetchMateriels(this.materielTypes[event.index]);
   }
 

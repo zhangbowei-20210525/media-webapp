@@ -31,12 +31,12 @@ const LANGS: { [key: string]: LangData } = {
     zorro: zh_CN,
     dateFns: df_zh_cn
   },
-  'zh-TW': {
-    text: '繁体中文',
-    ng: ngZhTw,
-    zorro: zh_TW,
-    dateFns: df_zh_tw
-  },
+  // 'zh-TW': {
+  //   text: '繁体中文',
+  //   ng: ngZhTw,
+  //   zorro: zh_TW,
+  //   dateFns: df_zh_tw
+  // },
   'en-US': {
     text: 'English',
     ng: ngEn,

@@ -8,7 +8,8 @@
     [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
       <tr>
-        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+          <!-- nzShowCheckbox -->
+        <th  [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
         <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.program-type' | translate }}</th>
@@ -22,7 +23,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
+        <td [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
         <td style="text-align: center"><a (click)="seriesDetails(data.id)">{{ data.name }}</a></td>
         <td style="text-align: center">
           {{ data.program_type | seriesType }}

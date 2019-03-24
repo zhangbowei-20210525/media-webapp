@@ -24,6 +24,7 @@ import { TapeComponent } from './details/tape/tape.component';
 import { EditTapeInfoComponent } from './components/edit-tape-info/edit-tape-info.component';
 import { EditSeriesInfoComponent } from './components/edit-series-info/edit-series-info.component';
 
+
 @NgModule({
   declarations: [
     SeriesComponent,

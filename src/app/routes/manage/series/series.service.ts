@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter, Inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpClientJsonpModule } from '@angular/common/http';
 import { formData, PaginationDto, ResponseDto, PaginationResponseDto } from '@shared';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
@@ -213,5 +213,12 @@ export class SeriesService {
 
   getTwoDimensionalCode(id: number) {
     return this.http.get<any>(`/api/v1/wechat/share_code/${id}`);
+  }
+
+  shareEmail(email: string, url: string, publicity_name: string, sid: number, tabIndex: number) {
+    console.log(email);
+    console.log(url);
+    // tslint:disable-next-line:max-line-length
+    return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any, tabIndex: tabIndex as any} });
   }
 }

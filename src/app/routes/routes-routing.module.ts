@@ -9,6 +9,7 @@ import { PersonalCenterComponent } from './manage/personal-center/personal-cente
 import { SimpleGuard } from '@delon/auth';
 import { SeriesComponent } from './manage/series/series.component';
 import { BrowseRecordComponent } from './manage/personal-center/browse-record/browse-record.component';
+import { MarketDetailsComponent } from './market/market-details/market-details.component';
 
 const routes: Routes = [
   {
@@ -18,8 +19,9 @@ const routes: Routes = [
     children: [
       {
         path: 'market',
-        component: MarketComponent
+        component: MarketComponent,
       },
+      { path:'d/:id', component: MarketDetailsComponent },
       {
         path: 'manage',
         component: ManageComponent,

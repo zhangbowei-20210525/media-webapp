@@ -233,7 +233,7 @@ export class PublishRightsComponent implements OnInit {
   saveCopyrights(hasContract: boolean) {
     this.isSaving = true;
     const datePipe = this.getDatePipe();
-    let contract = null, orders = null, programs = null;
+    let contract = {} as any, orders = [], programs = null;
 
     if (hasContract) {
       contract = this.service.toContractData(

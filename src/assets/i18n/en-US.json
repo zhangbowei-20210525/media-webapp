@@ -63,6 +63,8 @@
     "app.login.account-no-exist": "No account.",
     "app.account.unbound": "unbound",
     "app.account.my-favorite": "My favorite",
+    "app.login.email-login-account-number": "Email",
+    "app.login.email-login-password": "Password",
     "app.series.tv": "TV",
     "app.series.film": "Film",
     "app.series.variety": "Variety",
@@ -134,6 +136,7 @@
     "app.series.storage-date": "Storage date",
     "app.series.storage-location": "Storage location",
     "app.series.detail-location": "Detail location",
+    "app.series.publicity-share-email": "Share The Email",
 
     "app.copyright.homemade": "Homemade",
     "app.copyright.purchase": "Purchase",

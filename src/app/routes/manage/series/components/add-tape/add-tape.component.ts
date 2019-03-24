@@ -36,14 +36,64 @@ export class AddTapeComponent implements OnInit {
       format: [null],
       bit_rate: [null],
     });
+
+    this.entityTapeForm = this.fb.group({
+      program_name: [  null, [Validators.required]],
+      program_type: [ null, [Validators.required]],
+      name: [null, [Validators.required]],
+      episode: [null],
+      language: [null],
+      subtitle: [null],
+      ch1: [null],
+      ch2: [null],
+      ch3: [null],
+      ch4: [null],
+      ch5: [null],
+      ch6: [null],
+      sharpness: [null],
+      carrier: [null],
+      brand: [null],
+      model: [null],
+      storage_date: [null],
+      storage_location: [null],
+      detail_location: [null],
+    });
    }
 
   ngOnInit() {
-    console.log('111111111');
-    console.log(this.id);
-    console.log('222222222');
     this.source_type = 'online';
-    if ( this.id === undefined ) {} else {
+    if ( this.id === undefined ) {
+      this.onlineTapeForm = this.fb.group({
+        program_name: [null, [Validators.required]],
+        program_type: [null, [Validators.required]],
+        name: [null, [Validators.required]],
+        language: [null],
+        subtitle: [null],
+        format: [null],
+        bit_rate: [null],
+      });
+      this.entityTapeForm = this.fb.group({
+        program_name: [  null, [Validators.required]],
+        program_type: [ null, [Validators.required]],
+        name: [null, [Validators.required]],
+        episode: [null],
+        language: [null],
+        subtitle: [null],
+        ch1: [null],
+        ch2: [null],
+        ch3: [null],
+        ch4: [null],
+        ch5: [null],
+        ch6: [null],
+        sharpness: [null],
+        carrier: [null],
+        brand: [null],
+        model: [null],
+        storage_date: [null],
+        storage_location: [null],
+        detail_location: [null],
+      });
+    } else {
       this.service.getSeriesDetailsInfo(this.id).subscribe(result => {
         this.onlineTapeForm = this.fb.group({
           program_name: [{value: result.name, disabled: true}, [Validators.required]],
@@ -76,37 +126,6 @@ export class AddTapeComponent implements OnInit {
           detail_location: [null],
         });
         this.disabled = true;
-  });
-  this.onlineTapeForm = this.fb.group({
-    program_name: [  null, [Validators.required]],
-    program_type: [null, [Validators.required]],
-    name: [null, [Validators.required]],
-    language: [null],
-    subtitle: [null],
-    format: [null],
-    bit_rate: [null],
-  });
-
-  this.entityTapeForm = this.fb.group({
-    program_name: [  null, [Validators.required]],
-    program_type: [ null, [Validators.required]],
-    name: [null, [Validators.required]],
-    episode: [null],
-    language: [null],
-    subtitle: [null],
-    ch1: [null],
-    ch2: [null],
-    ch3: [null],
-    ch4: [null],
-    ch5: [null],
-    ch6: [null],
-    sharpness: [null],
-    carrier: [null],
-    brand: [null],
-    model: [null],
-    storage_date: [null],
-    storage_location: [null],
-    detail_location: [null],
   });
 }
 
