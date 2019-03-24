@@ -2,7 +2,7 @@
   <nz-skeleton [nzActive]="'true'" [nzLoading]="isSeriesLoading">
     <div>
       <p>
-        <nz-input-group nzSearch  [nzSuffix]="suffixIconSearch" style="width: 22rem;">
+        <nz-input-group nzSearch  [nzAddOnAfter]="suffixIconSearch" style="width: 22rem;">
           <input type="text" nz-input placeholder="输入名称关键字搜索" [(ngModel)]="searchText">
         </nz-input-group>
         <ng-template #suffixIconSearch>
