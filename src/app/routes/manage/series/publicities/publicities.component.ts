@@ -30,6 +30,7 @@ export class PublicitiesComponent implements OnInit {
   isLoaded: boolean;
   dataset: any;
   disabledButton: any;
+  publicityStyle = 'figure';
 
   constructor(
     private router: Router,
