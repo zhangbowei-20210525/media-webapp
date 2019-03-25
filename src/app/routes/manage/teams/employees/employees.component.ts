@@ -68,16 +68,22 @@ export class EmployeesComponent implements OnInit {
       nzWidth: 800,
       nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve, reject) => {
         if (component.validation()) {
-          component.submit().pipe(catchError(error => {
-            console.log('rxjs throw error', error);
-            return null;
-          })).subscribe(result => {
-            this.message.success('新增成功');
-            this.refreshDataSet();
-            resolve();
+          component.submit()
+          // .pipe(catchError(error => {
+          //   console.log('rxjs throw error', error);
+          //   return null;
+          // }))
+          .subscribe(result => {
+            console.log('success');
+            // this.message.success('新增成功');
+            // this.refreshDataSet();
+            // resolve();
           }, error => {
-            this.message.error('新增失败');
-            reject(false);
+            console.log('error');
+            // this.message.error('新增失败');
+            // reject(false);
+          }, () => {
+            console.log('complate');
           });
         } else {
           reject(false);

@@ -1,12 +1,15 @@
 <div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">新增版权</div>
+  </div>
   <div class="block-content">
     <nz-tabset [(nzSelectedIndex)]="tab">
       <nz-tab nzTitle="1.选择节目">
         <app-series-selector [(series)]="series" (tagChange)="seriesTagChange($event)"></app-series-selector>
         <nz-divider></nz-divider>
         <div class="right-options">
-          <span class="text-hint">点选节目后</span>
-          <button nz-button nzType="primary" (click)="next()">选择权利</button>
+          <span class="text-hint">请选择节目</span>
+          <button nz-button nzType="primary" (click)="next()">新增版权</button>
         </div>
       </nz-tab>
       <nz-tab nzTitle="2.选择权利">
@@ -236,7 +239,7 @@
               </td>
               <td>{{ data.note }}</td>
               <td>
-                <a>Delete</a>
+                <a (click)="deleteRight(data)"><i nz-icon type="delete" theme="outline"></i></a>
               </td>
             </tr>
           </tbody>
