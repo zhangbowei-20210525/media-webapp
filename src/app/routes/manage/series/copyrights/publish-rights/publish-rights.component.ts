@@ -78,7 +78,7 @@ export class PublishRightsComponent implements OnInit {
 
     this.typeForm = this.fb.group({
       investmentType: ['homemade', [Validators.required]],
-      contract: ['no', Validators.required]
+      contract: ['yes', Validators.required]
     });
 
     this.contractForm = this.fb.group({
@@ -221,7 +221,7 @@ export class PublishRightsComponent implements OnInit {
   save() {
     if (this.hasContract()) {
       const contract = this.validationForm(this.contractForm);
-      const payment = this.validationForm(this.paymentForm);
+      const payment = this.paymentForm ? this.validationForm(this.paymentForm) : null;
       if (contract && payment) {
         this.saveCopyrights(true);
       }
