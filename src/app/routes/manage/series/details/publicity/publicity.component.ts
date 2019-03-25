@@ -37,8 +37,7 @@ export class PublicityComponent implements OnInit {
     private router: Router,
     private uploader: QueueUploader,
     private modal: NzModalService,
-    private seriesService: SeriesService,
-    private local: LocalRequestService
+    private seriesService: SeriesService
   ) {
     this.materielTypes.forEach(item => {
       this[this.getLoadedString(item)] = false;
@@ -150,14 +149,6 @@ export class PublicityComponent implements OnInit {
     });
     // const listString = this.getListString(materielType);
     // this[listString] = [...this[listString], ...uploads];
-  }
-
-  requestClick() {
-    this.local.status('127.0.0.1:8756').subscribe(result => {
-      console.log(result);
-    }, error => {
-      console.log(error);
-    });
   }
 
   deletePublicity(id: number) {
