@@ -27,9 +27,10 @@
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label nzFor="telephone" [nzSm]="3">联系电话</nz-form-label>
+        <nz-form-label nzFor="telephone" [nzSm]="3" nzRequired>联系电话</nz-form-label>
         <nz-form-control [nzSm]="9">
             <input nz-input placeholder="请输入联系电话" id="telephone" formControlName="telephone">
+            <nz-form-explain *ngIf="validateForm.get('telephone').dirty && validateForm.get('telephone').errors">请输入联系电话</nz-form-explain>
         </nz-form-control>
         <nz-form-label nzFor="liaison_name" [nzSm]="3" nzRequired>公司联系人</nz-form-label>
         <nz-form-control [nzSm]="9">

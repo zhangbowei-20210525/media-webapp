@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeesService } from './employees.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
-import { finalize, switchMap, catchError } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AddEmployeeComponent } from './add-employee.component';
 import { ActivatedRoute } from '@angular/router';
 
@@ -69,21 +69,12 @@ export class EmployeesComponent implements OnInit {
       nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve, reject) => {
         if (component.validation()) {
           component.submit()
-          // .pipe(catchError(error => {
-          //   console.log('rxjs throw error', error);
-          //   return null;
-          // }))
           .subscribe(result => {
-            console.log('success');
-            // this.message.success('新增成功');
-            // this.refreshDataSet();
-            // resolve();
+            this.message.success('新增成功');
+            this.refreshDataSet();
+            resolve();
           }, error => {
-            console.log('error');
-            // this.message.error('新增失败');
-            // reject(false);
-          }, () => {
-            console.log('complate');
+            reject(false);
           });
         } else {
           reject(false);

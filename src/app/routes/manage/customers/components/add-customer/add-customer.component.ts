@@ -22,7 +22,7 @@ export class AddCustomerComponent implements OnInit {
       custom_type: ['0'],
       name: [null, [Validators.required]],
       abbreviation: [null],
-      telephone: [null],
+      telephone: [null, [Validators.required]],
       liaison_name: [null, [Validators.required]],
       phone: [null, [Validators.required]],
       wx_id: [null],

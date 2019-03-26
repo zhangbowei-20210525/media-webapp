@@ -288,8 +288,6 @@ export class AddCopyrightsComponent implements OnInit {
   }
 
   deleteRight(item: any) {
-    // const index = this.dataSet.findIndex(d => d === item);
-    // this.dataSet = this.dataSet.filter((d, i) => i !== index);
     this.dataSet = this.dataSet.filter(d => d !== item);
   }
 
