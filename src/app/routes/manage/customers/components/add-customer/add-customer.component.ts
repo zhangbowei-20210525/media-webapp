@@ -22,9 +22,9 @@ export class AddCustomerComponent implements OnInit {
       custom_type: ['0'],
       name: [null, [Validators.required]],
       abbreviation: [null],
-      telephone: [null],
+      phone: [null],
       liaison_name: [null, [Validators.required]],
-      phone: [null, [Validators.required]],
+      telephone: [null, [Validators.required]],
       wx_id: [null],
       email: [null],
       tag: [null],
@@ -43,6 +43,7 @@ export class AddCustomerComponent implements OnInit {
         control.updateValueAndValidity();
       }
     }
+    
       const data = {
         custom_type: form.value['custom_type'] || null,
         name: form.value['name'] || null,

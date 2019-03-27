@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
 import { switchMap, timeout } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { AddTapeComponent } from '../../components/add-tape/add-tape.component';
 import { AddPubTapeComponent } from '../../components/add-pub-tape/add-pub-tape.component';
 import { LocalRequestService } from '@shared/locals';
 import { EditTapeInfoComponent } from '../../components/edit-tape-info/edit-tape-info.component';
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 
 @Component({
   selector: 'app-tape',
@@ -38,7 +39,7 @@ export class TapeComponent implements OnInit {
     private message: MessageService,
     private translate: TranslateService,
     private router: Router,
-    private localRequestService: LocalRequestService
+    private localRequestService: LocalRequestService,
   ) { }
 
   ngOnInit() {
@@ -201,19 +202,17 @@ export class TapeComponent implements OnInit {
   uploadTape() {
     this.seriesService.getIpAddress().subscribe(res => {
       this.address = res.ip;
-
       this.localRequestService.status(this.address).pipe(timeout(5000)).subscribe(z => {
-        console.log(z);
         if (this.address.charAt(0) === '1' && this.address.charAt(1) === '2' && this.address.charAt(2) === '7') {
-          // this.seriesService.UploadTape(this.isId, 0).subscribe();
+          this.localRequestService.UploadTape(this.isId).subscribe();
         } else {
-          // this.localApplicationService.getUploadFoldersName(this.address).subscribe(c => {
+          // this.localRequestService.getUploadFoldersName(this.address).subscribe(c => {
           //   this.foldersName = c;
           //   this.uploadFoldersNameList();
           // });
         }
       }, err => {
-        // this.message.success('warning', `链接已超时请重新启动客户端`);
+        this.message.success(this.translate.instant('global.start-client'));
       });
     });
   }

@@ -32,7 +32,11 @@ export class TapeDownloadComponent implements OnInit {
     this.transmitService.tapeFileList(this.purchaseTapeId).subscribe(res => {
         this.indeterminate = true;
         this.sources = res.list;
-        this.sourceCheckOptions = this.selectArray(res.list, e => Object.create({ value: e, checked: false }));
+        console.log(res.list);
+        const b =[];
+        const aa = res.list.forEach(x =>b.push(x.id));
+        console.log(b);
+        this.sourceCheckOptions = this.selectArray(b, e => Object.create({ value: e, checked: false }));
         this.allChecked = true;
         this.updateAllChecked(); // 默认全选
       });
@@ -40,6 +44,8 @@ export class TapeDownloadComponent implements OnInit {
 
   getCheckSourceIdList(): number[] {
     this.isDownloaded = true;
+    console.log('234');
+    console.log(this.selectArray(this.sourceCheckOptions.filter(e => e.checked), e => e.value));
     return this.selectArray(this.sourceCheckOptions.filter(e => e.checked), e => e.value);
   }
 

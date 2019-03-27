@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SeriesService } from '../series/series.service';
-import { PaginationDto } from '@shared';
+import { PaginationDto, MessageService } from '@shared';
 import { finalize, timeout } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { TapeDownloadComponent } from './components/tape-download/tape-download.component';
 import { TransmitService } from './transmit.service';
+import { LocalRequestService } from '@shared/locals';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-transmit',
@@ -29,6 +31,9 @@ export class TransmitComponent implements OnInit {
     private router: Router,
     private modalService: NzModalService,
     private transmitService: TransmitService,
+    private localRequestService: LocalRequestService,
+    private message: MessageService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -98,17 +103,13 @@ export class TransmitComponent implements OnInit {
     });
   }
 
+
   judge(id: number) {
-    this.downloadTape(id);
-      // this.seriesService.clientStatus('127.0.0.1:8756').pipe(timeout(5000)).subscribe(z => {
-      //   if (z.code === 0) {
-      //    this.downloadTape();
-      //   } else {
-      //     // this.nzMessageService.create('warning', `请先启动客户端`);
-      //   }
-      // }, err => {
-      //   // this.nzMessageService.create('warning', `链接已超时请重新启动客户端`);
-      // });
+      this.localRequestService.status('127.0.0.1:8756').pipe(timeout(5000)).subscribe(z => {
+         this.downloadTape(id);
+      }, err => {
+        this.message.success(this.translate.instant('global.start-client'));
+      });
   }
 
   downloadTape(id: number) {
@@ -127,15 +128,16 @@ export class TransmitComponent implements OnInit {
 
   downloadArgeed = () => new Promise((resolve) => {
     const component = this.downloadModal.getContentComponent() as TapeDownloadComponent;
+    console.log(component);
     const downloadSources = component.getCheckSourceIdList();
     if (downloadSources.length === 0) {
-      // this.message.create(type, `请选择要下载的文件`);
+      this.message.success(this.translate.instant('global.select-download-file'));
+      resolve();
+    } else {
+      this.localRequestService.DownloadTape(downloadSources).subscribe(res => {
+        resolve();
+      });
     }
-    this.transmitService.DownloadTape(downloadSources).subscribe(res => {
-      resolve(); // 下载启动客户端返回后关闭选择下载弹窗
-    });
-    resolve(false);
-    // this.router.navigate(['/tape-card']);
   })
 
 }

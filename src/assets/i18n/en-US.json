@@ -176,5 +176,7 @@
     "global.delete-successfully": "Delete successfully",
     "global.delete-failed": "Delete failed",
     "global.upload-success": "Upload Success",
-    "global.edit-success": "Edit Success"
+    "global.edit-success": "Edit Success",
+    "global.start-client": "Please start the client",
+    "global.select-download-file": "Please select the file to download"
 }

@@ -178,5 +178,7 @@
     "global.delete-successfully": "删除成功",
     "global.delete-failed": "删除失败",
     "global.upload-success": "上传成功",
-    "global.edit-success": "编辑成功"
+    "global.edit-success": "编辑成功",
+    "global.start-client": "请启动客户端",
+    "global.select-download-file": "请选择要下载的文件"
 }
