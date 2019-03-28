@@ -13,20 +13,6 @@ export class CopyrightsService {
     protected http: HttpClient,
   ) { }
 
-  // getCopyrightAreaOptions() {
-  //   return this.http.get<any[]>('/api/v1/rights/area_numbers');
-  // }
-
-  // getCustomerWithLikeKeyword(keyword: string) {
-  //   return this.http.get<{ id: number, name: string, contact_name: string }[]>(
-  //     '/api/v1/customer/search', { params: { keyword: keyword } });
-  // }
-
-  // getSeriesWithLikeKeyword(keywords: string) {
-  //   return this.http.get<{ id: number, series_name: string, series_type: string, episodes_num: number }[]>(
-  //     '/api/v1/series/search', { params: { keywords: keywords } });
-  // }
-
   getSeries(pagination: PaginationDto, due_date: string, area_number: string, right_type: string, start_date: string, end_date: string) {
     return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>('/api/v1/right_programs',
       {
