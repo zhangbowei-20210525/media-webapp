@@ -2,6 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PaginationDto } from '@shared';
 
+declare interface AddEditCustomer {
+  custom_type: number;
+  name: string;
+  abbreviation: string;
+  telephone: string;
+  remark: string;
+  tags: string[];
+  liaisons: AddEditLiaison[];
+}
+
+declare interface AddEditLiaison {
+  liaison_name: string;
+  phone: string;
+  wx_id: string;
+  email: string;
+  department: string;
+  position: string;
+  remark: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,18 +35,12 @@ export class CustomersService {
     return this.http.get<any>(`/api/v1/custom?page=${pagination.page}&limit=${pagination.page_size}`);
   }
 
-  addCustomer(newCustomer: {
-    custom_type: number, name: string, abbreviation: string, telephone: string, liaison_name: string,
-    phone: string, wx_id: string, email: string, department: string, position: string, remark: string, tag: string, liaison_remark: string
-  }) {
-    return this.http.post<any>('api/v1/custom', newCustomer);
+  addCustomer(customer: AddEditCustomer) {
+    return this.http.post<any>('/api/v1/custom', customer);
   }
 
-  editCustomer(id: number, editInfo: {
-    custom_type: number, name: string, abbreviation: string, telephone: string, liaison_name: string,
-    phone: string, wx_id: string, email: string, department: string, position: string, remark: string, tag: string, liaison_remark: string
-  }) {
-    return this.http.put<any>(`/api/v1/custom/${id}`, editInfo);
+  editCustomer(id: number, customer: AddEditCustomer) {
+    return this.http.put<any>(`/api/v1/custom/${id}`, customer);
   }
 
   deleteCustomers(id: number) {
@@ -49,11 +63,15 @@ export class CustomersService {
     return this.http.get<any>(`/api/v1/custom/${id}/follow?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
-  addLog(id: number, newLog: {content: string, title: string}) {
+  addLog(id: number, newLog: { content: string, title: string }) {
     return this.http.post<any>(`api/v1/custom/${id}/follow`, newLog);
   }
 
   deleteLog(cid: number, id: number) {
     return this.http.delete<any>(`/api/v1/custom/${cid}/follow/${id}`);
+  }
+
+  getTags() {
+    return this.http.get<string[]>('/api/v1/custom/tag');
   }
 }

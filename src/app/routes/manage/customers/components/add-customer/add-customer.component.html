@@ -34,16 +34,25 @@
     <nz-form-label [nzSm]="3" nzFor="telephone" nzRequired>公司电话</nz-form-label>
     <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入公司电话" id="telephone" formControlName="telephone">
-      <nz-form-explain *ngIf="enterpriseForm.get('telephone').dirty && enterpriseForm.get('telephone').errors">
+      <nz-form-explain *ngIf="enterpriseForm.get('telephone').dirty && enterpriseForm.get('telephone').errors?.required">
         请输入公司电话
       </nz-form-explain>
+      <nz-form-explain *ngIf="enterpriseForm.get('telephone').dirty && enterpriseForm.get('telephone').errors?.pattern">
+        请输入正确的电话号码
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzFor="remark">客户备注</nz-form-label>
+    <nz-form-control [nzSm]="21">
+      <input nz-input placeholder="请输入客户备注" id="remark" formControlName="remark">
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="tags">客户标签</nz-form-label>
     <nz-form-control [nzSm]="21">
       <nz-select nzMode="tags" [nzTokenSeparators]="[',']" id="tags" formControlName="tags" nzPlaceHolder="请选择/输入客户标签">
-        <nz-option *ngFor="let option of customTagOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        <nz-option *ngFor="let option of customTagOptions" [nzLabel]="option" [nzValue]="option">
         </nz-option>
       </nz-select>
     </nz-form-control>
@@ -53,7 +62,7 @@
 <h4>企业联系人</h4>
 <nz-divider style="margin-top: 1rem"></nz-divider>
 
-<sf #sf [button]="none" [schema]="schema" (formSubmit)="schemaSubmit($event)"></sf>
+<sf #sf [button]="none" [schema]="schema" (formSubmit)="schemaSubmit($event)" [firstVisual]="true"></sf>
 
 <!-- <form nz-form [formGroup]="enterpriseForm">
     <nz-form-item>

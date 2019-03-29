@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomersService } from '../../customers.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { MessageService } from '@shared';
-import { SFComponent } from '@delon/form';
+import { SFComponent, FormProperty, PropertyGroup } from '@delon/form';
 
 declare type CustomType = 'enterprise' | 'personal';
 
@@ -20,25 +20,17 @@ export class AddCustomerComponent implements OnInit {
 
   @ViewChild('sf') sf: SFComponent;
 
-  customTagOptions: [];
+  customTagOptions: string[];
   schema = {
     properties: {
-      liaison: {
+      liaisons: {
         type: 'array',
         title: '联系人',
         minItems: 1,
+        maxItems: 3,
         items: {
           type: 'object',
           properties: {
-            main: {
-              type: 'boolean',
-              title: '主要联系人',
-              ui: {
-                spanLabel: 5,
-                offsetControl: 0,
-                spanControl: 18
-              }
-            },
             name: {
               type: 'string',
               title: '联系人名',
@@ -58,10 +50,13 @@ export class AddCustomerComponent implements OnInit {
                 spanLabel: 5,
                 offsetControl: 0,
                 spanControl: 18,
-                placeholder: '请输入联系人手机号码'
+                placeholder: '请输入联系人手机号码',
+                validator: (value: any, property: FormProperty, form: PropertyGroup) => {
+                  return /^[1][3,4,5,7,8][0-9]{9}$/.test(value) ? [] : [{ keyword: 'phone', message: '请输入正确的手机号码'}];
+                }
               }
             },
-            wx: {
+            wx_id: {
               type: 'string',
               title: '微信号',
               ui: {
@@ -100,6 +95,16 @@ export class AddCustomerComponent implements OnInit {
                 spanControl: 18,
                 placeholder: '请输入联系人所在职位'
               }
+            },
+            remark: {
+              type: 'string',
+              title: '备注',
+              ui: {
+                spanLabel: 5,
+                offsetControl: 0,
+                spanControl: 18,
+                placeholder: '请输入联系人备注'
+              }
             }
           },
           ui: { offsetControl: 0 },
@@ -129,16 +134,13 @@ export class AddCustomerComponent implements OnInit {
     this.enterpriseForm = this.fb.group({
       name: [null, [Validators.required]],
       abbreviation: [null],
-      telephone: [null, [Validators.required]],
-      tags: [null],
-
-      liaison_name: [null],
-      phone: [null],
-      wx_id: [null],
-      email: [null],
-      department: [null],
-      position: [null],
+      telephone: [null, [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]],
       remark: [null],
+      tags: [null]
+    });
+
+    this.service.getTags().subscribe(tags => {
+      this.customTagOptions = tags;
     });
   }
 
@@ -158,28 +160,23 @@ export class AddCustomerComponent implements OnInit {
   }
 
   submit(): Observable<any> {
-    this.messsage.success(JSON.stringify(this.sf.value));
-    // const form = this.enterpriseForm;
-    // const data = {
-    //   custom_type: form.value['custom_type'] || null,
-    //   name: form.value['name'] || null,
-    //   abbreviation: form.value['abbreviation'] || null,
-    //   telephone: form.value['telephone'] || null,
-    //   liaison_name: form.value['liaison_name'] || null,
-    //   phone: form.value['phone'] || null,
-    //   wx_id: form.value['wx_id'] || null,
-    //   email: form.value['email'] || null,
-    //   department: form.value['department'] || null,
-    //   position: form.value['position'] || null,
-    //   remark: form.value['remark'] || null,
-    //   tag: form.value['tag'] || null,
-    //   liaison_remark: null
-    // };
-    // return this.service.addCustomer(data);
+    if (!this.sf.valid) {
+      return throwError({});
+    }
+    const data = {
+      custom_type: this.baseForm.value['customType'] === 'enterprise' ? 0 : 1,
+      name: this.enterpriseForm.value['name'] || null,
+      abbreviation: this.enterpriseForm.value['abbreviation'] || null,
+      telephone: this.enterpriseForm.value['telephone'] || null,
+      tags: this.enterpriseForm.value['tags'] || null,
+    };
+    const post = Object.assign({ custom: data }, this.sf.value);
+    // this.messsage.success(JSON.stringify(post));
+    return this.service.addCustomer(post as any);
   }
 
   schemaSubmit(value: any) {
-    this.messsage.success(value);
+    this.messsage.success(JSON.stringify(value));
   }
 
 }
