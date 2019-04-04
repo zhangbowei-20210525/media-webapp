@@ -1,6 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PaginationDto } from '@shared';
+import { PaginationDto, PaginationResponseDto } from '@shared';
+
+declare interface AddEditCustomer {
+  custom_type: number;
+  name: string;
+  abbreviation: string;
+  telephone: string;
+  remark: string;
+  tags: string[];
+  liaisons: AddEditLiaison[];
+}
+
+declare interface AddEditLiaison {
+  liaison_name: string;
+  phone: string;
+  wx_id: string;
+  email: string;
+  department: string;
+  position: string;
+  remark: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,18 +35,12 @@ export class CustomersService {
     return this.http.get<any>(`/api/v1/custom?page=${pagination.page}&limit=${pagination.page_size}`);
   }
 
-  addCustomer(newCustomer: {
-    custom_type: number, name: string, abbreviation: string, telephone: string, liaison_name: string,
-    phone: string, wx_id: string, email: string, department: string, position: string, remark: string, tag: string, liaison_remark: string
-  }) {
-    return this.http.post<any>('api/v1/custom', newCustomer);
+  addCustomer(customer: AddEditCustomer) {
+    return this.http.post<any>('/api/v1/custom', customer);
   }
 
-  editCustomer(id: number, editInfo: {
-    custom_type: number, name: string, abbreviation: string, telephone: string, liaison_name: string,
-    phone: string, wx_id: string, email: string, department: string, position: string, remark: string, tag: string, liaison_remark: string
-  }) {
-    return this.http.put<any>(`/api/v1/custom/${id}`, editInfo);
+  editCustomer(id: number, customer: AddEditCustomer) {
+    return this.http.put<any>(`/api/v1/custom/${id}`, customer);
   }
 
   deleteCustomers(id: number) {
@@ -38,7 +52,9 @@ export class CustomersService {
   }
 
   getRights(pagination: PaginationDto, id: number) {
-    return this.http.get<any>(`/api/v1/custom/${id}/program?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom/${id}/program`, {
+      params: { page: pagination.page as any, page_size: pagination.page_size as any }
+    });
   }
 
   getContracts(pagination: PaginationDto, id: number) {
@@ -49,11 +65,49 @@ export class CustomersService {
     return this.http.get<any>(`/api/v1/custom/${id}/follow?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
-  addLog(id: number, newLog: {content: string, title: string}) {
+  addLog(id: number, newLog: { content: string, title: string }) {
     return this.http.post<any>(`api/v1/custom/${id}/follow`, newLog);
   }
 
   deleteLog(cid: number, id: number) {
     return this.http.delete<any>(`/api/v1/custom/${cid}/follow/${id}`);
+  }
+
+  getTags() {
+    return this.http.get<string[]>('/api/v1/custom/tag');
+  }
+
+  getLiaisons(customerId: number) {
+    return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom/${customerId}/liaison`);
+  }
+
+  mapCopyrights(list: any[]) {
+    const rights = [];
+    let itemIndex = 0;
+    list.forEach(item => {
+      let index = 0;
+      item.rights.forEach(right => {
+        rights.push({
+          index: index++,
+          itemIndex: itemIndex,
+          pid: item.program_id,
+          rid: right.id,
+          project: item.program_name,
+          investmentType: item.investment_type,
+          type: item.program_type,
+          episode: item.episode,
+          right: right.right_type_label,
+          area: right.area_label,
+          term: right.start_date && right.end_date,
+          termIsPermanent: right.permanent_date,
+          termStartDate: right.start_date,
+          termEndDate: right.end_date,
+          termNote: right.date_remark,
+          count: item.rights.length
+        });
+      });
+      itemIndex++;
+    });
+    return rights;
   }
 }

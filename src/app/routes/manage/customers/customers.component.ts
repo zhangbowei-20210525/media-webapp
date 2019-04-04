@@ -52,7 +52,7 @@ export class CustomersComponent implements OnInit {
   }
 
   tapeDetails(program_id: number, tapeId: number, source_type: string) {
-    this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: tapeId, source_type: source_type}]);
+    this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: tapeId, source_type: source_type }]);
   }
 
   addCustomer() {
@@ -66,17 +66,19 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  addCustomerAgreed = (component: AddCustomerComponent) => new Promise((resolve) => {
-    component.formSubmit()
-      .subscribe(res => {
-        this.message.success(this.translate.instant('global.add-success'));
-        this.fetchPublicities();
-        resolve();
-      }, error => {
-        if (error.message) {
-          this.message.error(error.message);
-        }
-      });
+  addCustomerAgreed = (component: AddCustomerComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      component.submit()
+        .subscribe(result => {
+          this.message.success(this.translate.instant('global.add-success'));
+          this.fetchPublicities();
+          resolve();
+        }, error => {
+          reject(false);
+        });
+    } else {
+      reject(false);
+    }
   })
 
   deleteCustomers(id: number) {
@@ -89,16 +91,13 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  deleteCustomersAgreed = (id: number) => new Promise((resolve) => {
-    this.service.deleteCustomers(id).subscribe(res => {
+  deleteCustomersAgreed = (id: number) => new Promise((resolve, reject) => {
+    this.service.deleteCustomers(id).subscribe(result => {
       this.fetchPublicities();
       this.message.success(this.translate.instant('global.delete-success'));
       resolve();
     }, error => {
-      if (error.message) {
-        this.message.error(error.message);
-      }
-      resolve(false);
+      reject(false);
     });
   })
 

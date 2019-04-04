@@ -36,7 +36,9 @@
               "src/styles/global.less",
               "src/styles/theme.less"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/ajv/dist/ajv.bundle.js"
+            ]
           },
           "configurations": {
             "production": {

@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@shared';
 import { AddLogComponent } from './components/add-log/add-log.component';
 import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
+import { DelonFormModule } from '@delon/form';
 
 @NgModule({
   declarations: [
@@ -22,9 +23,9 @@ import { EditCustomerComponent } from './components/edit-customer/edit-customer.
   imports: [
     CommonModule,
     CustomersRoutingModule,
-    NgZorroAntdModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    DelonFormModule.forRoot()
   ],
   entryComponents: [
     AddCustomerComponent,
