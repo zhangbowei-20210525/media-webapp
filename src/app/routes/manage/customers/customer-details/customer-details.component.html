@@ -2,7 +2,7 @@
   <div class="block-header">
     <div class="block-title">
       <span>客商信息</span>
-      <a style="margin-left: 1rem" (click)="editCustomer()"><i nz-icon type="edit" theme="outline"></i></a>
+      <!-- <a style="margin-left: 1rem" (click)="editCustomer()"><i nz-icon type="edit" theme="outline"></i></a> -->
     </div>
   </div>
   <div class="block-content">
@@ -64,34 +64,82 @@
   </div>
 </div>
 
-<div class="block clearfix">
-    <div class="block-header">
-      <div class="block-title">
-        <span>日志</span>
-      </div>
-      <div class="rf" style="line-height: 4.2rem;">
-          <button nz-button nzType="default" nzSize="small" (click)="addLog()" style="margin-right: 1rem">新增日志</button>
-          <nz-switch [(ngModel)]="switchValue" nzSize="small" nzTitle="日志编辑" nzPlacement="top"  nz-tooltip class="push-l-30"></nz-switch>
-      </div>
+<!-- <div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">
+      <span>日志</span>
     </div>
-    <div style="margin-top: 2rem;margin-bottom: 2rem;margin-left: 13rem;min-height: 1rem;">
-    <ul>
-        <li [ngClass]="{'aa': switchValue == false,'eaa': switchValue == true}" *ngFor="let log of logList">
-                
-            <div style="display: inline-block;float: left;margin-left: 4px;"><a (click)="logContent(log?.content)">2019-12-32 00:00:00</a></div>
-            <div style="display: inline-block;width: 96px;">{{log?.title}}</div>
-            <div *ngIf="switchValue == true" style="display: inline-block;float: right;margin-top: 3px;margin-right: 5px;">
-                <i nz-icon type="close-circle" theme="outline" style="font-size: 16px;color: red;float: right;" (click)="deleteLog(log?.id)"></i>
-            </div>
-        </li>
-        <div style="float: right;margin-top: 20px">
-        <nz-pagination [(nzPageIndex)]="logsPagination.page" [nzTotal]="logsPagination.count" [nzPageSize]="logsPagination.page_size" (nzPageIndexChange)="logsPageChange()"></nz-pagination>
-        </div>
-    </ul>
+    <div class="rf" style="line-height: 4.2rem;">
+      <button nz-button nzType="default" nzSize="small" (click)="addLog()" style="margin-right: 1rem">新增日志</button>
+      <nz-switch [(ngModel)]="switchValue" nzSize="small" nzTitle="日志编辑" nzPlacement="top" nz-tooltip class="push-l-30">
+      </nz-switch>
     </div>
   </div>
+  <div style="margin-top: 2rem;margin-bottom: 2rem;margin-left: 13rem;min-height: 1rem;">
+    <ul>
+      <li [ngClass]="{'aa': switchValue == false,'eaa': switchValue == true}" *ngFor="let log of logList">
 
-<nz-table #basicTable [nzData]="rightList" nzShowPagination="false" style="padding-bottom: 20px">
+        <div style="display: inline-block;float: left;margin-left: 4px;"><a
+            (click)="logContent(log?.content)">2019-12-32 00:00:00</a></div>
+        <div style="display: inline-block;width: 96px;">{{log?.title}}</div>
+        <div *ngIf="switchValue == true" style="display: inline-block;float: right;margin-top: 3px;margin-right: 5px;">
+          <i nz-icon type="close-circle" theme="outline" style="font-size: 16px;color: red;float: right;"
+            (click)="deleteLog(log?.id)"></i>
+        </div>
+      </li>
+      <div style="float: right;margin-top: 20px">
+        <nz-pagination [(nzPageIndex)]="logsPagination.page" [nzTotal]="logsPagination.count"
+          [nzPageSize]="logsPagination.page_size" (nzPageIndexChange)="logsPageChange()"></nz-pagination>
+      </div>
+    </ul>
+  </div>
+</div> -->
+
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">联系人</div>
+  </div>
+  <div class="block-content">
+    <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+      <nz-tab *ngFor="let liaison of liaisonTabs" [nzTitle]="liaison.name">
+        <div nz-row class="series-info-row">
+          <div nz-col nzSpan="6">
+            <span class="info-filed">联系人名</span>
+            <span>{{ liaison.name }}</span>
+          </div>
+          <div nz-col nzSpan="6">
+            <span class="info-filed">手机</span>
+            <span>{{ liaison.phone }}</span>
+          </div>
+          <div nz-col nzSpan="6">
+            <span class="info-filed">邮箱</span>
+            <span>{{ liaison.email }}</span>
+          </div>
+          <div nz-col nzSpan="6">
+            <span class="info-filed">微信</span>
+            <span>{{ liaison.wx_id }}</span>
+          </div>
+        </div>
+        <div nz-row class="series-info-row">
+          <div nz-col nzSpan="6">
+            <span class="info-filed">部门</span>
+            <span>{{ liaison.department }}</span>
+          </div>
+          <div nz-col nzSpan="6">
+            <span class="info-filed">职位</span>
+            <span>{{ liaison.position }}</span>
+          </div>
+          <div nz-col nzSpan="6">
+            <span class="info-filed">备注</span>
+            <span>{{ liaison.remark }}</span>
+          </div>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>
+
+<!-- <nz-table #basicTable [nzData]="rightList" nzShowPagination="false" style="padding-bottom: 20px">
   <thead>
     <tr>
       <th>节目名称</th>
@@ -111,16 +159,56 @@
       <td *ngIf="data.right_type == 'network'">信息网络传播权</td>
       <td *ngIf="data.right_type == 'publish'">出版发行权</td>
       <td *ngIf="data.right_type == 'public'">公播权</td>
-      <td>{{data.right_scope}}</td>
-      <td>{{data.start_date}}</td>
-      <td>{{data.end_date}}</td>
+      <td>{{ data.right_scope }}</td>
+      <td>{{ data.start_date }}</td>
+      <td>{{ data.end_date }}</td>
       <td *ngIf="data.payment_form == 1">一次性</td>
       <td *ngIf="data.payment_form == 2">分二次</td>
       <td *ngIf="data.payment_form == 3">分三次</td>
       <td *ngIf="data.payment_form == 4">分四次</td>
       <td *ngIf="data.is_payment == true">是</td>
       <td *ngIf="data.is_payment == false">否</td>
-      <td>{{data.remark}}</td>
+      <td>{{ data.remark }}</td>
+    </tr>
+  </tbody>
+</nz-table> -->
+
+<nz-table #rightsTable nzBordered [nzData]="rightDataSet" [nzPageSize]="rightsPagination.page_size"
+  [nzFrontPagination]="false" [nzPageIndex]="rightsPagination.page" [nzTotal]="rightsPagination.count"
+  (nzPageIndexChange)="copyrightsPageChange($event)">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>项目名称</th>
+      <th>投资类型</th>
+      <th>品类</th>
+      <th>集数</th>
+      <th>权利</th>
+      <th>范围</th>
+      <th>期限</th>
+      <!-- <th>操作</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rightsTable.data">
+      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
+      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+        <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
+      </td>
+      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
+      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
+      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
+      <td>{{ data.right }}</td>
+      <td>{{ data.area }}</td>
+      <td>
+        {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+          (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+      </td>
+      <!-- <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+        <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid)">
+          <i class="text-info" nz-icon type="delete" theme="outline"></i>
+        </a>
+      </td> -->
     </tr>
   </tbody>
 </nz-table>
@@ -138,16 +226,16 @@
   </thead>
   <tbody>
     <tr *ngFor="let data of table.data">
-        <td>{{data.contract_name}}</td>
-        <td>{{data.contract_number}}</td>
-        <td *ngIf="data.contract_type == 'purchase'">流入</td>
-        <td *ngIf="data.contract_type == 'publish'">流出</td>
-        <td>{{data.total_amount}}</td>
-        <td>{{data.total_amount}}</td>
-        <td *ngIf="data.payment_form == 1">一次性</td>
-        <td *ngIf="data.payment_form == 2">分二次</td>
-        <td *ngIf="data.payment_form == 3">分三次</td>
-        <td *ngIf="data.payment_form == 4">分四次</td>
+      <td>{{data.contract_name}}</td>
+      <td>{{data.contract_number}}</td>
+      <td *ngIf="data.contract_type == 'purchase'">流入</td>
+      <td *ngIf="data.contract_type == 'publish'">流出</td>
+      <td>{{data.total_amount}}</td>
+      <td>{{data.total_amount}}</td>
+      <td *ngIf="data.payment_form == 1">一次性</td>
+      <td *ngIf="data.payment_form == 2">分二次</td>
+      <td *ngIf="data.payment_form == 3">分三次</td>
+      <td *ngIf="data.payment_form == 4">分四次</td>
     </tr>
   </tbody>
 </nz-table>

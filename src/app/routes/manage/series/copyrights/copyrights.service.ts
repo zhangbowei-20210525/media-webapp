@@ -47,6 +47,10 @@ export class CopyrightsService {
     return this.http.post('/api/v1/publish_rights', rightsData);
   }
 
+  getPrograms() {
+    return this.http.get<PaginationResponseDto<any>>('/api/v1/program');
+  }
+
   setLeafNode(nodes: any[]) {
     for (const key in nodes) {
       if (nodes.hasOwnProperty(key)) {

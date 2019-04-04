@@ -35,6 +35,7 @@ export class AddCopyrightsComponent implements OnInit {
   dataSet = [];
   isSaving: boolean;
   isSaved = false;
+  programOfOptions = [];
 
   constructor(
     private fb: FormBuilder,
@@ -76,6 +77,8 @@ export class AddCopyrightsComponent implements OnInit {
       this.areaTemplates = result;
     });
 
+    this.fetchProgramOfOptions();
+
     this.typeForm = this.fb.group({
       investmentType: ['homemade', [Validators.required]],
       contract: ['no', Validators.required]
@@ -92,8 +95,9 @@ export class AddCopyrightsComponent implements OnInit {
     });
 
     this.rightForm = this.fb.group({
-      projects: [null],
-      projectsAllChecked: [true],
+      programType: ['other', [Validators.required]],
+      projects: [null, [Validators.required]],
+      // projectsAllChecked: [true],
       copyright: [null, [Validators.required]],
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
@@ -102,6 +106,12 @@ export class AddCopyrightsComponent implements OnInit {
       copyrightValidTermIsPermanent: [false],
       copyrightValidTermNote: [null],
       note: [null]
+    });
+  }
+
+  fetchProgramOfOptions() {
+    this.service.getPrograms().subscribe(result => {
+      this.programOfOptions = result.list;
     });
   }
 
@@ -179,11 +189,15 @@ export class AddCopyrightsComponent implements OnInit {
         startDate = term[0];
         endDate = term[1];
       }
-      const list = this.projects.value.filter(item => item.checked).map(item => {
+      // console.log(this.projects);
+      const list = this.projects.value.map(name => {
+        const program = this.programOfOptions.find(item => item.name === name);
+        console.log(program, this.rightForm.get('programType').value);
         return {
-          id: item.value,
-          name: item.label,
-          episodes: item.episodes,
+          id: program ? program.id : null,
+          name: name,
+          type: program ? program.program_type : this.rightForm.get('programType').value,
+          // episodes: item.episodes,
           right: right.code,
           area: area.code,
           term: term,
@@ -198,6 +212,7 @@ export class AddCopyrightsComponent implements OnInit {
           termEndDate: endDate
         };
       });
+      console.log(list);
       this.dataSet = [...this.dataSet, ...list];
     }
   }
@@ -280,6 +295,8 @@ export class AddCopyrightsComponent implements OnInit {
         .subscribe(result => {
           this.isSaved = true;
           this.dataSet = [];
+          this.rightForm.reset();
+          this.fetchProgramOfOptions();
           this.message.success(this.translate.instant('global.save-successfully'));
         });
     } else {
