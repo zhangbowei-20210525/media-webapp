@@ -306,4 +306,8 @@ export class PublishRightsComponent implements OnInit {
     }
   }
 
+  deleteRight(item: any) {
+    this.dataSet = this.dataSet.filter(d => d !== item);
+  }
+
 }
