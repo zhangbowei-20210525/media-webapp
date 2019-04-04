@@ -219,4 +219,8 @@ export class SeriesService {
     // tslint:disable-next-line:max-line-length
     return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any} });
   }
+
+  getThumbnail(pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/publicity/card?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
 }

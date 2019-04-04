@@ -23,6 +23,8 @@ export class AddTapeComponent implements OnInit {
   programList = [];
   disabled: boolean;
   info: any;
+  tapeVersion: string;
+
   constructor(
     private fb: FormBuilder,
     private service: SeriesService,
@@ -238,6 +240,7 @@ export class AddTapeComponent implements OnInit {
 
   formSubmit(): Observable<any> {
     if (this.source_type === 'online') {
+      this.tapeVersion = 'online';
       const otForm = this.onlineTapeForm;
       for (const i in otForm.controls) {
         if (otForm.controls.hasOwnProperty(i)) {
@@ -282,6 +285,7 @@ export class AddTapeComponent implements OnInit {
     }
 
     if (this.source_type === 'entity') {
+      this.tapeVersion = 'entity';
       const etForm = this.entityTapeForm;
       for (const i in etForm.controls) {
         if (etForm.controls.hasOwnProperty(i)) {

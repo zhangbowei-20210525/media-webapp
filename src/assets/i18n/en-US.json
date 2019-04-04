@@ -39,7 +39,9 @@
     "app.dashboard.source": "Source",
     "app.dashboard.publish-source": "Publish source",
     "app.dashboard.purchase-source": "Purchase source",
-    "app.dashboard.quarterly-statistical-analysis": "Quarterly statistical analysis",
+    "app.dashboard.publish-statistical-analysis": "Publish statistical analysis",
+    "app.dashboard.publish-statistical-analysis-quarter": " Quarter",
+    "app.dashboard.publish-statistical-analysis-annual": "Annual",
     "app.lang": "English",
     "app.login": "Login",
     "app.login.get-captcha": "Get captcha",
@@ -137,7 +139,7 @@
     "app.series.storage-location": "Storage location",
     "app.series.detail-location": "Detail location",
     "app.series.publicity-share-email": "Share The Email",
-
+    "app.series.publicity-view": "View",
     "app.copyright.homemade": "Homemade",
     "app.copyright.purchase": "Purchase",
     "app.copyright.proxy": "Proxy",
@@ -178,5 +180,6 @@
     "global.upload-success": "Upload Success",
     "global.edit-success": "Edit Success",
     "global.start-client": "Please start the client",
-    "global.select-download-file": "Please select the file to download"
+    "global.select-download-file": "Please select the file to download",
+    "global.select-series": "Please select at least one program"
 }

@@ -3,8 +3,9 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { ReactiveBase, FormControlService, TreeService, MessageService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-publish-rights',
@@ -42,7 +43,8 @@ export class PublishRightsComponent implements OnInit {
     private fcs: FormControlService,
     private ts: TreeService,
     private translate: TranslateService,
-    private message: MessageService
+    private message: MessageService,
+    private route: ActivatedRoute,
   ) { }
 
   get contract() {
@@ -58,6 +60,19 @@ export class PublishRightsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        const pids = params.get('pids');
+        return  this.service.getSeriesNames(pids);
+      })
+    ).subscribe(result => {
+      this.series = result.list;
+      this.checkOptions = this.series.map(item => ({ label: item.name, value: item.id, checked: true }));
+      console.log(this.checkOptions);
+      this.projects.setValue(this.checkOptions);
+      console.log(this.projects.setValue(this.checkOptions));
+    });
+   
     this.service.getCustomerOptions().subscribe(result => {
       this.customerOptions = result.list;
     });
@@ -77,7 +92,7 @@ export class PublishRightsComponent implements OnInit {
     });
 
     this.typeForm = this.fb.group({
-      investmentType: ['homemade', [Validators.required]],
+      // investmentType: ['homemade', [Validators.required]],
       contract: ['yes', Validators.required]
     });
 
@@ -106,10 +121,15 @@ export class PublishRightsComponent implements OnInit {
   }
 
   seriesTagChange(event: { checked: boolean, tag: any }) {
+    console.log(this.series);
     event.tag.status = event.checked;
+    console.log(event.tag.status)
     const selected = this.series ? this.series.filter(e => e.status) : [];
+    console.log(selected);
     this.checkOptions = selected.map(item => ({ label: item.name, value: item.id, checked: true, episodes: item.episodes }));
+    console.log(this.checkOptions);
     this.projects.setValue(this.checkOptions);
+    console.log(this.projects.setValue(this.checkOptions));
   }
 
   updateAllChecked() {
@@ -252,12 +272,11 @@ export class PublishRightsComponent implements OnInit {
     const groupData = this.service.groupBy(this.dataSet, item => item.id);
     programs = groupData.map(group => {
       const first = group[0];
-      const program = this.service.toProgramData(
+      const program = this.service.toPubProgramData(
         first.id,
         first.name,
         first.type,
         first.episodes,
-        this.typeForm.value['investmentType'],
         group.map(item => {
           return this.service.toCopyrightData(
             item.right,

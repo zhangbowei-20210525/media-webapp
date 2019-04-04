@@ -40,4 +40,8 @@ export class DashboardService {
   getAllStatistics(year: any, areas: any) {
     return this.http.get<any>(`/api/v1/analysis/publish_right_contract/quarter?year=${year}&areas=${areas}`);
   }
+
+  getAnnualStatistics(areas: any) {
+    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/year?&areas=${areas}`);
+  }
 }

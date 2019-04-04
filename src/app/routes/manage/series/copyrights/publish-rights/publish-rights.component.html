@@ -1,7 +1,7 @@
 <div class="block clearfix">
     <div class="block-content">
       <nz-tabset [(nzSelectedIndex)]="tab">
-        <nz-tab nzTitle="1.选择节目">
+        <!-- <nz-tab nzTitle="1.选择节目">
           <app-series-selector [(series)]="series" (tagChange)="seriesTagChange($event)"></app-series-selector>
           <nz-divider></nz-divider>
           <div class="right-options">
@@ -9,13 +9,13 @@
             <button nz-button nzType="primary" (click)="next()">选择权利</button>
             <span class="text-hint">发行</span>
           </div>
-        </nz-tab>
-        <nz-tab nzTitle="2.选择权利">
+        </nz-tab> -->
+        <nz-tab nzTitle="新增发行权利">
   
           <nz-divider nzText="合同" nzOrientation="left"></nz-divider>
   
           <form nz-form [formGroup]="typeForm">
-            <nz-form-item>
+            <!-- <nz-form-item>
               <nz-form-label [nzSm]="2" nzFor="investmentType">投资类型</nz-form-label>
               <nz-form-control [nzSm]="22">
                 <nz-radio-group formControlName="investmentType">
@@ -29,7 +29,7 @@
                   <label nz-radio-button nzValue="introduction">引进</label>
                 </nz-radio-group>
               </nz-form-control>
-            </nz-form-item>
+            </nz-form-item> -->
   
             <nz-form-item>
               <nz-form-label [nzSm]="2" nzFor="contract">有无合同</nz-form-label>

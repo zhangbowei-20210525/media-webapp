@@ -39,7 +39,9 @@
     "app.dashboard.source": "母带",
     "app.dashboard.publish-source": "发行母带",
     "app.dashboard.purchase-source": "购入母带",
-    "app.dashboard.quarterly-statistical-analysis": "季度统计分析",
+    "app.dashboard.publish-statistical-analysis": "发行统计分析",
+    "app.dashboard.publish-statistical-analysis-quarter": "季度",
+    "app.dashboard.publish-statistical-analysis-annual": "年度",
     "app.lang": "简体中文",
     "app.login": "登录",
     "app.login.get-captcha": "获取验证码",
@@ -135,6 +137,7 @@
     "app.series.storage-location": "存放地点",
     "app.series.detail-location": "具体位置",
     "app.series.publicity-share-email": "分享邮箱",
+    "app.series.publicity-view": "查看",
     "app.copyright.homemade": "自制",
     "app.copyright.purchase": "购入",
     "app.copyright.proxy": "代理",
@@ -180,5 +183,6 @@
     "global.upload-success": "上传成功",
     "global.edit-success": "编辑成功",
     "global.start-client": "请启动客户端",
-    "global.select-download-file": "请选择要下载的文件"
+    "global.select-download-file": "请选择要下载的文件",
+    "global.select-series": "请至少选择一个节目"
 }

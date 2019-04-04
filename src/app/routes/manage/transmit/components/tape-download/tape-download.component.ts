@@ -44,8 +44,6 @@ export class TapeDownloadComponent implements OnInit {
 
   getCheckSourceIdList(): number[] {
     this.isDownloaded = true;
-    console.log('234');
-    console.log(this.selectArray(this.sourceCheckOptions.filter(e => e.checked), e => e.value));
     return this.selectArray(this.sourceCheckOptions.filter(e => e.checked), e => e.value);
   }
 

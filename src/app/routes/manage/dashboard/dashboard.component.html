@@ -134,12 +134,16 @@
 
   <div class="all-statistics-box">
     <div class="all-statistics-title-wk">
-      <span class="all-statistics-title">{{ 'app.dashboard.quarterly-statistical-analysis' | translate }}</span>
-      <nz-tree-select #allStatisticsTree style="width: 250px;margin-top: 15px;margin-right: 10px;float: right" 
+      <span class="all-statistics-title">{{ 'app.dashboard.publish-statistical-analysis' | translate }}</span>
+      <nz-radio-group [(ngModel)]="timeType" style="margin-top: 15px;margin-right: 20px;float: right" nzSize="small" (ngModelChange)="$event($event)">
+          <label nz-radio-button nzValue="quarter">{{ 'app.dashboard.publish-statistical-analysis-quarter' | translate }}</label>
+          <label nz-radio-button nzValue="annual">{{ 'app.dashboard.publish-statistical-analysis-annual' | translate }}</label>
+        </nz-radio-group>
+      <nz-tree-select #allStatisticsTree style="width: 500px;margin-top: 15px;margin-right: 10px;float: right" 
       [nzNodes]="statisticsSelectArea" nzShowSearch nzCheckable nzSize="small" nzPlaceHolder="请选择地域"
-        [(ngModel)]="checkedAreaCode" (ngModelChange)="areaChange($event)">
+        [(ngModel)]="checkedAreaCode" (ngModelChange)="areaChange($event)" nzMaxTagCount = 5>
       </nz-tree-select>
-      <nz-select nzSize="small" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
+      <nz-select nzSize="small" [nzDisabled]="timeType == 'annual'" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
         <nz-option *ngFor="let ss of statisticsSelectYear" [nzLabel]="ss" [nzValue]="ss"></nz-option>
       </nz-select>
     </div>

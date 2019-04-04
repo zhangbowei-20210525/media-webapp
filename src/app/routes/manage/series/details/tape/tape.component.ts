@@ -205,6 +205,7 @@ export class TapeComponent implements OnInit {
       this.localRequestService.status(this.address).pipe(timeout(5000)).subscribe(z => {
         if (this.address.charAt(0) === '1' && this.address.charAt(1) === '2' && this.address.charAt(2) === '7') {
           this.localRequestService.UploadTape(this.isId).subscribe();
+          this.router.navigate([`/manage/transmit/download-record/${this.isId}`]);
         } else {
           // this.localRequestService.getUploadFoldersName(this.address).subscribe(c => {
           //   this.foldersName = c;

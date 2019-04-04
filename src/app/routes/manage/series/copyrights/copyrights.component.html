@@ -27,15 +27,23 @@
 
           <nz-form-item style="margin-bottom: 1rem;">
             <nz-form-label nzFor="right" [nzSm]="2">权利</nz-form-label>
-            <nz-form-control [nzSm]="8">
+            <nz-form-control [nzSm]="3">
               <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name"
                 nzValueProperty="code" nzPlaceHolder="" nzChangeOnSelect (ngModelChange)="onRightChange($event)">
               </nz-cascader>
             </nz-form-control>
 
             <nz-form-label nzFor="date" [nzSm]="2" [nzOffset]="1">期限</nz-form-label>
-            <nz-form-control [nzSm]="8">
-                <nz-range-picker formControlName="date" (ngModelChange)="onDateChange($event)"></nz-range-picker>
+            <nz-form-control [nzSm]="7">
+              <nz-range-picker formControlName="date" (ngModelChange)="onDateChange($event)"></nz-range-picker>
+            </nz-form-control>
+
+            <nz-form-label nzFor="date" [nzSm]="3" [nzOffset]="1">是否可发行</nz-form-label>
+            <nz-form-control [nzSm]="5">
+                <nz-radio-group formControlName="is_salable" (ngModelChange)="onPubRightChange($event)">
+                    <label nz-radio nzValue="1">是</label>
+                    <label nz-radio nzValue="0">否</label>
+                  </nz-radio-group>
             </nz-form-control>
           </nz-form-item>
         </form>
@@ -48,11 +56,18 @@
       </div>
     </div>
   </div>
-
+  <div style="margin-top: 1.5rem;margin-bottom: 1.5rem">
+    <nz-tag  nzMode="closeable" (nzOnClose)="closeTag(tag)"  *ngFor="let tag of tags">
+      {{ tag.project }}
+    </nz-tag>
+  </div>
   <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
-    [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
+    [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)"
+    nzShowSizeChanger (nzCurrentPageDataChange)="currentPageDataChange($event)">
     <thead>
       <tr>
+        <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate"
+          (nzCheckedChange)="checkAll($event, dataTable.data)"></th>
         <th>#</th>
         <th>项目名称</th>
         <th>投资类型</th>
@@ -66,6 +81,8 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of dataTable.data">
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0" nzShowCheckbox [(nzChecked)]="data.isChecked"
+          (nzCheckedChange)="onCheckedChange($event, data)"></td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
           <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>

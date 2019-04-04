@@ -12,7 +12,7 @@ export class TransmitService {
   ) { }
 
   tapeFileList(id: number) {
-    return this.http.get<any>(`/api/v1/sources/${id}/files`);
+    return this.http.get<any>(`/api/v1/bought_sources/${id}/files/brief`);
   }
 
   tapeDownloadInfo(id: number) {

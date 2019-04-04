@@ -163,6 +163,12 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.width(800);
     this.player.height(470);
     this.player.load();
+    console.log('222');
+    // console.log(this.player.bind('contextmenu',function() { return false; }));
+  }
+
+  nomenu(event) {
+    event.preventDefault();
   }
 
   ngOnDestroy() {
@@ -382,7 +388,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.featureIndex = i - 1;
     this.publicityType = 'feature';
     this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid}], { relativeTo: this.route });
+    { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   trailerNavigateToDetail(i: number, id: number) {
@@ -466,18 +472,18 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   getTwoDimensionalCode() {
-       // zh-CN en-US
-       this.languageVersion = this.i18n.currentLang;
-       console.log(this.languageVersion);
-       if (this.languageVersion === 'zh-CN') {
-        this.seriesService.getTwoDimensionalCode(this.id)
+    // zh-CN en-US
+    this.languageVersion = this.i18n.currentLang;
+    console.log(this.languageVersion);
+    if (this.languageVersion === 'zh-CN') {
+      this.seriesService.getTwoDimensionalCode(this.id)
         .pipe(map(x => x = `data:image/png;base64,${x}`))
-          .subscribe(res => {
-            this.twoDimensionalCode = res;
-          });
-       }
-       if (this.languageVersion === 'en-US') {
-       }
+        .subscribe(res => {
+          this.twoDimensionalCode = res;
+        });
+    }
+    if (this.languageVersion === 'en-US') {
+    }
 
   }
 

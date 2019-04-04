@@ -41,8 +41,8 @@ export class DashboardComponent implements OnInit {
   allStatisticsChart: any;
   allStatistics: NzTreeNodeOptions[];
   checkedAreaCode = [];
-  oldCheckedAreaCode = [];
-  @ViewChild('allStatisticsTree') allStatisticsTree: NzTreeSelectComponent;
+  timeType = 'quarter';
+   @ViewChild('allStatisticsTree') allStatisticsTree: NzTreeSelectComponent;
 
   constructor(
     private dashboardService: DashboardService,
@@ -136,8 +136,8 @@ export class DashboardComponent implements OnInit {
       this.allStatisticsChart.interval().position('label*value').color('line').opacity(1).adjust([{
         type: 'dodge',
         marginRatio: 1 / 32
-    }]);
-    this.allStatisticsChart.render();
+      }]);
+      this.allStatisticsChart.render();
     });
   }
 
@@ -238,7 +238,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getPublishStatisticsInfo () {
+  getPublishStatisticsInfo() {
     this.dashboardService.getPublishStatistics('custom').subscribe(res => {
       this.publishChart = new G2.Chart({
         container: 'publishStatistics',
@@ -248,14 +248,14 @@ export class DashboardComponent implements OnInit {
       });
       this.publishChart.source(res);
       this.publishChart.scale('value', {
-          tickCount: 10
+        tickCount: 10
       });
       this.publishChart.interval().position('label*value');
       this.publishChart.render();
     });
   }
 
-  getTapeStatisticsInfo () {
+  getTapeStatisticsInfo() {
     this.dashboardService.getTapeStatistics('publish').subscribe(res => {
       this.tapeChart = new G2.Chart({
         container: 'tapeStatistics',
@@ -416,14 +416,15 @@ export class DashboardComponent implements OnInit {
     }
     if (event.length < 6) {
       this.dashboardService.getAllStatistics(this.timeFiltrate, event).subscribe(res => {
-        this.statisticsSelectYear =  this.getStatisticsSelectYear(res.meta.area_number_choices);
+        this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
         this.statisticsSelectYear = res.meta.year_choices;
         this.allStatisticsChart.source(res.list);
         this.allStatisticsChart.render();
       });
     } else {
       this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
-      }
+      this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+    }
   }
 
   yearChange(event) {
@@ -432,10 +433,30 @@ export class DashboardComponent implements OnInit {
       this.checkedAreaCode = [''];
     }
     this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode).subscribe(res => {
-      this.statisticsSelectYear =  this.getStatisticsSelectYear(res.meta.area_number_choices);
+      this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
       this.statisticsSelectYear = res.meta.year_choices;
       this.allStatisticsChart.source(res.list);
       this.allStatisticsChart.render();
     });
+  }
+
+  timeTypeChange(event) {
+    this.timeType = event;
+    if (this.timeType === 'annual') {
+      console.log('334');
+      this.dashboardService.getAnnualStatistics(this.checkedAreaCode).subscribe(res => {
+        this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
+        this.statisticsSelectYear = res.meta.year_choices;
+        this.allStatisticsChart.source(res.list);
+        this.allStatisticsChart.render();
+      });
+    } else {
+      this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode).subscribe(res => {
+        this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
+        this.statisticsSelectYear = res.meta.year_choices;
+        this.allStatisticsChart.source(res.list);
+        this.allStatisticsChart.render();
+      });
+    }
   }
 }

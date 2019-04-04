@@ -1,9 +1,9 @@
 <div>
     <p class="clearfix">
-        <!-- <nz-radio-group [(ngModel)]="publicityStyle" [nzButtonStyle]="'solid'">
+        <nz-radio-group [(ngModel)]="publicityStyle" [nzButtonStyle]="'solid'" (ngModelChange)="publicityStyleChange($event)">
             <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline" style="font-size: 1.5rem"></i></label>
             <label nz-radio-button nzValue="table"><i nz-icon type="table" theme="outline" style="font-size: 1.5rem"></i></label>
-          </nz-radio-group> -->
+          </nz-radio-group>
       <button nz-button nzType="default" class="rf" (click)="addPublicity()">{{ 'app.series.add-publicity' | translate }}</button>
     </p>
   </div>
@@ -13,7 +13,7 @@
         </label>
         <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
     </ng-template>
-<div *ngIf="isLoaded" [@fadeIn]>
+<div *ngIf="isLoaded" [@fadeIn] [hidden]="publicityStyle == 'figure'">
   <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
     [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
@@ -28,7 +28,7 @@
         <th style="text-align: center">{{ 'app.series.poster' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.still' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.pdf' | translate }}</th>
-        <!-- <th style="text-align: center">操作</th> -->
+        <th style="text-align: center">{{ 'app.series.publicity-view' | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -43,6 +43,11 @@
         <td style="text-align: center">{{ data.poster }}</td>
         <td style="text-align: center">{{ data.still }}</td>
         <td style="text-align: center">{{ data.pdf }}</td>
+        <td style="text-align: center">
+          <button nz-button nzType="primary"nzSize="small" (click)="publicityPlay(data?.id, data?.program_id)">
+            <i nz-icon nzType="play-circle" style="font-size: 14px" nzTheme="outline"></i>
+          </button>
+        </td>
         <!-- <td style="text-align: center">
           <a><i nz-icon type="delete" theme="outline" style="font-size: 14px"></i></a>
         </td> -->
@@ -78,182 +83,45 @@
       </div>
     </div> -->
   
-    <!-- <div class="video-info-wk">
+    <div class="video-info-wk" [hidden]="publicityStyle == 'table'">
       <ul>
-        <li class="video-info">
+        <li class="video-info" *ngFor="let thumbnail of thumbnailList">
           <div class="video">
-            <img class="video-img" src="./assets/imaaa/120.png" />
-            <div class="price">
-              <span class="price">2018-12-19&nbsp;发布</span>
+           <img class="video-img" [src]="thumbnail?.src" />
+            <div class="price" (click)="thumbnailDetail(thumbnail?.program_id)">
+             <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
             </div>
           </div>
   
           <div class="info">
             <div class="info-wk-one">
-              <div class="info-name"><a (click)="marketDetail()">绣春刀2修罗战场</a></div>
-              <div class="info-type">电影
-              </div>
+              <div class="info-name"><a (click)="thumbnailDetail(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
+              <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
+              <a style="font-size: 13px;margin-left: 5rem;" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
             </div>
             <div class="info-wk-three">
               <div>导演:</div>
-              <div class="info-wk-four">路阳</div>
+              <div class="info-wk-four">{{ thumbnail?.director }}</div>
             </div>
             <div class="info-wk-five">
               主演:
-              <span class="info-wk-six">张震/杨幂/张译/雷佳音/辛芷蕾/2</span>
+              <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
             </div>
           </div>
   
           <div class="info-wk-seven">
             <div class="info-wk-eight">
               <div class="info-wk-nine">
-                <img class="info-hp" src="./assets/imaaa/3.jpg" />
+                <img class="info-hp" [src]="thumbnail?.user?.avatar"  />
               </div>
-              <div class="info-wk-ten">上海北丞科技股份有限公司</div>
+              <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
             </div>
           </div>
         </li>
-
-        <li class="video-info">
-            <div class="video">
-              <img class="video-img" src="./assets/imaaa/120.png" />
-              <div class="price">
-                <span class="price">2018-12-19&nbsp;发布</span>
-              </div>
-            </div>
-    
-            <div class="info">
-              <div class="info-wk-one">
-                <div class="info-name"><a (click)="marketDetail()">绣春刀2修罗战场</a></div>
-                <div class="info-type">电影
-                </div>
-              </div>
-              <div class="info-wk-three">
-                <div>导演:</div>
-                <div class="info-wk-four">路阳</div>
-              </div>
-              <div class="info-wk-five">
-                主演:
-                <span class="info-wk-six">张震/杨幂/张译/雷佳音/辛芷蕾/2</span>
-              </div>
-            </div>
-    
-            <div class="info-wk-seven">
-              <div class="info-wk-eight">
-                <div class="info-wk-nine">
-                  <img class="info-hp" src="./assets/imaaa/3.jpg" />
-                </div>
-                <div class="info-wk-ten">上海北丞科技股份有限公司</div>
-              </div>
-            </div>
-          </li>
-
-          <li class="video-info">
-              <div class="video">
-                <img class="video-img" src="./assets/imaaa/120.png" />
-                <div class="price">
-                  <span class="price">2018-12-19&nbsp;发布</span>
-                </div>
-              </div>
-      
-              <div class="info">
-                <div class="info-wk-one">
-                  <div class="info-name"><a (click)="marketDetail()">绣春刀2修罗战场</a></div>
-                  <div class="info-type">电影
-                  </div>
-                </div>
-                <div class="info-wk-three">
-                  <div>导演:</div>
-                  <div class="info-wk-four">路阳</div>
-                </div>
-                <div class="info-wk-five">
-                  主演:
-                  <span class="info-wk-six">张震/杨幂/张译/雷佳音/辛芷蕾/2</span>
-                </div>
-              </div>
-      
-              <div class="info-wk-seven">
-                <div class="info-wk-eight">
-                  <div class="info-wk-nine">
-                    <img class="info-hp" src="./assets/imaaa/3.jpg" />
-                  </div>
-                  <div class="info-wk-ten">上海北丞科技股份有限公司</div>
-                </div>
-              </div>
-            </li>
-
-            <li class="video-info">
-                <div class="video">
-                  <img class="video-img" src="./assets/imaaa/120.png" />
-                  <div class="price">
-                    <span class="price">2018-12-19&nbsp;发布</span>
-                  </div>
-                </div>
-        
-                <div class="info">
-                  <div class="info-wk-one">
-                    <div class="info-name"><a (click)="marketDetail()">绣春刀2修罗战场</a></div>
-                    <div class="info-type">电影
-                    </div>
-                  </div>
-                  <div class="info-wk-three">
-                    <div>导演:</div>
-                    <div class="info-wk-four">路阳</div>
-                  </div>
-                  <div class="info-wk-five">
-                    主演:
-                    <span class="info-wk-six">张震/杨幂/张译/雷佳音/辛芷蕾/2</span>
-                  </div>
-                </div>
-        
-                <div class="info-wk-seven">
-                  <div class="info-wk-eight">
-                    <div class="info-wk-nine">
-                      <img class="info-hp" src="./assets/imaaa/3.jpg" />
-                    </div>
-                    <div class="info-wk-ten">上海北丞科技股份有限公司</div>
-                  </div>
-                </div>
-              </li>
-
-              <li class="video-info">
-                  <div class="video">
-                    <img class="video-img" src="./assets/imaaa/120.png" />
-                    <div class="price">
-                      <span class="price">2018-12-19&nbsp;发布</span>
-                    </div>
-                  </div>
-          
-                  <div class="info">
-                    <div class="info-wk-one">
-                      <div class="info-name"><a (click)="marketDetail()">绣春刀2修罗战场</a></div>
-                      <div class="info-type">电影
-                      </div>
-                    </div>
-                    <div class="info-wk-three">
-                      <div>导演:</div>
-                      <div class="info-wk-four">路阳</div>
-                    </div>
-                    <div class="info-wk-five">
-                      主演:
-                      <span class="info-wk-six">张震/杨幂/张译/雷佳音/辛芷蕾/2</span>
-                    </div>
-                  </div>
-          
-                  <div class="info-wk-seven">
-                    <div class="info-wk-eight">
-                      <div class="info-wk-nine">
-                        <img class="info-hp" src="./assets/imaaa/3.jpg" />
-                      </div>
-                      <div class="info-wk-ten">上海北丞科技股份有限公司</div>
-                    </div>
-                  </div>
-                </li>
-  
-        
-        
       </ul>
-  
-    </div> -->
+    </div>
+    <div style="text-align: right;margin-top: 5rem" [hidden]="publicityStyle == 'table'">
+      <nz-pagination [(nzPageIndex)]="tbPagination.page" [nzTotal]="tbPagination.count" [nzPageSize]="tbPagination.page_size" (nzPageIndexChange)="tbPageChange()"></nz-pagination>
+  </div>
   <!-- </div> -->
   

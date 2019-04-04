@@ -3,7 +3,7 @@
     <div class="player-panel">
       <div [hidden]="ishidden">
         <div class="video-box">
-          <video id="video_player" class="video-js vjs-default-skin vjs-big-play-centered" type="application/x-mpegURL"
+          <video id="video_player" (contextmenu)="nomenu($event)" class="video-js vjs-default-skin vjs-big-play-centered" type="application/x-mpegURL"
             preload="none" data-setup="{}" controls autoplay></video>
         </div>
         <div class="video-title">

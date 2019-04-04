@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SeriesService } from '../series.service';
 import { PaginationDto } from '@shared';
 import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { fadeIn } from '@shared/animations';
 
 @Component({
@@ -22,7 +22,8 @@ export class PublicitiesComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   displayData = [];
-  pagination: PaginationDto;
+  pagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
+  tbPagination = { page: 1, count: 10, page_size: 16 } as PaginationDto;
   publicitiesList = [];
   addPublicityModal: NzModalRef;
   publicityId: number;
@@ -31,6 +32,7 @@ export class PublicitiesComponent implements OnInit {
   dataset: any;
   disabledButton: any;
   publicityStyle = 'figure';
+  thumbnailList = [];
 
   constructor(
     private router: Router,
@@ -38,10 +40,18 @@ export class PublicitiesComponent implements OnInit {
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.fetchPublicities();
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.tbPagination.page = +params.get('page') | 1;
+        return this.service.getThumbnail(this.tbPagination);
+      })).subscribe(res => {
+        this.thumbnailList = res.list;
+        this.tbPagination = res.pagination;
+      });
   }
 
   fetchPublicities() {
@@ -57,11 +67,27 @@ export class PublicitiesComponent implements OnInit {
         this.dataset = result.list;
         this.pagination = result.pagination;
       });
+    // this.route.paramMap.pipe(
+    //   switchMap((params: ParamMap) => {
+    //     this.tbPagination.page = +params.get('page');
+    //     return this.service.getThumbnail(this.tbPagination);
+    //     })).subscribe(res => {
+    //   this.thumbnailList = res.list;
+    //   this.tbPagination = res.pagination;
+    // });
   }
 
   pageChnage(page: number) {
     this.pagination.page = page;
     this.fetchPublicities();
+  }
+
+  tbPageChange() {
+    const page = this.tbPagination.page;
+    if (page < 1 || page > this.tbPagination.pages) {
+      return;
+    }
+    this.router.navigate([`/medias/movies/${page}`], { relativeTo: this.route });
   }
 
   refreshStatus(): void {
@@ -342,6 +368,22 @@ export class PublicitiesComponent implements OnInit {
       }
     } else { }
   }
+  thumbnailDetail(id: number) {
+    this.router.navigate([`/manage/series/d/${id}/publicityd`]);
+  }
 
+  publicityPlay(id: number, sid: number) {
+    this.router.navigate([`/manage/series/publicity-details/${id}`, { sid: sid }]);
+  }
 
+  publicityStyleChange(event) {
+    if (event === 'table') {
+      this.fetchPublicities();
+    } else {
+      this.service.getThumbnail(this.tbPagination).subscribe(res => {
+        this.thumbnailList = res.list;
+        this.tbPagination = res.pagination;
+      })
+    }
+  }
 }
