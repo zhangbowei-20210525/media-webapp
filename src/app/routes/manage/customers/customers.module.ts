@@ -11,6 +11,7 @@ import { SharedModule } from '@shared';
 import { AddLogComponent } from './components/add-log/add-log.component';
 import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
 import { DelonFormModule } from '@delon/form';
+import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DelonFormModule } from '@delon/form';
     CustomerDetailsComponent,
     AddCustomerComponent,
     AddLogComponent,
-    EditCustomerComponent
+    EditCustomerComponent,
+    PaymentFormatPipe
   ],
   imports: [
     CommonModule,

@@ -6,61 +6,42 @@
     </div>
   </div>
   <div class="block-content">
-    <div nz-row class="series-info-row">
-      <div nz-col nzSpan="6">
-        <span class="info-filed">公司全称</span>
-        <span>{{ customerInfo?.name }}</span>
+    <nz-skeleton [nzActive]="true" [nzLoading]="!isInfoLoaded">
+      <div nz-row class="series-info-row">
+        <div nz-col nzSpan="6">
+          <span class="info-filed">公司全称</span>
+          <span>{{ customer?.name }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">公司简称</span>
+          <span>{{ customer?.abbreviation }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">客商类型</span>
+          <!-- <span *ngIf="customer?.custom_type == 0">企业</span>
+                <span *ngIf="customer?.custom_type == 1">个人</span> -->
+          <span>企业</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">联系电话</span>
+          <span>{{ customer?.telephone }}</span>
+        </div>
       </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">公司简称</span>
-        <span>{{ customerInfo?.abbreviation }}</span>
+      <div nz-row class="series-info-row">
+        <div nz-col nzSpan="24">
+          <span class="info-filed">客户标签</span>
+          <span>
+            <nz-tag *ngFor="let tag of customer?.tags">{{ tag }}</nz-tag>
+          </span>
+        </div>
       </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">客商类型</span>
-        <span *ngIf="customerInfo?.custom_type == 0">企业</span>
-        <span *ngIf="customerInfo?.custom_type == 1">个人</span>
+      <div nz-row class="series-info-row" *ngIf="customer?.remark">
+        <div nz-col nzSpan="24">
+          <span class="info-filed">备注</span>
+          <span>{{ customer?.remark }}</span>
+        </div>
       </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">客户标签</span>
-        <span>{{ customerInfo?.tag }}</span>
-      </div>
-    </div>
-    <div nz-row class="series-info-row">
-      <div nz-col nzSpan="6">
-        <span class="info-filed">联系电话</span>
-        <span>{{ customerInfo?.telephone }}</span>
-      </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">手机号码</span>
-        <span>{{ customerInfo?.phone }}</span>
-      </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">微信</span>
-        <span>{{ customerInfo?.wx_id }}</span>
-      </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">邮箱</span>
-        <span>{{ customerInfo?.email }}</span>
-      </div>
-    </div>
-    <div nz-row class="series-info-row">
-      <div nz-col nzSpan="6">
-        <span class="info-filed">联系人</span>
-        <span>{{ customerInfo?.license_name }}</span>
-      </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">所属部门</span>
-        <span>{{ customerInfo?.department }}</span>
-      </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">所在职位</span>
-        <span>{{ customerInfo?.position }}</span>
-      </div>
-      <div nz-col nzSpan="6">
-        <span class="info-filed">备注</span>
-        <span>{{ customerInfo?.remark }}</span>
-      </div>
-    </div>
+    </nz-skeleton>
   </div>
 </div>
 
@@ -100,142 +81,182 @@
     <div class="block-title">联系人</div>
   </div>
   <div class="block-content">
-    <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
-      <nz-tab *ngFor="let liaison of liaisonTabs" [nzTitle]="liaison.name">
-        <div nz-row class="series-info-row">
-          <div nz-col nzSpan="6">
-            <span class="info-filed">联系人名</span>
-            <span>{{ liaison.name }}</span>
+    <nz-skeleton [nzActive]="true" [nzLoading]="!isLiaisonsLoaded">
+      <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'">
+        <nz-tab *ngFor="let liaison of liaisonTabs" [nzTitle]="liaison.name">
+          <div nz-row class="series-info-row">
+            <div nz-col nzSpan="6">
+              <span class="info-filed">联系人名</span>
+              <span>{{ liaison.name }}</span>
+            </div>
+            <div nz-col nzSpan="6">
+              <span class="info-filed">手机</span>
+              <span>{{ liaison.phone }}</span>
+            </div>
+            <div nz-col nzSpan="6">
+              <span class="info-filed">邮箱</span>
+              <span>{{ liaison.email }}</span>
+            </div>
+            <div nz-col nzSpan="6">
+              <span class="info-filed">微信</span>
+              <span>{{ liaison.wx_id }}</span>
+            </div>
           </div>
-          <div nz-col nzSpan="6">
-            <span class="info-filed">手机</span>
-            <span>{{ liaison.phone }}</span>
+          <div nz-row class="series-info-row">
+            <div nz-col nzSpan="6">
+              <span class="info-filed">部门</span>
+              <span>{{ liaison.department }}</span>
+            </div>
+            <div nz-col nzSpan="6">
+              <span class="info-filed">职位</span>
+              <span>{{ liaison.position }}</span>
+            </div>
+            <div nz-col nzSpan="6">
+              <span class="info-filed">备注</span>
+              <span>{{ liaison.remark }}</span>
+            </div>
           </div>
-          <div nz-col nzSpan="6">
-            <span class="info-filed">邮箱</span>
-            <span>{{ liaison.email }}</span>
-          </div>
-          <div nz-col nzSpan="6">
-            <span class="info-filed">微信</span>
-            <span>{{ liaison.wx_id }}</span>
-          </div>
-        </div>
-        <div nz-row class="series-info-row">
-          <div nz-col nzSpan="6">
-            <span class="info-filed">部门</span>
-            <span>{{ liaison.department }}</span>
-          </div>
-          <div nz-col nzSpan="6">
-            <span class="info-filed">职位</span>
-            <span>{{ liaison.position }}</span>
-          </div>
-          <div nz-col nzSpan="6">
-            <span class="info-filed">备注</span>
-            <span>{{ liaison.remark }}</span>
-          </div>
-        </div>
+        </nz-tab>
+      </nz-tabset>
+    </nz-skeleton>
+  </div>
+</div>
+
+<div class="block clearfix">
+  <div class="block-content" style="margin-top: 0">
+    <nz-tabset nzSize="default" nzAnimated="false">
+      <nz-tab nzTitle="采购">
+        <nz-table #purchaseTable nzBordered nzSize="small" [nzData]="purchaseDataSet"
+          [nzPageSize]="purchasePagination.page_size" [nzFrontPagination]="false"
+          [nzPageIndex]="purchasePagination.page" [nzTotal]="purchasePagination.count"
+          (nzPageIndexChange)="purchasePageChange($event)">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>项目名称</th>
+              <th>投资类型</th>
+              <th>品类</th>
+              <th>集数</th>
+              <th>权利</th>
+              <th>范围</th>
+              <th>期限</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of purchaseTable.data">
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+                <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
+              </td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}
+              </td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
+              <td>{{ data.right }}</td>
+              <td>{{ data.area }}</td>
+              <td>
+                {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+            (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="发售">
+        <nz-table #publishTable nzBordered nzSize="small" [nzData]="publishDataSet"
+          [nzPageSize]="publishPagination.page_size" [nzFrontPagination]="false" [nzPageIndex]="publishPagination.page"
+          [nzTotal]="publishPagination.count" (nzPageIndexChange)="publishPageChange($event)">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>项目名称</th>
+              <th>投资类型</th>
+              <th>品类</th>
+              <th>集数</th>
+              <th>权利</th>
+              <th>范围</th>
+              <th>期限</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of publishTable.data">
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+                <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
+              </td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}
+              </td>
+              <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
+              <td>{{ data.right }}</td>
+              <td>{{ data.area }}</td>
+              <td>
+                {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+            (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
       </nz-tab>
     </nz-tabset>
   </div>
 </div>
 
-<!-- <nz-table #basicTable [nzData]="rightList" nzShowPagination="false" style="padding-bottom: 20px">
-  <thead>
-    <tr>
-      <th>节目名称</th>
-      <th>发行权利</th>
-      <th>权利范围</th>
-      <th>开始时间</th>
-      <th>结束时间</th>
-      <th>收款形式</th>
-      <th>是否已收款</th>
-      <th>备注</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.program_name}}</td>
-      <td *ngIf="data.right_type == 'broadcast'">播映权</td>
-      <td *ngIf="data.right_type == 'network'">信息网络传播权</td>
-      <td *ngIf="data.right_type == 'publish'">出版发行权</td>
-      <td *ngIf="data.right_type == 'public'">公播权</td>
-      <td>{{ data.right_scope }}</td>
-      <td>{{ data.start_date }}</td>
-      <td>{{ data.end_date }}</td>
-      <td *ngIf="data.payment_form == 1">一次性</td>
-      <td *ngIf="data.payment_form == 2">分二次</td>
-      <td *ngIf="data.payment_form == 3">分三次</td>
-      <td *ngIf="data.payment_form == 4">分四次</td>
-      <td *ngIf="data.is_payment == true">是</td>
-      <td *ngIf="data.is_payment == false">否</td>
-      <td>{{ data.remark }}</td>
-    </tr>
-  </tbody>
-</nz-table> -->
-
-<nz-table #rightsTable nzBordered [nzData]="rightDataSet" [nzPageSize]="rightsPagination.page_size"
-  [nzFrontPagination]="false" [nzPageIndex]="rightsPagination.page" [nzTotal]="rightsPagination.count"
-  (nzPageIndexChange)="copyrightsPageChange($event)">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>项目名称</th>
-      <th>投资类型</th>
-      <th>品类</th>
-      <th>集数</th>
-      <th>权利</th>
-      <th>范围</th>
-      <th>期限</th>
-      <!-- <th>操作</th> -->
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of rightsTable.data">
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
-        <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
-      </td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
-      <td>{{ data.right }}</td>
-      <td>{{ data.area }}</td>
-      <td>
-        {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
-          (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
-      </td>
-      <!-- <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
-        <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid)">
-          <i class="text-info" nz-icon type="delete" theme="outline"></i>
-        </a>
-      </td> -->
-    </tr>
-  </tbody>
-</nz-table>
-
-<nz-table #table [nzData]="contractList" nzShowPagination="false" style="padding-bottom: 20px">
-  <thead>
-    <tr>
-      <th>合同名称</th>
-      <th>合同编号</th>
-      <th>方向</th>
-      <th>合同金额</th>
-      <th>付/收款金额</th>
-      <th>付/收款形式</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of table.data">
-      <td>{{data.contract_name}}</td>
-      <td>{{data.contract_number}}</td>
-      <td *ngIf="data.contract_type == 'purchase'">流入</td>
-      <td *ngIf="data.contract_type == 'publish'">流出</td>
-      <td>{{data.total_amount}}</td>
-      <td>{{data.total_amount}}</td>
-      <td *ngIf="data.payment_form == 1">一次性</td>
-      <td *ngIf="data.payment_form == 2">分二次</td>
-      <td *ngIf="data.payment_form == 3">分三次</td>
-      <td *ngIf="data.payment_form == 4">分四次</td>
-    </tr>
-  </tbody>
-</nz-table>
+<div class="block clearfix">
+  <div class="block-content" style="margin-top: 0">
+    <nz-tabset nzSize="default" nzAnimated="false">
+      <nz-tab nzTitle="采购">
+        <nz-table #purchaseContractTable nzSize="small" [nzData]="purchaseContractDataSet"
+          [nzPageSize]="purchaseContractsPagination.page_size" [nzFrontPagination]="false"
+          [nzPageIndex]="purchaseContractsPagination.page" [nzTotal]="purchaseContractsPagination.count"
+          (nzPageIndexChange)="purchaseContractsPageChange($event)">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>合同名称</th>
+              <th>合同编号</th>
+              <th>合同金额</th>
+              <!-- <th>付款金额</th> -->
+              <th>付款形式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of purchaseContractTable.data; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ data.contract_name }}</td>
+              <td>{{ data.contract_number }}</td>
+              <td>{{ data.total_amount }}</td>
+              <td>{{ data.payment_form | paymentFormat }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="发售">
+        <nz-table #publishContractTable nzSize="small" [nzData]="publishContractDataSet"
+          [nzPageSize]="publishContractsPagination.page_size" [nzFrontPagination]="false"
+          [nzPageIndex]="publishContractsPagination.page" [nzTotal]="publishContractsPagination.count"
+          (nzPageIndexChange)="publishContractsPageChange($event)">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>合同名称</th>
+              <th>合同编号</th>
+              <th>合同金额</th>
+              <!-- <th>付款金额</th> -->
+              <th>收款形式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of publishContractTable.data; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ data.contract_name }}</td>
+              <td>{{ data.contract_number }}</td>
+              <td>{{ data.total_amount }}</td>
+              <td>{{ data.payment_form | paymentFormat }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>

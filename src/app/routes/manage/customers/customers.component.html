@@ -12,7 +12,7 @@
           <tr>
             <th>公司/个人</th>
             <th>联系人</th>
-            <th>手机号码</th>
+            <th>电话</th>
             <th>客户类型</th>
             <th>客户标签</th>
             <!-- <th>已发行</th>
@@ -23,15 +23,15 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of basicTable.data">
-            <td><a routerLink="/manage/customers/d/{{data.id}}">{{data.name}}</a></td>
-            <td>{{data.license_name}}</td>
-            <td>{{data.telephone}}</td>
-            <td *ngIf="data.custom_type == 0">企业</td>
-            <td *ngIf="data.custom_type == 1">个人</td>
-            <td>{{data.tag}}</td>
+            <td><a routerLink="/manage/customers/d/{{data.id}}">{{ data.name }}</a></td>
+            <td>{{ data.liaison_name }}</td>
+            <td>{{ data.telephone }}</td>
+            <td>企业</td>
+            <td>{{ data.tags | arrayFormat }}</td>
+            <!-- <td><nz-tag *ngFor="let tag of data.tags">{{ tag }}</nz-tag></td> -->
             <!-- <td>{{data.publish_num}}</td>
                 <td>{{data.total_amount}}</td> -->
-            <td>{{data.remark}}</td>
+            <td>{{ data.remark }}</td>
             <td>
               <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
               <a><i class="text-info" nz-icon type="delete" theme="outline" (click)="deleteCustomers(data.id)"></i></a>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ContractCopyrightDto } from '../dtos';
 import { PaginationDto, PaginationResponseDto, ReactiveBase, ReactiveDatePicker, ReactiveTextbox } from '@shared';
 import { CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto } from './dtos';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -191,13 +192,14 @@ export class CopyrightsService {
 
   groupBy(array: any[], f: (object: any) => any) {
     const groups = {};
-    array.forEach(function (o) {
-      const group = JSON.stringify(f(o));
+    array.forEach((o) => {
+      let group = JSON.stringify(f(o));
+      if (group === 'null') {
+        group = _.uniqueId(); // 如果没有id，则单独分组，以避免所有无id的对象分到一组
+      }
       groups[group] = groups[group] || [];
       groups[group].push(o);
     });
-    return Object.keys(groups).map(function (group) {
-      return groups[group];
-    });
+    return Object.keys(groups).map(group => groups[group]);
   }
 }
