@@ -11,7 +11,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
-    MarketComponent, 
+    MarketComponent,
     MarketDetailsComponent
   ],
   imports: [

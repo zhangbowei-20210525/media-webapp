@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "https://www.bctop.net",
+        "target": "http://test1.bctop.net",
         "secure": false
     }
 }
