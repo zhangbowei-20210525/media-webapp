@@ -97,12 +97,12 @@
         <li class="nav-item">
           <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'" (click)="selectList('rights')">{{ 'app.series.right' | translate }}</a>
         </li>
-        <nz-input-group class="search" nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="small">
+        <!-- <nz-input-group class="search" nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="small">
           <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content" (keyup)="$event.which === 13 && search()"/>
         </nz-input-group>
         <ng-template #suffixIconButton>
           <button nz-button nzType="primary" nzSearch nzSize="small" (click)="search()"><i nz-icon type="search"></i></button>
-        </ng-template>
+        </ng-template> -->
       </ul>
     </nav>
   </div>

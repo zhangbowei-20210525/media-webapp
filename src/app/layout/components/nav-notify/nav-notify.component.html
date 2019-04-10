@@ -4,8 +4,8 @@
       <nz-tab [nzTitle]="'menu.notify.system' | translate">
         <div class="notitys">
           <nz-skeleton [nzLoading]="!isSysLoaded" class="notify-skeleton">
-            <div class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
-              (scrolled)="onSysScrollDown()">
+            <div *ngIf="sysNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll
+              [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onSysScrollDown()">
               <div class="n-card" *ngFor="let item of sysNotifys">
                 <div class="clearfix">
                   <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
@@ -24,7 +24,7 @@
       <nz-tab [nzTitle]="'menu.notify.source' | translate">
         <div class="notitys">
           <nz-skeleton [nzLoading]="!isSrcLoaded" class="notify-skeleton">
-            <div class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
+            <div *ngIf="srcNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
               (scrolled)="onSrcScrollDown()">
               <div class="n-card" *ngFor="let item of srcNotifys">
                 <div class="clearfix">
@@ -44,7 +44,7 @@
       <nz-tab [nzTitle]="'menu.notify.outside' | translate">
         <div class="notitys">
           <nz-skeleton [nzLoading]="!isOutLoaded" class="notify-skeleton">
-            <div class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
+            <div *ngIf="outNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
               (scrolled)="onOutScrollDown()">
               <div class="n-card" *ngFor="let item of outNotifys">
                 <div class="clearfix">
@@ -68,3 +68,7 @@
     <div class="n-operations-button"><a>全部</a></div> -->
   </div>
 </div>
+
+<ng-template #empty>
+  <div class="text-hint empty-box">{{ 'global.no-data' | translate }}</div>
+</ng-template>

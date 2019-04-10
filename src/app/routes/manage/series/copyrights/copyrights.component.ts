@@ -7,6 +7,7 @@ import { fadeIn } from '@shared/animations';
 import { finalize } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-copyrights',
@@ -29,7 +30,6 @@ export class CopyrightsComponent implements OnInit {
   listOfAllData: any[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
   tags = [];
-  
 
   constructor(
     private service: CopyrightsService,
@@ -42,13 +42,15 @@ export class CopyrightsComponent implements OnInit {
   ngOnInit() {
     this.loadAreaOptions();
     this.loadRightsOptions();
-    this.loadCopyrights();
+    this.fetchCopyrights(this.service.getDefaultFiltrateSeriesParams());
     this.filtrateForm = this.fb.group({
       days: ['all'],
-      area: [['000000']],
       right: [['all']],
-      is_salable: ['0'],
-      date: [null]
+      area: [['all']],
+      date: [null],
+      is_salable: [false],
+      investment_type: [null],
+      program_type: [null]
     });
   }
 
@@ -61,8 +63,8 @@ export class CopyrightsComponent implements OnInit {
   onCheckedChange(state: Boolean, tag: any) {
     if (state) {
       this.tags = [...this.tags, tag];
-      this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => item.isChecked == true);
-      this.isIndeterminate = this.listOfDisplayData.some(item => item.isChecked == true) && !this.isAllDisplayDataChecked;
+      this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => item.isChecked === true);
+      this.isIndeterminate = this.listOfDisplayData.some(item => item.isChecked === true) && !this.isAllDisplayDataChecked;
 
     } else {
       this.tags = this.tags.filter(e => e.pid !== tag.pid);
@@ -76,7 +78,7 @@ export class CopyrightsComponent implements OnInit {
     if (value) {
       tags.forEach(t => {
         if (this.tags.every(x => x.pid !== t.pid)) {
-          this.tags.push(t)
+          this.tags.push(t);
         }
       });
       this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => item.isChecked = true);
@@ -86,13 +88,16 @@ export class CopyrightsComponent implements OnInit {
       const pro = [];
       this.listOfDisplayData.forEach(item => {
         item.isChecked = value;
-        pro.push(item)
+        pro.push(item);
       });
       const p = [];
       const t = [];
-      pro.forEach(x => p.push(x.pid))
-      this.tags.forEach(f => t.push(f.pid))
-      const z = [...Array.from(new Set([...t, ...p])).filter(_ => !t.includes(_)), ...Array.from(new Set([...t, ...p])).filter(_ => !p.includes(_))];
+      pro.forEach(x => p.push(x.pid));
+      this.tags.forEach(f => t.push(f.pid));
+      const z = [
+        ...Array.from(new Set([...t, ...p])).filter(e => !t.includes(e)),
+        ...Array.from(new Set([...t, ...p])).filter(e => !p.includes(e))
+      ];
       if (z.length === 0) {
         this.dataSet = pro;
         this.tags = [];
@@ -104,7 +109,7 @@ export class CopyrightsComponent implements OnInit {
               pid: r.id,
               project: r.name
             })
-          )
+          );
           this.tags = [];
           this.tags = gsn;
         });
@@ -126,28 +131,18 @@ export class CopyrightsComponent implements OnInit {
 
   addPublishConpyrights() {
     const pids = [];
-    this.tags.forEach(r => pids.push(r.pid))
-    if(pids.length === 0) {
+    this.tags.forEach(r => pids.push(r.pid));
+    if (pids.length === 0) {
       this.message.success(this.translate.instant('global.select-series'));
     } else {
-      this.router.navigate([`/manage/series/publish-rights`, {pids: pids}]);
+      this.router.navigate([`/manage/series/publish-rights`, { pids: pids }]);
     }
-  }
-
-  loadCopyrights() {
-    this.isLoading = true;
-    this.service.getSeries(this.pagination, '', '', '', '', '', '').pipe(finalize(() => {
-      this.isLoaded = true;
-      this.isLoading = false;
-    })).subscribe(result => {
-      this.dataSet = this.mapCopyrights(result.list);
-      this.pagination = result.pagination;
-    });
   }
 
   loadAreaOptions() {
     this.service.getCopyrightAreaOptions().subscribe(result => {
       if (result) {
+        result = [{ code: 'all', name: '所有' }, ...result];
         this.service.setLeafNode(result);
       }
       this.areaOptions = result;
@@ -164,10 +159,13 @@ export class CopyrightsComponent implements OnInit {
     });
   }
 
-  fetchCopyrights(days: string, area: string, right: string, termStart: string, termEnd: string, is_salable: string) {
+  fetchCopyrights(params: any) {
     this.isLoading = true;
-    this.service.getSeries(this.pagination, days, area, right, termStart, termEnd, is_salable)
-      .pipe(finalize(() => this.isLoading = false))
+    this.service.getSeries(this.pagination, params)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        this.isLoaded = true;
+      }))
       .subscribe(result => {
         this.dataSet = this.mapCopyrights(result.list);
         this.pagination = result.pagination;
@@ -220,16 +218,20 @@ export class CopyrightsComponent implements OnInit {
 
   filtrate() {
     const datePipe = this.getDatePipe();
-    const days = this.filtrateForm.value['days'] as string;
-    const area = this.filtrateForm.value['area'] as string[];
+    const area = this.filtrateForm.value['area'];
     const right = this.filtrateForm.value['right'] as string[];
     const trem = this.filtrateForm.value['date'] as Date[];
-    const is_salable = this.filtrateForm.value['is_salable'];
-    const termStart = trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '';
-    const termEnd = trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '';
-    const areaValue = area.length > 0 ? area[area.length - 1] : '';
-    const rightValue = right.length > 0 ? right[right.length - 1] : '';
-    this.fetchCopyrights(days, areaValue, rightValue, termStart, termEnd, is_salable);
+    const params = {
+      due_date: this.filtrateForm.value['days'] || '',
+      area_number: area.length > 0 ? area[area.length - 1] : '',
+      right_type: right.length > 0 ? right[right.length - 1] : '',
+      start_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '',
+      end_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '',
+      is_salable: this.filtrateForm.value['is_salable'] ? '1' : '0',
+      investment_type: this.filtrateForm.value['investment_type'] || '',
+      program_type: this.filtrateForm.value['program_type'] || ''
+    };
+    this.fetchCopyrights(params);
   }
 
   deleteSeriesCopyright(pid: number) {
@@ -239,23 +241,8 @@ export class CopyrightsComponent implements OnInit {
     });
   }
 
-  onDaysChange(value: string) {
-    this.filtrate();
-  }
-
-  onAreaChange(value: string[]) {
-    this.filtrate();
-  }
-
-  onRightChange(value: string[]) {
-    this.filtrate();
-  }
-
-  onDateChange(value: string[]) {
-    this.filtrate();
-  }
-
-  onPubRightChange(value: string) {
+  onFormValueChange() {
+    this.pagination.page = 1;
     this.filtrate();
   }
 
