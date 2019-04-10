@@ -15,17 +15,17 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    data: { breadcrumb: 'home' },
+    data: { breadcrumb: 'Home' },
     children: [
       {
         path: 'market',
         component: MarketComponent,
       },
-      { path:'d/:id', component: MarketDetailsComponent },
+      { path: 'd/:id', component: MarketDetailsComponent },
       {
         path: 'manage',
         component: ManageComponent,
-        data: { breadcrumb: 'manage' },
+        data: { breadcrumb: 'Manage' },
         canActivate: [SimpleGuard],
         children: [
           { path: '', redirectTo: 'series', pathMatch: 'full' },
@@ -37,11 +37,12 @@ const routes: Routes = [
           { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
           { path: 'customers', loadChildren: './manage/customers/customers.module#CustomersModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
-          { path: 'account-center', component: PersonalCenterComponent, data: { breadcrumb: 'account' },
-          children: [
-            { path: 'history', component: BrowseRecordComponent, },
-          ]
-        },
+          {
+            path: 'account-center', component: PersonalCenterComponent, data: { breadcrumb: 'Account' },
+            children: [
+              { path: 'history', component: BrowseRecordComponent, },
+            ]
+          },
           { path: 'teams', loadChildren: './manage/teams/teams.module#TeamsModule' }
         ]
       }

@@ -17,6 +17,7 @@ export class AddCustomerComponent implements OnInit {
   baseForm: FormGroup;
   enterpriseForm: FormGroup;
   personalFomr: FormGroup;
+  liaisonForm: FormGroup;
 
   @ViewChild('sf') sf: SFComponent;
 
@@ -39,7 +40,10 @@ export class AddCustomerComponent implements OnInit {
                 spanLabel: 5,
                 offsetControl: 0,
                 spanControl: 18,
-                placeholder: '请输入联系人名'
+                placeholder: '请输入联系人名',
+                errors: {
+                  required: '请输入联系人名'
+                }
               }
             },
             phone: {
@@ -53,6 +57,9 @@ export class AddCustomerComponent implements OnInit {
                 placeholder: '请输入联系人手机号码',
                 validator: (value: any, property: FormProperty, form: PropertyGroup) => {
                   return /^[1][3,4,5,7,8][0-9]{9}$/.test(value) ? [] : [{ keyword: 'phone', message: '请输入正确的手机号码'}];
+                },
+                errors: {
+                  required: '请输入联系人手机号码'
                 }
               }
             },
@@ -134,9 +141,18 @@ export class AddCustomerComponent implements OnInit {
     this.enterpriseForm = this.fb.group({
       name: [null, [Validators.required]],
       abbreviation: [null],
-      telephone: [null, [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]],
+      telephone: [null], // [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]
       remark: [null],
-      tags: [null]
+      tags: [null, [Validators.required]]
+    });
+    this.liaisonForm = this.fb.group({
+      name: [null, [Validators.required]],
+      phone: [null, [Validators.required]],
+      wx_id: [null],
+      email: [null],
+      department: [null],
+      position: [null],
+      remark: [null]
     });
 
     this.service.getTags().subscribe(tags => {
@@ -156,23 +172,17 @@ export class AddCustomerComponent implements OnInit {
   }
 
   validation() {
-    return this.validationForm(this.enterpriseForm);
+    return this.validationForm(this.enterpriseForm) && this.validationForm(this.liaisonForm);
   }
 
   submit(): Observable<any> {
-    if (!this.sf.valid) {
+    if (this.sf.value.liaisons.length > 0 && !this.sf.valid) {
       return throwError({});
     }
-    const data = {
-      custom_type: this.baseForm.value['customType'] === 'enterprise' ? 0 : 1,
-      name: this.enterpriseForm.value['name'] || null,
-      abbreviation: this.enterpriseForm.value['abbreviation'] || null,
-      telephone: this.enterpriseForm.value['telephone'] || null,
-      tags: this.enterpriseForm.value['tags'] || null,
-    };
-    const post = Object.assign({ custom: data }, this.sf.value);
-    // this.messsage.success(JSON.stringify(post));
-    return this.service.addCustomer(post as any);
+    const custom = this.enterpriseForm.value;
+    custom.custom_type = this.baseForm.value['customType'] === 'enterprise' ? 0 : 1;
+    const liaisons = [this.liaisonForm.value, ...this.sf.value.liaisons];
+    return this.service.addCustomer({ custom, liaisons });
   }
 
   schemaSubmit(value: any) {

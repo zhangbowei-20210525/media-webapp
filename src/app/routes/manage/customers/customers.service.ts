@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PaginationDto, PaginationResponseDto } from '@shared';
 
-declare interface AddEditCustomer {
-  custom_type: number;
-  name: string;
-  abbreviation: string;
-  telephone: string;
-  remark: string;
-  tags: string[];
-  liaisons: AddEditLiaison[];
+declare interface OptionCustomer {
+  custom: {
+    custom_type: number;
+    name: string;
+    abbreviation: string;
+    telephone: string;
+    remark: string;
+    tags: string[];
+  };
+  liaisons: OptionLiaison[];
 }
 
-declare interface AddEditLiaison {
+declare interface OptionLiaison {
   liaison_name: string;
   phone: string;
   wx_id: string;
@@ -35,11 +37,11 @@ export class CustomersService {
     return this.http.get<any>(`/api/v1/custom?page=${pagination.page}&limit=${pagination.page_size}`);
   }
 
-  addCustomer(customer: AddEditCustomer) {
+  addCustomer(customer: OptionCustomer) {
     return this.http.post<any>('/api/v1/custom', customer);
   }
 
-  editCustomer(id: number, customer: AddEditCustomer) {
+  editCustomer(id: number, customer: OptionCustomer) {
     return this.http.put<any>(`/api/v1/custom/${id}`, customer);
   }
 
@@ -51,14 +53,15 @@ export class CustomersService {
     return this.http.get<any>(`/api/v1/custom/${id}`);
   }
 
-  getRights(pagination: PaginationDto, id: number) {
+  getRights(pagination: PaginationDto, id: number, contract_type: 'purchase' | 'publish') {
     return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom/${id}/program`, {
-      params: { page: pagination.page as any, page_size: pagination.page_size as any }
+      params: { page: pagination.page as any, page_size: pagination.page_size as any, contract_type }
     });
   }
 
-  getContracts(pagination: PaginationDto, id: number) {
-    return this.http.get<any>(`/api/v1/custom/${id}/contract?page=${pagination.page}&page_size=${pagination.page_size}`);
+  getContracts(pagination: PaginationDto, id: number, contract_type: 'purchase' | 'publish') {
+    return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom/${id}/contract`,
+      { params: { page: pagination.page as any, page_size: pagination.page_size as any, contract_type } });
   }
 
   getLogs(pagination: PaginationDto, id: number) {
