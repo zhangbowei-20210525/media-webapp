@@ -24,6 +24,8 @@ export class CustomerDetailsComponent implements OnInit {
   contractList = [];
   logList = [];
   switchValue = false;
+  liaisonTabs = [];
+  rightDataSet = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -43,24 +45,40 @@ export class CustomerDetailsComponent implements OnInit {
       })
     ).subscribe(res => {
       this.customerInfo = res;
-      this.service.getRights(this.rightsPagination, this.id).subscribe(r => {
-        this.rightList = r.list;
-      });
+      // this.service.getRights(this.rightsPagination, this.id).subscribe(r => {
+      //   this.rightList = r.list;
+      // });
+      this.fetchRights();
       this.service.getContracts(this.contractsPagination, this.id).subscribe(c => {
         this.contractList = c.list;
       });
-      this.service.getLogs(this.logsPagination, this.id).subscribe(l => {
-        this.logList = l.list;
-        this.logsPagination = l.pagination;
+      // this.service.getLogs(this.logsPagination, this.id).subscribe(l => {
+      //   this.logList = l.list;
+      //   this.logsPagination = l.pagination;
+      // });
+      this.service.getLiaisons(this.id).subscribe(result => {
+        this.liaisonTabs = result.list;
       });
     });
+  }
+
+  fetchRights() {
+    this.service.getRights(this.rightsPagination, this.id).subscribe(result => {
+      this.rightDataSet = this.service.mapCopyrights(result.list);
+      this.rightsPagination = result.pagination;
+    });
+  }
+
+  copyrightsPageChange(page: number) {
+    this.rightsPagination.page = page;
+    this.fetchRights();
   }
 
   editCustomer() {
     this.modal.create({
       nzTitle: `修改客商信息`,
       nzContent: EditCustomerComponent,
-      nzComponentParams: { id: this.id},
+      nzComponentParams: { id: this.id },
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: 800,
@@ -72,16 +90,16 @@ export class CustomerDetailsComponent implements OnInit {
   editCustomerAgreed = (component: EditCustomerComponent) => new Promise((resolve) => {
     component.formSubmit()
       .subscribe(res => {
-      this.service.getCustomerDetailsInfo(this.id).subscribe(res => {
-      this.customerInfo = res;
-      });
+        this.service.getCustomerDetailsInfo(this.id).subscribe(result => {
+          this.customerInfo = result;
+        });
         this.message.success(this.translate.instant('global.edit-success'));
         resolve();
       }, error => {
         if (error.message) {
           this.message.error(error.message);
         }
-      })
+      });
   })
 
   logsPageChange() {
@@ -118,43 +136,42 @@ export class CustomerDetailsComponent implements OnInit {
         if (error.message) {
           this.message.error(error.message);
         }
-      })
-    })
+      });
+  })
 
-    logContent(content: string) {
-      this.modal.create({
-        nzTitle: '日志内容',
-        // tslint:disable-next-line:max-line-length
-        nzContent: `<p>${content}</p>`,
-        nzOkText: null,
-        nzCancelText: null,
-        nzClosable: false,
-      });
-    }
+  logContent(content: string) {
+    this.modal.create({
+      nzTitle: '日志内容',
+      nzContent: `<p>${content}</p>`,
+      nzOkText: null,
+      nzCancelText: null,
+      nzClosable: false,
+    });
+  }
 
-    deleteLog(id: number) {
-      this.modal.confirm({
-        nzTitle: '是否删除本条日志信息?',
-        nzOkText: '删除',
-        nzCancelText: '取消',
-        nzOkType: 'danger',
-        nzOnOk: () => this.deleteLogAgreed(id)
+  deleteLog(id: number) {
+    this.modal.confirm({
+      nzTitle: '是否删除本条日志信息?',
+      nzOkText: '删除',
+      nzCancelText: '取消',
+      nzOkType: 'danger',
+      nzOnOk: () => this.deleteLogAgreed(id)
+    });
+  }
+
+  deleteLogAgreed = (id: number) => new Promise((resolve) => {
+    this.service.deleteLog(this.id, id).subscribe(res => {
+      this.service.getLogs(this.logsPagination, this.id).subscribe(l => {
+        this.logList = l.list;
+        this.logsPagination = l.pagination;
       });
-    }
-  
-    deleteLogAgreed = (id: number) => new Promise((resolve) => {
-      this.service.deleteLog(this.id, id).subscribe(res => {
-        this.service.getLogs(this.logsPagination, this.id).subscribe(l => {
-          this.logList = l.list;
-          this.logsPagination = l.pagination;
-        });
-        this.message.success(this.translate.instant('global.delete-success'));
-        resolve();
-      }, error => {
-        if (error.message) {
-          this.message.error(error.message);
-        }
-        resolve(false);
-      });
-    })
+      this.message.success(this.translate.instant('global.delete-success'));
+      resolve();
+    }, error => {
+      if (error.message) {
+        this.message.error(error.message);
+      }
+      resolve(false);
+    });
+  })
 }

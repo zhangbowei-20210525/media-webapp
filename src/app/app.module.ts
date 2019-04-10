@@ -82,7 +82,6 @@ import { SharedModule } from './shared';
 // import { LayoutModule } from './layout/layout.module';
 import { RoutesModule } from './routes/routes.module';
 import { DelonModule } from './delon.module';
-import en from '@angular/common/locales/en';
 
 @NgModule({
   declarations: [

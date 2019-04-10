@@ -10,6 +10,7 @@
       (nzPageIndexChange)="pageChange($event)">
       <thead>
         <tr>
+            <th>#</th>
           <th>{{ 'app.series.series-name' | translate }}</th>
           <th>{{ 'app.series.source-name' | translate }}</th>
           <th>{{ 'app.series.source-type' | translate }}</th>
@@ -20,7 +21,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
+        <tr *ngFor="let data of basicTable.data;let i = index">
+            <td>{{ i + 1 }}</td>
           <td>{{ data.program_name }}</td>
           <td><a (click)="tapeDetails(data.program_id, data.id, data.source_type)">{{ data.name }}</a></td>
           <td>{{ data.source_type == 'online' ? ('app.series.source-type-online' | translate) : ('app.series.source-type-entity' | translate) }}</td>

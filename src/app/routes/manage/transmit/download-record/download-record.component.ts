@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaginationDto } from '@shared';
 import { TransmitService } from '../transmit.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 import { switchMap, finalize } from 'rxjs/operators';
 import { TransmitScheduleComponent } from '../components/transmit-schedule/transmit-schedule.component';
@@ -23,6 +23,7 @@ export class DownloadRecordComponent implements OnInit {
     private service: TransmitService,
     private route: ActivatedRoute,
     private modalService: NzModalService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -71,5 +72,9 @@ export class DownloadRecordComponent implements OnInit {
       nzOkText: null,
       nzWidth: 800,
     });
+  }
+
+  goBack() {
+    this.router.navigate([`/manage/transmit`, {tabIndex: 1}]);
   }
 }

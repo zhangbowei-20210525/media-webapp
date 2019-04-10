@@ -27,7 +27,15 @@ export class CopyrightsService {
   //     '/api/v1/series/search', { params: { keywords: keywords } });
   // }
 
-  getSeries(pagination: PaginationDto, due_date: string, area_number: string, right_type: string, start_date: string, end_date: string, is_salable: string) {
+  getSeries(
+    pagination: PaginationDto,
+    due_date: string,
+    area_number: string,
+    right_type: string,
+    start_date: string,
+    end_date: string,
+    is_salable: string
+  ) {
     return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>('/api/v1/right_programs',
       {
         params: {
@@ -63,6 +71,10 @@ export class CopyrightsService {
 
   getSeriesNames(ids: any) {
     return this.http.get<any>(`/api/v1/programs/brief?program_ids=${ids}`);
+  }
+
+  getPrograms() {
+    return this.http.get<PaginationResponseDto<any>>('/api/v1/program');
   }
 
   setLeafNode(nodes: any[]) {
@@ -172,7 +184,7 @@ export class CopyrightsService {
     } as ProgramDto;
   }
   toPubProgramData(program_id: number, program_name: string, program_type: string, episodes: number,
-   right_data: CopyrightDto[]) {
+    right_data: CopyrightDto[]) {
     return {
       program_id,
       program_name,

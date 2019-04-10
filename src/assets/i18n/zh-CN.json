@@ -184,5 +184,6 @@
     "global.edit-success": "编辑成功",
     "global.start-client": "请启动客户端",
     "global.select-download-file": "请选择要下载的文件",
-    "global.select-series": "请至少选择一个节目"
+    "global.select-series": "请至少选择一个节目",
+    "global.search": "请输入搜索内容"
 }

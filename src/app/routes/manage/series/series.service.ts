@@ -82,6 +82,10 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/program?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
+  getSearchSeries(search: any, pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/program?q=${search}&page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
   getSeriesDetailsInfo(id: number) {
     return this.http.get<any>(`/api/v1/program/${id}`);
   }
@@ -132,6 +136,10 @@ export class SeriesService {
 
   getPublicities(pagination: PaginationDto) {
     return this.http.get<PaginationResponseDto<any[]>>('/api/v1/publicity', { params: pagination as any});
+  }
+
+  getSearchPublicities(search: any, pagination: PaginationDto) {
+    return this.http.get<PaginationResponseDto<any[]>>(`/api/v1/publicity?q=${search}`, { params: pagination as any});
   }
 
   publicityDetail(id: number) {
@@ -222,5 +230,9 @@ export class SeriesService {
 
   getThumbnail(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/publicity/card?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
+  getSearchThumbnail(search: any, pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/publicity/card?q=${search}&page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 }

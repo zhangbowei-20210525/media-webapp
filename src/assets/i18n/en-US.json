@@ -181,5 +181,6 @@
     "global.edit-success": "Edit Success",
     "global.start-client": "Please start the client",
     "global.select-download-file": "Please select the file to download",
-    "global.select-series": "Please select at least one program"
+    "global.select-series": "Please select at least one program",
+    "global.search": "Please enter the search content"
 }

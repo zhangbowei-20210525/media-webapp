@@ -21,6 +21,7 @@
         <!-- nzShowCheckbox -->
         <th [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
+          <th>#</th>
         <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.sample' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.feature' | translate }}</th>
@@ -32,8 +33,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of table.data">
+      <tr *ngFor="let data of table.data;let i = index">
         <td  [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
+        <td>{{ i + 1 }}</td>
         <td style="text-align: center">
           <a (click)="publicityDetails(data.program_id)">{{ data.name }}</a>
         </td>

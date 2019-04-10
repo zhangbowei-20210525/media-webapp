@@ -1,6 +1,6 @@
 <div class="block clearfix">
   <div class="block-content">
-    <nz-tabset>
+    <nz-tabset [nzTabBarExtraContent]="extraTemplate">
       <nz-tab nzTitle="上载记录" (nzClick)="uploadRecord()">
         <div>
           <nz-table #basicTable [nzData]="uploadRecordList" [nzPageSize]="uploadRecordPagination?.page_size"
@@ -8,6 +8,7 @@
             (nzPageIndexChange)="uploadRecordPageChange($event)">
             <thead>
               <tr>
+                  <th style="text-align: center">#</th>
                 <th style="text-align: center">节目名称</th>
                 <th style="text-align: center">母带版本</th>
                 <th style="text-align: center">任务数量</th>
@@ -18,7 +19,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of basicTable.data">
+              <tr *ngFor="let data of basicTable.data;let i = index">
+                  <td>{{ i + 1 }}</td>
                 <td style="text-align: center">{{data.program_name}}</td>
                 <td style="text-align: center">{{data.source_name}}</td>
                 <td style="text-align: center">{{data.tasks_num}}</td>
@@ -42,6 +44,7 @@
             (nzPageIndexChange)="downloadRecordPageChange($event)">
             <thead>
               <tr>
+                  <th style="text-align: center">#</th>
                 <th style="text-align: center">节目名称</th>
                 <th style="text-align: center">母带版本</th>
                 <th style="text-align: center">任务数量</th>
@@ -52,7 +55,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of basicTable.data">
+              <tr *ngFor="let data of basicTable.data;let i = index">
+                  <td>{{ i + 1 }}</td>
                 <td style="text-align: center">{{data.program_name}}</td>
                 <td style="text-align: center">{{data.source_name}}</td>
                 <td style="text-align: center">{{data.tasks_num}}</td>
@@ -70,5 +74,8 @@
         </div>
       </nz-tab>
     </nz-tabset>
+    <ng-template #extraTemplate>
+        <button nz-button nzType="default" nzSize ="small" (click)="goBack()">返回</button>
+      </ng-template>
   </div>
 </div>

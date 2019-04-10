@@ -21,14 +21,14 @@
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/transmit'">{{ 'menu.manage.transmit' | translate }}</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/account-center/history'">{{ 'menu.manage.personal-center' | translate }}</a>
             </li>
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/teams'">{{ 'menu.manage.teams' | translate }}</a>
-            </li>
+            </li> -->
             <li class="nav-item">
-              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/customers'">客商</a>
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/customers'">{{ 'menu.manage.customers' | translate }}</a>
             </li>
           </ul>
         </li>
@@ -82,11 +82,17 @@
                 </li>
                 <li nz-menu-divider></li>
                 <li nz-menu-item>
-                  <a routerLink="/manage/account-center">
+                  <a routerLink="/manage/account-center/history">
                     <i nz-icon type="user"></i>
                     {{ 'menu.account.center' | translate }}
                   </a>
                 </li>
+                <li nz-menu-item>
+                    <a routerLink="/manage/teams">
+                      <i nz-icon type="team" theme="outline"></i>
+                      {{ 'menu.manage.teams' | translate }} 
+                    </a>
+                  </li>
                 <li nz-menu-divider></li>
                 <li nz-menu-item>
                   <div (click)="logout()">

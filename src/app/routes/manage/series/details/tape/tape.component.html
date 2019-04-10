@@ -8,6 +8,7 @@
     <nz-table #basicTable [nzData]="tapesList" nzShowPagination="false" style="padding-bottom: 20px">
       <thead>
         <tr>
+            <th style="text-align: center">#</th>
           <th style="text-align: center">{{ 'app.series.source-name' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.source-type' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.detail' | translate }}</th>
@@ -15,7 +16,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data" [ngClass]="{'selected': isId == data.id}">
+        <tr *ngFor="let data of basicTable.data;let i = index" [ngClass]="{'selected': isId == data.id}">
+            <td>{{ i + 1 }}</td>
           <td style="text-align: center">{{data.name}}</td>
           <td style="text-align: center">
             <span *ngIf="data.source_type == 'online'">{{ 'app.series.source-type-online' | translate }}</span>
@@ -85,13 +87,15 @@
           (nzPageIndexChange)="tapeFilePageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th>{{ 'app.series.filename' | translate }}</th>
               <th>{{ 'app.series.size' | translate }}</th>
               <th>{{ 'app.series.created-time' | translate }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable.data">
+            <tr *ngFor="let data of basicTable.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td>{{data.name}}</td>
               <td>{{data.size}}</td>
               <td>{{data.created_at}}</td>
@@ -105,6 +109,7 @@
           (nzPageIndexChange)="pubTapePageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.source-name' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.release-date' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.company-nickname' | translate }}</th>
@@ -113,7 +118,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable1.data">
+            <tr *ngFor="let data of basicTable1.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td style="text-align: center">{{data.created_name}}</td>
               <td style="text-align: center">{{data.created_at}}</td>
               <td style="text-align: center">{{data.auth_company_name}}</td>

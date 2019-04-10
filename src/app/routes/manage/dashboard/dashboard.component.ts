@@ -42,6 +42,55 @@ export class DashboardComponent implements OnInit {
   allStatistics: NzTreeNodeOptions[];
   checkedAreaCode = [];
   timeType = 'quarter';
+  data = [{
+    company: 'Apple',
+    type: '整体',
+    value: 30
+  }, {
+    company: 'Facebook',
+    type: '整体',
+    value: 35
+  }, {
+    company: 'Google',
+    type: '整体',
+    value: 28
+  }, {
+    company: 'Apple',
+    type: '非技术岗',
+    value: 40
+  }, {
+    company: 'Facebook',
+    type: '非技术岗',
+    value: 65
+  }, {
+    company: 'Google',
+    type: '非技术岗',
+    value: 47
+  }, {
+    company: 'Apple',
+    type: '技术岗',
+    value: 23
+  }, {
+    company: 'Facebook',
+    type: '技术岗',
+    value: 18
+  }, {
+    company: 'Google',
+    type: '技术岗',
+    value: 20
+  }, {
+    company: 'Apple',
+    type: '技术岗',
+    value: 35
+  }, {
+    company: 'Facebook',
+    type: '技术岗',
+    value: 30
+  }, {
+    company: 'Google',
+    type: '技术岗',
+    value: 25
+  }];
    @ViewChild('allStatisticsTree') allStatisticsTree: NzTreeSelectComponent;
 
   constructor(
@@ -99,16 +148,14 @@ export class DashboardComponent implements OnInit {
       this.allStatisticsChart = new G2.Chart({
         container: 'allStatistics',
         forceFit: true,
-        width: 1100,
+        width: 1000,
         height: 425,
-        padding: [10, 30, 80, 30]
+        padding: [10, 30, 80, 50]
       });
       this.allStatisticsChart.source(res.list);
-      // this.allStatisticsChart.scale('value', {
-      //   tickInterval: 20
-      // });
-      // this.allStatisticsChart.interval().position('label*value');
-      // this.allStatisticsChart.render();
+      this.allStatisticsChart.scale('value', {
+        alias: '总金额（万元）',
+      });
       this.allStatisticsChart.axis('label', {
         label: {
           textStyle: {
@@ -127,11 +174,12 @@ export class DashboardComponent implements OnInit {
           }
         },
         title: {
-          offset: 50
+          offset: 40,
+          position: 'center',
         }
       });
       this.allStatisticsChart.legend({
-        position: 'top-center'
+        position: 'bottom-center'
       });
       this.allStatisticsChart.interval().position('label*value').color('line').opacity(1).adjust([{
         type: 'dodge',
@@ -445,8 +493,6 @@ export class DashboardComponent implements OnInit {
     if (this.timeType === 'annual') {
       console.log('334');
       this.dashboardService.getAnnualStatistics(this.checkedAreaCode).subscribe(res => {
-        this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
-        this.statisticsSelectYear = res.meta.year_choices;
         this.allStatisticsChart.source(res.list);
         this.allStatisticsChart.render();
       });

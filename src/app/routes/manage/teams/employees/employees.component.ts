@@ -93,7 +93,7 @@ export class EmployeesComponent implements OnInit {
             this.refreshDataSet();
             resolve();
           }, error => {
-            reject();
+            reject(false);
           });
       })
     });

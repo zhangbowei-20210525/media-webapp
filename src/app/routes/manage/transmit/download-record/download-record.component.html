@@ -1,11 +1,14 @@
 <div class="block clearfix">
   <div class="block-content">
         <div *ngIf="isLoaded == true">
+            <nz-tabset [nzTabBarExtraContent]="extraTemplate">
+                <nz-tab nzTitle="下载记录">
           <nz-table #basicTable [nzData]="list" [nzPageSize]="pgination?.page_size"
             [nzFrontPagination]="false" [nzPageIndex]="pgination?.page" [nzTotal]="pgination?.count"
             (nzPageIndexChange)="onPageChange($event)">
             <thead>
               <tr>
+                  <th style="text-align: center">#</th>
                 <th style="text-align: center">节目名称</th>
                 <th style="text-align: center">母带版本</th>
                 <th style="text-align: center">任务数量</th>
@@ -16,7 +19,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of basicTable.data">
+              <tr *ngFor="let data of basicTable.data;let i = index">
+                  <td>{{ i + 1 }}</td>
                 <td style="text-align: center">{{data.program_name}}</td>
                 <td style="text-align: center">{{data.source_name}}</td>
                 <td style="text-align: center">{{data.tasks_num}}</td>
@@ -31,6 +35,11 @@
               </tr>
             </tbody>
           </nz-table>
+          </nz-tab>
+          </nz-tabset>
+          <ng-template #extraTemplate>
+              <button nz-button nzType="default" nzSize ="small" (click)="goBack()">返回</button>
+            </ng-template>
         </div>
   </div>
 </div>

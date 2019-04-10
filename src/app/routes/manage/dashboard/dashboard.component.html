@@ -135,7 +135,7 @@
   <div class="all-statistics-box">
     <div class="all-statistics-title-wk">
       <span class="all-statistics-title">{{ 'app.dashboard.publish-statistical-analysis' | translate }}</span>
-      <nz-radio-group [(ngModel)]="timeType" style="margin-top: 15px;margin-right: 20px;float: right" nzSize="small" (ngModelChange)="$event($event)">
+      <nz-radio-group [(ngModel)]="timeType" style="margin-top: 15px;margin-right: 20px;float: right" nzSize="small" (ngModelChange)="timeTypeChange($event)">
           <label nz-radio-button nzValue="quarter">{{ 'app.dashboard.publish-statistical-analysis-quarter' | translate }}</label>
           <label nz-radio-button nzValue="annual">{{ 'app.dashboard.publish-statistical-analysis-annual' | translate }}</label>
         </nz-radio-group>
@@ -160,6 +160,7 @@
       <nz-table [nzTitle]="Header" nzShowPagination="false">
         <thead *ngIf="showTable == 1">
           <tr>
+              <th style="text-align: center">#</th>
             <th style="text-align: center">节目名称</th>
             <th style="text-align: center">权利</th>
             <th style="text-align: center">地域</th>
@@ -168,7 +169,8 @@
           </tr>
         </thead>
         <tbody *ngIf="showTable == 1">
-          <tr *ngFor="let activeProjectRight of activeProjectRight">
+          <tr *ngFor="let activeProjectRight of activeProjectRight;let i = index">
+              <td>{{ i + 1 }}</td>
             <td style="text-align: center">{{ activeProjectRight?.program_name }}</td>
             <td style="text-align: center">{{ activeProjectRight?.right_type }}</td>
             <td style="text-align: center">{{ activeProjectRight?.area }}</td>
@@ -178,6 +180,7 @@
         </tbody>
         <thead *ngIf="showTable == 2">
           <tr>
+              <th style="text-align: center">#</th>
             <th style="text-align: center">节目名称</th>
             <th style="text-align: center">权利</th>
             <th style="text-align: center">地域</th>
@@ -186,7 +189,8 @@
           </tr>
         </thead>
         <tbody *ngIf="showTable == 2">
-          <tr *ngFor="let activeProjectPubRight of activeProjectPubRight">
+          <tr *ngFor="let activeProjectPubRight of activeProjectPubRight;let i = index">
+              <td>{{ i + 1 }}</td>
             <td style="text-align: center">{{ activeProjectPubRight?.program_name }}</td>
             <td style="text-align: center">{{ activeProjectPubRight?.right_type }}</td>
             <td style="text-align: center">{{ activeProjectPubRight?.area }}</td>
@@ -196,13 +200,15 @@
         </tbody>
         <thead *ngIf="showTable == 3">
           <tr>
+              <th style="text-align: center">#</th>
             <th style="text-align: center">节目名称</th>
             <th style="text-align: center">类型</th>
             <th style="text-align: center">集数</th>
           </tr>
         </thead>
         <tbody *ngIf="showTable == 3">
-          <tr *ngFor="let activeProjectPublicity of activeProjectPublicity">
+          <tr *ngFor="let activeProjectPublicity of activeProjectPublicity;let i = index">
+              <td>{{ i + 1 }}</td>
             <td style="text-align: center">{{ activeProjectPublicity?.program_name }}</td>
             <td style="text-align: center">{{ activeProjectPublicity?.program_type }}</td>
             <td style="text-align: center">{{ activeProjectPublicity?.episode }}</td>
@@ -210,6 +216,7 @@
         </tbody>
         <thead *ngIf="showTable == 4">
           <tr>
+              <th style="text-align: center">#</th>
             <th style="text-align: center">节目名称</th>
             <th style="text-align: center">类型</th>
             <th style="text-align: center">版本</th>
@@ -217,7 +224,8 @@
           </tr>
         </thead>
         <tbody *ngIf="showTable == 4">
-          <tr *ngFor="let activeProjectSource of activeProjectSource">
+          <tr *ngFor="let activeProjectSource of activeProjectSource;let i = index">
+              <td>{{ i + 1 }}</td>
             <td style="text-align: center">{{ activeProjectSource?.program_name }}</td>
             <td style="text-align: center">{{ activeProjectSource?.program_type }}</td>
             <td style="text-align: center">{{ activeProjectSource?.name }}</td>

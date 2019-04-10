@@ -33,6 +33,7 @@ export class PublicitiesComponent implements OnInit {
   disabledButton: any;
   publicityStyle = 'figure';
   thumbnailList = [];
+  search: any;
 
   constructor(
     private router: Router,
@@ -47,17 +48,30 @@ export class PublicitiesComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.tbPagination.page = +params.get('page') | 1;
-        return this.service.getThumbnail(this.tbPagination);
+        this.search = params.get('search');
+        if(this.search === null) {
+          return this.service.getThumbnail(this.tbPagination)
+        } else {
+          return this.service.getSearchThumbnail(this.search, this.tbPagination)
+        }
       })).subscribe(res => {
         this.thumbnailList = res.list;
         this.tbPagination = res.pagination;
       });
   }
 
-  fetchPublicities() {
+  fetchPublicities() {   
     this.isLoading = true;
-    this.service.getPublicities(this.pagination)
-      .pipe(finalize(() => {
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.search = params.get('search');
+        console.log(this.search);
+        if(this.search === null) {
+          return  this.service.getPublicities(this.pagination)
+        } else {
+          return  this.service.getSearchPublicities(this.search, this.pagination)
+        }
+      })).pipe(finalize(() => {
         this.isLoading = false;
         if (!this.isLoaded) {
           this.isLoaded = true;
@@ -67,14 +81,6 @@ export class PublicitiesComponent implements OnInit {
         this.dataset = result.list;
         this.pagination = result.pagination;
       });
-    // this.route.paramMap.pipe(
-    //   switchMap((params: ParamMap) => {
-    //     this.tbPagination.page = +params.get('page');
-    //     return this.service.getThumbnail(this.tbPagination);
-    //     })).subscribe(res => {
-    //   this.thumbnailList = res.list;
-    //   this.tbPagination = res.pagination;
-    // });
   }
 
   pageChnage(page: number) {

@@ -1,5 +1,4 @@
 <div *ngIf="isLoaded" [@fadeIn]>
-
   <div nz-row style="margin-bottom: 1.5rem;">
     <div nz-col nzSpan="18">
       <div class="left-options">
@@ -63,7 +62,7 @@
   </div>
   <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
     [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)"
-    nzShowSizeChanger (nzCurrentPageDataChange)="currentPageDataChange($event)">
+    (nzCurrentPageDataChange)="currentPageDataChange($event)">
     <thead>
       <tr>
         <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate"

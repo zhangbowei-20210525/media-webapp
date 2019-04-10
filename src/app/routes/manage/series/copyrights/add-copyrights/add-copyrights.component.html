@@ -3,7 +3,7 @@
     <div class="block-title">新增版权</div>
   </div>
   <div class="block-content">
-    <nz-tabset [(nzSelectedIndex)]="tab">
+    <!-- <nz-tabset [(nzSelectedIndex)]="tab">
       <nz-tab nzTitle="1.选择节目">
         <app-series-selector [(series)]="series" (tagChange)="seriesTagChange($event)"></app-series-selector>
         <nz-divider></nz-divider>
@@ -12,13 +12,13 @@
           <button nz-button nzType="primary" (click)="next()">新增版权</button>
         </div>
       </nz-tab>
-      <nz-tab nzTitle="2.选择权利">
+      <nz-tab nzTitle="2.选择权利"> -->
 
         <nz-divider nzText="合同" nzOrientation="left"></nz-divider>
 
         <form nz-form [formGroup]="typeForm">
           <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="investmentType">投资类型</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="investmentType" nzRequired>投资类型</nz-form-label>
             <nz-form-control [nzSm]="22">
               <nz-radio-group formControlName="investmentType">
                 <label nz-radio-button nzValue="homemade">自制</label>
@@ -34,7 +34,7 @@
           </nz-form-item>
 
           <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="contract">有无合同</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="contract" nzRequired>有无合同</nz-form-label>
             <nz-form-control [nzSm]="22">
               <nz-radio-group formControlName="contract">
                 <label nz-radio-button nzValue="no">无合同</label>
@@ -47,7 +47,7 @@
         <form nz-form [formGroup]="contractForm" [hidden]="contract === 'no'">
 
           <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="customer">签约客户</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="customer" nzRequired>签约客户</nz-form-label>
             <nz-form-control [nzSm]="10">
               <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择客户" formControlName="customer">
                 <nz-option *ngFor="let option of customerOptions" [nzLabel]="option.name" [nzValue]="option.id">
@@ -57,16 +57,18 @@
               </nz-form-explain>
             </nz-form-control>
 
-            <nz-form-label [nzSm]="2" nzFor="totalAmount">合同金额</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="totalAmount" nzRequired>合同金额</nz-form-label>
             <nz-form-control [nzSm]="10">
-              <input nz-input formControlName="totalAmount" placeholder="合同金额">
+                <nz-input-group nzAddOnAfter="万元">
+                    <input nz-input formControlName="totalAmount" placeholder="合同金额">
+                  </nz-input-group>
               <nz-form-explain *ngIf="contractForm.get('totalAmount').dirty && contractForm.get('totalAmount').errors">
                 请输入正确的合同金额</nz-form-explain>
             </nz-form-control>
           </nz-form-item>
 
           <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="contractName">合同名称</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="contractName" nzRequired>合同名称</nz-form-label>
             <nz-form-control [nzSm]="10">
               <input nz-input formControlName="contractName" placeholder="合同名称">
               <nz-form-explain
@@ -74,7 +76,7 @@
               </nz-form-explain>
             </nz-form-control>
 
-            <nz-form-label [nzSm]="2" nzFor="contractNumber">合同编号</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="contractNumber" nzRequired>合同编号</nz-form-label>
             <nz-form-control [nzSm]="10">
               <input nz-input formControlName="contractNumber" placeholder="合同编号">
               <nz-form-explain
@@ -84,7 +86,7 @@
           </nz-form-item>
 
           <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="paymentMethod">付款形式</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="paymentMethod" nzRequired>付款形式</nz-form-label>
             <nz-form-control [nzSm]="10">
               <nz-select formControlName="paymentMethod" nzPlaceHolder="付款形式"
                 (ngModelChange)="onPaymentMethodChange($event)">
@@ -98,7 +100,7 @@
               </nz-form-explain>
             </nz-form-control>
 
-            <nz-form-label [nzSm]="2" nzFor="signDate">签约时间</nz-form-label>
+            <nz-form-label [nzSm]="2" nzFor="signDate" nzRequired>签约时间</nz-form-label>
             <nz-form-control [nzSm]="10">
               <nz-date-picker id="signDate" formControlName="signDate" nzPlaceHolder="签约时间"></nz-date-picker>
             </nz-form-control>
@@ -137,7 +139,7 @@
 
         <form nz-form [formGroup]="rightForm">
 
-          <nz-form-item>
+          <!-- <nz-form-item>
             <nz-form-label [nzSm]="2">项目</nz-form-label>
             <nz-form-control [nzSm]="22">
               <ng-container *ngIf="checkOptions; else optionsNone">
@@ -149,6 +151,46 @@
               <ng-template #optionsNone>
                 <span class="text-hint">请先选择节目</span>
               </ng-template>
+            </nz-form-control>
+          </nz-form-item> -->
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="2">
+              <span>
+                节目类型
+                <i
+                  nz-icon
+                  nz-tooltip
+                  nzTitle="该选项只对未入库节目生效"
+                  type="question-circle"
+                  theme="outline"
+                ></i>
+              </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="5">
+              <nz-select nzPlaceHolder="请选择新增节目类型" formControlName="programType">
+                <nz-option nzValue="film" nzLabel="电影"></nz-option>
+                <nz-option nzValue="tv" nzLabel="电视剧"></nz-option>
+                <nz-option nzValue="variety" nzLabel="综艺"></nz-option>
+                <nz-option nzValue="other" nzLabel="其他"></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="rightForm.get('programType').dirty && rightForm.get('programType').errors">
+                请选择新增节目类型
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="2" nzRequired>项目</nz-form-label>
+            <nz-form-control [nzSm]="22">
+              <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择相关项目" formControlName="projects">
+                <nz-option *ngFor="let option of programOfOptions" [nzLabel]="option.name" [nzValue]="option.name">
+                </nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="rightForm.get('projects').dirty && rightForm.get('projects').errors">
+                请至少选择或输入一个节目
+              </nz-form-explain>
+              <nz-form-extra>未入库节目请直接输入并按回车确认，可输出多个</nz-form-extra>
             </nz-form-control>
           </nz-form-item>
 
@@ -250,7 +292,7 @@
           <button nz-button nzType="primary" [nzLoading]="isSaving" (click)="save()">保存</button>
         </div>
 
-      </nz-tab>
-    </nz-tabset>
+      <!-- </nz-tab>
+    </nz-tabset> -->
   </div>
 </div>

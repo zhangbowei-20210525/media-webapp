@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SeriesService } from '../series/series.service';
 import { PaginationDto, MessageService } from '@shared';
-import { finalize, timeout } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { finalize, timeout, switchMap } from 'rxjs/operators';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { TapeDownloadComponent } from './components/tape-download/tape-download.component';
 import { TransmitService } from './transmit.service';
@@ -25,6 +25,7 @@ export class TransmitComponent implements OnInit {
   purchaseTapesList = [];
   purchaseTapesPagination: PaginationDto;
   downloadModal: NzModalRef;
+  tabIndex: number;
 
   constructor(
     private seriesService: SeriesService,
@@ -34,6 +35,7 @@ export class TransmitComponent implements OnInit {
     private localRequestService: LocalRequestService,
     private message: MessageService,
     private translate: TranslateService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -41,7 +43,12 @@ export class TransmitComponent implements OnInit {
     this.isMyTapesLoading = true;
     this.tapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.purchaseTapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.seriesService.getAllTapes(this.tapesPagination).pipe(finalize(() => {
+
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.tabIndex = +params.get('tabIndex');
+        return  this.seriesService.getAllTapes(this.tapesPagination)
+      })).pipe(finalize(() => {
       this.isMyTapesLoading = false;
       this.isMyTapesLoaded = true;
     })).subscribe(res => {

@@ -16,7 +16,7 @@ export class EditCustomerComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private service: CustomersService,
-  ) { 
+  ) {
     this.validateForm = this.fb.group({
       custom_type: ['0'],
       name: [null, [Validators.required]],
@@ -77,7 +77,7 @@ export class EditCustomerComponent implements OnInit {
         liaison_remark: null
       };
       if (form.valid === true) {
-        return this.service.editCustomer(this.id, data);
+        return this.service.editCustomer(this.id, data as any);
       } else {
         return Observable.create(() => { throw Error('form invalid'); });
       }

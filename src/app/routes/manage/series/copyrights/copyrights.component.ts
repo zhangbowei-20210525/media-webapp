@@ -19,7 +19,7 @@ export class CopyrightsComponent implements OnInit {
   isLoaded = false;
   isLoading = false;
   dataSet = [];
-  pagination = { page: 1, page_size: 3 } as PaginationDto;
+  pagination = { page: 1, page_size: 10 } as PaginationDto;
   filtrateForm: FormGroup;
   areaOptions: any[];
   rightOptions: any[];
@@ -174,7 +174,7 @@ export class CopyrightsComponent implements OnInit {
       });
   }
 
-  mapCopyrights(list: any[]) {
+  mapCopyrights(list: any[]) { // 可考虑使用公共方法
     const rights = [];
     let itemIndex = 0;
     list.forEach(item => {

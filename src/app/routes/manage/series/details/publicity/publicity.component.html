@@ -7,6 +7,7 @@
           (nzPageIndexChange)="samplePageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -15,7 +16,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable.data">
+            <tr *ngFor="let data of basicTable.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td style="text-align: center">{{ data.name }}</td>
               <td style="text-align: center">{{ data.extension }}</td>
               <td style="text-align: center">{{ data.size | byteFormat }}</td>
@@ -38,6 +40,7 @@
           (nzPageIndexChange)="featurePageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -46,7 +49,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable1.data">
+            <tr *ngFor="let data of basicTable1.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -69,6 +73,7 @@
           (nzPageIndexChange)="trailerPageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -77,7 +82,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable2.data">
+            <tr *ngFor="let data of basicTable2.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -100,6 +106,7 @@
           (nzPageIndexChange)="posterPageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -108,7 +115,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable3.data">
+            <tr *ngFor="let data of basicTable3.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -131,6 +139,7 @@
           (nzPageIndexChange)="stillPageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -139,7 +148,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable4.data">
+            <tr *ngFor="let data of basicTable4.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -162,6 +172,7 @@
           (nzPageIndexChange)="pdfPageChange($event)">
           <thead>
             <tr>
+                <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -170,7 +181,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable5.data">
+            <tr *ngFor="let data of basicTable5.data;let i = index">
+                <td>{{ i + 1 }}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>

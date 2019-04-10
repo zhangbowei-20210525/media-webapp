@@ -10,6 +10,10 @@ const routes: Routes = [
     component: TransmitComponent
   },
   {
+    path: 'transmit',
+    component: TransmitComponent
+  },
+  {
     path: 'historic-record/:id',
     component: HistoricRecordComponent
   },

@@ -4,13 +4,15 @@
       (nzPageIndexChange)="pageChange($event)">
       <thead>
         <tr>
+            <th style="text-align: center">#</th>
           <th style="text-align: center">节目名称</th>
           <th style="text-align: center">节目类型</th>
           <th style="text-align: center">所属公司</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
+        <tr *ngFor="let data of basicTable.data;let i = index">
+            <td>{{ i + 1 }}</td>
           <td style="text-align: center">{{data?.name}}</td>
           <td style="text-align: center">{{ data.program_type | seriesType }}</td>
           <td style="text-align: center">{{data?.company?.full_name}}</td>

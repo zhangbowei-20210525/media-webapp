@@ -3,14 +3,14 @@ import { NzModalService, NzMessageService, NzModalRef } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from '../series.service';
 import { PaginationDto } from '@shared';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap, switchMap } from 'rxjs/operators';
 import { AddSeriesInfoComponent } from '../components/add-series-info/add-series-info.component';
 import { SeriesDto } from './dtos';
 import { fadeIn } from '@shared/animations';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
 import { AddSourceComponent } from '../components/add-source/add-source.component';
 import { AddRightComponent } from '../components/add-right/add-right.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 
 @Component({
@@ -38,6 +38,7 @@ export class AllSeriesComponent implements OnInit {
   addPublicityModal: NzModalRef;
   id: number;
   publicityId: number;
+  search: any;
 
   constructor(
     private modal: NzModalService,
@@ -45,6 +46,7 @@ export class AllSeriesComponent implements OnInit {
     private translate: TranslateService,
     private seriesService: SeriesService,
     private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -53,16 +55,24 @@ export class AllSeriesComponent implements OnInit {
 
   loadSeries() {
     this.isLoading = true;
-    this.seriesService.getSeries(this.pagination).
-      pipe(finalize(() => {
-        this.isLoading = false;
-        this.isLoaded = true;
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.search = params.get('search'); 
+        console.log(this.search);
+          if(this.search === null) {
+            return  this.seriesService.getSeries(this.pagination)
+          } else {
+          return  this.seriesService.getSearchSeries(this.search, this.pagination)
+        }
       })).pipe(tap(x => {
         x.list.forEach(f => {
           if(f.release_date) {
             f.release_date = f.release_date.substring(0, 10);
           }
         });
+      })).pipe(finalize(() => {
+        this.isLoading = false;
+        this.isLoaded = true;
       }))
       .subscribe(res => {
         this.dataset = res.list;

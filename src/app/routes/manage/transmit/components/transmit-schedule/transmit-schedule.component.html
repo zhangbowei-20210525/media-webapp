@@ -1,6 +1,7 @@
 <nz-table #table [nzData]="transmitScheduleList" nzShowPagination="false" nzPageSize="999" [nzSize]="'middle'">
     <thead>
       <tr>
+          <th style="text-align: center">#</th>
         <th style="width:150px">文件名</th>
         <th style="width:150px">状态</th>
         <th style="text-align: center">时间</th>
@@ -8,7 +9,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of table.data">
+      <tr *ngFor="let data of table.data;let i = index">
+          <td>{{ i + 1 }}</td>
         <td style="width:150px">{{data?.source_file_name}}</td>
         <td style="width:150px" *ngIf="data?.status == 8">
           <nz-progress [nzPercent]="100" [nzStrokeWidth]="10" nzStatus="exception"></nz-progress>

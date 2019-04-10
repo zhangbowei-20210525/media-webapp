@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded" [@fadeIn]>
+<div [@fadeIn]>
   <div>
     <p class="clearfix">
       <button nz-button nzType="default" class="rf" (click)="addSeries()">{{ 'app.series.add-series' | translate }}</button>
@@ -11,6 +11,7 @@
           <!-- nzShowCheckbox -->
         <th  [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
+          <th>#</th>
         <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.program-type' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.theme' | translate }}</th>
@@ -22,8 +23,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of table.data">
+      <tr *ngFor="let data of table.data;let i = index">
         <td [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
+        <td>{{ i + 1 }}</td>
         <td style="text-align: center"><a (click)="seriesDetails(data.id)">{{ data.name }}</a></td>
         <td style="text-align: center">
           {{ data.program_type | seriesType }}

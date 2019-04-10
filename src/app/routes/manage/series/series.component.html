@@ -86,17 +86,23 @@
     <nav class="s-nav">
       <ul class="list s-nav-list">
         <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'all'">{{ 'app.series.all' | translate }}</a>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'all'" (click)="selectList('all')">{{ 'app.series.all' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'">{{ 'app.series.publicity' | translate }}</a>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'" (click)="selectList('publicity')">{{ 'app.series.publicity' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'">{{ 'app.series.source' | translate }}</a>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'" (click)="selectList('tapes')">{{ 'app.series.source' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'">{{ 'app.series.right' | translate }}</a>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'" (click)="selectList('rights')">{{ 'app.series.right' | translate }}</a>
         </li>
+        <nz-input-group class="search" nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="small">
+          <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content" (keyup)="$event.which === 13 && search()"/>
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch nzSize="small" (click)="search()"><i nz-icon type="search"></i></button>
+        </ng-template>
       </ul>
     </nav>
   </div>
