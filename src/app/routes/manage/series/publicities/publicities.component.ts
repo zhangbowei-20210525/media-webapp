@@ -62,12 +62,13 @@ export class PublicitiesComponent implements OnInit {
 
   fetchPublicities() {   
     this.isLoading = true;
+    this.isLoaded = true;
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.search = params.get('search');
         console.log(this.search);
         if(this.search === null) {
-          return  this.service.getPublicities(this.pagination)
+          return this.service.getPublicities(this.pagination)
         } else {
           return  this.service.getSearchPublicities(this.search, this.pagination)
         }
@@ -76,8 +77,7 @@ export class PublicitiesComponent implements OnInit {
         if (!this.isLoaded) {
           this.isLoaded = true;
         }
-      }))
-      .subscribe(result => {
+      })).subscribe(result => {
         this.dataset = result.list;
         this.pagination = result.pagination;
       });

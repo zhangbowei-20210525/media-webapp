@@ -47,13 +47,13 @@ export class SeriesComponent implements OnInit {
       this.router.navigate([`/manage/series/all`, { search: this.content }]);
     }
     if( this.select === 'publicity') {
-      this.router.navigate([`/manage/publicity`, { search: this.content }]);
+      this.router.navigate([`/manage/series/publicity`, { search: this.content }]);
     }
     if( this.select === 'tapes') {
-      this.router.navigate([`/manage/tapes`, { search: this.content }]);
+      this.router.navigate([`/manage/series/tapes`, { search: this.content }]);
     }
     if( this.select === 'rights') {
-      this.router.navigate([`/manage/rights`, { search: this.content }]);
+      this.router.navigate([`/manage/series/rights`, { search: this.content }]);
     }
   }
 }

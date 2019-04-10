@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { PaginationDto, AccountService } from '@shared';
 import { SeriesService } from '../series.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize, timeout } from 'rxjs/operators';
+import { finalize, timeout, switchMap } from 'rxjs/operators';
 import { LocalRequestService } from '@shared/locals';
 
 @Component({
@@ -19,6 +19,7 @@ export class TapesComponent implements OnInit {
   isLoading = false;
   pagination = { page: 1, page_size: 10 } as PaginationDto;
   dataset = [];
+  search: any;
 
   constructor(
     private router: Router,
@@ -26,7 +27,8 @@ export class TapesComponent implements OnInit {
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,
-    private localRequestService: LocalRequestService
+    private localRequestService: LocalRequestService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -35,8 +37,17 @@ export class TapesComponent implements OnInit {
 
   fetchPublicities() {
     this.isLoading = true;
-    this.service.getAllTapes(this.pagination)
-      .pipe(finalize(() => {
+    this.isLoaded = true;
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.search = params.get('search');
+        console.log(this.search);
+        if(this.search === null) {
+          return this.service.getAllTapes(this.pagination)
+        } else {
+          return this.service.getSearchAllTapes(this.search, this.pagination)
+        }
+      })).pipe(finalize(() => {
         this.isLoading = false;
         if (!this.isLoaded) {
           this.isLoaded = true;

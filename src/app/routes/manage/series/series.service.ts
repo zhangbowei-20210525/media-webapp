@@ -187,6 +187,10 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/sources?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
+  getSearchAllTapes(search: any, pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/sources?q=${search}&page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
   tapeFileList(id: number, pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/sources/${id}/files?page=${pagination.page}&page_size=${pagination.page_size}`);
   }

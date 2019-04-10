@@ -39,7 +39,7 @@ export class TransmitComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isMyTapesLoaded = false;
+    this.isMyTapesLoaded = true;
     this.isMyTapesLoading = true;
     this.tapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.purchaseTapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;

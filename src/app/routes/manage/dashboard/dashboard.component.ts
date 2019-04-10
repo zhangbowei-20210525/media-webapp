@@ -462,6 +462,16 @@ export class DashboardComponent implements OnInit {
     if (this.timeFiltrate === undefined) {
       this.timeFiltrate = [''];
     }
+    if(this.timeType === 'annual') {
+      if (event.length < 6) {
+        this.dashboardService.getAnnualStatistics(this.checkedAreaCode).subscribe(res => {
+          this.allStatisticsChart.source(res.list);
+          this.allStatisticsChart.render();
+        });
+      } else {
+        this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
+        this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+      }} else {
     if (event.length < 6) {
       this.dashboardService.getAllStatistics(this.timeFiltrate, event).subscribe(res => {
         this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
@@ -472,7 +482,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
       this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
-    }
+    }}
   }
 
   yearChange(event) {
@@ -485,15 +495,48 @@ export class DashboardComponent implements OnInit {
       this.statisticsSelectYear = res.meta.year_choices;
       this.allStatisticsChart.source(res.list);
       this.allStatisticsChart.render();
-    });
+    }); 
   }
 
   timeTypeChange(event) {
     this.timeType = event;
     if (this.timeType === 'annual') {
-      console.log('334');
       this.dashboardService.getAnnualStatistics(this.checkedAreaCode).subscribe(res => {
+        console.log(res.list);
+        this.allStatisticsChart.source([]);
         this.allStatisticsChart.source(res.list);
+        this.allStatisticsChart.scale('value', {
+          alias: '总金额（万元）',
+        });
+        this.allStatisticsChart.axis('label', {
+          label: {
+            textStyle: {
+              fill: '#aaaaaa'
+            }
+          },
+          tickLine: {
+            alignWithLabel: false,
+            length: 0
+          }
+        });
+        this.allStatisticsChart.axis('value', {
+          label: {
+            textStyle: {
+              fill: '#aaaaaa'
+            }
+          },
+          title: {
+            offset: 40,
+            position: 'center',
+          }
+        });
+        this.allStatisticsChart.legend({
+          position: 'bottom-center'
+        });
+        this.allStatisticsChart.interval().position('label*value').color('line').opacity(1).adjust([{
+          type: 'dodge',
+          marginRatio: 1 / 32
+        }]);
         this.allStatisticsChart.render();
       });
     } else {

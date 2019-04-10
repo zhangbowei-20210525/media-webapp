@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PaginationDto, MessageService } from '@shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CopyrightsService } from './copyrights.service';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeIn } from '@shared/animations';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
@@ -29,6 +29,7 @@ export class CopyrightsComponent implements OnInit {
   listOfAllData: any[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
   tags = [];
+  search: any;
   
 
   constructor(
@@ -36,7 +37,8 @@ export class CopyrightsComponent implements OnInit {
     private router: Router,
     private message: MessageService,
     private translate: TranslateService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -136,7 +138,17 @@ export class CopyrightsComponent implements OnInit {
 
   loadCopyrights() {
     this.isLoading = true;
-    this.service.getSeries(this.pagination, '', '', '', '', '', '').pipe(finalize(() => {
+    this.isLoaded = true;
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.search = params.get('search');
+        console.log(this.search);
+        if(this.search === null) {
+          return this.service.getSeries(this.pagination, '', '', '', '', '', '')
+        } else {
+          return this.service.getSearchSeries(this.search, this.pagination, '', '', '', '', '', '')
+        }
+      })).pipe(finalize(() => {
       this.isLoaded = true;
       this.isLoading = false;
     })).subscribe(result => {
