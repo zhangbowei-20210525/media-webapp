@@ -1,5 +1,6 @@
 @import 'theme.less';
 @import '~@angular/cdk/overlay-prebuilt.css';
+
 // angular/cdk/overlay cover
 .cdk-overlay-dark-backdrop {
     background-color: transparent;
@@ -210,6 +211,7 @@ ul.list.rf-list>li {
         opacity: 0;
         transform: translateY(15px);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0);
@@ -253,4 +255,8 @@ ul.list.rf-list>li {
 .s-nav-link.active {
     color: @color-info;
     border-bottom: 2px solid @color-info;
+}
+
+.breadcrumb-wrapper {
+    margin-bottom: 1rem;
 }

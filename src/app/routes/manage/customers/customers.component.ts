@@ -62,7 +62,8 @@ export class CustomersComponent implements OnInit {
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: 800,
-      nzOnOk: this.addCustomerAgreed
+      nzOnOk: this.addCustomerAgreed,
+      nzNoAnimation: true
     });
   }
 

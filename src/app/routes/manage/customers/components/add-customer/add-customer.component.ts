@@ -141,9 +141,9 @@ export class AddCustomerComponent implements OnInit {
     this.enterpriseForm = this.fb.group({
       name: [null, [Validators.required]],
       abbreviation: [null],
-      telephone: [null, [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]],
+      telephone: [null], // [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]
       remark: [null],
-      tags: [null]
+      tags: [null, [Validators.required]]
     });
     this.liaisonForm = this.fb.group({
       name: [null, [Validators.required]],
@@ -176,7 +176,7 @@ export class AddCustomerComponent implements OnInit {
   }
 
   submit(): Observable<any> {
-    if (!this.sf.valid) {
+    if (this.sf.value.liaisons.length > 0 && !this.sf.valid) {
       return throwError({});
     }
     const custom = this.enterpriseForm.value;
