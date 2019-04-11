@@ -5,6 +5,18 @@ import { PaginationDto, PaginationResponseDto, ReactiveBase, ReactiveDatePicker,
 import { CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto } from './dtos';
 import * as _ from 'lodash';
 
+declare interface FiltrateSeriesParams {
+  due_date: string;
+  area_number: string;
+  right_type: string;
+  start_date: string;
+  end_date: string;
+  is_salable: string;
+  investment_type: string;
+  program_type: string;
+  search?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,42 +40,48 @@ export class CopyrightsService {
   //     '/api/v1/series/search', { params: { keywords: keywords } });
   // }
 
-  getSeries(
-    pagination: PaginationDto,
-    due_date: string,
-    area_number: string,
-    right_type: string,
-    start_date: string,
-    end_date: string,
-    is_salable: string
-  ) {
-    return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>('/api/v1/right_programs',
-      {
-        params: {
-          page: pagination.page as any, page_size: pagination.page_size as any,
-          due_date, area_number, right_type, start_date, end_date, is_salable
-        }
-      });
+  getDefaultFiltrateSeriesParams(search?: string) {
+    return {
+      due_date: '',
+      area_number: '',
+      right_type: '',
+      start_date: '',
+      end_date: '',
+      is_salable: '',
+      investment_type: '',
+      program_type: '',
+      search: search
+    } as FiltrateSeriesParams;
   }
 
-  getSearchSeries(
-    search: any,
-    pagination: PaginationDto,
-    due_date: string,
-    area_number: string,
-    right_type: string,
-    start_date: string,
-    end_date: string,
-    is_salable: string
-  ) {
-    return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>(`/api/v1/right_programs?q=${search}`,
-      {
-        params: {
-          page: pagination.page as any, page_size: pagination.page_size as any,
-          due_date, area_number, right_type, start_date, end_date, is_salable
-        }
-      });
+  getSeries(pagination: PaginationDto, params: FiltrateSeriesParams) {
+    return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>('/api/v1/right_programs', {
+      params: {
+        page: pagination.page as any, page_size: pagination.page_size as any,
+        due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
+        start_date: params.start_date, end_date: params.end_date, is_salable: params.is_salable,
+        investment_type: params.investment_type, program_type: params.program_type, q: params.search || '' }
+    });
   }
+
+  // getSearchSeries(
+  //   search: any,
+  //   pagination: PaginationDto,
+  //   due_date: string,
+  //   area_number: string,
+  //   right_type: string,
+  //   start_date: string,
+  //   end_date: string,
+  //   is_salable: string
+  // ) {
+  //   return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>(`/api/v1/right_programs?q=${search}`,
+  //     {
+  //       params: {
+  //         page: pagination.page as any, page_size: pagination.page_size as any,
+  //         due_date, area_number, right_type, start_date, end_date, is_salable
+  //       }
+  //     });
+  // }
 
   deleteCopyrights(pid: number) {
     return this.http.delete(`/api/v1/right_programs/${pid}`);

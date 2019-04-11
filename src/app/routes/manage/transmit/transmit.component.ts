@@ -55,6 +55,7 @@ export class TransmitComponent implements OnInit {
       this.tapesList = res.list;
       this.tapesPagination = res.pagination;
     });
+    this.purchaseTapes();
   }
 
   tapesPageChange(page: number) {
@@ -88,7 +89,7 @@ export class TransmitComponent implements OnInit {
   }
 
   purchaseTapes() {
-    this.isPurchaseTapesLoaded = false;
+    this.isPurchaseTapesLoaded = true;
     this.isPurchaseTapesLoading = true;
     this.seriesService.purchaseTapes(this.purchaseTapesPagination).pipe(finalize(() => {
       this.isPurchaseTapesLoading = false;

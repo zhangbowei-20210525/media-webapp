@@ -40,7 +40,7 @@ export class SeriesComponent implements OnInit {
   }
 
   search() {
-    if(this.content == undefined || this.content === '') {
+    if(this.content == undefined) {
       this.message.success(this.translate.instant('global.search'));
     } else {
     if( this.select === 'all') {

@@ -3,46 +3,81 @@
     <div nz-col nzSpan="18">
       <div class="left-options">
         <form nz-form [formGroup]="filtrateForm" style="width: 100%;">
-          <nz-form-item style="margin-bottom: 1rem;">
 
-            <nz-form-label nzFor="days" [nzSm]="2">到期天数</nz-form-label>
-            <nz-form-control [nzSm]="8">
-              <nz-select formControlName="days" (ngModelChange)="onDaysChange($event)">
+          <nz-form-item style="margin-bottom: 0;">
+            <nz-form-label nzFor="investment_type" [nzSpan]="2">投资类型</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group formControlName="investment_type" (ngModelChange)="onFormValueChange()">
+                <label nz-radio-button [nzValue]="null">所有</label>
+                <label nz-radio-button nzValue="homemade">自制</label>
+                <label nz-radio-button nzValue="purchase">购入</label>
+                <label nz-radio-button nzValue="proxy">代理</label>
+                <label nz-radio-button nzValue="main-vote">主投</label>
+                <label nz-radio-button nzValue="follow">跟投</label>
+                <label nz-radio-button nzValue="co-production">合拍</label>
+                <label nz-radio-button nzValue="contract">承制</label>
+                <label nz-radio-button nzValue="introduction">引进</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item style="margin-bottom: 0;">
+            <nz-form-label nzFor="program_type" [nzSpan]="2">节目类型</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group formControlName="program_type" (ngModelChange)="onFormValueChange()">
+                <label nz-radio-button [nzValue]="null">所有</label>
+                <label nz-radio-button nzValue="tv">电视剧</label>
+                <label nz-radio-button nzValue="film">电影</label>
+                <label nz-radio-button nzValue="variety">综艺</label>
+                <label nz-radio-button nzValue="other">其他</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item style="margin-bottom: 0;">
+            <nz-form-label nzFor="days" [nzSpan]="2">到期天数</nz-form-label>
+            <nz-form-control [nzSpan]="8">
+              <nz-select formControlName="days" (ngModelChange)="onFormValueChange()" nzSize="default">
                 <nz-option nzValue="all" nzLabel="所有"></nz-option>
                 <nz-option nzValue="365" nzLabel="一年"></nz-option>
                 <nz-option nzValue="180" nzLabel="180天"></nz-option>
                 <nz-option nzValue="30" nzLabel="30天"></nz-option>
               </nz-select>
             </nz-form-control>
-
-            <nz-form-label nzFor="area" [nzSm]="2" [nzOffset]="1">地区</nz-form-label>
-            <nz-form-control [nzSm]="8">
-              <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
-                nzValueProperty="code" nzPlaceHolder="" nzChangeOnSelect (ngModelChange)="onAreaChange($event)">
-              </nz-cascader>
-            </nz-form-control>
-
           </nz-form-item>
 
-          <nz-form-item style="margin-bottom: 1rem;">
-            <nz-form-label nzFor="right" [nzSm]="2">权利</nz-form-label>
-            <nz-form-control [nzSm]="3">
+          <nz-form-item style="margin-bottom: 0;">
+            <nz-form-label nzFor="right" [nzSpan]="2">权利</nz-form-label>
+            <nz-form-control [nzSm]="8">
               <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name"
-                nzValueProperty="code" nzPlaceHolder="" nzChangeOnSelect (ngModelChange)="onRightChange($event)">
+                nzValueProperty="code" nzChangeOnSelect nzAllowClear="false" (ngModelChange)="onFormValueChange()"
+                nzSize="default">
               </nz-cascader>
             </nz-form-control>
+          </nz-form-item>
 
-            <nz-form-label nzFor="date" [nzSm]="2" [nzOffset]="1">期限</nz-form-label>
-            <nz-form-control [nzSm]="7">
-              <nz-range-picker formControlName="date" (ngModelChange)="onDateChange($event)"></nz-range-picker>
+          <nz-form-item style="margin-bottom: 0;">
+            <nz-form-label nzFor="area" [nzSpan]="2">地区</nz-form-label>
+            <nz-form-control [nzSpan]="8">
+              <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
+                nzValueProperty="code" nzPlaceHolder="筛选地区" nzChangeOnSelect nzAllowClear="false"
+                (ngModelChange)="onFormValueChange()" nzSize="default">
+              </nz-cascader>
             </nz-form-control>
+          </nz-form-item>
 
-            <nz-form-label nzFor="date" [nzSm]="3" [nzOffset]="1">是否可发行</nz-form-label>
-            <nz-form-control [nzSm]="5">
-                <nz-radio-group formControlName="is_salable" (ngModelChange)="onPubRightChange($event)">
-                    <label nz-radio nzValue="1">是</label>
-                    <label nz-radio nzValue="0">否</label>
-                  </nz-radio-group>
+          <nz-form-item style="margin-bottom: 0;">
+            <nz-form-label nzFor="date" [nzSpan]="2">期限</nz-form-label>
+            <nz-form-control [nzSpan]="8">
+              <nz-range-picker formControlName="date" (ngModelChange)="onFormValueChange()" nzSize="default">
+              </nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item style="margin-bottom: 0;">
+            <nz-form-label nzFor="is_salable" [nzSpan]="2">可发行</nz-form-label>
+            <nz-form-control [nzSpan]="8">
+              <label nz-checkbox formControlName="is_salable" (ngModelChange)="onFormValueChange()"></label>
             </nz-form-control>
           </nz-form-item>
         </form>
@@ -56,7 +91,7 @@
     </div>
   </div>
   <div style="margin-top: 1.5rem;margin-bottom: 1.5rem">
-    <nz-tag  nzMode="closeable" (nzOnClose)="closeTag(tag)"  *ngFor="let tag of tags">
+    <nz-tag nzMode="closeable" (nzOnClose)="closeTag(tag)" *ngFor="let tag of tags">
       {{ tag.project }}
     </nz-tag>
   </div>
@@ -82,7 +117,7 @@
       <tr *ngFor="let data of dataTable.data">
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0" nzShowCheckbox [(nzChecked)]="data.isChecked"
           (nzCheckedChange)="onCheckedChange($event, data)"></td>
-        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }} </td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
           <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
         </td>

@@ -191,6 +191,7 @@ export class DashboardComponent implements OnInit {
 
   getSeriesStatisticsInfo() {
     this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
+      console.log(res);
       this.seriesChart = new G2.Chart({
         container: 'seriesStatistics',
         forceFit: true,
@@ -201,11 +202,12 @@ export class DashboardComponent implements OnInit {
       this.seriesChart.source(res, {
         percent: {
           formatter: function formatter(val) {
-            val = val * 100 + '%';
+            val = val + '%';
             return val;
           }
         }
       });
+      console.log(this.seriesChart.source(res));
       this.seriesChart.coord('theta', {
         radius: 0.75,  // 设置半径，值范围为 0 至 1
         innerRadius: 0,  // 空心圆的半径，值范围为 0 至 1
@@ -326,7 +328,7 @@ export class DashboardComponent implements OnInit {
         this.seriesChart.source(res, {
           percent: {
             formatter: function formatter(val) {
-              val = val * 100 + '%';
+              val = val + '%';
               return val;
             }
           }
@@ -340,7 +342,7 @@ export class DashboardComponent implements OnInit {
         this.seriesChart.source(res, {
           percent: {
             formatter: function formatter(val) {
-              val = val * 100 + '%';
+              val = val + '%';
               return val;
             }
           }
