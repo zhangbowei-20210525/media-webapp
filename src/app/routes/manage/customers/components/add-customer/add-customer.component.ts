@@ -141,7 +141,7 @@ export class AddCustomerComponent implements OnInit {
     this.enterpriseForm = this.fb.group({
       name: [null, [Validators.required]],
       abbreviation: [null],
-      telephone: [null], // [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]
+      telephone: [null, [Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]], // [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]
       remark: [null],
       tags: [null, [Validators.required]]
     });

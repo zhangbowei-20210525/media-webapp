@@ -1,130 +1,40 @@
-<!-- <div class="program-wrap">
-  <nz-tabset [nzTabBarExtraContent]="extraTemplate">
-    <nz-tab nzTitle="节目" (nzClick)="seriesRefresh()">
-      <div class="program-info">
-        <nz-table #rowSelectionTable [nzData]="seriesList" (nzCurrentPageDataChange)="currentPageDataChange($event)"
-          (nzPageIndexChange)="refreshStatus($event)" (nzPageSizeChange)="refreshStatus($event)" [nzPageSize]="seriesPagination?.page_size"
-          [nzFrontPagination]="false" [nzPageIndex]="seriesPagination?.page" [nzTotal]="seriesPagination?.count">
-          <thead>
-            <tr>
-              <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
-              <th style="text-align: center">节目</th>
-              <th style="text-align: center">节目类型</th>
-              <th style="text-align: center">题材</th>
-              <th style="text-align: center">集数</th>
-              <th style="text-align: center">语言</th>
-              <th style="text-align: center">发行时间</th>
-              <th style="text-align: center">详细</th>
-              <th style="text-align: center">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of rowSelectionTable.data">
-              <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
-              <td style="text-align: center">{{data.name}}</td>
-              <td style="text-align: center">
-                <span *ngIf="data.program_type == 'tv'">电影</span>
-                <span *ngIf="data.program_type == 'film'">电视剧</span>
-                <span *ngIf="data.program_type == 'variety'">综艺</span>
-                <span *ngIf="data.program_type == 'other'">其他</span>
-              </td>
-              <td style="text-align: center">{{data.theme}}</td>
-              <td style="text-align: center">{{data.episode}}</td>
-              <td style="text-align: center">{{data.language}}</td>
-              <td style="text-align: center">{{data.release_date}}</td>
-              <td style="text-align: center">
-                <a (click)="publicity(data.id)">宣发</a>
-                <a (click)="tape(data.id)" style="margin-left: 10px">母带</a>
-                <a (click)="copyright(data.id)" style="margin-left: 10px">版权</a>
-              </td>
-              <td style="text-align: center">
-                <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
-            </td>
-            </tr>
-          </tbody>
-        </nz-table>
-      </div>
-    </nz-tab>
-    <ng-template #extraTemplate>
-      <div>
-        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px" *ngIf="type=='series'">新增节目(批量)</button>
-        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 20px" *ngIf="type=='copyright'">新增发行版权</button>
-        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 10px" *ngIf="type=='copyright'" (click)="addOwnRight()">新增自有版权</button>
-        <button nz-button nzType="primary" nzSize="small" style="float: right;margin-top: 15px;margin-right: 10px"
-          (click)="addSeries()">新增节目</button>
-      </div>
-    </ng-template>
-    <nz-tab nzTitle="版权" (nzClick)="copyrightRefresh()">
-      <app-copyrights></app-copyrights>
-    </nz-tab>
-    <nz-tab nzTitle="母带" (nzClick)="tapesRefresh()">
-      <app-tapes></app-tapes>
-    </nz-tab>
-    <nz-tab nzTitle="宣发" (nzClick)="publicitiesRefresh()">
-      <app-publicities></app-publicities>
-    </nz-tab>
-  </nz-tabset> -->
-
 <div class="block clearfix fade-in-up">
-  <!-- <div class="block-content">
-    <nz-tabset [nzTabPosition]="'top'" [nzType]="'line'" [nzAnimated]="'false'">
-      <nz-tab [nzTitle]="'全部'">
-        <app-all-series></app-all-series>
-      </nz-tab>
-      <nz-tab [nzTitle]="'宣发'">
-        <app-publicities></app-publicities>
-      </nz-tab>
-      <nz-tab [nzTitle]="'母带'">
-        Content of Tab Pane Type
-      </nz-tab>
-      <nz-tab [nzTitle]="'版权'">
-        <app-copyrights></app-copyrights>
-      </nz-tab>
-    </nz-tabset>
-  </div> -->
-  <div class="s-nav-wapper">
-    <nav class="s-nav">
-      <ul class="list s-nav-list">
-        <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'all'" (click)="selectList('all')">{{ 'app.series.all' | translate }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'" (click)="selectList('publicity')">{{ 'app.series.publicity' | translate }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'" (click)="selectList('tapes')">{{ 'app.series.source' | translate }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'" (click)="selectList('rights')">{{ 'app.series.right' | translate }}</a>
-        </li>
-        <nz-input-group class="search" nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="small">
-          <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content" (keyup)="$event.which === 13 && search()"/>
-        </nz-input-group>
-        <ng-template #suffixIconButton>
-          <button nz-button nzType="primary" nzSearch nzSize="small" (click)="search()"><i nz-icon type="search"></i></button>
-        </ng-template>
-      </ul>
-    </nav>
+  <div class="block-header" style="padding-left: 0;">
+    <div class="s-nav-wapper">
+      <nav class="s-nav">
+        <ul class="list s-nav-list">
+          <li class="nav-item">
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'all'"
+              (click)="selectList('all')">{{ 'app.series.all' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'"
+              (click)="selectList('publicity')">{{ 'app.series.publicity' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'"
+              (click)="selectList('tapes')">{{ 'app.series.source' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'"
+              (click)="selectList('rights')">{{ 'app.series.right' | translate }}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="block-options">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
+        <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+          (keyup)="$event.which === 13 && search()" />
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+          <i nz-icon type="search"></i>
+        </button>
+      </ng-template>
+    </div>
   </div>
   <div class="block-content">
     <router-outlet></router-outlet>
   </div>
 </div>
-<!-- <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
-  <nz-tab [nzTitle]="'全部'">
-    Content of Tab Pane All
-  </nz-tab>
-  <nz-tab [nzTitle]="'宣发'">
-    <app-publicities></app-publicities>
-  </nz-tab>
-  <nz-tab [nzTitle]="'母带'">
-    Content of Tab Pane Type
-  </nz-tab>
-  <nz-tab [nzTitle]="'版权'">
-    <div class="block clearfix">
-      <div class="block-content">
-        <app-copyrights></app-copyrights>
-      </div>
-    </div>
-  </nz-tab>
-</nz-tabset> -->

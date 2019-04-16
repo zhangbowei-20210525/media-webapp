@@ -265,6 +265,9 @@ export class AddCopyrightsComponent implements OnInit {
     }
 
     const groupData = this.service.groupBy(this.dataSet, item => item.id);
+    const nullId = groupData.find(item => item[0].id === null);
+    groupData.splice(groupData.indexOf(nullId), 1);
+    this.service.groupBy(nullId, item => item.name).forEach(item => groupData.push(item));
     programs = groupData.map(group => {
       const first = group[0];
       const program = this.service.toProgramData(

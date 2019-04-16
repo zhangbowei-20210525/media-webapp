@@ -52,6 +52,7 @@ import { FloorPipe } from './pipes/floor.pipe';
 import { InvestmentTypePipe } from './pipes/investment-type.pipe';
 import { DefaultCharPipe } from './pipes/default-char.pipe';
 import { ArrayFormatPipe } from './pipes/array-format.pipe';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -62,7 +63,8 @@ const PIPES = [
   FloorPipe,
   InvestmentTypePipe,
   DefaultCharPipe,
-  ArrayFormatPipe
+  ArrayFormatPipe,
+  TruncatePipe
 ];
 // #endregion
 
@@ -76,7 +78,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ...COMPONENTS,
     ...DIRECTIVES,
     ...PIPES,
-    ArrayFormatPipe,
   ],
   imports: [
     CommonModule,

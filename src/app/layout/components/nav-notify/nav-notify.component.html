@@ -3,62 +3,73 @@
     <nz-tabset nzAnimated="false" (nzSelectChange)="onTabChange($event)">
       <nz-tab [nzTitle]="'menu.notify.system' | translate">
         <div class="notitys">
-          <nz-skeleton [nzLoading]="!isSysLoaded" class="notify-skeleton">
-            <div *ngIf="sysNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll
-              [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onSysScrollDown()">
-              <div class="n-card" *ngFor="let item of sysNotifys">
-                <div class="clearfix">
-                  <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
-                    {{ item.title }}</div>
-                  <div class="n-time">{{ item.created_at }}</div>
+          <!-- <nz-skeleton [nzLoading]="!isSysLoaded" class="notify-skeleton">
+          </nz-skeleton> -->
+          <nz-spin [nzSpinning]="!isSysLoaded" style="min-height: 360px;">
+            <div *ngIf="isSysLoaded">
+              <div *ngIf="sysNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll
+                [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onSysScrollDown()">
+                <div class="n-card" *ngFor="let item of sysNotifys">
+                  <div class="clearfix">
+                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
+                      {{ item.title }}</div>
+                    <div class="n-time">{{ item.created_at }}</div>
+                  </div>
+                  <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1">
+                    {{ item.content }}</div>
                 </div>
-                <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1">
-                  {{ item.content }}</div>
+                <nz-skeleton *ngIf="sysPagination.pages > sysPagination.page" [nzTitle]="false"
+                  style="margin-top: 1rem;">
+                </nz-skeleton>
               </div>
-              <nz-skeleton *ngIf="sysPagination.pages > sysPagination.page" [nzTitle]="false" style="margin-top: 1rem;">
-              </nz-skeleton>
             </div>
-          </nz-skeleton>
+          </nz-spin>
         </div>
       </nz-tab>
       <nz-tab [nzTitle]="'menu.notify.source' | translate">
         <div class="notitys">
-          <nz-skeleton [nzLoading]="!isSrcLoaded" class="notify-skeleton">
-            <div *ngIf="srcNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
-              (scrolled)="onSrcScrollDown()">
-              <div class="n-card" *ngFor="let item of srcNotifys">
-                <div class="clearfix">
-                  <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
-                    {{ item.title }}</div>
-                  <div class="n-time">{{ item.created_at }}</div>
+          <nz-spin [nzSpinning]="!isSrcLoaded" style="min-height: 360px;">
+            <div *ngIf="isSrcLoaded">
+              <div *ngIf="srcNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll
+                [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onSrcScrollDown()">
+                <div class="n-card" *ngFor="let item of srcNotifys">
+                  <div class="clearfix">
+                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
+                      {{ item.title }}</div>
+                    <div class="n-time">{{ item.created_at }}</div>
+                  </div>
+                  <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1">
+                    {{ item.content }}</div>
                 </div>
-                <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1">
-                  {{ item.content }}</div>
+                <nz-skeleton *ngIf="srcPagination.pages > srcPagination.page" [nzTitle]="false"
+                  style="margin-top: 1rem;">
+                </nz-skeleton>
               </div>
-              <nz-skeleton *ngIf="srcPagination.pages > srcPagination.page" [nzTitle]="false" style="margin-top: 1rem;">
-              </nz-skeleton>
             </div>
-          </nz-skeleton>
+          </nz-spin>
         </div>
       </nz-tab>
       <nz-tab [nzTitle]="'menu.notify.outside' | translate">
         <div class="notitys">
-          <nz-skeleton [nzLoading]="!isOutLoaded" class="notify-skeleton">
-            <div *ngIf="outNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll [scrollWindow]="false" infiniteScrollDistance="1"
-              (scrolled)="onOutScrollDown()">
-              <div class="n-card" *ngFor="let item of outNotifys">
-                <div class="clearfix">
-                  <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
-                    {{ item.title }}</div>
-                  <div class="n-time">{{ item.created_at }}</div>
+          <nz-spin [nzSpinning]="!isOutLoaded" style="min-height: 360px;">
+            <div *ngIf="isOutLoaded">
+              <div *ngIf="outNotifys.length > 0 else empty" class="n-list scrollbar" infinite-scroll
+                [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onOutScrollDown()">
+                <div class="n-card" *ngFor="let item of outNotifys">
+                  <div class="clearfix">
+                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
+                      {{ item.title }}</div>
+                    <div class="n-time">{{ item.created_at }}</div>
+                  </div>
+                  <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1">
+                    {{ item.content }}</div>
                 </div>
-                <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1">
-                  {{ item.content }}</div>
+                <nz-skeleton *ngIf="outPagination.pages > outPagination.page" [nzTitle]="false"
+                  style="margin-top: 1rem;">
+                </nz-skeleton>
               </div>
-              <nz-skeleton *ngIf="outPagination.pages > outPagination.page" [nzTitle]="false" style="margin-top: 1rem;">
-              </nz-skeleton>
             </div>
-          </nz-skeleton>
+          </nz-spin>
         </div>
       </nz-tab>
     </nz-tabset>

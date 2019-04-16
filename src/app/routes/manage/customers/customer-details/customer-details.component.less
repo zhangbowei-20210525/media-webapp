@@ -1,3 +1,10 @@
+// cover ant-design
+:host ::ng-deep .ant-page-header {
+    background: transparent;
+    margin-bottom: 1.5rem;
+    padding: 16px 0;
+}
+
 .series-info-row {
     margin-bottom: 1rem;
 }
@@ -5,21 +12,23 @@
 .info-filed::after {
     content: '：';
 }
+
 ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
     zoom: 1;
     overflow: hidden;
-  }
-  ul>li {
+}
+
+ul>li {
     float: left
-  }
+}
 
 .aa {
     margin-right: 25px;
     border-width: 1px 1px 1px 1px;
-    border-style:solid;
+    border-style: solid;
     border-color: #403d3d;
     margin-top: 10px;
     text-align: center;
@@ -29,9 +38,51 @@ ul {
 .eaa {
     margin-right: 14px;
     border-width: 1px 1px 1px 1px;
-    border-style:solid;
+    border-style: solid;
     border-color: #4A90E2;
     margin-top: 10px;
     text-align: center;
     border-radius: 5px;
+}
+
+.wrap {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+}
+
+.content.padding {
+    padding-left: 40px;
+}
+
+.content p {
+    margin-bottom: 8px;
+}
+
+.content .description {
+    display: table;
+}
+
+.description .term {
+    display: table-cell;
+    margin-right: 8px;
+    padding-bottom: 8px;
+    white-space: nowrap;
+    line-height: 20px;
+}
+
+.description .term:after {
+    position: relative;
+    top: -0.5px;
+    margin: 0 8px 0 2px;
+    content: ":";
+}
+
+.description .detail {
+    display: table-cell;
+    padding-bottom: 8px;
+    width: 100%;
+    line-height: 20px;
 }

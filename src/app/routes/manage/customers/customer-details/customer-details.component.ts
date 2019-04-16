@@ -49,6 +49,7 @@ export class CustomerDetailsComponent implements OnInit {
       this.fetchPurchaseRights();
       this.fetchPublishRights();
       this.fetchPurchaseContracts();
+      this.fetchPublishContracts();
       this.fetchLiaisons();
       // this.service.getLogs(this.logsPagination, this.id).subscribe(l => {
       //   this.logList = l.list;
@@ -115,6 +116,10 @@ export class CustomerDetailsComponent implements OnInit {
   publishContractsPageChange(page: number) {
     this.publishContractsPagination.page = page;
     this.fetchPublishContracts();
+  }
+
+  goBack() {
+    window.history.back();
   }
 
   // editCustomer() {

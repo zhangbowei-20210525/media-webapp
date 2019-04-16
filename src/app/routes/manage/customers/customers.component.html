@@ -1,11 +1,10 @@
 <div class="block clearfix fade-in-up">
+  <div class="block-header">
+    <div class="block-title">客商列表</div>
+    <div class="block-options"><button nz-button nzType="default" (click)="addCustomer()">新增客商</button></div>
+  </div>
   <div class="block-content">
-    <div *ngIf="isLoaded == true">
-      <div>
-        <p class="clearfix">
-          <button nz-button nzType="default" class="rf" (click)="addCustomer()">新增客商</button>
-        </p>
-      </div>
+    <div *ngIf="isLoaded">
       <nz-table #basicTable [nzData]="dataset" [nzPageSize]="pagination?.page_size" [nzFrontPagination]="false"
         [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count" (nzPageIndexChange)="pageChange($event)">
         <thead>

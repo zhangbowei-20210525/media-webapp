@@ -59,20 +59,22 @@
 
   <div class="block-container">
     <div class="main-block block">
-      <div class="s-nav-wapper">
-        <nav class="s-nav">
-          <ul class="list s-nav-list">
-            <li class="nav-item">
-              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'history'">历史记录</a>
-            </li>
-            <!-- <li class="nav-item">
-              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'favorites'">收藏</a>
-            </li>
-            <li class="nav-item">
-              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'notifies'">消息</a>
-            </li> -->
-          </ul>
-        </nav>
+      <div class="block-header" style="padding-left: 0;">
+        <div class="s-nav-wapper">
+          <nav class="s-nav">
+            <ul class="list s-nav-list">
+              <li class="nav-item">
+                <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'history'">历史记录</a>
+              </li>
+              <!-- <li class="nav-item">
+                    <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'favorites'">收藏</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'notifies'">消息</a>
+                  </li> -->
+            </ul>
+          </nav>
+        </div>
       </div>
       <div class="block-content">
         <router-outlet></router-outlet>

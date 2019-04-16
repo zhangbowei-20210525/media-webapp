@@ -1,0 +1,17 @@
+<!-- <p>
+  contract-rights-view works! {{ id }}
+</p> -->
+<div class="rights-panel">
+  <!-- <nz-tag *ngFor="let tag of list">{{ tag.program_name + '[' + tag.rights[0].right_type_label + '(' + tag.rights[0].area_label + '#' + tag.rights[0].start_date + '-' + tag.rights[0].end_date + ')' + ']' }}</nz-tag> -->
+  <div *ngFor="let program of list">
+    <a [routerLink]="['/manage/series/d', program.id, 'right']">{{ program.program_name }}</a>
+    [
+    <span *ngFor="let right of program.rights; index as i">
+      {{ i > 0 ? '，' : '' }}
+      <b>{{ right.right_type_label }}</b>
+      {{ ' ( ' + right.area_label + '#' + ((right.permanent_date ? '永久' : (right.start_date && right.end_date) ? ((right.start_date | date:'yyyy/MM/dd') + ' ~ ' +
+      (right.end_date | date:'yyyy/MM/dd')) : right.date_remark) | emptyDefaultChar) + ' ) '}}
+    </span>
+    ]
+  </div>
+</div>
