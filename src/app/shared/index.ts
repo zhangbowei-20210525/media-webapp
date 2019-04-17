@@ -1,3 +1,4 @@
+export { Util } from './util';
 export { formData } from './helpers/request.helper';
 export { ResponseDto, ListResponseDto, PaginationResponseDto, PaginationDto } from './dtos/response.dto';
 export { SharedModule } from './shared.module';

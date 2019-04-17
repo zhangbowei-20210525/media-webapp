@@ -30,6 +30,7 @@ import { BindPhoneComponent } from './account/bind-phone.component';
 import { BindWechatComponent } from './account/bind-wechat.component';
 import { EmptyComponent } from './components/empty/empty.component';
 import { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 const INSIDE_COMPONENTS = [
   LoginComponent,
@@ -38,7 +39,8 @@ const INSIDE_COMPONENTS = [
 ];
 const COMPONENTS = [
   EmptyComponent,
-  SeriesSelectorComponent
+  SeriesSelectorComponent,
+  LoadingComponent
 ];
 
 const DIRECTIVES = [];

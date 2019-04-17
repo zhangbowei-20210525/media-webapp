@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PaginationDto, PaginationResponseDto } from '@shared';
+import { ContractPaymentsDto } from './dtos';
 
 declare interface OptionCustomer {
   custom: {
@@ -82,6 +83,18 @@ export class CustomersService {
 
   getLiaisons(customerId: number) {
     return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom/${customerId}/liaison`);
+  }
+
+  getContractPayments(contractId: number) {
+    return this.http.get<ContractPaymentsDto>(`/api/v1/rights/contracts/${contractId}/payments`);
+  }
+
+  addContractPayment(contractId: number, pay_amount: number, pay_date: string, pay_remark: string) {
+    return this.http.post<{ id: number }>(`/api/v1/rights/contracts/${contractId}/payments`, { pay_amount, pay_date, pay_remark });
+  }
+
+  deleteContractPayment(paymentId: number) {
+    return this.http.delete(`/api/v1/rights/contracts/payments/${paymentId}`);
   }
 
   mapCopyrights(list: any[]) {

@@ -22,39 +22,39 @@ export class SeriesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.select = 'all'
+    this.select = 'all';
   }
   selectList(select: string) {
-    if(select === 'all') {
-      this.select = 'all'
+    if (select === 'all') {
+      this.select = 'all';
     }
-    if(select === 'publicity') {
-      this.select = 'publicity'
+    if (select === 'publicity') {
+      this.select = 'publicity';
     }
-    if(select === 'tapes') {
-      this.select = 'tapes'
+    if (select === 'tapes') {
+      this.select = 'tapes';
     }
-    if(select === 'rights') {
-      this.select = 'rights'
+    if (select === 'rights') {
+      this.select = 'rights';
     }
   }
 
   search() {
-    if(this.content == undefined) {
+    if (this.content === undefined) {
       this.message.success(this.translate.instant('global.search'));
     } else {
-    if( this.select === 'all') {
-      this.router.navigate([`/manage/series/all`, { search: this.content }]);
-    }
-    if( this.select === 'publicity') {
-      this.router.navigate([`/manage/series/publicity`, { search: this.content }]);
-    }
-    if( this.select === 'tapes') {
-      this.router.navigate([`/manage/series/tapes`, { search: this.content }]);
-    }
-    if( this.select === 'rights') {
-      this.router.navigate([`/manage/series/rights`, { search: this.content }]);
+      if (this.select === 'all') {
+        this.router.navigate([`/manage/series/all`, { search: this.content }]);
+      }
+      if (this.select === 'publicity') {
+        this.router.navigate([`/manage/series/publicity`, { search: this.content }]);
+      }
+      if (this.select === 'tapes') {
+        this.router.navigate([`/manage/series/tapes`, { search: this.content }]);
+      }
+      if (this.select === 'rights') {
+        this.router.navigate([`/manage/series/rights`, { search: this.content }]);
+      }
     }
   }
-}
 }

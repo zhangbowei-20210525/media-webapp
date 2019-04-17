@@ -13,6 +13,7 @@ import { EditCustomerComponent } from './components/edit-customer/edit-customer.
 import { DelonFormModule } from '@delon/form';
 import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 import { ContractRightsViewComponent } from './components/contract-rights-view/contract-rights-view.component';
+import { ContractPaymentViewComponent } from './components/contract-payment-view/contract-payment-view.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ContractRightsViewComponent } from './components/contract-rights-view/c
     AddLogComponent,
     EditCustomerComponent,
     PaymentFormatPipe,
-    ContractRightsViewComponent
+    ContractRightsViewComponent,
+    ContractPaymentViewComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { ContractRightsViewComponent } from './components/contract-rights-view/c
   entryComponents: [
     AddCustomerComponent,
     AddLogComponent,
-    EditCustomerComponent
+    EditCustomerComponent,
+    ContractPaymentViewComponent
   ]
 })
 export class CustomersModule { }

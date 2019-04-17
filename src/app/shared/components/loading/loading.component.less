@@ -1,0 +1,81 @@
+.rectangle-bounce {
+    margin: 100px auto;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+}
+
+.rectangle-bounce>div {
+    height: 100%;
+    width: 7px;
+    margin: 0 3px 0 0;
+    background-color: #0dbd9d;
+    display: inline-block;
+    animation: stretchdelay 1.2s infinite ease-in-out;
+}
+
+.rectangle-bounce .rect2 {
+    animation-delay: -1.1s;
+}
+
+.rectangle-bounce .rect3 {
+    animation-delay: -1.0s;
+}
+
+.rectangle-bounce .rect4 {
+    animation-delay: -0.9s;
+}
+
+.rectangle-bounce .rect5 {
+    animation-delay: -0.8s;
+}
+
+@keyframes stretchdelay {
+
+    0%,
+    40%,
+    100% {
+        transform: scaleY(0.4);
+    }
+
+    20% {
+        transform: scaleY(1.0);
+    }
+}
+
+.three-bounce {
+    text-align: center;
+    font-size: 26px;
+    width: 80px;
+    margin: 100px auto;
+}
+
+.three-bounce>div {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin: 0 3px;
+    border-radius: 100%;
+    background-color: #7f8c8d;
+    animation: bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.three-bounce .one {
+    animation-delay: -0.32s;
+}
+
+.three-bounce .two {
+    animation-delay: -0.16s;
+}
+
+@keyframes bouncedelay {
+
+    0%,
+    40%,
+    100% {
+        transform: scale(0);
+    }
+    80% {
+        transform: scale(1);
+    }
+}

@@ -16,15 +16,6 @@ export class ContractRightsViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.list = [{
-    //   program_name: '微微一笑很倾城',
-    //   rights: [{
-    //     right_type_label: '播映权',
-    //     area_label: '中国大陆',
-    //     start_date: '2019/01/01',
-    //     end_date: '2022/01/01'
-    //   }]
-    // }];
   }
 
 }
