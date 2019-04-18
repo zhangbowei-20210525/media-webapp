@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ReactiveBase, FormControlService, TreeService, MessageService } from '@shared';
+import { ReactiveBase, FormControlService, TreeService, MessageService, Util } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { finalize, switchMap } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-publish-rights',
@@ -68,11 +69,9 @@ export class PublishRightsComponent implements OnInit {
     ).subscribe(result => {
       this.series = result.list;
       this.checkOptions = this.series.map(item => ({ label: item.name, value: item.id, checked: true }));
-      console.log(this.checkOptions);
       this.projects.setValue(this.checkOptions);
-      console.log(this.projects.setValue(this.checkOptions));
     });
-   
+
     this.service.getCustomerOptions().subscribe(result => {
       this.customerOptions = result.list;
     });
@@ -98,10 +97,10 @@ export class PublishRightsComponent implements OnInit {
 
     this.contractForm = this.fb.group({
       customer: [null, [Validators.required]],
-      totalAmount: [null, [Validators.required, Validators.pattern('[0-9]*(/.[0-9]{1,2})?')]],
+      totalAmount: [null, [Validators.required, Validators.pattern(/^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/)]], // '[0-9]*(/.[0-9]{1,2})?'
       paymentMethod: [null, [Validators.required]],
       payments: this.fb.array([]),
-      contractName: [null, [Validators.required]],
+      contractName: [null],
       contractNumber: [null, [Validators.required]],
       signDate: [new Date(), Validators.required]
     });
@@ -121,15 +120,10 @@ export class PublishRightsComponent implements OnInit {
   }
 
   seriesTagChange(event: { checked: boolean, tag: any }) {
-    console.log(this.series);
     event.tag.status = event.checked;
-    console.log(event.tag.status)
     const selected = this.series ? this.series.filter(e => e.status) : [];
-    console.log(selected);
     this.checkOptions = selected.map(item => ({ label: item.name, value: item.id, checked: true, episodes: item.episodes }));
-    console.log(this.checkOptions);
     this.projects.setValue(this.checkOptions);
-    console.log(this.projects.setValue(this.checkOptions));
   }
 
   updateAllChecked() {
@@ -160,6 +154,7 @@ export class PublishRightsComponent implements OnInit {
   onPaymentMethodChange(value: string) {
     const count = parseInt(value, 10);
     this.payments = this.service.getPublishRightsPaymentReactives(count);
+    this.payments[count - 1].find(item => item.key.startsWith('money')).disabled = true;
     const fg = {};
     this.payments.map(p => this.fcs.toFormGroup(p)).forEach(p => {
       const c = p.controls;
@@ -226,14 +221,6 @@ export class PublishRightsComponent implements OnInit {
     this.dataSet = [];
   }
 
-  getDatePipe() {
-    return new DatePipe('zh-CN');
-  }
-
-  formatDate(pipe: DatePipe, date: Date) {
-    return date ? pipe.transform(date, 'yyyy-MM-dd') : null;
-  }
-
   hasContract() {
     return this.typeForm.get('contract').value === 'yes';
   }
@@ -252,7 +239,6 @@ export class PublishRightsComponent implements OnInit {
 
   saveCopyrights(hasContract: boolean) {
     this.isSaving = true;
-    const datePipe = this.getDatePipe();
     let contract = {} as any, orders = [], programs = null;
 
     if (hasContract) {
@@ -261,11 +247,11 @@ export class PublishRightsComponent implements OnInit {
         this.contractForm.value['contractName'],
         null,
         this.contractForm.value['customer'],
-        this.formatDate(datePipe, this.contractForm.value['signDate']));
+        Util.dateToString(this.contractForm.value['signDate']));
 
       orders = this.payments.map(paymentObjArr => {
         const arr = paymentObjArr.map(item => this.paymentForm.value[item.key]);
-        return this.service.toOrderData(+arr[1], this.formatDate(datePipe, arr[0]), arr[2]); // 来自页面字段顺序
+        return this.service.toOrderData(+arr[1], Util.dateToString(arr[0]), arr[2]); // 来自页面字段顺序
       });
     }
 
@@ -284,8 +270,8 @@ export class PublishRightsComponent implements OnInit {
             item.area,
             item.areaNote,
             item.termIsPermanent,
-            this.formatDate(datePipe, item.termStartDate),
-            this.formatDate(datePipe, item.termEndDate),
+            Util.dateToString(item.termStartDate),
+            Util.dateToString(item.termEndDate),
             item.termNote,
             item.note);
         })
@@ -308,6 +294,65 @@ export class PublishRightsComponent implements OnInit {
 
   deleteRight(item: any) {
     this.dataSet = this.dataSet.filter(d => d !== item);
+  }
+
+  onMoneyChange(value: string, key: string) {
+    let originKey: string;
+    for (let index = 0; index < this.payments.length; index++) {
+      if (key.endsWith(index + '')) {
+        originKey = _.trimEnd(key, index + '');
+        break;
+      }
+    }
+    let hasValue = true;
+    const allKeys = _.flatten(this.payments).filter(item => item.key.startsWith(originKey)).map(item => item.key);
+    const lastKey = allKeys[allKeys.length - 1];
+    allKeys.filter(item => item !== lastKey).forEach(item => {
+      const field = this.paymentForm.get(item);
+      if (!(typeof field.value === 'string' && field.value.length > 0 && field.valid)) {
+        hasValue = false;
+      }
+    });
+    if (hasValue) {
+      let otherTotalValue = 0;
+      allKeys.filter(item => item !== lastKey).forEach(item => otherTotalValue += +this.paymentForm.value[item]);
+      console.log(otherTotalValue);
+      const lastField = this.paymentForm.get(lastKey);
+      const lastValue = +this.contractForm.value['totalAmount'] - otherTotalValue;
+      if (lastValue < 0) {
+        this.contractForm.get('totalAmount').setErrors({ totalInvalid: true }, { emitEvent: false });
+        console.log(+this.contractForm.value['totalAmount'], this.contractForm.get('totalAmount').errors);
+      }
+      lastField.setValue(lastValue, { onlySelf: true, emitEvent: false, emitViewToModelChange: false });
+    }
+    console.log(value, key, originKey, hasValue);
+  }
+
+  onTotalAmountChange(value: string) {
+    console.log(value, 'total amount');
+    if (!this.paymentForm) {
+      return;
+    }
+    const allKeys = _.flatten(this.payments).map(item => item.key);
+    const lastKey = allKeys[allKeys.length - 1];
+    let hasValue = true;
+    allKeys.filter(item => item !== lastKey).forEach(item => {
+      const field = this.paymentForm.get(item);
+      if (!(typeof field.value === 'string' && field.value.length > 0 && field.valid)) {
+        hasValue = false;
+      }
+    });
+    if (hasValue) {
+      let otherTotalValue = 0;
+      allKeys.filter(item => item !== lastKey).forEach(item => otherTotalValue += +this.paymentForm.value[item]);
+      const lastField = this.paymentForm.get(lastKey);
+      const lastValue = +value - otherTotalValue;
+      if (lastValue < 0) {
+        this.contractForm.get('totalAmount').setErrors({ totalInvalid: true });
+        console.log(this.contractForm.get('totalAmount').errors);
+      }
+      lastField.setValue(lastValue, { onlySelf: true, emitEvent: false, emitViewToModelChange: false });
+    }
   }
 
 }
