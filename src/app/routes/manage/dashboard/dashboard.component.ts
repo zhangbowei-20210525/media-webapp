@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   publishChart: any;
   tapeType: string;
   tapeChart: any;
+  content: any;
   activeProjectRight = [];
   activeProjectPubRight = [];
   activeProjectPublicity = [];
@@ -39,59 +40,63 @@ export class DashboardComponent implements OnInit {
   statisticsSelectYear = [];
   statisticsSelectArea = [];
   allStatisticsChart: any;
+  listOfOption = [];
+  selectArea = [];
   allStatistics: NzTreeNodeOptions[];
   checkedAreaCode = [];
   timeType = 'quarter';
+  sid: number;
   data = [{
-    company: 'Apple',
-    type: '整体',
-    value: 30
+    'State': '第一季度',
+    '中国(未付款)': 30,
+    '中国(已付款)': 70,
+    '英国(已付款)': 100,
+    '英国(未付款)': 200,
+    '美国(已付款)': 400,
+    '美国(未付款)': 400,
+    '法国(已付款)': 500,
+    '法国(未付款)': 100,
+    '日本(已付款)': 50,
+    '日本(未付款)': 250,
   }, {
-    company: 'Facebook',
-    type: '整体',
-    value: 35
+    'State': '第二季度',
+    '中国(已付款)': 70,
+    '中国(未付款)': 30,
+    '英国(已付款)': 100,
+    '英国(未付款)': 200,
+    '美国(已付款)': 400,
+    '美国(未付款)': 400,
+    '法国(已付款)': 500,
+    '法国(未付款)': 100,
+    '日本(已付款)': 50,
+    '日本(未付款)': 250,
   }, {
-    company: 'Google',
-    type: '整体',
-    value: 28
+    'State': '第三季度',
+    '中国(已付款)': 70,
+    '中国(未付款)': 30,
+    '英国(已付款)': 100,
+    '英国(未付款)': 200,
+    '美国(已付款)': 400,
+    '美国(未付款)': 400,
+    '法国(已付款)': 500,
+    '法国(未付款)': 100,
+    '日本(已付款)': 50,
+    '日本(未付款)': 250,
   }, {
-    company: 'Apple',
-    type: '非技术岗',
-    value: 40
-  }, {
-    company: 'Facebook',
-    type: '非技术岗',
-    value: 65
-  }, {
-    company: 'Google',
-    type: '非技术岗',
-    value: 47
-  }, {
-    company: 'Apple',
-    type: '技术岗',
-    value: 23
-  }, {
-    company: 'Facebook',
-    type: '技术岗',
-    value: 18
-  }, {
-    company: 'Google',
-    type: '技术岗',
-    value: 20
-  }, {
-    company: 'Apple',
-    type: '技术岗',
-    value: 35
-  }, {
-    company: 'Facebook',
-    type: '技术岗',
-    value: 30
-  }, {
-    company: 'Google',
-    type: '技术岗',
-    value: 25
-  }];
-   @ViewChild('allStatisticsTree') allStatisticsTree: NzTreeSelectComponent;
+    'State': '第四季度',
+    '中国(已付款)': 70,
+    '中国(未付款)': 30,
+    '英国(已付款)': 100,
+    '英国(未付款)': 200,
+    '美国(已付款)': 400,
+    '美国(未付款)': 400,
+    '法国(已付款)': 500,
+    '法国(未付款)': 100,
+    '日本(已付款)': 50,
+    '日本(未付款)': 250,
+  }
+  ];
+  // @ViewChild('allStatisticsTree') allStatisticsTree: NzTreeSelectComponent;
 
   constructor(
     private dashboardService: DashboardService,
@@ -129,7 +134,51 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getStatisticsSelectYear(origins: DashboardDto[]): NzTreeNodeOptions[] {
+searchChange(event) {
+  this.dashboardService.searchSeries(event, ['']).subscribe(res => {
+     this.listOfOption = res.list
+  });
+}
+
+selectSeries() {
+  console.log(this.content);
+ const seriesInfo =  this.listOfOption.find( x => x.name == this.content);
+ this.sid = seriesInfo.id;
+
+ if (this.timeFiltrate === undefined) {
+  this.timeFiltrate = [''];
+  if (this.checkedAreaCode === undefined) {
+    this.checkedAreaCode = [''];
+  }
+}
+if (this.timeType === 'annual') {
+  if (this.checkedAreaCode.length < 6) {
+    this.dashboardService.getAnnualStatistics(this.checkedAreaCode, this.sid).subscribe(res => {
+      this.allStatisticsChart.source(res.list);
+      this.allStatisticsChart.render();
+    });
+  } else {
+    this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
+    this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+  }
+} else {
+  if (this.checkedAreaCode.length < 6) {
+    this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
+      this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
+      this.statisticsSelectYear = res.meta.year_choices;
+      this.allStatisticsChart.source(res.list);
+      this.allStatisticsChart.render();
+    });
+  } else {
+    this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
+    this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+  }
+}
+
+}
+  
+
+  getStatisticsSelectArea(origins: DashboardDto[]): NzTreeNodeOptions[] {
     return this.ts.getNzTreeNodes(origins, item => ({
       title: item.name,
       key: item.code,
@@ -137,13 +186,107 @@ export class DashboardComponent implements OnInit {
       selectable: true,
       expanded: true,
       disableCheckbox: false,
-      checked: false
+      checked: false,
+      disabled: item.disabled
     }));
   }
 
   getAllStatisticsInfo() {
-    this.dashboardService.getAllStatistics('', '').subscribe(res => {
-      this.statisticsSelectArea = this.getStatisticsSelectYear(res.meta.area_number_choices);
+    // var _DataSet = DataSet,
+    //   DataView = _DataSet.DataView;
+    // var _G = G2,
+    //   Chart = _G.Chart;
+    // var ages = [
+    //   '中国(未付款)',
+    //   '中国(已付款)',
+    //   '英国(未付款)',
+    //   '英国(已付款)',
+    //   '美国(未付款)',
+    //   '美国(已付款)',
+    //   '法国(未付款)',
+    //   '法国(已付款)',
+    //   '日本(未付款)',
+    //   '日本(已付款)',
+    // ];
+    // var dv = new DataView();
+    // dv.source(this.data).transform({
+    //   type: 'fold',
+    //   fields: ages,
+    //   key: 'age',
+    //   value: 'population',
+    //   retains: ['State']
+    // }).transform({
+    //   type: 'map',
+    //   callback: function callback(obj) {
+    //     var key = obj.age;
+    //     var type = void 0;
+    //     if (key === '中国(未付款)' || key === '中国(已付款)') {
+    //       type = 'a';
+    //     } else if (key === '英国(已付款)' || key === '英国(未付款)') {
+    //       type = 'b';
+    //     } else if (key === '美国(已付款)' || key === '美国(未付款)') {
+    //       type = 'c';
+    //     } else if (key === '法国(已付款)' || key === '法国(未付款)') {
+    //       type = 'd';
+    //     } else if (key === '日本(已付款)' || key === '日本(未付款)') {
+    //       type = 'e';
+    //     }
+    //     obj.type = type;
+    //     return obj;
+    //   }
+    // });
+    // var colorMap = {
+    //   '中国(已付款)': '#660000',
+    //   '中国(未付款)': '#663300',
+    //   '英国(已付款)': '#006600',
+    //   '英国(未付款)': '#009900',
+    //   '美国(已付款)': '#404040',
+    //   '美国(未付款)': '#707070',
+    //   '法国(已付款)': '#3366FF',
+    //   '法国(未付款)': '#3399FF',
+    //   '日本(已付款)': '#CC9933',
+    //   '日本(未付款)': '#CCCC33',
+    // };
+    // this.allStatisticsChart = new Chart({
+    //   container: 'allStatistics',
+    //   forceFit: true,
+    //   width: 1000,
+    //   height: 425,
+    //   padding: [10, 30, 80, 50]
+    // });
+    // this.allStatisticsChart.source(dv, {
+    //   population: {
+    //     alias: '总金额（万元）',
+    //   }
+    // });
+    // this.allStatisticsChart.axis('population', {
+    //   // label: {
+    //   //   formatter: function formatter(val) {
+    //   //     return val / 1000000 + 'M';
+    //   //   }
+    //   // }
+    // });
+    // this.allStatisticsChart.legend({
+    //   position: 'bottom-center'
+    // });
+    // this.allStatisticsChart.interval().position('State*population').color('age', function (age) {
+    //   return colorMap[age];
+    // }).tooltip('age*population', function (age, population) {
+    //   return {
+    //     name: age,
+    //     value: population
+    //   };
+    // }).adjust([{
+    //   type: 'dodge',
+    //   dodgeBy: 'type', // 按照 type 字段进行分组
+    //   marginRatio: 0 // 分组中各个柱子之间不留空隙
+    // }, {
+    //   type: 'stack'
+    // }]);
+    // this.allStatisticsChart.render();
+
+    this.dashboardService.getAllStatistics('', '', '').subscribe(res => {
+      this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
       this.statisticsSelectYear = res.meta.year_choices;
       this.allStatisticsChart = new G2.Chart({
         container: 'allStatistics',
@@ -191,7 +334,6 @@ export class DashboardComponent implements OnInit {
 
   getSeriesStatisticsInfo() {
     this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
-      console.log(res);
       this.seriesChart = new G2.Chart({
         container: 'seriesStatistics',
         forceFit: true,
@@ -207,7 +349,6 @@ export class DashboardComponent implements OnInit {
           }
         }
       });
-      console.log(this.seriesChart.source(res));
       this.seriesChart.coord('theta', {
         radius: 0.75,  // 设置半径，值范围为 0 至 1
         innerRadius: 0,  // 空心圆的半径，值范围为 0 至 1
@@ -223,7 +364,7 @@ export class DashboardComponent implements OnInit {
           return label.point.label + ': ' + val;
         }
       }).tooltip('label*percent', function (label, percent) {
-        percent = percent * 100 + '%';
+        percent = percent + '%';
         return {
           name: label,
           value: percent
@@ -464,27 +605,30 @@ export class DashboardComponent implements OnInit {
     if (this.timeFiltrate === undefined) {
       this.timeFiltrate = [''];
     }
-    if(this.timeType === 'annual') {
+    if (this.timeType === 'annual') {
       if (event.length < 6) {
-        this.dashboardService.getAnnualStatistics(this.checkedAreaCode).subscribe(res => {
+        this.dashboardService.getAnnualStatistics(this.checkedAreaCode, this.sid).subscribe(res => {
+          this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
           this.allStatisticsChart.source(res.list);
           this.allStatisticsChart.render();
         });
       } else {
         this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
         this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
-      }} else {
-    if (event.length < 6) {
-      this.dashboardService.getAllStatistics(this.timeFiltrate, event).subscribe(res => {
-        this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
-        this.statisticsSelectYear = res.meta.year_choices;
-        this.allStatisticsChart.source(res.list);
-        this.allStatisticsChart.render();
-      });
+      }
     } else {
-      this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
-      this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
-    }}
+      if (event.length < 6) {
+        this.dashboardService.getAllStatistics(this.timeFiltrate, event, this.sid).subscribe(res => {
+          this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
+          this.statisticsSelectYear = res.meta.year_choices;
+          this.allStatisticsChart.source(res.list);
+          this.allStatisticsChart.render();
+        });
+      } else {
+        this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
+        this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+      }
+    }
   }
 
   yearChange(event) {
@@ -492,19 +636,18 @@ export class DashboardComponent implements OnInit {
     if (this.checkedAreaCode === undefined) {
       this.checkedAreaCode = [''];
     }
-    this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode).subscribe(res => {
-      this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
+    this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
+      this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
       this.statisticsSelectYear = res.meta.year_choices;
       this.allStatisticsChart.source(res.list);
       this.allStatisticsChart.render();
-    }); 
+    });
   }
 
   timeTypeChange(event) {
     this.timeType = event;
     if (this.timeType === 'annual') {
-      this.dashboardService.getAnnualStatistics(this.checkedAreaCode).subscribe(res => {
-        console.log(res.list);
+      this.dashboardService.getAnnualStatistics(this.checkedAreaCode, this.sid).subscribe(res => {
         this.allStatisticsChart.source([]);
         this.allStatisticsChart.source(res.list);
         this.allStatisticsChart.scale('value', {
@@ -542,8 +685,8 @@ export class DashboardComponent implements OnInit {
         this.allStatisticsChart.render();
       });
     } else {
-      this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode).subscribe(res => {
-        this.statisticsSelectYear = this.getStatisticsSelectYear(res.meta.area_number_choices);
+      this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
+        this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
         this.statisticsSelectYear = res.meta.year_choices;
         this.allStatisticsChart.source(res.list);
         this.allStatisticsChart.render();

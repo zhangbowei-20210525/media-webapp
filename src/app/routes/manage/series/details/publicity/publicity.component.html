@@ -17,7 +17,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable.data;let i = index">
-                <td>{{ i + 1 }}</td>
+                <td>{{ i + 1 + samplePagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{ data.name }}</td>
               <td style="text-align: center">{{ data.extension }}</td>
               <td style="text-align: center">{{ data.size | byteFormat }}</td>
@@ -50,7 +50,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable1.data;let i = index">
-                <td>{{ i + 1 }}</td>
+                <td>{{ i + 1 + featurePagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -83,7 +83,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable2.data;let i = index">
-                <td>{{ i + 1 }}</td>
+                <td>{{ i + 1 + trailerPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -116,7 +116,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable3.data;let i = index">
-                <td>{{ i + 1 }}</td>
+                <td>{{ i + 1 + posterPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -149,7 +149,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable4.data;let i = index">
-                <td>{{ i + 1 }}</td>
+                <td>{{ i + 1 + stillPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -182,7 +182,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable5.data;let i = index">
-                <td>{{ i + 1 }}</td>
+                <td>{{ i + 1 + pdfPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>

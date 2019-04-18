@@ -201,6 +201,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
         this.samplePoster = this.sampleList[this.sampleIndex].poster;
         this.samplePageChange({ page: 1, pageSize: 20 });
         this.playerSource(this.sampleSrc, this.samplePoster);
+        // this.playerSource('http://test.static.bctop.net/马术-24/马术-hls/playlist.m3u8', this.samplePoster);
       }
     });
   }

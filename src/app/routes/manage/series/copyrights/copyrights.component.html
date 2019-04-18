@@ -117,7 +117,7 @@
       <tr *ngFor="let data of dataTable.data">
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0" nzShowCheckbox [(nzChecked)]="data.isChecked"
           (nzCheckedChange)="onCheckedChange($event, data)"></td>
-        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }} </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 + pagination.page * 10 - 10}}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
           <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
         </td>
