@@ -22,6 +22,8 @@
                 <nz-option nzValue="film" nzLabel="电影"></nz-option>
                 <nz-option nzValue="tv" nzLabel="电视剧"></nz-option>
                 <nz-option nzValue="variety" nzLabel="综艺"></nz-option>
+                <nz-option nzValue="anime" nzLabel="动画"></nz-option>
+                <nz-option nzValue="documentary" nzLabel="纪录片"></nz-option>
                 <nz-option nzValue="other" nzLabel="其他"></nz-option>
             </nz-select>
             <nz-form-explain *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请选择节目类型</nz-form-explain>

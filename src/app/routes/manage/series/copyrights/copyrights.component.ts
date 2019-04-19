@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PaginationDto, MessageService } from '@shared';
+import { PaginationDto, MessageService, TreeService } from '@shared';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CopyrightsService } from './copyrights.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,6 +8,9 @@ import { finalize, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as _ from 'lodash';
+import { NzTreeNodeOptions } from 'ng-zorro-antd';
+import { SeriesService } from '../series.service';
+import { RootTemplateDto } from './dtos';
 
 @Component({
   selector: 'app-copyrights',
@@ -31,7 +34,13 @@ export class CopyrightsComponent implements OnInit {
   mapOfCheckedId: { [key: string]: boolean } = {};
   tags = [];
   search: string;
-
+  seriesType = [
+    { label: '电视剧', value: 'tv' },
+    { label: '电影', value: 'film' },
+    { label: '综艺', value: 'variety' },
+    { label: '动画', value: 'anime' },
+    { label: '纪录片', value: 'documentary' },
+    { label: '其他', value: 'other' }];
   constructor(
     private service: CopyrightsService,
     private router: Router,
@@ -39,6 +48,8 @@ export class CopyrightsComponent implements OnInit {
     private translate: TranslateService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private ts: TreeService,
+    private seriesService: SeriesService,
   ) { }
 
   ngOnInit() {
@@ -48,6 +59,7 @@ export class CopyrightsComponent implements OnInit {
     });
     this.loadAreaOptions();
     this.loadRightsOptions();
+    this.seriesService.eventEmit.emit('rights');
     this.filtrateForm = this.fb.group({
       days: ['all'],
       right: [['all']],
@@ -57,6 +69,20 @@ export class CopyrightsComponent implements OnInit {
       investment_type: [null],
       program_type: [null]
     });
+  }
+
+
+  getStatisticsSelectArea(origins: RootTemplateDto[]): NzTreeNodeOptions[] {
+    return this.ts.getNzTreeNodes(origins, item => ({
+      title: item.name,
+      key: item.code,
+      isLeaf: !!item.children && item.children.length < 1,
+      selectable: true,
+      expanded: true,
+      disableCheckbox: false,
+      checked: false,
+      disabled: item.disabled
+    }));
   }
 
   currentPageDataChange($event) {
@@ -167,11 +193,11 @@ export class CopyrightsComponent implements OnInit {
 
   loadAreaOptions() {
     this.service.getCopyrightAreaOptions().subscribe(result => {
-      if (result) {
-        result = [{ code: 'all', name: '所有' }, ...result];
-        this.service.setLeafNode(result);
-      }
-      this.areaOptions = result;
+      // if (result) {
+      //   result = [{ code: 'all', name: '所有' }, ...result];
+      //   this.service.setLeafNode(result);
+      // }
+      this.areaOptions = this.getStatisticsSelectArea(result);
     });
   }
 
@@ -249,7 +275,8 @@ export class CopyrightsComponent implements OnInit {
     const trem = this.filtrateForm.value['date'] as Date[];
     const params = {
       due_date: this.filtrateForm.value['days'] || '',
-      area_number: area.length > 0 ? area[area.length - 1] : '',
+      // area_number: area.length > 0 ? area[area.length - 1] : '',
+      area_number: area,
       right_type: right.length > 0 ? right[right.length - 1] : '',
       start_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '',
       end_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '',
@@ -258,6 +285,7 @@ export class CopyrightsComponent implements OnInit {
       program_type: this.filtrateForm.value['program_type'] || '',
       search: this.search
     };
+    console.log(area);
     this.fetchCopyrights(params);
   }
 

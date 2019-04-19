@@ -20,7 +20,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of basicTable.data;let i = index">
-                  <td>{{ i + 1 }}</td>
+                  <td>{{ i + 1 + pgination.page * 10 - 10}}</td>
                 <td style="text-align: center">{{data.program_name}}</td>
                 <td style="text-align: center">{{data.source_name}}</td>
                 <td style="text-align: center">{{data.tasks_num}}</td>

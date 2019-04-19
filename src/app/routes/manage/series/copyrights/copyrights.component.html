@@ -24,15 +24,43 @@
           <nz-form-item style="margin-bottom: 0;">
             <nz-form-label nzFor="program_type" [nzSpan]="2">节目类型</nz-form-label>
             <nz-form-control>
-              <nz-radio-group formControlName="program_type" (ngModelChange)="onFormValueChange()">
+                <nz-select
+                style="width: 445px"
+                nzMode="multiple"
+                nzPlaceHolder="请选择节目类型"
+                formControlName="program_type" 
+                (ngModelChange)="onFormValueChange()"
+              >
+                <nz-option *ngFor="let option of seriesType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+              </nz-select>  
+             <!-- <nz-radio-group formControlName="program_type" (ngModelChange)="onFormValueChange()">
                 <label nz-radio-button [nzValue]="null">所有</label>
                 <label nz-radio-button nzValue="tv">电视剧</label>
                 <label nz-radio-button nzValue="film">电影</label>
                 <label nz-radio-button nzValue="variety">综艺</label>
                 <label nz-radio-button nzValue="other">其他</label>
-              </nz-radio-group>
+              </nz-radio-group> -->
             </nz-form-control>
           </nz-form-item>
+
+          <nz-form-item style="margin-bottom: 0;">
+              <nz-form-label nzFor="area" [nzSpan]="2">地域</nz-form-label>
+              <nz-form-control [nzSpan]="8">
+                  <nz-tree-select style="width: 445px"
+                  [nzNodes]="areaOptions"
+                  nzShowSearch
+                  nzCheckable
+                  nzPlaceHolder="请选择地域"
+                  formControlName="area"
+                  (ngModelChange)="onFormValueChange($event)"
+                >
+                </nz-tree-select>
+                <!-- <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
+                  nzValueProperty="code" nzPlaceHolder="筛选地区" nzChangeOnSelect nzAllowClear="false"
+                  (ngModelChange)="onFormValueChange()" nzSize="default">
+                </nz-cascader> -->
+              </nz-form-control>
+            </nz-form-item>
 
           <nz-form-item style="margin-bottom: 0;">
             <nz-form-label nzFor="days" [nzSpan]="2">到期天数</nz-form-label>
@@ -52,16 +80,6 @@
               <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name"
                 nzValueProperty="code" nzChangeOnSelect nzAllowClear="false" (ngModelChange)="onFormValueChange()"
                 nzSize="default">
-              </nz-cascader>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item style="margin-bottom: 0;">
-            <nz-form-label nzFor="area" [nzSpan]="2">地区</nz-form-label>
-            <nz-form-control [nzSpan]="8">
-              <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
-                nzValueProperty="code" nzPlaceHolder="筛选地区" nzChangeOnSelect nzAllowClear="false"
-                (ngModelChange)="onFormValueChange()" nzSize="default">
               </nz-cascader>
             </nz-form-control>
           </nz-form-item>
@@ -117,7 +135,7 @@
       <tr *ngFor="let data of dataTable.data">
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0" nzShowCheckbox [(nzChecked)]="data.isChecked"
           (nzCheckedChange)="onCheckedChange($event, data)"></td>
-        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }} </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 + pagination.page * 10 - 10}}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
           <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
         </td>

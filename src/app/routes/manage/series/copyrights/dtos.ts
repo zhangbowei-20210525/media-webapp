@@ -75,5 +75,7 @@ export interface CopyrightDto {
 export interface RootTemplateDto {
     code: string;
     name: string;
+    status?: boolean;
+    disabled?: boolean;
     children?: RootTemplateDto[];
 }

@@ -12,6 +12,8 @@ import { PublicityDetailsComponent } from './publicities/publicity-details/publi
 import { TapesComponent } from './tapes/tapes.component';
 import { PublicityComponent } from './details/publicity/publicity.component';
 import { TapeComponent } from './details/tape/tape.component';
+import { PubRightsComponent } from './copyrights/pub-rights/pub-rights.component';
+import { SwitchRightComponent } from './switch-right/switch-right.component';
 
 
 
@@ -34,8 +36,18 @@ const routes: Routes = [
         component: TapesComponent
       },
       {
-        path: 'rights',
-        component: CopyrightsComponent
+        path: 'switchRight',
+        component: SwitchRightComponent,
+        children: [
+          {
+            path: 'rights',
+            component: CopyrightsComponent
+          },
+          {
+            path: 'pubRights',
+            component: PubRightsComponent
+          },
+        ]
       }
     ]
   },

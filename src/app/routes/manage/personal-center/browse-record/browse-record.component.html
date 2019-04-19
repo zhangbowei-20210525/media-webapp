@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data;let i = index">
-            <td>{{ i + 1 }}</td>
+            <td>{{ i + 1 + pagination.page * 10 - 10}}</td>
           <td style="text-align: center">{{data?.name}}</td>
           <td style="text-align: center">{{ data.program_type | seriesType }}</td>
           <td style="text-align: center">{{data?.company?.full_name}}</td>

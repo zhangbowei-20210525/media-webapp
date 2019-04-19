@@ -21,7 +21,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of basicTable.data;let i = index">
-                  <td>{{ i + 1 }}</td>
+                  <td>{{ i + 1 + tapesPagination.page * 10 - 10}}</td>
                 <td>{{data.program_name}}</td>
                 <td><a
                     (click)="tapeDetails(data.program_id, data.id, data.source_type)">{{data.name}}</a></td>
@@ -67,7 +67,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of basicTable.data;let i = index">
-                  <td>{{ i + 1 }}</td>
+                  <td>{{ i + 1 + purchaseTapesPagination.page * 10 - 10}}</td>
                 <td>{{data.program_name}}</td>
                 <td>{{data.name}}</td>
                 <td>
