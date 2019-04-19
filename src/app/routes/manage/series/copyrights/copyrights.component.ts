@@ -31,7 +31,6 @@ export class CopyrightsComponent implements OnInit {
   mapOfCheckedId: { [key: string]: boolean } = {};
   tags = [];
   search: string;
-  
 
   constructor(
     private service: CopyrightsService,
