@@ -95,7 +95,7 @@
           <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'" (click)="selectList('tapes')">{{ 'app.series.source' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'" (click)="selectList('rights')">{{ 'app.series.right' | translate }}</a>
+          <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'switchRight/rights'" (click)="selectList('rights')">{{ 'app.series.right' | translate }}</a>
         </li>
         <nz-input-group class="search" nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="small">
           <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content" (keyup)="$event.which === 13 && search()"/>

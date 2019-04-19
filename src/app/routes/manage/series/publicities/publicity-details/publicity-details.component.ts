@@ -163,8 +163,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.width(800);
     this.player.height(470);
     this.player.load();
-    console.log('222');
-    // console.log(this.player.bind('contextmenu',function() { return false; }));
   }
 
   nomenu(event) {

@@ -42,10 +42,10 @@ export class TapesComponent implements OnInit {
       switchMap((params: ParamMap) => {
         this.search = params.get('search');
         console.log(this.search);
-        if(this.search === null) {
-          return this.service.getAllTapes(this.pagination)
+        if (this.search === null) {
+          return this.service.getAllTapes(this.pagination);
         } else {
-          return this.service.getSearchAllTapes(this.search, this.pagination)
+          return this.service.getSearchAllTapes(this.search, this.pagination);
         }
       })).pipe(finalize(() => {
         this.isLoading = false;
@@ -82,7 +82,7 @@ export class TapesComponent implements OnInit {
   addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
     component.formSubmit()
       .subscribe(res => {
-        if(component.tapeVersion === 'online') {
+        if (component.tapeVersion === 'online') {
           this.modal.confirm({
             nzTitle: '是否需要上传母带文件?',
             nzOkText: '上传',
@@ -99,7 +99,7 @@ export class TapesComponent implements OnInit {
           this.message.error(error.message);
         }
       });
-  })   
+  })
 
 
   uploadTape = (id: number) => new Promise((resolve) => {

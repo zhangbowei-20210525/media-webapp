@@ -14,6 +14,7 @@ declare interface FiltrateSeriesParams {
   is_salable: string;
   investment_type: string;
   program_type: string;
+  company_id: string;
   search?: string;
 }
 
@@ -50,7 +51,8 @@ export class CopyrightsService {
       is_salable: '',
       investment_type: '',
       program_type: '',
-      search: search
+      company_id: '',
+      search: search,
     } as FiltrateSeriesParams;
   }
 
@@ -60,6 +62,16 @@ export class CopyrightsService {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
         start_date: params.start_date, end_date: params.end_date, is_salable: params.is_salable,
+        investment_type: params.investment_type, program_type: params.program_type, q: params.search || '' }
+    });
+  }
+
+  getPubRights(pagination: PaginationDto, params: FiltrateSeriesParams) {
+    return this.http.get<any>('/api/v1/publish_rights', {
+      params: {
+        page: pagination.page as any, page_size: pagination.page_size as any,
+        due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
+        start_date: params.start_date, end_date: params.end_date, company_id: params.company_id,
         investment_type: params.investment_type, program_type: params.program_type, q: params.search || '' }
     });
   }
@@ -85,6 +97,10 @@ export class CopyrightsService {
 
   deleteCopyrights(pid: number) {
     return this.http.delete(`/api/v1/right_programs/${pid}`);
+  }
+
+  deletePubCopyrights(pid: number) {
+    return this.http.delete(`/api/v1/publish_rights/${pid}`);
   }
 
   getCopyrightAreaOptions() {

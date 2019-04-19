@@ -72,7 +72,7 @@ export class PublishRightsComponent implements OnInit {
       this.projects.setValue(this.checkOptions);
       console.log(this.projects.setValue(this.checkOptions));
     });
-   
+
     this.service.getCustomerOptions().subscribe(result => {
       this.customerOptions = result.list;
     });
@@ -123,7 +123,7 @@ export class PublishRightsComponent implements OnInit {
   seriesTagChange(event: { checked: boolean, tag: any }) {
     console.log(this.series);
     event.tag.status = event.checked;
-    console.log(event.tag.status)
+    console.log(event.tag.status);
     const selected = this.series ? this.series.filter(e => e.status) : [];
     console.log(selected);
     this.checkOptions = selected.map(item => ({ label: item.name, value: item.id, checked: true, episodes: item.episodes }));

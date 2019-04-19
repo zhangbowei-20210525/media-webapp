@@ -1,0 +1,6 @@
+<nz-radio-group [(ngModel)]="switchRight" [nzButtonStyle]="'solid'">
+    <label nz-radio-button nzValue="rights" [routerLink]="'rights'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">版权</label>
+    <label nz-radio-button nzValue="pubRights" [routerLink]="'pubRights'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">发行版权</label>
+  </nz-radio-group>
+  <nz-divider></nz-divider>
+  <router-outlet></router-outlet>

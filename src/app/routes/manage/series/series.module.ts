@@ -23,6 +23,8 @@ import { PublicityComponent } from './details/publicity/publicity.component';
 import { TapeComponent } from './details/tape/tape.component';
 import { EditTapeInfoComponent } from './components/edit-tape-info/edit-tape-info.component';
 import { EditSeriesInfoComponent } from './components/edit-series-info/edit-series-info.component';
+import { PubRightsComponent } from './copyrights/pub-rights/pub-rights.component';
+import { SwitchRightComponent } from './switch-right/switch-right.component';
 
 
 @NgModule({
@@ -47,6 +49,8 @@ import { EditSeriesInfoComponent } from './components/edit-series-info/edit-seri
     TapeComponent,
     EditTapeInfoComponent,
     EditSeriesInfoComponent,
+    PubRightsComponent,
+    SwitchRightComponent,
   ],
   imports: [
     CommonModule,

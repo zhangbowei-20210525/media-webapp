@@ -136,13 +136,13 @@ export class DashboardComponent implements OnInit {
 
 searchChange(event) {
   this.dashboardService.searchSeries(event, ['']).subscribe(res => {
-     this.listOfOption = res.list
+     this.listOfOption = res.list;
   });
 }
 
 selectSeries() {
   console.log(this.content);
- const seriesInfo =  this.listOfOption.find( x => x.name == this.content);
+ const seriesInfo =  this.listOfOption.find( x => x.name === this.content);
  this.sid = seriesInfo.id;
 
  if (this.timeFiltrate === undefined) {
@@ -159,7 +159,7 @@ if (this.timeType === 'annual') {
     });
   } else {
     this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
-    this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+    this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1);
   }
 } else {
   if (this.checkedAreaCode.length < 6) {
@@ -171,12 +171,11 @@ if (this.timeType === 'annual') {
     });
   } else {
     this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
-    this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+    this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1);
   }
 }
 
 }
-  
 
   getStatisticsSelectArea(origins: DashboardDto[]): NzTreeNodeOptions[] {
     return this.ts.getNzTreeNodes(origins, item => ({
@@ -614,7 +613,7 @@ if (this.timeType === 'annual') {
         });
       } else {
         this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
-        this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+        this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1);
       }
     } else {
       if (event.length < 6) {
@@ -626,7 +625,7 @@ if (this.timeType === 'annual') {
         });
       } else {
         this.message.warning(this.translate.instant('app.home-page.statistics-operation-instruction'));
-        this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1)
+        this.checkedAreaCode.splice(this.timeFiltrate.length - 1, 1);
       }
     }
   }
