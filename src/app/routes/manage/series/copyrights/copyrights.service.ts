@@ -16,6 +16,7 @@ declare interface FiltrateSeriesParams {
   program_type: string;
   company_id: string;
   search?: string;
+  sole: string;
 }
 
 @Injectable({
@@ -52,6 +53,7 @@ export class CopyrightsService {
       investment_type: '',
       program_type: '',
       company_id: '',
+      sole: '',
       search: search,
     } as FiltrateSeriesParams;
   }
@@ -71,7 +73,7 @@ export class CopyrightsService {
       params: {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
-        start_date: params.start_date, end_date: params.end_date, company_id: params.company_id,
+        start_date: params.start_date, end_date: params.end_date, company_id: params.company_id, sole: params.sole,
         investment_type: params.investment_type, program_type: params.program_type, q: params.search || '' }
     });
   }

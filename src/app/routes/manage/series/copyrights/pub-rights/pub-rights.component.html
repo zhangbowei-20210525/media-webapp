@@ -53,6 +53,21 @@
           </nz-form-item>
 
           <nz-form-item style="margin-bottom: 0;">
+              <nz-form-label nzFor="right" [nzSpan]="2">权利</nz-form-label>
+              <nz-form-control [nzSm]="8">
+                <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name"
+                  nzValueProperty="code" nzChangeOnSelect nzAllowClear="false" (ngModelChange)="onFormValueChange()"
+                  nzSize="default">
+                </nz-cascader>
+              </nz-form-control>
+                  <nz-form-label nzFor="sole" [nzSpan]="2">独家</nz-form-label>
+                  <nz-form-control [nzSpan]="8">
+                    <label nz-checkbox formControlName="sole" (ngModelChange)="onFormValueChange()"></label>
+                  </nz-form-control>
+            </nz-form-item>
+  
+
+          <nz-form-item style="margin-bottom: 0;">
             <nz-form-label nzFor="days" [nzSpan]="2">到期天数</nz-form-label>
             <nz-form-control [nzSpan]="8">
               <nz-select formControlName="days" (ngModelChange)="onFormValueChange()" nzSize="default">
@@ -61,16 +76,6 @@
                 <nz-option nzValue="180" nzLabel="180天"></nz-option>
                 <nz-option nzValue="30" nzLabel="30天"></nz-option>
               </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item style="margin-bottom: 0;">
-            <nz-form-label nzFor="right" [nzSpan]="2">权利</nz-form-label>
-            <nz-form-control [nzSm]="8">
-              <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name"
-                nzValueProperty="code" nzChangeOnSelect nzAllowClear="false" (ngModelChange)="onFormValueChange()"
-                nzSize="default">
-              </nz-cascader>
             </nz-form-control>
           </nz-form-item>
 
@@ -86,7 +91,7 @@
             <nz-form-label nzFor="company_id" [nzSpan]="2">公司</nz-form-label>
             <nz-form-control [nzSpan]="8">
               <nz-select formControlName="company_id" nzAllowClear nzPlaceHolder="请选择公司"
-                (ngModelChange)="selectCompany()">
+                (ngModelChange)="onFormValueChange()">
                 <nz-option *ngFor="let option of companyList" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
               </nz-select>
             </nz-form-control>

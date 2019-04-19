@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
   allStatistics: NzTreeNodeOptions[];
   checkedAreaCode = [];
   timeType = 'quarter';
-  sid: number;
+  sid: string;
   data = [{
     'State': '第一季度',
     '中国(未付款)': 30,
@@ -144,16 +144,16 @@ selectSeries() {
   console.log(this.content);
  const seriesInfo =  this.listOfOption.find( x => x.name === this.content);
  this.sid = seriesInfo.id;
-
  if (this.timeFiltrate === undefined) {
   this.timeFiltrate = [''];
+ }
   if (this.checkedAreaCode === undefined) {
     this.checkedAreaCode = [''];
   }
-}
+
 if (this.timeType === 'annual') {
   if (this.checkedAreaCode.length < 6) {
-    this.dashboardService.getAnnualStatistics(this.checkedAreaCode, this.sid).subscribe(res => {
+    this.dashboardService.getAnnualStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
       this.allStatisticsChart.source(res.list);
       this.allStatisticsChart.render();
     });
@@ -438,7 +438,7 @@ if (this.timeType === 'annual') {
       });
       this.publishChart.source(res);
       this.publishChart.scale('value', {
-        tickCount: 10
+        tickCount: 4
       });
       this.publishChart.interval().position('label*value');
       this.publishChart.render();
@@ -604,9 +604,12 @@ if (this.timeType === 'annual') {
     if (this.timeFiltrate === undefined) {
       this.timeFiltrate = [''];
     }
+    if (this.sid === undefined) {
+      this.sid = '';
+ }
     if (this.timeType === 'annual') {
       if (event.length < 6) {
-        this.dashboardService.getAnnualStatistics(this.checkedAreaCode, this.sid).subscribe(res => {
+        this.dashboardService.getAnnualStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
           this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
           this.allStatisticsChart.source(res.list);
           this.allStatisticsChart.render();
@@ -635,6 +638,9 @@ if (this.timeType === 'annual') {
     if (this.checkedAreaCode === undefined) {
       this.checkedAreaCode = [''];
     }
+    if (this.sid === undefined) {
+         this.sid = '';
+    }
     this.dashboardService.getAllStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
       this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
       this.statisticsSelectYear = res.meta.year_choices;
@@ -646,7 +652,7 @@ if (this.timeType === 'annual') {
   timeTypeChange(event) {
     this.timeType = event;
     if (this.timeType === 'annual') {
-      this.dashboardService.getAnnualStatistics(this.checkedAreaCode, this.sid).subscribe(res => {
+      this.dashboardService.getAnnualStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
         this.allStatisticsChart.source([]);
         this.allStatisticsChart.source(res.list);
         this.allStatisticsChart.scale('value', {

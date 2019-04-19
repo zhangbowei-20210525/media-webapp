@@ -41,11 +41,11 @@ export class DashboardService {
     return this.http.get<any>(`/api/v1/analysis/publish_right_contract/quarter?year=${year}&areas=${areas}&program_id=${id}`);
   }
 
-  getAnnualStatistics(areas: any, id: any) {
-    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/year?&areas=${areas}&program_id=${id}`);
+  getAnnualStatistics(year: any, areas: any, id: any) {
+    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/year?&year=${year}&areas=${areas}&program_id=${id}`);
   }
 
-  searchSeries(name: string,program_ids: any) {
+  searchSeries(name: string, program_ids: any) {
     return this.http.get<any>(`/api/v1/programs/brief?q=${name}&program_ids=${program_ids}`);
   }
 }

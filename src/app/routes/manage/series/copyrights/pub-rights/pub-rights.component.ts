@@ -63,6 +63,7 @@ export class PubRightsComponent implements OnInit {
       right: [['all']],
       area: [''],
       date: [null],
+      sole: [false],
       company_id: [null],
       investment_type: [null],
       program_type: [null]
@@ -136,6 +137,7 @@ export class PubRightsComponent implements OnInit {
       due_date: this.filtrateForm.value['days'] || '',
       // area_number: area.length > 0 ? area[area.length - 1] : '',
       area_number: area,
+      sole: this.filtrateForm.value['sole'] ? '1' : '0',
       right_type: right.length > 0 ? right[right.length - 1] : '',
       start_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '',
       end_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '',
@@ -156,11 +158,6 @@ export class PubRightsComponent implements OnInit {
   }
 
   onFormValueChange() {
-    this.pagination.page = 1;
-    this.filtrate();
-  }
-
-  selectCompany() {
     this.pagination.page = 1;
     this.filtrate();
   }

@@ -160,7 +160,7 @@
     >
     </nz-tree-select>
     <ng-template #omittedPlaceHolder let-omittedValues>更多... {{ omittedValues.length }}</ng-template>
-      <nz-select nzSize="small" [nzDisabled]="timeType == 'annual'" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
+      <nz-select nzSize="small" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
         <nz-option *ngFor="let ss of statisticsSelectYear" [nzLabel]="ss" [nzValue]="ss"></nz-option>
       </nz-select>
       <!-- <nz-input-group class="search" nzSearch nzSize="small" style="width:200px;margin-top: 15px;margin-right: 20px;float: right">
