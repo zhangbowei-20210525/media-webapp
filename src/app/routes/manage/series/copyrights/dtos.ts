@@ -59,7 +59,9 @@ export interface ProgramDto {
 }
 
 export interface CopyrightDto {
+    sole: boolean;
     right_type: string;
+    child_rights: string[];
     right_remark: string;
     area_number: string;
     area_remark: string;
@@ -68,4 +70,10 @@ export interface CopyrightDto {
     end_date: string;
     date_remark: string;
     remark: string;
+}
+
+export interface RootTemplateDto {
+    code: string;
+    name: string;
+    children?: RootTemplateDto[];
 }

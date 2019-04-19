@@ -278,7 +278,9 @@ export class AddCopyrightsComponent implements OnInit {
         this.typeForm.value['investmentType'],
         group.map(item => {
           return this.service.toCopyrightData(
+            null,
             item.right,
+            null,
             item.rightNote,
             item.area,
             item.areaNote,

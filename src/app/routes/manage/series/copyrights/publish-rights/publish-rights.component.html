@@ -77,16 +77,19 @@
       <nz-form-item>
         <nz-form-label [nzSm]="2" nzFor="totalAmount" nzRequired>合同金额</nz-form-label>
         <nz-form-control [nzSm]="10">
-          <input nz-input formControlName="totalAmount" placeholder="合同金额" #amount nz-tooltip [nzTitle]="amount"
-            nzTrigger="focus" (ngModelChange)="onTotalAmountChange($event)">
-          <nz-form-explain
-            *ngIf="(contractForm.get('totalAmount').dirty && contractForm.get('totalAmount').errors?.pattern) else totalAmountError">
+          <input nz-input formControlName="totalAmount" placeholder="合同金额" #amount nz-tooltip
+            [nzTitle]="+amount.value | currency:'¥ '" nzTrigger="focus" nzPlacement="topLeft"
+            (ngModelChange)="onTotalAmountChange($event)">
+          <nz-form-explain *ngIf="contractForm.get('totalAmount').dirty && contractForm.get('totalAmount').errors">
+            请输入正确的合同金额</nz-form-explain>
+          <!-- <nz-form-explain
+            *ngIf="(contractForm.get('totalAmount').dirty && contractForm.get('totalAmount').errors?.pattern); else totalAmountError">
             请输入正确的合同金额</nz-form-explain>
           <ng-template #totalAmountError>
-              <nz-form-explain
-              *ngIf="contractForm.get('totalAmount').dirty && contractForm.get('totalAmount').errors?.totalAmount">
+            <nz-form-explain
+              *ngIf="contractForm.get('totalAmount').dirty && contractForm.get('totalAmount').errors?.totalInvalid">
               请输入准确的合同金额</nz-form-explain>
-          </ng-template>
+          </ng-template> -->
           <!-- <nz-form-explain *ngIf="contractForm.get('totalAmount').dirty && contractForm.get('totalAmount').errors?.pattern">
             请输入正确的合同金额</nz-form-explain>
           <nz-form-explain
@@ -129,7 +132,9 @@
                 <ng-container [ngSwitch]="reactive.customerType">
                   <ng-container *ngSwitchCase="'money'">
                     <input nz-input [formControlName]="reactive.key" [type]="reactive.type"
-                      [placeholder]="reactive.label" (ngModelChange)="onMoneyChange($event, reactive.key)">
+                      [placeholder]="reactive.label" (ngModelChange)="onMoneyChange($event, reactive.key)"
+                      [readonly]="reactive.readonly" #amount nz-tooltip [nzTitle]="+amount.value | currency:'¥ '"
+                      nzTrigger="focus" nzPlacement="topLeft">
                   </ng-container>
                   <ng-container *ngSwitchDefault>
                     <input nz-input [formControlName]="reactive.key" [type]="reactive.type"
@@ -172,14 +177,31 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="2" nzFor="copyright">权利</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyright" nzRequired>权利</nz-form-label>
         <nz-form-control [nzSm]="10">
           <nz-cascader nzChangeOnSelect [nzOptions]="rightTemplates" formControlName="copyright" nzLabelProperty="name"
-            nzValueProperty="code" nzPlaceHolder="选择权利">
+            nzValueProperty="code" nzPlaceHolder="选择权利" (ngModelChange)="onRightChange()">
           </nz-cascader>
           <nz-form-explain *ngIf="rightForm.get('copyright').dirty && rightForm.get('copyright').errors">
             请选择权利</nz-form-explain>
         </nz-form-control>
+        <nz-form-label [nzSm]="2" nzFor="copyrightChildren">子权利</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <nz-select nzMode="multiple" nzPlaceHolder="可选择子权利" formControlName="copyrightChildren">
+            <nz-option *ngFor="let option of rightChiddenTemplate[rightForm.get('copyright').value]"
+              [nzLabel]="option.name" [nzValue]="option.code">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="copyrightIsSole">是否独家</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <label nz-checkbox formControlName="copyrightIsSole">独家</label>
+        </nz-form-control>
+
         <nz-form-label [nzSm]="2" nzFor="copyrightNote">权利备注</nz-form-label>
         <nz-form-control [nzSm]="10">
           <input nz-input formControlName="copyrightNote" placeholder="权利备注">
@@ -187,7 +209,7 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="2" nzFor="copyrightArea">权利范围</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightArea" nzRequired>权利范围</nz-form-label>
         <nz-form-control [nzSm]="10">
           <nz-cascader nzChangeOnSelect [nzOptions]="areaTemplates" formControlName="copyrightArea"
             nzLabelProperty="name" nzValueProperty="code" nzPlaceHolder="选择权利范围">
@@ -229,7 +251,7 @@
     </form>
 
     <div class="right-options">
-      <button nz-button (click)="tab = 0;">上一步</button>
+      <!-- <button nz-button (click)="tab = 0;">上一步</button> -->
       <button nz-button (click)="resetCopyrightForm()">重置</button>
       <button nz-button (click)="addList()">添加到待发行列表</button>
     </div>
@@ -237,11 +259,13 @@
     <h4>待发行列表</h4>
     <nz-divider style="margin-top: 1rem"></nz-divider>
 
-    <nz-table #rightsTable [nzData]="dataSet">
+    <nz-table #rightsTable [nzData]="dataSet" nzSize="small">
       <thead>
         <tr>
           <th>项目名称</th>
+          <th>是否独家</th>
           <th>权利</th>
+          <th nzWidth="16rem">子权利</th>
           <th>范围</th>
           <th>期限</th>
           <th>备注</th>
@@ -251,7 +275,9 @@
       <tbody>
         <tr *ngFor="let data of rightsTable.data">
           <td>{{ data.name }}</td>
+          <td>{{ data.isSole | yesOrNo }}</td>
           <td>{{ data.displayRight }}</td>
+          <td>{{ data.displayRightChildren | arrayFormat }}</td>
           <td>{{ data.displayArea }}</td>
           <td>
             {{ data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy-MM-dd') + ' ~ ' +

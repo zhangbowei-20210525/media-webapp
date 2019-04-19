@@ -55,6 +55,7 @@ import { InvestmentTypePipe } from './pipes/investment-type.pipe';
 import { DefaultCharPipe } from './pipes/default-char.pipe';
 import { ArrayFormatPipe } from './pipes/array-format.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -66,7 +67,8 @@ const PIPES = [
   InvestmentTypePipe,
   DefaultCharPipe,
   ArrayFormatPipe,
-  TruncatePipe
+  TruncatePipe,
+  YesOrNoPipe
 ];
 // #endregion
 

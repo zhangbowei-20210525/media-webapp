@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ContractCopyrightDto } from '../dtos';
 import { PaginationDto, PaginationResponseDto, ReactiveBase, ReactiveDatePicker, ReactiveTextbox } from '@shared';
-import { CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto } from './dtos';
+import {
+  CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto, RootTemplateDto
+} from './dtos';
 import * as _ from 'lodash';
 
 declare interface FiltrateSeriesParams {
@@ -60,7 +62,8 @@ export class CopyrightsService {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
         start_date: params.start_date, end_date: params.end_date, is_salable: params.is_salable,
-        investment_type: params.investment_type, program_type: params.program_type, q: params.search || '' }
+        investment_type: params.investment_type, program_type: params.program_type, q: params.search || ''
+      }
     });
   }
 
@@ -88,11 +91,11 @@ export class CopyrightsService {
   }
 
   getCopyrightAreaOptions() {
-    return this.http.get<any[]>('/api/v1/rights/template/area_numbers');
+    return this.http.get<RootTemplateDto[]>('/api/v1/rights/template/area_numbers');
   }
 
   getCopyrightTemplates() {
-    return this.http.get<any[]>('/api/v1/rights/template/right_types');
+    return this.http.get<RootTemplateDto[]>('/api/v1/rights/template/right_types');
   }
 
   addCopyrights(copyrightData: AddCopyrightsDto) {
@@ -243,10 +246,12 @@ export class CopyrightsService {
     } as ProgramDto;
   }
 
-  toCopyrightData(right_type: string, right_remark: string, area_number: string, area_remark: string, permanent_date: boolean,
-    start_date: string, end_date: string, date_remark: string, remark: string) {
+  toCopyrightData(sole: boolean, right_type: string, child_rights: string[], right_remark: string, area_number: string, area_remark: string,
+    permanent_date: boolean, start_date: string, end_date: string, date_remark: string, remark: string) {
     return {
+      sole,
       right_type,
+      child_rights,
       right_remark,
       area_number,
       area_remark,

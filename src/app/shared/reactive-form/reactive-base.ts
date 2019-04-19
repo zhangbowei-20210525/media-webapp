@@ -7,6 +7,7 @@ export class ReactiveBase<T> {
   controlType: string;
   customerType: string;
   disabled: boolean;
+  readonly: boolean;
 
   constructor(options: {
     value?: T,
@@ -16,7 +17,8 @@ export class ReactiveBase<T> {
     order?: number,
     controlType?: string,
     customerType?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    readonly?: boolean
   } = {}) {
     this.value = options.value;
     this.key = options.key || '';
@@ -26,5 +28,6 @@ export class ReactiveBase<T> {
     this.controlType = options.controlType || '';
     this.customerType = options.customerType || '';
     this.disabled = !!options.disabled;
+    this.readonly = !!options.readonly;
   }
 }

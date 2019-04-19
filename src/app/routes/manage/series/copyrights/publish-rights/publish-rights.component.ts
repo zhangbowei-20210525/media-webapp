@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ReactiveBase, FormControlService, TreeService, MessageService, Util } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,8 @@ import { finalize, switchMap } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import * as _ from 'lodash';
+import { RootTemplateDto } from '../dtos';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-publish-rights',
@@ -25,8 +27,9 @@ export class PublishRightsComponent implements OnInit {
   tab: number;
   series: any[];
   customerOptions: any[];
-  areaTemplates: any[];
-  rightTemplates: any[];
+  areaTemplates: RootTemplateDto[];
+  rightTemplates: RootTemplateDto[];
+  rightChiddenTemplate = {};
   typeForm: FormGroup;
   contractForm: FormGroup;
   paymentForm: FormGroup;
@@ -64,7 +67,7 @@ export class PublishRightsComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         const pids = params.get('pids');
-        return  this.service.getSeriesNames(pids);
+        return this.service.getSeriesNames(pids);
       })
     ).subscribe(result => {
       this.series = result.list;
@@ -77,6 +80,10 @@ export class PublishRightsComponent implements OnInit {
     });
 
     this.service.getCopyrightTemplates().subscribe(result => {
+      result.forEach(item => {
+        this.rightChiddenTemplate[item.code] = item.children;
+        delete item.children;
+      });
       if (result) {
         this.service.setLeafNode(result);
       }
@@ -109,6 +116,8 @@ export class PublishRightsComponent implements OnInit {
       projects: [null],
       projectsAllChecked: [true],
       copyright: [null, [Validators.required]],
+      copyrightChildren: [null],
+      copyrightIsSole: [false],
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
       copyrightAreaNote: [null],
@@ -117,6 +126,10 @@ export class PublishRightsComponent implements OnInit {
       copyrightValidTermNote: [null],
       note: [null]
     });
+  }
+
+  onRightChange() {
+    this.rightForm.get('copyrightChildren').reset();
   }
 
   seriesTagChange(event: { checked: boolean, tag: any }) {
@@ -154,7 +167,7 @@ export class PublishRightsComponent implements OnInit {
   onPaymentMethodChange(value: string) {
     const count = parseInt(value, 10);
     this.payments = this.service.getPublishRightsPaymentReactives(count);
-    this.payments[count - 1].find(item => item.key.startsWith('money')).disabled = true;
+    this.payments[count - 1].find(item => item.key.startsWith('money')).readonly = true;
     const fg = {};
     this.payments.map(p => this.fcs.toFormGroup(p)).forEach(p => {
       const c = p.controls;
@@ -165,6 +178,7 @@ export class PublishRightsComponent implements OnInit {
       }
     });
     this.paymentForm = this.fb.group(fg);
+    this.setAmounts();
   }
 
   validationForm(form: FormGroup) {
@@ -184,11 +198,16 @@ export class PublishRightsComponent implements OnInit {
 
   addList() {
     if (this.validationForm(this.rightForm)) {
-      const checkedRights = this.rightForm.get('copyright').value as Array<any>;
+      const checkedRights = this.rightForm.get('copyright').value as string[];
       const right = this.ts.recursionNodesFindBy(this.rightTemplates, node => node.code === checkedRights[checkedRights.length - 1]);
-      const checkedAreas = this.rightForm.get('copyrightArea').value as Array<any>;
+      const checkedAreas = this.rightForm.get('copyrightArea').value as string[];
       const area = this.ts.recursionNodesFindBy(this.areaTemplates, node => node.code === checkedAreas[checkedAreas.length - 1]);
       const term = this.rightForm.get('copyrightValidTerm').value;
+      let children: RootTemplateDto[];
+      const rightChildren = this.rightForm.get('copyrightChildren').value as string[];
+      if (rightChildren) {
+        children = rightChildren.map(child => this.rightChiddenTemplate[right.code].find((item: RootTemplateDto) => item.code === child));
+      }
       let startDate, endDate;
       if (term) {
         startDate = term[0];
@@ -200,6 +219,8 @@ export class PublishRightsComponent implements OnInit {
           name: item.label,
           episodes: item.episodes,
           right: right.code,
+          rightChildren: children ? children.map(c => c.code) : null,
+          isSole: this.rightForm.get('copyrightIsSole').value,
           area: area.code,
           term: term,
           termIsPermanent: this.rightForm.get('copyrightValidTermIsPermanent').value,
@@ -209,6 +230,7 @@ export class PublishRightsComponent implements OnInit {
           termNote: this.rightForm.get('copyrightValidTermNote').value,
           displayRight: right.name,
           displayArea: area.name,
+          displayRightChildren: children ? children.map(c => c.name) : null,
           termStartDate: startDate,
           termEndDate: endDate
         };
@@ -251,7 +273,7 @@ export class PublishRightsComponent implements OnInit {
 
       orders = this.payments.map(paymentObjArr => {
         const arr = paymentObjArr.map(item => this.paymentForm.value[item.key]);
-        return this.service.toOrderData(+arr[1], Util.dateToString(arr[0]), arr[2]); // 来自页面字段顺序
+        return this.service.toOrderData(+arr[1], Util.dateToString(arr[0]), arr[3]); // 来自页面字段顺序
       });
     }
 
@@ -265,7 +287,9 @@ export class PublishRightsComponent implements OnInit {
         first.episodes,
         group.map(item => {
           return this.service.toCopyrightData(
+            item.isSole,
             item.right,
+            item.rightChildren,
             item.rightNote,
             item.area,
             item.areaNote,
@@ -281,12 +305,15 @@ export class PublishRightsComponent implements OnInit {
 
     if (programs.length > 0) {
       this.service.publishRights(this.service.toPublishRightsData(contract, orders, programs))
-      .pipe(finalize(() => this.isSaving = false))
-      .subscribe(result => {
-        this.isSaved = true;
-        this.dataSet = [];
-        this.message.success(this.translate.instant('global.save-successfully'));
-      });
+        .pipe(finalize(() => this.isSaving = false))
+        .subscribe(result => {
+          this.isSaved = true;
+          this.dataSet = [];
+          this.paymentForm.reset();
+          this.contractForm.reset();
+          this.payments = null;
+          this.message.success(this.translate.instant('global.save-successfully'));
+        });
     } else {
       this.isSaving = false;
     }
@@ -297,45 +324,20 @@ export class PublishRightsComponent implements OnInit {
   }
 
   onMoneyChange(value: string, key: string) {
-    let originKey: string;
-    for (let index = 0; index < this.payments.length; index++) {
-      if (key.endsWith(index + '')) {
-        originKey = _.trimEnd(key, index + '');
-        break;
-      }
-    }
-    let hasValue = true;
-    const allKeys = _.flatten(this.payments).filter(item => item.key.startsWith(originKey)).map(item => item.key);
-    const lastKey = allKeys[allKeys.length - 1];
-    allKeys.filter(item => item !== lastKey).forEach(item => {
-      const field = this.paymentForm.get(item);
-      if (!(typeof field.value === 'string' && field.value.length > 0 && field.valid)) {
-        hasValue = false;
-      }
-    });
-    if (hasValue) {
-      let otherTotalValue = 0;
-      allKeys.filter(item => item !== lastKey).forEach(item => otherTotalValue += +this.paymentForm.value[item]);
-      console.log(otherTotalValue);
-      const lastField = this.paymentForm.get(lastKey);
-      const lastValue = +this.contractForm.value['totalAmount'] - otherTotalValue;
-      if (lastValue < 0) {
-        this.contractForm.get('totalAmount').setErrors({ totalInvalid: true }, { emitEvent: false });
-        console.log(+this.contractForm.value['totalAmount'], this.contractForm.get('totalAmount').errors);
-      }
-      lastField.setValue(lastValue, { onlySelf: true, emitEvent: false, emitViewToModelChange: false });
-    }
-    console.log(value, key, originKey, hasValue);
+    this.setAmounts();
   }
 
   onTotalAmountChange(value: string) {
-    console.log(value, 'total amount');
     if (!this.paymentForm) {
       return;
     }
-    const allKeys = _.flatten(this.payments).map(item => item.key);
-    const lastKey = allKeys[allKeys.length - 1];
+    this.setAmounts();
+  }
+
+  setAmounts() {
     let hasValue = true;
+    const allKeys = _.flatten(this.payments).filter(item => item.key.startsWith('money')).map(item => item.key);
+    const lastKey = allKeys[allKeys.length - 1];
     allKeys.filter(item => item !== lastKey).forEach(item => {
       const field = this.paymentForm.get(item);
       if (!(typeof field.value === 'string' && field.value.length > 0 && field.valid)) {
@@ -345,13 +347,23 @@ export class PublishRightsComponent implements OnInit {
     if (hasValue) {
       let otherTotalValue = 0;
       allKeys.filter(item => item !== lastKey).forEach(item => otherTotalValue += +this.paymentForm.value[item]);
-      const lastField = this.paymentForm.get(lastKey);
-      const lastValue = +value - otherTotalValue;
+      const lastField = this.paymentForm.get(lastKey) as FormControl;
+      const lastValue = +this.contractForm.value['totalAmount'] - otherTotalValue;
+      const totalAountField = this.contractForm.get('totalAmount');
       if (lastValue < 0) {
-        this.contractForm.get('totalAmount').setErrors({ totalInvalid: true });
-        console.log(this.contractForm.get('totalAmount').errors);
+        totalAountField.setErrors({ totalInvalid: true });
+      } else {
+        totalAountField.markAsDirty();
+        totalAountField.updateValueAndValidity();
       }
-      lastField.setValue(lastValue, { onlySelf: true, emitEvent: false, emitViewToModelChange: false });
+      lastField.setValue(lastValue, { emitViewToModelChange: false });
+      lastField.markAsDirty();
+      lastField.updateValueAndValidity();
+      allKeys.forEach(item => {
+        const percentKey = 'percent' + _.trimStart(item, 'money');
+        const percent = (+this.paymentForm.value[item] / +this.contractForm.value['totalAmount']) * 100;
+        this.paymentForm.get(percentKey).setValue(_.floor(percent, 2) + '%');
+      });
     }
   }
 
