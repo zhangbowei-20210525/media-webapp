@@ -4,12 +4,12 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { CopyrightsService } from '../copyrights.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { DashboardDto } from 'app/routes/manage/dashboard/dtos';
 import { NzTreeNodeOptions } from 'ng-zorro-antd';
 import { finalize } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { fadeIn } from '@shared/animations';
 import { SeriesService } from '../../series.service';
+import { RootTemplateDto } from '../dtos';
 
 @Component({
   selector: 'app-pub-rights',
@@ -71,7 +71,7 @@ export class PubRightsComponent implements OnInit {
   }
 
 
-  getStatisticsSelectArea(origins: DashboardDto[]): NzTreeNodeOptions[] {
+  getStatisticsSelectArea(origins: RootTemplateDto[]): NzTreeNodeOptions[] {
     return this.ts.getNzTreeNodes(origins, item => ({
       title: item.name,
       key: item.code,
@@ -108,7 +108,6 @@ export class PubRightsComponent implements OnInit {
         this.isLoaded = true;
       }))
       .subscribe(result => {
-        console.log(result);
         this.dataSet = result.list;
         this.companyList = result.custom_list;
         this.pagination = result.pagination;

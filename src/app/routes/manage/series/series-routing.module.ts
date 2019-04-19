@@ -39,6 +39,7 @@ const routes: Routes = [
         path: 'switchRight',
         component: SwitchRightComponent,
         children: [
+          { path: '', redirectTo: 'rights', pathMatch: 'full' },
           {
             path: 'rights',
             component: CopyrightsComponent

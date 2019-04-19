@@ -5,7 +5,7 @@ import { CopyrightsService } from './copyrights.service';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeIn } from '@shared/animations';
 import { finalize, switchMap } from 'rxjs/operators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as _ from 'lodash';
 import { NzTreeNodeOptions } from 'ng-zorro-antd';
@@ -61,14 +61,16 @@ export class CopyrightsComponent implements OnInit {
     this.loadRightsOptions();
     this.seriesService.eventEmit.emit('rights');
     this.filtrateForm = this.fb.group({
-      days: ['all'],
-      right: [['all']],
-      area: [['all']],
+      days: [null],
+      right: [[null]],
+      area: [[null]],
       date: [null],
       is_salable: [false],
+      sole: [false],
       investment_type: [null],
       program_type: [null]
     });
+    this.filtrateForm.get('sole').disable();
   }
 
 
@@ -204,7 +206,7 @@ export class CopyrightsComponent implements OnInit {
   loadRightsOptions() {
     this.service.getCopyrightTemplates().subscribe(result => {
       if (result) {
-        result = [{ code: 'all', name: '所有' }, ...result];
+        result = [{ code: null, name: '所有' }, ...result];
         this.service.setLeafNode(result);
       }
       this.rightOptions = result;
@@ -270,22 +272,30 @@ export class CopyrightsComponent implements OnInit {
 
   filtrate() {
     const datePipe = this.getDatePipe();
-    const area = this.filtrateForm.value['area'];
+    const area = this.filtrateForm.value['area'] as string[];
     const right = this.filtrateForm.value['right'] as string[];
     const trem = this.filtrateForm.value['date'] as Date[];
+    if (area && area.length > 0) {
+      area.forEach((item, index) => {
+        if (!item) {
+          area[index] = '';
+        }
+      });
+    }
     const params = {
       due_date: this.filtrateForm.value['days'] || '',
       // area_number: area.length > 0 ? area[area.length - 1] : '',
-      area_number: area,
+      area_number: area ? area : '',
       right_type: right.length > 0 ? right[right.length - 1] : '',
       start_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '',
       end_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '',
       is_salable: this.filtrateForm.value['is_salable'] ? '1' : '0',
+      sole: this.filtrateForm.value['sole'] ? '1' : '0',
       investment_type: this.filtrateForm.value['investment_type'] || '',
       program_type: this.filtrateForm.value['program_type'] || '',
       search: this.search
     };
-    console.log(area);
+    params.right_type = params.right_type ? params.right_type : '';
     this.fetchCopyrights(params);
   }
 
@@ -299,6 +309,16 @@ export class CopyrightsComponent implements OnInit {
   onFormValueChange() {
     this.pagination.page = 1;
     this.filtrate();
+  }
+
+  onPublishChange(value: boolean) {
+    if (!value) {
+      this.filtrateForm.get('sole').setValue(false);
+      this.filtrateForm.get('sole').disable();
+    } else {
+      this.filtrateForm.get('sole').enable();
+    }
+    this.onFormValueChange();
   }
 
 }

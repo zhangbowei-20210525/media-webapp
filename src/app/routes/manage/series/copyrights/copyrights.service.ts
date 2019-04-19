@@ -65,7 +65,7 @@ export class CopyrightsService {
       params: {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
-        start_date: params.start_date, end_date: params.end_date, is_salable: params.is_salable,
+        start_date: params.start_date, end_date: params.end_date, is_salable: params.is_salable, sole: params.sole,
         investment_type: params.investment_type, program_type: params.program_type, q: params.search || ''
       }
     });
