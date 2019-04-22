@@ -195,10 +195,25 @@
         <nz-form-label [nzSm]="2" nzFor="copyright">权利</nz-form-label>
         <nz-form-control [nzSm]="10">
           <nz-cascader nzChangeOnSelect [nzOptions]="rightTemplates" formControlName="copyright" nzLabelProperty="name"
-            nzValueProperty="code" nzPlaceHolder="选择权利">
+            nzValueProperty="code" nzPlaceHolder="选择权利" (ngModelChange)="onRightChange()">
           </nz-cascader>
           <nz-form-explain *ngIf="rightForm.get('copyright').dirty && rightForm.get('copyright').errors">
             请选择权利</nz-form-explain>
+        </nz-form-control>
+        <nz-form-label [nzSm]="2" nzFor="copyrightChildren">子权利</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <nz-select nzMode="multiple" nzPlaceHolder="可选择子权利" formControlName="copyrightChildren">
+            <nz-option *ngFor="let option of rightChiddenTemplate[rightForm.get('copyright').value]"
+              [nzLabel]="option.name" [nzValue]="option.code">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="copyrightIsSole">是否独家</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <label nz-checkbox formControlName="copyrightIsSole">独家</label>
         </nz-form-control>
         <nz-form-label [nzSm]="2" nzFor="copyrightNote">权利备注</nz-form-label>
         <nz-form-control [nzSm]="10">

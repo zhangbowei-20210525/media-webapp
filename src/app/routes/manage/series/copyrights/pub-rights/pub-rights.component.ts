@@ -11,6 +11,7 @@ import { fadeIn } from '@shared/animations';
 import { SeriesService } from '../../series.service';
 import { RootTemplateDto } from '../dtos';
 
+
 @Component({
   selector: 'app-pub-rights',
   templateUrl: './pub-rights.component.html',

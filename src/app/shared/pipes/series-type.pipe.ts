@@ -28,6 +28,12 @@ export class SeriesTypePipe implements PipeTransform {
       case 'variety':
         translateKey = 'app.series.variety';
         break;
+      case 'anime':
+        translateKey = 'app.series.anime';
+        break;
+      case 'documentary':
+        translateKey = 'app.series.documentary';
+        break;
       case 'other':
         translateKey = 'app.series.other';
         break;

@@ -85,7 +85,7 @@
 
 <div class="block clearfix">
   <div class="block-content" style="margin-top: 0">
-    <nz-tabset nzSize="default" nzAnimated="false">
+    <nz-tabset nzSize="default" nzAnimated="false" [nzSelectedIndex]="rightsTabIndex">
       <nz-tab nzTitle="采购">
         <nz-table #purchaseTable nzBordered nzSize="small" [nzData]="purchaseDataSet"
           [nzPageSize]="purchasePagination.page_size" [nzFrontPagination]="false"
@@ -165,7 +165,7 @@
 
 <div class="block clearfix">
   <div class="block-content" style="margin-top: 0">
-    <nz-tabset nzSize="default" nzAnimated="false">
+    <nz-tabset nzSize="default" nzAnimated="false" [nzSelectedIndex]="contractsTabIndex">
       <nz-tab nzTitle="采购">
         <nz-table #purchaseContractTable nzSize="small" [nzData]="purchaseContractDataSet"
           [nzPageSize]="purchaseContractsPagination.page_size" [nzFrontPagination]="false"
@@ -179,6 +179,7 @@
               <th>合同金额</th>
               <!-- <th>付款金额</th> -->
               <th>付款形式</th>
+              <th>已付款</th>
               <th>付款记录</th>
               <th>关联节目</th>
             </tr>
@@ -190,6 +191,7 @@
               <td>{{ data.contract_name }}</td>
               <td>{{ data.total_amount }}</td>
               <td>{{ data.payment_form | paymentFormat }}</td>
+              <td>{{ data.paid_amount }}</td>
               <td><a (click)="showPayment(data.id, 'outflow')">查看付款记录</a></td>
               <td>
                 <span nz-tooltip [nzTitle]="data.programs[0].program_name"
@@ -217,6 +219,7 @@
               <th>合同金额</th>
               <!-- <th>付款金额</th> -->
               <th>收款形式</th>
+              <th>已收款</th>
               <th>收款记录</th>
               <th>关联节目</th>
             </tr>
@@ -228,6 +231,7 @@
               <td>{{ data.contract_name }}</td>
               <td>{{ data.total_amount }}</td>
               <td>{{ data.payment_form | paymentFormat }}</td>
+              <td>{{ data.paid_amount }}</td>
               <td><a (click)="showPayment(data.id, 'inflow')">查看收款记录</a></td>
               <td>
                 <span nz-tooltip [nzTitle]="data.programs[0].program_name"
