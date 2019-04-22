@@ -64,7 +64,7 @@ export class PubRightsComponent implements OnInit {
       area: [''],
       date: [null],
       sole: [false],
-      company_id: [null],
+      custom_id: [null],
       investment_type: [null],
       program_type: [null]
     });
@@ -142,7 +142,7 @@ export class PubRightsComponent implements OnInit {
       start_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '',
       end_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '',
       investment_type: this.filtrateForm.value['investment_type'] || '',
-      company_id: this.filtrateForm.value['company_id'] || '',
+      custom_id: this.filtrateForm.value['custom_id'] || '',
       program_type: this.filtrateForm.value['program_type'] || '',
       search: this.search
     };

@@ -7,10 +7,10 @@
         <li class="statistics-info-four" *ngFor="let right of right?.data">
           <div class="statistics-info-gr-one">{{right?.program_name}}</div>
           <div class="statistics-info-gr-two">{{right?.custom_name}}</div>
-          <div class="statistics-info-gr-four" *ngIf="right?.is_expiry == true"><i nz-icon type="stop"
+          <!-- <div class="statistics-info-gr-four" *ngIf="right?.is_expiry == true"><i nz-icon type="stop"
               theme="outline"></i></div>
           <div class="statistics-info-gr-five" *ngIf="right?.is_expiry == false"><i nz-icon type="stop"
-              theme="outline"></i></div>
+              theme="outline"></i></div> -->
           <div class="statistics-info-gr-three">{{right?.expire_date}}</div>
         </li>
       </ul>
@@ -22,10 +22,10 @@
         <li class="statistics-info-four" *ngFor="let publish_right of publish_right?.data">
           <div class="statistics-info-fx-one">{{publish_right?.program_name}}</div>
           <div class="statistics-info-fx-two">{{publish_right?.custom_name}}</div>
-          <div class="statistics-info-fx-four" *ngIf="publish_right?.is_expiry == true"><i nz-icon type="stop"
+          <!-- <div class="statistics-info-fx-four" *ngIf="publish_right?.is_expiry == true"><i nz-icon type="stop"
               theme="outline"></i></div>
           <div class="statistics-info-fx-five" *ngIf="publish_right?.is_expiry == false"><i nz-icon type="stop"
-              theme="outline"></i></div>
+              theme="outline"></i></div> -->
           <div class="statistics-info-fx-three">{{publish_right?.expire_date}}</div>
         </li>
       </ul>
@@ -36,10 +36,10 @@
       <ul class="statistics-info-three">
         <li class="statistics-info-four" *ngFor="let payment of payment?.data">
           <div class="statistics-info-fk-one">{{payment?.custom_name}}</div>
-          <div class="statistics-info-fk-three" *ngIf="payment?.is_expiry == true"><i nz-icon type="stop"
+          <!-- <div class="statistics-info-fk-three" *ngIf="payment?.is_expiry == true"><i nz-icon type="stop"
               theme="outline"></i></div>
           <div class="statistics-info-fk-four" *ngIf="payment?.is_expiry == false"><i nz-icon type="stop"
-              theme="outline"></i></div>
+              theme="outline"></i></div> -->
           <div class="statistics-info-fk-two">{{payment?.expire_date}}</div>
         </li>
       </ul>
@@ -50,10 +50,10 @@
       <ul class="statistics-info-three">
         <li class="statistics-info-four" *ngFor="let receipt of receipt?.data">
           <div class="statistics-info-sk-one">{{receipt?.custom_name}}</div>
-          <div class="statistics-info-sk-three" *ngIf="receipt?.is_expiry == true"><i nz-icon type="stop"
+          <!-- <div class="statistics-info-sk-three" *ngIf="receipt?.is_expiry == true"><i nz-icon type="stop"
               theme="outline"></i></div>
           <div class="statistics-info-sk-four" *ngIf="receipt?.is_expiry == false"><i nz-icon type="stop"
-              theme="outline"></i></div>
+              theme="outline"></i></div> -->
           <div class="statistics-info-sk-two">{{receipt?.expire_date}}</div>
         </li>
       </ul>
