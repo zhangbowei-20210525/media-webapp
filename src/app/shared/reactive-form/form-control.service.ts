@@ -23,7 +23,7 @@ export class FormControlService {
       if ((r as any).reg) {
         arr.push(Validators.pattern((r as any).reg));
       }
-      group[r.key] = new FormControl(r.value || '', arr);
+      group[r.key] = new FormControl({ value: r.value || '', disabled: r.disabled }, arr);
     });
     return new FormGroup(group);
   }

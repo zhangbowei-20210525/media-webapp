@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ContractCopyrightDto } from '../dtos';
 import { PaginationDto, PaginationResponseDto, ReactiveBase, ReactiveDatePicker, ReactiveTextbox } from '@shared';
-import { CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto } from './dtos';
+import {
+  CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto, RootTemplateDto
+} from './dtos';
 import * as _ from 'lodash';
 
 declare interface FiltrateSeriesParams {
@@ -63,8 +65,9 @@ export class CopyrightsService {
       params: {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
-        start_date: params.start_date, end_date: params.end_date, is_salable: params.is_salable,
-        investment_type: params.investment_type, program_type: params.program_type, q: params.search || '' }
+        start_date: params.start_date, end_date: params.end_date, is_salable: params.is_salable, sole: params.sole,
+        investment_type: params.investment_type, program_type: params.program_type, q: params.search || ''
+      }
     });
   }
 
@@ -106,11 +109,11 @@ export class CopyrightsService {
   }
 
   getCopyrightAreaOptions() {
-    return this.http.get<any[]>('/api/v1/rights/template/area_numbers');
+    return this.http.get<RootTemplateDto[]>('/api/v1/rights/template/area_numbers');
   }
 
   getCopyrightTemplates() {
-    return this.http.get<any[]>('/api/v1/rights/template/right_types');
+    return this.http.get<RootTemplateDto[]>('/api/v1/rights/template/right_types');
   }
 
   addCopyrights(copyrightData: AddCopyrightsDto) {
@@ -187,21 +190,32 @@ export class CopyrightsService {
           label: '收款日期',
           required: true,
           format: 'yyyy/MM/dd',
-          order: 1
+          order: 1,
+          customerType: 'payment'
         }),
         new ReactiveTextbox({
           key: 'money' + index,
           label: '金额',
           required: true,
           type: 'text',
-          reg: '[0-9]*(/.[0-9]{1,2})?',
-          order: 2
+          reg: /^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/,
+          order: 2,
+          customerType: 'money'
+        }),
+        new ReactiveTextbox({
+          key: 'percent' + index,
+          label: '金额占比',
+          type: 'text',
+          order: 3,
+          customerType: 'percent',
+          disabled: true
         }),
         new ReactiveTextbox({
           key: 'note' + index,
           label: '备注',
           type: 'text',
-          order: 3
+          order: 4,
+          customerType: 'remark'
         })
       ];
       payment.sort((a, b) => a.order - b.order);
@@ -250,10 +264,12 @@ export class CopyrightsService {
     } as ProgramDto;
   }
 
-  toCopyrightData(right_type: string, right_remark: string, area_number: string, area_remark: string, permanent_date: boolean,
-    start_date: string, end_date: string, date_remark: string, remark: string) {
+  toCopyrightData(sole: boolean, right_type: string, child_rights: string[], right_remark: string, area_number: string, area_remark: string,
+    permanent_date: boolean, start_date: string, end_date: string, date_remark: string, remark: string) {
     return {
+      sole,
       right_type,
+      child_rights,
       right_remark,
       area_number,
       area_remark,
@@ -284,10 +300,10 @@ export class CopyrightsService {
   groupBy(array: any[], f: (object: any) => any) {
     const groups = {};
     array.forEach((o) => {
-      let group = JSON.stringify(f(o));
-      if (group === 'null') {
-        group = _.uniqueId(); // 如果没有id，则单独分组，以避免所有无id的对象分到一组
-      }
+      const group = JSON.stringify(f(o));
+      // if (group === 'null') {
+      //   group = _.uniqueId(); // 如果没有id，则单独分组，以避免所有无id的对象分到一组
+      // }
       groups[group] = groups[group] || [];
       groups[group].push(o);
     });

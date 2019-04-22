@@ -11,6 +11,7 @@ export class AppComponent {
   title = 'aimedia-webapp';
 
   constructor(private router: Router) {
+    NProgress.configure({ trickleSpeed: 100 });
     router.events.subscribe(event => {
       if (event instanceof RouteConfigLoadStart) {
         NProgress.start();

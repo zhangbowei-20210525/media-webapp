@@ -139,7 +139,7 @@ export class TreeService {
     });
   }
 
-  getNzTreeNodes<T extends { children: T[] }>(origins: T[], fn: (obj: T) => NzTreeNodeOptions): NzTreeNodeOptions[] {
+  getNzTreeNodes<T extends { children?: T[] }>(origins: T[], fn: (obj: T) => NzTreeNodeOptions): NzTreeNodeOptions[] {
     return this.recursionNodesMapNodes(origins, fn);
   }
 

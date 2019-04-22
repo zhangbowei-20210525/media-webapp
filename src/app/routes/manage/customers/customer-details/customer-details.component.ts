@@ -7,6 +7,7 @@ import { switchMap, finalize } from 'rxjs/operators';
 import { PaginationDto } from '@shared';
 import { AddLogComponent } from '../components/add-log/add-log.component';
 import { EditCustomerComponent } from '../components/edit-customer/edit-customer.component';
+import { ContractPaymentViewComponent } from '../components/contract-payment-view/contract-payment-view.component';
 
 @Component({
   selector: 'app-customer-details',
@@ -21,6 +22,10 @@ export class CustomerDetailsComponent implements OnInit {
   publishPagination = { page: 1, page_size: 10 } as PaginationDto;
   purchaseContractsPagination = { page: 1, page_size: 10 } as PaginationDto;
   publishContractsPagination = { page: 1, page_size: 10 } as PaginationDto;
+  purchaseRightsLoading = false;
+  publishRightsLoading = false;
+  purchaseContractsLoading = false;
+  publishContractsLoading = false;
   // logsPagination = { page: 1, page_size: 10 } as PaginationDto;
   // logList = [];
   // switchValue = false;
@@ -49,6 +54,7 @@ export class CustomerDetailsComponent implements OnInit {
       this.fetchPurchaseRights();
       this.fetchPublishRights();
       this.fetchPurchaseContracts();
+      this.fetchPublishContracts();
       this.fetchLiaisons();
       // this.service.getLogs(this.logsPagination, this.id).subscribe(l => {
       //   this.logList = l.list;
@@ -64,28 +70,40 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   fetchPurchaseRights() {
-    this.service.getRights(this.purchasePagination, this.id, 'purchase').subscribe(result => {
-      this.purchaseDataSet = this.service.mapCopyrights(result.list);
-      this.purchasePagination = result.pagination;
-    });
+    this.purchaseRightsLoading = true;
+    this.service.getRights(this.purchasePagination, this.id, 'purchase')
+      .pipe(finalize(() => this.purchaseRightsLoading = false))
+      .subscribe(result => {
+        this.purchaseDataSet = this.service.mapCopyrights(result.list);
+        this.purchasePagination = result.pagination;
+      });
   }
 
   fetchPublishRights() {
-    this.service.getRights(this.publishPagination, this.id, 'publish').subscribe(result => {
+    this.publishRightsLoading = true;
+    this.service.getRights(this.publishPagination, this.id, 'publish')
+    .pipe(finalize(() => this.publishRightsLoading = false))
+    .subscribe(result => {
       this.publishDataSet = this.service.mapCopyrights(result.list);
       this.publishPagination = result.pagination;
     });
   }
 
   fetchPurchaseContracts() {
-    this.service.getContracts(this.purchaseContractsPagination, this.id, 'purchase').subscribe(result => {
+    this.purchaseContractsLoading = true;
+    this.service.getContracts(this.purchaseContractsPagination, this.id, 'purchase')
+    .pipe(finalize(() => this.purchaseContractsLoading = false))
+    .subscribe(result => {
       this.purchaseContractDataSet = result.list;
       this.purchaseContractsPagination = result.pagination;
     });
   }
 
   fetchPublishContracts() {
-    this.service.getContracts(this.publishContractsPagination, this.id, 'publish').subscribe(result => {
+    this.publishContractsLoading = true;
+    this.service.getContracts(this.publishContractsPagination, this.id, 'publish')
+    .pipe(finalize(() => this.publishContractsLoading = false))
+    .subscribe(result => {
       this.publishContractDataSet = result.list;
       this.publishContractsPagination = result.pagination;
     });
@@ -115,6 +133,20 @@ export class CustomerDetailsComponent implements OnInit {
   publishContractsPageChange(page: number) {
     this.publishContractsPagination.page = page;
     this.fetchPublishContracts();
+  }
+
+  goBack() {
+    window.history.back();
+  }
+
+  showPayment(id: number, mode: 'inflow' | 'outflow') {
+    this.modal.create({
+      nzTitle: (mode === 'inflow' ? '收款' : '付款') + '记录',
+      nzContent: ContractPaymentViewComponent,
+      nzComponentParams: { id, mode },
+      nzFooter: null,
+      nzWidth: 800,
+    });
   }
 
   // editCustomer() {

@@ -43,5 +43,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-src/app/routes/market/market.component.ts
-src/app/routes/manage/series/publicities/publicity-details/publicity-details.component.ts

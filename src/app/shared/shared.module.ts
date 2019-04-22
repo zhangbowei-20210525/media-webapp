@@ -30,6 +30,7 @@ import { BindPhoneComponent } from './account/bind-phone.component';
 import { BindWechatComponent } from './account/bind-wechat.component';
 import { EmptyComponent } from './components/empty/empty.component';
 import { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 const INSIDE_COMPONENTS = [
   LoginComponent,
@@ -38,7 +39,8 @@ const INSIDE_COMPONENTS = [
 ];
 const COMPONENTS = [
   EmptyComponent,
-  SeriesSelectorComponent
+  SeriesSelectorComponent,
+  LoadingComponent
 ];
 
 const DIRECTIVES = [];
@@ -52,6 +54,8 @@ import { FloorPipe } from './pipes/floor.pipe';
 import { InvestmentTypePipe } from './pipes/investment-type.pipe';
 import { DefaultCharPipe } from './pipes/default-char.pipe';
 import { ArrayFormatPipe } from './pipes/array-format.pipe';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -62,7 +66,9 @@ const PIPES = [
   FloorPipe,
   InvestmentTypePipe,
   DefaultCharPipe,
-  ArrayFormatPipe
+  ArrayFormatPipe,
+  TruncatePipe,
+  YesOrNoPipe
 ];
 // #endregion
 
@@ -76,7 +82,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ...COMPONENTS,
     ...DIRECTIVES,
     ...PIPES,
-    ArrayFormatPipe,
   ],
   imports: [
     CommonModule,

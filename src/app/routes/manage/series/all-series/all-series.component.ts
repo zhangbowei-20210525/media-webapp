@@ -57,16 +57,16 @@ export class AllSeriesComponent implements OnInit {
     this.isLoading = true;
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
-        this.search = params.get('search'); 
+        this.search = params.get('search');
         console.log(this.search);
-          if(this.search === null) {
-            return  this.seriesService.getSeries(this.pagination)
-          } else {
-          return  this.seriesService.getSearchSeries(this.search, this.pagination)
+        if (this.search === null) {
+          return this.seriesService.getSeries(this.pagination);
+        } else {
+          return this.seriesService.getSearchSeries(this.search, this.pagination);
         }
       })).pipe(tap(x => {
         x.list.forEach(f => {
-          if(f.release_date) {
+          if (f.release_date) {
             f.release_date = f.release_date.substring(0, 10);
           }
         });
@@ -85,7 +85,7 @@ export class AllSeriesComponent implements OnInit {
     this.isLoading = true;
     this.seriesService.getSeries(this.pagination).pipe(finalize(() => this.isLoading = false)).pipe(tap(x => {
       x.list.forEach(f => {
-        if(f.release_date) {
+        if (f.release_date) {
           f.release_date = f.release_date.substring(0, 10);
         }
       });
@@ -165,7 +165,7 @@ export class AllSeriesComponent implements OnInit {
     this.seriesService.deleteSeries(id).subscribe(res => {
       this.seriesService.getSeries(this.pagination).pipe(tap(x => {
         x.list.forEach(f => {
-          if(f.release_date) {
+          if (f.release_date) {
             f.release_date = f.release_date.substring(0, 10);
           }
         });

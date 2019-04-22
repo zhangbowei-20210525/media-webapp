@@ -1,0 +1,73 @@
+<!-- <div *ngIf="isLoading else contentTemplate"><app-loading></app-loading></div> -->
+<!-- <ng-template #contentTemplate> -->
+<nz-skeleton [nzActive]="true" [nzLoading]="isLoading">
+  <h4>合同{{ stateText }}计划</h4>
+  <!-- <nz-divider style="margin-top: 1rem"></nz-divider> -->
+  <nz-table #ordersTable nzSize="small" [nzData]="orders" [nzShowPagination]="false" class="fade-in">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{ stateText }}日期</th>
+        <th>{{ stateText }}金额</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ordersTable.data; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.pay_date }}</td>
+        <td>{{ data.pay_amount }}</td>
+        <td>{{ data.pay_remark }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <h4 style="margin-top: 2rem;">已{{ stateText }}记录</h4>
+  <div style="margin-bottom: 1rem;">
+    <button nz-button (click)="addRow()">添加</button>
+  </div>
+  <!-- <nz-divider style="margin-top: 1rem"></nz-divider> -->
+  <nz-table #paymentTable nzSize="small" [nzData]="payments" [nzShowPagination]="false" class="fade-in">
+    <thead>
+      <tr>
+        <th nzWidth="10%">#</th>
+        <th nzWidth="25%">{{ stateText }}日期</th>
+        <th nzWidth="25%">{{ stateText }}金额</th>
+        <th nzWidth="25%">备注</th>
+        <th nzWidth="15%">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of paymentTable.data; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>
+          <span *ngIf="!data.edit else dateInputTemplate">{{ data.pay_date }}</span>
+          <ng-template #dateInputTemplate>
+            <nz-date-picker [(ngModel)]="data.pay_date"></nz-date-picker>
+          </ng-template>
+        </td>
+        <td>
+          <span *ngIf="!data.edit else amountInputTemplate">{{ data.pay_amount }}</span>
+          <ng-template #amountInputTemplate>
+            <input type="text" nz-input [(ngModel)]="data.pay_amount" placeholder="请输入金额">
+          </ng-template>
+        </td>
+        <td>
+          <span *ngIf="!data.edit else remarkInputTemplate">{{ data.pay_remark }}</span>
+          <ng-template #remarkInputTemplate>
+            <input type="text" nz-input [(ngModel)]="data.pay_remark" placeholder="请输入备注">
+          </ng-template>
+        </td>
+        <td>
+          <a *ngIf="!data.edit else editTemplate" nz-popconfirm nzTitle="确定要删除吗" (nzOnConfirm)="delete(data)">删除</a>
+          <ng-template #editTemplate>
+            <a (click)="save(data)">保存</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a nz-popconfirm nzTitle="确定要取消吗" (nzOnConfirm)="cancelConfirm(data)">取消</a>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-skeleton>
+<!-- </ng-template> -->

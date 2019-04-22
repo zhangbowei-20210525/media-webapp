@@ -24,16 +24,12 @@
           <nz-form-item style="margin-bottom: 0;">
             <nz-form-label nzFor="program_type" [nzSpan]="2">节目类型</nz-form-label>
             <nz-form-control>
-                <nz-select
-                style="width: 445px"
-                nzMode="multiple"
-                nzPlaceHolder="请选择节目类型"
-                formControlName="program_type" 
-                (ngModelChange)="onFormValueChange()"
-              >
-                <nz-option *ngFor="let option of seriesType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-              </nz-select>  
-             <!-- <nz-radio-group formControlName="program_type" (ngModelChange)="onFormValueChange()">
+              <nz-select style="width: 445px" nzMode="multiple" nzPlaceHolder="请选择节目类型" formControlName="program_type"
+                (ngModelChange)="onFormValueChange()">
+                <nz-option *ngFor="let option of seriesType" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+              </nz-select>
+              <!-- <nz-radio-group formControlName="program_type" (ngModelChange)="onFormValueChange()">
                 <label nz-radio-button [nzValue]="null">所有</label>
                 <label nz-radio-button nzValue="tv">电视剧</label>
                 <label nz-radio-button nzValue="film">电影</label>
@@ -44,29 +40,23 @@
           </nz-form-item>
 
           <nz-form-item style="margin-bottom: 0;">
-              <nz-form-label nzFor="area" [nzSpan]="2">地域</nz-form-label>
-              <nz-form-control [nzSpan]="8">
-                  <nz-tree-select style="width: 445px"
-                  [nzNodes]="areaOptions"
-                  nzShowSearch
-                  nzCheckable
-                  nzPlaceHolder="请选择地域"
-                  formControlName="area"
-                  (ngModelChange)="onFormValueChange($event)"
-                >
-                </nz-tree-select>
-                <!-- <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
+            <nz-form-label nzFor="area" [nzSpan]="2">地域</nz-form-label>
+            <nz-form-control [nzSpan]="8">
+              <nz-tree-select style="width: 445px" [nzNodes]="areaOptions" nzShowSearch nzCheckable
+                nzPlaceHolder="请选择地域" formControlName="area" (ngModelChange)="onFormValueChange($event)">
+              </nz-tree-select>
+              <!-- <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
                   nzValueProperty="code" nzPlaceHolder="筛选地区" nzChangeOnSelect nzAllowClear="false"
                   (ngModelChange)="onFormValueChange()" nzSize="default">
                 </nz-cascader> -->
-              </nz-form-control>
-            </nz-form-item>
+            </nz-form-control>
+          </nz-form-item>
 
           <nz-form-item style="margin-bottom: 0;">
             <nz-form-label nzFor="days" [nzSpan]="2">到期天数</nz-form-label>
             <nz-form-control [nzSpan]="8">
               <nz-select formControlName="days" (ngModelChange)="onFormValueChange()" nzSize="default">
-                <nz-option nzValue="all" nzLabel="所有"></nz-option>
+                <nz-option [nzValue]="null" nzLabel="所有"></nz-option>
                 <nz-option nzValue="365" nzLabel="一年"></nz-option>
                 <nz-option nzValue="180" nzLabel="180天"></nz-option>
                 <nz-option nzValue="30" nzLabel="30天"></nz-option>
@@ -94,8 +84,12 @@
 
           <nz-form-item style="margin-bottom: 0;">
             <nz-form-label nzFor="is_salable" [nzSpan]="2">可发行</nz-form-label>
-            <nz-form-control [nzSpan]="8">
-              <label nz-checkbox formControlName="is_salable" (ngModelChange)="onFormValueChange()"></label>
+            <nz-form-control [nzSpan]="2">
+              <label nz-checkbox formControlName="is_salable" (ngModelChange)="onPublishChange($event)"></label>
+            </nz-form-control>
+            <nz-form-label nzFor="sole" [nzSpan]="2">独家</nz-form-label>
+            <nz-form-control [nzSpan]="2">
+              <label nz-checkbox formControlName="sole" (ngModelChange)="onFormValueChange()" disabled></label>
             </nz-form-control>
           </nz-form-item>
         </form>
@@ -142,7 +136,7 @@
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
-        <td>{{ data.right }}</td>
+        <td [class.sole]="data.sole">{{ data.right }}</td>
         <td>{{ data.area }}</td>
         <td>
           {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +

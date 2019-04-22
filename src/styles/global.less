@@ -1,6 +1,13 @@
 @import 'theme.less';
 @import '~@angular/cdk/overlay-prebuilt.css';
 
+// cover ng-zorro
+
+// :host ::ng-deep .ant-page-header {
+//     background: transparent;
+//     margin-bottom: 1.5rem;
+// }
+
 // angular/cdk/overlay cover
 .cdk-overlay-dark-backdrop {
     background-color: transparent;
@@ -58,8 +65,20 @@ a:link {
     box-sizing: border-box;
 }
 
+.block>.block-header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.block>.block-header>.block-options {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .block>.block-header>.block-title {
-    float: left;
+    // float: left;
     line-height: 4.2rem;
     color: @color-subhead;
 }
@@ -202,6 +221,20 @@ ul.list.rf-list>li {
     height: 100%;
 }
 
+.fade-in {
+    animation: fadeIn .5s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 .fade-in-up {
     animation: fadeInUp .5s;
 }
@@ -219,12 +252,12 @@ ul.list.rf-list>li {
 }
 
 .s-nav-wapper {
-    width: 100%;
-    border-bottom: 1px solid @color-border;
+    // width: 100%;
+    // border-bottom: 1px solid @color-border;
 }
 
 .s-nav {
-    width: 100%;
+    // width: 100%;
 }
 
 .s-nav-list {
