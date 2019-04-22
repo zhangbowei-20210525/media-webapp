@@ -69,6 +69,8 @@
     "app.series.tv": "电视剧",
     "app.series.film": "电影",
     "app.series.variety": "综艺",
+    "app.series.anime": "动画",
+    "app.series.documentary": "纪录片",
     "app.series.other": "其它",
     "app.series.all": "全部",
     "app.series.publicity": "宣发",

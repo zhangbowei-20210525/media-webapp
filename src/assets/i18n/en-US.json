@@ -70,6 +70,8 @@
     "app.series.tv": "TV",
     "app.series.film": "Film",
     "app.series.variety": "Variety",
+    "app.series.anime": "Animation",
+    "app.series.documentary": "Documentary",
     "app.series.other": "Other",
 
     "app.series.all": "All",

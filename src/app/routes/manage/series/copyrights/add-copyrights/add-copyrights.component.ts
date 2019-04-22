@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
+import { RootTemplateDto } from '../dtos';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -23,8 +24,9 @@ export class AddCopyrightsComponent implements OnInit {
   tab: number;
   series: any[];
   customerOptions: any[];
-  areaTemplates: any[];
-  rightTemplates: any[];
+  areaTemplates: RootTemplateDto[];
+  rightTemplates: RootTemplateDto[];
+  rightChiddenTemplate = {};
   typeForm: FormGroup;
   contractForm: FormGroup;
   paymentForm: FormGroup;
@@ -64,6 +66,10 @@ export class AddCopyrightsComponent implements OnInit {
     });
 
     this.service.getCopyrightTemplates().subscribe(result => {
+      result.forEach(item => {
+        this.rightChiddenTemplate[item.code] = item.children;
+        delete item.children;
+      });
       if (result) {
         this.service.setLeafNode(result);
       }
@@ -99,6 +105,8 @@ export class AddCopyrightsComponent implements OnInit {
       projects: [null, [Validators.required]],
       // projectsAllChecked: [true],
       copyright: [null, [Validators.required]],
+      copyrightChildren: [null],
+      copyrightIsSole: [false],
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
       copyrightAreaNote: [null],
@@ -107,6 +115,10 @@ export class AddCopyrightsComponent implements OnInit {
       copyrightValidTermNote: [null],
       note: [null]
     });
+  }
+
+  onRightChange() {
+    this.rightForm.get('copyrightChildren').reset();
   }
 
   fetchProgramOfOptions() {

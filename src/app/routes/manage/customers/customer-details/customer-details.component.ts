@@ -8,6 +8,7 @@ import { PaginationDto } from '@shared';
 import { AddLogComponent } from '../components/add-log/add-log.component';
 import { EditCustomerComponent } from '../components/edit-customer/edit-customer.component';
 import { ContractPaymentViewComponent } from '../components/contract-payment-view/contract-payment-view.component';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-customer-details',
@@ -36,6 +37,8 @@ export class CustomerDetailsComponent implements OnInit {
   publishContractDataSet = [];
   isInfoLoaded = false;
   isLiaisonsLoaded = false;
+  rightsTabIndex = 0;
+  contractsTabIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,16 +54,56 @@ export class CustomerDetailsComponent implements OnInit {
       this.id = +params.get('id');
       // this.logsPagination.page = +params.get('page') || 1;
       this.fetchCustomerDetailsInfo();
-      this.fetchPurchaseRights();
-      this.fetchPublishRights();
-      this.fetchPurchaseContracts();
-      this.fetchPublishContracts();
+      this.fetchRights();
+      this.fetchContracts();
       this.fetchLiaisons();
       // this.service.getLogs(this.logsPagination, this.id).subscribe(l => {
       //   this.logList = l.list;
       //   this.logsPagination = l.pagination;
       // });
     });
+  }
+
+  fetchRights() {
+    this.purchaseRightsLoading = this.publishRightsLoading = true;
+    zip(
+      this.service.getRights(this.purchasePagination, this.id, 'purchase'),
+      this.service.getRights(this.publishPagination, this.id, 'publish'))
+      .pipe(finalize(() => this.purchaseRightsLoading = this.publishRightsLoading = false))
+      .subscribe(results => {
+        const data = {
+          purchase: results[0],
+          publish: results[1]
+        };
+        this.purchaseDataSet = this.service.mapCopyrights(data.purchase.list);
+        this.purchasePagination = data.purchase.pagination;
+        this.publishDataSet = this.service.mapCopyrights(data.publish.list);
+        this.publishPagination = data.publish.pagination;
+        if (data.publish.pagination.count > data.purchase.pagination.count) {
+          this.rightsTabIndex = 1;
+        }
+      });
+  }
+
+  fetchContracts() {
+    this.purchaseContractsLoading = this.publishContractsLoading = true;
+    zip(
+      this.service.getContracts(this.purchaseContractsPagination, this.id, 'purchase'),
+      this.service.getContracts(this.publishContractsPagination, this.id, 'publish'))
+      .pipe(finalize(() => this.purchaseContractsLoading = this.publishContractsLoading = false))
+      .subscribe(results => {
+        const data = {
+          purchase: results[0],
+          publish: results[1]
+        };
+        this.purchaseContractDataSet = data.purchase.list;
+        this.purchaseContractsPagination = data.purchase.pagination;
+        this.publishContractDataSet = data.publish.list;
+        this.publishContractsPagination = data.publish.pagination;
+        if (data.publish.pagination.count > data.purchase.pagination.count) {
+          this.contractsTabIndex = 1;
+        }
+      });
   }
 
   fetchCustomerDetailsInfo() {
@@ -82,31 +125,31 @@ export class CustomerDetailsComponent implements OnInit {
   fetchPublishRights() {
     this.publishRightsLoading = true;
     this.service.getRights(this.publishPagination, this.id, 'publish')
-    .pipe(finalize(() => this.publishRightsLoading = false))
-    .subscribe(result => {
-      this.publishDataSet = this.service.mapCopyrights(result.list);
-      this.publishPagination = result.pagination;
-    });
+      .pipe(finalize(() => this.publishRightsLoading = false))
+      .subscribe(result => {
+        this.publishDataSet = this.service.mapCopyrights(result.list);
+        this.publishPagination = result.pagination;
+      });
   }
 
   fetchPurchaseContracts() {
     this.purchaseContractsLoading = true;
     this.service.getContracts(this.purchaseContractsPagination, this.id, 'purchase')
-    .pipe(finalize(() => this.purchaseContractsLoading = false))
-    .subscribe(result => {
-      this.purchaseContractDataSet = result.list;
-      this.purchaseContractsPagination = result.pagination;
-    });
+      .pipe(finalize(() => this.purchaseContractsLoading = false))
+      .subscribe(result => {
+        this.purchaseContractDataSet = result.list;
+        this.purchaseContractsPagination = result.pagination;
+      });
   }
 
   fetchPublishContracts() {
     this.publishContractsLoading = true;
     this.service.getContracts(this.publishContractsPagination, this.id, 'publish')
-    .pipe(finalize(() => this.publishContractsLoading = false))
-    .subscribe(result => {
-      this.publishContractDataSet = result.list;
-      this.publishContractsPagination = result.pagination;
-    });
+      .pipe(finalize(() => this.publishContractsLoading = false))
+      .subscribe(result => {
+        this.publishContractDataSet = result.list;
+        this.publishContractsPagination = result.pagination;
+      });
   }
 
   fetchLiaisons() {
