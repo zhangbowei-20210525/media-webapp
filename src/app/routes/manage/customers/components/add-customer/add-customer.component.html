@@ -52,13 +52,14 @@
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="tags" nzRequired>客户标签</nz-form-label>
     <nz-form-control [nzSm]="21">
-      <nz-select nzMode="tags" [nzTokenSeparators]="[',']" id="tags" formControlName="tags" nzPlaceHolder="请选择/输入客户标签">
+      <nz-select nzMode="tags" [nzTokenSeparators]="[',']" id="tags" formControlName="tags" nzPlaceHolder="请输入/选择客户标签">
         <nz-option *ngFor="let option of customTagOptions" [nzLabel]="option" [nzValue]="option">
         </nz-option>
       </nz-select>
       <nz-form-explain *ngIf="enterpriseForm.get('tags').dirty && enterpriseForm.get('tags').errors">
-        请选择或输入客户标签
+        请输入或者选择客户标签
       </nz-form-explain>
+      <nz-form-extra>请输入/选择客户标签，并使用 enter 键确认</nz-form-extra>
     </nz-form-control>
   </nz-form-item>
 </form>

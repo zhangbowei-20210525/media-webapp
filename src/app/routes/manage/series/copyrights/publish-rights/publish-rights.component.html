@@ -1,41 +1,22 @@
+<p>
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>主页</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a [routerLink]="'/manage/series/switchRight/rights'">版权列表</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>版权发行</nz-breadcrumb-item>
+  </nz-breadcrumb>
+</p>
+
 <div class="block clearfix">
   <div class="block-header">
-    <div class="block-title">新增版权</div>
+    <div class="block-title">版权发行</div>
   </div>
   <div class="block-content">
-    <!-- <nz-divider nzText="合同" nzOrientation="left"></nz-divider> -->
     <h4>合同</h4>
     <nz-divider style="margin-top: 1rem"></nz-divider>
 
-    <form nz-form [formGroup]="typeForm">
-      <!-- <nz-form-item>
-              <nz-form-label [nzSm]="2" nzFor="investmentType">投资类型</nz-form-label>
-              <nz-form-control [nzSm]="22">
-                <nz-radio-group formControlName="investmentType">
-                  <label nz-radio-button nzValue="homemade">自制</label>
-                  <label nz-radio-button nzValue="purchase">购入</label>
-                  <label nz-radio-button nzValue="proxy">代理</label>
-                  <label nz-radio-button nzValue="main-vote">主投</label>
-                  <label nz-radio-button nzValue="follow">跟投</label>
-                  <label nz-radio-button nzValue="co-production">合拍</label>
-                  <label nz-radio-button nzValue="contract">承制</label>
-                  <label nz-radio-button nzValue="introduction">引进</label>
-                </nz-radio-group>
-              </nz-form-control>
-            </nz-form-item> -->
-
-      <!-- <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="contract">有无合同</nz-form-label>
-            <nz-form-control [nzSm]="22">
-              <nz-radio-group formControlName="contract">
-                <label nz-radio-button nzValue="no" nzDisabled>无合同</label>
-                <label nz-radio-button nzValue="yes" nzDisabled>有合同</label>
-              </nz-radio-group>
-            </nz-form-control>
-          </nz-form-item> -->
-    </form>
-
-    <form nz-form [formGroup]="contractForm" [hidden]="contract === 'no'">
+    <form nz-form [formGroup]="contractForm" #contractFormRef>
 
       <nz-form-item>
         <nz-form-label [nzSm]="2" nzFor="customer" nzRequired>签约客户</nz-form-label>
@@ -114,7 +95,7 @@
 
     </form>
 
-    <form nz-form [formGroup]="paymentForm" [hidden]="contract === 'no'" *ngIf="paymentForm">
+    <form nz-form [formGroup]="paymentForm" *ngIf="paymentForm" #paymentFormRef>
 
       <nz-form-item *ngFor="let payment of payments; let i = index">
         <ng-container *ngFor="let reactive of payment">
@@ -188,7 +169,7 @@
         <nz-form-label [nzSm]="2" nzFor="copyrightChildren">子权利</nz-form-label>
         <nz-form-control [nzSm]="10">
           <nz-select nzMode="multiple" nzPlaceHolder="可选择子权利" formControlName="copyrightChildren">
-            <nz-option *ngFor="let option of rightChiddenTemplate[rightForm.get('copyright').value]"
+            <nz-option *ngFor="let option of rightChildrenTemplate[rightForm.get('copyright').value]"
               [nzLabel]="option.name" [nzValue]="option.code">
             </nz-option>
           </nz-select>

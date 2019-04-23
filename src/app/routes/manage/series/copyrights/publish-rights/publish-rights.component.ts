@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ReactiveBase, FormControlService, TreeService, MessageService, Util } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,9 +6,10 @@ import { DatePipe } from '@angular/common';
 import { finalize, switchMap } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import * as _ from 'lodash';
 import { RootTemplateDto } from '../dtos';
-import { Subscription } from 'rxjs';
+import { ScrollService } from '@shared';
+// import { ScrollService } from '@delon/theme';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-publish-rights',
@@ -24,13 +25,14 @@ import { Subscription } from 'rxjs';
 })
 export class PublishRightsComponent implements OnInit {
 
+  @ViewChild('contractFormRef') contractFormRef: ElementRef<HTMLFormElement>;
+  @ViewChild('paymentFormRef') paymentFormRef: ElementRef<HTMLFormElement>;
   tab: number;
   series: any[];
   customerOptions: any[];
   areaTemplates: RootTemplateDto[];
   rightTemplates: RootTemplateDto[];
-  rightChiddenTemplate = {};
-  typeForm: FormGroup;
+  rightChildrenTemplate = {};
   contractForm: FormGroup;
   paymentForm: FormGroup;
   rightForm: FormGroup;
@@ -49,11 +51,8 @@ export class PublishRightsComponent implements OnInit {
     private translate: TranslateService,
     private message: MessageService,
     private route: ActivatedRoute,
+    private scroll: ScrollService
   ) { }
-
-  get contract() {
-    return this.typeForm.get('contract').value;
-  }
 
   get projects() {
     return this.rightForm.get('projects') as FormControl;
@@ -81,7 +80,7 @@ export class PublishRightsComponent implements OnInit {
 
     this.service.getCopyrightTemplates().subscribe(result => {
       result.forEach(item => {
-        this.rightChiddenTemplate[item.code] = item.children;
+        this.rightChildrenTemplate[item.code] = item.children;
         delete item.children;
       });
       if (result) {
@@ -97,16 +96,10 @@ export class PublishRightsComponent implements OnInit {
       this.areaTemplates = result;
     });
 
-    this.typeForm = this.fb.group({
-      // investmentType: ['homemade', [Validators.required]],
-      contract: ['yes', Validators.required]
-    });
-
     this.contractForm = this.fb.group({
       customer: [null, [Validators.required]],
       totalAmount: [null, [Validators.required, Validators.pattern(/^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/)]], // '[0-9]*(/.[0-9]{1,2})?'
       paymentMethod: [null, [Validators.required]],
-      payments: this.fb.array([]),
       contractName: [null],
       contractNumber: [null, [Validators.required]],
       signDate: [new Date(), Validators.required]
@@ -166,21 +159,21 @@ export class PublishRightsComponent implements OnInit {
 
   onPaymentMethodChange(value: string) {
     const count = parseInt(value, 10);
-    console.log(count);
-    this.payments = this.service.getPublishRightsPaymentReactives(count);
-    console.log(this.payments);
-    this.payments[count - 1].find(item => item.key.startsWith('money')).readonly = true;
-    const fg = {};
-    this.payments.map(p => this.fcs.toFormGroup(p)).forEach(p => {
-      const c = p.controls;
-      for (const key in c) {
-        if (c.hasOwnProperty(key)) {
-          fg[key] = c[key];
+    if (count >= 0) {
+      this.payments = this.service.getPublishRightsPaymentReactives(count);
+      this.payments[count - 1].find(item => item.key.startsWith('money')).readonly = true;
+      const fg = {};
+      this.payments.map(p => this.fcs.toFormGroup(p)).forEach(p => {
+        const c = p.controls;
+        for (const key in c) {
+          if (c.hasOwnProperty(key)) {
+            fg[key] = c[key];
+          }
         }
-      }
-    });
-    this.paymentForm = this.fb.group(fg);
-    this.setAmounts();
+      });
+      this.paymentForm = this.fb.group(fg);
+      this.setAmounts();
+    }
   }
 
   validationForm(form: FormGroup) {
@@ -208,9 +201,9 @@ export class PublishRightsComponent implements OnInit {
       let children: RootTemplateDto[];
       const rightChildren = this.rightForm.get('copyrightChildren').value as string[];
       if (rightChildren) {
-        children = rightChildren.map(child => this.rightChiddenTemplate[right.code].find((item: RootTemplateDto) => item.code === child));
+        children = rightChildren.map(child => this.rightChildrenTemplate[right.code].find((item: RootTemplateDto) => item.code === child));
       }
-      let startDate, endDate;
+      let startDate: any, endDate: any;
       if (term) {
         startDate = term[0];
         endDate = term[1];
@@ -245,19 +238,23 @@ export class PublishRightsComponent implements OnInit {
     this.dataSet = [];
   }
 
-  hasContract() {
-    return this.typeForm.get('contract').value === 'yes';
-  }
-
   save() {
-    if (this.hasContract()) {
-      const contract = this.validationForm(this.contractForm);
-      const payment = this.paymentForm ? this.validationForm(this.paymentForm) : null;
-      if (contract && payment) {
-        this.saveCopyrights(true);
-      }
+    const contract = this.validationForm(this.contractForm);
+    const payment = this.paymentForm ? this.validationForm(this.paymentForm) : false;
+    if (contract && payment && this.dataSet.length > 0) {
+      this.saveCopyrights(true);
     } else {
-      this.saveCopyrights(false);
+      if (!contract) {
+        this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
+      } else {
+        if (!payment) {
+          this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
+        } else {
+          if (this.dataSet.length < 1) {
+            this.message.warning('请先添加待发行权利');
+          }
+        }
+      }
     }
   }
 

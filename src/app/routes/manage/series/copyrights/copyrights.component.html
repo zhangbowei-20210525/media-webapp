@@ -89,7 +89,7 @@
             </nz-form-control>
             <nz-form-label nzFor="sole" [nzSpan]="2">独家</nz-form-label>
             <nz-form-control [nzSpan]="2">
-              <label nz-checkbox formControlName="sole" (ngModelChange)="onFormValueChange()" disabled></label>
+              <label nz-checkbox formControlName="sole" (ngModelChange)="onFormValueChange()"></label>
             </nz-form-control>
           </nz-form-item>
         </form>
@@ -136,7 +136,7 @@
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
-        <td [class.sole]="data.sole">{{ data.right }}</td>
+        <td [ngClass]="{'sole': data.sole}">{{ data.right }}</td>
         <td>{{ data.area }}</td>
         <td>
           {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +

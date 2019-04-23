@@ -158,21 +158,32 @@ export class CopyrightsService {
           label: '付款日期',
           required: true,
           format: 'yyyy/MM/dd',
-          order: 1
+          order: 1,
+          customerType: 'payment'
         }),
         new ReactiveTextbox({
           key: 'money' + index,
           label: '金额',
           required: true,
           type: 'text',
-          reg: '[0-9]*(/.[0-9]{1,2})?',
-          order: 2
+          reg: /^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/,
+          order: 2,
+          customerType: 'money'
+        }),
+        new ReactiveTextbox({
+          key: 'percent' + index,
+          label: '金额占比',
+          type: 'text',
+          order: 3,
+          customerType: 'percent',
+          disabled: true
         }),
         new ReactiveTextbox({
           key: 'note' + index,
           label: '备注',
           type: 'text',
-          order: 3
+          order: 4,
+          customerType: 'remark'
         })
       ];
       payment.sort((a, b) => a.order - b.order);
@@ -297,7 +308,7 @@ export class CopyrightsService {
     } as PublishRightsDto;
   }
 
-  groupBy(array: any[], f: (object: any) => any) {
+  groupBy<T>(array: T[], f: (object: any) => any): T[][] {
     const groups = {};
     array.forEach((o) => {
       const group = JSON.stringify(f(o));

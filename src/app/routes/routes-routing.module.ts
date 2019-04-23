@@ -17,6 +17,7 @@ const routes: Routes = [
     component: LayoutComponent,
     data: { breadcrumb: 'Home' },
     children: [
+      { path: '', redirectTo: 'market', pathMatch: 'full' },
       {
         path: 'market',
         component: MarketComponent,
