@@ -455,7 +455,7 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
       this.isLoggedIn = this.checkSimple(t);
     });
     // zh-CN en-US
-    if (this.isLoggedIn == false) {
+    if (this.isLoggedIn === false) {
       this.accountService.openLoginModal().then(() => {
         this.router.navigate([`/d/${this.id}`, { publicityName: this.publicityName, sid: this.sid }]);
       });
@@ -480,7 +480,7 @@ export class MarketDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
     this.token.change().subscribe(t => {
       this.isLoggedIn = this.checkSimple(t);
     });
-    if (this.isLoggedIn == false) {
+    if (this.isLoggedIn === false) {
       this.accountService.openLoginModal().then(() => {
         this.router.navigate([`/d/${this.id}`, { publicityName: this.publicityName, sid: this.sid }]);
       });

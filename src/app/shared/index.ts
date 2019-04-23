@@ -2,6 +2,7 @@ export { Util } from './util';
 export { formData } from './helpers/request.helper';
 export { ResponseDto, ListResponseDto, PaginationResponseDto, PaginationDto } from './dtos/response.dto';
 export { SharedModule } from './shared.module';
+export { ScrollService } from './scroll/scroll.service';
 export { AccountService } from './account/account.service';
 export { MessageService } from './message/message.service';
 export { TreeService } from './components/tree.service';
