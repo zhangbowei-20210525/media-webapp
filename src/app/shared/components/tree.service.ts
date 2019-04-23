@@ -147,6 +147,18 @@ export class TreeService {
     return this.recursionNodesFindBy(nodes, item => item.key === key);
   }
 
+  getSelectTreeNodeByKey(nodes: NzTreeNode[], key: string[]) {
+    nodes.forEach(x => {
+      key.forEach(k => {
+        if (x.key === k) {
+          x.isDisabled = false;
+        } else {
+          x.isDisabled = true;
+        }
+      });
+    });
+  }
+
   getKeysWithStatus<T extends { status: boolean, children: T[] }>(origins: T[], keyMap: (obj: T) => string) {
     return this.recursionNodesMapArray(origins, keyMap, item => item.status);
   }

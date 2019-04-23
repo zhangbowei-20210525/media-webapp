@@ -144,18 +144,20 @@
         [(ngModel)]="checkedAreaCode" (ngModelChange)="areaChange($event)" nzMaxTagCount = 5>
       </nz-tree-select> -->
 
-
       <nz-tree-select
+      #allStatisticsTree
       style="width: 500px;margin-top: 15px;margin-right: 10px;float: right" 
       nzPlaceHolder="请选择地域"
       [nzMaxTagCount]="5"
       [nzMaxTagPlaceholder]="omittedPlaceHolder"
-      [nzNodes]="selectArea"
-      [nzDefaultExpandAll]="true"
-      [nzAllowClear]="false"
+      [nzNodes]="areaOptions"
+      [nzDefaultExpandedKeys]="spread"
+      nzAllowClear="false"
       [(ngModel)]="checkedAreaCode"
-      [nzMultiple]="true"
-      (ngModelChange)="areaChange($event)"
+      nzMultiple="true"
+      nzDefaultExpandAll = "false"
+      (nzOpenChange)="onOpenChange($event)"
+      (ngModelChange)="onAreaChange($event)"
       nzSize = "small"
     >
     </nz-tree-select>

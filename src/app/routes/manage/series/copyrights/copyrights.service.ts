@@ -72,7 +72,7 @@ export class CopyrightsService {
   }
 
   getPubRights(pagination: PaginationDto, params: FiltrateSeriesParams) {
-    return this.http.get<any>('/api/v1/publish_rights', {
+    return this.http.get<any>('/api/v1/rights/publish/right_programs', {
       params: {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,

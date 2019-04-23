@@ -105,7 +105,7 @@
       {{ tag.project }}
     </nz-tag>
   </div>
-  <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
+  <!-- <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
     [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
     <thead>
       <tr>
@@ -139,6 +139,50 @@
         </td>
         <td>
           <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.id)"><i class="text-info"
+              nz-icon type="delete" theme="outline"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table> -->
+  <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
+  [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>项目名称</th>
+        <th>合同编号</th>
+        <th>客商</th>
+        <th>品类</th>
+        <th>集数</th>
+        <th>单价</th>
+        <th>合同金额</th>
+        <th>权利</th>
+        <th>范围</th>
+        <th>期限</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of dataTable.data">
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 + pagination.page * 10 - 10}}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+          <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
+        </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.contract_number }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.custom_name }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
+          <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episode | emptyDefaultChar }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.share_amount }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.total_amount }}</td>
+        <td [class.sole]="data.sole">{{ data.right }}</td>
+        <td>{{ data.area }}</td>
+        <td>
+          {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+          (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+        </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+          <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+          <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid)"><i class="text-info"
               nz-icon type="delete" theme="outline"></i></a>
         </td>
       </tr>

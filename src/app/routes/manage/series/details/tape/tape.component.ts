@@ -50,20 +50,19 @@ export class TapeComponent implements OnInit {
       })
     ).subscribe(res => {
       this.tapesList = res;
-    });
-
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.isId = +params.get('tapeId');
-        this.source_type = params.get('source_type');
-        if (this.isId === 0) {
-          return null;
-        } else {
-          return this.seriesService.getOnlineInfo(this.isId);
-        }
-      })
-    ).subscribe(t => {
-      this.tapeDetailsInfo = t;
+      this.route.paramMap.pipe(
+        switchMap((params: ParamMap) => {
+          this.isId = +params.get('tapeId');
+          this.source_type = params.get('source_type');
+          if (this.isId === 0) {
+            return this.seriesService.getOnlineInfo(this.tapesList[0].id);
+          } else {
+            return this.seriesService.getOnlineInfo(this.isId);
+          }
+        })
+      ).subscribe(t => {
+        this.tapeDetailsInfo = t;
+      });
     });
 
     this.tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
@@ -73,12 +72,12 @@ export class TapeComponent implements OnInit {
   pitchOn(id: number, source_type: string) {
     if (source_type === 'online') {
       this.source_type = 'online';
-      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }]);
+      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }], { relativeTo: this.route });
       this.isId = id;
     }
     if (source_type === 'entity') {
       this.source_type = 'entity';
-      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }]);
+      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }], { relativeTo: this.route });
       this.isId = id;
     }
   }

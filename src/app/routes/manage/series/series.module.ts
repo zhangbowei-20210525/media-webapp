@@ -17,8 +17,6 @@ import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.comp
 import { TapesComponent } from './tapes/tapes.component';
 import { PublicityDetailsComponent } from './publicities/publicity-details/publicity-details.component';
 import { AddPublicityComponent } from './components/add-publicity/add-publicity.component';
-import { AddSourceComponent } from './components/add-source/add-source.component';
-import { AddRightComponent } from './components/add-right/add-right.component';
 import { PublicityComponent } from './details/publicity/publicity.component';
 import { TapeComponent } from './details/tape/tape.component';
 import { EditTapeInfoComponent } from './components/edit-tape-info/edit-tape-info.component';
@@ -43,8 +41,6 @@ import { SwitchRightComponent } from './switch-right/switch-right.component';
     AddTapeComponent,
     AddPubTapeComponent,
     AddPublicityComponent,
-    AddSourceComponent,
-    AddRightComponent,
     PublicityComponent,
     TapeComponent,
     EditTapeInfoComponent,
@@ -63,8 +59,6 @@ import { SwitchRightComponent } from './switch-right/switch-right.component';
     AddTapeComponent,
     AddPubTapeComponent,
     AddPublicityComponent,
-    AddSourceComponent,
-    AddRightComponent,
     EditTapeInfoComponent,
     EditSeriesInfoComponent,
   ]

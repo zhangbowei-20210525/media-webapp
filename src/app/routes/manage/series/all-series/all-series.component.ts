@@ -8,8 +8,6 @@ import { AddSeriesInfoComponent } from '../components/add-series-info/add-series
 import { SeriesDto } from './dtos';
 import { fadeIn } from '@shared/animations';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
-import { AddSourceComponent } from '../components/add-source/add-source.component';
-import { AddRightComponent } from '../components/add-right/add-right.component';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 

@@ -121,7 +121,7 @@ export class PublishRightsComponent implements OnInit {
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
       copyrightAreaNote: [null],
-      copyrightValidTerm: [null],
+      copyrightValidTerm: [null, [Validators.required]],
       copyrightValidTermIsPermanent: [false],
       copyrightValidTermNote: [null],
       note: [null]
@@ -166,7 +166,9 @@ export class PublishRightsComponent implements OnInit {
 
   onPaymentMethodChange(value: string) {
     const count = parseInt(value, 10);
+    console.log(count);
     this.payments = this.service.getPublishRightsPaymentReactives(count);
+    console.log(this.payments);
     this.payments[count - 1].find(item => item.key.startsWith('money')).readonly = true;
     const fg = {};
     this.payments.map(p => this.fcs.toFormGroup(p)).forEach(p => {

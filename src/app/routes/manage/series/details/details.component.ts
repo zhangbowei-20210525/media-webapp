@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, tap } from 'rxjs/operators';
 import { SeriesService } from '../series.service';
 import { MessageService } from '@shared';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
@@ -48,7 +48,9 @@ export class SeriesDetailsComponent implements OnInit {
         }
         return this.seriesService.getSeriesDetailsInfo(this.id);
       })
-    ).subscribe(result => {
+    ).pipe(tap(x => {
+          x.release_date = x.release_date.substring(0, 10);
+    })).subscribe(result => {
       this.seriesInfo = result;
     });
   }

@@ -110,7 +110,7 @@ export class AddCopyrightsComponent implements OnInit {
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
       copyrightAreaNote: [null],
-      copyrightValidTerm: [null],
+      copyrightValidTerm: [null, [Validators.required]],
       copyrightValidTermIsPermanent: [false],
       copyrightValidTermNote: [null],
       note: [null]

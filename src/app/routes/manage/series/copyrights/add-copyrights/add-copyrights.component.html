@@ -192,7 +192,7 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="2" nzFor="copyright">权利</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyright" nzRequired>权利</nz-form-label>
         <nz-form-control [nzSm]="10">
           <nz-cascader nzChangeOnSelect [nzOptions]="rightTemplates" formControlName="copyright" nzLabelProperty="name"
             nzValueProperty="code" nzPlaceHolder="选择权利" (ngModelChange)="onRightChange()">
@@ -222,7 +222,7 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="2" nzFor="copyrightArea">权利范围</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightArea" nzRequired>权利范围</nz-form-label>
         <nz-form-control [nzSm]="10">
           <nz-cascader nzChangeOnSelect [nzOptions]="areaTemplates" formControlName="copyrightArea"
             nzLabelProperty="name" nzValueProperty="code" nzPlaceHolder="选择权利范围">
@@ -238,9 +238,11 @@
 
       <nz-form-item>
 
-        <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm">购入期限</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm" nzRequired>购入期限</nz-form-label>
         <nz-form-control [nzSm]="7">
           <nz-range-picker nzFormat="yyyy/MM/dd" formControlName="copyrightValidTerm"></nz-range-picker>
+          <nz-form-explain *ngIf="rightForm.get('copyrightValidTerm').dirty && rightForm.get('copyrightValidTerm').errors">
+            请选择购入期限</nz-form-explain>
         </nz-form-control>
 
         <nz-form-control [nzSm]="3">

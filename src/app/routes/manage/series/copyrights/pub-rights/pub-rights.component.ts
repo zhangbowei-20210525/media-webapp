@@ -109,10 +109,43 @@ export class PubRightsComponent implements OnInit {
         this.isLoaded = true;
       }))
       .subscribe(result => {
-        this.dataSet = result.list;
-        this.companyList = result.custom_list;
+        this.dataSet = this.mapCopyrights(result.list);
         this.pagination = result.pagination;
+        this.companyList = result.custom_list;
       });
+  }
+
+  mapCopyrights(list: any[]) { // 可考虑使用公共方法
+    const rights = [];
+    let itemIndex = 0;
+    list.forEach(item => {
+      let index = 0;
+      item.rights.forEach(right => {
+        rights.push({
+          index: index++,
+          itemIndex: itemIndex,
+          pid: item.id,
+          rid: right.id,
+          project: item.program_name,
+          contract_number: item.contract_number,
+          custom_name: item.custom_name,
+          share_amount: item.share_amount,
+          total_amount: item.total_amount,
+          type: item.program_type,
+          episode: item.episode,
+          right: right.right_type_label,
+          area: right.area_label,
+          term: right.start_date && right.end_date,
+          termIsPermanent: right.permanent_date,
+          termStartDate: right.start_date,
+          termEndDate: right.end_date,
+          termNote: right.date_remark,
+          count: item.rights.length
+        });
+      });
+      itemIndex++;
+    });
+    return rights;
   }
 
   copyrightsPageChange(page: number) {

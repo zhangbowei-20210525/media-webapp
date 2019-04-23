@@ -66,16 +66,16 @@
               </div>
               <div nz-col nzSpan="6">
                 <span class="info-filed">{{ 'app.series.language' | translate }}</span>
-                <span>{{ tapeDetailsInfo?.language }}</span>
-                <!-- <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
-                <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span> -->
+                <!-- <span>{{ tapeDetailsInfo?.language }}</span> -->
+                <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
+                <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span>
               </div>
               <div nz-col nzSpan="6">
                 <span class="info-filed">{{ 'app.series.subtitle' | translate }}</span>
-                <span>{{ tapeDetailsInfo?.subtitle }}</span>
-                <!-- <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
+                <!-- <span>{{ tapeDetailsInfo?.subtitle }}</span> -->
+                <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
                 <span *ngIf="tapeDetailsInfo?.subtitle == 'English'">英语</span>
-                <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span> -->
+                <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span>
               </div>
             </div>
           </div>
@@ -165,25 +165,26 @@
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.language' | translate }}</span>
-        <span>{{ tapeDetailsInfo?.language }}</span>
-        <!-- <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
-        <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span> -->
+        <!-- <span>{{ tapeDetailsInfo?.language }}</span> -->
+        <span *ngIf="tapeDetailsInfo?.language == 'Chinese'">中文</span>
+        <span *ngIf="tapeDetailsInfo?.language == 'English'">英语</span>
       </div>
     </div>
     <div nz-row class="series-info-row">
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.subtitle' | translate }}</span>
-        <span>{{ tapeDetailsInfo?.subtitle }}</span>
-        <!-- <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
+        <!-- <span>{{ tapeDetailsInfo?.subtitle }}</span> -->
+        <span *ngIf="tapeDetailsInfo?.subtitle == 'Chinese'">中文</span>
         <span *ngIf="tapeDetailsInfo?.subtitle == 'English'">英语</span>
-        <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span> -->
+        <span *ngIf="tapeDetailsInfo?.subtitle == 'other'">其他</span>
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sharpness' | translate }}</span>
-        <span>{{ tapeDetailsInfo?.sharpness }}</span>
-        <!-- <span *ngIf="tapeDetailsInfo?.sharpness == 'SD'">标清</span>
+        <span *ngIf="tapeDetailsInfo?.sharpness == 'SD'">标清</span>
         <span *ngIf="tapeDetailsInfo?.sharpness == 'HD'">高清</span>
-        <span *ngIf="tapeDetailsInfo?.sharpness == 'BL'">蓝光</span> -->
+        <span *ngIf="tapeDetailsInfo?.sharpness == 'BL'">蓝光</span>
+        <span *ngIf="tapeDetailsInfo?.sharpness == 'SL'">模拟</span>
+        <span *ngIf="tapeDetailsInfo?.sharpness == '4K'">4K</span> 
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.brand' | translate }}</span>
@@ -191,37 +192,55 @@
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}1</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'mixture'">{{ 'app.series.mixture' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'vocal'">{{ 'app.series.vocal' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'music'">{{ 'app.series.music' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
       </div>
     </div>
     <div nz-row class="series-info-row">
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}2</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'mixture'">{{ 'app.series.mixture' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'vocal'">{{ 'app.series.vocal' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'music'">{{ 'app.series.music' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}3</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'mixture'">{{ 'app.series.mixture' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'vocal'">{{ 'app.series.vocal' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'music'">{{ 'app.series.music' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}4</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'mixture'">{{ 'app.series.mixture' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'vocal'">{{ 'app.series.vocal' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'music'">{{ 'app.series.music' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}5</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'mixture'">{{ 'app.series.mixture' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'vocal'">{{ 'app.series.vocal' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'music'">{{ 'app.series.music' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
       </div>
     </div>
     <div nz-row class="series-info-row">
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}6</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'mixture'">{{ 'app.series.mixture' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'vocal'">{{ 'app.series.vocal' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'music'">{{ 'app.series.music' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
+        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span> 
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.carrier' | translate }}</span>
