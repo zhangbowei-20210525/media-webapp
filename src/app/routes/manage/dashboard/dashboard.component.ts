@@ -611,26 +611,22 @@ export class DashboardComponent implements OnInit {
     if (this.checkedAreaCode && this.checkedAreaCode.length > 0) {
       const nodes = this.allStatisticsTree.treeRef.getTreeNodes();
       if (nodes) {
-        const first = this.checkedAreaCode[0];
-        const firstNode = this.ts.recursionNodesFindBy(nodes, n => n.key === first);
-        if (firstNode) {
-          this.ts.recursionNodes(nodes, n => {
-            const parent = n.getParentNode();
-            if (!parent || firstNode.getParentNode().key !== parent.key) {
-                n.isDisabled = true;
-              }
-          });
-        }
+        const firstKey = this.checkedAreaCode[0];
+        const firstNodeParent = this.ts.recursionNodesFindBy(nodes, n => n.key === firstKey).getParentNode();
+        this.ts.recursionNodes(nodes, n => {
+          const parent = n.getParentNode();
+          if (firstNodeParent ? (!parent || firstNodeParent.key !== parent.key) : parent) {
+            n.isDisabled = true;
+          }
+        });
       }
     }
   }
 
   onOpenChange(state: boolean) {
-    if (state) {
-      setTimeout(() => {
-        this.changeNodesState();
-      }, 0);
-    }
+    setTimeout(() => {
+      this.changeNodesState();
+    }, 0);
   }
 
   onAreaChange(event) {
