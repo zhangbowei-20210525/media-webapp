@@ -624,9 +624,11 @@ export class DashboardComponent implements OnInit {
   }
 
   onOpenChange(state: boolean) {
-    setTimeout(() => {
-      this.changeNodesState();
-    }, 0);
+    if (state === true) {
+      setTimeout(() => {
+        this.changeNodesState();
+      }, 0);
+    }
   }
 
   onAreaChange(event) {
