@@ -47,12 +47,12 @@ export class PublicitiesComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
-        this.tbPagination.page = +params.get('page') | 1;
+        this.tbPagination.page = +params.get('page') || 1;
         this.search = params.get('search');
-        if(this.search === null) {
-          return this.service.getThumbnail(this.tbPagination)
+        if (this.search === null) {
+          return this.service.getThumbnail(this.tbPagination);
         } else {
-          return this.service.getSearchThumbnail(this.search, this.tbPagination)
+          return this.service.getSearchThumbnail(this.search, this.tbPagination);
         }
       })).subscribe(res => {
         this.thumbnailList = res.list;
@@ -60,17 +60,17 @@ export class PublicitiesComponent implements OnInit {
       });
   }
 
-  fetchPublicities() {   
+  fetchPublicities() {
     this.isLoading = true;
     this.isLoaded = true;
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.search = params.get('search');
         console.log(this.search);
-        if(this.search === null) {
-          return this.service.getPublicities(this.pagination)
+        if (this.search === null) {
+          return this.service.getPublicities(this.pagination);
         } else {
-          return  this.service.getSearchPublicities(this.search, this.pagination)
+          return  this.service.getSearchPublicities(this.search, this.pagination);
         }
       })).pipe(finalize(() => {
         this.isLoading = false;
@@ -389,7 +389,7 @@ export class PublicitiesComponent implements OnInit {
       this.service.getThumbnail(this.tbPagination).subscribe(res => {
         this.thumbnailList = res.list;
         this.tbPagination = res.pagination;
-      })
+      });
     }
   }
 }

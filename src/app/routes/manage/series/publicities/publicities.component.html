@@ -13,39 +13,39 @@
         </label>
         <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
     </ng-template>
-<div *ngIf="isLoaded" [@fadeIn] [hidden]="publicityStyle == 'figure'">
+<div *ngIf="isLoaded"[hidden]="publicityStyle == 'figure'">
   <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
     [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
       <tr>
         <!-- nzShowCheckbox -->
-        <th [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
-          (nzCheckedChange)="checkAll($event)"></th>
-          <th>#</th>
-        <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
-        <th style="text-align: center">{{ 'app.series.sample' | translate }}</th>
-        <th style="text-align: center">{{ 'app.series.feature' | translate }}</th>
-        <th style="text-align: center">{{ 'app.series.trailer' | translate }}</th>
-        <th style="text-align: center">{{ 'app.series.poster' | translate }}</th>
-        <th style="text-align: center">{{ 'app.series.still' | translate }}</th>
-        <th style="text-align: center">{{ 'app.series.pdf' | translate }}</th>
-        <th style="text-align: center">{{ 'app.series.publicity-view' | translate }}</th>
+        <!-- <th [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="checkAll($event)"></th> -->
+        <th>#</th>
+        <th>{{ 'app.series.series' | translate }}</th>
+        <th>{{ 'app.series.sample' | translate }}</th>
+        <th>{{ 'app.series.feature' | translate }}</th>
+        <th>{{ 'app.series.trailer' | translate }}</th>
+        <th>{{ 'app.series.poster' | translate }}</th>
+        <th>{{ 'app.series.still' | translate }}</th>
+        <th>{{ 'app.series.pdf' | translate }}</th>
+        <th>{{ 'app.series.publicity-view' | translate }}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data;let i = index">
-        <td  [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
+        <!-- <td  [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td> -->
         <td>{{ i + 1 + pagination.page * 10 - 10}}</td>
-        <td style="text-align: center">
+        <td>
           <a (click)="publicityDetails(data.program_id)">{{ data.name }}</a>
         </td>
-        <td style="text-align: center">{{ data.sample }}</td>
-        <td style="text-align: center">{{ data.feature }}</td>
-        <td style="text-align: center">{{ data.trailer }}</td>
-        <td style="text-align: center">{{ data.poster }}</td>
-        <td style="text-align: center">{{ data.still }}</td>
-        <td style="text-align: center">{{ data.pdf }}</td>
-        <td style="text-align: center">
+        <td>{{ data.sample }}</td>
+        <td>{{ data.feature }}</td>
+        <td>{{ data.trailer }}</td>
+        <td>{{ data.poster }}</td>
+        <td>{{ data.still }}</td>
+        <td>{{ data.pdf }}</td>
+        <td>
           <button nz-button nzType="primary"nzSize="small" (click)="publicityPlay(data?.id, data?.program_id)">
             <i nz-icon nzType="play-circle" style="font-size: 14px" nzTheme="outline"></i>
           </button>
@@ -122,7 +122,9 @@
         </li>
       </ul>
     </div>
-    <div style="text-align: right;margin-top: 5rem" [hidden]="publicityStyle == 'table'">
+
+    <nz-empty [hidden]="thumbnailList.length > 0 || publicityStyle == 'table'"></nz-empty>
+    <div style="text-align: right;margin-top: 5rem" [hidden]="thumbnailList.length == 0  || publicityStyle == 'table'">
       <nz-pagination [(nzPageIndex)]="tbPagination.page" [nzTotal]="tbPagination.count" [nzPageSize]="tbPagination.page_size" (nzPageIndexChange)="tbPageChange()"></nz-pagination>
   </div>
   <!-- </div> -->
