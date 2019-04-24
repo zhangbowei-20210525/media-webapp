@@ -82,17 +82,17 @@ export class CustomersComponent implements OnInit {
     }
   })
 
-  deleteCustomers(id: number) {
+  deleteCustomer(data: any) {
     this.modal.confirm({
-      nzTitle: '是否删除本条客商信息?',
+      nzTitle: data.related ? '该客商存在关联数据，此操作将会删除所有关联数据，是否删除该客商信息？' : '是否删除该客商信息?',
       nzOkText: '删除',
       nzCancelText: '取消',
       nzOkType: 'danger',
-      nzOnOk: () => this.deleteCustomersAgreed(id)
+      nzOnOk: () => this.deleteCustomerAgreed(data.id)
     });
   }
 
-  deleteCustomersAgreed = (id: number) => new Promise((resolve, reject) => {
+  deleteCustomerAgreed = (id: number) => new Promise((resolve, reject) => {
     this.service.deleteCustomers(id).subscribe(result => {
       this.fetchPublicities();
       this.message.success(this.translate.instant('global.delete-success'));

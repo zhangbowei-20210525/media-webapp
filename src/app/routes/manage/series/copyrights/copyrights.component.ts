@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PaginationDto, MessageService, TreeService } from '@shared';
+import { PaginationDto, MessageService, TreeService, Util } from '@shared';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CopyrightsService } from './copyrights.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -163,12 +163,11 @@ export class CopyrightsComponent implements OnInit {
   }
 
   addPublishConpyrights() {
-    const pids = [];
-    this.tags.forEach(r => pids.push(r.pid));
-    if (pids.length === 0) {
-      this.message.success(this.translate.instant('global.select-series'));
-    } else {
+    const pids = this.tags.map(t => t.pid);
+    if (pids.length > 0) {
       this.router.navigate([`/manage/series/publish-rights`, { pids: pids }]);
+    } else {
+      this.message.success(this.translate.instant('global.select-series'));
     }
   }
 
@@ -262,16 +261,7 @@ export class CopyrightsComponent implements OnInit {
     this.filtrate();
   }
 
-  getDatePipe() {
-    return new DatePipe('zh-CN');
-  }
-
-  formatDate(pipe: DatePipe, date: Date) {
-    return date ? pipe.transform(date, 'yyyy-MM-dd') : null;
-  }
-
   filtrate() {
-    const datePipe = this.getDatePipe();
     const area = this.filtrateForm.value['area'] as string[];
     const right = this.filtrateForm.value['right'] as string[];
     const trem = this.filtrateForm.value['date'] as Date[];
@@ -287,8 +277,8 @@ export class CopyrightsComponent implements OnInit {
       // area_number: area.length > 0 ? area[area.length - 1] : '',
       area_number: area ? area : '',
       right_type: right.length > 0 ? right[right.length - 1] : '',
-      start_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[0]) : '',
-      end_date: trem && trem.length > 0 ? this.formatDate(datePipe, trem[1]) : '',
+      start_date: trem && trem.length > 0 ? Util.dateToString(trem[0]) : '',
+      end_date: trem && trem.length > 0 ? Util.dateToString(trem[1]) : '',
       is_salable: this.filtrateForm.value['is_salable'] ? '1' : '0',
       sole: this.filtrateForm.value['sole'] ? '1' : '0',
       investment_type: this.filtrateForm.value['investment_type'] || '',

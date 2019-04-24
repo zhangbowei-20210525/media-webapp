@@ -17,7 +17,7 @@ export class AddCustomerComponent implements OnInit {
   baseForm: FormGroup;
   enterpriseForm: FormGroup;
   personalFomr: FormGroup;
-  liaisonForm: FormGroup;
+  // liaisonForm: FormGroup;
 
   @ViewChild('sf') sf: SFComponent;
 
@@ -143,17 +143,17 @@ export class AddCustomerComponent implements OnInit {
       abbreviation: [null],
       telephone: [null, [Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]], // [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]
       remark: [null],
-      tags: [null, [Validators.required]]
+      tags: [[]]
     });
-    this.liaisonForm = this.fb.group({
-      name: [null, [Validators.required]],
-      phone: [null, [Validators.required]],
-      wx_id: [null],
-      email: [null],
-      department: [null],
-      position: [null],
-      remark: [null]
-    });
+    // this.liaisonForm = this.fb.group({
+    //   name: [null, [Validators.required]],
+    //   phone: [null, [Validators.required]],
+    //   wx_id: [null],
+    //   email: [null],
+    //   department: [null],
+    //   position: [null],
+    //   remark: [null]
+    // });
 
     this.service.getTags().subscribe(tags => {
       this.customTagOptions = tags;
@@ -172,7 +172,8 @@ export class AddCustomerComponent implements OnInit {
   }
 
   validation() {
-    return this.validationForm(this.enterpriseForm) && this.validationForm(this.liaisonForm);
+    // return this.validationForm(this.enterpriseForm) && this.validationForm(this.liaisonForm);
+    return this.validationForm(this.enterpriseForm);
   }
 
   submit(): Observable<any> {
@@ -181,7 +182,8 @@ export class AddCustomerComponent implements OnInit {
     }
     const custom = this.enterpriseForm.value;
     custom.custom_type = this.baseForm.value['customType'] === 'enterprise' ? 0 : 1;
-    const liaisons = [this.liaisonForm.value, ...this.sf.value.liaisons];
+    // const liaisons = [this.liaisonForm.value, ...this.sf.value.liaisons];
+    const liaisons = [...this.sf.value.liaisons];
     return this.service.addCustomer({ custom, liaisons });
   }
 
