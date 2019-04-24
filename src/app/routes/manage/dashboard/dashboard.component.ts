@@ -641,7 +641,13 @@ export class DashboardComponent implements OnInit {
     if (this.timeType === 'annual') {
       if (event.length < 6) {
         this.dashboardService.getAnnualStatistics(this.timeFiltrate, this.checkedAreaCode, this.sid).subscribe(res => {
-          // this.selectArea = this.getStatisticsSelectArea(res.meta.area_number_choices);
+          // if (event.length > 0) {
+          //   const nodes = this.allStatisticsTree.treeRef.getTreeNodes();
+          //   this.ts.recursionNodes(nodes, node => {
+          //     node.isDisabled = true;
+          //   });
+          // }
+          // this.spread = ['000000'];
           this.allStatisticsChart.source(res.list);
           this.allStatisticsChart.render();
         });
@@ -653,23 +659,13 @@ export class DashboardComponent implements OnInit {
       if (event.length < 6) {
         this.dashboardService.getAllStatistics(this.timeFiltrate, event, this.sid).subscribe(res => {
 
-          if (event.length > 0) {
-            //  const a = this.ts.getSelectTreeNodeByKey(this.allStatisticsTree.treeRef.getTreeNodes(), event);
-            const nodes = this.allStatisticsTree.treeRef.getTreeNodes();
-            this.ts.recursionNodes(nodes, node => {
-              node.isDisabled = true;
-            });
-            // const parent = node.getParentNode();
-            // console.log(parent);
-            // const children = parent.children;
-            // const grandpa = parent.getParentNode();
-            // console.log(this.allStatisticsTree.treeRef.getTreeNodes());
-            // console.log(node);
-            // console.log(parent);
-            // console.log(grandpa);
-            // console.log(children);
-          }
-          this.spread = ['000000'];
+          // if (event.length > 0) {
+          //   const nodes = this.allStatisticsTree.treeRef.getTreeNodes();
+          //   this.ts.recursionNodes(nodes, node => {
+          //     node.isDisabled = true;
+          //   });
+          // }
+          // this.spread = ['000000'];
           this.statisticsSelectYear = res.meta.year_choices;
           this.allStatisticsChart.source(res.list);
           this.allStatisticsChart.render();
