@@ -166,7 +166,7 @@
     <h4>权利</h4>
     <nz-divider style="margin-top: 1rem"></nz-divider>
 
-    <form nz-form [formGroup]="rightForm">
+    <form nz-form [formGroup]="rightForm" #rightFormRef>
 
       <nz-form-item>
         <nz-form-label [nzSm]="2">
@@ -283,7 +283,7 @@
       <button nz-button (click)="addList()" nzType="primary">添加</button>
     </div>
 
-    <h4>待新增列表</h4>
+    <h4>权利明细（保存前请仔细确认</h4>
     <nz-divider style="margin-top: 1rem"></nz-divider>
 
     <nz-table #rightsTable [nzData]="dataSet">

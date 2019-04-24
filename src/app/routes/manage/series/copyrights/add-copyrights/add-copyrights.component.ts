@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { ReactiveBase, FormControlService, TreeService, MessageService, Util } from '@shared';
+import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
 import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { RootTemplateDto } from '../dtos';
 import * as _ from 'lodash';
-import { ScrollService } from '@delon/theme';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -25,6 +24,8 @@ export class AddCopyrightsComponent implements OnInit {
 
   @ViewChild('contractFormRef') contractFormRef: ElementRef<HTMLFormElement>;
   @ViewChild('paymentFormRef') paymentFormRef: ElementRef<HTMLFormElement>;
+  @ViewChild('rightFormRef') rightFormRef: ElementRef<HTMLFormElement>;
+
   tab: number;
   series: any[];
   customerOptions: any[];
@@ -237,6 +238,8 @@ export class AddCopyrightsComponent implements OnInit {
         };
       });
       this.dataSet = [...this.dataSet, ...list];
+    } else {
+      this.scroll.scrollToElement(this.rightFormRef.nativeElement, -20);
     }
   }
 

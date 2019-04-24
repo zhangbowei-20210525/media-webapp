@@ -1,16 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ReactiveBase, FormControlService, TreeService, MessageService, Util } from '@shared';
+import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { finalize, switchMap } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { RootTemplateDto } from '../dtos';
-
 // import { ScrollService } from '@delon/theme';
 import * as _ from 'lodash';
-import { ScrollService } from '@delon/theme';
 
 @Component({
   selector: 'app-publish-rights',
@@ -28,6 +26,8 @@ export class PublishRightsComponent implements OnInit {
 
   @ViewChild('contractFormRef') contractFormRef: ElementRef<HTMLFormElement>;
   @ViewChild('paymentFormRef') paymentFormRef: ElementRef<HTMLFormElement>;
+  @ViewChild('rightFormRef') rightFormRef: ElementRef<HTMLFormElement>;
+
   tab: number;
   series: any[];
   customerOptions: any[];
@@ -232,6 +232,8 @@ export class PublishRightsComponent implements OnInit {
         };
       });
       this.dataSet = [...this.dataSet, ...list];
+    } else {
+      this.scroll.scrollToElement(this.rightFormRef.nativeElement, -20);
     }
   }
 
