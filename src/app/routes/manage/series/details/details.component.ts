@@ -49,7 +49,9 @@ export class SeriesDetailsComponent implements OnInit {
         return this.seriesService.getSeriesDetailsInfo(this.id);
       })
     ).pipe(tap(x => {
+        if (x.release_date) {
           x.release_date = x.release_date.substring(0, 10);
+        }
     })).subscribe(result => {
       this.seriesInfo = result;
     });

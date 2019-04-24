@@ -142,6 +142,8 @@ export class PublicityComponent implements OnInit {
         success: (upload, data) => {
           this.service.bindingMateriel(upload.target, data.id, materielType).subscribe(result => {
             this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+            this.fetchMateriels(materielType);
+            this.fetchPublicity();
           });
           return true;
         }
