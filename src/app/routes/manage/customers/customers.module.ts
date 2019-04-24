@@ -11,7 +11,6 @@ import { SharedModule } from '@shared';
 import { AddLogComponent } from './components/add-log/add-log.component';
 import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
 import { DelonFormModule } from '@delon/form';
-import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 import { ContractRightsViewComponent } from './components/contract-rights-view/contract-rights-view.component';
 import { ContractPaymentViewComponent } from './components/contract-payment-view/contract-payment-view.component';
 
@@ -22,7 +21,6 @@ import { ContractPaymentViewComponent } from './components/contract-payment-view
     AddCustomerComponent,
     AddLogComponent,
     EditCustomerComponent,
-    PaymentFormatPipe,
     ContractRightsViewComponent,
     ContractPaymentViewComponent
   ],

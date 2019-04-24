@@ -192,7 +192,7 @@
               <td>{{ data.total_amount }}</td>
               <td>{{ data.payment_form | paymentFormat }}</td>
               <td>{{ data.paid_amount }}</td>
-              <td><a (click)="showPayment(data.id, 'outflow')">查看付款记录</a></td>
+              <td><a (click)="showPayment(data.id, 'outflow')" *ngIf="data.total_amount">查看付款记录</a></td>
               <td>
                 <span nz-tooltip [nzTitle]="data.programs[0].program_name"
                   style="margin-right: 1rem;">{{ data.programs[0].program_name | truncate:8 }}</span>
@@ -232,7 +232,7 @@
               <td>{{ data.total_amount }}</td>
               <td>{{ data.payment_form | paymentFormat }}</td>
               <td>{{ data.paid_amount }}</td>
-              <td><a (click)="showPayment(data.id, 'inflow')">查看收款记录</a></td>
+              <td><a (click)="showPayment(data.id, 'inflow')" *ngIf="data.total_amount">查看收款记录</a></td>
               <td>
                 <span nz-tooltip [nzTitle]="data.programs[0].program_name"
                   style="margin-right: 1rem;">{{ data.programs[0].program_name | truncate:8 }}</span>

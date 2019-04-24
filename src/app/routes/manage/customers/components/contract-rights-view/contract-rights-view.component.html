@@ -4,7 +4,7 @@
 <div class="rights-panel">
   <!-- <nz-tag *ngFor="let tag of list">{{ tag.program_name + '[' + tag.rights[0].right_type_label + '(' + tag.rights[0].area_label + '#' + tag.rights[0].start_date + '-' + tag.rights[0].end_date + ')' + ']' }}</nz-tag> -->
   <div *ngFor="let program of list">
-    <a [routerLink]="['/manage/series/d', program.id, 'right']">{{ program.program_name }}</a>
+    <a [routerLink]="['/manage/series/d', program.program_id, 'right']">{{ program.program_name }}</a>
     [
     <span *ngFor="let right of program.rights; index as i">
       {{ i > 0 ? '，' : '' }}
