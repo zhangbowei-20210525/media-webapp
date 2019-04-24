@@ -25,8 +25,8 @@ export class PubRightsComponent implements OnInit {
   dataSet = [];
   pagination = { page: 1, page_size: 10 } as PaginationDto;
   filtrateForm: FormGroup;
-  areaOptions: any[];
-  rightOptions: any[];
+  areaOptions: any[] = [];
+  rightOptions: any[] = [];
   listOfDisplayData: any[] = [];
   listOfAllData: any[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};

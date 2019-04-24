@@ -259,10 +259,15 @@
     </nz-alert> -->
 
     <p *ngIf="contractForm.valid">
-      <!-- <nz-tag> -->
-        <span>{{ contractForm.get('customer').value }}</span>&nbsp;&nbsp;&nbsp;
-        <span *ngIf="+contractForm.get('totalAmount').value >= 0">¥ {{ contractForm.get('totalAmount').value }}</span>
-      <!-- </nz-tag> -->
+      <span>{{ contractForm.get('customer').value }}</span>
+      <span *ngIf="contractForm.get('totalAmount').value">
+        <nz-divider nzType="vertical"></nz-divider>
+        ¥ {{ contractForm.get('totalAmount').value }}
+      </span>
+      <span *ngIf="contractForm.get('paymentMethod').value">
+        <nz-divider nzType="vertical"></nz-divider>
+        {{ contractForm.get('paymentMethod').value | paymentFormat }}
+      </span>
     </p>
 
     <nz-table #rightsTable [nzData]="dataSet" nzSize="small">

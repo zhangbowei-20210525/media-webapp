@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { fadeIn } from '@shared/animations';
 import { finalize, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { DatePipe } from '@angular/common';
 import * as _ from 'lodash';
 import { NzTreeNodeOptions } from 'ng-zorro-antd';
 import { SeriesService } from '../series.service';
@@ -25,8 +24,8 @@ export class CopyrightsComponent implements OnInit {
   dataSet = [];
   pagination = { page: 1, page_size: 10 } as PaginationDto;
   filtrateForm: FormGroup;
-  areaOptions: any[];
-  rightOptions: any[];
+  areaOptions: any[] = [];
+  rightOptions: any[] = [];
   isAllDisplayDataChecked = false;
   isIndeterminate = false;
   listOfDisplayData: any[] = [];

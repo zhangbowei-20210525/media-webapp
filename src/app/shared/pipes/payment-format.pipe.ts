@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PaymentFormatPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
-    switch (value) {
+    switch (+value) {
       case 1:
         return '一次性';
       case 2:

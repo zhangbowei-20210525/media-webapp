@@ -56,6 +56,7 @@ import { DefaultCharPipe } from './pipes/default-char.pipe';
 import { ArrayFormatPipe } from './pipes/array-format.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
+import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -68,7 +69,8 @@ const PIPES = [
   DefaultCharPipe,
   ArrayFormatPipe,
   TruncatePipe,
-  YesOrNoPipe
+  YesOrNoPipe,
+  PaymentFormatPipe
 ];
 // #endregion
 
