@@ -46,6 +46,7 @@ private callHttpApp(method: string, param: { id: number | number[]}) {
   const a = 'http://127.0.0.1:8756/add_task?';
   const b = `type=${method}&ids=${string$}`;
   const c = `&token=${this.getToken()}`;
+  // tslint:disable-next-line:max-line-length
   return this.http.get(`http://127.0.0.1:8756/add_task?type=${method}&ids=${string$}&token=${this.getToken()}`, { params: { _allow_anonymous: '', _allow_no_language: '' }});
 }
 }

@@ -53,6 +53,7 @@
         <nz-select id="language" formControlName="language" nzPlaceHolder="请选择语言种类">
           <nz-option nzLabel="汉语" nzValue="Chinese"></nz-option>
           <nz-option nzLabel="英语" nzValue="English"></nz-option>
+          <nz-option nzLabel="其他" nzValue="other"></nz-option>
         </nz-select>
         <nz-form-explain *ngIf="onlineTapeForm.get('language').dirty && onlineTapeForm.get('language').errors">请选择语言
         </nz-form-explain>
@@ -73,6 +74,15 @@
     </nz-form-item>
 
     <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="remark" formControlName="remark" placeholder="请输入备注">
+          <nz-form-explain *ngIf="onlineTapeForm.get('remark').dirty && onlineTapeForm.get('remark').errors">请输入备注
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+    <!-- <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="format">格式</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <nz-select id="format" formControlName="format" nzPlaceHolder="请选择母带格式">
@@ -98,9 +108,9 @@
         <nz-form-explain *ngIf="onlineTapeForm.get('format').dirty && onlineTapeForm.get('format').errors">请选择母带格式
         </nz-form-explain>
       </nz-form-control>
-    </nz-form-item>
+    </nz-form-item> -->
 
-    <nz-form-item>
+    <!-- <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="bit_rate">码率</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <nz-input-group nzAddOnAfter="kbps">
@@ -118,7 +128,7 @@
           </nz-select>
         </nz-input-group>
       </nz-form-control>
-    </nz-form-item>
+    </nz-form-item> -->
   </form>
 
 
@@ -174,6 +184,7 @@
         <nz-select id="language" formControlName="language" nzPlaceHolder="请选择语言种类">
           <nz-option nzLabel="汉语" nzValue="Chinese"></nz-option>
           <nz-option nzLabel="英语" nzValue="English"></nz-option>
+          <nz-option nzLabel="其他" nzValue="other"></nz-option>
         </nz-select>
         <nz-form-explain *ngIf="entityTapeForm.get('language').dirty && entityTapeForm.get('language').errors">请选择语言
         </nz-form-explain>
@@ -289,6 +300,7 @@
         <nz-select id="carrier" formControlName="carrier" nzPlaceHolder="请选择载体类型">
           <nz-option nzLabel="磁带" nzValue="tape"></nz-option>
           <nz-option nzLabel="光盘" nzValue="CD"></nz-option>
+          <nz-option nzLabel="硬盘" nzValue="hardDisk"></nz-option>
         </nz-select>
         <nz-form-explain *ngIf="entityTapeForm.get('carrier').dirty && entityTapeForm.get('carrier').errors">请选择载体类型
         </nz-form-explain>
@@ -342,4 +354,10 @@
     </nz-form-item>
 
   </form>
+ <div style="text-align: center">
+    <button nz-button nzType="default" (click)="cancel()">取消</button>
+    <button nz-button nzType="primary" style="margin-left: 1.5rem" [hidden]="source_type == 'entity'" (click)="upload()">
+        <i nz-icon type="loading" style="font-size: 14px;color: #ffffff" [hidden]="true"></i>上传母带</button>
+    <button nz-button nzType="primary" style="margin-left: 1.5rem" [hidden]="source_type == 'online'" (click)="save()">保存</button>
+ </div>
 </div>

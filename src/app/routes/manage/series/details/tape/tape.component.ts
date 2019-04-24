@@ -82,32 +82,44 @@ export class TapeComponent implements OnInit {
     }
   }
 
-  addTape() {
-    this.modalService.create({
-      nzTitle: `新增母带`,
-      nzContent: AddTapeComponent,
-      nzComponentParams: { id: this.id },
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: 800,
-      nzOnOk: this.addTapeAgreed
-    });
-  }
+    addTape() {
+      const ref = this.modalService.create({
+         nzTitle: `新增母带`,
+         nzContent: AddTapeComponent,
+         nzComponentParams: { id: this.id },
+         nzMaskClosable: false,
+         nzClosable: false,
+         nzFooter: null,
+         nzWidth: 800,
+       });
+       ref.afterClose.subscribe(
+         x => {
+           this.nzAfterClose();
+         }
+       );
+     }
 
-  addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
-    component.formSubmit()
-      .subscribe(res => {
-        this.message.success(this.translate.instant('global.add-success'));
-        this.seriesService.getTapeList(this.id).subscribe(t => {
-          this.tapesList = t;
-        });
-        resolve();
-      }, error => {
-        if (error.message) {
-          this.message.error(error.message);
-        }
-      });
-  })
+     nzAfterClose() {
+       this.seriesService.getTapeList(this.id).subscribe(res => {
+         this.tapesList = res;
+         this.TapeFile();
+       });
+     }
+
+  // addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
+  //   component.formSubmit()
+  //     .subscribe(res => {
+  //       this.message.success(this.translate.instant('global.add-success'));
+  //       this.seriesService.getTapeList(this.id).subscribe(t => {
+  //         this.tapesList = t;
+  //       });
+  //       resolve();
+  //     }, error => {
+  //       if (error.message) {
+  //         this.message.error(error.message);
+  //       }
+  //     });
+  // })
 
   tapeInfo() {
     this.tab = 0;

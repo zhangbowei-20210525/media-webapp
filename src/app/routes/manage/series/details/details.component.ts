@@ -81,28 +81,28 @@ export class SeriesDetailsComponent implements OnInit {
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: 800,
-      nzOnOk: this.addTapeAgreed
+      // nzOnOk: this.addTapeAgreed
     });
   }
 
-  addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
-    component.formSubmit()
-      .subscribe(res => {
-        this.seriesService.getSeriesDetailsInfo(this.id).subscribe(result => {
-          this.seriesInfo = result;
-        });
-        this.message.success(this.translate.instant('global.add-success'));
-        this.seriesService.getTapeList(this.id).subscribe(tape => {
-          const tapeId = tape[0].id;
-          this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: tapeId }]);
-        });
-        resolve();
-      }, error => {
-        if (error.message) {
-          this.message.error(error.message);
-        }
-      });
-  })
+  // addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
+  //   component.formSubmit()
+  //     .subscribe(res => {
+  //       this.seriesService.getSeriesDetailsInfo(this.id).subscribe(result => {
+  //         this.seriesInfo = result;
+  //       });
+  //       this.message.success(this.translate.instant('global.add-success'));
+  //       this.seriesService.getTapeList(this.id).subscribe(tape => {
+  //         const tapeId = tape[0].id;
+  //         this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: tapeId }]);
+  //       });
+  //       resolve();
+  //     }, error => {
+  //       if (error.message) {
+  //         this.message.error(error.message);
+  //       }
+  //     });
+  // })
 
   // publicity() {
   //   console.log('1');

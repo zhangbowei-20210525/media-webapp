@@ -69,53 +69,64 @@ export class TapesComponent implements OnInit {
   }
 
   addTape() {
-    this.modal.create({
+   const ref = this.modal.create({
       nzTitle: `新增母带`,
       nzContent: AddTapeComponent,
       nzMaskClosable: false,
       nzClosable: false,
+      nzFooter: null,
       nzWidth: 800,
-      nzOnOk: this.addTapeAgreed
+      // nzOnOk: this.addTapeAgreed
     });
+    ref.afterClose.subscribe(
+      x => {
+        this.nzAfterClose();
+      }
+    );
   }
 
-  addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
-    component.formSubmit()
-      .subscribe(res => {
-        if (component.tapeVersion === 'online') {
-          this.modal.confirm({
-            nzTitle: '是否需要上传母带文件?',
-            nzOkText: '上传',
-            nzCancelText: '取消',
-            nzOkType: 'primary',
-            nzOnOk: () => this.uploadTape(res.id)
-          });
-        }
-        this.message.success(this.translate.instant('global.add-success'));
-        this.fetchPublicities();
-        resolve();
-      }, error => {
-        if (error.message) {
-          this.message.error(error.message);
-        }
-      });
-  })
+  nzAfterClose() {
+    console.log('222');
+    this.fetchPublicities();
+  }
+
+  // addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
+  //   component.formSubmit()
+  //     .subscribe(res => {
+  //       if (component.tapeVersion === 'online') {
+  //         this.modal.confirm({
+  //           nzTitle: '是否需要上传母带文件?',
+  //           nzOkText: '上传',
+  //           nzCancelText: '取消',
+  //           nzOkType: 'primary',
+  //           nzOnOk: () => this.uploadTape(res.id)
+  //         });
+  //       }
+  //       this.message.success(this.translate.instant('global.add-success'));
+  //       this.fetchPublicities();
+  //       resolve();
+  //     }, error => {
+  //       if (error.message) {
+  //         this.message.error(error.message);
+  //       }
+  //     });
+  // })
 
 
-  uploadTape = (id: number) => new Promise((resolve) => {
-     this.service.getIpAddress().subscribe(res => {
-    const address = res.ip;
-    this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
-      if (address.charAt(0) === '1' && address.charAt(1) === '2' && address.charAt(2) === '7') {
-        this.localRequestService.UploadTape(id).subscribe();
-        this.router.navigate([`/manage/transmit/download-record/${id}`]);
-      } else {
-      }
-    }, err => {
-      this.message.success(this.translate.instant('global.start-client'));
-    });
-  });
-  })
+  // uploadTape = (id: number) => new Promise((resolve) => {
+  //    this.service.getIpAddress().subscribe(res => {
+  //   const address = res.ip;
+  //   this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
+  //     if (address.charAt(0) === '1' && address.charAt(1) === '2' && address.charAt(2) === '7') {
+  //       this.localRequestService.UploadTape(id).subscribe();
+  //       this.router.navigate([`/manage/transmit/download-record/${id}`]);
+  //     } else {
+  //     }
+  //   }, err => {
+  //     this.message.success(this.translate.instant('global.start-client'));
+  //   });
+  // });
+  // })
 
 
   deleteTape(id: number) {

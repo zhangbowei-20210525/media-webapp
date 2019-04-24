@@ -147,7 +147,7 @@ export class SeriesService {
   }
 
   // tslint:disable-next-line:max-line-length
-  addTape(newTape: { program_id: number; name: string, language: string, subtitle: string, format: string, bit_rate: string, source_type: string, }) {
+  addTape(newTape: { program_id: number; name: string, language: string, subtitle: string, remark: string, source_type: string, }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
 
@@ -157,7 +157,7 @@ export class SeriesService {
   }
 
   // tslint:disable-next-line:max-line-length
-  addTape1(newTape: {  program_name: string, program_type: string, name: string, language: string, subtitle: string, format: string, bit_rate: string, source_type: string, }) {
+  addTape1(newTape: {  program_name: string, program_type: string, name: string, language: string, subtitle: string, remark: string, source_type: string, }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
   // tslint:disable-next-line:max-line-length

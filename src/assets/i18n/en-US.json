@@ -139,6 +139,7 @@
     "app.series.carrier": "Carrier",
     "app.series.tape": "Tape",
     "app.series.CD": "CD",
+    "app.series.hard-disk": "Hard Disk",
     "app.series.source-model": "Source model",
     "app.series.storage-date": "Storage date",
     "app.series.storage-location": "Storage location",

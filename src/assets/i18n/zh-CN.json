@@ -137,6 +137,7 @@
     "app.series.carrier": "载体",
     "app.series.tape": "磁带",
     "app.series.CD": "CD",
+    "app.series.hard-disk": "硬盘",
     "app.series.source-model": "载体型号",
     "app.series.storage-date": "入库时间",
     "app.series.storage-location": "存放地点",
