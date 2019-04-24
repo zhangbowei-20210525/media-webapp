@@ -251,11 +251,11 @@
 
       <nz-form-item>
 
-        <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm" nzRequired>购入期限</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm">购入期限</nz-form-label>
         <nz-form-control [nzSm]="7">
           <nz-range-picker nzFormat="yyyy/MM/dd" formControlName="copyrightValidTerm"></nz-range-picker>
-          <nz-form-explain *ngIf="rightForm.get('copyrightValidTerm').dirty && rightForm.get('copyrightValidTerm').errors">
-            请选择购入期限</nz-form-explain>
+          <!-- <nz-form-explain *ngIf="rightForm.get('copyrightValidTerm').dirty && rightForm.get('copyrightValidTerm').errors">
+            请选择购入期限</nz-form-explain> -->
         </nz-form-control>
 
         <nz-form-control [nzSm]="3">
@@ -280,7 +280,7 @@
 
     <div class="right-options">
       <button nz-button (click)="resetCopyrightForm()">重置</button>
-      <button nz-button (click)="addList()">添加到待新增列表</button>
+      <button nz-button (click)="addList()" nzType="primary">添加</button>
     </div>
 
     <h4>待新增列表</h4>

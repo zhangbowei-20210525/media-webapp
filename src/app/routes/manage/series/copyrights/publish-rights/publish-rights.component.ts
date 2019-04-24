@@ -7,9 +7,10 @@ import { finalize, switchMap } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { RootTemplateDto } from '../dtos';
-import { ScrollService } from '@shared';
+
 // import { ScrollService } from '@delon/theme';
 import * as _ from 'lodash';
+import { ScrollService } from '@delon/theme';
 
 @Component({
   selector: 'app-publish-rights',
@@ -114,7 +115,7 @@ export class PublishRightsComponent implements OnInit {
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
       copyrightAreaNote: [null],
-      copyrightValidTerm: [null, [Validators.required]],
+      copyrightValidTerm: [null],
       copyrightValidTermIsPermanent: [false],
       copyrightValidTermNote: [null],
       note: [null]
@@ -251,7 +252,7 @@ export class PublishRightsComponent implements OnInit {
           this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
         } else {
           if (this.dataSet.length < 1) {
-            this.message.warning('请先添加待发行权利');
+            this.message.warning('请先"添加"');
           }
         }
       }

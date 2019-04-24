@@ -204,7 +204,7 @@
 
       <nz-form-item>
 
-        <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm" nzRequired>发行期限</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm">发行期限</nz-form-label>
         <nz-form-control [nzSm]="7">
           <nz-range-picker nzFormat="yyyy/MM/dd" formControlName="copyrightValidTerm"></nz-range-picker>
         </nz-form-control>
@@ -232,7 +232,7 @@
     <div class="right-options">
       <!-- <button nz-button (click)="tab = 0;">上一步</button> -->
       <button nz-button (click)="resetCopyrightForm()">重置</button>
-      <button nz-button (click)="addList()">添加到待发行列表</button>
+      <button nz-button (click)="addList()" nzType="primary">添加</button>
     </div>
 
     <h4>待发行列表</h4>

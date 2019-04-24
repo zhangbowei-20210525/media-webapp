@@ -6,8 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { RootTemplateDto } from '../dtos';
-import { ScrollService } from '@shared';
 import * as _ from 'lodash';
+import { ScrollService } from '@delon/theme';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -113,7 +113,7 @@ export class AddCopyrightsComponent implements OnInit {
       copyrightNote: [null],
       copyrightArea: [null, [Validators.required]],
       copyrightAreaNote: [null],
-      copyrightValidTerm: [null, [Validators.required]],
+      copyrightValidTerm: [null],
       copyrightValidTermIsPermanent: [false],
       copyrightValidTermNote: [null],
       note: [null]
@@ -262,7 +262,7 @@ export class AddCopyrightsComponent implements OnInit {
             this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
           } else {
             if (this.dataSet.length < 1) {
-              this.message.warning('请先添加待新增权利');
+              this.message.warning('请先"添加"');
             }
           }
         }
@@ -271,7 +271,7 @@ export class AddCopyrightsComponent implements OnInit {
       if (this.dataSet.length > 0) {
         this.saveCopyrights(false);
       } else {
-        this.message.warning('请先添加待新增权利');
+        this.message.warning('请先"添加"');
       }
     }
   }
