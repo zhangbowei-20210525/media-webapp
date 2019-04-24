@@ -43,7 +43,7 @@
   </div>
   <div class="block-content">
     <nz-skeleton [nzActive]="true" [nzLoading]="!isLiaisonsLoaded">
-      <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'">
+      <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'" *ngIf="liaisonTabs && liaisonTabs.length > 0; else noResults">
         <nz-tab *ngFor="let liaison of liaisonTabs" [nzTitle]="liaison.name">
           <div nz-row class="series-info-row">
             <div nz-col nzSpan="6">
@@ -249,3 +249,7 @@
     </nz-tabset>
   </div>
 </div>
+
+<ng-template #noResults>
+  <app-empty></app-empty>
+</ng-template>

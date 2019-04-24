@@ -31,6 +31,7 @@ export class PublishRightsComponent implements OnInit {
   tab: number;
   series: any[];
   customerOptions: any[];
+  filteredCustomerOptions: string[];
   areaTemplates: RootTemplateDto[];
   rightTemplates: RootTemplateDto[];
   rightChildrenTemplate = {};
@@ -66,7 +67,7 @@ export class PublishRightsComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
-        const pids = params.get('pids');
+        const pids = params.get('pids') as any;
         return this.service.getSeriesNames(pids);
       })
     ).subscribe(result => {
@@ -77,6 +78,7 @@ export class PublishRightsComponent implements OnInit {
 
     this.service.getCustomerOptions().subscribe(result => {
       this.customerOptions = result.list;
+      this.filteredCustomerOptions = result.list.map(c => c.name);
     });
 
     this.service.getCopyrightTemplates().subscribe(result => {
@@ -99,10 +101,10 @@ export class PublishRightsComponent implements OnInit {
 
     this.contractForm = this.fb.group({
       customer: [null, [Validators.required]],
-      totalAmount: [null, [Validators.required, Validators.pattern(/^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/)]], // '[0-9]*(/.[0-9]{1,2})?'
-      paymentMethod: [null, [Validators.required]],
+      totalAmount: [null, [Validators.pattern(/^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/)]], // '[0-9]*(/.[0-9]{1,2})?'
+      paymentMethod: [null],
       contractName: [null],
-      contractNumber: [null, [Validators.required]],
+      contractNumber: [null],
       signDate: [new Date(), Validators.required]
     });
 
@@ -120,6 +122,10 @@ export class PublishRightsComponent implements OnInit {
       copyrightValidTermNote: [null],
       note: [null]
     });
+  }
+
+  onCustomerInput(value: string) {
+    this.filteredCustomerOptions = this.customerOptions.filter(item => item.name.indexOf(value) >= 0).map(item => item.name);
   }
 
   onRightChange() {
@@ -242,22 +248,43 @@ export class PublishRightsComponent implements OnInit {
   }
 
   save() {
-    const contract = this.validationForm(this.contractForm);
-    const payment = this.paymentForm ? this.validationForm(this.paymentForm) : false;
-    if (contract && payment && this.dataSet.length > 0) {
-      this.saveCopyrights(true);
-    } else {
-      if (!contract) {
-        this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
-      } else {
-        if (!payment) {
-          this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
-        } else {
-          if (this.dataSet.length < 1) {
+    // const contract = this.validationForm(this.contractForm);
+    // const payment = this.paymentForm ? this.validationForm(this.paymentForm) : false;
+    // if (contract && payment && this.dataSet.length > 0) {
+    //   this.saveCopyrights(true);
+    // } else {
+    //   if (!contract) {
+    //     this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
+    //   } else {
+    //     if (!payment) {
+    //       this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
+    //     } else {
+    //       if (this.dataSet.length < 1) {
+    //         this.message.warning('请先"添加"');
+    //       }
+    //     }
+    //   }
+    // }
+    if (this.validationForm(this.contractForm)) {
+      if (this.paymentForm) {
+        if (this.validationForm(this.paymentForm)) {
+          if (this.dataSet.length > 0) {
+            this.saveCopyrights(true);
+          } else {
             this.message.warning('请先"添加"');
           }
+        } else {
+          this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
+        }
+      } else {
+        if (this.dataSet.length > 0) {
+          this.saveCopyrights(true);
+        } else {
+          this.message.warning('请先"添加"');
         }
       }
+    } else {
+      this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
     }
   }
 
@@ -271,12 +298,15 @@ export class PublishRightsComponent implements OnInit {
         this.contractForm.value['contractName'],
         null,
         this.contractForm.value['customer'],
-        Util.dateToString(this.contractForm.value['signDate']));
+        Util.dateToString(this.contractForm.value['signDate']),
+        this.contractForm.value['totalAmount']);
 
-      orders = this.payments.map(paymentObjArr => {
-        const arr = paymentObjArr.map(item => this.paymentForm.value[item.key]);
-        return this.service.toOrderData(+arr[1], Util.dateToString(arr[0]), arr[3]); // 来自页面字段顺序
-      });
+      if (this.payments) {
+        orders = this.payments.map(paymentObjArr => {
+          const arr = paymentObjArr.map(item => this.paymentForm.value[item.key]);
+          return this.service.toOrderData(+arr[1], Util.dateToString(arr[0]), arr[3]); // 来自页面字段顺序
+        });
+      }
     }
 
     const groupData = this.service.groupBy(this.dataSet, item => item.id);
@@ -311,7 +341,9 @@ export class PublishRightsComponent implements OnInit {
         .subscribe(result => {
           this.isSaved = true;
           this.dataSet = [];
-          this.paymentForm.reset();
+          if (this.paymentForm) {
+            this.paymentForm.reset();
+          }
           this.contractForm.reset();
           this.payments = null;
           this.message.success(this.translate.instant('global.save-successfully'));

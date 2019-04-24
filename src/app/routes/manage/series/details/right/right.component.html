@@ -1,6 +1,9 @@
 <div class="block clearfix">
   <div class="block-header">
     <div class="block-title">已有权利</div>
+    <div class="block-options">
+      <a nz-button [routerLink]="['/manage/series/add-copyrights', { pids: id }]">新增权利</a>
+    </div>
   </div>
   <div class="block-content">
     <div [@fadeIn] *ngIf="isOwnLoaded">
@@ -45,6 +48,9 @@
 <div class="block clearfix">
   <div class="block-header">
     <div class="block-title">已发行权利</div>
+    <div class="block-options">
+      <a nz-button [routerLink]="['/manage/series/publish-rights', { pids: id }]">发行权利</a>
+    </div>
   </div>
   <div class="block-content">
     <div [@fadeIn] *ngIf="isPublishLoaded">

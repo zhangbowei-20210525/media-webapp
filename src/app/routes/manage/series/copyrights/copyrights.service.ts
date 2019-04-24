@@ -77,7 +77,8 @@ export class CopyrightsService {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
         start_date: params.start_date, end_date: params.end_date, custom_id: params.custom_id, sole: params.sole,
-        investment_type: params.investment_type, program_type: params.program_type, q: params.search || '' }
+        investment_type: params.investment_type, program_type: params.program_type, q: params.search || ''
+      }
     });
   }
 
@@ -128,8 +129,8 @@ export class CopyrightsService {
     return this.http.post('/api/v1/publish_rights', rightsData);
   }
 
-  getSeriesNames(ids: any) {
-    return this.http.get<any>(`/api/v1/programs/brief?program_ids=${ids}`);
+  getSeriesNames(program_ids?: number[]) {
+    return this.http.get<{ list: any[], meta: any }>(`/api/v1/programs/brief?program_ids=${program_ids}`);
   }
 
   getPrograms() {
@@ -235,13 +236,15 @@ export class CopyrightsService {
     return payments;
   }
 
-  toContractData(contract_number: string, contract_name: string, remark: string, custom_id: number, sign_date: string) {
+  toContractData(contract_number: string, contract_name: string, remark: string,
+    custom_name: string, sign_date: string, total_amount: number) {
     return {
       contract_number,
       contract_name,
       remark,
-      custom_id,
-      sign_date
+      custom_name,
+      sign_date,
+      total_amount
     } as ContractDto;
   }
 

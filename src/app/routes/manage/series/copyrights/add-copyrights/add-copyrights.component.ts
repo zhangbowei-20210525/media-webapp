@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
-import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { RootTemplateDto } from '../dtos';
 import * as _ from 'lodash';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -29,6 +29,7 @@ export class AddCopyrightsComponent implements OnInit {
   tab: number;
   series: any[];
   customerOptions: any[];
+  filteredCustomerOptions: string[];
   areaTemplates: RootTemplateDto[];
   rightTemplates: RootTemplateDto[];
   rightChildrenTemplate = {};
@@ -51,7 +52,8 @@ export class AddCopyrightsComponent implements OnInit {
     private ts: TreeService,
     private translate: TranslateService,
     private message: MessageService,
-    private scroll: ScrollService
+    private scroll: ScrollService,
+    private route: ActivatedRoute
   ) { }
 
   get contract() {
@@ -67,8 +69,13 @@ export class AddCopyrightsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(param => {
+      const pids = param.get('pids') as any;
+      this.fetchProgramOfOptions(pids);
+    });
     this.service.getCustomerOptions().subscribe(result => {
       this.customerOptions = result.list;
+      this.filteredCustomerOptions = result.list.map(c => c.name);
     });
 
     this.service.getCopyrightTemplates().subscribe(result => {
@@ -89,8 +96,6 @@ export class AddCopyrightsComponent implements OnInit {
       this.areaTemplates = result;
     });
 
-    this.fetchProgramOfOptions();
-
     this.typeForm = this.fb.group({
       investmentType: ['homemade', [Validators.required]],
       contract: ['no', Validators.required]
@@ -98,10 +103,10 @@ export class AddCopyrightsComponent implements OnInit {
 
     this.contractForm = this.fb.group({
       customer: [null, [Validators.required]],
-      totalAmount: [null, [Validators.required, Validators.pattern(/^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/)]],
-      paymentMethod: [null, [Validators.required]],
+      totalAmount: [null, [Validators.pattern(/^[1-9]{1}\d*(.\d{1,2})?$|^0.\d{1,2}$/)]],
+      paymentMethod: [null],
       contractName: [null],
-      contractNumber: [null, [Validators.required]],
+      contractNumber: [null],
       signDate: [new Date(), Validators.required]
     });
 
@@ -121,13 +126,20 @@ export class AddCopyrightsComponent implements OnInit {
     });
   }
 
+  onCustomerInput(value: string) {
+    this.filteredCustomerOptions = this.customerOptions.filter(item => item.name.indexOf(value) >= 0).map(item => item.name);
+  }
+
   onRightChange() {
     this.rightForm.get('copyrightChildren').reset();
   }
 
-  fetchProgramOfOptions() {
-    this.service.getPrograms().subscribe(result => {
+  fetchProgramOfOptions(ids?: number[]) {
+    this.service.getSeriesNames(ids).subscribe(result => {
       this.programOfOptions = result.list;
+      if (ids) {
+        this.rightForm.get('projects').setValue(this.programOfOptions.map(p => p.name));
+      }
     });
   }
 
@@ -252,23 +264,52 @@ export class AddCopyrightsComponent implements OnInit {
   }
 
   save() {
+    // if (this.hasContract()) {
+    //   const contract = this.validationForm(this.contractForm);
+    //   const payment = this.paymentForm ? this.validationForm(this.paymentForm) : false;
+    //   if (contract && payment && this.dataSet.length > 0) {
+    //     this.saveCopyrights(true);
+    //   } else {
+    //     if (!contract) {
+    //       this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
+    //     } else {
+    //       if (!payment) {
+    //         this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
+    //       } else {
+    //         if (this.dataSet.length < 1) {
+    //           this.message.warning('请先"添加"');
+    //         }
+    //       }
+    //     }
+    //   }
+    // } else {
+    //   if (this.dataSet.length > 0) {
+    //     this.saveCopyrights(false);
+    //   } else {
+    //     this.message.warning('请先"添加"');
+    //   }
+    // }
     if (this.hasContract()) {
-      const contract = this.validationForm(this.contractForm);
-      const payment = this.paymentForm ? this.validationForm(this.paymentForm) : false;
-      if (contract && payment && this.dataSet.length > 0) {
-        this.saveCopyrights(true);
-      } else {
-        if (!contract) {
-          this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
-        } else {
-          if (!payment) {
-            this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
-          } else {
-            if (this.dataSet.length < 1) {
+      if (this.validationForm(this.contractForm)) {
+        if (this.paymentForm) {
+          if (this.validationForm(this.paymentForm)) {
+            if (this.dataSet.length > 0) {
+              this.saveCopyrights(true);
+            } else {
               this.message.warning('请先"添加"');
             }
+          } else {
+            this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
+          }
+        } else {
+          if (this.dataSet.length > 0) {
+            this.saveCopyrights(true);
+          } else {
+            this.message.warning('请先"添加"');
           }
         }
+      } else {
+        this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
       }
     } else {
       if (this.dataSet.length > 0) {
@@ -289,12 +330,15 @@ export class AddCopyrightsComponent implements OnInit {
         this.contractForm.value['contractName'],
         null,
         this.contractForm.value['customer'],
-        Util.dateToString(this.contractForm.value['signDate']));
+        Util.dateToString(this.contractForm.value['signDate']),
+        this.contractForm.value['totalAmount']);
 
-      orders = this.payments.map(paymentObjArr => {
-        const arr = paymentObjArr.map(item => this.paymentForm.value[item.key]);
-        return this.service.toOrderData(+arr[1], Util.dateToString(arr[0]), arr[3]); // 来自页面字段顺序
-      });
+      if (this.payments) {
+        orders = this.payments.map(paymentObjArr => {
+          const arr = paymentObjArr.map(item => this.paymentForm.value[item.key]);
+          return this.service.toOrderData(+arr[1], Util.dateToString(arr[0]), arr[3]); // 来自页面字段顺序
+        });
+      }
     }
 
     const groupData = this.service.groupBy(this.dataSet, item => item.id);

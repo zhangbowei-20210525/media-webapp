@@ -39,8 +39,9 @@ export interface ContractDto {
     contract_number: string;
     contract_name: string;
     remark: string;
-    custom_id: number;
+    custom_name: string;
     sign_date: string;
+    total_amount: number;
 }
 
 export interface OrderPayDto {

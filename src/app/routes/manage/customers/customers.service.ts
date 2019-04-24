@@ -35,7 +35,7 @@ export class CustomersService {
   ) { }
 
   getCustomers(pagination: PaginationDto) {
-    return this.http.get<any>(`/api/v1/custom?page=${pagination.page}&limit=${pagination.page_size}`);
+    return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom?page=${pagination.page}&limit=${pagination.page_size}`);
   }
 
   addCustomer(customer: OptionCustomer) {
