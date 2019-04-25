@@ -40,6 +40,9 @@
 <div class="block clearfix">
   <div class="block-header">
     <div class="block-title">联系人</div>
+    <div class="block-options">
+      <button nz-button (click)="addLiaisons()">添加联系人</button>
+    </div>
   </div>
   <div class="block-content">
     <nz-skeleton [nzActive]="true" [nzLoading]="!isLiaisonsLoaded">

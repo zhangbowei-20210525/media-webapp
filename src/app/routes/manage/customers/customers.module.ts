@@ -13,6 +13,7 @@ import { EditCustomerComponent } from './components/edit-customer/edit-customer.
 import { DelonFormModule } from '@delon/form';
 import { ContractRightsViewComponent } from './components/contract-rights-view/contract-rights-view.component';
 import { ContractPaymentViewComponent } from './components/contract-payment-view/contract-payment-view.component';
+import { AddLiaisonsComponent } from './components/add-liaisons/add-liaisons.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ContractPaymentViewComponent } from './components/contract-payment-view
     AddLogComponent,
     EditCustomerComponent,
     ContractRightsViewComponent,
-    ContractPaymentViewComponent
+    ContractPaymentViewComponent,
+    AddLiaisonsComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,8 @@ import { ContractPaymentViewComponent } from './components/contract-payment-view
     AddCustomerComponent,
     AddLogComponent,
     EditCustomerComponent,
-    ContractPaymentViewComponent
+    ContractPaymentViewComponent,
+    AddLiaisonsComponent
   ]
 })
 export class CustomersModule { }

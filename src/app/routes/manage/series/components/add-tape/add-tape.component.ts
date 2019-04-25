@@ -381,7 +381,7 @@ export class AddTapeComponent implements OnInit {
           const address = res.ip;
           this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
             if (address.charAt(0) === '1' && address.charAt(1) === '2' && address.charAt(2) === '7') {
-              this.localRequestService.UploadTape(result.id).subscribe(x => {
+              this.localRequestService.uploadTape(result.id).subscribe(x => {
                 this.isloading = true;
                 this.component.close();
                 // this.message.success(this.translate.instant('global.add-success'));

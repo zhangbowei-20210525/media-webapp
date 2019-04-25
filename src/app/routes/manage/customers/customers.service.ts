@@ -97,6 +97,10 @@ export class CustomersService {
     return this.http.delete(`/api/v1/rights/contracts/payments/${paymentId}`);
   }
 
+  addLiaison(customId: number, liaison: any) {
+    return this.http.post(`/api/v1/custom/${customId}/liaison`, liaison);
+  }
+
   mapCopyrights(list: any[]) {
     const rights = [];
     let itemIndex = 0;
