@@ -76,6 +76,7 @@ const PIPES = [
 
 import { RouterModule } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { HttpClientJsonpModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -91,6 +92,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    HttpClientJsonpModule,
     // third libs
     ...THIRD_MODULES,
   ],

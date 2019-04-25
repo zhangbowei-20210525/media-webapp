@@ -9,6 +9,7 @@ import { AddLogComponent } from '../components/add-log/add-log.component';
 import { EditCustomerComponent } from '../components/edit-customer/edit-customer.component';
 import { ContractPaymentViewComponent } from '../components/contract-payment-view/contract-payment-view.component';
 import { zip } from 'rxjs';
+import { AddLiaisonsComponent } from '../components/add-liaisons/add-liaisons.component';
 
 @Component({
   selector: 'app-customer-details',
@@ -191,6 +192,30 @@ export class CustomerDetailsComponent implements OnInit {
       nzWidth: 800,
     });
   }
+
+  addLiaisons() {
+    this.modal.create({
+      nzTitle: '添加联系人',
+      nzContent: AddLiaisonsComponent,
+      nzComponentParams: { id: this.id },
+      nzWidth: 800,
+      nzOnOk: this.addLiaisonsAgreed
+    });
+  }
+
+  addLiaisonsAgreed = (component: AddLiaisonsComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      component.submit().subscribe(result => {
+        this.message.success(this.translate.instant('global.add-success'));
+        this.fetchLiaisons();
+        resolve();
+      }, error => {
+        reject(false);
+      });
+    } else {
+      reject(false);
+    }
+  })
 
   // editCustomer() {
   //   this.modal.create({

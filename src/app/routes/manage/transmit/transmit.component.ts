@@ -47,7 +47,7 @@ export class TransmitComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.tabIndex = +params.get('tabIndex');
-        return  this.seriesService.getAllTapes(this.tapesPagination)
+        return  this.seriesService.getAllTapes(this.tapesPagination);
       })).pipe(finalize(() => {
       this.isMyTapesLoading = false;
       this.isMyTapesLoaded = true;
@@ -121,7 +121,7 @@ export class TransmitComponent implements OnInit {
   }
 
   downloadTape(id: number) {
-    this.downloadModal = this.modalService.create({
+    this.modalService.create({
       nzTitle: '下载母带文件',
       nzContent: TapeDownloadComponent,
       nzComponentParams: { purchaseTapeId: id },
@@ -134,15 +134,14 @@ export class TransmitComponent implements OnInit {
     });
   }
 
-  downloadArgeed = () => new Promise((resolve) => {
-    const component = this.downloadModal.getContentComponent() as TapeDownloadComponent;
-    console.log(component);
+  downloadArgeed = (component: TapeDownloadComponent) => new Promise((resolve) => {
+    // console.log(component);
     const downloadSources = component.getCheckSourceIdList();
     if (downloadSources.length === 0) {
       this.message.success(this.translate.instant('global.select-download-file'));
       resolve();
     } else {
-      this.localRequestService.DownloadTape(downloadSources).subscribe(res => {
+      this.localRequestService.downloadTape(downloadSources).subscribe(res => {
         resolve();
       });
     }
