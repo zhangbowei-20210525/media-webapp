@@ -103,6 +103,8 @@
     "app.series.source-type": "Type",
     "app.series.source-language": "Language",
     "app.series.source-subtitles": "Subtitles",
+    "app.series.source-format": "Format",
+    "app.series.source-bit-rate": "Bit Rate",
     "app.series.source-type-online": "Online",
     "app.series.source-type-entity": "Entity",
     "app.series.subtitle": "Subtitle",

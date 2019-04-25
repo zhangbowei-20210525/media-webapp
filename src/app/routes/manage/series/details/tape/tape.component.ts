@@ -2,7 +2,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
-import { switchMap, timeout } from 'rxjs/operators';
+import { switchMap, timeout, tap } from 'rxjs/operators';
 import { ParamMap, ActivatedRoute, Router } from '@angular/router';
 import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,12 +26,12 @@ export class TapeComponent implements OnInit {
   tapeDetailsInfo: any;
   tapeFileList = [];
   pubTapeList = [];
-  tapeFilePagination: PaginationDto;
-  pubTapePagination: PaginationDto;
   tab: number;
   address: string;
   source_type: string;
   showTape: boolean;
+  tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
+  pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   constructor(
     private modalService: NzModalService,
     private seriesService: SeriesService,
@@ -62,11 +62,9 @@ export class TapeComponent implements OnInit {
         })
       ).subscribe(t => {
         this.tapeDetailsInfo = t;
+        this.tapeFile();
       });
     });
-
-    this.tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
-    this.pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   }
 
   pitchOn(id: number, source_type: string) {
@@ -102,7 +100,7 @@ export class TapeComponent implements OnInit {
      nzAfterClose() {
        this.seriesService.getTapeList(this.id).subscribe(res => {
          this.tapesList = res;
-         this.TapeFile();
+         this.tapeFile();
        });
      }
 
@@ -125,9 +123,16 @@ export class TapeComponent implements OnInit {
     this.tab = 0;
   }
 
-  TapeFile() {
+  tapeFile() {
     this.tab = 1;
-    this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).subscribe(res => {
+    this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).pipe(tap(x => {
+      x.list.forEach(f => {
+        if (f.created_at) {
+          f.created_at = f.created_at.substring(0, 10);
+        }
+      });
+    })).subscribe(res => {
+      console.log(res);
       this.tapeFileList = res.list;
       this.tapeFilePagination = res.pagination;
     });
@@ -206,6 +211,7 @@ export class TapeComponent implements OnInit {
     this.tapeFilePagination.page = page;
     this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).subscribe(res => {
       this.tapeFileList = res.list;
+      console.log( this.tapeFileList);
       this.tapeFilePagination = res.pagination;
     });
   }
@@ -216,7 +222,7 @@ export class TapeComponent implements OnInit {
       this.localRequestService.status(this.address).pipe(timeout(5000)).subscribe(z => {
         if (this.address.charAt(0) === '1' && this.address.charAt(1) === '2' && this.address.charAt(2) === '7') {
           this.localRequestService.UploadTape(this.isId).subscribe();
-          this.router.navigate([`/manage/transmit/download-record/${this.isId}`]);
+          this.router.navigate([`/manage/transmit/historic-record/${this.isId}`]);
         } else {
           // this.localRequestService.getUploadFoldersName(this.address).subscribe(c => {
           //   this.foldersName = c;

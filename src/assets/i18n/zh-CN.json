@@ -101,6 +101,8 @@
     "app.series.source-type": "类型",
     "app.series.source-language": "语言",
     "app.series.source-subtitles": "字幕",
+    "app.series.source-format": "格式",
+    "app.series.source-bit-rate": "码率",
     "app.series.source-type-online": "在线母带",
     "app.series.source-type-entity": "实体母带",
     "app.series.subtitle": "字幕",

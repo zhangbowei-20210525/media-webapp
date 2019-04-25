@@ -13,6 +13,8 @@
           <th style="text-align: center">{{ 'app.series.source-type' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.source-language' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.source-subtitles' | translate }}</th>
+          <th style="text-align: center">{{ 'app.series.source-format' | translate }}</th>
+          <th style="text-align: center">{{ 'app.series.source-bit-rate' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.detail' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.operation' | translate }}</th>
         </tr>
@@ -35,6 +37,8 @@
             <span *ngIf="data?.subtitle == 'English'">英语</span>
             <span *ngIf="data?.subtitle == 'other'">其他</span>
           </td>
+          <td style="text-align: center">{{data.format}}</td>
+          <td style="text-align: center">{{data.bit_rate}}</td>
           <td style="text-align: center"><a (click)="pitchOn(data.id, data.source_type)">{{ 'app.series.view' | translate }}</a></td>
           <td style="text-align: center">
             <a (click)="editTape(data.id, data.source_type)"><i nz-icon type="form" theme="outline"
@@ -92,7 +96,7 @@
           </div>
         </div>
       </nz-tab> -->
-      <nz-tab nzTitle="母带文件" (nzClick)="TapeFile()">
+      <nz-tab nzTitle="母带文件" (nzClick)="tapeFile()">
         <nz-table #basicTable [nzData]="tapeFileList" nzBordered [nzPageSize]="tapeFilePagination.page_size"
           [nzFrontPagination]="false" [nzPageIndex]="tapeFilePagination.page" [nzTotal]="tapeFilePagination.count"
           (nzPageIndexChange)="tapeFilePageChange($event)">
@@ -106,9 +110,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable.data;let i = index">
-                <td>{{ i + 1 }}</td>
-              <td>{{r.name}}</td>
-              <td>{{data.size}}</td>
+                <td>{{ i + 1 + tapeFilePagination.page * 10 - 10}}</td>
+              <td>{{data.name}}</td>
+              <td>{{data.size | byteFormat}}</td>
               <td>{{data.created_at}}</td>
             </tr>
           </tbody>
@@ -130,7 +134,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable1.data;let i = index">
-                <td>{{ i + 1 }}</td>
+                <td>{{ i + 1 + pubTapePagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.created_name}}</td>
               <td style="text-align: center">{{data.created_at}}</td>
               <td style="text-align: center">{{data.auth_company_name}}</td>
