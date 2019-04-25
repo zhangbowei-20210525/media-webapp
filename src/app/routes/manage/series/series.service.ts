@@ -152,7 +152,7 @@ export class SeriesService {
   }
 
   // tslint:disable-next-line:max-line-length
-  editTape(id: number, newTape: { name: string, language: string, subtitle: string, format: string, bit_rate: string, source_type: string, }) {
+  editTape(id: number, newTape: { name: string, language: string, subtitle: string, remark: string, source_type: string, }) {
     return this.http.put<ResponseDto<number>>(`/api/v1/sources/${id}`, newTape);
   }
 

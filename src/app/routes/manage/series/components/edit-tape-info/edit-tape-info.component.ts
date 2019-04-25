@@ -28,8 +28,9 @@ export class EditTapeInfoComponent implements OnInit {
       name: [null, [Validators.required]],
       language: [null],
       subtitle: [null],
-      format: [null],
-      bit_rate: [null],
+      remark: [null],
+      // format: [null],
+      // bit_rate: [null],
     });
     this.entityTapeForm = this.fb.group({
       program_name: [  null, [Validators.required]],
@@ -60,8 +61,9 @@ export class EditTapeInfoComponent implements OnInit {
           name: [result.name, [Validators.required]],
           language: [result.language],
           subtitle: [result.subtitle],
-          format: [result.format],
-          bit_rate: [result.bit_rate],
+          remark: [result.remark],
+          // format: [result.format],
+          // bit_rate: [result.bit_rate],
         });
         this.entityTapeForm = this.fb.group({
           name: [result.name, [Validators.required]],
@@ -112,8 +114,9 @@ export class EditTapeInfoComponent implements OnInit {
           name: this.onlineTapeForm.value['name'] || null,
           language: this.onlineTapeForm.value['language'] || null,
           subtitle: this.onlineTapeForm.value['subtitle'] || null,
-          format: this.onlineTapeForm.value['format'] || null,
-          bit_rate: this.onlineTapeForm.value['bit_rate'] || null,
+          remark: this.onlineTapeForm.value['remark'] || null,
+          // format: this.onlineTapeForm.value['format'] || null,
+          // bit_rate: this.onlineTapeForm.value['bit_rate'] || null,
           source_type: 'online',
         };
         if (this.onlineTapeForm.valid === true) {

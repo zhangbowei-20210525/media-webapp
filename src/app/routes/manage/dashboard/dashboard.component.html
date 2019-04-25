@@ -73,7 +73,8 @@
         </nz-radio-group>
       </div>
       <div class="cartogram-info-one">
-        <div id="seriesStatistics"></div>
+        <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="seriesStatistics" [hidden]="t1 == 0"></div>
       </div>
     </div>
 
@@ -91,7 +92,8 @@
         </nz-radio-group>
       </div>
       <div class="cartogram-info-two">
-        <div id="publicityStatistics"></div>
+          <nz-empty [hidden]="t2 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="publicityStatistics" [hidden]="t2 == 0"></div>
       </div>
     </div>
   </div>
@@ -110,7 +112,8 @@
         </nz-radio-group>
       </div>
       <div class="cartogram-info-three">
-        <div id="publishStatistics"></div>
+          <nz-empty [hidden]="t3 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="publishStatistics" [hidden]="t3 == 0"></div>
       </div>
     </div>
 
@@ -127,7 +130,8 @@
         </nz-radio-group>
       </div>
       <div class="cartogram-info-four">
-        <div id="tapeStatistics"></div>
+          <nz-empty [hidden]="t4 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="tapeStatistics" [hidden]="t4 == 0"></div>
       </div>
     </div>
   </div>

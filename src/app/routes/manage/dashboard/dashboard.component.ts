@@ -47,6 +47,10 @@ export class DashboardComponent implements OnInit {
   spread = [];
   timeType = 'quarter';
   sid: string;
+  t1: any;
+  t2: any;
+  t3: any;
+  t4: any;
   data = [{
     'State': '第一季度',
     '中国(未付款)': 30,
@@ -341,6 +345,7 @@ export class DashboardComponent implements OnInit {
 
   getSeriesStatisticsInfo() {
     this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
+      this.t1 = res.length;
       this.seriesChart = new G2.Chart({
         container: 'seriesStatistics',
         forceFit: true,
@@ -386,6 +391,7 @@ export class DashboardComponent implements OnInit {
 
   getPublicityStatisticsInfo() {
     this.dashboardService.getPublicityStatistics('day').subscribe(res => {
+      this.t2 = res.length;
       const dv = new DataSet.View().source(res);
       dv.transform({
         type: 'sort',
@@ -438,6 +444,7 @@ export class DashboardComponent implements OnInit {
 
   getPublishStatisticsInfo() {
     this.dashboardService.getPublishStatistics('custom').subscribe(res => {
+      this.t3 = res.length;
       this.publishChart = new G2.Chart({
         container: 'publishStatistics',
         forceFit: true,
@@ -455,6 +462,7 @@ export class DashboardComponent implements OnInit {
 
   getTapeStatisticsInfo() {
     this.dashboardService.getTapeStatistics('publish').subscribe(res => {
+      this.t4 = res.length;
       this.tapeChart = new G2.Chart({
         container: 'tapeStatistics',
         forceFit: true,

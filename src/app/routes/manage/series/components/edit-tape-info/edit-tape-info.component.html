@@ -21,6 +21,7 @@
         <nz-select id="language" formControlName="language" nzPlaceHolder="请选择语言种类">
           <nz-option nzLabel="汉语" nzValue="Chinese"></nz-option>
           <nz-option nzLabel="英语" nzValue="English"></nz-option>
+          <nz-option nzLabel="其他" nzValue="other"></nz-option>
         </nz-select>
         <nz-form-explain *ngIf="onlineTapeForm.get('language').dirty && onlineTapeForm.get('language').errors">请选择语言
         </nz-form-explain>
@@ -39,7 +40,7 @@
       </nz-form-control>
     </nz-form-item>
 
-    <nz-form-item>
+    <!-- <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="format">格式</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <nz-select id="format" formControlName="format" nzPlaceHolder="请选择母带格式">
@@ -65,9 +66,9 @@
         <nz-form-explain *ngIf="onlineTapeForm.get('format').dirty && onlineTapeForm.get('format').errors">请选择母带格式
         </nz-form-explain>
       </nz-form-control>
-    </nz-form-item>
+    </nz-form-item> -->
 
-    <nz-form-item>
+    <!-- <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="bit_rate">码率</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <nz-input-group nzAddOnAfter="kbps">
@@ -85,7 +86,16 @@
             </nz-select>
         </nz-input-group>
       </nz-form-control>
-    </nz-form-item>
+    </nz-form-item> -->
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="remark" formControlName="remark" placeholder="请输入备注">
+          <nz-form-explain *ngIf="onlineTapeForm.get('remark').dirty && onlineTapeForm.get('remark').errors">请输入备注
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
   </form>
 
 
@@ -111,6 +121,7 @@
         <nz-select id="language" formControlName="language" nzPlaceHolder="请选择语言种类">
             <nz-option nzLabel="汉语" nzValue="Chinese"></nz-option>
             <nz-option nzLabel="英语" nzValue="English"></nz-option>
+            <nz-option nzLabel="其他" nzValue="other"></nz-option>
         </nz-select>
         <nz-form-explain *ngIf="entityTapeForm.get('language').dirty && entityTapeForm.get('language').errors">请选择语言
         </nz-form-explain>
@@ -131,16 +142,22 @@
         <nz-form-label [nzSm]="3" nzFor="ch1">声轨1</nz-form-label>
         <nz-form-control [nzSm]="9">
           <nz-select id="ch1" formControlName="ch1" nzPlaceHolder="请选择声轨类型">
-            <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
-            <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+              <nz-option nzLabel="混合" nzValue="hybrid"></nz-option>
+              <nz-option nzLabel="国际" nzValue="international"></nz-option>
+              <nz-option nzLabel="音乐" nzValue="music"></nz-option>
+              <nz-option nzLabel="对白" nzValue="dialogue"></nz-option>
+              <nz-option nzLabel="动效" nzValue="DynamicEffect"></nz-option>
           </nz-select>
           <nz-form-explain *ngIf="entityTapeForm.get('ch1').dirty && entityTapeForm.get('ch1').errors">请选择声轨类型</nz-form-explain>
         </nz-form-control>
         <nz-form-label [nzSm]="3" nzFor="ch2">声轨2</nz-form-label>
         <nz-form-control [nzSm]="9">
           <nz-select id="ch2" formControlName="ch2" nzPlaceHolder="请选择声轨类型">
-            <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
-            <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+              <nz-option nzLabel="混合" nzValue="hybrid"></nz-option>
+              <nz-option nzLabel="国际" nzValue="international"></nz-option>
+              <nz-option nzLabel="音乐" nzValue="music"></nz-option>
+              <nz-option nzLabel="对白" nzValue="dialogue"></nz-option>
+              <nz-option nzLabel="动效" nzValue="DynamicEffect"></nz-option>
           </nz-select>
           <nz-form-explain *ngIf="entityTapeForm.get('ch2').dirty && entityTapeForm.get('ch2').errors">请选择声轨类型</nz-form-explain>
         </nz-form-control>
@@ -150,16 +167,22 @@
           <nz-form-label [nzSm]="3" nzFor="ch3">声轨3</nz-form-label>
           <nz-form-control [nzSm]="9">
             <nz-select id="ch3" formControlName="ch3" nzPlaceHolder="请选择声轨类型">
-              <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
-              <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+                <nz-option nzLabel="混合" nzValue="hybrid"></nz-option>
+                <nz-option nzLabel="国际" nzValue="international"></nz-option>
+                <nz-option nzLabel="音乐" nzValue="music"></nz-option>
+                <nz-option nzLabel="对白" nzValue="dialogue"></nz-option>
+                <nz-option nzLabel="动效" nzValue="DynamicEffect"></nz-option>
             </nz-select>
             <nz-form-explain *ngIf="entityTapeForm.get('ch3').dirty && entityTapeForm.get('ch3').errors">请选择声轨类型</nz-form-explain>
           </nz-form-control>
           <nz-form-label [nzSm]="3" nzFor="ch4">声轨4</nz-form-label>
           <nz-form-control [nzSm]="9">
             <nz-select id="ch4" formControlName="ch4" nzPlaceHolder="请选择声轨类型">
-              <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
-              <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+                <nz-option nzLabel="混合" nzValue="hybrid"></nz-option>
+                <nz-option nzLabel="国际" nzValue="international"></nz-option>
+                <nz-option nzLabel="音乐" nzValue="music"></nz-option>
+                <nz-option nzLabel="对白" nzValue="dialogue"></nz-option>
+                <nz-option nzLabel="动效" nzValue="DynamicEffect"></nz-option>
             </nz-select>
             <nz-form-explain *ngIf="entityTapeForm.get('ch4').dirty && entityTapeForm.get('ch4').errors">请选择声轨类型</nz-form-explain>
           </nz-form-control>
@@ -169,16 +192,22 @@
             <nz-form-label [nzSm]="3" nzFor="ch5">声轨5</nz-form-label>
             <nz-form-control [nzSm]="9">
               <nz-select id="ch5" formControlName="ch5" nzPlaceHolder="请选择声轨类型">
-                <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
-                <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+                  <nz-option nzLabel="混合" nzValue="hybrid"></nz-option>
+                  <nz-option nzLabel="国际" nzValue="international"></nz-option>
+                  <nz-option nzLabel="音乐" nzValue="music"></nz-option>
+                  <nz-option nzLabel="对白" nzValue="dialogue"></nz-option>
+                  <nz-option nzLabel="动效" nzValue="DynamicEffect"></nz-option>
               </nz-select>
               <nz-form-explain *ngIf="entityTapeForm.get('ch5').dirty && entityTapeForm.get('ch5').errors">请选择声轨类型</nz-form-explain>
             </nz-form-control>
             <nz-form-label [nzSm]="3" nzFor="ch6">声轨6</nz-form-label>
             <nz-form-control [nzSm]="9">
               <nz-select id="ch6" formControlName="ch6" nzPlaceHolder="请选择声轨类型">
-                <nz-option nzLabel="混合" nzValue="mixture"></nz-option>
-                <nz-option nzLabel="人声" nzValue="vocal"></nz-option>
+                  <nz-option nzLabel="混合" nzValue="hybrid"></nz-option>
+                  <nz-option nzLabel="国际" nzValue="international"></nz-option>
+                  <nz-option nzLabel="音乐" nzValue="music"></nz-option>
+                  <nz-option nzLabel="对白" nzValue="dialogue"></nz-option>
+                  <nz-option nzLabel="动效" nzValue="DynamicEffect"></nz-option>
               </nz-select>
               <nz-form-explain *ngIf="entityTapeForm.get('ch6').dirty && entityTapeForm.get('ch6').errors">请选择声轨类型</nz-form-explain>
             </nz-form-control>
@@ -199,6 +228,7 @@
                 <nz-select id="carrier" formControlName="carrier" nzPlaceHolder="请选择载体类型">
                   <nz-option nzLabel="磁带" nzValue="tape"></nz-option>
                   <nz-option nzLabel="光盘" nzValue="CD"></nz-option>
+                  <nz-option nzLabel="硬盘" nzValue="hardDisk"></nz-option>
                 </nz-select>
                 <nz-form-explain *ngIf="entityTapeForm.get('carrier').dirty && entityTapeForm.get('carrier').errors">请选择载体类型</nz-form-explain>
               </nz-form-control>

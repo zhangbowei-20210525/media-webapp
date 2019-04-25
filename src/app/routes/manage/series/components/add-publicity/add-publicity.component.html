@@ -40,7 +40,13 @@
         <nz-option nzLabel="剧照" nzValue="still"></nz-option>
         <nz-option nzLabel="PDF" nzValue="pdf"></nz-option>
       </nz-select>
-      <nz-form-explain *ngIf="validateForm.get('type').dirty && validateForm.get('type').errors">请选择宣发类型</nz-form-explain>
+      <nz-form-explain *ngIf="validateForm.get('type').dirty && validateForm.get('type').errors">请选择节目类型</nz-form-explain>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'sample'"><a>样片的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",  "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'feature'"><a>片花的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",  "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'trailer'"><a>先导片的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",  "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'poster'"><a>海报支持的图片格式为："jpg", "jpeg", "png"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'still'"><a>剧照支持的图片格式为："jpg", "jpeg", "png"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'pdf'"><a>PDF支持的文档格式为："pdf"。</a></nz-form-extra>
     </nz-form-control>
   </nz-form-item>
 </form>

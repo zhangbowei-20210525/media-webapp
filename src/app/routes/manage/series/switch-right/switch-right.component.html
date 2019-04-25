@@ -1,6 +1,6 @@
 <nz-radio-group [(ngModel)]="switchRight" [nzButtonStyle]="'solid'">
-    <label nz-radio-button nzValue="rights" [routerLink]="'rights'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">版权库</label>
-    <label nz-radio-button nzValue="pubRights" [routerLink]="'pubRights'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">已发行</label>
+    <label nz-radio-button nzValue="rights" [routerLink]="'rights'" [routerLinkActive]="'ant-radio-button-wrapper-checked'"><span nzTitle="采购或自制的节目版权管理" nzPlacement="bottom" nz-tooltip>版权库</span></label>
+    <label nz-radio-button nzValue="pubRights" [routerLink]="'pubRights'" [routerLinkActive]="'ant-radio-button-wrapper-checked'"><span nzTitle="节目版权的发行历史" nzPlacement="bottom" nz-tooltip>已发行</span></label>
   </nz-radio-group>
   <nz-divider></nz-divider>
   <router-outlet></router-outlet>

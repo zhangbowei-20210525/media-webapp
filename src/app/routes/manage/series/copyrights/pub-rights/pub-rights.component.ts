@@ -124,8 +124,9 @@ export class PubRightsComponent implements OnInit {
         rights.push({
           index: index++,
           itemIndex: itemIndex,
-          pid: item.id,
+          pid: item.program_id,
           rid: right.id,
+          cid: item.custom_id,
           project: item.program_name,
           contract_number: item.contract_number,
           custom_name: item.custom_name,

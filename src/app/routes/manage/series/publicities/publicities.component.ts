@@ -2,11 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SeriesService } from '../series.service';
 import { PaginationDto } from '@shared';
-import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
 import { finalize, switchMap } from 'rxjs/operators';
 import { fadeIn } from '@shared/animations';
+import { QueueUploader } from '@shared/upload';
+import { PublicityService } from '../details/publicity/publicity.service';
 
 @Component({
   selector: 'app-publicities',
@@ -38,10 +40,13 @@ export class PublicitiesComponent implements OnInit {
   constructor(
     private router: Router,
     private service: SeriesService,
+    private pservice: PublicityService,
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,
     private route: ActivatedRoute,
+    private uploader: QueueUploader,
+    private notification: NzNotificationService,
   ) { }
 
   ngOnInit() {
@@ -133,6 +138,7 @@ export class PublicitiesComponent implements OnInit {
   publicityUpload(event) {
     const component = this.addPublicityModal.getContentComponent();
     if (component.validation()) {
+      this.addPublicityModal.close();
       if (component.submit().type === 'sample') {
         let fileList: FileList, folder: string;
         try {
@@ -157,22 +163,40 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(data).subscribe(s => {
+
+        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(datas).subscribe(s => {
           const sid = s.id;
-          this.service.getUploadVideoId(fileList[0]).subscribe(res => {
-            const id = res.id;
             this.service.getPublicitiesList(sid).subscribe(pl => {
               this.publicityId = pl.list[0].id;
-              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
-                this.message.success(this.translate.instant('global.upload-success'));
-                this.addPublicityModal.close();
-                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              // this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
+              //   this.message.success(this.translate.instant('global.upload-success'));
+              //   this.addPublicityModal.close();
+              //   this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              // });
+              const uploads = list.map(item => {
+                const dotIndex = item.name.lastIndexOf('.');
+                return this.uploader.enqueue({
+                  target: this.publicityId,
+                  url: '/api/v1/upload/video',
+                  file: item,
+                  name: item.name.substring(0, dotIndex),
+                  extension: item.name.substring(dotIndex + 1, item.name.length),
+                  size: item.size,
+                  progress: 0,
+                  createAt: new Date,
+                  success: (upload, data) => {
+                    this.pservice.bindingMateriel(upload.target, data.id, 'sample').subscribe(result => {
+                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                    });
+                    return true;
+                  }
+                });
               });
             });
-          });
         });
       }
+
       if (component.submit().type === 'feature') {
         let fileList: FileList, folder: string;
         try {
@@ -197,20 +221,31 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(data).subscribe(s => {
+        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(datas).subscribe(s => {
           const sid = s.id;
-          this.service.getUploadVideoId(fileList[0]).subscribe(res => {
-            const id = res.id;
             this.service.getPublicitiesList(sid).subscribe(pl => {
               this.publicityId = pl.list[0].id;
-              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
-                this.message.success(this.translate.instant('global.upload-success'));
-                this.addPublicityModal.close();
-                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              const uploads = list.map(item => {
+                const dotIndex = item.name.lastIndexOf('.');
+                return this.uploader.enqueue({
+                  target: this.publicityId,
+                  url: '/api/v1/upload/video',
+                  file: item,
+                  name: item.name.substring(0, dotIndex),
+                  extension: item.name.substring(dotIndex + 1, item.name.length),
+                  size: item.size,
+                  progress: 0,
+                  createAt: new Date,
+                  success: (upload, data) => {
+                    this.pservice.bindingMateriel(upload.target, data.id, 'feature').subscribe(result => {
+                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                    });
+                    return true;
+                  }
+                });
               });
             });
-          });
         });
       }
       if (component.submit().type === 'trailer') {
@@ -237,20 +272,31 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(data).subscribe(s => {
+        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(datas).subscribe(s => {
           const sid = s.id;
-          this.service.getUploadVideoId(fileList[0]).subscribe(res => {
-            const id = res.id;
             this.service.getPublicitiesList(sid).subscribe(pl => {
               this.publicityId = pl.list[0].id;
-              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
-                this.message.success(this.translate.instant('global.upload-success'));
-                this.addPublicityModal.close();
-                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              const uploads = list.map(item => {
+                const dotIndex = item.name.lastIndexOf('.');
+                return this.uploader.enqueue({
+                  target: this.publicityId,
+                  url: '/api/v1/upload/video',
+                  file: item,
+                  name: item.name.substring(0, dotIndex),
+                  extension: item.name.substring(dotIndex + 1, item.name.length),
+                  size: item.size,
+                  progress: 0,
+                  createAt: new Date,
+                  success: (upload, data) => {
+                    this.pservice.bindingMateriel(upload.target, data.id, 'trailer').subscribe(result => {
+                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                    });
+                    return true;
+                  }
+                });
               });
             });
-          });
         });
       }
       if (component.submit().type === 'poster') {
@@ -276,20 +322,31 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(data).subscribe(s => {
+        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(datas).subscribe(s => {
           const sid = s.id;
-          this.service.getUploadImageId(fileList[0]).subscribe(result => {
-            const id = result.id;
             this.service.getPublicitiesList(sid).subscribe(pl => {
               this.publicityId = pl.list[0].id;
-              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
-                this.message.success(this.translate.instant('global.upload-success'));
-                this.addPublicityModal.close();
-                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              const uploads = list.map(item => {
+                const dotIndex = item.name.lastIndexOf('.');
+                return this.uploader.enqueue({
+                  target: this.publicityId,
+                  url: '/api/v1/upload/image',
+                  file: item,
+                  name: item.name.substring(0, dotIndex),
+                  extension: item.name.substring(dotIndex + 1, item.name.length),
+                  size: item.size,
+                  progress: 0,
+                  createAt: new Date,
+                  success: (upload, data) => {
+                    this.pservice.bindingMateriel(upload.target, data.id, 'poster').subscribe(result => {
+                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                    });
+                    return true;
+                  }
+                });
               });
             });
-          });
         });
       }
       if (component.submit().type === 'still') {
@@ -315,21 +372,31 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-        console.log(component.submit().name);
-        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(data).subscribe(s => {
+        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(datas).subscribe(s => {
           const sid = s.id;
-          this.service.getUploadImageId(fileList[0]).subscribe(result => {
-            const id = result.id;
             this.service.getPublicitiesList(sid).subscribe(pl => {
               this.publicityId = pl.list[0].id;
-              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
-                this.message.success(this.translate.instant('global.upload-success'));
-                this.addPublicityModal.close();
-                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              const uploads = list.map(item => {
+                const dotIndex = item.name.lastIndexOf('.');
+                return this.uploader.enqueue({
+                  target: this.publicityId,
+                  url: '/api/v1/upload/image',
+                  file: item,
+                  name: item.name.substring(0, dotIndex),
+                  extension: item.name.substring(dotIndex + 1, item.name.length),
+                  size: item.size,
+                  progress: 0,
+                  createAt: new Date,
+                  success: (upload, data) => {
+                    this.pservice.bindingMateriel(upload.target, data.id, 'still').subscribe(result => {
+                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                    });
+                    return true;
+                  }
+                });
               });
             });
-          });
         });
       }
       if (component.submit().type === 'pdf') {
@@ -356,20 +423,31 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-        const data = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(data).subscribe(s => {
+        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
+        this.service.addSeries(datas).subscribe(s => {
           const sid = s.id;
-          this.service.getUploadPdfId(fileList[0]).subscribe(res => {
-            const id = res.id;
             this.service.getPublicitiesList(sid).subscribe(pl => {
               this.publicityId = pl.list[0].id;
-              this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
-                this.message.success(this.translate.instant('global.upload-success'));
-                this.addPublicityModal.close();
-                this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
+              const uploads = list.map(item => {
+                const dotIndex = item.name.lastIndexOf('.');
+                return this.uploader.enqueue({
+                  target: this.publicityId,
+                  url: '/api/v1/upload/docment',
+                  file: item,
+                  name: item.name.substring(0, dotIndex),
+                  extension: item.name.substring(dotIndex + 1, item.name.length),
+                  size: item.size,
+                  progress: 0,
+                  createAt: new Date,
+                  success: (upload, data) => {
+                    this.pservice.bindingMateriel(upload.target, data.id, 'pdf').subscribe(result => {
+                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                    });
+                    return true;
+                  }
+                });
               });
             });
-          });
         });
       }
     } else { }

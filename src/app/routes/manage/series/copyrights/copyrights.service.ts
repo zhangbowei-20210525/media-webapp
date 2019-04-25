@@ -106,7 +106,7 @@ export class CopyrightsService {
   }
 
   deletePubCopyrights(pid: number) {
-    return this.http.delete(`/api/v1/publish_rights/${pid}`);
+    return this.http.delete(`/api/v1/rights/publish/right_programs/${pid}`);
   }
 
   getCopyrightAreaOptions() {

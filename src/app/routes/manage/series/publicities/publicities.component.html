@@ -122,7 +122,6 @@
         </li>
       </ul>
     </div>
-
     <nz-empty [hidden]="thumbnailList.length > 0 || publicityStyle == 'table'"></nz-empty>
     <div style="text-align: right;margin-top: 5rem" [hidden]="thumbnailList.length == 0  || publicityStyle == 'table'">
       <nz-pagination [(nzPageIndex)]="tbPagination.page" [nzTotal]="tbPagination.count" [nzPageSize]="tbPagination.page_size" (nzPageIndexChange)="tbPageChange()"></nz-pagination>

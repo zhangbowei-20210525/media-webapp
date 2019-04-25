@@ -102,7 +102,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       switchMap((params: ParamMap) => {
         this.id = +params.get('id');
         this.sid = +params.get('sid');
-        this.tabIndex = +params.get('tabIndex');
+        // this.tabIndex = +params.get('tabIndex');
         this.sampleIndex = +params.get('sampleIndex');
         this.featureIndex = +params.get('featureIndex');
         this.trailerIndex = +params.get('trailerIndex');
