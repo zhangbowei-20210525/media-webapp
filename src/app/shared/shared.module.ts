@@ -57,6 +57,7 @@ import { ArrayFormatPipe } from './pipes/array-format.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
 import { PaymentFormatPipe } from './pipes/payment-format.pipe';
+import { ArrayMapPipe } from './pipes/array-map.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -70,7 +71,8 @@ const PIPES = [
   ArrayFormatPipe,
   TruncatePipe,
   YesOrNoPipe,
-  PaymentFormatPipe
+  PaymentFormatPipe,
+  ArrayMapPipe
 ];
 // #endregion
 
@@ -84,7 +86,7 @@ import { HttpClientJsonpModule } from '@angular/common/http';
     ...INSIDE_COMPONENTS,
     ...COMPONENTS,
     ...DIRECTIVES,
-    ...PIPES,
+    ...PIPES
   ],
   imports: [
     CommonModule,

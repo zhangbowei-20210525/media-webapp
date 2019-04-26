@@ -70,7 +70,6 @@ export class SeriesService {
   addSeries(newSeriesInfo: {
     name: string, program_type: string
   }) {
-    console.log(newSeriesInfo);
     return this.http.post<any>('/api/v1/program', newSeriesInfo);
   }
 

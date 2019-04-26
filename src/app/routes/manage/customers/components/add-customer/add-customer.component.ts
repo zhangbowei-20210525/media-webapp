@@ -7,6 +7,9 @@ import { SFComponent, FormProperty, PropertyGroup } from '@delon/form';
 
 declare type CustomType = 'enterprise' | 'personal';
 
+// tslint:disable-next-line:max-line-length
+const EMAIL_EXGEXP = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$/;
+
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
@@ -80,7 +83,10 @@ export class AddCustomerComponent implements OnInit {
                 spanLabel: 5,
                 offsetControl: 0,
                 spanControl: 18,
-                placeholder: '请输入联系人邮箱地址'
+                placeholder: '请输入联系人邮箱地址',
+                validator: (value: any, property: FormProperty, form: PropertyGroup) => {
+                  return EMAIL_EXGEXP.test(value) ? [] : [{ keyword: 'email', message: '请输入正确的邮箱地址'}];
+                },
               }
             },
             department: {
