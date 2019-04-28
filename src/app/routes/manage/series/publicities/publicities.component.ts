@@ -135,86 +135,6 @@ export class PublicitiesComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
-  publicityUpload(event) {
-    const component = this.addPublicityModal.getContentComponent();
-    if (component.validation()) {
-      this.addPublicityModal.close();
-      if (component.submit().type === 'sample') {
-        let fileList: FileList, folder: string;
-        try {
-          fileList = event.target.files as FileList;
-          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-        } catch (ex) {
-          return;
-        }
-        const list = [] as File[];
-        for (const key in fileList) {
-          if (fileList.hasOwnProperty(key)) {
-            const element = fileList[key];
-            this.fileFilters.forEach(filter => {
-              if (element.name.toLowerCase().endsWith(filter)) {
-                list.push(element);
-                return;
-              }
-            });
-          }
-        }
-        if (list.length < 1) {
-          this.message.success(this.translate.instant('global.no-valid-file'));
-          return;
-        }
-        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(datas).subscribe(s => {
-          const sid = s.id;
-            this.service.getPublicitiesList(sid).subscribe(pl => {
-              this.publicityId = pl.list[0].id;
-              // this.service.addUpload(this.publicityId, id, component.submit().type).subscribe(i => {
-              //   this.message.success(this.translate.instant('global.upload-success'));
-              //   this.addPublicityModal.close();
-              //   this.router.navigate([`/manage/series/d/${sid}/publicityd`]);
-              // });
-              const uploads = list.map(item => {
-                const dotIndex = item.name.lastIndexOf('.');
-                return this.uploader.enqueue({
-                  target: this.publicityId,
-                  url: '/api/v1/upload/video',
-                  file: item,
-                  name: item.name.substring(0, dotIndex),
-                  extension: item.name.substring(dotIndex + 1, item.name.length),
-                  size: item.size,
-                  progress: 0,
-                  createAt: new Date,
-                  success: (upload, data) => {
-                    this.pservice.bindingMateriel(upload.target, data.id, 'sample').subscribe(result => {
-                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                    });
-                    return true;
-                  }
-                });
-              });
-            });
-        });
-      }
-
-      if (component.submit().type === 'feature') {
-        let fileList: FileList, folder: string;
-        try {
-          fileList = event.target.files as FileList;
-          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-        } catch (ex) {
-          return;
-        }
-        const list = [] as File[];
-        for (const key in fileList) {
-          if (fileList.hasOwnProperty(key)) {
-            const element = fileList[key];
-            this.fileFilters.forEach(filter => {
-              if (element.name.toLowerCase().endsWith(filter)) {
-                list.push(element);
-                return;
-              }
-=======
   getUploadUrl(type: string) {
     switch (type) {
       case 'sample':
@@ -246,7 +166,6 @@ export class PublicitiesComponent implements OnInit {
           success: (obj, data) => {
             this.pservice.bindingMateriel(obj.target, data.id, materielType).subscribe(() => {
               this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
->>>>>>> b2b666e83dc4c03624a58cf312655430f384101d
             });
             return true;
           }
