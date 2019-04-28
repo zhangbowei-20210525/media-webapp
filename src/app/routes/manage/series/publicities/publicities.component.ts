@@ -75,7 +75,7 @@ export class PublicitiesComponent implements OnInit {
         if (this.search === null) {
           return this.service.getPublicities(this.pagination);
         } else {
-          return  this.service.getSearchPublicities(this.search, this.pagination);
+          return this.service.getSearchPublicities(this.search, this.pagination);
         }
       })).pipe(finalize(() => {
         this.isLoading = false;
@@ -135,6 +135,7 @@ export class PublicitiesComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
   publicityUpload(event) {
     const component = this.addPublicityModal.getContentComponent();
     if (component.validation()) {
@@ -213,243 +214,83 @@ export class PublicitiesComponent implements OnInit {
                 list.push(element);
                 return;
               }
+=======
+  getUploadUrl(type: string) {
+    switch (type) {
+      case 'sample':
+      case 'feature':
+      case 'trailer':
+        return '/api/v1/upload/video';
+      case 'poster':
+      case 'still':
+        return '/api/v1/upload/image';
+      case 'pdf':
+        return '/api/v1/upload/docment';
+    }
+  }
+
+  upload(sid: number, list: File[], materielType: string) {
+    this.service.getPublicitiesList(sid).subscribe(result => {
+      this.publicityId = result.list[0].id;
+      list.map(item => {
+        const dotIndex = item.name.lastIndexOf('.');
+        return this.uploader.enqueue({
+          target: this.publicityId,
+          url: this.getUploadUrl(materielType),
+          file: item,
+          name: item.name.substring(0, dotIndex),
+          extension: item.name.substring(dotIndex + 1, item.name.length),
+          size: item.size,
+          progress: 0,
+          createAt: new Date,
+          success: (obj, data) => {
+            this.pservice.bindingMateriel(obj.target, data.id, materielType).subscribe(() => {
+              this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
+>>>>>>> b2b666e83dc4c03624a58cf312655430f384101d
             });
+            return true;
           }
+        });
+      });
+    });
+  }
+
+  publicityUpload(event) {
+    const component = this.addPublicityModal.getContentComponent() as AddPublicityComponent;
+    if (component.validation()) {
+      this.addPublicityModal.close();
+      const value = component.getValue();
+      let fileList: FileList, folder: string;
+      try {
+        fileList = event.target.files as FileList;
+        folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
+      } catch (ex) {
+        return;
+      }
+      const list = [] as File[];
+      for (const key in fileList) {
+        if (fileList.hasOwnProperty(key)) {
+          const element = fileList[key];
+          this.fileFilters.forEach(filter => {
+            if (element.name.toLowerCase().endsWith(filter)) {
+              list.push(element);
+              return;
+            }
+          });
         }
-        if (list.length < 1) {
-          this.message.success(this.translate.instant('global.no-valid-file'));
-          return;
-        }
-        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(datas).subscribe(s => {
-          const sid = s.id;
-            this.service.getPublicitiesList(sid).subscribe(pl => {
-              this.publicityId = pl.list[0].id;
-              const uploads = list.map(item => {
-                const dotIndex = item.name.lastIndexOf('.');
-                return this.uploader.enqueue({
-                  target: this.publicityId,
-                  url: '/api/v1/upload/video',
-                  file: item,
-                  name: item.name.substring(0, dotIndex),
-                  extension: item.name.substring(dotIndex + 1, item.name.length),
-                  size: item.size,
-                  progress: 0,
-                  createAt: new Date,
-                  success: (upload, data) => {
-                    this.pservice.bindingMateriel(upload.target, data.id, 'feature').subscribe(result => {
-                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                    });
-                    return true;
-                  }
-                });
-              });
-            });
+      }
+      if (list.length < 1) {
+        this.message.success(this.translate.instant('global.no-valid-file'));
+        return;
+      }
+      if (Number.isInteger(+value.id)) {
+        this.upload(value.id, list, value.type);
+      } else {
+        this.service.addSeries({ name: value.name, program_type: value.program_type }).subscribe(s => {
+          this.upload(s.id, list, value.type);
         });
       }
-      if (component.submit().type === 'trailer') {
-        let fileList: FileList, folder: string;
-        try {
-          fileList = event.target.files as FileList;
-          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-        } catch (ex) {
-          return;
-        }
-        const list = [] as File[];
-        for (const key in fileList) {
-          if (fileList.hasOwnProperty(key)) {
-            const element = fileList[key];
-            this.fileFilters.forEach(filter => {
-              if (element.name.toLowerCase().endsWith(filter)) {
-                list.push(element);
-                return;
-              }
-            });
-          }
-        }
-        if (list.length < 1) {
-          this.message.success(this.translate.instant('global.no-valid-file'));
-          return;
-        }
-        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(datas).subscribe(s => {
-          const sid = s.id;
-            this.service.getPublicitiesList(sid).subscribe(pl => {
-              this.publicityId = pl.list[0].id;
-              const uploads = list.map(item => {
-                const dotIndex = item.name.lastIndexOf('.');
-                return this.uploader.enqueue({
-                  target: this.publicityId,
-                  url: '/api/v1/upload/video',
-                  file: item,
-                  name: item.name.substring(0, dotIndex),
-                  extension: item.name.substring(dotIndex + 1, item.name.length),
-                  size: item.size,
-                  progress: 0,
-                  createAt: new Date,
-                  success: (upload, data) => {
-                    this.pservice.bindingMateriel(upload.target, data.id, 'trailer').subscribe(result => {
-                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                    });
-                    return true;
-                  }
-                });
-              });
-            });
-        });
-      }
-      if (component.submit().type === 'poster') {
-        let fileList: FileList;
-        try {
-          fileList = event.target.files as FileList;
-        } catch (ex) {
-          return;
-        }
-        const list = [] as File[];
-        for (const key in fileList) {
-          if (fileList.hasOwnProperty(key)) {
-            const element = fileList[key];
-            this.imageFilters.forEach(filter => {
-              if (element.name.toLowerCase().endsWith(filter)) {
-                list.push(element);
-                return;
-              }
-            });
-          }
-        }
-        if (list.length < 1) {
-          this.message.success(this.translate.instant('global.no-valid-file'));
-          return;
-        }
-        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(datas).subscribe(s => {
-          const sid = s.id;
-            this.service.getPublicitiesList(sid).subscribe(pl => {
-              this.publicityId = pl.list[0].id;
-              const uploads = list.map(item => {
-                const dotIndex = item.name.lastIndexOf('.');
-                return this.uploader.enqueue({
-                  target: this.publicityId,
-                  url: '/api/v1/upload/image',
-                  file: item,
-                  name: item.name.substring(0, dotIndex),
-                  extension: item.name.substring(dotIndex + 1, item.name.length),
-                  size: item.size,
-                  progress: 0,
-                  createAt: new Date,
-                  success: (upload, data) => {
-                    this.pservice.bindingMateriel(upload.target, data.id, 'poster').subscribe(result => {
-                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                    });
-                    return true;
-                  }
-                });
-              });
-            });
-        });
-      }
-      if (component.submit().type === 'still') {
-        let fileList: FileList;
-        try {
-          fileList = event.target.files as FileList;
-        } catch (ex) {
-          return;
-        }
-        const list = [] as File[];
-        for (const key in fileList) {
-          if (fileList.hasOwnProperty(key)) {
-            const element = fileList[key];
-            this.imageFilters.forEach(filter => {
-              if (element.name.toLowerCase().endsWith(filter)) {
-                list.push(element);
-                return;
-              }
-            });
-          }
-        }
-        if (list.length < 1) {
-          this.message.success(this.translate.instant('global.no-valid-file'));
-          return;
-        }
-        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(datas).subscribe(s => {
-          const sid = s.id;
-            this.service.getPublicitiesList(sid).subscribe(pl => {
-              this.publicityId = pl.list[0].id;
-              const uploads = list.map(item => {
-                const dotIndex = item.name.lastIndexOf('.');
-                return this.uploader.enqueue({
-                  target: this.publicityId,
-                  url: '/api/v1/upload/image',
-                  file: item,
-                  name: item.name.substring(0, dotIndex),
-                  extension: item.name.substring(dotIndex + 1, item.name.length),
-                  size: item.size,
-                  progress: 0,
-                  createAt: new Date,
-                  success: (upload, data) => {
-                    this.pservice.bindingMateriel(upload.target, data.id, 'still').subscribe(result => {
-                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                    });
-                    return true;
-                  }
-                });
-              });
-            });
-        });
-      }
-      if (component.submit().type === 'pdf') {
-        let fileList: FileList, folder: string;
-        try {
-          fileList = event.target.files as FileList;
-          folder = ((fileList[0] as any).webkitRelativePath as string).split('/')[0];
-        } catch (ex) {
-          return;
-        }
-        const list = [] as File[];
-        for (const key in fileList) {
-          if (fileList.hasOwnProperty(key)) {
-            const element = fileList[key];
-            this.pdfFilters.forEach(filter => {
-              if (element.name.toLowerCase().endsWith(filter)) {
-                list.push(element);
-                return;
-              }
-            });
-          }
-        }
-        if (list.length < 1) {
-          this.message.success(this.translate.instant('global.no-valid-file'));
-          return;
-        }
-        const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
-        this.service.addSeries(datas).subscribe(s => {
-          const sid = s.id;
-            this.service.getPublicitiesList(sid).subscribe(pl => {
-              this.publicityId = pl.list[0].id;
-              const uploads = list.map(item => {
-                const dotIndex = item.name.lastIndexOf('.');
-                return this.uploader.enqueue({
-                  target: this.publicityId,
-                  url: '/api/v1/upload/docment',
-                  file: item,
-                  name: item.name.substring(0, dotIndex),
-                  extension: item.name.substring(dotIndex + 1, item.name.length),
-                  size: item.size,
-                  progress: 0,
-                  createAt: new Date,
-                  success: (upload, data) => {
-                    this.pservice.bindingMateriel(upload.target, data.id, 'pdf').subscribe(result => {
-                      this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                    });
-                    return true;
-                  }
-                });
-              });
-            });
-        });
-      }
-    } else { }
+    }
   }
 
   publicityPlay(id: number, sid: number) {

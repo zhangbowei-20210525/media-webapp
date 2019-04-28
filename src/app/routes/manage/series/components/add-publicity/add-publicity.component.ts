@@ -41,13 +41,13 @@ export class AddPublicityComponent implements OnInit {
     return form.valid;
   }
 
-  submit(): Observable<any> {
-    this.data = {
-      program_name: this.validateForm.value['program_name'] || null,
-      program_type: this.validateForm.value['program_type'] || null,
-      type: this.validateForm.value['type'] || null,
-    };
-    return this.data;
+  getValue() {
+    const data = Object.assign(this.validateForm.value);
+    const selected = this.programList.find(item => item.name === data.program_name);
+    if (selected) {
+      data.id = selected.id;
+    }
+    return data;
   }
 
   onInput() {
