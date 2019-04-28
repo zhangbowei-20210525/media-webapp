@@ -163,7 +163,6 @@ export class PublicitiesComponent implements OnInit {
           this.message.success(this.translate.instant('global.no-valid-file'));
           return;
         }
-
         const datas = { name: component.submit().program_name, program_type: component.submit().program_type };
         this.service.addSeries(datas).subscribe(s => {
           const sid = s.id;
@@ -451,9 +450,6 @@ export class PublicitiesComponent implements OnInit {
         });
       }
     } else { }
-  }
-  thumbnailDetail(id: number) {
-    this.router.navigate([`/manage/series/d/${id}/publicityd`]);
   }
 
   publicityPlay(id: number, sid: number) {

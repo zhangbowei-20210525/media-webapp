@@ -14,8 +14,7 @@
         <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
     </ng-template>
 <div *ngIf="isLoaded"[hidden]="publicityStyle == 'figure'">
-  <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
-    [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
+  <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false" [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
       <tr>
         <!-- nzShowCheckbox -->
@@ -90,7 +89,7 @@
         <li class="video-info" *ngFor="let thumbnail of thumbnailList">
           <div class="video">
            <img class="video-img" [src]="thumbnail?.src" />
-            <div class="price" (click)="thumbnailDetail(thumbnail?.program_id)">
+            <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
              <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
             </div>
           </div>

@@ -127,6 +127,7 @@ export class PubRightsComponent implements OnInit {
           pid: item.program_id,
           rid: right.id,
           cid: item.custom_id,
+          id: item.id,
           project: item.program_name,
           contract_number: item.contract_number,
           custom_name: item.custom_name,

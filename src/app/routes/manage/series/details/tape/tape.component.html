@@ -52,7 +52,7 @@
 
 <div class="program-details-tape-details-box" *ngIf="source_type == 'online'">
   <div class="program-details-tape-details-wk">
-    <nz-tabset nzSize="large" [nzTabBarExtraContent]="extraTemplate">
+    <nz-tabset nzSize="large" [nzTabBarExtraContent]="extraTemplate" [nzSelectedIndex]="tab">
       <!-- <nz-tab nzTitle="母带信息" (nzClick)="tapeInfo()">
         <div class="block clearfix">
           <div class="block-content">
@@ -125,7 +125,7 @@
           <thead>
             <tr>
                 <th style="text-align: center">#</th>
-              <th style="text-align: center">{{ 'app.series.source-name' | translate }}</th>
+              <th style="text-align: center">{{ 'app.series.release-man' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.release-date' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.company-nickname' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.download-count' | translate }}</th>
@@ -149,9 +149,9 @@
       </nz-tab>
     </nz-tabset>
     <ng-template #extraTemplate>
-      <button nz-button nzType="primary" nzSize="small" *ngIf="tab == 1" style="margin-top: 15px;"
+      <button nz-button nzType="primary" nzSize="small" [hidden]="tab !== 0" style="margin-top: 15px;"
         (click)="uploadTape()">{{ 'app.series.upload-source' | translate }}</button>
-      <button nz-button nzType="primary" nzSize="small" *ngIf="tab == 2" style="margin-top: 15px;"
+      <button nz-button nzType="primary" nzSize="small" [hidden]="tab !== 1" style="margin-top: 15px;"
         (click)="publishTape()">{{ 'app.series.publish-source' | translate }}</button>
     </ng-template>
   </div>
