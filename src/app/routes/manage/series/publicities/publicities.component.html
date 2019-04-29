@@ -88,6 +88,7 @@
         <a>筛选</a>
       </div>
     </div> -->
+<<<<<<< HEAD
 
 <div class="video-info-wk" [hidden]="publicityStyle == 'table'">
   <ul>
@@ -120,6 +121,42 @@
         <div class="info-wk-eight">
           <div class="info-wk-nine">
             <img class="info-hp" [src]="thumbnail?.user?.avatar" />
+=======
+  
+    <div class="video-info-wk" [hidden]="publicityStyle == 'table'">
+      <ul>
+        <li class="video-info" *ngFor="let thumbnail of thumbnailList">
+          <div class="video">
+           <img class="video-img" [src]="thumbnail?.src" />
+            <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
+             <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
+            </div>
+          </div>
+  
+          <div class="info">
+            <div class="info-wk-one">
+              <div class="info-name"><a (click)="thumbnailDetail(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
+              <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
+              <a style="font-size: 13px;margin-left: 5rem;" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
+            </div>
+            <div class="info-wk-three">
+              <div>导演:</div>
+              <div class="info-wk-four">{{ thumbnail?.director }}</div>
+            </div>
+            <div class="info-wk-five">
+              主演:
+              <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
+            </div>
+          </div>
+  
+          <div class="info-wk-seven">
+            <div class="info-wk-eight">
+              <div class="info-wk-nine">
+                <img class="info-hp" [src]="thumbnail?.user?.avatar"  />
+              </div>
+              <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
+            </div>
+>>>>>>> 8a90fecbb734734a766a98453b7c0f43f34ba25a
           </div>
           <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
         </div>

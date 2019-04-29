@@ -43,6 +43,7 @@ export class TapeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.tab = 0;
     this.route.parent.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.id = +params.get('sid');
@@ -55,27 +56,48 @@ export class TapeComponent implements OnInit {
           this.isId = +params.get('tapeId');
           this.source_type = params.get('source_type');
           if (this.isId === 0) {
-            return this.seriesService.getOnlineInfo(this.tapesList[0].id);
+            return this.seriesService.tapeFileList(this.tapesList[0].id, this.tapeFilePagination);
           } else {
-            return this.seriesService.getOnlineInfo(this.isId);
+            return  this.seriesService.tapeFileList(this.isId, this.tapeFilePagination);
           }
         })
-      ).subscribe(t => {
-        this.tapeDetailsInfo = t;
-        this.tapeFile();
+      ).pipe(tap(x => {
+        x.list.forEach(f => {
+          if (f.created_at) {
+            f.created_at = f.created_at.substring(0, 10);
+          }
+        });
+      })).subscribe(x => {
+        this.tapeFileList = x.list;
+        this.tapeFilePagination = x.pagination;
       });
+    });
+  }
+
+  tapeFile() {
+    this.tab = 0;
+    this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).pipe(tap(x => {
+      x.list.forEach(f => {
+        if (f.created_at) {
+          f.created_at = f.created_at.substring(0, 10);
+        }
+      });
+    })).subscribe(res => {
+      this.tapeFileList = res.list;
+      this.tapeFilePagination = res.pagination;
     });
   }
 
   pitchOn(id: number, source_type: string) {
     if (source_type === 'online') {
+      this.tab = 0;
       this.source_type = 'online';
-      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }], { relativeTo: this.route });
+      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }]);
       this.isId = id;
     }
     if (source_type === 'entity') {
       this.source_type = 'entity';
-      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }], { relativeTo: this.route });
+      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }]);
       this.isId = id;
     }
   }
@@ -123,23 +145,9 @@ export class TapeComponent implements OnInit {
     this.tab = 0;
   }
 
-  tapeFile() {
-    this.tab = 1;
-    this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).pipe(tap(x => {
-      x.list.forEach(f => {
-        if (f.created_at) {
-          f.created_at = f.created_at.substring(0, 10);
-        }
-      });
-    })).subscribe(res => {
-      console.log(res);
-      this.tapeFileList = res.list;
-      this.tapeFilePagination = res.pagination;
-    });
-  }
 
   pubTape() {
-    this.tab = 2;
+    this.tab = 1;
     this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(res => {
       this.pubTapeList = res.list;
       this.pubTapePagination = res.pagination;

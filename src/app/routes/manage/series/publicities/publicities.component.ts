@@ -211,9 +211,6 @@ export class PublicitiesComponent implements OnInit {
       }
     }
   }
-  thumbnailDetail(id: number) {
-    this.router.navigate([`/manage/series/d/${id}/publicityd`]);
-  }
 
   publicityPlay(id: number, sid: number) {
     this.router.navigate([`/manage/series/publicity-details/${id}`, { sid: sid }]);
