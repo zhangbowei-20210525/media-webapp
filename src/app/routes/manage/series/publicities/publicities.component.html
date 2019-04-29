@@ -1,19 +1,23 @@
 <div>
-    <p class="clearfix">
-        <nz-radio-group [(ngModel)]="publicityStyle" [nzButtonStyle]="'solid'" (ngModelChange)="publicityStyleChange($event)">
-            <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline" style="font-size: 1.5rem"></i></label>
-            <label nz-radio-button nzValue="table"><i nz-icon type="table" theme="outline" style="font-size: 1.5rem"></i></label>
-          </nz-radio-group>
-      <button nz-button nzType="default" class="rf" (click)="addPublicity()">{{ 'app.series.add-publicity' | translate }}</button>
-    </p>
-  </div>
-  <ng-template #publicityOk>
-      <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
-          {{ 'app.series.upload-publicity' | translate }}
-        </label>
-        <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
-    </ng-template>
-<div *ngIf="isLoaded"[hidden]="publicityStyle == 'figure'">
+  <p class="clearfix">
+    <nz-radio-group [(ngModel)]="publicityStyle" [nzButtonStyle]="'solid'"
+      (ngModelChange)="publicityStyleChange($event)">
+      <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
+          style="font-size: 1.5rem"></i></label>
+      <label nz-radio-button nzValue="table"><i nz-icon type="table" theme="outline"
+          style="font-size: 1.5rem"></i></label>
+    </nz-radio-group>
+    <button nz-button nzType="default" class="rf"
+      (click)="addPublicity()">{{ 'app.series.add-publicity' | translate }}</button>
+  </p>
+</div>
+<ng-template #publicityOk>
+  <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
+    {{ 'app.series.upload-publicity' | translate }}
+  </label>
+  <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
+</ng-template>
+<div *ngIf="isLoaded" [hidden]="publicityStyle == 'figure'">
   <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
     [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
@@ -46,7 +50,7 @@
         <td>{{ data.still }}</td>
         <td>{{ data.pdf }}</td>
         <td>
-          <button nz-button nzType="primary"nzSize="small" (click)="publicityPlay(data?.id, data?.program_id)">
+          <button nz-button nzType="primary" nzSize="small" (click)="publicityPlay(data?.id, data?.program_id)">
             <i nz-icon nzType="play-circle" style="font-size: 14px" nzTheme="outline"></i>
           </button>
         </td>
@@ -59,7 +63,7 @@
 </div>
 
 <!-- <div class="home-page-navigation-wk-one"> -->
-    <!-- <div class="home-page-navigation-wk-two">
+<!-- <div class="home-page-navigation-wk-two">
       <div class="home-page-navigation-wk-three">全部</div>
       <div class="home-page-navigation-wk-four">电影</div>
       <div class="home-page-navigation-wk-five">电视</div>
@@ -84,47 +88,48 @@
         <a>筛选</a>
       </div>
     </div> -->
-  
-    <div class="video-info-wk" [hidden]="publicityStyle == 'table'">
-      <ul>
-        <li class="video-info" *ngFor="let thumbnail of thumbnailList">
-          <div class="video">
-           <img class="video-img" [src]="thumbnail?.src" />
-            <div class="price" (click)="thumbnailDetail(thumbnail?.program_id)">
-             <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
-            </div>
+
+<div class="video-info-wk" [hidden]="publicityStyle == 'table'">
+  <ul>
+    <li class="video-info" *ngFor="let thumbnail of thumbnailList">
+      <div class="video">
+        <img class="video-img" [src]="thumbnail?.src" />
+        <div class="price" (click)="thumbnailDetail(thumbnail?.program_id)">
+          <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
+        </div>
+      </div>
+
+      <div class="info">
+        <div class="info-wk-one">
+          <div class="info-name"><a (click)="thumbnailDetail(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
+          <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
+          <a style="font-size: 13px;margin-left: 5rem;" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i
+              nz-icon nzType="eye" nzTheme="outline"></i></a>
+        </div>
+        <div class="info-wk-three">
+          <div>导演:</div>
+          <div class="info-wk-four">{{ thumbnail?.director }}</div>
+        </div>
+        <div class="info-wk-five">
+          主演:
+          <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
+        </div>
+      </div>
+
+      <div class="info-wk-seven">
+        <div class="info-wk-eight">
+          <div class="info-wk-nine">
+            <img class="info-hp" [src]="thumbnail?.user?.avatar" />
           </div>
-  
-          <div class="info">
-            <div class="info-wk-one">
-              <div class="info-name"><a (click)="thumbnailDetail(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
-              <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
-              <a style="font-size: 13px;margin-left: 5rem;" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
-            </div>
-            <div class="info-wk-three">
-              <div>导演:</div>
-              <div class="info-wk-four">{{ thumbnail?.director }}</div>
-            </div>
-            <div class="info-wk-five">
-              主演:
-              <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
-            </div>
-          </div>
-  
-          <div class="info-wk-seven">
-            <div class="info-wk-eight">
-              <div class="info-wk-nine">
-                <img class="info-hp" [src]="thumbnail?.user?.avatar"  />
-              </div>
-              <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <nz-empty [hidden]="thumbnailList.length > 0 || publicityStyle == 'table'"></nz-empty>
-    <div style="text-align: right;margin-top: 5rem" [hidden]="thumbnailList.length == 0  || publicityStyle == 'table'">
-      <nz-pagination [(nzPageIndex)]="tbPagination.page" [nzTotal]="tbPagination.count" [nzPageSize]="tbPagination.page_size" (nzPageIndexChange)="tbPageChange()"></nz-pagination>
-  </div>
-  <!-- </div> -->
-  
+          <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<nz-empty [hidden]="thumbnailList.length > 0 || publicityStyle == 'table'"></nz-empty>
+<div style="text-align: right;margin-top: 5rem" [hidden]="thumbnailList.length == 0  || publicityStyle == 'table'">
+  <nz-pagination [(nzPageIndex)]="tbPagination.page" [nzTotal]="tbPagination.count"
+    [nzPageSize]="tbPagination.page_size" (nzPageIndexChange)="tbPageChange()"></nz-pagination>
+</div>
+<!-- </div> -->

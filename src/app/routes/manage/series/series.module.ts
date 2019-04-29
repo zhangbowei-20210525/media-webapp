@@ -23,6 +23,7 @@ import { EditTapeInfoComponent } from './components/edit-tape-info/edit-tape-inf
 import { EditSeriesInfoComponent } from './components/edit-series-info/edit-series-info.component';
 import { PubRightsComponent } from './copyrights/pub-rights/pub-rights.component';
 import { SwitchRightComponent } from './switch-right/switch-right.component';
+import { ContractsComponent } from './contracts/contracts.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { SwitchRightComponent } from './switch-right/switch-right.component';
     EditSeriesInfoComponent,
     PubRightsComponent,
     SwitchRightComponent,
+    ContractsComponent,
   ],
   imports: [
     CommonModule,
