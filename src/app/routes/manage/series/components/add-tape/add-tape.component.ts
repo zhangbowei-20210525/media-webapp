@@ -23,6 +23,8 @@ export class AddTapeComponent implements OnInit {
   entityTapeForm: FormGroup;
   source_type: string;
   listOfOption = [];
+  carrierBrandList = [];
+  carrierModelList = [];
   sound_track = [];
   programList = [];
   disabled: boolean;
@@ -50,8 +52,8 @@ export class AddTapeComponent implements OnInit {
     });
 
     this.entityTapeForm = this.fb.group({
-      program_name: [  null, [Validators.required]],
-      program_type: [ null, [Validators.required]],
+      program_name: [null, [Validators.required]],
+      program_type: [null, [Validators.required]],
       name: [null, [Validators.required]],
       episode: [null],
       language: [null],
@@ -74,6 +76,12 @@ export class AddTapeComponent implements OnInit {
 
   ngOnInit() {
     this.source_type = 'online';
+    this.service.getCarrierBrand().subscribe(res =>
+      this.carrierBrandList = res
+    );
+    this.service.getCarrierModel().subscribe(res =>
+      this.carrierModelList = res
+    );
     if (this.id === undefined) {
       this.onlineTapeForm = this.fb.group({
         program_name: [null, [Validators.required]],
@@ -307,14 +315,14 @@ export class AddTapeComponent implements OnInit {
           episode: etForm.value['episode'] || null,
           sharpness: etForm.value['sharpness'] || null,
           carrier: etForm.value['carrier'] || null,
-          brand: etForm.value['brand'] || null,
-          model: etForm.value['model'] || null,
+          brand: etForm.value['brand'][0] || null,
+          model: etForm.value['model'][0] || null,
           storage_date: storage_date || null,
           storage_location: etForm.value['storage_location'] || null,
           detail_location: etForm.value['detail_location'] || null,
           sound_track: this.sound_track
         };
-          return this.service.addEntityTape1(data);
+        return this.service.addEntityTape1(data);
       } else {
         const ch1 = etForm.value['ch1'] || null;
         const ch2 = etForm.value['ch2'] || null;
@@ -333,14 +341,14 @@ export class AddTapeComponent implements OnInit {
           episode: etForm.value['episode'] || null,
           sharpness: etForm.value['sharpness'] || null,
           carrier: etForm.value['carrier'] || null,
-          brand: etForm.value['brand'] || null,
-          model: etForm.value['model'] || null,
+          brand: etForm.value['brand'][0] || null,
+          model: etForm.value['model'][0] || null,
           storage_date: storage_date || null,
           storage_location: etForm.value['storage_location'] || null,
           detail_location: etForm.value['detail_location'] || null,
           sound_track: this.sound_track
         };
-          return this.service.addEntityTape(data);
+        return this.service.addEntityTape(data);
       }
     }
   }
@@ -366,20 +374,20 @@ export class AddTapeComponent implements OnInit {
       this.entitySubmit().subscribe(result => {
         this.isloading = true;
         this.message.success(this.translate.instant('global.add-success'));
-      this.component.close();
+        this.component.close();
       });
     } else {
       this.isloading = true;
     }
-   }
+  }
 
   upload() {
     this.isloading = false;
     if (this.validationForm(this.onlineTapeForm)) {
-      this.onlineSubmit().subscribe(result => {
-        this.service.getIpAddress().subscribe(res => {
-          const address = res.ip;
-          this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
+      this.service.getIpAddress().subscribe(res => {
+        const address = res.ip;
+        this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
+          this.onlineSubmit().subscribe(result => {
             if (address.charAt(0) === '1' && address.charAt(1) === '2' && address.charAt(2) === '7') {
               this.localRequestService.uploadTape(result.id).subscribe(x => {
                 this.isloading = true;
@@ -389,15 +397,38 @@ export class AddTapeComponent implements OnInit {
               });
             } else {
             }
-          }, err => {
+          });
+        }, err => {
             this.message.success(this.translate.instant('global.start-client'));
             this.isloading = true;
           });
-         });
-      });
+        });
     } else {
       this.isloading = true;
     }
   }
-}
 
+
+    //   this.onlineSubmit().subscribe(result => {
+    //     this.service.getIpAddress().subscribe(res => {
+    //       const address = res.ip;
+    //       this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
+    //         if (address.charAt(0) === '1' && address.charAt(1) === '2' && address.charAt(2) === '7') {
+    //           this.localRequestService.uploadTape(result.id).subscribe(x => {
+    //             this.isloading = true;
+    //             this.component.close();
+    //             // this.message.success(this.translate.instant('global.add-success'));
+    //             this.router.navigate([`/manage/transmit/historic-record/${result.id}`]);
+    //           });
+    //         } else {
+    //         }
+    //       }, err => {
+    //         this.message.success(this.translate.instant('global.start-client'));
+    //         this.isloading = true;
+    //       });
+    //     });
+    //   });
+    // } else {
+    //   this.isloading = true;
+    // }
+}

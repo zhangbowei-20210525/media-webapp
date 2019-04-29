@@ -15,6 +15,7 @@ export class AddPubTapeComponent implements OnInit {
   validateForm: FormGroup;
   phone: number;
   companiesName = [];
+  isOpen: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -24,12 +25,12 @@ export class AddPubTapeComponent implements OnInit {
   ngOnInit() {
     // this.seriesService.getCompaniesName()
     this.validateForm = this.fb.group({
-      companyName : [null, [Validators.required]],
+      companyName: [null, [Validators.required]],
       phone: [null, [Validators.required]]
     });
   }
 
-  formSubmit(): Observable<any> {
+  validation() {
     const form = this.validateForm;
     for (const i in form.controls) {
       if (form.controls.hasOwnProperty(i)) {
@@ -38,28 +39,32 @@ export class AddPubTapeComponent implements OnInit {
         control.updateValueAndValidity();
       }
     }
-      const data = {
-        auth_company_id: form.value['companyName'] || null,
-      };
-      if (form.valid === true) {
-        return this.seriesService.addPubTape(this.id, data);
-      } else {
-        return Observable.create(() => { throw Error('form invalid'); });
-      }
+    return form.valid;
+  }
+
+  formSubmit(): Observable<any> {
+    const form = this.validateForm;
+    const data = {
+      auth_company_id: form.value['companyName'] || null,
+    };
+    return this.seriesService.addPubTape(this.id, data);
+  }
+
+  openChange() {
+    console.log(this.isOpen);
+  }
+
+  inputChange() {
+    if (this.validateForm.value['phone'] === '') {
+      this.isOpen = false;
+    }
   }
 
   search() {
-    const form = this.validateForm;
-    for (const i in form.controls) {
-      if (form.controls.hasOwnProperty(i)) {
-        const control = form.controls[i];
-        control.markAsDirty();
-        control.updateValueAndValidity();
-      }
-    }
-    this.phone = form.value['phone'];
+    this.phone = this.validateForm.value['phone'];
     this.seriesService.getCompaniesName(this.phone).subscribe(res => {
       this.companiesName = res;
+      this.isOpen = true;
     });
   }
 
