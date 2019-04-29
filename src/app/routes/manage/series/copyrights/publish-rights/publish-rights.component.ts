@@ -3,12 +3,14 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { finalize, switchMap } from 'rxjs/operators';
+import { finalize, switchMap, zip } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { RootTemplateDto } from '../dtos';
 // import { ScrollService } from '@delon/theme';
 import * as _ from 'lodash';
+import { Observable, merge } from 'rxjs';
+import { FieldCalc, MultiplyCalcMethod, FieldMultiplyCalcGroup } from '../field-calc';
 
 @Component({
   selector: 'app-publish-rights',
@@ -105,7 +107,13 @@ export class PublishRightsComponent implements OnInit {
       paymentMethod: [null],
       contractName: [null],
       contractNumber: [null],
-      signDate: [new Date(), Validators.required]
+      signDate: [new Date(), Validators.required],
+      totalEpisodes: [null],        // 总集数
+      episodePrice: [null],         // 每集单价
+      totalEpisodesPrice: [null],   // 节目费总计
+      tapeMailPrice: [null],        // 磁复邮单价
+      totalTapeMailPrice: [null],   // 磁复邮总计
+      chargePerson: [null]          // 经办人
     });
 
     this.rightForm = this.fb.group({
@@ -122,6 +130,28 @@ export class PublishRightsComponent implements OnInit {
       copyrightValidTermNote: [null],
       note: [null]
     });
+    // this.contractForm.get('totalEpisodes').valueChanges.subscribe(value => {
+
+    // });
+    // merge(...this.getContractFormFields(
+    //   'totalEpisodes',
+    //   'episodePrice',
+    //   'totalEpisodesPrice').map(f => f.valueChanges))
+    //   .subscribe(value => {
+
+    //   });
+    const episodeFields = this.getContractFormFields('totalEpisodes', 'episodePrice', 'totalEpisodesPrice');
+    // const fieldCalc = new FieldCalc(fields[0], fields[1], fields[2], new MultiplyCalcMethod());
+    const episodeFieldCalcGroup = new FieldMultiplyCalcGroup(episodeFields[0], episodeFields[1], episodeFields[2]);
+
+    const tapeMailFields = this.getContractFormFields('totalEpisodes', 'tapeMailPrice', 'totalTapeMailPrice');
+    const tapeMailFieldCalcGroup = new FieldMultiplyCalcGroup(tapeMailFields[0], tapeMailFields[1], tapeMailFields[2]);
+
+    // const amountFields = this.getContractFormFields('totalEpisodes', 'tapeMailPrice', 'totalTapeMailPrice');
+  }
+
+  getContractFormFields(...keys: string[]) {
+    return keys.map(k => this.contractForm.get(k) as FormControl);
   }
 
   onCustomerInput(value: string) {
@@ -248,23 +278,6 @@ export class PublishRightsComponent implements OnInit {
   }
 
   save() {
-    // const contract = this.validationForm(this.contractForm);
-    // const payment = this.paymentForm ? this.validationForm(this.paymentForm) : false;
-    // if (contract && payment && this.dataSet.length > 0) {
-    //   this.saveCopyrights(true);
-    // } else {
-    //   if (!contract) {
-    //     this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
-    //   } else {
-    //     if (!payment) {
-    //       this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
-    //     } else {
-    //       if (this.dataSet.length < 1) {
-    //         this.message.warning('请先"添加"');
-    //       }
-    //     }
-    //   }
-    // }
     if (this.validationForm(this.contractForm)) {
       if (this.paymentForm) {
         if (this.validationForm(this.paymentForm)) {
