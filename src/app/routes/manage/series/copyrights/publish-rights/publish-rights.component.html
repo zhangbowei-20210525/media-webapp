@@ -69,6 +69,42 @@
       </nz-form-item>
 
       <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="totalEpisodes">总集数</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="totalEpisodes" placeholder="总集数">
+        </nz-form-control>
+
+        <nz-form-label [nzSm]="2" nzFor="chargePerson">经办人</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="chargePerson" placeholder="经办人">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="episodePrice">每集单价</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="episodePrice" placeholder="每集单价">
+        </nz-form-control>
+
+        <nz-form-label [nzSm]="2" nzFor="totalEpisodesPrice">节目费合计</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="totalEpisodesPrice" placeholder="节目费合计">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="tapeMailPrice">磁复邮单价</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="tapeMailPrice" placeholder="磁复邮单价">
+        </nz-form-control>
+
+        <nz-form-label [nzSm]="2" nzFor="totalTapeMailPrice">磁复邮合计</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="totalTapeMailPrice" placeholder="磁复邮合计">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
         <nz-form-label [nzSm]="2" nzFor="totalAmount">合同金额</nz-form-label>
         <nz-form-control [nzSm]="10">
           <input nz-input formControlName="totalAmount" placeholder="合同金额" #amount nz-tooltip
@@ -165,7 +201,8 @@
             </nz-checkbox-group>
           </ng-container>
           <ng-template #optionsNone>
-            <span class="text-hint">请先选择节目</span>
+            <!-- <span class="text-hint">请先选择节目</span> -->
+            <button nz-button (click)="selectSeries()">选择节目</button>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -244,7 +281,7 @@
 
     <div class="right-options">
       <!-- <button nz-button (click)="tab = 0;">上一步</button> -->
-      <button nz-button (click)="resetCopyrightForm()">重置</button>
+      <button nz-button (click)="rightForm.reset()">重置</button>
       <button nz-button (click)="addList()" nzType="primary">添加</button>
     </div>
 

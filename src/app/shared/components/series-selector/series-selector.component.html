@@ -2,30 +2,32 @@
   <nz-skeleton [nzActive]="'true'" [nzLoading]="isSeriesLoading">
     <div>
       <p>
-        <nz-input-group nzSearch  [nzAddOnAfter]="suffixIconSearch" style="width: 22rem;">
-          <input type="text" nz-input placeholder="输入名称关键字搜索" [(ngModel)]="searchText">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input type="text" nz-input placeholder="输入名称关键字搜索" [(ngModel)]="searchText" (keyup)="$event.which === 13 && search()"/>
         </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <!-- <i nz-icon type="search"></i> -->
+        <ng-template #suffixIconButton>
           <button nz-button nzType="default" nzSearch (click)="search()"><i nz-icon type="search"></i></button>
         </ng-template>
       </p>
     </div>
     <div>
       <p>
-        <nz-radio-group [(ngModel)]="selectedType" (ngModelChange)="handleTypeChange($event)" [nzButtonStyle]="'solid'" [nzSize]="'small'">
+        <nz-radio-group [(ngModel)]="selectedType" (ngModelChange)="handleTypeChange($event)" [nzButtonStyle]="'solid'"
+          [nzSize]="'small'">
           <label nz-radio-button [nzValue]="type.code" *ngFor="let type of programTypes">{{ type.name }}</label>
         </nz-radio-group>
       </p>
       <p>
-        <nz-radio-group [(ngModel)]="selectedYear" (ngModelChange)="handleYearChange($event)" [nzButtonStyle]="'solid'" [nzSize]="'small'">
+        <nz-radio-group [(ngModel)]="selectedYear" (ngModelChange)="handleYearChange($event)" [nzButtonStyle]="'solid'"
+          [nzSize]="'small'">
           <label nz-radio-button [nzValue]="year.code" *ngFor="let year of releaseYears">{{ year.name }}</label>
         </nz-radio-group>
       </p>
     </div>
+    <nz-divider></nz-divider>
     <div>
-      <strong style="margin-right: 0.5rem;">节目: </strong>
-      <nz-tag *ngFor="let tag of series" [nzMode]="'checkable'" [nzChecked]="tag.status"
+      <strong style="display: inline-block; margin: 4px 8px 4px 0;">节目: </strong>
+      <nz-tag *ngFor="let tag of series" [nzMode]="'checkable'" [(nzChecked)]="tag.status"
         (nzCheckedChange)="handleChange($event, tag)" class="series-tag">
         <!-- <i nz-icon type="loading" theme="outline"></i> -->
         <!-- <i nz-icon [type]="'sync'" [spin]="true" *ngIf="tag.loading"></i> -->
@@ -33,4 +35,8 @@
       </nz-tag>
     </div>
   </nz-skeleton>
+  <div class="footer">
+    <button nz-button (click)="close()" style="margin-right: 8px;"><span>取消</span></button>
+    <button nz-button (click)="confirm()" nzType="primary"><span>确定</span></button>
+  </div>
 </div>

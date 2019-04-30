@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
-import { RootTemplateDto } from '../dtos';
+import { RootTemplateDto, ContractDto } from '../dtos';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
+import { FieldCalcGroup, FieldMultiplyCalcGroup, FieldAdditionCalcGroup } from '../field-calc';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -20,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
     }
   `]
 })
-export class AddCopyrightsComponent implements OnInit {
+export class AddCopyrightsComponent implements OnInit, OnDestroy {
 
   @ViewChild('contractFormRef') contractFormRef: ElementRef<HTMLFormElement>;
   @ViewChild('paymentFormRef') paymentFormRef: ElementRef<HTMLFormElement>;
@@ -44,6 +45,7 @@ export class AddCopyrightsComponent implements OnInit {
   isSaving: boolean;
   isSaved = false;
   programOfOptions = [];
+  fieldCalcGroups: FieldCalcGroup[];
 
   constructor(
     private fb: FormBuilder,
@@ -107,7 +109,13 @@ export class AddCopyrightsComponent implements OnInit {
       paymentMethod: [null],
       contractName: [null],
       contractNumber: [null],
-      signDate: [new Date(), Validators.required]
+      signDate: [new Date(), Validators.required],
+      totalEpisodes: [null],        // 总集数
+      episodePrice: [null],         // 每集单价
+      totalEpisodesPrice: [null],   // 节目费总计
+      tapeMailPrice: [null],        // 磁复邮单价
+      totalTapeMailPrice: [null],   // 磁复邮总计
+      chargePerson: [null]          // 经办人
     });
 
     this.rightForm = this.fb.group({
@@ -122,8 +130,29 @@ export class AddCopyrightsComponent implements OnInit {
       copyrightValidTerm: [null],
       copyrightValidTermIsPermanent: [false],
       copyrightValidTermNote: [null],
+      broadcastChannel: [null],
+      airDate: [null],
       note: [null]
     });
+
+    this.fieldCalcGroups = [];
+
+    const episodeFields = this.getContractFormFields('totalEpisodes', 'episodePrice', 'totalEpisodesPrice');
+    this.fieldCalcGroups.push(new FieldMultiplyCalcGroup(episodeFields[0], episodeFields[1], episodeFields[2]));
+
+    const tapeMailFields = this.getContractFormFields('totalEpisodes', 'tapeMailPrice', 'totalTapeMailPrice');
+    this.fieldCalcGroups.push(new FieldMultiplyCalcGroup(tapeMailFields[0], tapeMailFields[1], tapeMailFields[2]));
+
+    const amountFields = this.getContractFormFields('totalEpisodesPrice', 'totalTapeMailPrice', 'totalAmount');
+    this.fieldCalcGroups.push(new FieldAdditionCalcGroup(amountFields[0], amountFields[1], amountFields[2]));
+  }
+
+  ngOnDestroy(): void {
+    this.fieldCalcGroups.forEach(item => item.ngOnDestroy());
+  }
+
+  getContractFormFields(...keys: string[]) {
+    return keys.map(k => this.contractForm.get(k) as FormControl);
   }
 
   onCustomerInput(value: string) {
@@ -242,6 +271,8 @@ export class AddCopyrightsComponent implements OnInit {
           rightNote: this.rightForm.get('copyrightNote').value,
           areaNote: this.rightForm.get('copyrightAreaNote').value,
           termNote: this.rightForm.get('copyrightValidTermNote').value,
+          broadcastChannel: this.rightForm.get('broadcastChannel').value,
+          airDate: this.rightForm.get('airDate').value,
           displayRight: right.name,
           displayArea: area.name,
           displayRightChildren: children ? children.map(c => c.name) : null,
@@ -264,31 +295,6 @@ export class AddCopyrightsComponent implements OnInit {
   }
 
   save() {
-    // if (this.hasContract()) {
-    //   const contract = this.validationForm(this.contractForm);
-    //   const payment = this.paymentForm ? this.validationForm(this.paymentForm) : false;
-    //   if (contract && payment && this.dataSet.length > 0) {
-    //     this.saveCopyrights(true);
-    //   } else {
-    //     if (!contract) {
-    //       this.scroll.scrollToElement(this.contractFormRef.nativeElement, -20);
-    //     } else {
-    //       if (!payment) {
-    //         this.scroll.scrollToElement(this.paymentFormRef.nativeElement, -20);
-    //       } else {
-    //         if (this.dataSet.length < 1) {
-    //           this.message.warning('请先"添加"');
-    //         }
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   if (this.dataSet.length > 0) {
-    //     this.saveCopyrights(false);
-    //   } else {
-    //     this.message.warning('请先"添加"');
-    //   }
-    // }
     if (this.hasContract()) {
       if (this.validationForm(this.contractForm)) {
         if (this.paymentForm) {
@@ -322,16 +328,23 @@ export class AddCopyrightsComponent implements OnInit {
 
   saveCopyrights(hasContract: boolean) {
     this.isSaving = true;
-    let contract = null, orders = null, programs = null;
+    let contract = {} as ContractDto, orders = null, programs = null;
 
     if (hasContract) {
-      contract = this.service.toContractData(
-        this.contractForm.value['contractNumber'],
-        this.contractForm.value['contractName'],
-        null,
-        this.contractForm.value['customer'],
-        Util.dateToString(this.contractForm.value['signDate']),
-        this.contractForm.value['totalAmount']);
+      contract = {
+        custom_name: this.contractForm.value['customer'],
+        sign_date: Util.dateToString(this.contractForm.value['signDate']),
+        contract_number: this.contractForm.value['contractNumber'],
+        contract_name: this.contractForm.value['contractName'],
+        total_episodes: this.contractForm.value['totalEpisodes'],
+        charge_person: this.contractForm.value['chargePerson'],
+        episode_price: this.contractForm.value['episodePrice'],
+        total_episodes_price: this.contractForm.value['totalEpisodesPrice'],
+        tape_mail_price: this.contractForm.value['tapeMailPrice'],
+        total_tape_mail_price: this.contractForm.value['totalTapeMailPrice'],
+        total_amount: this.contractForm.value['totalAmount'],
+        remark: null
+      };
 
       if (this.payments) {
         orders = this.payments.map(paymentObjArr => {
@@ -367,7 +380,9 @@ export class AddCopyrightsComponent implements OnInit {
             Util.dateToString(item.termStartDate),
             Util.dateToString(item.termEndDate),
             item.termNote,
-            item.note);
+            item.note,
+            item.broadcastChannel,
+            Util.dateToString(item.airDate));
         })
       );
       return program;
