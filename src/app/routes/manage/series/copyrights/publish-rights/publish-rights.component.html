@@ -201,7 +201,8 @@
             </nz-checkbox-group>
           </ng-container>
           <ng-template #optionsNone>
-            <span class="text-hint">请先选择节目</span>
+            <!-- <span class="text-hint">请先选择节目</span> -->
+            <button nz-button (click)="selectSeries()">选择节目</button>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -280,7 +281,7 @@
 
     <div class="right-options">
       <!-- <button nz-button (click)="tab = 0;">上一步</button> -->
-      <button nz-button (click)="resetCopyrightForm()">重置</button>
+      <button nz-button (click)="rightForm.reset()">重置</button>
       <button nz-button (click)="addList()" nzType="primary">添加</button>
     </div>
 

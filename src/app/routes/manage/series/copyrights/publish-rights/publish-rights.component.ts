@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
+import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService, SeriesSelectorComponent } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
-import { DatePipe } from '@angular/common';
-import { finalize, switchMap, zip } from 'rxjs/operators';
+import { finalize, switchMap, zip, catchError } from 'rxjs/operators';
 import { CopyrightsService } from '../copyrights.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { RootTemplateDto } from '../dtos';
+import { RootTemplateDto, ContractDto } from '../dtos';
 // import { ScrollService } from '@delon/theme';
 import * as _ from 'lodash';
-import { Observable, merge } from 'rxjs';
-import { FieldCalc, MultiplyCalcMethod, FieldMultiplyCalcGroup } from '../field-calc';
+import { Observable, merge, of, throwError } from 'rxjs';
+import { FieldCalc, MultiplyCalcMethod, FieldMultiplyCalcGroup, FieldAdditionCalcGroup, FieldCalcGroup } from '../field-calc';
+import { NzDrawerService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-publish-rights',
@@ -24,7 +24,7 @@ import { FieldCalc, MultiplyCalcMethod, FieldMultiplyCalcGroup } from '../field-
     }
   `]
 })
-export class PublishRightsComponent implements OnInit {
+export class PublishRightsComponent implements OnInit, OnDestroy {
 
   @ViewChild('contractFormRef') contractFormRef: ElementRef<HTMLFormElement>;
   @ViewChild('paymentFormRef') paymentFormRef: ElementRef<HTMLFormElement>;
@@ -46,6 +46,7 @@ export class PublishRightsComponent implements OnInit {
   dataSet = [];
   isSaving: boolean;
   isSaved = false;
+  fieldCalcGroups: FieldCalcGroup[];
 
   constructor(
     private fb: FormBuilder,
@@ -55,7 +56,8 @@ export class PublishRightsComponent implements OnInit {
     private translate: TranslateService,
     private message: MessageService,
     private route: ActivatedRoute,
-    private scroll: ScrollService
+    private scroll: ScrollService,
+    private drawer: NzDrawerService
   ) { }
 
   get projects() {
@@ -70,12 +72,17 @@ export class PublishRightsComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         const pids = params.get('pids') as any;
-        return this.service.getSeriesNames(pids);
+        if (pids != null) {
+          return this.service.getSeriesNames(pids);
+        }
+        return throwError({});
       })
     ).subscribe(result => {
       this.series = result.list;
       this.checkOptions = this.series.map(item => ({ label: item.name, value: item.id, checked: true }));
       this.projects.setValue(this.checkOptions);
+    }, () => {
+      this.selectSeries();
     });
 
     this.service.getCustomerOptions().subscribe(result => {
@@ -130,24 +137,36 @@ export class PublishRightsComponent implements OnInit {
       copyrightValidTermNote: [null],
       note: [null]
     });
-    // this.contractForm.get('totalEpisodes').valueChanges.subscribe(value => {
 
-    // });
-    // merge(...this.getContractFormFields(
-    //   'totalEpisodes',
-    //   'episodePrice',
-    //   'totalEpisodesPrice').map(f => f.valueChanges))
-    //   .subscribe(value => {
+    this.fieldCalcGroups = [];
 
-    //   });
     const episodeFields = this.getContractFormFields('totalEpisodes', 'episodePrice', 'totalEpisodesPrice');
-    // const fieldCalc = new FieldCalc(fields[0], fields[1], fields[2], new MultiplyCalcMethod());
-    const episodeFieldCalcGroup = new FieldMultiplyCalcGroup(episodeFields[0], episodeFields[1], episodeFields[2]);
+    this.fieldCalcGroups.push(new FieldMultiplyCalcGroup(episodeFields[0], episodeFields[1], episodeFields[2]));
 
     const tapeMailFields = this.getContractFormFields('totalEpisodes', 'tapeMailPrice', 'totalTapeMailPrice');
-    const tapeMailFieldCalcGroup = new FieldMultiplyCalcGroup(tapeMailFields[0], tapeMailFields[1], tapeMailFields[2]);
+    this.fieldCalcGroups.push(new FieldMultiplyCalcGroup(tapeMailFields[0], tapeMailFields[1], tapeMailFields[2]));
 
-    // const amountFields = this.getContractFormFields('totalEpisodes', 'tapeMailPrice', 'totalTapeMailPrice');
+    const amountFields = this.getContractFormFields('totalEpisodesPrice', 'totalTapeMailPrice', 'totalAmount');
+    this.fieldCalcGroups.push(new FieldAdditionCalcGroup(amountFields[0], amountFields[1], amountFields[2]));
+  }
+
+  ngOnDestroy(): void {
+    this.fieldCalcGroups.forEach(item => item.ngOnDestroy());
+  }
+
+  selectSeries() {
+    const drawerRef = this.drawer.create({
+      nzTitle: '选择节目',
+      nzContent: SeriesSelectorComponent,
+      nzWidth: 600
+    });
+    drawerRef.afterClose.subscribe(result => {
+      if (result && result.length > 0) {
+        this.series = result;
+        this.checkOptions = this.series.map(item => ({ label: item.name, value: item.id, checked: true }));
+        this.projects.setValue(this.checkOptions);
+      }
+    });
   }
 
   getContractFormFields(...keys: string[]) {
@@ -222,10 +241,6 @@ export class PublishRightsComponent implements OnInit {
       }
     }
     return form.valid;
-  }
-
-  resetCopyrightForm() {
-    this.rightForm.reset();
   }
 
   addList() {
@@ -303,16 +318,23 @@ export class PublishRightsComponent implements OnInit {
 
   saveCopyrights(hasContract: boolean) {
     this.isSaving = true;
-    let contract = {} as any, orders = [], programs = null;
+    let contract = {} as ContractDto, orders = [], programs = null;
 
     if (hasContract) {
-      contract = this.service.toContractData(
-        this.contractForm.value['contractNumber'],
-        this.contractForm.value['contractName'],
-        null,
-        this.contractForm.value['customer'],
-        Util.dateToString(this.contractForm.value['signDate']),
-        this.contractForm.value['totalAmount']);
+      contract = {
+        custom_name: this.contractForm.value['customer'],
+        sign_date: Util.dateToString(this.contractForm.value['signDate']),
+        contract_number: this.contractForm.value['contractNumber'],
+        contract_name: this.contractForm.value['contractName'],
+        total_episodes: this.contractForm.value['totalEpisodes'],
+        charge_person: this.contractForm.value['chargePerson'],
+        episode_price: this.contractForm.value['episodePrice'],
+        total_episodes_price: this.contractForm.value['totalEpisodesPrice'],
+        tape_mail_price: this.contractForm.value['tapeMailPrice'],
+        total_tape_mail_price: this.contractForm.value['totalTapeMailPrice'],
+        total_amount: this.contractForm.value['totalAmount'],
+        remark: null
+      };
 
       if (this.payments) {
         orders = this.payments.map(paymentObjArr => {

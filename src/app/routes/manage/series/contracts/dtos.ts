@@ -1,13 +1,14 @@
 export interface ContractDto {
     id: number;
-    code: string;
-    custom: string;
+    contract_number: string;
+    custom_name: string;
     total_episodes: number;
-    episodes_price: number;
+    episode_price: number;
     total_episodes_price: number;
     tape_mail_price: number;
     total_tape_mail_price: number;
-    amount: number;
+    total_amount: number;
+    paid_amount: number;
     charge_person: string;
-    payment_method: number;
+    payment_form: number;
 }

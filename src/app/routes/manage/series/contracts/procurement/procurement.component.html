@@ -1,0 +1,40 @@
+<div *ngIf="isLoaded" [@fadeIn]>
+  <nz-table #dataTable [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
+    [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="pageChange($event)">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>合同编号</th>
+        <!-- <th>合同名称</th> -->
+        <th>客户</th>
+        <th>总集数</th>
+        <th>每集单价/合计</th>
+        <th>磁复邮单价/合计</th>
+        <th>合同金额</th>
+        <th>经办人</th>
+        <th>付款方式</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of dataTable.data">
+        <td>{{ data.displayIndex }}</td>
+        <td>{{ data.contract_number | emptyDefaultChar}}</td>
+        <!-- <td>{{ data }}</td> -->
+        <td>{{ data.custom_name }}</td>
+        <td>{{ data.total_episodes | emptyDefaultChar }}</td>
+        <td>{{ data.episode_price | emptyDefaultChar }} / {{ data.total_episodes_price | emptyDefaultChar }}</td>
+        <td>{{ data.tape_mail_price | emptyDefaultChar }} / {{ data.total_tape_mail_price | emptyDefaultChar }}</td>
+        <td>{{ data.total_amount | emptyDefaultChar }}</td>
+        <td>{{ data.charge_person | emptyDefaultChar }}</td>
+        <td>{{ data.payment_form | paymentFormat | emptyDefaultChar }}</td>
+        <td>
+          <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+          <a nz-popconfirm nzTitle="是否删除此合同？" (nzOnConfirm)="delete(data.id)">
+            <i class="text-info" nz-icon type="delete" theme="outline"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
