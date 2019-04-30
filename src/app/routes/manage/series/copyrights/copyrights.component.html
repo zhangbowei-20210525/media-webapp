@@ -120,7 +120,7 @@
         <th>品类</th>
         <th>集数</th>
         <th>权利</th>
-        <th>范围</th>
+        <th>地域</th>
         <th nzWidth="18rem">期限</th>
         <th>操作</th>
       </tr>
@@ -135,7 +135,7 @@
         </td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
-        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episodes | emptyDefaultChar }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episode | emptyDefaultChar }}</td>
         <td [ngClass]="{'sole': data.sole}">{{ data.right }}</td>
         <td>{{ data.area }}</td>
         <td>
