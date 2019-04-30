@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SeriesService } from '../../series.service';
+import { map } from 'rxjs/operators';
+import { Settings } from 'http2';
+import { SettingsService, I18nService } from '@core';
 
 @Component({
   selector: 'app-add-publicity',
@@ -15,17 +18,44 @@ export class AddPublicityComponent implements OnInit {
 
   disabled: boolean;
   programNames = [];
+  companies = [];
+
 
   constructor(
     private fb: FormBuilder,
     private service: SeriesService,
-  ) { }
-
-  ngOnInit() {
+    private setService: SettingsService,
+  ) {
     this.validateForm = this.fb.group({
       program_name: [null, [Validators.required]],
       program_type: [null, [Validators.required]],
       type: [null, [Validators.required]],
+      checkCompanies: [null],
+      currentCompany: [true]
+    });
+  }
+
+  ngOnInit() {
+    this.service.getCompanies().pipe(map(item => {
+      item.forEach(c => {
+        this.companies.push({
+        label: c.company_full_name,
+        value: c.id,
+        company_name: c.company_name,
+        department: c.department,
+        name: c.name,
+        phone: c.phone,
+      });
+      });
+      return this.companies;
+    })).subscribe(res => {
+      this.validateForm = this.fb.group({
+        program_name: [null, [Validators.required]],
+        program_type: [null, [Validators.required]],
+        type: [null, [Validators.required]],
+        checkCompanies: [res],
+        currentCompany: [true]
+      });
     });
   }
 
