@@ -1,6 +1,16 @@
 <div class="expire-info-box fade-in-up">
   <div class="block pur">
-    <div class="block-content"></div>
+    <div class="block-content">
+        <div>{{right?.count}}</div>
+        <div>{{ 'app.dashboard.purchase-imminent' | translate }}</div>
+        <ul>
+          <li *ngFor="let right of right?.data">
+            <div>{{right?.program_name}}</div>
+            <div>{{right?.custom_name}}</div>
+            <div>{{right?.expire_date}}</div>
+          </li>
+        </ul>
+    </div>
   </div>
   <div class="block pub">
     <div class="block-content"></div>
@@ -13,10 +23,26 @@
   </div>
 </div>
 
-<div></div>
-<div></div>
-<div></div>
-<div></div>
+<div class="block statistical">
+  <div class="block-content"></div>
+</div>
+
+<div class="statistical-pub-tape">
+  <div class="block pub">
+    <div class="block-content"></div>
+  </div>
+
+  <div class="block tape">
+    <div class="block-content"></div>
+  </div>
+</div>
+
+<div class="block tatistical-project">
+  <div class="block-content"></div>
+</div>
+
+
+
 
 
 

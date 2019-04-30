@@ -129,11 +129,11 @@ export class DashboardComponent implements OnInit {
       this.payment = res.payment;
       this.receipt = res.receipt;
     });
-    this.getSeriesStatisticsInfo();
-    this.getPublicityStatisticsInfo();
-    this.getPublishStatisticsInfo();
-    this.getTapeStatisticsInfo();
-    this.getAllStatisticsInfo();
+    // this.getSeriesStatisticsInfo();
+    // this.getPublicityStatisticsInfo();
+    // this.getPublishStatisticsInfo();
+    // this.getTapeStatisticsInfo();
+    // this.getAllStatisticsInfo();
     this.dashboardService.getActiveProject('right').subscribe(res => {
       this.activeProjectRight = res;
     });
