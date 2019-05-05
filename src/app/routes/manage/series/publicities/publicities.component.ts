@@ -36,6 +36,7 @@ export class PublicitiesComponent implements OnInit {
   publicityStyle = 'figure';
   thumbnailList = [];
   search: any;
+  company_ids = [];
 
   constructor(
     private router: Router,
@@ -164,7 +165,7 @@ export class PublicitiesComponent implements OnInit {
           progress: 0,
           createAt: new Date,
           success: (obj, data) => {
-            this.pservice.bindingMateriel(obj.target, data.id, materielType).subscribe(() => {
+            this.pservice.bindingMateriel(obj.target, data.id, materielType, this.company_ids).subscribe(() => {
               this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
             });
             return true;
@@ -177,6 +178,8 @@ export class PublicitiesComponent implements OnInit {
   publicityUpload(event) {
     const component = this.addPublicityModal.getContentComponent() as AddPublicityComponent;
     if (component.validation()) {
+      this.company_ids  =  component.getValue().checkCompanies;
+      // this.company_ids = component.data
       this.addPublicityModal.close();
       const value = component.getValue();
       let fileList: FileList, folder: string;

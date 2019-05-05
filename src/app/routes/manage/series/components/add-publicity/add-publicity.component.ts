@@ -39,9 +39,9 @@ export class AddPublicityComponent implements OnInit {
     this.service.getCompanies().pipe(map(item => {
       item.forEach(c => {
         this.companies.push({
-        label: c.company_full_name,
+        label: c.company_name,
         value: c.id,
-        company_name: c.company_name,
+        company_full_name: c.company_full_name,
         department: c.department,
         name: c.name,
         phone: c.phone,
