@@ -42,6 +42,12 @@ export interface ContractDto {
     custom_name: string;
     sign_date: string;
     total_amount: number;
+    total_episodes: number;
+    episode_price: number;
+    total_episodes_price: number;
+    tape_mail_price: number;
+    total_tape_mail_price: number;
+    charge_person: string;
 }
 
 export interface OrderPayDto {
@@ -70,6 +76,8 @@ export interface CopyrightDto {
     start_date: string;
     end_date: string;
     date_remark: string;
+    broadcast_channel?: string;
+    air_date?: string;
     remark: string;
 }
 

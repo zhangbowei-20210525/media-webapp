@@ -27,6 +27,7 @@ export class PublicityComponent implements OnInit {
   publicityId: number;
   publicity: any;
   tabIndex: number;
+  company_ids = [];
 
   constructor(
     private message: MessageService,
@@ -140,7 +141,7 @@ export class PublicityComponent implements OnInit {
         progress: 0,
         createAt: new Date,
         success: (upload, data) => {
-          this.service.bindingMateriel(upload.target, data.id, materielType).subscribe(result => {
+          this.service.bindingMateriel(upload.target, data.id, materielType, '').subscribe(result => {
             this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
             this.fetchMateriels(materielType);
             this.fetchPublicity();

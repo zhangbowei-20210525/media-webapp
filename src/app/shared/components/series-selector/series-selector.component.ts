@@ -3,6 +3,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SeriesSelectorService } from './series-selector.service';
 import { SeriesBriefDto, SearchMetaDataDto } from './dtos';
 import { SettingsService } from '@core';
+import { NzDrawerRef } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-series-selector',
@@ -27,8 +28,13 @@ export class SeriesSelectorComponent implements OnInit {
 
   constructor(
     private service: SeriesSelectorService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private drawerRef: NzDrawerRef
   ) { }
+
+  get checkedSeries() {
+    return this.series.filter(item => item.status);
+  }
 
   ngOnInit() {
     this.isSeriesLoading = true;
@@ -105,6 +111,18 @@ export class SeriesSelectorComponent implements OnInit {
       && this.selectYear(e, year)
       && this.selectText(e, searchText)
     );
+  }
+
+  close() {
+    if (this.drawerRef) {
+      this.drawerRef.close();
+    }
+  }
+
+  confirm() {
+    if (this.drawerRef) {
+      this.drawerRef.close(this.checkedSeries);
+    }
   }
 
 }

@@ -17,8 +17,8 @@ export class LocalRequestService {
   }
 
   status(address: string) {
-    return this.http.get(`http://${address}/status`, { params: { _allow_anonymous: '', _allow_no_language: '' } });
-    // return this.jsonpCallHttpAppStatus(address);
+    // return this.http.get(`http://${address}/status`, { params: { _allow_anonymous: '', _allow_no_language: '' } });
+    return this.jsonpCallHttpAppStatus(address);
   }
 
   //   getUploadFoldersName (address: string) {
@@ -26,13 +26,13 @@ export class LocalRequestService {
   // }
 
   downloadTape(idArray: number[]) {
-    return this.callHttpApp('download', { id: idArray });
-    // return this.jsonpCallHttpApp('127.0.0.1:8756', 'download', { id: idArray });
+    // return this.callHttpApp('download', { id: idArray });
+    return this.jsonpCallHttpApp('127.0.0.1:8756', 'download', { id: idArray });
   }
 
   uploadTape(id: number) {
-    return this.callHttpApp('upload_public', { id: id });
-    // return this.jsonpCallHttpApp('127.0.0.1:8756', 'upload_public', { id });
+    // return this.callHttpApp('upload_public', { id: id });
+    return this.jsonpCallHttpApp('127.0.0.1:8756', 'upload_public', { id });
   }
 
   private callHttpApp(action: string, data: { id: number | number[] }) {
