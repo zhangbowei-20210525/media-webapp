@@ -24,7 +24,7 @@ export class AddPublicityComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private service: SeriesService,
-    private setService: SettingsService,
+    public settings: SettingsService,
   ) {
     this.validateForm = this.fb.group({
       program_name: [null, [Validators.required]],
