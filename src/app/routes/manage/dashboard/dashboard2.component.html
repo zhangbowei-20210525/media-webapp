@@ -1,65 +1,4 @@
-<div class="expire-info-box fade-in-up">
-  <div class="block pur">
-    <div class="block-content">
-        <div class="pur-count">{{right?.count}}</div>
-        <div class="expire-title">{{ 'app.dashboard.purchase-imminent' | translate }}</div>
-        <ul >
-          <li *ngFor="let right of right?.data">
-            <div>{{right?.program_name}}</div>
-            <div>{{right?.custom_name}}</div>
-            <div>{{right?.expire_date}}</div>
-          </li>
-        </ul>
-    </div>
-  </div>
-  <div class="block pub">
-    <div class="block-content"></div>
-  </div>
-  <div class="block pub">
-    <div class="block-content"></div>
-  </div>
-  <div class="block pub">
-    <div class="block-content"></div>
-  </div>
-</div>
-
-<div class="block statistical">
-  <div class="block-content"></div>
-</div>
-
-<div class="statistical-pub-tape">
-  <div class="block pub">
-    <div class="block-content"></div>
-  </div>
-
-  <div class="block tape">
-    <div class="block-content"></div>
-  </div>
-</div>
-
-<div class="block tatistical-project">
-  <div class="block-content"></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="home-page-wrap fade-in-up">
+<div class="home-page-wrap fade-in-up">
   <div class="statistics-info-box">
     <div class="expire-info">
       <div class="statistics-info count">{{right?.count}}</div>
@@ -68,7 +7,10 @@
         <li class="li" *ngFor="let right of right?.data">
           <div class="statistics-info-gr-one">{{right?.program_name}}</div>
           <div class="statistics-info-gr-two">{{right?.custom_name}}</div>
-  
+          <!-- <div class="statistics-info-gr-four" *ngIf="right?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-gr-five" *ngIf="right?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div> -->
           <div class="statistics-info-gr-three">{{right?.expire_date}}</div>
         </li>
       </ul>
@@ -80,7 +22,10 @@
         <li class="li" *ngFor="let publish_right of publish_right?.data">
           <div class="statistics-info-fx-one">{{publish_right?.program_name}}</div>
           <div class="statistics-info-fx-two">{{publish_right?.custom_name}}</div>
-         
+          <!-- <div class="statistics-info-fx-four" *ngIf="publish_right?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-fx-five" *ngIf="publish_right?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div> -->
           <div class="statistics-info-fx-three">{{publish_right?.expire_date}}</div>
         </li>
       </ul>
@@ -91,7 +36,10 @@
       <ul class="ul">
         <li class="li" *ngFor="let payment of payment?.data">
           <div class="statistics-info-fk-one">{{payment?.custom_name}}</div>
-       
+          <!-- <div class="statistics-info-fk-three" *ngIf="payment?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-fk-four" *ngIf="payment?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div> -->
           <div class="statistics-info-fk-two">{{payment?.expire_date}}</div>
         </li>
       </ul>
@@ -102,7 +50,10 @@
       <ul class="ul">
         <li class="li" *ngFor="let receipt of receipt?.data">
           <div class="statistics-info-sk-one">{{receipt?.custom_name}}</div>
-       
+          <!-- <div class="statistics-info-sk-three" *ngIf="receipt?.is_expiry == true"><i nz-icon type="stop"
+              theme="outline"></i></div>
+          <div class="statistics-info-sk-four" *ngIf="receipt?.is_expiry == false"><i nz-icon type="stop"
+              theme="outline"></i></div> -->
           <div class="statistics-info-sk-two">{{receipt?.expire_date}}</div>
         </li>
       </ul>
@@ -112,7 +63,9 @@
     <div class="cartogram-box-one">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">{{ 'app.dashboard.series' | translate }}</div>
-       
+        <!-- <div class="cartogram-filtrate-one">权利</div>
+        <div class="cartogram-filtrate-two">品类</div>
+        <div class="cartogram-filtrate-three">投资类型</div> -->
         <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small"
           style="margin-top: 15px;float: right;margin-right: 20px" (ngModelChange)="switchoverSeriesCriteria()">
           <label nz-radio-button nzValue="program_type">{{ 'app.dashboard.program-type' | translate }}</label>
@@ -128,7 +81,9 @@
     <div class="cartogram-box-two">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">{{ 'app.dashboard.publicity' | translate }}</div>
-       
+        <!-- <div class="cartogram-filtrate-one">收藏</div>
+        <div class="cartogram-filtrate-two">点赞</div>
+        <div class="cartogram-filtrate-three">浏览量</div> -->
         <nz-radio-group [(ngModel)]="time" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
           (ngModelChange)="switchoverTime()">
           <label nz-radio-button nzValue="day">{{ 'app.dashboard.day' | translate }}</label>
@@ -146,11 +101,14 @@
     <div class="cartogram-box-one">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">{{ 'app.dashboard.publish' | translate }}</div>
-       
+        <!-- <div class="cartogram-filtrate-one">地区</div>
+        <div class="cartogram-filtrate-two">权利</div>
+        <div class="cartogram-filtrate-four">客户</div> -->
         <nz-radio-group [(ngModel)]="pubType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
           (ngModelChange)="switchoverPubType()">
           <label nz-radio-button nzValue="custom">{{ 'app.dashboard.custom' | translate }}</label>
-         
+          <!-- <label nz-radio-button nzValue="right">权利</label> -->
+          <!-- <label nz-radio-button nzValue="area">{{ 'app.dashboard.area' | translate }}</label> -->
         </nz-radio-group>
       </div>
       <div class="cartogram-info-three">
@@ -162,7 +120,9 @@
     <div class="cartogram-box-two">
       <div class="cartogram-wk-two">
         <div class="cartogram-title">{{ 'app.dashboard.source' | translate }}</div>
-       
+        <!-- <div class="cartogram-filtrate-five">密钥授权</div>
+        <div class="cartogram-filtrate-six">购入母带</div>
+        <div class="cartogram-filtrate-three">发行母带</div> -->
         <nz-radio-group [(ngModel)]="tapeType" nzSize="small" style="margin-top: 15px;float: right;margin-right: 20px"
           (ngModelChange)="switchoverTape()">
           <label nz-radio-button nzValue="publish">{{ 'app.dashboard.publish-source' | translate }}</label>
@@ -183,7 +143,10 @@
           <label nz-radio-button nzValue="quarter">{{ 'app.dashboard.publish-statistical-analysis-quarter' | translate }}</label>
           <label nz-radio-button nzValue="annual">{{ 'app.dashboard.publish-statistical-analysis-annual' | translate }}</label>
         </nz-radio-group>
-     
+      <!-- <nz-tree-select #allStatisticsTree style="width: 500px;margin-top: 15px;margin-right: 10px;float: right" 
+      [nzNodes]="statisticsSelectArea" nzShowSearch nzCheckable nzSize="small" nzPlaceHolder="请选择地域"
+        [(ngModel)]="checkedAreaCode" (ngModelChange)="areaChange($event)" nzMaxTagCount = 5>
+      </nz-tree-select> -->
 
       <nz-tree-select
       #allStatisticsTree
@@ -206,7 +169,9 @@
       <nz-select nzSize="small" style="width: 120px; margin-top: 15px;margin-right: 20px;float: right" (ngModelChange)="yearChange($event)" [(ngModel)]="timeFiltrate" nzAllowClear nzPlaceHolder="请选择年份">
         <nz-option *ngFor="let ss of statisticsSelectYear" [nzLabel]="ss" [nzValue]="ss"></nz-option>
       </nz-select>
-    
+      <!-- <nz-input-group class="search" nzSearch nzSize="small" style="width:200px;margin-top: 15px;margin-right: 20px;float: right">
+        <input type="text" nz-input placeholder="请输入节目名称" [(ngModel)]="content" (ngModelChange)="searchChange()"/>
+      </nz-input-group> -->
 
 
 
@@ -328,4 +293,31 @@
                     </tbody>
                   </nz-table>
   </div>
-</div> -->
+
+  <!-- <div class="dynamic-wk">
+    <div class="publicities-dynamic-box">
+      <div class="publicities-dynamic-title-wk">
+        <span class="publicities-dynamic-title">宣发客户动态</span>
+      </div>
+      <div class="publicities-dynamic-info-wk">
+        <ul class="publicities-dynamic-info-box">
+          <li class="publicities-dynamic-info">
+            动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="tapes-dynamic-box">
+      <div class="tapes-dynamic-title-wk">
+        <span class="tapes-dynamic-title">母带客户动态</span>
+      </div>
+      <div class="tapes-dynamic-info-wk">
+        <ul class="tapes-dynamic-info-box">
+          <li class="tapes-dynamic-info">
+            动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息动态信息
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div> -->
+</div>
