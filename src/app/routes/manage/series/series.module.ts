@@ -21,11 +21,12 @@ import { PublicityComponent } from './details/publicity/publicity.component';
 import { TapeComponent } from './details/tape/tape.component';
 import { EditTapeInfoComponent } from './components/edit-tape-info/edit-tape-info.component';
 import { EditSeriesInfoComponent } from './components/edit-series-info/edit-series-info.component';
-import { PubRightsComponent } from './copyrights/pub-rights/pub-rights.component';
-import { SwitchRightComponent } from './switch-right/switch-right.component';
 import { ContractsComponent } from './contracts/contracts.component';
 import { ProcurementComponent } from './contracts/procurement/procurement.component';
 import { PublishedComponent } from './contracts/published/published.component';
+import { PublishedComponent as PublishedListComponent } from './copyrights/published/published.component';
+import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
+import { RelationImportFieldComponent } from './components/relation-import-field/relation-import-field.component';
 
 
 @NgModule({
@@ -48,11 +49,12 @@ import { PublishedComponent } from './contracts/published/published.component';
     TapeComponent,
     EditTapeInfoComponent,
     EditSeriesInfoComponent,
-    PubRightsComponent,
-    SwitchRightComponent,
     ContractsComponent,
     ProcurementComponent,
     PublishedComponent,
+    PublishedListComponent,
+    AllRightsComponent,
+    RelationImportFieldComponent,
   ],
   imports: [
     CommonModule,
@@ -67,7 +69,8 @@ import { PublishedComponent } from './contracts/published/published.component';
     AddPublicityComponent,
     EditTapeInfoComponent,
     EditSeriesInfoComponent,
-    SeriesSelectorComponent
+    SeriesSelectorComponent,
+    RelationImportFieldComponent
   ]
 })
 export class SeriesModule { }

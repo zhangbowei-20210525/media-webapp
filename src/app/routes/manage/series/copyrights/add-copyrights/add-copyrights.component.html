@@ -234,6 +234,18 @@
       </nz-form-item>
 
       <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="programTheme">
+          <span>
+            题材
+            <i nz-icon nz-tooltip nzTitle="该选项只对未入库节目生效" type="question-circle" theme="outline"></i>
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="programTheme" placeholder="题材">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
         <nz-form-label [nzSm]="2" nzFor="projects" nzRequired>项目</nz-form-label>
         <nz-form-control [nzSm]="22">
           <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择相关项目" formControlName="projects">
@@ -320,7 +332,7 @@
 
         <nz-form-label [nzSm]="2" nzFor="airDate">播出日期</nz-form-label>
         <nz-form-control [nzSm]="10">
-            <nz-date-picker id="airDate" nzAllowClear="false" formControlName="airDate" nzPlaceHolder="播出日期"
+          <nz-date-picker id="airDate" nzAllowClear="false" formControlName="airDate" nzPlaceHolder="播出日期"
             style="width: 100%;" [nzStyle]="{ width: '100%' }">
           </nz-date-picker>
         </nz-form-control>

@@ -120,6 +120,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
 
     this.rightForm = this.fb.group({
       programType: ['other', [Validators.required]],
+      programTheme: [null],
       projects: [null, [Validators.required]],
       copyright: [null, [Validators.required]],
       copyrightChildren: [null],
@@ -261,6 +262,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
           id: program ? program.id : null,
           name: name,
           type: program ? program.program_type : this.rightForm.get('programType').value,
+          theme: this.rightForm.get('programTheme').value,
           // episodes: item.episodes,
           right: right.code,
           rightChildren: children ? children.map(c => c.code) : null,
@@ -366,6 +368,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
         first.id,
         first.name,
         first.type,
+        first.theme,
         first.episodes,
         this.typeForm.value['investmentType'],
         group.map(item => {

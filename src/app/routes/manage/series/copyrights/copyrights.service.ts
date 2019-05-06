@@ -6,6 +6,8 @@ import {
   CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto, RootTemplateDto
 } from './dtos';
 import * as _ from 'lodash';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 declare interface FiltrateSeriesParams {
   due_date: string;
@@ -137,6 +139,17 @@ export class CopyrightsService {
     return this.http.get<PaginationResponseDto<any>>('/api/v1/program');
   }
 
+  uploadImportFile(file: File) {
+    return this.http.post<any>('/api/v1/upload', { file });
+  }
+
+  uploadImportFileMock(file: File) {
+    return of({
+      theme: [{ raw: '动画片', real: '动画片' }, { raw: '动画片', real: '动画' }],
+      program_type: [{ raw: '战斗', real: '战争' }, { raw: '战争', real: '战争' }]
+    }).pipe(delay(3000));
+  }
+
   setLeafNode(nodes: any[]) {
     for (const key in nodes) {
       if (nodes.hasOwnProperty(key)) {
@@ -256,12 +269,13 @@ export class CopyrightsService {
     } as OrderPayDto;
   }
 
-  toProgramData(program_id: number, program_name: string, program_type: string, episodes: number,
+  toProgramData(program_id: number, program_name: string, program_type: string, theme: string, episodes: number,
     investment_type: string, right_data: CopyrightDto[]) {
     return {
       program_id,
       program_name,
       program_type,
+      theme,
       episodes,
       investment_type,
       right_data

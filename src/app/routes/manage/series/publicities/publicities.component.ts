@@ -18,9 +18,9 @@ import { PublicityService } from '../details/publicity/publicity.service';
 })
 export class PublicitiesComponent implements OnInit {
   @ViewChild('publicityOk') publicityOk: any;
-  readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
-  readonly imageFilters = ['.jpg', '.jpeg', '.png'];
-  readonly pdfFilters = ['.pdf'];
+  readonly fileFilters = ['mp4', 'wmv',  'rmvb', 'mkv', 'mov', 'avi', 'mpg'];
+  // readonly imageFilters = ['.jpg', '.jpeg', '.png'];
+  // readonly pdfFilters = ['.pdf'];
   allChecked = false;
   indeterminate = false;
   displayData = [];

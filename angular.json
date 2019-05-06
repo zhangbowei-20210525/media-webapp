@@ -33,8 +33,7 @@
             ],
             "styles": [
               "src/styles.less",
-              "src/styles/global.less",
-              "src/styles/theme.less"
+              "src/styles/index.less"
             ],
             "scripts": [
               "node_modules/ajv/dist/ajv.bundle.js"

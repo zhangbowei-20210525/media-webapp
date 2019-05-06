@@ -13,12 +13,11 @@ import { RootTemplateDto } from '../dtos';
 
 
 @Component({
-  selector: 'app-pub-rights',
-  templateUrl: './pub-rights.component.html',
-  styleUrls: ['./pub-rights.component.less'],
+  selector: 'app-published',
+  templateUrl: './published.component.html',
   animations: [fadeIn]
 })
-export class PubRightsComponent implements OnInit {
+export class PublishedComponent implements OnInit {
 
   isLoaded = false;
   isLoading = false;

@@ -81,7 +81,7 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/program?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
-  getSearchSeries(search: any, pagination: PaginationDto) {
+  searchSeries(search: string, pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/program?q=${search}&page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
@@ -186,7 +186,7 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/sources?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
-  getSearchAllTapes(search: any, pagination: PaginationDto) {
+  searchAllTapes(search: any, pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/sources?q=${search}&page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
