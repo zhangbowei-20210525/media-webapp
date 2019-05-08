@@ -499,98 +499,98 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllStatisticsInfo() {
-    const _DataSet = DataSet,
-      DataView = _DataSet.DataView;
-      const _G = G2,
-      Chart = _G.Chart;
-      const ages = [
-      '中国(未付款)',
-      '中国(已付款)',
-      '英国(未付款)',
-      '英国(已付款)',
-      '美国(未付款)',
-      '美国(已付款)',
-      '法国(未付款)',
-      '法国(已付款)',
-      '日本(未付款)',
-      '日本(已付款)',
-    ];
-    const dv = new DataView();
-    dv.source(this.data).transform({
-      type: 'fold',
-      fields: ages,
-      key: 'age',
-      value: 'population',
-      retains: ['State']
-    }).transform({
-      type: 'map',
-      callback: function callback(obj) {
-        const key = obj.age;
-        let type = void 0;
-        if (key === '中国(未付款)' || key === '中国(已付款)') {
-          type = 'a';
-        } else if (key === '英国(已付款)' || key === '英国(未付款)') {
-          type = 'b';
-        } else if (key === '美国(已付款)' || key === '美国(未付款)') {
-          type = 'c';
-        } else if (key === '法国(已付款)' || key === '法国(未付款)') {
-          type = 'd';
-        } else if (key === '日本(已付款)' || key === '日本(未付款)') {
-          type = 'e';
-        }
-        obj.type = type;
-        return obj;
-      }
-    });
-    const colorMap = {
-      '中国(已付款)': '#660000',
-      '中国(未付款)': '#663300',
-      '英国(已付款)': '#006600',
-      '英国(未付款)': '#009900',
-      '美国(已付款)': '#404040',
-      '美国(未付款)': '#707070',
-      '法国(已付款)': '#3366FF',
-      '法国(未付款)': '#3399FF',
-      '日本(已付款)': '#CC9933',
-      '日本(未付款)': '#CCCC33',
-    };
-    this.allStatisticsChart = new Chart({
-      container: 'allStatistics',
-      forceFit: true,
-      width: 1000,
-      height: 425,
-      padding: [10, 30, 80, 50]
-    });
-    this.allStatisticsChart.source(dv, {
-      population: {
-        alias: '总金额（万元）',
-      }
-    });
-    this.allStatisticsChart.axis('population', {
-      // label: {
-      //   formatter: function formatter(val) {
-      //     return val / 1000000 + 'M';
-      //   }
-      // }
-    });
-    this.allStatisticsChart.legend({
-      position: 'bottom-center'
-    });
-    this.allStatisticsChart.interval().position('State*population').color('age', function (age) {
-      return colorMap[age];
-    }).tooltip('age*population', function (age, population) {
-      return {
-        name: age,
-        value: population
-      };
-    }).adjust([{
-      type: 'dodge',
-      dodgeBy: 'type', // 按照 type 字段进行分组
-      marginRatio: 0 // 分组中各个柱子之间不留空隙
-    }, {
-      type: 'stack'
-    }]);
-    this.allStatisticsChart.render();
+    // const _DataSet = DataSet,
+    //   DataView = _DataSet.DataView;
+    //   const _G = G2,
+    //   Chart = _G.Chart;
+    //   const ages = [
+    //   '中国(未付款)',
+    //   '中国(已付款)',
+    //   '英国(未付款)',
+    //   '英国(已付款)',
+    //   '美国(未付款)',
+    //   '美国(已付款)',
+    //   '法国(未付款)',
+    //   '法国(已付款)',
+    //   '日本(未付款)',
+    //   '日本(已付款)',
+    // ];
+    // const dv = new DataView();
+    // dv.source(this.data).transform({
+    //   type: 'fold',
+    //   fields: ages,
+    //   key: 'age',
+    //   value: 'population',
+    //   retains: ['State']
+    // }).transform({
+    //   type: 'map',
+    //   callback: function callback(obj) {
+    //     const key = obj.age;
+    //     let type = void 0;
+    //     if (key === '中国(未付款)' || key === '中国(已付款)') {
+    //       type = 'a';
+    //     } else if (key === '英国(已付款)' || key === '英国(未付款)') {
+    //       type = 'b';
+    //     } else if (key === '美国(已付款)' || key === '美国(未付款)') {
+    //       type = 'c';
+    //     } else if (key === '法国(已付款)' || key === '法国(未付款)') {
+    //       type = 'd';
+    //     } else if (key === '日本(已付款)' || key === '日本(未付款)') {
+    //       type = 'e';
+    //     }
+    //     obj.type = type;
+    //     return obj;
+    //   }
+    // });
+    // const colorMap = {
+    //   '中国(已付款)': '#660000',
+    //   '中国(未付款)': '#663300',
+    //   '英国(已付款)': '#006600',
+    //   '英国(未付款)': '#009900',
+    //   '美国(已付款)': '#404040',
+    //   '美国(未付款)': '#707070',
+    //   '法国(已付款)': '#3366FF',
+    //   '法国(未付款)': '#3399FF',
+    //   '日本(已付款)': '#CC9933',
+    //   '日本(未付款)': '#CCCC33',
+    // };
+    // this.allStatisticsChart = new Chart({
+    //   container: 'allStatistics',
+    //   forceFit: true,
+    //   width: 1000,
+    //   height: 425,
+    //   padding: [10, 30, 80, 50]
+    // });
+    // this.allStatisticsChart.source(dv, {
+    //   population: {
+    //     alias: '总金额（万元）',
+    //   }
+    // });
+    // this.allStatisticsChart.axis('population', {
+    //   // label: {
+    //   //   formatter: function formatter(val) {
+    //   //     return val / 1000000 + 'M';
+    //   //   }
+    //   // }
+    // });
+    // this.allStatisticsChart.legend({
+    //   position: 'bottom-center'
+    // });
+    // this.allStatisticsChart.interval().position('State*population').color('age', function (age) {
+    //   return colorMap[age];
+    // }).tooltip('age*population', function (age, population) {
+    //   return {
+    //     name: age,
+    //     value: population
+    //   };
+    // }).adjust([{
+    //   type: 'dodge',
+    //   dodgeBy: 'type', // 按照 type 字段进行分组
+    //   marginRatio: 0 // 分组中各个柱子之间不留空隙
+    // }, {
+    //   type: 'stack'
+    // }]);
+    // this.allStatisticsChart.render();
 
     this.dashboardService.getAllStatistics('', '', '').subscribe(res => {
       this.areaOptions = this.getStatisticsSelectArea(res.meta.area_number_choices);
