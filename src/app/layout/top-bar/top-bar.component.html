@@ -2,7 +2,8 @@
   <div class="container">
     <div class="n-logo">
       <!-- <img src="../assets/images/logo-color.svg"> -->
-      <span style="font-size: 25px;font-weight: bold;font-family: sans-serif;">{{ settings.user.company_full_name }}</span>
+      <span style="font-size: 25px;font-weight: bold;font-family: sans-serif;" *ngIf="settings.user.company_name !== '个人用户'">{{ settings.user.company_name }}</span>
+      <span style="font-size: 25px;font-weight: bold;font-family: sans-serif;" *ngIf="settings.user.company_name == '个人用户'">Bctop影业助手</span>
       <!-- <img src="../assets/images/logo.png"> -->
       <!-- <span class="push-l-15" style="font-size: 18px;">BCTOP 影业助手</span> -->
     </div>

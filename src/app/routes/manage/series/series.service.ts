@@ -242,4 +242,12 @@ export class SeriesService {
   getCompanies() {
     return this.http.get<any>(`/api/v1/users/info/employees`);
   }
+
+  getCarrierBrand() {
+    return this.http.get<any>(`/api/v1/sources/template/brand`);
+  }
+
+  getCarrierModel() {
+    return this.http.get<any>(`/api/v1/sources/template/model`);
+  }
 }

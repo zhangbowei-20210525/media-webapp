@@ -44,40 +44,41 @@ export class TapeComponent implements OnInit {
 
   ngOnInit() {
     this.tab = 0;
-    this.route.parent.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.id = +params.get('sid');
-        console.log(this.id);
-        return this.seriesService.getTapeList(this.id);
-      })
-    ).subscribe(res => {
-      this.tapesList = res;
-      this.route.paramMap.pipe(
-        switchMap((params: ParamMap) => {
-          this.isId = +params.get('tapeId');
-          this.source_type = params.get('source_type');
+    this.route.parent.paramMap.subscribe(params => {
+      this.id = +params.get('sid');
+      this.seriesService.getTapeList(this.id).subscribe(res => {
+        this.tapesList = res;
+        this.route.paramMap.subscribe(tapeParams => {
+          this.isId = +tapeParams.get('tapeId');
+          this.source_type = tapeParams.get('source_type');
           if (this.isId === 0) {
-            this.seriesService.getOnlineInfo(this.tapesList[0].id).subscribe(t =>
-              this.tapeDetailsInfo =  t
+            if (this.tapesList.length > 0) {
+              this.seriesService.getOnlineInfo(this.tapesList[0].id).subscribe(t =>
+                this.tapeDetailsInfo = t
               );
-            return this.seriesService.tapeFileList(this.tapesList[0].id, this.tapeFilePagination);
+              this.getTapeFileList();
+            }
           } else {
             this.seriesService.getOnlineInfo(this.isId).subscribe(t =>
-              this.tapeDetailsInfo =  t
-              );
-            return this.seriesService.tapeFileList(this.isId, this.tapeFilePagination);
-          }
-        })
-      ).pipe(tap(x => {
-        x.list.forEach(f => {
-          if (f.created_at) {
-            f.created_at = f.created_at.substring(0, 10);
+              this.tapeDetailsInfo = t
+            );
+            this.getTapeFileList();
           }
         });
-      })).subscribe(x => {
-        this.tapeFileList = x.list;
-        this.tapeFilePagination = x.pagination;
       });
+    });
+  }
+
+  getTapeFileList() {
+    this.seriesService.tapeFileList(this.tapesList[0].id, this.tapeFilePagination).pipe(tap(x => {
+      x.list.forEach(f => {
+        if (f.created_at) {
+          f.created_at = f.created_at.substring(0, 10);
+        }
+      });
+    })).subscribe(x => {
+      this.tapeFileList = x.list;
+      this.tapeFilePagination = x.pagination;
     });
   }
 
@@ -127,10 +128,12 @@ export class TapeComponent implements OnInit {
   }
 
   nzAfterClose() {
-    this.seriesService.getTapeList(this.id).subscribe(res => {
-      this.tapesList = res;
-      this.tapeFile();
-    });
+    if (this.isId > 0) {
+      this.seriesService.getTapeList(this.id).subscribe(res => {
+        this.tapesList = res;
+        this.tapeFile();
+      });
+    }
   }
 
   // addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {

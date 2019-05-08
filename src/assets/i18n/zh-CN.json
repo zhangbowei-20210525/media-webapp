@@ -42,6 +42,7 @@
     "app.dashboard.publish-statistical-analysis": "发行统计分析",
     "app.dashboard.publish-statistical-analysis-quarter": "季度",
     "app.dashboard.publish-statistical-analysis-annual": "年度",
+    "app.dashboard.in-five-years": "请选择正确的年份（相隔5年）",
     "app.lang": "简体中文",
     "app.login": "登录",
     "app.login.get-captcha": "获取验证码",
