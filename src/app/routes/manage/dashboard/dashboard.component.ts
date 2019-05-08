@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit {
   publish_right: any;
   payment: any;
   receipt: any;
-  seriesCriteria: string;
   time: string;
   publicityData: any;
   publicityChart: any;
@@ -33,10 +32,11 @@ export class DashboardComponent implements OnInit {
   publishChart: any;
   tapeType: string;
   tapeChart: any;
-  seriesTime: any;
   seriesLineChart: any;
   startYear: any;
+  seriesTime = 'month';
   sortType = 'negative';
+  seriesCriteria = 'program_type';
   endYear: any;
   seriesInvestmentChart: any;
   seriesThemeChart: any;
@@ -406,8 +406,6 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('33445');
-    console.log(this.startYear);
     this.seriesCriteria = 'program_type';
     this.time = 'day';
     this.pubType = 'custom';

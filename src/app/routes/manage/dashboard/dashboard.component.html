@@ -54,16 +54,16 @@
   <div class="block-header">
     <div class="block-title"><span style="font-size: 20px">{{ 'app.dashboard.series' | translate }}</span></div>
     <div class="block-options">
-      <nz-year-picker [(ngModel)]="startYear" (ngModelChange)="startYearChange()" nzPlaceHolder="请选择起始年份" nzSize="small"
+      <nz-year-picker [(ngModel)]="startYear" (ngModelChange)="startYearChange()" [nzDisabled]="seriesTime == 'month'" nzPlaceHolder="请选择起始年份" nzSize="small"
         style="width:131px" nzAutoFocus="true"></nz-year-picker>
       <span>~</span>
-      <nz-year-picker [(ngModel)]="endYear" nzPlaceHolder="请选择终止年份" (ngModelChange)="endYearChange()" nzSize="small"
+      <nz-year-picker [(ngModel)]="endYear" nzPlaceHolder="请选择终止年份" [nzDisabled]="seriesTime == 'month'" (ngModelChange)="endYearChange()" nzSize="small"
         style="width:131px"></nz-year-picker>
       <nz-radio-group [(ngModel)]="seriesTime" nzSize="small" (ngModelChange)="cgChange()">
         <label nz-radio-button nzValue="month">本年度</label>
         <label nz-radio-button nzValue="year">近五年</label>
       </nz-radio-group>
-      <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small" (ngModelChange)="switchoverSeriesCriteria()">
+      <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small" (ngModelChange)="switchoverSeriesCriteria()" [nzDisabled]="conversionGraphics == 'pieChart'">
         <label nz-radio-button nzValue="program_type">{{ 'app.dashboard.program-type' | translate }}</label>
         <label nz-radio-button nzValue="investment_type">{{ 'app.dashboard.investment-type' | translate }}</label>
         <label nz-radio-button nzValue="investment_type">题材</label>
