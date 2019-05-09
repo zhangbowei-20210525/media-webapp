@@ -17,8 +17,12 @@ export class DashboardService {
     return this.http.get<any>('/api/v1/analysis/period');
   }
 
-  getSeriesStatistics(seriesStatisticsType: string) {
-    return this.http.get<any>(`/api/v1/analysis/program?title=${seriesStatisticsType}`);
+  getSeriesPieChart(startYear: string, endYear: string) {
+    return this.http.get<any>(`/api/v1/analysis/program/pie?start_year=${startYear}&end_year=${endYear}`);
+  }
+
+  getSeriesLineChart(title: string, startYear: string, endYear: string) {
+    return this.http.get<any>(`/api/v1/analysis/program/line?title=${title}&start_year=${startYear}&end_year=${endYear}`);
   }
 
   getPublicityStatistics(timeStatisticsType: string) {
@@ -47,5 +51,13 @@ export class DashboardService {
 
   searchSeries(name: string, program_ids: any) {
     return this.http.get<any>(`/api/v1/programs/brief?q=${name}&program_ids=${program_ids}`);
+  }
+
+  getPurCustomer(start_date: any, end_date: any) {
+    return this.http.get<any>(`/api/v1/analysis/purchase_right_contract/custom?start_date=${start_date}&end_date=${end_date}`);
+  }
+
+  getPubCustomer(start_date: any, end_date: any) {
+    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/custom?start_date=${start_date}&end_date=${end_date}`);
   }
 }

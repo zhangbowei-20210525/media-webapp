@@ -59,14 +59,14 @@
       <span>~</span>
       <nz-year-picker [(ngModel)]="endYear" nzPlaceHolder="请选择终止年份" [nzDisabled]="seriesTime == 'month'" (ngModelChange)="endYearChange()" nzSize="small"
         style="width:131px"></nz-year-picker>
-      <nz-radio-group [(ngModel)]="seriesTime" nzSize="small" (ngModelChange)="cgChange()">
+      <nz-radio-group [(ngModel)]="seriesTime" nzSize="small" (ngModelChange)="seriesTimeChange()">
         <label nz-radio-button nzValue="month">本年度</label>
         <label nz-radio-button nzValue="year">近五年</label>
       </nz-radio-group>
       <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small" (ngModelChange)="switchoverSeriesCriteria()" [nzDisabled]="conversionGraphics == 'pieChart'">
         <label nz-radio-button nzValue="program_type">{{ 'app.dashboard.program-type' | translate }}</label>
         <label nz-radio-button nzValue="investment_type">{{ 'app.dashboard.investment-type' | translate }}</label>
-        <label nz-radio-button nzValue="investment_type">题材</label>
+        <label nz-radio-button nzValue="theme">题材</label>
       </nz-radio-group>
       <nz-radio-group [(ngModel)]="conversionGraphics" nzSize="small" (ngModelChange)="cgChange()">
         <label nz-radio-button nzValue="pieChart">饼图</label>
@@ -75,22 +75,21 @@
     </div>
   </div>
   <div class="block-content" [hidden]="conversionGraphics == 'pieChart'">
-    <!-- <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty> -->
-    <div id="seriesLine"></div>
+    <nz-empty [hidden]="t4 > 0" style="margin-top: 125px"></nz-empty>
+    <div id="seriesLine" [hidden]="t4 == 0"></div>
   </div>
   <div class="block-content flex" [hidden]="conversionGraphics == 'lineChart'">
-
     <div style="height: 450px;width: 362px">
-      <!-- <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty> -->
-      <div id="seriesType"></div>
+      <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
+      <div id="seriesType" [hidden]="t1 == 0"></div>
     </div>
     <div style="height: 450px;width: 362px">
-      <!-- <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty> -->
-      <div id="seriesTheme"></div>
+      <nz-empty [hidden]="t3 > 0" style="margin-top: 125px"></nz-empty>
+      <div id="seriesTheme" [hidden]="t3 == 0"></div>
     </div>
     <div style="height: 450px;width: 362px">
-      <!-- <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty> -->
-      <div id="seriesInvestment"></div>
+      <nz-empty [hidden]="t2 > 0" style="margin-top: 125px"></nz-empty>
+      <div id="seriesInvestment" [hidden]="t2 == 0"></div>
     </div>
   </div>
 </div>
@@ -101,9 +100,9 @@
       <div class="block-options">
         <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onChange($event)" nzSize="small" style="width: 240px">
         </nz-range-picker>
-        <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small" (ngModelChange)="switchoverSeriesCriteria()">
-          <label nz-radio-button nzValue="program_type">采购</label>
-          <label nz-radio-button nzValue="investment_type">发行</label>
+        <nz-radio-group [(ngModel)]="seriesInOut" nzSize="small" (ngModelChange)="seriesInOutChange()">
+          <label nz-radio-button nzValue="purchase">采购</label>
+          <label nz-radio-button nzValue="publish">发行</label>
         </nz-radio-group>
         <nz-radio-group [(ngModel)]="sortType" nzSize="small" (ngModelChange)="sortChange()">
           <label nz-radio-button nzValue="negative"><i nz-icon nzType="arrow-down" nzTheme="outline"></i></label>
@@ -113,8 +112,8 @@
     </div>
     <div class="block-content">
       <div style="height: 450px;width: 505px">
-        <!-- [hidden]="t2 == 0 -->
-        <div id="publishStatistics"></div>
+        <nz-empty [hidden]="t5 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="customerStatistics" [hidden]="t5 == 0"></div>
       </div>
     </div>
   </div>
@@ -131,8 +130,8 @@
     </div>
     <div class="block-content">
       <div style="height: 450px;width: 505px">
-        <!-- <nz-empty [hidden]="t4 > 0" style="margin-top: 125px"></nz-empty> -->
-        <div id="tapeStatistics"></div>
+        <nz-empty [hidden]="t6 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="tapeStatistics" [hidden]="t6 == 0"></div>
       </div>
     </div>
   </div>

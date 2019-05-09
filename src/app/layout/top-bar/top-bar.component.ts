@@ -28,7 +28,6 @@ export class TopBarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.settings);
     this.langs = this.i18n.getLangs();
     this.token.change().subscribe(t => {
       this.isLoggedIn = this.checkSimple(t);
