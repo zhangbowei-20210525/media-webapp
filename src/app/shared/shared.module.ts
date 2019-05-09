@@ -31,6 +31,7 @@ import { BindWechatComponent } from './account/bind-wechat.component';
 import { EmptyComponent } from './components/empty/empty.component';
 import { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { TagMergeComponent } from './components/tag-merge/tag-merge.component';
 
 const INSIDE_COMPONENTS = [
   LoginComponent,
@@ -40,7 +41,8 @@ const INSIDE_COMPONENTS = [
 const COMPONENTS = [
   EmptyComponent,
   SeriesSelectorComponent,
-  LoadingComponent
+  LoadingComponent,
+  TagMergeComponent
 ];
 
 const DIRECTIVES = [];
@@ -79,6 +81,7 @@ const PIPES = [
 import { RouterModule } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { HttpClientJsonpModule } from '@angular/common/http';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -95,6 +98,7 @@ import { HttpClientJsonpModule } from '@angular/common/http';
     ReactiveFormsModule,
     TranslateModule,
     HttpClientJsonpModule,
+    DragDropModule,
     // third libs
     ...THIRD_MODULES,
   ],

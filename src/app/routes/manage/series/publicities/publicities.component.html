@@ -1,7 +1,6 @@
 <div>
   <p class="clearfix">
-    <nz-radio-group [(ngModel)]="publicityStyle" [nzButtonStyle]="'solid'"
-      (ngModelChange)="publicityStyleChange($event)">
+    <nz-radio-group [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
       <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
           style="font-size: 1.5rem"></i></label>
       <label nz-radio-button nzValue="table"><i nz-icon type="table" theme="outline"
@@ -17,7 +16,7 @@
   </label>
   <input id="fileUpload" hidden type="file" (change)="publicityUpload($event)" multiple="multiple">
 </ng-template>
-<div *ngIf="isLoaded" [hidden]="publicityStyle == 'figure'">
+<div *ngIf="isLoaded" [hidden]="mode == 'figure'">
   <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
     [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
@@ -89,46 +88,56 @@
       </div>
     </div> -->
 
-<div class="video-info-wk" [hidden]="publicityStyle == 'table'">
-  <ul>
-    <li class="video-info" *ngFor="let thumbnail of thumbnailList">
-      <div class="video">
-       <img class="video-img" [src]="thumbnail?.src" />
-        <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
-          <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
-        </div>
-      </div>
+<div [hidden]="mode == 'table'">
+  <div *ngIf="list.length > 0 else empty">
+    <div class="video-info-wk">
+      <ul>
+        <li class="video-info" *ngFor="let thumbnail of list">
+          <div class="video">
+            <img class="video-img" [src]="thumbnail?.src" />
+            <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
+              <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
+            </div>
+          </div>
 
-      <div class="info">
-        <div class="info-wk-one">
-          <div class="info-name"><a (click)="thumbnailDetail(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
-          <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
-          <a style="font-size: 13px;margin-left: 4rem;" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i
-              nz-icon nzType="eye" nzTheme="outline"></i></a>
-        </div>
-        <div class="info-wk-three">
-          <div>导演:</div>
-          <div class="info-wk-four">{{ thumbnail?.director }}</div>
-        </div>
-        <div class="info-wk-five">
-          主演:
-          <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
-        </div>
-      </div>
+          <div class="info">
+            <div class="info-wk-one">
+              <div class="info-name"><a (click)="thumbnailDetail(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
+              <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
+              <a style="font-size: 13px;margin-left: 5rem;"
+                (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i nz-icon nzType="eye"
+                  nzTheme="outline"></i></a>
+            </div>
+            <div class="info-wk-three">
+              <div>导演:</div>
+              <div class="info-wk-four">{{ thumbnail?.director }}</div>
+            </div>
+            <div class="info-wk-five">
+              主演:
+              <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
+            </div>
+          </div>
 
-      <div class="info-wk-seven">
-        <div class="info-wk-eight">
-          <div class="info-wk-nine">
-              <span *ngIf="thumbnail?.user?.avatar == ''; else avatar"></span>
-              <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template>
+          <div class="info-wk-seven">
+            <div class="info-wk-eight">
+              <div class="info-wk-nine">
+                <span *ngIf="thumbnail?.user?.avatar; else avatar"></span>
+                <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template>
+              </div>
+              <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
+            </div>
           </div>
           <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
-    </li>
-  </ul>
-</div>
-<nz-empty [hidden]="thumbnailList.length > 0 || publicityStyle == 'table'"></nz-empty>
-<div style="text-align: right;margin-top: 5rem" [hidden]="thumbnailList.length == 0  || publicityStyle == 'table'">
-  <nz-pagination [(nzPageIndex)]="tbPagination.page" [nzTotal]="tbPagination.count"
-    [nzPageSize]="tbPagination.page_size" (nzPageIndexChange)="tbPageChange()"></nz-pagination>
+        </li>
+      </ul>
+    </div>
+    <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0  || mode == 'table'">
+      <nz-pagination [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count" [nzPageSize]="pagination.page_size"
+        (nzPageIndexChange)="pageChnage()"></nz-pagination>
+    </div>
+  </div>
+  <ng-template #empty>
+    <nz-empty></nz-empty>
+  </ng-template>
 </div>
 <!-- </div> -->

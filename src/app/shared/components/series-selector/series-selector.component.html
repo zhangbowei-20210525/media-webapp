@@ -14,7 +14,8 @@
       <p>
         <nz-radio-group [(ngModel)]="selectedType" (ngModelChange)="handleTypeChange($event)" [nzButtonStyle]="'solid'"
           [nzSize]="'small'">
-          <label nz-radio-button [nzValue]="type.code" *ngFor="let type of programTypes">{{ type.name }}</label>
+          <label nz-radio-button nzValue="">全部</label>
+          <label nz-radio-button [nzValue]="type" *ngFor="let type of programTypes">{{ type }}</label>
         </nz-radio-group>
       </p>
       <p>

@@ -215,21 +215,35 @@
         <nz-form-label [nzSm]="2">
           <span>
             节目类型
-            <i nz-icon nz-tooltip nzTitle="该选项只对未入库节目生效" type="question-circle" theme="outline"></i>
+            <i nz-icon nz-tooltip nzTitle="该选项只对新增节目有效" type="question-circle" theme="outline"></i>
           </span>
         </nz-form-label>
         <nz-form-control [nzSm]="5">
-          <nz-select nzPlaceHolder="请选择新增节目类型" formControlName="programType">
-            <nz-option nzValue="film" nzLabel="电影"></nz-option>
-            <nz-option nzValue="tv" nzLabel="电视剧"></nz-option>
-            <nz-option nzValue="variety" nzLabel="综艺"></nz-option>
-            <nz-option nzValue="anime" nzLabel="动画"></nz-option>
-            <nz-option nzValue="documentary" nzLabel="纪录片"></nz-option>
-            <nz-option nzValue="other" nzLabel="其他"></nz-option>
-          </nz-select>
-          <nz-form-explain *ngIf="rightForm.get('programType').dirty && rightForm.get('programType').errors">
-            请选择新增节目类型
-          </nz-form-explain>
+          <input placeholder="节目类型" nz-input formControlName="programType"
+            (input)="onProgramTypeInput($event.target?.value)" [nzAutocomplete]="autoProgramType" />
+          <nz-autocomplete nzBackfill #autoProgramType>
+            <nz-auto-option *ngFor="let option of filteredProgramTypes" [nzValue]="option">
+              {{ option }}
+            </nz-auto-option>
+          </nz-autocomplete>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="programTheme">
+          <span>
+            题材
+            <i nz-icon nz-tooltip nzTitle="该选项只对新增节目有效" type="question-circle" theme="outline"></i>
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="programTheme" placeholder="题材"
+            (input)="onProgramThemeInput($event.target?.value)" [nzAutocomplete]="autoProgramTheme">
+          <nz-autocomplete nzBackfill #autoProgramTheme>
+            <nz-auto-option *ngFor="let option of filteredProgramThemes" [nzValue]="option">
+              {{ option }}
+            </nz-auto-option>
+          </nz-autocomplete>
         </nz-form-control>
       </nz-form-item>
 
@@ -320,7 +334,7 @@
 
         <nz-form-label [nzSm]="2" nzFor="airDate">播出日期</nz-form-label>
         <nz-form-control [nzSm]="10">
-            <nz-date-picker id="airDate" nzAllowClear="false" formControlName="airDate" nzPlaceHolder="播出日期"
+          <nz-date-picker id="airDate" nzAllowClear="false" formControlName="airDate" nzPlaceHolder="播出日期"
             style="width: 100%;" [nzStyle]="{ width: '100%' }">
           </nz-date-picker>
         </nz-form-control>

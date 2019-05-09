@@ -13,12 +13,11 @@ import { SettingsService, I18nService } from '@core';
 })
 export class AddPublicityComponent implements OnInit {
   validateForm: FormGroup;
-  data: any;
   programList = [];
-
-  disabled: boolean;
   programNames = [];
   companies = [];
+  programTypeOptions: string[];
+  filteredProgramTypes: string[];
 
 
   constructor(
@@ -51,6 +50,18 @@ export class AddPublicityComponent implements OnInit {
       });
       this.validateForm.get('checkCompanies').setValue(companyNames);
     });
+
+    this.fetchFuzzyOptions('');
+  }
+
+  fetchFuzzyOptions(value: string) {
+    this.service.fuzzySearch(value).subscribe(result => {
+      this.programList = result.list;
+    });
+  }
+
+  onProgramTypeInput(value: string) {
+    this.filteredProgramTypes = this.programTypeOptions.filter(item => item.indexOf(value) >= 0);
   }
 
   validation() {
@@ -84,36 +95,17 @@ export class AddPublicityComponent implements OnInit {
   }
 
   onInput() {
-    this.service.fuzzySearch(this.validateForm.value['program_name']).subscribe(s => {
-      this.programList = s.list;
-      if (this.disabled === true) {
-        this.disabled = false;
-        this.validateForm = this.fb.group({
-          program_name: [this.validateForm.value['program_name'], [Validators.required]],
-          program_type: [null, [Validators.required]],
-          type: [null, [Validators.required]],
-        });
-      }
-      this.programList.forEach(pf => {
-        if (this.validateForm.value['program_name'] === pf.name) {
-          this.validateForm = this.fb.group({
-            program_name: [this.validateForm.value['program_name'], [Validators.required]],
-            program_type: [pf.program_type, [Validators.required]],
-            type: [null, [Validators.required]],
-          });
-          this.disabled = true;
-        }
-        // if (this.validateForm.value['program_name'] !== pf.name) {
-        //   console.log('2');
-        //   console.log(this.validateForm.value['program_name']);
-        //   this.validateForm = this.fb.group({
-        //     program_name: [this.validateForm.value['program_name'], [Validators.required]],
-        //     program_type: [null, [Validators.required]],
-        //     type: [null, [Validators.required]],
-        //   });
-        // }
-      });
-    });
+    const value = this.validateForm.value['program_name'];
+    const programType = this.validateForm.get('program_type');
+    const find = this.programList.find(item => item.name === value);
+    if (find) {
+      programType.setValue(find.program_type);
+      programType.disable();
+    } else {
+      this.validateForm.get('program_type').reset();
+      programType.enable();
+    }
+    this.fetchFuzzyOptions(value);
   }
 
 }

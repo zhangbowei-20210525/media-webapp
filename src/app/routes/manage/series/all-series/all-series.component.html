@@ -1,4 +1,4 @@
-<div [@fadeIn]>
+<div *ngIf="isLoaded" [@fadeIn]>
   <div>
     <p class="clearfix">
       <button nz-button nzType="default" class="rf" (click)="addSeries()">{{ 'app.series.add-series' | translate }}</button>
@@ -25,7 +25,7 @@
     <tbody>
       <tr *ngFor="let data of table.data;let i = index">
         <td [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td>
-        <td>{{ i + 1 + pagination.page * 10 - 10}}</td>
+        <td>{{ data.displayIndex }}</td>
         <td style="text-align: center"><a (click)="seriesDetails(data.id)">{{ data.name }}</a></td>
         <td style="text-align: center">
           {{ data.program_type | seriesType }}

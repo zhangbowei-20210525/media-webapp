@@ -7,9 +7,16 @@
       </nz-radio-group>
     </div>
     <div class="options-wrapper">
+        <label for="file" nz-tooltip [nzTitle]="download"><a nz-button>{{ lastUrlType == 'purchase' ? '导入版权库' : '导入发行库' }}</a></label>
         <a nz-button nzType="default" routerLink="/manage/series/add-copyrights">新增版权</a>
         <a nz-button nzType="default" routerLink="/manage/series/publish-rights">新增发行</a>
     </div>
   </div>
   <router-outlet></router-outlet>
 </div>
+
+<input type="file" hidden id="file" [disabled]="isUploading" (change)="fileChange($event)">
+
+<ng-template #download>
+  仅支持excel文件，需要遵循<a>模板</a>格式
+</ng-template>

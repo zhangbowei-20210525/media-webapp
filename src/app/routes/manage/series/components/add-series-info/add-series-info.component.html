@@ -1,98 +1,107 @@
 <form nz-form [formGroup]="validateForm">
   <nz-form-item>
-      <nz-form-label nzFor="name" [nzSm]="3" nzRequired>节目名称</nz-form-label>
-      <nz-form-control [nzSm]="9">
-          <input nz-input placeholder="请输入节目名称" id="name" formControlName="name">
-          <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">请输入节目名称</nz-form-explain>
-      </nz-form-control>
-      <nz-form-label nzFor="nickname" [nzSm]="3">节目别名</nz-form-label>
-      <nz-form-control [nzSm]="9">
-          <input nz-input placeholder="请输入节目别名" id="nickname" formControlName="nickname">
-      </nz-form-control>
+    <nz-form-label nzFor="name" [nzSm]="3" nzRequired>节目名称</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <input nz-input placeholder="请输入节目名称" id="name" formControlName="name">
+      <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">请输入节目名称
+      </nz-form-explain>
+    </nz-form-control>
+    <nz-form-label nzFor="nickname" [nzSm]="3">节目别名</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <input nz-input placeholder="请输入节目别名" id="nickname" formControlName="nickname">
+    </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-label nzFor="program_type" [nzSm]="3" nzRequired>节目类型</nz-form-label>
     <nz-form-control [nzSm]="9">
-        <nz-select id="program_type" formControlName="program_type" nzAllowClear nzPlaceHolder="请选择节目类型">
-          <nz-option nzValue="film" nzLabel="电影"></nz-option>
-          <nz-option nzValue="tv" nzLabel="电视剧"></nz-option>
-          <nz-option nzValue="variety" nzLabel="综艺"></nz-option>
-          <nz-option nzValue="anime" nzLabel="动画"></nz-option>
-          <nz-option nzValue="documentary" nzLabel="纪录片"></nz-option>
-          <nz-option nzValue="other" nzLabel="其他"></nz-option>
-        </nz-select>
-        <nz-form-explain *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请选择节目类型</nz-form-explain>
+      <input placeholder="节目类型" nz-input formControlName="program_type"
+        (input)="onProgramTypeInput($event.target?.value)" [nzAutocomplete]="auto" />
+      <nz-autocomplete nzBackfill #auto>
+        <nz-auto-option *ngFor="let option of filteredProgramTypes" [nzValue]="option">
+          {{ option }}
+        </nz-auto-option>
+      </nz-autocomplete>
+      <nz-form-explain *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请输入节目类型
+      </nz-form-explain>
     </nz-form-control>
     <nz-form-label nzFor="theme" [nzSm]="3">题材</nz-form-label>
     <nz-form-control [nzSm]="9">
-        <input nz-input placeholder="请输入题材" id="theme" formControlName="theme">
+      <input nz-input placeholder="请输入题材" id="theme" formControlName="theme"
+        (input)="onProgramThemeInput($event.target?.value)" [nzAutocomplete]="autoProgramTheme">
+      <nz-autocomplete nzBackfill #autoProgramTheme>
+        <nz-auto-option *ngFor="let option of filteredProgramThemes" [nzValue]="option">
+          {{ option }}
+        </nz-auto-option>
+      </nz-autocomplete>
     </nz-form-control>
-</nz-form-item>
+  </nz-form-item>
 
-<nz-form-item>
-  <nz-form-label nzFor="episode" [nzSm]="3">集数</nz-form-label>
-  <nz-form-control [nzSm]="9">
+  <nz-form-item>
+    <nz-form-label nzFor="episode" [nzSm]="3">集数</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入集数" id="episode" formControlName="episode">
-  </nz-form-control>
-  <nz-form-label nzFor="director" [nzSm]="3">导演</nz-form-label>
-  <nz-form-control [nzSm]="9">
+    </nz-form-control>
+    <nz-form-label nzFor="director" [nzSm]="3">导演</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入导演" id="director" formControlName="director">
-  </nz-form-control>
-</nz-form-item>
+    </nz-form-control>
+  </nz-form-item>
 
-<nz-form-item>
-  <nz-form-label nzFor="screen_writer" [nzSm]="3">编剧</nz-form-label>
-  <nz-form-control [nzSm]="9">
+  <nz-form-item>
+    <nz-form-label nzFor="screen_writer" [nzSm]="3">编剧</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入编剧" id="screen_writer" formControlName="screen_writer">
-  </nz-form-control>
-  <nz-form-label nzFor="protagonist" [nzSm]="3">主演</nz-form-label>
-  <nz-form-control [nzSm]="9">
+    </nz-form-control>
+    <nz-form-label nzFor="protagonist" [nzSm]="3">主演</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入主演" id="protagonist" formControlName="protagonist">
-  </nz-form-control>
-</nz-form-item>
+    </nz-form-control>
+  </nz-form-item>
 
-<nz-form-item>
-  <nz-form-label nzFor="product_company" [nzSm]="3">出品方</nz-form-label>
-  <nz-form-control [nzSm]="9">
+  <nz-form-item>
+    <nz-form-label nzFor="product_company" [nzSm]="3">出品方</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入出品方" id="product_company" formControlName="product_company">
-  </nz-form-control>
-  <nz-form-label nzFor="supervisor" [nzSm]="3">监制</nz-form-label>
-  <nz-form-control [nzSm]="9">
+    </nz-form-control>
+    <nz-form-label nzFor="supervisor" [nzSm]="3">监制</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入监制" id="supervisor" formControlName="supervisor">
-  </nz-form-control>
-</nz-form-item>
+    </nz-form-control>
+  </nz-form-item>
 
-<nz-form-item>
-  <nz-form-label nzFor="general_producer" [nzSm]="3">总制片人</nz-form-label>
-  <nz-form-control [nzSm]="9">
+  <nz-form-item>
+    <nz-form-label nzFor="general_producer" [nzSm]="3">总制片人</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入总制片人" id="general_producer" formControlName="general_producer">
-  </nz-form-control>
-  <nz-form-label nzFor="producer" [nzSm]="3">出品人</nz-form-label>
-  <nz-form-control [nzSm]="9">
+    </nz-form-control>
+    <nz-form-label nzFor="producer" [nzSm]="3">出品人</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <input nz-input placeholder="请输入出品人" id="producer" formControlName="producer">
-  </nz-form-control>
-</nz-form-item>
+    </nz-form-control>
+  </nz-form-item>
 
-<nz-form-item>
-  <nz-form-label nzFor="release_date" [nzSm]="3">发行时间</nz-form-label>
-  <nz-form-control [nzSm]="9">
-      <nz-date-picker [nzStyle]="{'width':'280px'}" id="release_date" formControlName="release_date" nzPlaceHolder="请选择发行时间"></nz-date-picker>
-  </nz-form-control>
-  <nz-form-label nzFor="language" [nzSm]="3">语言</nz-form-label>
-  <nz-form-control [nzSm]="9">
+  <nz-form-item>
+    <nz-form-label nzFor="release_date" [nzSm]="3">发行时间</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <nz-date-picker [nzStyle]="{'width':'280px'}" id="release_date" formControlName="release_date"
+        nzPlaceHolder="请选择发行时间"></nz-date-picker>
+    </nz-form-control>
+    <nz-form-label nzFor="language" [nzSm]="3">语言</nz-form-label>
+    <nz-form-control [nzSm]="9">
       <nz-select id="language" formControlName="language" nzPlaceHolder="请选择语言种类">
-          <nz-option nzLabel="汉语" nzValue="Chinese"></nz-option>
-          <nz-option nzLabel="英语" nzValue="English"></nz-option>
-        </nz-select>
-  <nz-form-explain *ngIf="validateForm.get('language').dirty && validateForm.get('language').errors">请选择语言</nz-form-explain>
-  </nz-form-control>
-</nz-form-item>
+        <nz-option nzLabel="汉语" nzValue="Chinese"></nz-option>
+        <nz-option nzLabel="英语" nzValue="English"></nz-option>
+      </nz-select>
+      <nz-form-explain *ngIf="validateForm.get('language').dirty && validateForm.get('language').errors">请选择语言
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
 
-<nz-form-item>
-  <nz-form-label nzFor="introduction" [nzSm]="3">简介</nz-form-label>
-  <nz-form-control [nzSm]="21">
+  <nz-form-item>
+    <nz-form-label nzFor="introduction" [nzSm]="3">简介</nz-form-label>
+    <nz-form-control [nzSm]="21">
       <input nz-input placeholder="请输入简介" id="introduction" formControlName="introduction">
-  </nz-form-control>
-</nz-form-item>
+    </nz-form-control>
+  </nz-form-item>
 </form>

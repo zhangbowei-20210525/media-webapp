@@ -12,11 +12,11 @@ import { PublicityDetailsComponent } from './publicities/publicity-details/publi
 import { TapesComponent } from './tapes/tapes.component';
 import { PublicityComponent } from './details/publicity/publicity.component';
 import { TapeComponent } from './details/tape/tape.component';
-import { PubRightsComponent } from './copyrights/pub-rights/pub-rights.component';
-import { SwitchRightComponent } from './switch-right/switch-right.component';
 import { ContractsComponent } from './contracts/contracts.component';
 import { ProcurementComponent } from './contracts/procurement/procurement.component';
 import { PublishedComponent } from './contracts/published/published.component';
+import { PublishedComponent as PublishedListComponent } from './copyrights/published/published.component';
+import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
 
 
 
@@ -39,17 +39,17 @@ const routes: Routes = [
         component: TapesComponent
       },
       {
-        path: 'switchRight',
-        component: SwitchRightComponent,
+        path: 'rights',
+        component: CopyrightsComponent,
         children: [
-          { path: '', redirectTo: 'rights', pathMatch: 'full' },
+          { path: '', redirectTo: 'all', pathMatch: 'full' },
           {
-            path: 'rights',
-            component: CopyrightsComponent
+            path: 'all',
+            component: AllRightsComponent
           },
           {
-            path: 'pubRights',
-            component: PubRightsComponent
+            path: 'published',
+            component: PublishedListComponent
           },
         ]
       },

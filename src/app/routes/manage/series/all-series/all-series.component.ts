@@ -10,6 +10,8 @@ import { fadeIn } from '@shared/animations';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
+import * as _ from 'lodash';
+import { indexMap } from '@shared/rxjs/operators';
 
 @Component({
   selector: 'app-all-series',
@@ -19,15 +21,9 @@ import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 })
 export class AllSeriesComponent implements OnInit {
 
-  @ViewChild('publicityOk') publicityOk: any;
-
-  readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
-  readonly imageFilters = ['.jpg', '.jpeg', '.png'];
-  readonly pdfFilters = ['.pdf'];
-
   dataset: SeriesDto[] = [];
   isLoaded = false;
-  isLoading: boolean;
+  isLoading = false;
   pagination = { page: 1, page_size: 10 } as PaginationDto;
   allChecked: boolean;
   indeterminate: boolean;
@@ -36,7 +32,7 @@ export class AllSeriesComponent implements OnInit {
   addPublicityModal: NzModalRef;
   id: number;
   publicityId: number;
-  search: any;
+  searchText: string;
 
   constructor(
     private modal: NzModalService,
@@ -48,50 +44,32 @@ export class AllSeriesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadSeries();
-  }
-
-  loadSeries() {
-    this.isLoading = true;
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.search = params.get('search');
-        console.log(this.search);
-        if (this.search === null) {
-          return this.seriesService.getSeries(this.pagination);
-        } else {
-          return this.seriesService.getSearchSeries(this.search, this.pagination);
-        }
-      })).pipe(tap(x => {
-        x.list.forEach(f => {
-          if (f.release_date) {
-            f.release_date = f.release_date.substring(0, 10);
-          }
-        });
-      })).pipe(finalize(() => {
-        this.isLoading = false;
-        this.isLoaded = true;
-      }))
-      .subscribe(res => {
-        this.dataset = res.list;
-        this.pagination = res.pagination;
-        this.refreshStatus();
-      });
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.searchText = params.get('search');
+      this.fetchSeries();
+    });
   }
 
   fetchSeries() {
     this.isLoading = true;
-    this.seriesService.getSeries(this.pagination).pipe(finalize(() => this.isLoading = false)).pipe(tap(x => {
-      x.list.forEach(f => {
-        if (f.release_date) {
-          f.release_date = f.release_date.substring(0, 10);
+    (_.isString(this.searchText) ?
+      this.seriesService.searchSeries(this.searchText, this.pagination) :
+      this.seriesService.getSeries(this.pagination))
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        this.isLoaded = true;
+      }), tap(data => {
+        for (const iterator of data.list) {
+          if (iterator.release_date) {
+            iterator.release_date = iterator.release_date.substring(0, 10);
+          }
         }
+      }), indexMap())
+      .subscribe(result => {
+        this.dataset = result.list;
+        this.pagination = result.pagination;
+        this.refreshStatus();
       });
-    })).subscribe(res => {
-      this.dataset = res.list;
-      this.pagination = res.pagination;
-      this.refreshStatus();
-    });
   }
 
   refreshDataSet() {

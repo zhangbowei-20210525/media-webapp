@@ -8,6 +8,7 @@ import { RootTemplateDto, ContractDto } from '../dtos';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { FieldCalcGroup, FieldMultiplyCalcGroup, FieldAdditionCalcGroup } from '../field-calc';
+import { SeriesService } from '../../series.service';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -46,10 +47,15 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   isSaved = false;
   programOfOptions = [];
   fieldCalcGroups: FieldCalcGroup[];
+  programTypeOptions: string[];
+  filteredProgramTypes: string[];
+  programThemeOptions: string[];
+  filteredProgramThemes: string[];
 
   constructor(
     private fb: FormBuilder,
     private service: CopyrightsService,
+    private ss: SeriesService,
     private fcs: FormControlService,
     private ts: TreeService,
     private translate: TranslateService,
@@ -98,6 +104,11 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
       this.areaTemplates = result;
     });
 
+    this.ss.getProgramTypes().subscribe(result => {
+      this.filteredProgramTypes = this.programTypeOptions = result.program_type_choices;
+      this.filteredProgramThemes = this.programThemeOptions = result.theme_choices;
+    });
+
     this.typeForm = this.fb.group({
       investmentType: ['homemade', [Validators.required]],
       contract: ['no', Validators.required]
@@ -119,7 +130,8 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
     });
 
     this.rightForm = this.fb.group({
-      programType: ['other', [Validators.required]],
+      programType: [null, [Validators.required]],
+      programTheme: [null],
       projects: [null, [Validators.required]],
       copyright: [null, [Validators.required]],
       copyrightChildren: [null],
@@ -161,6 +173,14 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
 
   onRightChange() {
     this.rightForm.get('copyrightChildren').reset();
+  }
+
+  onProgramTypeInput(value: string) {
+    this.filteredProgramTypes = this.programTypeOptions.filter(item => item.indexOf(value) >= 0);
+  }
+
+  onProgramThemeInput(value: string) {
+    this.filteredProgramThemes = this.programThemeOptions.filter(item => item.indexOf(value) >= 0);
   }
 
   fetchProgramOfOptions(ids?: number[]) {
@@ -261,6 +281,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
           id: program ? program.id : null,
           name: name,
           type: program ? program.program_type : this.rightForm.get('programType').value,
+          theme: this.rightForm.get('programTheme').value,
           // episodes: item.episodes,
           right: right.code,
           rightChildren: children ? children.map(c => c.code) : null,
@@ -366,6 +387,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
         first.id,
         first.name,
         first.type,
+        first.theme,
         first.episodes,
         this.typeForm.value['investmentType'],
         group.map(item => {

@@ -13,12 +13,11 @@ import { RootTemplateDto } from '../dtos';
 
 
 @Component({
-  selector: 'app-pub-rights',
-  templateUrl: './pub-rights.component.html',
-  styleUrls: ['./pub-rights.component.less'],
+  selector: 'app-published',
+  templateUrl: './published.component.html',
   animations: [fadeIn]
 })
-export class PubRightsComponent implements OnInit {
+export class PublishedComponent implements OnInit {
 
   isLoaded = false;
   isLoading = false;
@@ -33,13 +32,7 @@ export class PubRightsComponent implements OnInit {
   tags = [];
   search: string;
   companyList = [];
-  seriesType = [
-    { label: '电视剧', value: 'tv' },
-    { label: '电影', value: 'film' },
-    { label: '综艺', value: 'variety' },
-    { label: '动画', value: 'anime' },
-    { label: '纪录片', value: 'documentary' },
-    { label: '其他', value: 'other' }];
+  seriesType = [];
   constructor(
     private service: CopyrightsService,
     private router: Router,
@@ -56,7 +49,9 @@ export class PubRightsComponent implements OnInit {
       this.search = param.get('search');
       this.fetchCopyrights(this.service.getDefaultFiltrateSeriesParams(this.search));
     });
-    this.seriesService.eventEmit.emit('pubRights');
+    this.seriesService.getProgramTypes().subscribe(result => {
+      this.seriesType = result.program_type_choices;
+    });
     this.loadAreaOptions();
     this.loadRightsOptions();
     this.filtrateForm = this.fb.group({

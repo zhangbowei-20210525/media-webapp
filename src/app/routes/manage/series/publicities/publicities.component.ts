@@ -9,6 +9,7 @@ import { finalize, switchMap } from 'rxjs/operators';
 import { fadeIn } from '@shared/animations';
 import { QueueUploader } from '@shared/upload';
 import { PublicityService } from '../details/publicity/publicity.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-publicities',
@@ -18,24 +19,21 @@ import { PublicityService } from '../details/publicity/publicity.service';
 })
 export class PublicitiesComponent implements OnInit {
   @ViewChild('publicityOk') publicityOk: any;
-  readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
+  readonly fileFilters = ['mp4', 'wmv', 'rmvb', 'mkv', 'mov', 'avi', 'mpg'];
   readonly imageFilters = ['.jpg', '.jpeg', '.png'];
   readonly pdfFilters = ['.pdf'];
   allChecked = false;
   indeterminate = false;
-  displayData = [];
+  disabledButton: boolean;
   pagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-  tbPagination = { page: 1, count: 10, page_size: 16 } as PaginationDto;
-  publicitiesList = [];
   addPublicityModal: NzModalRef;
   publicityId: number;
   isLoading: boolean;
   isLoaded: boolean;
-  dataset: any;
-  disabledButton: any;
-  publicityStyle = 'figure';
-  thumbnailList = [];
-  search: any;
+  mode: 'figure' | 'table' = 'figure';
+  dataset = [];
+  list = [];
+  searchText: string;
   company_ids = [];
 
   constructor(
@@ -48,57 +46,44 @@ export class PublicitiesComponent implements OnInit {
     private route: ActivatedRoute,
     private uploader: QueueUploader,
     private notification: NzNotificationService,
+    private ps: PublicityService
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.tbPagination.page = +params.get('page') || 1;
-        this.search = params.get('search');
-        if (this.search === null) {
-          return this.service.getThumbnail(this.tbPagination);
-        } else {
-          return this.service.getSearchThumbnail(this.search, this.tbPagination);
-        }
-      })).subscribe(res => {
-        this.thumbnailList = res.list;
-        this.tbPagination = res.pagination;
-      });
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.searchText = params.get('search');
+      this.fetchPublicities();
+    });
   }
 
   fetchPublicities() {
+    const mode = this.mode;
+    const q = _.isString(this.searchText) ? this.searchText : '';
     this.isLoading = true;
-    this.isLoaded = true;
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.search = params.get('search');
-        if (this.search === null) {
-          return this.service.getPublicities(this.pagination);
-        } else {
-          return this.service.getSearchPublicities(this.search, this.pagination);
-        }
-      })).pipe(finalize(() => {
+    (mode === 'table' ?
+      this.service.searchPublicities(q, this.pagination) :
+      this.service.searchThumbnail(q, this.pagination))
+      .pipe(finalize(() => {
         this.isLoading = false;
-        if (!this.isLoaded) {
-          this.isLoaded = true;
+        this.isLoaded = true;
+      }))
+      .subscribe(result => {
+        if (mode === 'table') {
+          this.dataset = result.list;
+        } else {
+          this.list = result.list;
         }
-      })).subscribe(result => {
-        this.dataset = result.list;
         this.pagination = result.pagination;
       });
+  }
+
+  modeChange() {
+    this.fetchPublicities();
   }
 
   pageChnage(page: number) {
     this.pagination.page = page;
     this.fetchPublicities();
-  }
-
-  tbPageChange() {
-    const page = this.tbPagination.page;
-    if (page < 1 || page > this.tbPagination.pages) {
-      return;
-    }
-    this.router.navigate([`/medias/movies/${page}`], { relativeTo: this.route });
   }
 
   refreshStatus(): void {
@@ -135,20 +120,6 @@ export class PublicitiesComponent implements OnInit {
     });
   }
 
-  getUploadUrl(type: string) {
-    switch (type) {
-      case 'sample':
-      case 'feature':
-      case 'trailer':
-        return '/api/v1/upload/video';
-      case 'poster':
-      case 'still':
-        return '/api/v1/upload/image';
-      case 'pdf':
-        return '/api/v1/upload/docment';
-    }
-  }
-
   upload(sid: number, list: File[], materielType: string) {
     this.service.getPublicitiesList(sid).subscribe(result => {
       this.publicityId = result.list[0].id;
@@ -156,7 +127,7 @@ export class PublicitiesComponent implements OnInit {
         const dotIndex = item.name.lastIndexOf('.');
         return this.uploader.enqueue({
           target: this.publicityId,
-          url: this.getUploadUrl(materielType),
+          url: this.ps.getUploadUrl(materielType),
           file: item,
           name: item.name.substring(0, dotIndex),
           extension: item.name.substring(dotIndex + 1, item.name.length),
@@ -192,22 +163,20 @@ export class PublicitiesComponent implements OnInit {
         return;
       }
       const list = [] as File[];
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(filter => {
-            if (element.name.toLowerCase().endsWith(filter)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
+      for (let index = 0; index < fileList.length; index++) {
+        const element = fileList.item(index);
+        this.ps.getFilters(value.type).forEach(filter => {
+          if (element.name.toLowerCase().endsWith(filter)) {
+            list.push(element);
+            return;
+          }
+        });
       }
       if (list.length < 1) {
-        this.message.success(this.translate.instant('global.no-valid-file'));
+        this.message.warning(this.translate.instant('global.no-valid-file'));
         return;
       }
-      if (Number.isInteger(+value.id)) {
+      if (+value.id > 0) {
         this.upload(value.id, list, value.type);
       } else {
         this.service.addSeries({ name: value.program_name, program_type: value.program_type }).subscribe(s => {
@@ -219,16 +188,5 @@ export class PublicitiesComponent implements OnInit {
 
   publicityPlay(id: number, sid: number) {
     this.router.navigate([`/manage/series/publicity-details/${id}`, { sid: sid }]);
-  }
-
-  publicityStyleChange(event) {
-    if (event === 'table') {
-      this.fetchPublicities();
-    } else {
-      this.service.getThumbnail(this.tbPagination).subscribe(res => {
-        this.thumbnailList = res.list;
-        this.tbPagination = res.pagination;
-      });
-    }
   }
 }

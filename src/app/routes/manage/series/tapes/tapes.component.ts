@@ -7,11 +7,14 @@ import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize, timeout, switchMap } from 'rxjs/operators';
 import { LocalRequestService } from '@shared/locals';
+import { fadeIn } from '@shared/animations';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-tapes',
   templateUrl: './tapes.component.html',
   styleUrls: ['./tapes.component.less'],
+  animations: [fadeIn]
 })
 export class TapesComponent implements OnInit {
 
@@ -19,7 +22,7 @@ export class TapesComponent implements OnInit {
   isLoading = false;
   pagination = { page: 1, page_size: 10 } as PaginationDto;
   dataset = [];
-  search: any;
+  searchText: string;
 
   constructor(
     private router: Router,
@@ -32,26 +35,42 @@ export class TapesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchPublicities();
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.searchText = params.get('search');
+      this.fetchPublicities();
+    });
   }
 
+  // fetchPublicities() {
+  //   this.isLoading = true;
+  //   this.route.paramMap.pipe(
+  //     switchMap((params: ParamMap) => {
+  //       this.search = params.get('search');
+  //       console.log(this.search);
+  //       if (this.search === null) {
+  //         return this.service.getAllTapes(this.pagination);
+  //       } else {
+  //         return this.service.getSearchAllTapes(this.search, this.pagination);
+  //       }
+  //     })).pipe(finalize(() => {
+  //       this.isLoading = false;
+  //       if (!this.isLoaded) {
+  //         this.isLoaded = true;
+  //       }
+  //     }))
+  //     .subscribe(result => {
+  //       this.dataset = result.list;
+  //       this.pagination = result.pagination;
+  //     });
+  // }
+
   fetchPublicities() {
+    const q = _.isString(this.searchText) ? this.searchText : '';
     this.isLoading = true;
-    this.isLoaded = true;
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.search = params.get('search');
-        console.log(this.search);
-        if (this.search === null) {
-          return this.service.getAllTapes(this.pagination);
-        } else {
-          return this.service.getSearchAllTapes(this.search, this.pagination);
-        }
-      })).pipe(finalize(() => {
+    this.service.searchAllTapes(q, this.pagination)
+      .pipe(finalize(() => {
         this.isLoading = false;
-        if (!this.isLoaded) {
-          this.isLoaded = true;
-        }
+        this.isLoaded = true;
       }))
       .subscribe(result => {
         this.dataset = result.list;
@@ -65,11 +84,11 @@ export class TapesComponent implements OnInit {
   }
 
   tapeDetails(program_id: number, tapeId: number, source_type: string) {
-    this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: tapeId, source_type: source_type}]);
+    this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: tapeId, source_type: source_type }]);
   }
 
   addTape() {
-   const ref = this.modal.create({
+    const ref = this.modal.create({
       nzTitle: `新增母带`,
       nzContent: AddTapeComponent,
       nzMaskClosable: false,

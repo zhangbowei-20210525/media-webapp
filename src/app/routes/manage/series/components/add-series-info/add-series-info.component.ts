@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SeriesService } from '../../series.service';
 import { Observable } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { Util } from '@shared';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-add-series-info',
@@ -12,10 +13,14 @@ import { DatePipe } from '@angular/common';
 export class AddSeriesInfoComponent implements OnInit {
 
   validateForm: FormGroup;
+  programTypeOptions: string[];
+  filteredProgramTypes: string[];
+  programThemeOptions: string[];
+  filteredProgramThemes: string[];
 
   constructor(
     private fb: FormBuilder,
-    private seriesService: SeriesService,
+    private service: SeriesService,
   ) { }
 
   ngOnInit() {
@@ -36,6 +41,18 @@ export class AddSeriesInfoComponent implements OnInit {
       release_date: [null],
       language: [null],
     });
+    this.service.getProgramTypes().subscribe(result => {
+      this.filteredProgramTypes = this.programTypeOptions = result.program_type_choices;
+      this.filteredProgramThemes = this.programThemeOptions = result.theme_choices;
+    });
+  }
+
+  onProgramTypeInput(value: string) {
+    this.filteredProgramTypes = this.programTypeOptions.filter(item => item.indexOf(value) >= 0);
+  }
+
+  onProgramThemeInput(value: string) {
+    this.filteredProgramThemes = this.programThemeOptions.filter(item => item.indexOf(value) >= 0);
   }
 
   validation() {
@@ -51,28 +68,11 @@ export class AddSeriesInfoComponent implements OnInit {
   }
 
   submit(): Observable<any> {
-    const form = this.validateForm;
-    const data = {
-      name: form.value['name'] || null,
-      nickname: form.value['nickname'] || null,
-      program_type: form.value['program_type'] || null,
-      theme: form.value['theme'] || null,
-      episode: form.value['episode'] || null,
-      introduction: form.value['introduction'] || null,
-      director: form.value['director'] || null,
-      screen_writer: form.value['screen_writer'] || null,
-      protagonist: form.value['protagonist'] || null,
-      product_company: form.value['product_company'] || null,
-      supervisor: form.value['supervisor'] || null,
-      general_producer: form.value['general_producer'] || null,
-      producer: form.value['producer'] || null,
-      release_date: form.value['release_date'] || null,
-      language: form.value['language'] || null,
-    };
+    const data = _.clone(this.validateForm.value);
     if (data.release_date) {
-      data.release_date = new DatePipe('zh-CN').transform(data.release_date, 'yyyy-MM-dd');
+      data.release_date = Util.dateToString(data.release_date, 'yyyy-MM-dd');
     }
-    return this.seriesService.addSeriesInfo(data);
+    return this.service.addSeriesInfo(data);
   }
 
 }

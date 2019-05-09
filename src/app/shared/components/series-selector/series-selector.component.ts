@@ -19,7 +19,7 @@ export class SeriesSelectorComponent implements OnInit {
   @Input() series: SeriesBriefDto[];
   @Output() seriesChange = new EventEmitter<SeriesBriefDto[]>();
   // @Output() selectedSeriesChange = new EventEmitter<SeriesBriefDto[]>();
-  programTypes: SearchMetaDataDto[];
+  programTypes: string[];
   releaseYears: SearchMetaDataDto[];
   selectedType: string;
   selectedYear: string;
@@ -49,7 +49,7 @@ export class SeriesSelectorComponent implements OnInit {
         this.originSeries = result.list;
         this.programTypes = result.meta.program_type_choices;
         this.releaseYears = result.meta.release_year_choices;
-        this.selectedType = this.programTypes[0].code;
+        this.selectedType = '';
         this.selectedYear = this.releaseYears[0].code;
         this.validReleaseYears = this.releaseYears.filter(e => !e.code.startsWith('@')).map(e => e.code);
       });
@@ -80,7 +80,7 @@ export class SeriesSelectorComponent implements OnInit {
   }
 
   selectType(s: SeriesBriefDto, type: string): boolean {
-    if (type === '@all') {
+    if (type === '') {
       return true;
     } else {
       return s.program_type === type;
