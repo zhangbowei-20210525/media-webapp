@@ -18,5 +18,5 @@
 <input type="file" hidden id="file" [disabled]="isUploading" (change)="fileChange($event)">
 
 <ng-template #download>
-  仅支持excel文件，需要遵循<a>模板</a>格式
+  仅支持excel文件，需要遵循<a [href]="lastUrlType == 'purchase' ? purchaseTemplatePath : publishTemplatePath">模板</a>格式
 </ng-template>
