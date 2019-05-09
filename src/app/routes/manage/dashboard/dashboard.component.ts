@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
   publishChart: any;
   tapeType: string;
   tapeChart: any;
+  customerSort: any;
   seriesLineChart: any;
   startYear: any;
   seriesTime = 'month';
@@ -468,11 +469,11 @@ export class DashboardComponent implements OnInit {
     this.startYear = '';
     this.endYear = '';
     this.dashboardService.getSeriesPieChart(this.startYear !== '' ? this.startYear.getFullYear() : '',
-    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
-      this.getSeriesType(res.program_type);
-      this.getSeriesInvestment(res.investment_type);
-      this.getSeriesTheme(res.theme);
-    });
+      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+        this.getSeriesType(res.program_type);
+        this.getSeriesInvestment(res.investment_type);
+        this.getSeriesTheme(res.theme);
+      });
   }
 
   getStatisticsSelectArea(origins: DashboardDto[]): NzTreeNodeOptions[] {
@@ -634,56 +635,56 @@ export class DashboardComponent implements OnInit {
     this.startYear = '';
     this.endYear = '';
     this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear !== '' ? this.startYear.getFullYear() : '',
-    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
-      this.t4 = res.length;
-      const dv = new DataSet.View().source(res);
-      dv.transform({
-        type: 'sort',
-        callback: function callback(a, b) {
-          return a.label - b.label;
-        }
-      });
+      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+        this.t4 = res.length;
+        const dv = new DataSet.View().source(res);
+        dv.transform({
+          type: 'sort',
+          callback: function callback(a, b) {
+            return a.label - b.label;
+          }
+        });
 
-      this.seriesLineChart = new G2.Chart({
-        container: 'seriesLine',
-        forceFit: true,
-        width: 1000,
-        height: 400,
-        padding: [10, 30, 80, 30]
-      });
-      this.seriesLineChart.source(dv);
-      this.seriesLineChart.scale('label', {
-        range: [0, 1]
-      });
-      this.seriesLineChart.axis('label', {
-        label: {
-          textStyle: {
-            fill: '#aaaaaa'
+        this.seriesLineChart = new G2.Chart({
+          container: 'seriesLine',
+          forceFit: true,
+          width: 1000,
+          height: 400,
+          padding: [10, 30, 80, 30]
+        });
+        this.seriesLineChart.source(dv);
+        this.seriesLineChart.scale('label', {
+          range: [0, 1]
+        });
+        this.seriesLineChart.axis('label', {
+          label: {
+            textStyle: {
+              fill: '#aaaaaa'
+            }
           }
-        }
-      });
-      this.seriesLineChart.axis('value', {
-        label: {
-          textStyle: {
-            fill: '#aaaaaa'
+        });
+        this.seriesLineChart.axis('value', {
+          label: {
+            textStyle: {
+              fill: '#aaaaaa'
+            }
           }
-        }
+        });
+        this.seriesLineChart.tooltip({
+          shared: true,
+        });
+        this.seriesLineChart.line().position('label*value').color('line').size('line', function (val) {
+          return 2;
+        }).opacity('line', function (val) {
+          return 0.7;
+        });
+        this.seriesLineChart.point().position('label*value').color('line').size('line', function (val) {
+          return 0;
+        }).style({
+          lineWidth: 2
+        });
+        this.seriesLineChart.render();
       });
-      this.seriesLineChart.tooltip({
-        shared: true,
-      });
-      this.seriesLineChart.line().position('label*value').color('line').size('line', function (val) {
-        return 2;
-      }).opacity('line', function (val) {
-        return 0.7;
-      });
-      this.seriesLineChart.point().position('label*value').color('line').size('line', function (val) {
-        return 0;
-      }).style({
-        lineWidth: 2
-      });
-      this.seriesLineChart.render();
-    });
   }
 
   getSeriesInvestment(res: any) {
@@ -887,57 +888,56 @@ export class DashboardComponent implements OnInit {
     //   this.publishChart.render();
     // });
     this.dashboardService.getPurCustomer('', '').subscribe(res => {
+      this.customerSort = res;
       this.t5 = res.length;
-    this.publishChart = new G2.Chart({
-      container: 'customerStatistics',
-      forceFit: true,
-      width: 505,
-      height: 450,
-      padding: [20, 40, 50, 124]
-    });
-    this.publishChart.source(res, {
-      value: {
-        max: 1300,
-        min: 0,
-        nice: false,
-        alias: '销量（百万）'
-      }
-    });
-    this.publishChart.axis('type', {
-      label: {
-        textStyle: {
-          fill: '#8d8d8d',
-          fontSize: 12
+      this.publishChart = new G2.Chart({
+        container: 'customerStatistics',
+        forceFit: true,
+        width: 505,
+        height: 450,
+        padding: [20, 40, 50, 124]
+      });
+      this.publishChart.source(res, {
+        value: {
+          nice: false,
+          alias: '销量（万）'
         }
-      },
-      tickLine: {
-        alignWithLabel: false,
-        length: 0
-      },
-      line: {
-        lineWidth: 0
-      }
-    });
-    this.publishChart.axis('value', {
-      label: null,
-      title: {
-        offset: 30,
-        textStyle: {
-          fontSize: 12,
-          fontWeight: 300
+      });
+      this.publishChart.axis('label', {
+        label: {
+          textStyle: {
+            fill: '#8d8d8d',
+            fontSize: 12
+          }
+        },
+        tickLine: {
+          alignWithLabel: false,
+          length: 0
+        },
+        line: {
+          lineWidth: 0
         }
-      }
+      });
+      this.publishChart.axis('value', {
+        label: null,
+        title: {
+          offset: 30,
+          textStyle: {
+            fontSize: 12,
+            fontWeight: 300
+          }
+        }
+      });
+      this.publishChart.legend(false);
+      this.publishChart.coord().transpose();
+      this.publishChart.interval().position('label*value').size(26).opacity(1).label('value', {
+        textStyle: {
+          fill: '#8d8d8d'
+        },
+        offset: 10
+      });
+      this.publishChart.render();
     });
-    this.publishChart.legend(false);
-    this.publishChart.coord().transpose();
-    this.publishChart.interval().position('type*value').size(26).opacity(1).label('value', {
-      textStyle: {
-        fill: '#8d8d8d'
-      },
-      offset: 10
-    });
-    this.publishChart.render();
-  });
     // $('.sort-button').click(function() {
     //   sortType = sortType === 'positive' ? 'negative' : 'positive';
     //   sortData(sortType);
@@ -1238,11 +1238,11 @@ export class DashboardComponent implements OnInit {
 
   sortChange() {
     if (this.sortType === 'positive') {
-      this.data4.sort(function (a, b) {
+      this.customerSort.sort(function (a, b) {
         return b.value - a.value;
       });
     } else {
-      this.data4.sort(function (a, b) {
+      this.customerSort.sort(function (a, b) {
         return a.value - b.value;
       });
     }
@@ -1297,44 +1297,44 @@ export class DashboardComponent implements OnInit {
 
   getTransformPieChart() {
     this.dashboardService.getSeriesPieChart(this.startYear !== '' ? this.startYear.getFullYear() : '',
-    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
-      this.seriesInvestmentChart.source(res.program_type, {
-        percent: {
-          formatter: function formatter(val) {
-            val = val + '%';
-            return val;
+      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+        this.seriesInvestmentChart.source(res.program_type, {
+          percent: {
+            formatter: function formatter(val) {
+              val = val + '%';
+              return val;
+            }
           }
-        }
-      });
-      this.seriesThemeChart.source(res.theme, {
-        percent: {
-          formatter: function formatter(val) {
-            val = val + '%';
-            return val;
+        });
+        this.seriesThemeChart.source(res.theme, {
+          percent: {
+            formatter: function formatter(val) {
+              val = val + '%';
+              return val;
+            }
           }
-        }
-      });
-      this.sseriesTypeChart.source(res.program_type, {
-        percent: {
-          formatter: function formatter(val) {
-            val = val + '%';
-            return val;
+        });
+        this.sseriesTypeChart.source(res.program_type, {
+          percent: {
+            formatter: function formatter(val) {
+              val = val + '%';
+              return val;
+            }
           }
-        }
+        });
       });
-    });
     this.seriesInvestmentChart.render();
     this.seriesThemeChart.render();
     this.sseriesTypeChart.render();
   }
 
 
-  getTransformLineChart () {
+  getTransformLineChart() {
     this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear !== '' ? this.startYear.getFullYear() : '',
-    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
-      this.seriesLineChart.source(res);
-      this.seriesLineChart.render();
-    });
+      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+        this.seriesLineChart.source(res);
+        this.seriesLineChart.render();
+      });
   }
 
   seriesTimeChange() {
@@ -1350,8 +1350,8 @@ export class DashboardComponent implements OnInit {
     }
     if (this.seriesTime === 'year') {
       this.endYear = new Date();
-       const date = new Date();
-       date.setFullYear(date.getFullYear() - 5);
+      const date = new Date();
+      date.setFullYear(date.getFullYear() - 5);
       this.startYear = date;
       if (this.conversionGraphics === 'pieChart') {
         this.getTransformPieChart();
@@ -1364,33 +1364,35 @@ export class DashboardComponent implements OnInit {
 
   getPurCustomer() {
     this.dashboardService.getPurCustomer(this.dateRange.length > 0 ? Util.dateToString(this.dateRange[0]) : '',
-    this.dateRange.length > 0 ? Util.dateToString(this.dateRange[1]) : '').subscribe(res => {
-      this.t5 = res.length;
-      this.publishChart.source(res, {
-        value: {
-          max: 1300,
-          min: 0,
-          nice: false,
-          alias: '销量（百万）'
-        }
+      this.dateRange.length > 0 ? Util.dateToString(this.dateRange[1]) : '').subscribe(res => {
+        this.customerSort = res;
+        this.t5 = res.length;
+        this.publishChart.source(res, {
+          value: {
+            max: 1300,
+            min: 0,
+            nice: false,
+            alias: '销量（百万）'
+          }
+        });
       });
-    });
     this.publishChart.render();
   }
 
   getPubCustomer() {
     this.dashboardService.getPubCustomer(this.dateRange.length > 0 ? Util.dateToString(this.dateRange[0]) : '',
-    this.dateRange.length > 0 ? Util.dateToString(this.dateRange[1]) : '').subscribe(res => {
-      this.t5 = res.length;
-      this.publishChart.source(res, {
-        value: {
-          max: 1300,
-          min: 0,
-          nice: false,
-          alias: '销量（百万）'
-        }
+      this.dateRange.length > 0 ? Util.dateToString(this.dateRange[1]) : '').subscribe(res => {
+        this.customerSort = res;
+        this.t5 = res.length;
+        this.publishChart.source(res, {
+          value: {
+            max: 1300,
+            min: 0,
+            nice: false,
+            alias: '销量（百万）'
+          }
+        });
       });
-    });
     this.publishChart.render();
   }
 
@@ -1406,7 +1408,7 @@ export class DashboardComponent implements OnInit {
   seriesInOutChange() {
     if (this.seriesInOut === 'purchase') {
       this.dateRange = [];
-     this.getPurCustomer();
+      this.getPurCustomer();
     }
     if (this.seriesInOut === 'publish') {
       this.dateRange = [];
