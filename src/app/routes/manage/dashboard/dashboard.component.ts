@@ -1259,7 +1259,7 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       const sy = +Util.dateToString(this.startYear).substring(0, 4);
-      if (this.endYear - sy === 5) {
+      if (this.endYear - sy === 4) {
         if (this.conversionGraphics === 'pieChart') {
           this.getTransformPieChart();
         }
@@ -1282,7 +1282,7 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       const ey = +Util.dateToString(this.endYear).substring(0, 4);
-      if (ey - this.startYear === 5) {
+      if (ey - this.startYear === 4) {
         if (this.conversionGraphics === 'pieChart') {
           this.getTransformPieChart();
         }
@@ -1351,7 +1351,7 @@ export class DashboardComponent implements OnInit {
     if (this.seriesTime === 'year') {
       this.endYear = new Date();
       const date = new Date();
-      date.setFullYear(date.getFullYear() - 5);
+      date.setFullYear(date.getFullYear() - 4);
       this.startYear = date;
       if (this.conversionGraphics === 'pieChart') {
         this.getTransformPieChart();
