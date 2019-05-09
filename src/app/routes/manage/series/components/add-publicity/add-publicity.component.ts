@@ -51,6 +51,10 @@ export class AddPublicityComponent implements OnInit {
       this.validateForm.get('checkCompanies').setValue(companyNames);
     });
 
+    this.service.getProgramTypes().subscribe(result => {
+      this.filteredProgramTypes = this.programTypeOptions = result.program_type_choices;
+    });
+
     this.fetchFuzzyOptions('');
   }
 
