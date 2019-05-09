@@ -24,7 +24,7 @@
         <nz-form-control [nzSpan]="22">
           <nz-select style="width: 445px" nzMode="multiple" nzPlaceHolder="请选择节目类型" formControlName="program_type"
             (ngModelChange)="onFormValueChange()">
-            <nz-option *ngFor="let option of seriesType" [nzLabel]="option.label" [nzValue]="option.value">
+            <nz-option *ngFor="let option of seriesType" [nzLabel]="option" [nzValue]="option">
             </nz-option>
           </nz-select>
           <!-- <nz-radio-group formControlName="program_type" (ngModelChange)="onFormValueChange()">

@@ -2,19 +2,20 @@ import { Injectable, EventEmitter, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpClientJsonpModule } from '@angular/common/http';
 import { formData, PaginationDto, ResponseDto, PaginationResponseDto } from '@shared';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { tap } from 'rxjs/operators';
+import { CacheService, CacheType } from '@core/cache';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeriesService {
-  public eventEmit: any;
 
   constructor(
+    private cache: CacheService,
     protected http: HttpClient,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
-  ) {
-    this.eventEmit = new EventEmitter();
-  }
+  ) { }
 
   // getUserSamples(pagination: PaginationDto) {
   //   return this.auth1.http.get<any>(`/api/v1/media/get_medialist_of_user?page=${pagination.page}&limit=${pagination.page_size}`);
@@ -73,8 +74,8 @@ export class SeriesService {
     return this.http.post<any>('/api/v1/program', newSeriesInfo);
   }
 
-  fuzzySearch(name: string ) {
-    return this.http.get<any>(`/api/v1/programs/brief?q=${name}`);
+  fuzzySearch(name: string) {
+    return this.http.get<PaginationResponseDto<any>>(`/api/v1/programs/brief?q=${name}`);
   }
 
   getSeries(pagination: PaginationDto) {
@@ -132,13 +133,12 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/publicity/${id}/${type}?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
-
   getPublicities(pagination: PaginationDto) {
-    return this.http.get<PaginationResponseDto<any[]>>('/api/v1/publicity', { params: pagination as any});
+    return this.http.get<PaginationResponseDto<any[]>>('/api/v1/publicity', { params: pagination as any });
   }
 
-  getSearchPublicities(search: any, pagination: PaginationDto) {
-    return this.http.get<PaginationResponseDto<any[]>>(`/api/v1/publicity?q=${search}`, { params: pagination as any});
+  searchPublicities(search: any, pagination: PaginationDto) {
+    return this.http.get<PaginationResponseDto<any[]>>(`/api/v1/publicity?q=${search}`, { params: pagination as any });
   }
 
   publicityDetail(id: number) {
@@ -156,7 +156,7 @@ export class SeriesService {
   }
 
   // tslint:disable-next-line:max-line-length
-  addTape1(newTape: {  program_name: string, program_type: string, name: string, language: string, subtitle: string, remark: string, source_type: string, }) {
+  addTape1(newTape: { program_name: string, program_type: string, name: string, language: string, subtitle: string, remark: string, source_type: string, }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
   // tslint:disable-next-line:max-line-length
@@ -170,7 +170,7 @@ export class SeriesService {
   }
 
   // tslint:disable-next-line:max-line-length
-  addEntityTape1(newTape: {  program_name: string, program_type: string, name: string, language: string, subtitle: string, source_type: string, episode: any, sharpness: any, carrier: any, brand: any, model: any, storage_date: any, storage_location: any, detail_location: any, sound_track: any }) {
+  addEntityTape1(newTape: { program_name: string, program_type: string, name: string, language: string, subtitle: string, source_type: string, episode: any, sharpness: any, carrier: any, brand: any, model: any, storage_date: any, storage_location: any, detail_location: any, sound_track: any }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
   }
 
@@ -228,18 +228,28 @@ export class SeriesService {
 
   shareEmail(email: string, url: string, publicity_name: string, sid: number) {
     // tslint:disable-next-line:max-line-length
-    return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any} });
+    return this.http.get<any>(`/api/v1/email/share`, { params: { email, url, publicity_name, sid: sid as any } });
   }
 
   getThumbnail(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/publicity/card?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
-  getSearchThumbnail(search: any, pagination: PaginationDto) {
+  searchThumbnail(search: string, pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/publicity/card?q=${search}&page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
   getCompanies() {
     return this.http.get<any>(`/api/v1/users/info/employees`);
+  }
+
+  requestProgramTypes() {
+    return this.http.get<{ program_type_choices: string[], theme_choices: string[] }>('/api/v1/programs/template');
+    // .pipe(tap(data => this.cache.set(CacheType.PROGRAM_TYPE, data)));
+  }
+
+  getProgramTypes() {
+    // return this.cache.isCold(CacheType.PROGRAM_TYPE) ? this.requestProgramTypes() : of(this.cache.get(CacheType.PROGRAM_TYPE));
+    return this.requestProgramTypes();
   }
 }

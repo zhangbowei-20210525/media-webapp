@@ -19,36 +19,15 @@ import { RelationImportFieldComponent } from '../components/relation-import-fiel
 })
 export class CopyrightsComponent implements OnInit {
 
-  isUploading = false;
-
   constructor(
     private service: CopyrightsService,
     private message: NzMessageService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
 
   }
 
-  fileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files.item(0);
-    const loadingRef = this.message.loading('正在上传文件');
-    this.isUploading = true;
-    this.service.uploadImportFileMock(file)
-    .pipe(finalize(() => {
-      this.message.remove(loadingRef.messageId);
-      this.isUploading = false;
-    }))
-    .subscribe(result => {
-      this.message.success('上传成功');
-      this.modal.create({
-        nzTitle: '关联字段',
-        nzContent: RelationImportFieldComponent,
-        nzComponentParams: { theme: result.theme, programType: result.program_type }
-      });
-    });
-    input.value = null;
-  }
 }

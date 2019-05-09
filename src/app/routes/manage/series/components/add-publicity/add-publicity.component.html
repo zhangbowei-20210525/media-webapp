@@ -1,34 +1,33 @@
 <form nz-form [formGroup]="validateForm">
-    <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_name" nzRequired>节目名称</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24">
-          <!-- <input nz-input id="name" formControlName="name" placeholder="请输入节目名称" (input)="input($event)" > -->
-          <input placeholder="请输入节目名称" nz-input id="program_name" formControlName="program_name" (ngModelChange)="onInput()" [nzAutocomplete]="auto">
-          <nz-autocomplete nzBackfill #auto>
-          <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">
-          {{program.name}}
-          </nz-auto-option>
-          </nz-autocomplete>
-  
-          <nz-form-explain *ngIf="validateForm.get('program_name').dirty && validateForm.get('program_name').errors">请输入节目名称
-          </nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_name" nzRequired>节目名称</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input placeholder="请输入节目名称" nz-input id="program_name" formControlName="program_name" (ngModelChange)="onInput()"
+        [nzAutocomplete]="autoProgramName">
+      <nz-autocomplete nzBackfill #autoProgramName>
+        <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">
+          {{ program.name }}
+        </nz-auto-option>
+      </nz-autocomplete>
+      <nz-form-explain *ngIf="validateForm.get('program_name').dirty && validateForm.get('program_name').errors">请输入节目名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
 
-      <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_type" nzRequired>节目类型</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <nz-select id="program_type" formControlName="program_type" nzPlaceHolder="请选择节目类型" [nzDisabled]="disabled">
-                <nz-option nzValue="film" nzLabel="电影"></nz-option>
-                <nz-option nzValue="tv" nzLabel="电视剧"></nz-option>
-                <nz-option nzValue="variety" nzLabel="综艺"></nz-option>
-                <nz-option nzValue="anime" nzLabel="动画"></nz-option>
-                <nz-option nzValue="documentary" nzLabel="纪录片"></nz-option>
-                <nz-option nzValue="other" nzLabel="其他"></nz-option>
-            </nz-select>
-            <nz-form-explain *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请选择节目类型</nz-form-explain>
-          </nz-form-control>
-        </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_type" nzRequired>节目类型</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input placeholder="节目类型" nz-input formControlName="program_type"
+        (input)="onProgramTypeInput($event.target?.value)" [nzAutocomplete]="autoProgramType" />
+      <nz-autocomplete nzBackfill #autoProgramType>
+        <nz-auto-option *ngFor="let option of filteredProgramTypes" [nzValue]="option">
+          {{ option }}
+        </nz-auto-option>
+      </nz-autocomplete>
+      <nz-form-explain *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请输入节目类型
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type">宣发类型</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
@@ -40,21 +39,27 @@
         <nz-option nzLabel="剧照" nzValue="still"></nz-option>
         <nz-option nzLabel="PDF" nzValue="pdf"></nz-option>
       </nz-select>
-      <nz-form-explain *ngIf="validateForm.get('type').dirty && validateForm.get('type').errors">请选择节目类型</nz-form-explain>
-      <nz-form-extra *ngIf="validateForm.get('type').value == 'sample'"><a>样片的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",  "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
-      <nz-form-extra *ngIf="validateForm.get('type').value == 'feature'"><a>片花的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",  "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
-      <nz-form-extra *ngIf="validateForm.get('type').value == 'trailer'"><a>先导片的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",  "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
-      <nz-form-extra *ngIf="validateForm.get('type').value == 'poster'"><a>海报支持的图片格式为："jpg", "jpeg", "png"。</a></nz-form-extra>
-      <nz-form-extra *ngIf="validateForm.get('type').value == 'still'"><a>剧照支持的图片格式为："jpg", "jpeg", "png"。</a></nz-form-extra>
+      <nz-form-explain *ngIf="validateForm.get('type').dirty && validateForm.get('type').errors">请选择节目类型
+      </nz-form-explain>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'sample'"><a>样片的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",
+          "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'feature'"><a>片花的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",
+          "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'trailer'"><a>先导片的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv",
+          "rmvb", "mkv", "mov", "avi", "mpg"。</a></nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'poster'"><a>海报支持的图片格式为："jpg", "jpeg", "png"。</a>
+      </nz-form-extra>
+      <nz-form-extra *ngIf="validateForm.get('type').value == 'still'"><a>剧照支持的图片格式为："jpg", "jpeg", "png"。</a>
+      </nz-form-extra>
       <nz-form-extra *ngIf="validateForm.get('type').value == 'pdf'"><a>PDF支持的文档格式为："pdf"。</a></nz-form-extra>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkCompanies">属下公司</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24">
-          <label nz-checkbox formControlName="currentCompany" nzDisabled="true">{{ settings.user.username }}</label>
-          <nz-checkbox-group formControlName="checkCompanies"></nz-checkbox-group>
-      </nz-form-control>
-    </nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkCompanies">属下公司</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <label nz-checkbox formControlName="currentCompany" nzDisabled="true">{{ settings.user.username }}</label>
+      <nz-checkbox-group formControlName="checkCompanies"></nz-checkbox-group>
+    </nz-form-control>
+  </nz-form-item>
 </form>

@@ -1,3 +1,25 @@
-<h4>类型</h4>
-<nz-divider style="margin: 1rem 0"></nz-divider>
-<nz-tag *ngFor="let item of programType">{{ item.raw }}</nz-tag>
+<div class="block">
+    <div class="options-bar" style="margin: 0">
+        <div class="options-wrapper">
+            <h4 style="margin: 0">类型</h4>
+        </div>
+        <div class="options-wrapper">
+            <button nz-button nzSize="small" (click)="typeMerge.reset()">重置</button>
+        </div>
+    </div>
+    <nz-divider style="margin: 1rem 0"></nz-divider>
+    <app-tag-merge [tags]="programTypes" #typeMerge></app-tag-merge>
+</div>
+
+<div class="block">
+    <div class="options-bar" style="margin: 0">
+        <div class="options-wrapper">
+            <h4 style="margin: 0">题材</h4>
+        </div>
+        <div class="options-wrapper">
+            <button nz-button nzSize="small" (click)="themeMerge.reset()">重置</button>
+        </div>
+    </div>
+    <nz-divider style="margin: 1rem 0"></nz-divider>
+    <app-tag-merge [tags]="programThemes" #themeMerge></app-tag-merge>
+</div>

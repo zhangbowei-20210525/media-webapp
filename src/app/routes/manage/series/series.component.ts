@@ -24,53 +24,9 @@ export class SeriesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.select = 'all';
-    this.seriesService.eventEmit.subscribe((value: any) => {
-      if (value === 'pubRights') {
-        this.select = 'pubRights';
-      }
-      if (value === 'rights') {
-        this.select = 'rights';
-      }
-    });
-
-  }
-  selectList(select: string) {
-    if (select === 'all') {
-      this.select = 'all';
-    }
-    if (select === 'publicity') {
-      this.select = 'publicity';
-    }
-    if (select === 'tapes') {
-      this.select = 'tapes';
-    }
-    if (select === 'rights') {
-      this.select = 'rights';
-    }
   }
 
   search() {
-    console.log('222');
-    console.log(this.select);
-    if (this.content === undefined) {
-      this.message.success(this.translate.instant('global.search'));
-    } else {
-      if (this.select === 'all') {
-        this.router.navigate([`/manage/series/all`, { search: this.content }]);
-      }
-      if (this.select === 'publicity') {
-        this.router.navigate([`/manage/series/publicity`, { search: this.content }]);
-      }
-      if (this.select === 'tapes') {
-        this.router.navigate([`/manage/series/tapes`, { search: this.content }]);
-      }
-      if (this.select === 'rights') {
-        this.router.navigate([`/manage/series/switchRight/rights`, { search: this.content }]);
-      }
-      if (this.select === 'pubRights') {
-        this.router.navigate([`/manage/series/switchRight/pubRights`, { search: this.content }]);
-      }
-    }
+    this.router.navigate([this.router.url, { search: this.content }]);
   }
 }

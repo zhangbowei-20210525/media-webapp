@@ -32,13 +32,7 @@ export class AllRightsComponent implements OnInit {
   mapOfCheckedId: { [key: string]: boolean } = {};
   tags = [];
   search: string;
-  seriesType = [
-    { label: '电视剧', value: 'tv' },
-    { label: '电影', value: 'film' },
-    { label: '综艺', value: 'variety' },
-    { label: '动画', value: 'anime' },
-    { label: '纪录片', value: 'documentary' },
-    { label: '其他', value: 'other' }];
+  seriesType = [];
   constructor(
     private service: CopyrightsService,
     private router: Router,
@@ -55,9 +49,11 @@ export class AllRightsComponent implements OnInit {
       this.search = param.get('search');
       this.fetchCopyrights(this.service.getDefaultFiltrateSeriesParams(this.search));
     });
+    this.seriesService.getProgramTypes().subscribe(result => {
+      this.seriesType = result.program_type_choices;
+    });
     this.loadAreaOptions();
     this.loadRightsOptions();
-    this.seriesService.eventEmit.emit('rights');
     this.filtrateForm = this.fb.group({
       days: [null],
       right: [[null]],

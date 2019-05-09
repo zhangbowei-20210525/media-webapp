@@ -1,4 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { CdkDragDrop, CdkDragEnd, CdkDragStart, CdkDragMove } from '@angular/cdk/drag-drop';
+import { NzTagComponent } from 'ng-zorro-antd';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-relation-import-field',
@@ -7,8 +10,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class RelationImportFieldComponent implements OnInit {
 
-  @Input() theme: { raw: string, real: string }[];
-  @Input() programType: { raw: string, real: string }[];
+  @Input() programThemes: { raw: string, real: string, count: number, over?: boolean }[];
+  @Input() programTypes: { raw: string, real: string, count: number, over?: boolean }[];
 
   constructor() { }
 

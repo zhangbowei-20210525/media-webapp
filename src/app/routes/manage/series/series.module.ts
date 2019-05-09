@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SeriesRoutingModule } from './series-routing.module';
 import { CopyrightsComponent } from './copyrights/copyrights.component';
 import { PublicitiesComponent } from './publicities/publicities.component';
@@ -60,7 +61,7 @@ import { RelationImportFieldComponent } from './components/relation-import-field
     CommonModule,
     SeriesRoutingModule,
     PdfViewerModule,
-    SharedModule,
+    SharedModule
   ],
   entryComponents: [
     AddSeriesInfoComponent,

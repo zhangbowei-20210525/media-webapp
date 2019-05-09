@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { indexMap } from '@shared/rxjs/operators';
 import { fadeIn } from '@shared/animations';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-procurement',
@@ -21,12 +22,16 @@ export class ProcurementComponent implements OnInit {
   isLoading = false;
 
   constructor(
+    private route: ActivatedRoute,
     private service: ContractsService,
     private message: NzMessageService,
     private translate: TranslateService
   ) { }
 
   ngOnInit() {
+    // this.route.url.subscribe(url => {
+    //   console.log(url);
+    // });
     this.fetchContracts();
   }
 

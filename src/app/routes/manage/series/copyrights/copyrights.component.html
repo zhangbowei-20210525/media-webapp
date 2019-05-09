@@ -9,12 +9,9 @@
       </nz-radio-group>
     </div>
     <div class="options-wrapper">
-      <label for="file"><a nz-button>导入版权库</a></label>
       <a nz-button nzType="default" routerLink="/manage/series/add-copyrights">新增版权</a>
       <a nz-button nzType="default" routerLink="/manage/series/publish-rights">新增发行</a>
     </div>
   </div>
   <router-outlet></router-outlet>
 </div>
-
-<input type="file" hidden id="file" [disabled]="isUploading" (change)="fileChange($event)">
