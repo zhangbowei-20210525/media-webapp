@@ -23,13 +23,15 @@ export class ContractsComponent implements OnInit, OnDestroy {
   loadingRef: any;
   fileName: string;
   lastUrlType: 'purchase' | 'publish';
+  purchaseTemplatePath: string;
+  publishTemplatePath: string;
 
   private eventsSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: CopyrightsService,
+    private service: ContractsService,
     private message: NzMessageService,
     private modal: NzModalService,
     private translate: TranslateService
@@ -49,6 +51,12 @@ export class ContractsComponent implements OnInit, OnDestroy {
       } else if (event.url.endsWith('published')) {
         this.lastUrlType = 'publish';
       }
+    });
+    this.service.getImportTemplateFilePath('purchase').subscribe(result => {
+      this.purchaseTemplatePath = result.file_url;
+    });
+    this.service.getImportTemplateFilePath('publish').subscribe(result => {
+      this.publishTemplatePath = result.file_url;
     });
   }
 
