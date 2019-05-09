@@ -279,7 +279,8 @@ export class CopyrightsService {
   }
 
   toCopyrightData(sole: boolean, right_type: string, child_rights: string[], right_remark: string, area_number: string, area_remark: string,
-    permanent_date: boolean, start_date: string, end_date: string, date_remark: string, remark: string) {
+    permanent_date: boolean, start_date: string, end_date: string, date_remark: string, remark: string, broadcast_channel?: string,
+    air_date?: string) {
     return {
       sole,
       right_type,
@@ -291,6 +292,8 @@ export class CopyrightsService {
       start_date,
       end_date,
       date_remark,
+      broadcast_channel,
+      air_date,
       remark
     } as CopyrightDto;
   }

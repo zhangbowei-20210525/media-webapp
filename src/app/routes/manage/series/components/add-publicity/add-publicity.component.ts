@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SeriesService } from '../../series.service';
+import { map } from 'rxjs/operators';
+import { Settings } from 'http2';
+import { SettingsService, I18nService } from '@core';
 
 @Component({
   selector: 'app-add-publicity',
@@ -15,17 +18,38 @@ export class AddPublicityComponent implements OnInit {
 
   disabled: boolean;
   programNames = [];
+  companies = [];
+
 
   constructor(
     private fb: FormBuilder,
     private service: SeriesService,
-  ) { }
+    public settings: SettingsService,
+  ) {
+  }
 
   ngOnInit() {
     this.validateForm = this.fb.group({
       program_name: [null, [Validators.required]],
       program_type: [null, [Validators.required]],
       type: [null, [Validators.required]],
+      checkCompanies: [null],
+      currentCompany: [true]
+    });
+    this.service.getCompanies().pipe(map(item => {
+      item.forEach(c => {
+        this.companies.push({
+          label: c.company_name,
+          value: c.company_id,
+          checked: false
+        });
+      });
+      return this.companies;
+    })).subscribe(res => {
+      const companyNames = res.filter(x => {
+        return this.settings.user.company_id !== x.value;
+      });
+      this.validateForm.get('checkCompanies').setValue(companyNames);
     });
   }
 
@@ -39,6 +63,15 @@ export class AddPublicityComponent implements OnInit {
       }
     }
     return form.valid;
+  }
+
+  checkChange() {
+    if (this.validateForm.value['checkCompanies']) {
+      const checkedCom = this.validateForm.value['checkCompanies'].filter(x => {
+        return x.checked === true;
+      });
+      return checkedCom;
+    }
   }
 
   getValue() {
@@ -55,7 +88,7 @@ export class AddPublicityComponent implements OnInit {
       this.programList = s.list;
       if (this.disabled === true) {
         this.disabled = false;
-          this.validateForm = this.fb.group({
+        this.validateForm = this.fb.group({
           program_name: [this.validateForm.value['program_name'], [Validators.required]],
           program_type: [null, [Validators.required]],
           type: [null, [Validators.required]],

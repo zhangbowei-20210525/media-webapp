@@ -4,7 +4,7 @@
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>手机号码</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
-          <input type="text" nz-input placeholder="请输入手机号码" id="phone" formControlName="phone">
+          <input type="text" nz-input placeholder="请输入手机号码" id="phone" formControlName="phone" (ngModelChange)="inputChange()">
         </nz-input-group>
         <ng-template #suffixIconButton>
           <button nz-button nzType="primary" nzSearch (click)="search()" style="margin-right: -11px;"><i nz-icon type="search"></i></button>
@@ -16,7 +16,7 @@
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>选择公司名称</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <nz-select style="width: 100%" nzPlaceHolder="请选择公司名称" id="companyName" formControlName="companyName"
+        <nz-select style="width: 100%" nzPlaceHolder="请选择公司名称" id="companyName" formControlName="companyName" [nzOpen]="isOpen" (nzOpenChange)="openChange()"
           nzMaxMultipleCount="1">
           <nz-option *ngFor="let companyName of companiesName" [nzLabel]="companyName.full_name" [nzValue]="companyName.id">
           </nz-option>

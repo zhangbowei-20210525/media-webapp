@@ -15,6 +15,8 @@ import { TapeComponent } from './details/tape/tape.component';
 import { PubRightsComponent } from './copyrights/pub-rights/pub-rights.component';
 import { SwitchRightComponent } from './switch-right/switch-right.component';
 import { ContractsComponent } from './contracts/contracts.component';
+import { ProcurementComponent } from './contracts/procurement/procurement.component';
+import { PublishedComponent } from './contracts/published/published.component';
 
 
 
@@ -53,7 +55,12 @@ const routes: Routes = [
       },
       {
         path: 'contracts',
-        component: ContractsComponent
+        component: ContractsComponent,
+        children: [
+          { path: '', redirectTo: 'procurement', pathMatch: 'full' },
+          { path: 'procurement', component: ProcurementComponent },
+          { path: 'published', component: PublishedComponent }
+        ]
       }
     ]
   },

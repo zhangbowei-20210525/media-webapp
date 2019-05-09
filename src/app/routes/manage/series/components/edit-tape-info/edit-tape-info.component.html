@@ -235,19 +235,17 @@
             </nz-form-item>
 
             <nz-form-item>
-                <nz-form-label [nzSm]="3" nzFor="brand">品牌</nz-form-label>
+                <nz-form-label [nzSm]="3" nzFor="brand">载体品牌</nz-form-label>
                 <nz-form-control [nzSm]="9">
-                  <nz-select id="brand" formControlName="brand" nzPlaceHolder="请选择品牌种类">
-                    <nz-option nzLabel="Sony" nzValue="Sony"></nz-option>
+                  <nz-select nzMode="tags" nzPlaceHolder="请选择载体品牌" id="brand" formControlName="brand" nzMaxMultipleCount= 1>
+                    <nz-option *ngFor="let option of carrierBrandList" [nzLabel]="option" [nzValue]="option"> </nz-option>
                   </nz-select>
-                  <nz-form-explain *ngIf="entityTapeForm.get('brand').dirty && entityTapeForm.get('brand').errors">请选择品牌种类</nz-form-explain>
+                  <nz-form-explain *ngIf="entityTapeForm.get('brand').dirty && entityTapeForm.get('brand').errors">请选择载体品牌</nz-form-explain>
                 </nz-form-control>
                 <nz-form-label [nzSm]="3" nzFor="model">载体型号</nz-form-label>
                 <nz-form-control [nzSm]="9">
-                  <nz-select id="model" formControlName="model" nzPlaceHolder="请选择载体型号">
-                    <nz-option nzLabel="D1" nzValue="D1"></nz-option>
-                    <nz-option nzLabel="D2" nzValue="D2"></nz-option>
-                    <nz-option nzLabel="D3" nzValue="D3"></nz-option>
+                  <nz-select nzMode="tags" nzPlaceHolder="请选择载体型号" id="model" formControlName="model" nzMaxMultipleCount= 1>
+                    <nz-option *ngFor="let option of carrierModelList" [nzLabel]="option" [nzValue]="option"> </nz-option>
                   </nz-select>
                   <nz-form-explain *ngIf="entityTapeForm.get('model').dirty && entityTapeForm.get('model').errors">请选择载体型号</nz-form-explain>
                 </nz-form-control>

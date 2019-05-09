@@ -44,33 +44,41 @@ export class TapeComponent implements OnInit {
 
   ngOnInit() {
     this.tab = 0;
-    this.route.parent.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.id = +params.get('sid');
-        return this.seriesService.getTapeList(this.id);
-      })
-    ).subscribe(res => {
-      this.tapesList = res;
-      this.route.paramMap.pipe(
-        switchMap((params: ParamMap) => {
-          this.isId = +params.get('tapeId');
-          this.source_type = params.get('source_type');
+    this.route.parent.paramMap.subscribe(params => {
+      this.id = +params.get('sid');
+      this.seriesService.getTapeList(this.id).subscribe(res => {
+        this.tapesList = res;
+        this.route.paramMap.subscribe(tapeParams => {
+          this.isId = +tapeParams.get('tapeId');
+          this.source_type = tapeParams.get('source_type');
           if (this.isId === 0) {
-            return this.seriesService.tapeFileList(this.tapesList[0].id, this.tapeFilePagination);
+            if (this.tapesList.length > 0) {
+              this.seriesService.getOnlineInfo(this.tapesList[0].id).subscribe(t =>
+                this.tapeDetailsInfo = t
+              );
+              this.getTapeFileList();
+            }
           } else {
-            return  this.seriesService.tapeFileList(this.isId, this.tapeFilePagination);
-          }
-        })
-      ).pipe(tap(x => {
-        x.list.forEach(f => {
-          if (f.created_at) {
-            f.created_at = f.created_at.substring(0, 10);
+            this.seriesService.getOnlineInfo(this.isId).subscribe(t =>
+              this.tapeDetailsInfo = t
+            );
+            this.getTapeFileList();
           }
         });
-      })).subscribe(x => {
-        this.tapeFileList = x.list;
-        this.tapeFilePagination = x.pagination;
       });
+    });
+  }
+
+  getTapeFileList() {
+    this.seriesService.tapeFileList(this.tapesList[0].id, this.tapeFilePagination).pipe(tap(x => {
+      x.list.forEach(f => {
+        if (f.created_at) {
+          f.created_at = f.created_at.substring(0, 10);
+        }
+      });
+    })).subscribe(x => {
+      this.tapeFileList = x.list;
+      this.tapeFilePagination = x.pagination;
     });
   }
 
@@ -102,29 +110,31 @@ export class TapeComponent implements OnInit {
     }
   }
 
-    addTape() {
-      const ref = this.modalService.create({
-         nzTitle: `新增母带`,
-         nzContent: AddTapeComponent,
-         nzComponentParams: { id: this.id },
-         nzMaskClosable: false,
-         nzClosable: false,
-         nzFooter: null,
-         nzWidth: 800,
-       });
-       ref.afterClose.subscribe(
-         x => {
-           this.nzAfterClose();
-         }
-       );
-     }
+  addTape() {
+    const ref = this.modalService.create({
+      nzTitle: `新增母带`,
+      nzContent: AddTapeComponent,
+      nzComponentParams: { id: this.id },
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzFooter: null,
+      nzWidth: 800,
+    });
+    ref.afterClose.subscribe(
+      x => {
+        this.nzAfterClose();
+      }
+    );
+  }
 
-     nzAfterClose() {
-       this.seriesService.getTapeList(this.id).subscribe(res => {
-         this.tapesList = res;
-         this.tapeFile();
-       });
-     }
+  nzAfterClose() {
+    if (this.isId > 0) {
+      this.seriesService.getTapeList(this.id).subscribe(res => {
+        this.tapesList = res;
+        this.tapeFile();
+      });
+    }
+  }
 
   // addTapeAgreed = (component: AddTapeComponent) => new Promise((resolve) => {
   //   component.formSubmit()
@@ -199,27 +209,28 @@ export class TapeComponent implements OnInit {
     });
   }
 
-  addPubTapeAgreed = (component: AddPubTapeComponent) => new Promise((resolve) => {
-    component.formSubmit()
-      .subscribe(res => {
-        this.message.success(this.translate.instant('global.add-success'));
-        this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
-          this.pubTapeList = p.list;
-          this.pubTapePagination = p.pagination;
+  addPubTapeAgreed = (component: AddPubTapeComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      component.formSubmit()
+        .subscribe(res => {
+          this.message.success(this.translate.instant('global.add-success'));
+          this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
+            this.pubTapeList = p.list;
+            this.pubTapePagination = p.pagination;
+          });
+          resolve();
+        }, error => {
+          reject(false);
         });
-        resolve();
-      }, error => {
-        if (error.message) {
-          this.message.error(error.message);
-        }
-      });
+    } else {
+      reject(false);
+    }
   })
 
   tapeFilePageChange(page: number) {
     this.tapeFilePagination.page = page;
     this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).subscribe(res => {
       this.tapeFileList = res.list;
-      console.log( this.tapeFileList);
       this.tapeFilePagination = res.pagination;
     });
   }

@@ -36,6 +36,7 @@ export class PublicitiesComponent implements OnInit {
   publicityStyle = 'figure';
   thumbnailList = [];
   search: any;
+  company_ids = [];
 
   constructor(
     private router: Router,
@@ -71,7 +72,6 @@ export class PublicitiesComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.search = params.get('search');
-        console.log(this.search);
         if (this.search === null) {
           return this.service.getPublicities(this.pagination);
         } else {
@@ -164,7 +164,7 @@ export class PublicitiesComponent implements OnInit {
           progress: 0,
           createAt: new Date,
           success: (obj, data) => {
-            this.pservice.bindingMateriel(obj.target, data.id, materielType).subscribe(() => {
+            this.pservice.bindingMateriel(obj.target, data.id, materielType, this.company_ids).subscribe(() => {
               this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
             });
             return true;
@@ -177,6 +177,11 @@ export class PublicitiesComponent implements OnInit {
   publicityUpload(event) {
     const component = this.addPublicityModal.getContentComponent() as AddPublicityComponent;
     if (component.validation()) {
+      if (component.checkChange().length === 0) {
+        this.company_ids = [''];
+      } else {
+        component.checkChange().forEach(x => this.company_ids.push(x.value));
+      }
       this.addPublicityModal.close();
       const value = component.getValue();
       let fileList: FileList, folder: string;
@@ -205,7 +210,7 @@ export class PublicitiesComponent implements OnInit {
       if (Number.isInteger(+value.id)) {
         this.upload(value.id, list, value.type);
       } else {
-        this.service.addSeries({ name: value.name, program_type: value.program_type }).subscribe(s => {
+        this.service.addSeries({ name: value.program_name, program_type: value.program_type }).subscribe(s => {
           this.upload(s.id, list, value.type);
         });
       }

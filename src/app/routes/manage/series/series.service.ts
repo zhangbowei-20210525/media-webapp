@@ -238,4 +238,16 @@ export class SeriesService {
   getSearchThumbnail(search: any, pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/publicity/card?q=${search}&page=${pagination.page}&page_size=${pagination.page_size}`);
   }
+
+  getCompanies() {
+    return this.http.get<any>(`/api/v1/users/info/employees`);
+  }
+
+  getCarrierBrand() {
+    return this.http.get<any>(`/api/v1/sources/template/brand`);
+  }
+
+  getCarrierModel() {
+    return this.http.get<any>(`/api/v1/sources/template/model`);
+  }
 }

@@ -14,8 +14,10 @@ export class EditTapeInfoComponent implements OnInit {
   @Input() id: number;
   @Input() source_type: string;
   options = [];
+  carrierBrandList = [];
   onlineTapeForm: FormGroup;
   entityTapeForm: FormGroup;
+  carrierModelList = [];
   listOfOption = [];
   sound_track = [];
   constructor(
@@ -56,6 +58,12 @@ export class EditTapeInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.service.getCarrierBrand().subscribe(res =>
+      this.carrierBrandList = res
+    );
+    this.service.getCarrierModel().subscribe(res =>
+      this.carrierModelList = res
+    );
       this.service.getOnlineInfo(this.id).subscribe(result => {
         this.onlineTapeForm = this.fb.group({
           name: [result.name, [Validators.required]],
@@ -79,7 +87,7 @@ export class EditTapeInfoComponent implements OnInit {
           sharpness: [result.sharpness],
           carrier: [result.carrier],
           brand: [result.brand],
-          model: [result.model],
+          model: [result.brand],
           storage_date: [result.storage_date],
           storage_location: [result.storage_location],
           detail_location: [result.detail_location],

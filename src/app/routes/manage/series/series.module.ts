@@ -7,7 +7,7 @@ import { SeriesComponent } from './series.component';
 import { SeriesDetailsComponent } from './details/details.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AddSeriesInfoComponent } from './components/add-series-info/add-series-info.component';
-import { SharedModule } from '@shared';
+import { SharedModule, SeriesSelectorComponent } from '@shared';
 import { AllSeriesComponent } from './all-series/all-series.component';
 import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrights.component';
 import { RightComponent } from './details/right/right.component';
@@ -24,6 +24,8 @@ import { EditSeriesInfoComponent } from './components/edit-series-info/edit-seri
 import { PubRightsComponent } from './copyrights/pub-rights/pub-rights.component';
 import { SwitchRightComponent } from './switch-right/switch-right.component';
 import { ContractsComponent } from './contracts/contracts.component';
+import { ProcurementComponent } from './contracts/procurement/procurement.component';
+import { PublishedComponent } from './contracts/published/published.component';
 
 
 @NgModule({
@@ -49,6 +51,8 @@ import { ContractsComponent } from './contracts/contracts.component';
     PubRightsComponent,
     SwitchRightComponent,
     ContractsComponent,
+    ProcurementComponent,
+    PublishedComponent,
   ],
   imports: [
     CommonModule,
@@ -63,6 +67,7 @@ import { ContractsComponent } from './contracts/contracts.component';
     AddPublicityComponent,
     EditTapeInfoComponent,
     EditSeriesInfoComponent,
+    SeriesSelectorComponent
   ]
 })
 export class SeriesModule { }

@@ -102,6 +102,42 @@
       </nz-form-item>
 
       <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="totalEpisodes">总集数</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="totalEpisodes" placeholder="总集数">
+        </nz-form-control>
+
+        <nz-form-label [nzSm]="2" nzFor="chargePerson">经办人</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="chargePerson" placeholder="经办人">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="episodePrice">每集单价</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="episodePrice" placeholder="每集单价">
+        </nz-form-control>
+
+        <nz-form-label [nzSm]="2" nzFor="totalEpisodesPrice">节目费合计</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="totalEpisodesPrice" placeholder="节目费合计">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="tapeMailPrice">磁复邮单价</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="tapeMailPrice" placeholder="磁复邮单价">
+        </nz-form-control>
+
+        <nz-form-label [nzSm]="2" nzFor="totalTapeMailPrice">磁复邮合计</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="totalTapeMailPrice" placeholder="磁复邮合计">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
         <nz-form-label [nzSm]="2" nzFor="totalAmount">合同金额</nz-form-label>
         <nz-form-control [nzSm]="10">
           <input nz-input formControlName="totalAmount" placeholder="合同金额" #amount nz-tooltip
@@ -231,9 +267,9 @@
         <nz-form-control [nzSm]="10">
           <label nz-checkbox formControlName="copyrightIsSole">独家</label>
         </nz-form-control> -->
-        <nz-form-label [nzSm]="2" nzFor="copyrightChildren">子权利</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightChildren">授权范围</nz-form-label>
         <nz-form-control [nzSm]="22">
-          <nz-select nzMode="multiple" nzPlaceHolder="可选择子权利" formControlName="copyrightChildren">
+          <nz-select nzMode="multiple" nzPlaceHolder="可选择授权范围" formControlName="copyrightChildren">
             <nz-option *ngFor="let option of rightChildrenTemplate[rightForm.get('copyright').value]"
               [nzLabel]="option.name" [nzValue]="option.code">
             </nz-option>
@@ -242,17 +278,17 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="2" nzFor="copyrightArea" nzRequired>权利范围</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightArea" nzRequired>地域</nz-form-label>
         <nz-form-control [nzSm]="10">
           <nz-cascader nzChangeOnSelect [nzOptions]="areaTemplates" formControlName="copyrightArea"
-            nzLabelProperty="name" nzValueProperty="code" nzPlaceHolder="选择权利范围">
+            nzLabelProperty="name" nzValueProperty="code" nzPlaceHolder="选择地域">
           </nz-cascader>
           <nz-form-explain *ngIf="rightForm.get('copyrightArea').dirty && rightForm.get('copyrightArea').errors">
-            请选择权利范围</nz-form-explain>
+            请选择地域</nz-form-explain>
         </nz-form-control>
-        <nz-form-label [nzSm]="2" nzFor="copyrightAreaNote">范围备注</nz-form-label>
+        <nz-form-label [nzSm]="2" nzFor="copyrightAreaNote">地域备注</nz-form-label>
         <nz-form-control [nzSm]="10">
-          <input nz-input formControlName="copyrightAreaNote" placeholder="权利范围备注">
+          <input nz-input formControlName="copyrightAreaNote" placeholder="地域备注">
         </nz-form-control>
       </nz-form-item>
 
@@ -274,6 +310,20 @@
           <input nz-input formControlName="copyrightValidTermNote" placeholder="权利期限备注">
         </nz-form-control>
 
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="broadcastChannel">播出频道</nz-form-label>
+        <nz-form-control [nzSm]="10">
+          <input nz-input formControlName="broadcastChannel" placeholder="播出频道">
+        </nz-form-control>
+
+        <nz-form-label [nzSm]="2" nzFor="airDate">播出日期</nz-form-label>
+        <nz-form-control [nzSm]="10">
+            <nz-date-picker id="airDate" nzAllowClear="false" formControlName="airDate" nzPlaceHolder="播出日期"
+            style="width: 100%;" [nzStyle]="{ width: '100%' }">
+          </nz-date-picker>
+        </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
@@ -310,8 +360,8 @@
         <tr>
           <th nzWidth="16rem">项目名称</th>
           <th>权利</th>
-          <th nzWidth="16rem">子权利</th>
-          <th>范围</th>
+          <th nzWidth="16rem">授权范围</th>
+          <th>地域</th>
           <th>期限</th>
           <th>备注</th>
           <th>操作</th>
@@ -327,7 +377,9 @@
             {{ data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy-MM-dd') + ' ~ ' +
                 (data.termEndDate | date:'yyyy-MM-dd')) : data.termNote }}
           </td>
-          <td><div style="width: 20rem;">{{ data.note }}</div></td>
+          <td>
+            <div style="width: 20rem;">{{ data.note }}</div>
+          </td>
           <td>
             <a (click)="deleteRight(data)"><i nz-icon type="delete" theme="outline"></i></a>
           </td>

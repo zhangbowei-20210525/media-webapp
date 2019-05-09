@@ -56,8 +56,8 @@ export class PublicityService {
     { params: { page: pagination.page as any, page_size: pagination.page_size as any } });
   }
 
-  bindingMateriel(publicity_id: number, material_id: number, material_type: string) {
-    return this.http.post<any>(`/api/v1/publicity/${publicity_id}`, { material_id, material_type });
+  bindingMateriel(publicity_id: number, material_id: number, material_type: string, company_ids: any) {
+    return this.http.post<any>(`/api/v1/publicity/${publicity_id}`, { material_id, material_type, company_ids: company_ids });
   }
 
   request() {

@@ -5,9 +5,10 @@ import { SeriesService } from '../series/series.service';
 import { DashboardService } from './dashboard.service';
 import { map } from 'rxjs/operators';
 import { NzTreeNodeOptions, NzTreeComponent, NzTreeSelectComponent, NzTreeNode } from 'ng-zorro-antd';
-import { TreeService, MessageService } from '@shared';
+import { TreeService, MessageService, Util } from '@shared';
 import { DashboardDto } from './dtos';
 import { TranslateService } from '@ngx-translate/core';
+import { differenceInCalendarDays } from 'date-fns';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,21 +24,31 @@ export class DashboardComponent implements OnInit {
   publish_right: any;
   payment: any;
   receipt: any;
-  seriesCriteria: string;
   time: string;
   publicityData: any;
   publicityChart: any;
-  seriesChart: any;
+  sseriesTypeChart: any;
   pubType: string;
+  dateRange: any;
   publishChart: any;
   tapeType: string;
   tapeChart: any;
+  seriesLineChart: any;
+  startYear: any;
+  seriesTime = 'month';
+  sortType = 'negative';
+  seriesCriteria = 'program_type';
+  endYear: any;
+  seriesInvestmentChart: any;
+  seriesThemeChart: any;
+  conversionGraphics = 'pieChart';
   content: any;
   activeProjectRight = [];
   activeProjectPubRight = [];
   activeProjectPublicity = [];
   activeProjectSource = [];
   statisticsSelectYear = [];
+  seriesInOut = 'purchase';
   statisticsSelectArea = [];
   allStatisticsChart: any;
   listOfOption = [];
@@ -51,6 +62,273 @@ export class DashboardComponent implements OnInit {
   t2: any;
   t3: any;
   t4: any;
+  t5: any;
+  t6: any;
+
+  data5 = [{
+    label: '汽车',
+    value: 34
+  }, {
+    label: '建材家居',
+    value: 85
+  }, {
+    label: '住宿旅游',
+    value: 103
+  }, {
+    label: '交通运输与仓储邮政',
+    value: 142
+  }];
+
+  data4 = [{
+    type: '汽车',
+    value: 34
+  }, {
+    type: '建材家居',
+    value: 85
+  }, {
+    type: '住宿旅游',
+    value: 103
+  }, {
+    type: '交通运输与仓储邮政',
+    value: 142
+  }, {
+    type: '建筑房地产',
+    value: 251
+  }, {
+    type: '教育',
+    value: 367
+  }, {
+    type: 'IT 通讯电子',
+    value: 491
+  }, {
+    type: '社会公共管理',
+    value: 672
+  }, {
+    type: '医疗卫生',
+    value: 868
+  }, {
+    type: '金融保险',
+    value: 1234
+  }];
+  data3 = [
+    { 'line': '浏览量', 'label': '12', 'value': 1705 },
+    { 'line': '浏览量', 'label': '11', 'value': 178 },
+    { 'line': '浏览量', 'label': '10', 'value': 186 },
+    { 'line': '浏览量', 'label': '9', 'value': 213 },
+    { 'line': '浏览量', 'label': '8', 'value': 247 },
+    { 'line': '浏览量', 'label': '7', 'value': 272 },
+    { 'line': '浏览量', 'label': '6', 'value': 316 },
+    { 'line': '浏览量', 'label': '5', 'value': 382 },
+    { 'line': '浏览量', 'label': '4', 'value': 428 },
+    { 'line': '浏览量', 'label': '3', 'value': 468 },
+    { 'line': '浏览量', 'label': '2', 'value': 537 },
+    { 'line': '浏览量', 'label': '1', 'value': 6 },
+    { 'line': '点赞', 'label': '12', 'value': 1635 },
+    { 'line': '点赞', 'label': '11', 'value': 16 },
+    { 'line': '点赞', 'label': '10', 'value': 158 },
+    { 'line': '点赞', 'label': '9', 'value': 155 },
+    { 'line': '点赞', 'label': '8', 'value': 151 },
+    { 'line': '点赞', 'label': '7', 'value': 2725 },
+    { 'line': '点赞', 'label': '6', 'value': 255 },
+    { 'line': '点赞', 'label': '5', 'value': 3 },
+    { 'line': '点赞', 'label': '4', 'value': 477 },
+    { 'line': '点赞', 'label': '3', 'value': 625 },
+    { 'line': '点赞', 'label': '2', 'value': 62 },
+    { 'line': '点赞', 'label': '1', 'value': 54 },
+    { 'line': '收藏', 'label': '12', 'value': 1973 },
+    { 'line': '收藏', 'label': '11', 'value': 1982 },
+    { 'line': '收藏', 'label': '10', 'value': 1978 },
+    { 'line': '收藏', 'label': '9', 'value': 1882 },
+    { 'line': '收藏', 'label': '8', 'value': 1762 },
+    { 'line': '收藏', 'label': '7', 'value': 1715 },
+    { 'line': '收藏', 'label': '6', 'value': 1805 },
+    { 'line': '收藏', 'label': '5', 'value': 1865 },
+    { 'line': '收藏', 'label': '4', 'value': 187 },
+    { 'line': '收藏', 'label': '3', 'value': 23 },
+    { 'line': '收藏', 'label': '2', 'value': 2639 },
+    { 'line': '收藏', 'label': '1', 'value': 2832 },
+  ];
+  data2 = [{
+    date: '2018/8/1',
+    type: 'download',
+    value: 4623
+  }, {
+    date: '2018/8/1',
+    type: 'register',
+    value: 2208
+  }, {
+    date: '2018/8/1',
+    type: 'bill',
+    value: 182
+  }, {
+    date: '2018/8/2',
+    type: 'download',
+    value: 6145
+  }, {
+    date: '2018/8/2',
+    type: 'register',
+    value: 2016
+  }, {
+    date: '2018/8/2',
+    type: 'bill',
+    value: 257
+  }, {
+    date: '2018/8/3',
+    type: 'download',
+    value: 508
+  }, {
+    date: '2018/8/3',
+    type: 'register',
+    value: 2916
+  }, {
+    date: '2018/8/3',
+    type: 'bill',
+    value: 289
+  }, {
+    date: '2018/8/4',
+    type: 'download',
+    value: 6268
+  }, {
+    date: '2018/8/4',
+    type: 'register',
+    value: 4512
+  }, {
+    date: '2018/8/4',
+    type: 'bill',
+    value: 428
+  }, {
+    date: '2018/8/5',
+    type: 'download',
+    value: 6411
+  }, {
+    date: '2018/8/5',
+    type: 'register',
+    value: 8281
+  }, {
+    date: '2018/8/5',
+    type: 'bill',
+    value: 619
+  }, {
+    date: '2018/8/6',
+    type: 'download',
+    value: 1890
+  }, {
+    date: '2018/8/6',
+    type: 'register',
+    value: 2008
+  }, {
+    date: '2018/8/6',
+    type: 'bill',
+    value: 87
+  }, {
+    date: '2018/8/7',
+    type: 'download',
+    value: 4251
+  }, {
+    date: '2018/8/7',
+    type: 'register',
+    value: 1963
+  }, {
+    date: '2018/8/7',
+    type: 'bill',
+    value: 706
+  }, {
+    date: '2018/8/8',
+    type: 'download',
+    value: 2978
+  }, {
+    date: '2018/8/8',
+    type: 'register',
+    value: 2367
+  }, {
+    date: '2018/8/8',
+    type: 'bill',
+    value: 387
+  }, {
+    date: '2018/8/9',
+    type: 'download',
+    value: 3880
+  }, {
+    date: '2018/8/9',
+    type: 'register',
+    value: 2956
+  }, {
+    date: '2018/8/9',
+    type: 'bill',
+    value: 488
+  }, {
+    date: '2018/8/10',
+    type: 'download',
+    value: 3606
+  }, {
+    date: '2018/8/10',
+    type: 'register',
+    value: 678
+  }, {
+    date: '2018/8/10',
+    type: 'bill',
+    value: 507
+  }, {
+    date: '2018/8/11',
+    type: 'download',
+    value: 4311
+  }, {
+    date: '2018/8/11',
+    type: 'register',
+    value: 3188
+  }, {
+    date: '2018/8/11',
+    type: 'bill',
+    value: 548
+  }, {
+    date: '2018/8/12',
+    type: 'download',
+    value: 4116
+  }, {
+    date: '2018/8/12',
+    type: 'register',
+    value: 3491
+  }, {
+    date: '2018/8/12',
+    type: 'bill',
+    value: 456
+  }, {
+    date: '2018/8/13',
+    type: 'download',
+    value: 6419
+  }, {
+    date: '2018/8/13',
+    type: 'register',
+    value: 2852
+  }, {
+    date: '2018/8/13',
+    type: 'bill',
+    value: 689
+  }, {
+    date: '2018/8/14',
+    type: 'download',
+    value: 1643
+  }, {
+    date: '2018/8/14',
+    type: 'register',
+    value: 4788
+  }, {
+    date: '2018/8/14',
+    type: 'bill',
+    value: 280
+  }, {
+    date: '2018/8/15',
+    type: 'download',
+    value: 445
+  }, {
+    date: '2018/8/15',
+    type: 'register',
+    value: 4319
+  }, {
+    date: '2018/8/15',
+    type: 'bill',
+    value: 176
+  }];
   data = [{
     'State': '第一季度',
     '中国(未付款)': 30,
@@ -111,7 +389,6 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.seriesCriteria = 'program_type';
     this.time = 'day';
     this.pubType = 'custom';
     this.tapeType = 'publish';
@@ -129,9 +406,11 @@ export class DashboardComponent implements OnInit {
       this.payment = res.payment;
       this.receipt = res.receipt;
     });
-    this.getSeriesStatisticsInfo();
-    this.getPublicityStatisticsInfo();
-    this.getPublishStatisticsInfo();
+    this.startYear = '';
+    this.endYear = '';
+    this.getSeriesPieChart();
+    // this.getPublicityStatisticsInfo();
+    this.getCustomerStatisticsInfo();
     this.getTapeStatisticsInfo();
     this.getAllStatisticsInfo();
     this.dashboardService.getActiveProject('right').subscribe(res => {
@@ -185,6 +464,17 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  getSeriesPieChart() {
+    this.startYear = '';
+    this.endYear = '';
+    this.dashboardService.getSeriesPieChart(this.startYear !== '' ? this.startYear.getFullYear() : '',
+    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+      this.getSeriesType(res.program_type);
+      this.getSeriesInvestment(res.investment_type);
+      this.getSeriesTheme(res.theme);
+    });
+  }
+
   getStatisticsSelectArea(origins: DashboardDto[]): NzTreeNodeOptions[] {
     return this.ts.getNzTreeNodes(origins, item => ({
       title: item.name,
@@ -199,11 +489,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllStatisticsInfo() {
-    // var _DataSet = DataSet,
+    // const _DataSet = DataSet,
     //   DataView = _DataSet.DataView;
-    // var _G = G2,
+    //   const _G = G2,
     //   Chart = _G.Chart;
-    // var ages = [
+    //   const ages = [
     //   '中国(未付款)',
     //   '中国(已付款)',
     //   '英国(未付款)',
@@ -215,7 +505,7 @@ export class DashboardComponent implements OnInit {
     //   '日本(未付款)',
     //   '日本(已付款)',
     // ];
-    // var dv = new DataView();
+    // const dv = new DataView();
     // dv.source(this.data).transform({
     //   type: 'fold',
     //   fields: ages,
@@ -225,8 +515,8 @@ export class DashboardComponent implements OnInit {
     // }).transform({
     //   type: 'map',
     //   callback: function callback(obj) {
-    //     var key = obj.age;
-    //     var type = void 0;
+    //     const key = obj.age;
+    //     let type = void 0;
     //     if (key === '中国(未付款)' || key === '中国(已付款)') {
     //       type = 'a';
     //     } else if (key === '英国(已付款)' || key === '英国(未付款)') {
@@ -242,7 +532,7 @@ export class DashboardComponent implements OnInit {
     //     return obj;
     //   }
     // });
-    // var colorMap = {
+    // const colorMap = {
     //   '中国(已付款)': '#660000',
     //   '中国(未付款)': '#663300',
     //   '英国(已付款)': '#006600',
@@ -294,9 +584,6 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getAllStatistics('', '', '').subscribe(res => {
       this.areaOptions = this.getStatisticsSelectArea(res.meta.area_number_choices);
-      // const a = this.selectArea[0];
-      // const b = this.selectArea[0].children[0];
-      // const c = this.selectArea[0].children[0].children;
       this.spread = ['000000'];
       this.statisticsSelectYear = res.meta.year_choices;
       this.allStatisticsChart = new G2.Chart({
@@ -343,50 +630,192 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getSeriesStatisticsInfo() {
-    this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
-      this.t1 = res.length;
-      this.seriesChart = new G2.Chart({
-        container: 'seriesStatistics',
-        forceFit: true,
-        width: 520,
-        height: 360,
-        // padding:  [ 0,  0,  0,  0]
+  getSeriesLineChart() {
+    this.startYear = '';
+    this.endYear = '';
+    this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear !== '' ? this.startYear.getFullYear() : '',
+    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+      this.t4 = res.length;
+      const dv = new DataSet.View().source(res);
+      dv.transform({
+        type: 'sort',
+        callback: function callback(a, b) {
+          return a.label - b.label;
+        }
       });
-      this.seriesChart.source(res, {
-        percent: {
-          formatter: function formatter(val) {
-            val = val + '%';
-            return val;
+
+      this.seriesLineChart = new G2.Chart({
+        container: 'seriesLine',
+        forceFit: true,
+        width: 1000,
+        height: 400,
+        padding: [10, 30, 80, 30]
+      });
+      this.seriesLineChart.source(dv);
+      this.seriesLineChart.scale('label', {
+        range: [0, 1]
+      });
+      this.seriesLineChart.axis('label', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
           }
         }
       });
-      this.seriesChart.coord('theta', {
-        radius: 0.75,  // 设置半径，值范围为 0 至 1
-        innerRadius: 0,  // 空心圆的半径，值范围为 0 至 1
-        startAngle: -1 * Math.PI / 2,  // 极坐标的起始角度，单位为弧度
-        endAngle: 3 * Math.PI / 2 // 极坐标的结束角度，单位为弧度
-      });
-      this.seriesChart.tooltip({
-        showTitle: false,
-        itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-      });
-      this.seriesChart.intervalStack().position('percent').color('label').label('percent', {
-        formatter: function formatter(val, label) {
-          return label.point.label + ': ' + val;
+      this.seriesLineChart.axis('value', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
+          }
         }
-      }).tooltip('label*percent', function (label, percent) {
-        percent = percent + '%';
-        return {
-          name: label,
-          value: percent
-        };
-      }).style({
-        lineWidth: 1,
-        stroke: '#fff'
       });
-      this.seriesChart.render();
+      this.seriesLineChart.tooltip({
+        shared: true,
+      });
+      this.seriesLineChart.line().position('label*value').color('line').size('line', function (val) {
+        return 2;
+      }).opacity('line', function (val) {
+        return 0.7;
+      });
+      this.seriesLineChart.point().position('label*value').color('line').size('line', function (val) {
+        return 0;
+      }).style({
+        lineWidth: 2
+      });
+      this.seriesLineChart.render();
     });
+  }
+
+  getSeriesInvestment(res: any) {
+    this.t2 = res.length;
+    this.seriesInvestmentChart = new G2.Chart({
+      container: 'seriesInvestment',
+      forceFit: true,
+      width: 300,
+      height: 400,
+      padding: [0, 0, 0, 0]
+    });
+    this.seriesInvestmentChart.source(res, {
+      percent: {
+        formatter: function formatter(val) {
+          val = val + '%';
+          return val;
+        }
+      }
+    });
+    this.seriesInvestmentChart.coord('theta', {
+      radius: 0.5,
+      innerRadius: 0,
+      startAngle: -1 * Math.PI / 2,
+      endAngle: 3 * Math.PI / 2
+    });
+    this.seriesInvestmentChart.tooltip({
+      showTitle: false,
+      itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+    });
+    this.seriesInvestmentChart.intervalStack().position('percent').color('label').label('percent', {
+      formatter: function formatter(val, label) {
+        return label.point.label + ': ' + val;
+      }
+    }).tooltip('label*percent', function (label, percent) {
+      percent = percent + '%';
+      return {
+        name: label,
+        value: percent
+      };
+    }).style({
+      lineWidth: 1,
+      stroke: '#fff'
+    });
+    this.seriesInvestmentChart.render();
+  }
+
+  getSeriesTheme(res: any) {
+    this.t3 = res.length;
+    this.seriesThemeChart = new G2.Chart({
+      container: 'seriesTheme',
+      forceFit: true,
+      width: 300,
+      height: 400,
+      padding: [0, 0, 0, 0]
+    });
+    this.seriesThemeChart.source(res, {
+      percent: {
+        formatter: function formatter(val) {
+          val = val + '%';
+          return val;
+        }
+      }
+    });
+    this.seriesThemeChart.coord('theta', {
+      radius: 0.5,
+      innerRadius: 0,
+      startAngle: -1 * Math.PI / 2,
+      endAngle: 3 * Math.PI / 2
+    });
+    this.seriesThemeChart.tooltip({
+      showTitle: false,
+      itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+    });
+    this.seriesThemeChart.intervalStack().position('percent').color('label').label('percent', {
+      formatter: function formatter(val, label) {
+        return label.point.label + ': ' + val;
+      }
+    }).tooltip('label*percent', function (label, percent) {
+      percent = percent + '%';
+      return {
+        name: label,
+        value: percent
+      };
+    }).style({
+      lineWidth: 1,
+      stroke: '#fff'
+    });
+    this.seriesThemeChart.render();
+  }
+
+  getSeriesType(res: any) {
+    this.t1 = res.length;
+    this.sseriesTypeChart = new G2.Chart({
+      container: 'seriesType',
+      forceFit: true,
+      width: 300,
+      height: 400,
+      padding: [0, 0, 0, 0]
+    });
+    this.sseriesTypeChart.source(res, {
+      percent: {
+        formatter: function formatter(val) {
+          val = val + '%';
+          return val;
+        }
+      }
+    });
+    this.sseriesTypeChart.coord('theta', {
+      radius: 0.5,
+      innerRadius: 0,
+      startAngle: -1 * Math.PI / 2,
+      endAngle: 3 * Math.PI / 2
+    });
+    this.sseriesTypeChart.tooltip({
+      showTitle: false,
+      itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+    });
+    this.sseriesTypeChart.intervalStack().position('percent').color('label').label('percent', {
+      formatter: function formatter(val, label) {
+        return label.point.label + ': ' + val;
+      }
+    }).tooltip('label*percent', function (label, percent) {
+      percent = percent + '%';
+      return {
+        name: label,
+        value: percent
+      };
+    }).style({
+      lineWidth: 1,
+      stroke: '#fff'
+    });
+    this.sseriesTypeChart.render();
   }
 
   getPublicityStatisticsInfo() {
@@ -399,7 +828,6 @@ export class DashboardComponent implements OnInit {
           return a.label - b.label;
         }
       });
-
       this.publicityChart = new G2.Chart({
         container: 'publicityStatistics',
         forceFit: true,
@@ -442,32 +870,100 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getPublishStatisticsInfo() {
-    this.dashboardService.getPublishStatistics('custom').subscribe(res => {
-      this.t3 = res.length;
-      this.publishChart = new G2.Chart({
-        container: 'publishStatistics',
-        forceFit: true,
-        width: 520,
-        height: 350,
-      });
-      this.publishChart.source(res);
-      this.publishChart.scale('value', {
-        tickCount: 4
-      });
-      this.publishChart.interval().position('label*value');
-      this.publishChart.render();
+  getCustomerStatisticsInfo() {
+    // this.dashboardService.getPublishStatistics('custom').subscribe(res => {
+    //   this.t3 = res.length;
+    //   this.publishChart = new G2.Chart({
+    //     container: 'publishStatistics',
+    //     forceFit: true,
+    //     width: 520,
+    //     height: 350,
+    //   });
+    //   this.publishChart.source(res);
+    //   this.publishChart.scale('value', {
+    //     tickCount: 4
+    //   });
+    //   this.publishChart.interval().position('label*value');
+    //   this.publishChart.render();
+    // });
+    this.dashboardService.getPurCustomer('', '').subscribe(res => {
+      this.t5 = res.length;
+    this.publishChart = new G2.Chart({
+      container: 'customerStatistics',
+      forceFit: true,
+      width: 505,
+      height: 450,
+      padding: [20, 40, 50, 124]
     });
+    this.publishChart.source(res, {
+      value: {
+        max: 1300,
+        min: 0,
+        nice: false,
+        alias: '销量（百万）'
+      }
+    });
+    this.publishChart.axis('type', {
+      label: {
+        textStyle: {
+          fill: '#8d8d8d',
+          fontSize: 12
+        }
+      },
+      tickLine: {
+        alignWithLabel: false,
+        length: 0
+      },
+      line: {
+        lineWidth: 0
+      }
+    });
+    this.publishChart.axis('value', {
+      label: null,
+      title: {
+        offset: 30,
+        textStyle: {
+          fontSize: 12,
+          fontWeight: 300
+        }
+      }
+    });
+    this.publishChart.legend(false);
+    this.publishChart.coord().transpose();
+    this.publishChart.interval().position('type*value').size(26).opacity(1).label('value', {
+      textStyle: {
+        fill: '#8d8d8d'
+      },
+      offset: 10
+    });
+    this.publishChart.render();
+  });
+    // $('.sort-button').click(function() {
+    //   sortType = sortType === 'positive' ? 'negative' : 'positive';
+    //   sortData(sortType);
+    //   chart.repaint();
+    // });
+    // function sortData(sortType) {
+    //   if (sortType === 'positive') {
+    //     data.sort(function(a, b) {
+    //       return b.value - a.value;
+    //     });
+    //   } else {
+    //     data.sort(function(a, b) {
+    //       return a.value - b.value;
+    //     });
+    //   }
+    // }
   }
 
   getTapeStatisticsInfo() {
     this.dashboardService.getTapeStatistics('publish').subscribe(res => {
-      this.t4 = res.length;
+      this.t6 = res.length;
       this.tapeChart = new G2.Chart({
         container: 'tapeStatistics',
         forceFit: true,
-        width: 520,
-        height: 350,
+        width: 500,
+        height: 450,
       });
       this.tapeChart.source(res);
       this.tapeChart.scale('value', {
@@ -479,33 +975,7 @@ export class DashboardComponent implements OnInit {
   }
 
   switchoverSeriesCriteria() {
-    if (this.seriesCriteria === 'investment_type') {
-      this.dashboardService.getSeriesStatistics('investment_type').subscribe(res => {
-        this.seriesChart.source(res, {
-          percent: {
-            formatter: function formatter(val) {
-              val = val + '%';
-              return val;
-            }
-          }
-        });
-        this.seriesChart.render();
-      });
-    }
-
-    if (this.seriesCriteria === 'program_type') {
-      this.dashboardService.getSeriesStatistics('program_type').subscribe(res => {
-        this.seriesChart.source(res, {
-          percent: {
-            formatter: function formatter(val) {
-              val = val + '%';
-              return val;
-            }
-          }
-        });
-        this.seriesChart.render();
-      });
-    }
+    this.getTransformLineChart();
   }
   switchoverTime() {
     if (this.time === 'day') {
@@ -750,6 +1220,197 @@ export class DashboardComponent implements OnInit {
         this.allStatisticsChart.source(res.list);
         this.allStatisticsChart.render();
       });
+    }
+  }
+
+  cgChange() {
+    if (this.conversionGraphics === 'pieChart') {
+      this.seriesLineChart.destroy();
+      this.getSeriesPieChart();
+    }
+    if (this.conversionGraphics === 'lineChart') {
+      this.sseriesTypeChart.destroy();
+      this.seriesThemeChart.destroy();
+      this.seriesInvestmentChart.destroy();
+      this.getSeriesLineChart();
+    }
+  }
+
+  sortChange() {
+    if (this.sortType === 'positive') {
+      this.data4.sort(function (a, b) {
+        return b.value - a.value;
+      });
+    } else {
+      this.data4.sort(function (a, b) {
+        return a.value - b.value;
+      });
+    }
+    this.publishChart.repaint();
+  }
+
+  startYearChange() {
+    if (this.endYear === '') {
+      if (this.conversionGraphics === 'pieChart') {
+        this.getTransformPieChart();
+      }
+      if (this.conversionGraphics === 'lineChart') {
+        this.getTransformLineChart();
+      }
+    } else {
+      const sy = +Util.dateToString(this.startYear).substring(0, 4);
+      if (this.endYear - sy === 5) {
+        if (this.conversionGraphics === 'pieChart') {
+          this.getTransformPieChart();
+        }
+        if (this.conversionGraphics === 'lineChart') {
+          this.getTransformLineChart();
+        }
+      } else {
+        this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
+      }
+    }
+  }
+
+  endYearChange() {
+    if (this.startYear === '') {
+      if (this.conversionGraphics === 'pieChart') {
+        this.getTransformPieChart();
+      }
+      if (this.conversionGraphics === 'lineChart') {
+        this.getTransformLineChart();
+      }
+    } else {
+      const ey = +Util.dateToString(this.endYear).substring(0, 4);
+      if (ey - this.startYear === 5) {
+        if (this.conversionGraphics === 'pieChart') {
+          this.getTransformPieChart();
+        }
+        if (this.conversionGraphics === 'lineChart') {
+          this.getTransformLineChart();
+        }
+      } else {
+        this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
+      }
+    }
+  }
+
+  getTransformPieChart() {
+    this.dashboardService.getSeriesPieChart(this.startYear !== '' ? this.startYear.getFullYear() : '',
+    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+      this.seriesInvestmentChart.source(res.program_type, {
+        percent: {
+          formatter: function formatter(val) {
+            val = val + '%';
+            return val;
+          }
+        }
+      });
+      this.seriesThemeChart.source(res.theme, {
+        percent: {
+          formatter: function formatter(val) {
+            val = val + '%';
+            return val;
+          }
+        }
+      });
+      this.sseriesTypeChart.source(res.program_type, {
+        percent: {
+          formatter: function formatter(val) {
+            val = val + '%';
+            return val;
+          }
+        }
+      });
+    });
+    this.seriesInvestmentChart.render();
+    this.seriesThemeChart.render();
+    this.sseriesTypeChart.render();
+  }
+
+
+  getTransformLineChart () {
+    this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear !== '' ? this.startYear.getFullYear() : '',
+    this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+      this.seriesLineChart.source(res);
+      this.seriesLineChart.render();
+    });
+  }
+
+  seriesTimeChange() {
+    if (this.seriesTime === 'month') {
+      this.startYear = '';
+      this.endYear = '';
+      if (this.conversionGraphics === 'pieChart') {
+        this.getTransformPieChart();
+      }
+      if (this.conversionGraphics === 'lineChart') {
+        this.getTransformLineChart();
+      }
+    }
+    if (this.seriesTime === 'year') {
+      this.endYear = new Date();
+       const date = new Date();
+       date.setFullYear(date.getFullYear() - 5);
+      this.startYear = date;
+      if (this.conversionGraphics === 'pieChart') {
+        this.getTransformPieChart();
+      }
+      if (this.conversionGraphics === 'lineChart') {
+        this.getTransformLineChart();
+      }
+    }
+  }
+
+  getPurCustomer() {
+    this.dashboardService.getPurCustomer(this.dateRange.length > 0 ? Util.dateToString(this.dateRange[0]) : '',
+    this.dateRange.length > 0 ? Util.dateToString(this.dateRange[1]) : '').subscribe(res => {
+      this.t5 = res.length;
+      this.publishChart.source(res, {
+        value: {
+          max: 1300,
+          min: 0,
+          nice: false,
+          alias: '销量（百万）'
+        }
+      });
+    });
+    this.publishChart.render();
+  }
+
+  getPubCustomer() {
+    this.dashboardService.getPubCustomer(this.dateRange.length > 0 ? Util.dateToString(this.dateRange[0]) : '',
+    this.dateRange.length > 0 ? Util.dateToString(this.dateRange[1]) : '').subscribe(res => {
+      this.t5 = res.length;
+      this.publishChart.source(res, {
+        value: {
+          max: 1300,
+          min: 0,
+          nice: false,
+          alias: '销量（百万）'
+        }
+      });
+    });
+    this.publishChart.render();
+  }
+
+  onChange() {
+    if (this.seriesInOut === 'purchase') {
+      this.getPurCustomer();
+    }
+    if (this.seriesInOut === 'publish') {
+      this.getPubCustomer();
+    }
+  }
+
+  seriesInOutChange() {
+    if (this.seriesInOut === 'purchase') {
+      this.dateRange = [];
+     this.getPurCustomer();
+    }
+    if (this.seriesInOut === 'publish') {
+      this.dateRange = [];
+      this.getPubCustomer();
     }
   }
 }
