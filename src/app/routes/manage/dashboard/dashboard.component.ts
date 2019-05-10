@@ -1213,6 +1213,9 @@ export class DashboardComponent implements OnInit {
 
   getTransformPieChart() {
     this.dashboardService.getSeriesPieChart(this.startYear.getFullYear() + '', this.endYear.getFullYear() + '').subscribe(res => {
+      this.t1 = res.program_type.length;
+      this.t2 = res.investment_type.length;
+      this.t3 = res.theme.length;
       this.seriesInvestmentChart.source(res.investment_type, {
         percent: {
           formatter: function formatter(val) {
@@ -1247,6 +1250,7 @@ export class DashboardComponent implements OnInit {
   getTransformLineChart() {
     this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear.getFullYear() + '',
       this.endYear.getFullYear() + '').subscribe(res => {
+        this.t4  = res.length;
         this.seriesLineChart.source(res);
         this.seriesLineChart.render();
       });
