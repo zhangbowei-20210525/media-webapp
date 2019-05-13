@@ -56,10 +56,12 @@
       <div class="block-title"><span style="font-size: 20px">{{ 'app.dashboard.series' | translate }}</span></div>
       <div class="block-options">
         <nz-year-picker [(ngModel)]="startYear" (ngModelChange)="startYearChange()" [nzDisabled]="seriesTime == 'month'"
-          nzPlaceHolder="请选择起始年份" nzSize="small" style="width:131px" nzAutoFocus="true"></nz-year-picker>
+          nzAllowClear=false; nzPlaceHolder="请选择起始年份" nzSize="small" style="width:131px" nzAutoFocus="true">
+        </nz-year-picker>
         <span>~</span>
-        <nz-year-picker [(ngModel)]="endYear" nzPlaceHolder="请选择终止年份" [nzDisabled]="seriesTime == 'month'"
-          (ngModelChange)="endYearChange()" nzSize="small" style="width:131px"></nz-year-picker>
+        <nz-year-picker [(ngModel)]="endYear" nzPlaceHolder="请选择终止年份" nzAllowClear=false;
+          [nzDisabled]="seriesTime == 'month'" (ngModelChange)="endYearChange()" nzSize="small" style="width:131px">
+        </nz-year-picker>
         <nz-radio-group [(ngModel)]="seriesTime" nzSize="small" (ngModelChange)="seriesTimeChange()">
           <label nz-radio-button nzValue="month">本年度</label>
           <label nz-radio-button nzValue="year">近五年</label>
@@ -76,22 +78,25 @@
         </nz-radio-group>
       </div>
     </div>
-    <div class="block-content" [hidden]="conversionGraphics == 'pieChart'">
+    <div class="block-content" [hidden]="conversionGraphics == 'pieChart'" style="height: 450px">
       <nz-empty [hidden]="t4 > 0" style="margin-top: 125px"></nz-empty>
       <div id="seriesLine" [hidden]="t4 == 0"></div>
     </div>
-    <div class="block-content flex" [hidden]="conversionGraphics == 'lineChart'">
+    <div class="block-content flex" [hidden]="conversionGraphics == 'lineChart'" style="text-align: center">
       <div style="height: 450px;width: 362px">
         <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
         <div id="seriesType" [hidden]="t1 == 0"></div>
+        <div [hidden]="t1 == 0">品类</div>
       </div>
       <div style="height: 450px;width: 362px">
         <nz-empty [hidden]="t3 > 0" style="margin-top: 125px"></nz-empty>
         <div id="seriesTheme" [hidden]="t3 == 0"></div>
+        <div [hidden]="t3 == 0">题材</div>
       </div>
       <div style="height: 450px;width: 362px">
         <nz-empty [hidden]="t2 > 0" style="margin-top: 125px"></nz-empty>
         <div id="seriesInvestment" [hidden]="t2 == 0"></div>
+        <div [hidden]="t2 == 0">投资类型</div>
       </div>
     </div>
   </div>
@@ -100,8 +105,7 @@
       <div class="block-header">
         <div class="block-title"><span style="font-size: 20px">客商</span></div>
         <div class="block-options">
-          <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onChange()" nzSize="small"
-            style="width: 240px">
+          <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onChange()" nzSize="small" style="width: 240px">
           </nz-range-picker>
           <nz-radio-group [(ngModel)]="seriesInOut" nzSize="small" (ngModelChange)="seriesInOutChange()">
             <label nz-radio-button nzValue="purchase">采购</label>
@@ -115,7 +119,7 @@
       </div>
       <div class="block-content">
         <div style="height: 450px;width: 505px">
-          <nz-empty [hidden]="t5 > 0" style="margin-top: 125px"></nz-empty>
+          <nz-empty [hidden]="t5 > 0" style="line-height: 300px"></nz-empty>
           <div id="customerStatistics" [hidden]="t5 == 0"></div>
         </div>
       </div>
@@ -133,7 +137,7 @@
       </div>
       <div class="block-content">
         <div style="height: 450px;width: 505px">
-          <nz-empty [hidden]="t6 > 0" style="margin-top: 125px"></nz-empty>
+          <nz-empty [hidden]="t6 > 0" style="line-height: 300px"></nz-empty>
           <div id="tapeStatistics" [hidden]="t6 == 0"></div>
         </div>
       </div>
