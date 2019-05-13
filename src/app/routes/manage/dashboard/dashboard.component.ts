@@ -35,11 +35,11 @@ export class DashboardComponent implements OnInit {
   tapeChart: any;
   customerSort: any;
   seriesLineChart: any;
-  startYear: any;
+  startYear: Date;
   seriesTime = 'month';
   sortType = 'negative';
   seriesCriteria = 'program_type';
-  endYear: any;
+  endYear: Date;
   seriesInvestmentChart: any;
   seriesThemeChart: any;
   conversionGraphics = 'pieChart';
@@ -66,89 +66,6 @@ export class DashboardComponent implements OnInit {
   t5: any;
   t6: any;
 
-  data5 = [{
-    label: '汽车',
-    value: 34
-  }, {
-    label: '建材家居',
-    value: 85
-  }, {
-    label: '住宿旅游',
-    value: 103
-  }, {
-    label: '交通运输与仓储邮政',
-    value: 142
-  }];
-
-  data4 = [{
-    type: '汽车',
-    value: 34
-  }, {
-    type: '建材家居',
-    value: 85
-  }, {
-    type: '住宿旅游',
-    value: 103
-  }, {
-    type: '交通运输与仓储邮政',
-    value: 142
-  }, {
-    type: '建筑房地产',
-    value: 251
-  }, {
-    type: '教育',
-    value: 367
-  }, {
-    type: 'IT 通讯电子',
-    value: 491
-  }, {
-    type: '社会公共管理',
-    value: 672
-  }, {
-    type: '医疗卫生',
-    value: 868
-  }, {
-    type: '金融保险',
-    value: 1234
-  }];
-  data3 = [
-    { 'line': '浏览量', 'label': '12', 'value': 1705 },
-    { 'line': '浏览量', 'label': '11', 'value': 178 },
-    { 'line': '浏览量', 'label': '10', 'value': 186 },
-    { 'line': '浏览量', 'label': '9', 'value': 213 },
-    { 'line': '浏览量', 'label': '8', 'value': 247 },
-    { 'line': '浏览量', 'label': '7', 'value': 272 },
-    { 'line': '浏览量', 'label': '6', 'value': 316 },
-    { 'line': '浏览量', 'label': '5', 'value': 382 },
-    { 'line': '浏览量', 'label': '4', 'value': 428 },
-    { 'line': '浏览量', 'label': '3', 'value': 468 },
-    { 'line': '浏览量', 'label': '2', 'value': 537 },
-    { 'line': '浏览量', 'label': '1', 'value': 6 },
-    { 'line': '点赞', 'label': '12', 'value': 1635 },
-    { 'line': '点赞', 'label': '11', 'value': 16 },
-    { 'line': '点赞', 'label': '10', 'value': 158 },
-    { 'line': '点赞', 'label': '9', 'value': 155 },
-    { 'line': '点赞', 'label': '8', 'value': 151 },
-    { 'line': '点赞', 'label': '7', 'value': 2725 },
-    { 'line': '点赞', 'label': '6', 'value': 255 },
-    { 'line': '点赞', 'label': '5', 'value': 3 },
-    { 'line': '点赞', 'label': '4', 'value': 477 },
-    { 'line': '点赞', 'label': '3', 'value': 625 },
-    { 'line': '点赞', 'label': '2', 'value': 62 },
-    { 'line': '点赞', 'label': '1', 'value': 54 },
-    { 'line': '收藏', 'label': '12', 'value': 1973 },
-    { 'line': '收藏', 'label': '11', 'value': 1982 },
-    { 'line': '收藏', 'label': '10', 'value': 1978 },
-    { 'line': '收藏', 'label': '9', 'value': 1882 },
-    { 'line': '收藏', 'label': '8', 'value': 1762 },
-    { 'line': '收藏', 'label': '7', 'value': 1715 },
-    { 'line': '收藏', 'label': '6', 'value': 1805 },
-    { 'line': '收藏', 'label': '5', 'value': 1865 },
-    { 'line': '收藏', 'label': '4', 'value': 187 },
-    { 'line': '收藏', 'label': '3', 'value': 23 },
-    { 'line': '收藏', 'label': '2', 'value': 2639 },
-    { 'line': '收藏', 'label': '1', 'value': 2832 },
-  ];
   data2 = [{
     date: '2018/8/1',
     type: 'download',
@@ -407,8 +324,10 @@ export class DashboardComponent implements OnInit {
       this.payment = res.payment;
       this.receipt = res.receipt;
     });
-    this.startYear = '';
-    this.endYear = '';
+    const date = new Date();
+    // date.setFullYear(date.getFullYear() - 4);
+    this.startYear = date;
+    this.endYear = date;
     this.getSeriesPieChart();
     // this.getPublicityStatisticsInfo();
     this.getCustomerStatisticsInfo();
@@ -466,14 +385,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getSeriesPieChart() {
-    this.startYear = '';
-    this.endYear = '';
-    this.dashboardService.getSeriesPieChart(this.startYear !== '' ? this.startYear.getFullYear() : '',
-      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
-        this.getSeriesType(res.program_type);
-        this.getSeriesInvestment(res.investment_type);
-        this.getSeriesTheme(res.theme);
-      });
+    this.dashboardService.getSeriesPieChart(this.startYear.getFullYear() + '', this.endYear.getFullYear() + '').subscribe(res => {
+      this.getSeriesType(res.program_type);
+      this.getSeriesInvestment(res.investment_type);
+      this.getSeriesTheme(res.theme);
+    });
   }
 
   getStatisticsSelectArea(origins: DashboardDto[]): NzTreeNodeOptions[] {
@@ -632,10 +548,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getSeriesLineChart() {
-    this.startYear = '';
-    this.endYear = '';
-    this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear !== '' ? this.startYear.getFullYear() : '',
-      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+    this.dashboardService.getSeriesLineChart(this.seriesCriteria,
+      this.startYear.getFullYear() + '', this.endYear.getFullYear() + '').subscribe(res => {
         this.t4 = res.length;
         const dv = new DataSet.View().source(res);
         dv.transform({
@@ -1250,88 +1164,93 @@ export class DashboardComponent implements OnInit {
   }
 
   startYearChange() {
-    if (this.endYear === '') {
-      if (this.conversionGraphics === 'pieChart') {
-        this.getTransformPieChart();
-      }
-      if (this.conversionGraphics === 'lineChart') {
-        this.getTransformLineChart();
-      }
-    } else {
-      const sy = +Util.dateToString(this.startYear).substring(0, 4);
-      if (this.endYear - sy === 4) {
-        if (this.conversionGraphics === 'pieChart') {
-          this.getTransformPieChart();
-        }
-        if (this.conversionGraphics === 'lineChart') {
-          this.getTransformLineChart();
-        }
-      } else {
-        this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
-      }
+    this.endYear = new Date(this.endYear.setFullYear(this.startYear.getFullYear() + 4));
+    // if (this.endYear === '') {
+    if (this.conversionGraphics === 'pieChart') {
+      this.getTransformPieChart();
     }
+    if (this.conversionGraphics === 'lineChart') {
+      this.getTransformLineChart();
+    }
+    // } else {
+    // const sy = +Util.dateToString(this.startYear).substring(0, 4);
+    // if (this.endYear - sy === 4) {
+    //   if (this.conversionGraphics === 'pieChart') {
+    //     this.getTransformPieChart();
+    //   }
+    //   if (this.conversionGraphics === 'lineChart') {
+    //     this.getTransformLineChart();
+    //   }
+    // } else {
+    //   this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
+    // }
+    // }
   }
 
   endYearChange() {
-    if (this.startYear === '') {
-      if (this.conversionGraphics === 'pieChart') {
-        this.getTransformPieChart();
-      }
-      if (this.conversionGraphics === 'lineChart') {
-        this.getTransformLineChart();
-      }
-    } else {
-      const ey = +Util.dateToString(this.endYear).substring(0, 4);
-      if (ey - this.startYear === 4) {
-        if (this.conversionGraphics === 'pieChart') {
-          this.getTransformPieChart();
-        }
-        if (this.conversionGraphics === 'lineChart') {
-          this.getTransformLineChart();
-        }
-      } else {
-        this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
-      }
+    // if (this.startYear === '') {
+    this.startYear = new Date(this.startYear.setFullYear(this.endYear.getFullYear() - 4));
+    if (this.conversionGraphics === 'pieChart') {
+      this.getTransformPieChart();
     }
+    if (this.conversionGraphics === 'lineChart') {
+      this.getTransformLineChart();
+    }
+    // } else {
+    // const ey = +Util.dateToString(this.endYear).substring(0, 4);
+    // if (ey - this.startYear === 4) {
+    //   if (this.conversionGraphics === 'pieChart') {
+    //     this.getTransformPieChart();
+    //   }
+    //   if (this.conversionGraphics === 'lineChart') {
+    //     this.getTransformLineChart();
+    //   }
+    // } else {
+    //   this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
+    // }
+    // }
   }
 
   getTransformPieChart() {
-    this.dashboardService.getSeriesPieChart(this.startYear !== '' ? this.startYear.getFullYear() : '',
-      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
-        this.seriesInvestmentChart.source(res.program_type, {
-          percent: {
-            formatter: function formatter(val) {
-              val = val + '%';
-              return val;
-            }
+    this.dashboardService.getSeriesPieChart(this.startYear.getFullYear() + '', this.endYear.getFullYear() + '').subscribe(res => {
+      this.t1 = res.program_type.length;
+      this.t2 = res.investment_type.length;
+      this.t3 = res.theme.length;
+      this.seriesInvestmentChart.source(res.investment_type, {
+        percent: {
+          formatter: function formatter(val) {
+            val = val + '%';
+            return val;
           }
-        });
-        this.seriesThemeChart.source(res.theme, {
-          percent: {
-            formatter: function formatter(val) {
-              val = val + '%';
-              return val;
-            }
-          }
-        });
-        this.sseriesTypeChart.source(res.program_type, {
-          percent: {
-            formatter: function formatter(val) {
-              val = val + '%';
-              return val;
-            }
-          }
-        });
+        }
       });
-    this.seriesInvestmentChart.render();
-    this.seriesThemeChart.render();
-    this.sseriesTypeChart.render();
+      this.seriesThemeChart.source(res.theme, {
+        percent: {
+          formatter: function formatter(val) {
+            val = val + '%';
+            return val;
+          }
+        }
+      });
+      this.sseriesTypeChart.source(res.program_type, {
+        percent: {
+          formatter: function formatter(val) {
+            val = val + '%';
+            return val;
+          }
+        }
+      });
+      this.seriesInvestmentChart.render();
+      this.seriesThemeChart.render();
+      this.sseriesTypeChart.render();
+    });
   }
 
 
   getTransformLineChart() {
-    this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear !== '' ? this.startYear.getFullYear() : '',
-      this.endYear !== '' ? this.endYear.getFullYear() : '').subscribe(res => {
+    this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear.getFullYear() + '',
+      this.endYear.getFullYear() + '').subscribe(res => {
+        this.t4  = res.length;
         this.seriesLineChart.source(res);
         this.seriesLineChart.render();
       });
@@ -1339,8 +1258,10 @@ export class DashboardComponent implements OnInit {
 
   seriesTimeChange() {
     if (this.seriesTime === 'month') {
-      this.startYear = '';
-      this.endYear = '';
+      const date = new Date();
+      // date.setFullYear(date.getFullYear() - 4);
+      this.startYear = date;
+      this.endYear = date;
       if (this.conversionGraphics === 'pieChart') {
         this.getTransformPieChart();
       }
@@ -1369,14 +1290,45 @@ export class DashboardComponent implements OnInit {
         this.t5 = res.length;
         this.publishChart.source(res, {
           value: {
-            max: 1300,
-            min: 0,
             nice: false,
-            alias: '销量（百万）'
+            alias: '销量（万）'
           }
         });
+        this.publishChart.axis('label', {
+          label: {
+            textStyle: {
+              fill: '#8d8d8d',
+              fontSize: 12
+            }
+          },
+          tickLine: {
+            alignWithLabel: false,
+            length: 0
+          },
+          line: {
+            lineWidth: 0
+          }
+        });
+        this.publishChart.axis('value', {
+          label: null,
+          title: {
+            offset: 30,
+            textStyle: {
+              fontSize: 12,
+              fontWeight: 300
+            }
+          }
+        });
+        this.publishChart.legend(false);
+        this.publishChart.coord().transpose();
+        this.publishChart.interval().position('label*value').size(26).opacity(1).label('value', {
+          textStyle: {
+            fill: '#8d8d8d'
+          },
+          offset: 10
+        });
+        this.publishChart.render();
       });
-    this.publishChart.render();
   }
 
   getPubCustomer() {
@@ -1386,14 +1338,45 @@ export class DashboardComponent implements OnInit {
         this.t5 = res.length;
         this.publishChart.source(res, {
           value: {
-            max: 1300,
-            min: 0,
             nice: false,
-            alias: '销量（百万）'
+            alias: '销量（万）'
           }
         });
+        this.publishChart.axis('label', {
+          label: {
+            textStyle: {
+              fill: '#8d8d8d',
+              fontSize: 12
+            }
+          },
+          tickLine: {
+            alignWithLabel: false,
+            length: 0
+          },
+          line: {
+            lineWidth: 0
+          }
+        });
+        this.publishChart.axis('value', {
+          label: null,
+          title: {
+            offset: 30,
+            textStyle: {
+              fontSize: 12,
+              fontWeight: 300
+            }
+          }
+        });
+        this.publishChart.legend(false);
+        this.publishChart.coord().transpose();
+        this.publishChart.interval().position('label*value').size(26).opacity(1).label('value', {
+          textStyle: {
+            fill: '#8d8d8d'
+          },
+          offset: 10
+        });
+        this.publishChart.render();
       });
-    this.publishChart.render();
   }
 
   onChange() {
@@ -1408,10 +1391,12 @@ export class DashboardComponent implements OnInit {
   seriesInOutChange() {
     if (this.seriesInOut === 'purchase') {
       this.dateRange = [];
+      // this.publishChart.clear();
       this.getPurCustomer();
     }
     if (this.seriesInOut === 'publish') {
       this.dateRange = [];
+      // this.publishChart.clear();
       this.getPubCustomer();
     }
   }
