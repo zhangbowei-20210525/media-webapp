@@ -1164,51 +1164,38 @@ export class DashboardComponent implements OnInit {
   }
 
   startYearChange() {
-    this.endYear = new Date(this.endYear.setFullYear(this.startYear.getFullYear() + 4));
-    // if (this.endYear === '') {
-    if (this.conversionGraphics === 'pieChart') {
-      this.getTransformPieChart();
+    // this.endYear = new Date(this.endYear.setFullYear(this.startYear.getFullYear() + 4));
+    if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 0) {
+      if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 9) {
+        this.message.warning(this.translate.instant('app.dashboard.interval-10-year'));
+      } else {
+        if (this.conversionGraphics === 'pieChart') {
+          this.getTransformPieChart();
+        }
+        if (this.conversionGraphics === 'lineChart') {
+          this.getTransformLineChart();
+        }
+      }
+    } else {
+      this.message.warning(this.translate.instant('app.dashboard.choose-right-year'));
     }
-    if (this.conversionGraphics === 'lineChart') {
-      this.getTransformLineChart();
-    }
-    // } else {
-    // const sy = +Util.dateToString(this.startYear).substring(0, 4);
-    // if (this.endYear - sy === 4) {
-    //   if (this.conversionGraphics === 'pieChart') {
-    //     this.getTransformPieChart();
-    //   }
-    //   if (this.conversionGraphics === 'lineChart') {
-    //     this.getTransformLineChart();
-    //   }
-    // } else {
-    //   this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
-    // }
-    // }
   }
 
   endYearChange() {
-    // if (this.startYear === '') {
-    this.startYear = new Date(this.startYear.setFullYear(this.endYear.getFullYear() - 4));
-    if (this.conversionGraphics === 'pieChart') {
-      this.getTransformPieChart();
+    if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 0) {
+      if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 9) {
+        this.message.warning(this.translate.instant('app.dashboard.interval-10-year'));
+      } else {
+        if (this.conversionGraphics === 'pieChart') {
+          this.getTransformPieChart();
+        }
+        if (this.conversionGraphics === 'lineChart') {
+          this.getTransformLineChart();
+        }
+      }
+    } else {
+      this.message.warning(this.translate.instant('app.dashboard.choose-right-year'));
     }
-    if (this.conversionGraphics === 'lineChart') {
-      this.getTransformLineChart();
-    }
-    // } else {
-    // const ey = +Util.dateToString(this.endYear).substring(0, 4);
-    // if (ey - this.startYear === 4) {
-    //   if (this.conversionGraphics === 'pieChart') {
-    //     this.getTransformPieChart();
-    //   }
-    //   if (this.conversionGraphics === 'lineChart') {
-    //     this.getTransformLineChart();
-    //   }
-    // } else {
-    //   this.message.warning(this.translate.instant('app.dashboard.in-five-years'));
-    // }
-    // }
   }
 
   getTransformPieChart() {
@@ -1250,7 +1237,7 @@ export class DashboardComponent implements OnInit {
   getTransformLineChart() {
     this.dashboardService.getSeriesLineChart(this.seriesCriteria, this.startYear.getFullYear() + '',
       this.endYear.getFullYear() + '').subscribe(res => {
-        this.t4  = res.length;
+        this.t4 = res.length;
         this.seriesLineChart.source(res);
         this.seriesLineChart.render();
       });
