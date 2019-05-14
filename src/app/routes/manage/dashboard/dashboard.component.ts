@@ -3,7 +3,7 @@ import * as G2 from '@antv/g2';
 import DataSet from '@antv/data-set';
 import { SeriesService } from '../series/series.service';
 import { DashboardService } from './dashboard.service';
-import { map } from 'rxjs/operators';
+import { map, tap, finalize } from 'rxjs/operators';
 import { NzTreeNodeOptions, NzTreeComponent, NzTreeSelectComponent, NzTreeNode } from 'ng-zorro-antd';
 import { TreeService, MessageService, Util } from '@shared';
 import { DashboardDto } from './dtos';
@@ -58,6 +58,14 @@ export class DashboardComponent implements OnInit {
   checkedAreaCode = [];
   spread = [];
   timeType = 'quarter';
+  isLoadingRight: boolean;
+  isLoadedRight: boolean;
+  isLoadingPubRight: boolean;
+  isLoadedPubRight: boolean;
+  isLoadingPublicity: boolean;
+  isLoadedPublicity: boolean;
+  isLoadingSource: boolean;
+  isLoadedSource: boolean;
   sid: string;
   t1: any;
   t2: any;
@@ -333,7 +341,13 @@ export class DashboardComponent implements OnInit {
     this.getCustomerStatisticsInfo();
     this.getTapeStatisticsInfo();
     this.getAllStatisticsInfo();
-    this.dashboardService.getActiveProject('right').subscribe(res => {
+    this.isLoadingRight = true;
+    this.isLoadedRight = false;
+    this.dashboardService.getActiveProject('right').pipe(finalize(() => {
+      this.isLoadingRight = false;
+      this.isLoadedRight = true;
+    }))
+    .subscribe(res => {
       this.activeProjectRight = res;
     });
   }
@@ -974,26 +988,50 @@ export class DashboardComponent implements OnInit {
 
   activeProjects() {
     if (this.activeProject === 'right') {
+      this.isLoadingRight = true;
       this.showTable = 1;
-      this.dashboardService.getActiveProject('right').subscribe(res => {
+      this.dashboardService.getActiveProject('right').pipe(finalize(() => {
+        this.isLoadingRight = false;
+        this.isLoadedRight = true;
+      }))
+      .subscribe(res => {
         this.activeProjectRight = res;
       });
     }
     if (this.activeProject === 'publish_right') {
+      this.isLoadingPubRight = true;
+      this.isLoadedPubRight = false;
       this.showTable = 2;
-      this.dashboardService.getActiveProject('publish_right').subscribe(res => {
+      this.dashboardService.getActiveProject('publish_right').pipe(finalize(() => {
+        this.isLoadingPubRight = false;
+        this.isLoadedPubRight = true;
+      }))
+      .subscribe(res => {
         this.activeProjectPubRight = res;
       });
     }
     if (this.activeProject === 'publicity') {
+      this.isLoadingPublicity = true;
+      this.isLoadedPublicity = false;
       this.showTable = 3;
-      this.dashboardService.getActiveProject('publicity').subscribe(res => {
+      this.dashboardService.getActiveProject('publicity').pipe(finalize(() => {
+        this.isLoadingPublicity = false;
+        this.isLoadedPublicity = true;
+      }))
+      .subscribe(res => {
+        console.log(res);
         this.activeProjectPublicity = res;
       });
     }
     if (this.activeProject === 'source') {
+      this.isLoadingSource = true;
+      this.isLoadedSource = false;
       this.showTable = 4;
-      this.dashboardService.getActiveProject('source').subscribe(res => {
+      this.dashboardService.getActiveProject('source').pipe(finalize(() => {
+        this.isLoadingSource = false;
+        this.isLoadedSource = true;
+      }))
+      .subscribe(res => {
         this.activeProjectSource = res;
       });
     }
