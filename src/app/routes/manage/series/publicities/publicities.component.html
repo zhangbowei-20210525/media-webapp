@@ -93,7 +93,7 @@
   <ul>
     <li class="video-info" *ngFor="let thumbnail of thumbnailList">
       <div class="video">
-       <img class="video-img" [src]="thumbnail?.src" />
+        <img class="video-img" [src]="thumbnail?.src" />
         <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
           <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
         </div>
@@ -119,8 +119,9 @@
       <div class="info-wk-seven">
         <div class="info-wk-eight">
           <div class="info-wk-nine">
-              <span *ngIf="thumbnail?.user?.avatar == ''; else avatar"></span>
-              <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template>
+            <!-- <span *ngIf="thumbnail?.user?.avatar == ''; else avatar"></span>
+            <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template> -->
+            <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
           </div>
           <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
         </div>
