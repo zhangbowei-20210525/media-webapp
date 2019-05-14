@@ -1203,7 +1203,7 @@ export class DashboardComponent implements OnInit {
 
   startYearChange() {
     // this.endYear = new Date(this.endYear.setFullYear(this.startYear.getFullYear() + 4));
-    if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 0) {
+    if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) >= 0) {
       if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 9) {
         this.message.warning(this.translate.instant('app.dashboard.interval-10-year'));
       } else {
@@ -1220,7 +1220,7 @@ export class DashboardComponent implements OnInit {
   }
 
   endYearChange() {
-    if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 0) {
+    if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) >= 0) {
       if (+Util.dateToString(this.endYear).substring(0, 4) - +Util.dateToString(this.startYear).substring(0, 4) > 9) {
         this.message.warning(this.translate.instant('app.dashboard.interval-10-year'));
       } else {
