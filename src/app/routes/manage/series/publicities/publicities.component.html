@@ -100,23 +100,22 @@
             </div>
           </div>
 
-          <div class="info">
-            <div class="info-wk-one">
-              <div class="info-name"><a (click)="thumbnailDetail(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
-              <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
-              <a style="font-size: 13px;margin-left: 5rem;"
-                (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i nz-icon nzType="eye"
-                  nzTheme="outline"></i></a>
-            </div>
-            <div class="info-wk-three">
-              <div>导演:</div>
-              <div class="info-wk-four">{{ thumbnail?.director }}</div>
-            </div>
-            <div class="info-wk-five">
-              主演:
-              <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
-            </div>
-          </div>
+      <div class="info">
+        <div class="info-wk-one">
+          <div class="info-name"><a (click)="publicityDetails(thumbnail?.program_id)">{{ thumbnail?.name }}</a></div>
+          <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
+          <a style="font-size: 13px;margin-left: 4rem;" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i
+              nz-icon nzType="eye" nzTheme="outline"></i></a>
+        </div>
+        <div class="info-wk-three">
+          <div>导演:</div>
+          <div class="info-wk-four">{{ thumbnail?.director }}</div>
+        </div>
+        <div class="info-wk-five">
+          主演:
+          <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
+        </div>
+      </div>
 
           <div class="info-wk-seven">
             <div class="info-wk-eight">
