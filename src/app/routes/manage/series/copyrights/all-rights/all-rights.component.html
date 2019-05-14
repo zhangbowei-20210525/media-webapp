@@ -5,7 +5,7 @@
       <nz-form-item style="margin-bottom: 0;">
         <nz-form-label nzFor="investment_type" [nzSpan]="2">投资类型</nz-form-label>
         <nz-form-control [nzSpan]="22">
-          <nz-radio-group formControlName="investment_type" (ngModelChange)="onFormValueChange()">
+          <nz-radio-group formControlName="investment_type" (ngModelChange)="onFormValueChange()" nzSize="default">
             <label nz-radio-button [nzValue]="null">所有</label>
             <label nz-radio-button nzValue="homemade">自制</label>
             <label nz-radio-button nzValue="purchase">购入</label>
@@ -23,7 +23,7 @@
         <nz-form-label nzFor="program_type" [nzSpan]="2">节目类型</nz-form-label>
         <nz-form-control [nzSpan]="22">
           <nz-select style="width: 445px" nzMode="multiple" nzPlaceHolder="请选择节目类型" formControlName="program_type"
-            (ngModelChange)="onFormValueChange()">
+            (ngModelChange)="onFormValueChange()" nzSize="default">
             <nz-option *ngFor="let option of seriesType" [nzLabel]="option" [nzValue]="option">
             </nz-option>
           </nz-select>
@@ -41,7 +41,7 @@
         <nz-form-label nzFor="area" [nzSpan]="2">地域</nz-form-label>
         <nz-form-control [nzSpan]="8">
           <nz-tree-select style="width: 445px" [nzNodes]="areaOptions" nzShowSearch nzCheckable nzPlaceHolder="请选择地域"
-            formControlName="area" (ngModelChange)="onFormValueChange($event)">
+            formControlName="area" (ngModelChange)="onFormValueChange($event)" nzSize="default">
           </nz-tree-select>
           <!-- <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
               nzValueProperty="code" nzPlaceHolder="筛选地区" nzChangeOnSelect nzAllowClear="false"
