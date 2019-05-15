@@ -119,14 +119,12 @@
             </div>
           </div>
 
-          <div class="info-wk-seven">
-            <div class="info-wk-eight">
-              <div class="info-wk-nine">
-                <span *ngIf="thumbnail?.user?.avatar; else avatar"></span>
-                <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template>
-              </div>
-              <div class="info-wk-ten">{{ thumbnail?.company?.full_name }}</div>
-            </div>
+      <div class="info-wk-seven">
+        <div class="info-wk-eight">
+          <div class="info-wk-nine">
+            <!-- <span *ngIf="thumbnail?.user?.avatar == ''; else avatar"></span>
+            <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template> -->
+            <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
           </div>
         </li>
       </ul>

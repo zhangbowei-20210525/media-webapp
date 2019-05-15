@@ -152,7 +152,7 @@ export class PublicitiesComponent implements OnInit {
         this.company_ids = [''];
       } else {
         component.checkChange().forEach(x => this.company_ids.push(x.value));
-      }
+    }
       this.addPublicityModal.close();
       const value = component.getValue();
       let fileList: FileList, folder: string;
