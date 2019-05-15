@@ -93,6 +93,7 @@
     <div class="video-info-wk">
       <ul>
         <li class="video-info" *ngFor="let thumbnail of list">
+
           <div class="video">
             <img class="video-img" [src]="thumbnail?.src" />
             <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
@@ -119,13 +120,23 @@
             </div>
           </div>
 
+<<<<<<< HEAD
       <div class="info-wk-seven">
         <div class="info-wk-eight">
           <div class="info-wk-nine">
             <!-- <span *ngIf="thumbnail?.user?.avatar == ''; else avatar"></span>
             <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template> -->
             <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
+=======
+          <div class="info-wk-seven">
+            <div class="info-wk-eight">
+              <div class="info-wk-nine">
+                <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
+              </div>
+            </div>
+>>>>>>> dev
           </div>
+
         </li>
       </ul>
     </div>
@@ -134,8 +145,8 @@
         (nzPageIndexChange)="pageChnage()"></nz-pagination>
     </div>
   </div>
-  <ng-template #empty>
-    <nz-empty></nz-empty>
-  </ng-template>
 </div>
-<!-- </div> -->
+
+<ng-template #empty>
+  <nz-empty></nz-empty>
+</ng-template>
