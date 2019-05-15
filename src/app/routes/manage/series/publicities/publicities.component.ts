@@ -81,7 +81,7 @@ export class PublicitiesComponent implements OnInit {
     this.fetchPublicities();
   }
 
-  pageChnage(page: number) {
+  pageChange(page: number) {
     this.pagination.page = page;
     this.fetchPublicities();
   }

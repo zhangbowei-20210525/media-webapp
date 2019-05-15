@@ -2,64 +2,74 @@
   <div class="expire-info-box">
     <div class="block" style="height: 249px">
       <div class="block-content pur">
-        <!-- <div class="pur-count">{{right?.count}}</div>
-        <div class="title">{{ 'app.dashboard.purchase-imminent' | translate }}</div> -->
-        <!-- <ul style=" width: 100%;height: 130px;">
-          <li class="info-li" *ngFor="let right of right?.data">
-            <div nz-row>
-              <div nz-col nzSpan="8" class="text-ellipsis">{{right?.program_name}}</div>
-              <div nz-col nzSpan="8" class="text-ellipsis">{{right?.custom_name}}</div>
-              <div nz-col nzSpan="8" class="text-ellipsis">{{right?.expire_date}}</div>
-            </div>
-          </li>
-        </ul> -->
-        <nz-skeleton [nzActive]="true" [nzParagraph]="7"></nz-skeleton>
+        <div *ngIf="isLoaded == true; else skeleton">
+          <div class="pur-count">{{right?.count}}</div>
+          <div class="title">{{ 'app.dashboard.purchase-imminent' | translate }}</div>
+          <ul style=" width: 100%;height: 130px;">
+            <li class="info-li" *ngFor="let right of right?.data">
+              <div nz-row>
+                <div nz-col nzSpan="8" class="text-ellipsis">{{right?.program_name}}</div>
+                <div nz-col nzSpan="8" class="text-ellipsis">{{right?.custom_name}}</div>
+                <div nz-col nzSpan="8" class="text-ellipsis">{{right?.expire_date}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="block" style="margin-left: 20px;height:249px">
       <div class="block-content pur">
-        <div class="pub-count">{{publish_right?.count}}</div>
-        <div class="title">{{ 'app.dashboard.publish-imminent' | translate }}</div>
-        <ul style=" width: 100%;height: 130px;">
-          <li class="info-li" *ngFor="let publish_right of publish_right?.data">
-            <div nz-row>
-              <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.program_name}}</div>
-              <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.custom_name}}</div>
-              <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.expire_date}}</div>
-            </div>
-          </li>
-        </ul>
+        <div *ngIf="isLoaded == true; else skeleton">
+          <div class="pub-count">{{publish_right?.count}}</div>
+          <div class="title">{{ 'app.dashboard.publish-imminent' | translate }}</div>
+          <ul style=" width: 100%;height: 130px;">
+            <li class="info-li" *ngFor="let publish_right of publish_right?.data">
+              <div nz-row>
+                <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.program_name}}</div>
+                <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.custom_name}}</div>
+                <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.expire_date}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="block" style="margin-left: 20px;height:249px">
       <div class="block-content pur">
-        <div class="payment-count">{{payment?.count}}</div>
-        <div class="title">{{ 'app.dashboard.payment-imminent' | translate }}</div>
-        <ul style=" width: 100%;height: 130px;">
-          <li class="info-li" *ngFor="let payment of payment?.data">
-            <div nz-row>
-              <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.custom_name}}</div>
-              <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.expire_date}}</div>
-            </div>
-          </li>
-        </ul>
+        <div *ngIf="isLoaded == true; else skeleton">
+          <div class="payment-count">{{payment?.count}}</div>
+          <div class="title">{{ 'app.dashboard.payment-imminent' | translate }}</div>
+          <ul style=" width: 100%;height: 130px;">
+            <li class="info-li" *ngFor="let payment of payment?.data">
+              <div nz-row>
+                <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.custom_name}}</div>
+                <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.expire_date}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="block" style="margin-left: 20px;height:249px">
       <div class="block-content pur">
-        <div class="receipt-count">{{receipt?.count}}</div>
-        <div class="title">{{ 'app.dashboard.receivables-imminent' | translate }}</div>
-        <ul style=" width: 100%;height: 130px;">
-          <li class="info-li" *ngFor="let receipt of receipt?.data">
-            <div nz-row>
-              <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.custom_name}}</div>
-              <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.expire_date}}</div>
-            </div>
-          </li>
-        </ul>
+        <div *ngIf="isLoaded == true; else skeleton">
+          <div class="receipt-count">{{receipt?.count}}</div>
+          <div class="title">{{ 'app.dashboard.receivables-imminent' | translate }}</div>
+          <ul style=" width: 100%;height: 130px;">
+            <li class="info-li" *ngFor="let receipt of receipt?.data">
+              <div nz-row>
+                <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.custom_name}}</div>
+                <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.expire_date}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
+  <ng-template #skeleton>
+      <nz-skeleton [nzActive]="true" [nzParagraph]="{ rows: 5 }"></nz-skeleton>
+  </ng-template>
   <div class="block">
     <div class="block-header">
       <div class="block-title"><span style="font-size: 20px">{{ 'app.dashboard.series' | translate }}</span></div>
@@ -114,8 +124,7 @@
       <div class="block-header">
         <div class="block-title"><span style="font-size: 20px">客商</span></div>
         <div class="block-options">
-          <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onChange()" nzSize="small"
-            style="width: 240px">
+          <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onChange()" nzSize="small" style="width: 240px">
           </nz-range-picker>
           <nz-radio-group [(ngModel)]="seriesInOut" nzSize="small" (ngModelChange)="seriesInOutChange()">
             <label nz-radio-button nzValue="purchase">采购</label>

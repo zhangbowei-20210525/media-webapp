@@ -67,7 +67,7 @@
       <div class="home-page-navigation-wk-four">电影</div>
       <div class="home-page-navigation-wk-five">电视</div>
       <div class="home-page-navigation-wk-six">综艺</div>
-      <div class="home-page-navigation-wk-seven">其他</div>
+      <div class="home-page-naGitigation-wk-seven">其他</div>
     </div>
     <div class="home-page-navigation-wk-eight">
       <div class="home-page-navigation-wk-nine">
@@ -120,29 +120,19 @@
             </div>
           </div>
 
-<<<<<<< HEAD
-      <div class="info-wk-seven">
-        <div class="info-wk-eight">
-          <div class="info-wk-nine">
-            <!-- <span *ngIf="thumbnail?.user?.avatar == ''; else avatar"></span>
-            <ng-template #avatar><img class="info-hp" [src]="thumbnail?.user?.avatar" /></ng-template> -->
-            <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
-=======
           <div class="info-wk-seven">
             <div class="info-wk-eight">
               <div class="info-wk-nine">
                 <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
               </div>
             </div>
->>>>>>> dev
           </div>
-
         </li>
       </ul>
     </div>
     <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0  || mode == 'table'">
       <nz-pagination [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count" [nzPageSize]="pagination.page_size"
-        (nzPageIndexChange)="pageChnage()"></nz-pagination>
+        (nzPageIndexChange)="pageChange($event)"></nz-pagination>
     </div>
   </div>
 </div>

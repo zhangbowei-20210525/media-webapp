@@ -36,6 +36,8 @@ export class DashboardComponent implements OnInit {
   customerSort: any;
   seriesLineChart: any;
   startYear: Date;
+  isLoading = true;
+  isLoaded = false;
   seriesTime = 'month';
   sortType = 'negative';
   seriesCriteria = 'program_type';
@@ -326,6 +328,9 @@ export class DashboardComponent implements OnInit {
       m.payment.data.length = 5;
       m.receipt.data.length = 5;
       return m;
+    })).pipe(finalize(() => {
+      this.isLoading = false;
+    this.isLoaded = true;
     })).subscribe(res => {
       this.right = res.right;
       this.publish_right = res.publish_right;
