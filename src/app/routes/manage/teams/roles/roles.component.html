@@ -1,22 +1,33 @@
-<div>
+<div *ngIf="isLoaded">
   <div class="roles">
-    <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRoleName" (ngModelChange)="handleRoleChange($event)">
-      <label nz-radio-button [nzValue]="role.name" [nzDisabled]="role.loading" class="role-radio" *ngFor="let role of roles">{{
+    <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRoleName"
+      (ngModelChange)="onRoleChange($event)">
+      <label nz-radio-button [nzValue]="role.name" [nzDisabled]="role.loading" class="role-radio"
+        *ngFor="let role of roles">{{
         role.name }}</label>
     </nz-radio-group>
-    <nz-tag *ngIf="!inputVisible" class="editable-tag" (click)="showInput()">
+    <!-- <nz-tag *ngIf="!inputVisible" class="editable-tag" (click)="showInput()">
       添加角色
     </nz-tag>
-    <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue" class="add-input"
-      (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()">
+    <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+      class="add-input" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()">
     <span class="rf" [hidden]="equalsArray(finalCheckedKeys, originCheckedKeys)">
       <button nz-button nzType="primary" nzSize="small" (click)="savePermissions()">保存</button>
       <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelSavePermissions()">取消</button>
-    </span>
+    </span> -->
   </div>
   <div class="permission">
-    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+    <!-- <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
       (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
+    </nz-tree> -->
+    <p>
+      <button nz-button nzSize="small" (click)="setEditable(true)" [disabled]="editable">编辑权限</button>
+      <span [hidden]="!editable" style="margin-left: 1rem;">
+        <button nz-button nzSize="small" nzType="primary" (click)="saveRoleAndPermissions()">保存</button>
+        <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="setEditable(false)">取消</button>
+      </span>
+    </p>
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true">
     </nz-tree>
   </div>
 </div>

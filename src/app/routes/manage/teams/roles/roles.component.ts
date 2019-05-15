@@ -12,16 +12,24 @@ import { TreeService } from '@shared';
 })
 export class RolesComponent implements OnInit {
 
-  @ViewChild('inputElement') inputElement: ElementRef;
+  // @ViewChild('inputElement') inputElement: ElementRef;
+  // @ViewChild('permissionTree') permissionTreeCom: NzTreeComponent;
+  // roles: RoleDto[];
+  // selectedRoleName: string;
+  // selectedRole: RoleDto;
+  // inputVisible = false;
+  // inputValue = '';
+  // permissionNodes: NzTreeNodeOptions[];
+  // originCheckedKeys = [];
+  // currentCheckedKeys = [];
+
   @ViewChild('permissionTree') permissionTreeCom: NzTreeComponent;
+
   roles: RoleDto[];
-  selectedRoleName: string;
-  selectedRole: RoleDto;
-  inputVisible = false;
-  inputValue = '';
+
+  isLoaded = false;
+  editable = false;
   permissionNodes: NzTreeNodeOptions[];
-  originCheckedKeys = [];
-  finalCheckedKeys = [];
 
   constructor(
     private service: RolesService,
@@ -30,138 +38,159 @@ export class RolesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.service.getRoles().subscribe(result => {
+    this.fetchRoles();
+  }
+
+  fetchRoles() {
+    this.service.getRoles().pipe(finalize(() => this.isLoaded = true)).subscribe(result => {
       this.roles = result;
     });
   }
 
-  equalsArray(a: any[], b: any[]): boolean {
-    return a && b && a.filter(key => !b.includes(key)).length === 0 && b.filter(key => !a.includes(key)).length === 0;
+  onRoleChange(name: string) {
+    console.log(name);
   }
 
-  showInput(): void {
-    this.inputVisible = true;
-    setTimeout(() => {
-      this.inputElement.nativeElement.focus();
-    }, 10);
+  setEditable(state: boolean) {
+    this.editable = state;
+    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, state);
   }
 
-  handleInputConfirm(): void {
-    if (this.inputValue) {
-      if (this.roles.findIndex(e => e.name === this.inputValue) < 0) {
-        this.addRole(this.inputValue);
-      } else {
-        this.message.warning('此角色已存在');
-      }
-    }
-    this.inputValue = '';
-    this.inputVisible = false;
+  saveRoleAndPermissions() {
+
   }
 
-  addRole(name: string) {
-    this.roles = [...this.roles, {
-      id: undefined,
-      name: name,
-      loading: true
-    }];
-    this.service.addRole(name).subscribe(result => {
-      const role = this.roles.find(e => e.name === name);
-      role.id = result.id;
-      role.loading = false;
-    }, error => {
-      this.roles = this.roles.filter(e => e.name !== name);
-    });
-  }
+  // showInput(): void {
+  //   this.inputVisible = true;
+  //   setTimeout(() => {
+  //     this.inputElement.nativeElement.focus();
+  //   }, 10);
+  // }
 
-  handleRoleChange(name: string) {
-    this.permissionNodes = [];
-    this.originCheckedKeys = [];
-    this.finalCheckedKeys = [];
-    this.selectedRole = this.roles.find(e => e.name === name);
-    this.service.getRolePermissions(this.selectedRole.id).subscribe(permissions => {
-      this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
-      this.finalCheckedKeys = this.originCheckedKeys = this.getOwnedPermissionKeys(permissions);
-    });
-  }
+  // onRoleChange(): void {
+  //   if (this.inputValue) {
+  //     if (this.roles.findIndex(e => e.name === this.inputValue) < 0) {
+  //       this.addRole(this.inputValue);
+  //     } else {
+  //       this.message.warning('此角色已存在');
+  //     }
+  //   }
+  //   this.inputValue = '';
+  //   this.inputVisible = false;
+  // }
 
-  getNzTreeNodesByPermissions(origins: PermissionDto[]): NzTreeNodeOptions[] {
-    return this.ts.getNzTreeNodes(origins, item => ({
-      title: item.name,
-      key: item.code,
-      isLeaf: !!item.children && item.children.length < 1,
-      selectable: false,
-      expanded: true,
-      disableCheckbox: false,
-      checked: item.status
-    }));
-  }
+  // addRole(name: string) {
+  //   this.roles = [...this.roles, {
+  //     id: undefined,
+  //     name: name,
+  //     loading: true
+  //   }];
+  //   this.service.addRole(name).subscribe(result => {
+  //     const role = this.roles.find(e => e.name === name);
+  //     role.id = result.id;
+  //     role.loading = false;
+  //   }, error => {
+  //     this.roles = this.roles.filter(e => e.name !== name);
+  //   });
+  // }
 
-  getOwnedPermissionKeys(origins: PermissionDto[]) {
-    return this.ts.getKeysWithStatus(origins, item => item.code + '');
-  }
+  // handleRoleChange(name: string) {
+  //   this.permissionNodes = [];
+  //   this.originCheckedKeys = [];
+  //   this.currentCheckedKeys = [];
+  //   this.selectedRole = this.roles.find(e => e.name === name);
+  //   this.service.getRolePermissions(this.selectedRole.id).subscribe(permissions => {
+  //     this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
+  //     this.currentCheckedKeys = this.originCheckedKeys = this.getOwnedPermissionKeys(permissions);
+  //   });
+  // }
 
-  permissionCheck(event: NzFormatEmitEvent): void {
-    this.finalCheckedKeys = event.keys;
-    if (event.node.isChecked) {
-      this.backCheckNodes(event.node.key);
-    }
-  }
+  // getNzTreeNodesByPermissions(origins: PermissionDto[]): NzTreeNodeOptions[] {
+  //   return this.ts.getNzTreeNodes(origins, item => ({
+  //     title: item.name,
+  //     key: item.code,
+  //     isLeaf: !!item.children && item.children.length < 1,
+  //     selectable: false,
+  //     expanded: true,
+  //     disableCheckbox: false,
+  //     checked: item.status
+  //   }));
+  // }
 
-  savePermissions() {
-    if (this.validationNodes()) {
-      this.service.updateRolePermissions(this.selectedRole.id, this.finalCheckedKeys).subscribe(result => {
-        this.originCheckedKeys = this.finalCheckedKeys;
-        this.message.success('修改成功');
-      }, error => {
-        this.message.success('修改失败');
-      });
-    }
-  }
+  // getOwnedPermissionKeys(origins: PermissionDto[]) {
+  //   return this.ts.getKeysWithStatus(origins, item => item.code + '');
+  // }
 
-  cancelSavePermissions() {
-    this.finalCheckedKeys = this.originCheckedKeys;
-    this.setCheckedByKeys(this.permissionTreeCom.getTreeNodes(), this.originCheckedKeys);
-  }
+  // permissionCheck(event: NzFormatEmitEvent): void {
+  //   // this.finalCheckedKeys = event.keys;
+  //   // if (event.node.isChecked) {
+  //   //   this.backCheckNodes(event.node.key);
+  //   // }
+  //   const nodes = this.permissionTreeCom.getTreeNodes();
+  //   this.finalCheckedKeys = this.ts.recursionNodesMapArray(nodes, node => node.key, node => node.isChecked || node.isHalfChecked);
+  //   // console.log(this.finalCheckedKeys);
+  // }
 
-  setCheckedByKeys(nodes: NzTreeNode[], keys: string[]) {
-    for (const i in nodes) {
-      if (nodes.hasOwnProperty(i)) {
-        const element = nodes[i];
-        element.isChecked = !!keys.find(e => e === element.key);
-        if (element.children && element.children.length > 0) {
-          this.setCheckedByKeys(element.children, keys);
-        }
-      }
-    }
-  }
+  // savePermissions() {
+  //   if (this.validationNodes()) {
+  //     this.service.updateRolePermissions(this.selectedRole.id, this.finalCheckedKeys).subscribe(result => {
+  //       console.log('originCheckedKeys', this.originCheckedKeys);
+  //       console.log('finalCheckedKeys', this.finalCheckedKeys);
+  //       this.originCheckedKeys = this.finalCheckedKeys;
+  //       this.message.success('修改成功');
+  //     }, error => {
+  //       this.message.success('修改失败');
+  //     });
+  //   }
+  // }
 
-  backCheckNodes(key: string) {
-    const node = this.ts.getNodeByKey(this.permissionTreeCom.getTreeNodes(), key);
-    if (node) {
-      this.checkParentNodes(node);
-    }
-  }
+  // cancelSavePermissions() {
+  //   this.finalCheckedKeys = this.originCheckedKeys;
+  //   this.setCheckedByKeys(this.permissionTreeCom.getTreeNodes(), this.originCheckedKeys);
+  // }
 
-  checkParentNodes(node: NzTreeNode) {
-    const parent = node.getParentNode();
-    if (parent) {
-      if (!parent.isChecked) {
-        parent.setChecked(true);
-        if (!this.finalCheckedKeys.find(e => e === parent.key)) {
-          this.finalCheckedKeys = [...this.finalCheckedKeys, parent.key];
-        }
-        this.checkParentNodes(parent);
-      }
-    }
-  }
+  // setCheckedByKeys(nodes: NzTreeNode[], keys: string[]) {
+  //   for (const i in nodes) {
+  //     if (nodes.hasOwnProperty(i)) {
+  //       const element = nodes[i];
+  //       element.isChecked = !!keys.find(e => e === element.key);
+  //       if (element.children && element.children.length > 0) {
+  //         this.setCheckedByKeys(element.children, keys);
+  //       }
+  //     }
+  //   }
+  // }
 
-  validationNodes(): boolean {
-    const invalid = this.ts.findInvalidNode(this.permissionTreeCom.getTreeNodes());
-    if (invalid) {
-      this.message.warning(`${invalid.title} 需要前置权限 ${invalid.parentNode.title}`);
-      return false;
-    }
-    return true;
-  }
+  // backCheckNodes(key: string) {
+  //   const node = this.ts.getNodeByKey(this.permissionTreeCom.getTreeNodes(), key);
+  //   if (node) {
+  //     this.checkParentNodes(node);
+  //   }
+  // }
+
+  // checkParentNodes(node: NzTreeNode) {
+  //   const parent = node.getParentNode();
+  //   if (parent) {
+  //     if (!parent.isChecked) {
+  //       parent.setChecked(true);
+  //       if (!this.finalCheckedKeys.find(e => e === parent.key)) {
+  //         this.finalCheckedKeys = [...this.finalCheckedKeys, parent.key];
+  //       }
+  //       this.checkParentNodes(parent);
+  //     }
+  //   }
+  // }
+
+  // validationNodes(): boolean {
+  //   // const invalid = this.ts.findInvalidNode(this.permissionTreeCom.getTreeNodes());
+  //   const nodes = this.permissionTreeCom.getTreeNodes();
+  //   const invalid = this.ts.recursionNodesFindBy(nodes, item =>
+  //     (item.isChecked || item.isHalfChecked) && item.parentNode && !(item.parentNode.isChecked || item.parentNode.isHalfChecked));
+  //   if (invalid) {
+  //     this.message.warning(`${invalid.title} 需要前置权限 ${invalid.parentNode.title}`);
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
 }

@@ -158,9 +158,9 @@ export class EmployeeDetailsComponent implements OnInit {
 
   permissionCheck(event: NzFormatEmitEvent): void {
     this.finalCheckedKeys = event.keys;
-    if (event.node.isChecked) {
-      this.backCheckNodes(event.node.key);
-    }
+    // if (event.node.isChecked) {
+    //   this.backCheckNodes(event.node.key);
+    // }
   }
 
   backCheckNodes(key: string) {

@@ -38,8 +38,16 @@
         <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelsaveRoleAndPermissions()">取消</button>
       </span>
     </p>
-    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+    <!-- <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
       (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
+      <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node">
+          <span>{{ node.title }}</span>
+        </span>
+      </ng-template>
+    </nz-tree> -->
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+      (nzCheckBoxChange)="permissionCheck($event)">
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node">
           <span>{{ node.title }}</span>
