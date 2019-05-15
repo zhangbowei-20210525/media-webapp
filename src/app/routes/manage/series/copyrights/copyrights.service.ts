@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ContractCopyrightDto } from '../dtos';
-import { PaginationDto, PaginationResponseDto, ReactiveBase, ReactiveDatePicker, ReactiveTextbox } from '@shared';
+import { PaginationDto, PaginationResponseDto, ReactiveBase, ReactiveDatePicker, ReactiveTextbox, formData } from '@shared';
 import {
   CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto, RootTemplateDto
 } from './dtos';
 import * as _ from 'lodash';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 declare interface FiltrateSeriesParams {
   due_date: string;
@@ -256,12 +258,13 @@ export class CopyrightsService {
     } as OrderPayDto;
   }
 
-  toProgramData(program_id: number, program_name: string, program_type: string, episodes: number,
+  toProgramData(program_id: number, program_name: string, program_type: string, theme: string, episodes: number,
     investment_type: string, right_data: CopyrightDto[]) {
     return {
       program_id,
       program_name,
       program_type,
+      theme,
       episodes,
       investment_type,
       right_data

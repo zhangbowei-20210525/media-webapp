@@ -4,23 +4,20 @@
       <nav class="s-nav">
         <ul class="list s-nav-list">
           <li class="nav-item">
-            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'all'"
-              (click)="selectList('all')">{{ 'app.series.all' | translate }}</a>
+            <a class="s-nav-link" [routerLinkActive]="'active'"
+              [routerLink]="'all'">{{ 'app.series.all' | translate }}</a>
           </li>
           <li class="nav-item">
-            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'"
-              (click)="selectList('publicity')"><span nzTitle="样片，片花，海报，文档等物料的上传，分享管理" nzPlacement="bottom"
-                nz-tooltip>{{ 'app.series.publicity' | translate }}</span></a>
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'" nz-tooltip
+              nzTitle="样片，片花，海报，文档等物料的上传，分享管理">{{ 'app.series.publicity' | translate }}</a>
           </li>
           <li class="nav-item">
-            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'"
-              (click)="selectList('tapes')"><span nzTitle="母带文件的上传与管理" nzPlacement="bottom"
-                nz-tooltip>{{ 'app.series.source' | translate }}</span></a>
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'" nz-tooltip
+              nzTitle="母带文件的上传与管理">{{ 'app.series.source' | translate }}</a>
           </li>
           <li class="nav-item">
-            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'switchRight'"
-              (click)="selectList('rights')"><span nzTitle="节目版权的采购，发行及管理" nzPlacement="bottom"
-                nz-tooltip>{{ 'app.series.right' | translate }}</span></a>
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'" nz-tooltip
+              nzTitle="节目版权的采购，发行及管理">{{ 'app.series.right' | translate }}</a>
           </li>
           <li class="nav-item">
             <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'contracts'">

@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalRequestService } from '@shared/locals';
 import { timeout } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Util } from '@shared';
 
 @Component({
   selector: 'app-add-tape',
@@ -21,7 +22,7 @@ export class AddTapeComponent implements OnInit {
   options = [];
   onlineTapeForm: FormGroup;
   entityTapeForm: FormGroup;
-  source_type: string;
+  source_type: 'online' | 'entity' = 'online';
   listOfOption = [];
   carrierBrandList = [];
   carrierModelList = [];
@@ -31,6 +32,9 @@ export class AddTapeComponent implements OnInit {
   info: any;
   tapeVersion: string;
   isloading = true;
+  programTypeOptions = [];
+  filteredProgramTypes = [];
+
   constructor(
     private fb: FormBuilder,
     private service: SeriesService,
@@ -39,7 +43,9 @@ export class AddTapeComponent implements OnInit {
     private localRequestService: LocalRequestService,
     private router: Router,
     private component: NzModalRef
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.onlineTapeForm = this.fb.group({
       program_name: [null, [Validators.required]],
       program_type: [null, [Validators.required]],
@@ -50,7 +56,6 @@ export class AddTapeComponent implements OnInit {
       // format: [null],
       // bit_rate: [null],
     });
-
     this.entityTapeForm = this.fb.group({
       program_name: [null, [Validators.required]],
       program_type: [null, [Validators.required]],
@@ -72,85 +77,22 @@ export class AddTapeComponent implements OnInit {
       storage_location: [null],
       detail_location: [null],
     });
-  }
-
-  ngOnInit() {
-    this.source_type = 'online';
-    this.service.getCarrierBrand().subscribe(res =>
-      this.carrierBrandList = res
-    );
-    this.service.getCarrierModel().subscribe(res =>
-      this.carrierModelList = res
-    );
-    if (this.id === undefined) {
-      this.onlineTapeForm = this.fb.group({
-        program_name: [null, [Validators.required]],
-        program_type: [null, [Validators.required]],
-        name: [null, [Validators.required]],
-        language: [null],
-        subtitle: [null],
-        remark: [null],
-        // format: [null],
-        // bit_rate: [null],
-      });
-      this.entityTapeForm = this.fb.group({
-        program_name: [null, [Validators.required]],
-        program_type: [null, [Validators.required]],
-        name: [null, [Validators.required]],
-        episode: [null],
-        language: [null],
-        subtitle: [null],
-        ch1: [null],
-        ch2: [null],
-        ch3: [null],
-        ch4: [null],
-        ch5: [null],
-        ch6: [null],
-        sharpness: [null],
-        carrier: [null],
-        brand: [null],
-        model: [null],
-        storage_date: [null],
-        storage_location: [null],
-        detail_location: [null],
-      });
-    } else {
+    if (+this.id > 0) {
       this.service.getSeriesDetailsInfo(this.id).subscribe(result => {
-        this.onlineTapeForm = this.fb.group({
-          program_name: [{ value: result.name, disabled: true }, [Validators.required]],
-          program_type: [result.program_type, [Validators.required]],
-          name: [null, [Validators.required]],
-          language: [null],
-          subtitle: [null],
-          remark: [null],
-          // format: [null],
-          // bit_rate: [null],
-        });
-        this.entityTapeForm = this.fb.group({
-          program_name: [{ value: result.name, disabled: true }, [Validators.required]],
-          program_type: [result.program_type, [Validators.required]],
-          name: [null, [Validators.required]],
-          episode: [null],
-          language: [null],
-          subtitle: [null],
-          ch1: [null],
-          ch2: [null],
-          ch3: [null],
-          ch4: [null],
-          ch5: [null],
-          ch6: [null],
-          sharpness: [null],
-          carrier: [null],
-          brand: [null],
-          model: [null],
-          storage_date: [null],
-          storage_location: [null],
-          detail_location: [null],
-        });
-        this.disabled = true;
+        this.onlineTapeForm.get('program_name').setValue(result.name);
+        this.onlineTapeForm.get('program_name').disable();
+        this.onlineTapeForm.get('program_type').setValue(result.program_type);
+        this.onlineTapeForm.get('program_type').disable();
+        this.entityTapeForm.get('program_name').setValue(result.name);
+        this.entityTapeForm.get('program_name').disable();
+        this.entityTapeForm.get('program_type').setValue(result.program_type);
+        this.entityTapeForm.get('program_type').disable();
       });
     }
 
+    this.service.getProgramTypes().subscribe(result => {
+      this.filteredProgramTypes = this.programTypeOptions = result.program_type_choices;
+    });
 
     this.listOfOption = [
       { key: '1000', value: 1000 },
@@ -166,98 +108,36 @@ export class AddTapeComponent implements OnInit {
     ];
   }
 
-  onInput() {
-    this.service.fuzzySearch(this.onlineTapeForm.value['program_name']).subscribe(s => {
-      this.programList = s.list;
-      if (this.disabled === true) {
-        this.disabled = false;
-        this.onlineTapeForm = this.fb.group({
-          program_name: [this.onlineTapeForm.value['program_name'], [Validators.required]],
-          program_type: [null, [Validators.required]],
-          name: [null, [Validators.required]],
-          language: [null],
-          subtitle: [null],
-          remark: [null],
-          // format: [null],
-          // bit_rate: [null],
-        });
-      }
-      this.programList.forEach(pf => {
-        if (this.onlineTapeForm.value['program_name'] === pf.name) {
-          this.id = pf.id;
-          console.log(this.id);
-          this.onlineTapeForm = this.fb.group({
-            program_name: [this.onlineTapeForm.value['program_name'], [Validators.required]],
-            program_type: [pf.program_type, [Validators.required]],
-            name: [null, [Validators.required]],
-            language: [null],
-            subtitle: [null],
-            remark: [null],
-            // format: [null],
-            // bit_rate: [null],
-          });
-          this.disabled = true;
-        }
-      });
+  onProgramTypeInput(value: string) {
+    this.filteredProgramTypes = this.programTypeOptions.filter(item => item.indexOf(value) >= 0);
+  }
+
+  fetchFuzzyOptions(value: string) {
+    this.service.fuzzySearch(value).subscribe(result => {
+      this.programList = result.list;
     });
   }
 
-  enInput() {
-    this.service.fuzzySearch(this.entityTapeForm.value['program_name']).subscribe(s => {
-      this.programList = s.list;
-      if (this.disabled === true) {
-        this.disabled = false;
-        this.entityTapeForm = this.fb.group({
-          program_name: [this.entityTapeForm.value['program_name'], [Validators.required]],
-          program_type: [null, [Validators.required]],
-          name: [null, [Validators.required]],
-          episode: [null],
-          language: [null],
-          subtitle: [null],
-          ch1: [null],
-          ch2: [null],
-          ch3: [null],
-          ch4: [null],
-          ch5: [null],
-          ch6: [null],
-          sharpness: [null],
-          carrier: [null],
-          brand: [null],
-          model: [null],
-          storage_date: [null],
-          storage_location: [null],
-          detail_location: [null],
-        });
-      }
-      this.programList.forEach(pf => {
-        if (this.entityTapeForm.value['program_name'] === pf.name) {
-          this.id = pf.id;
-          console.log(this.id);
-          this.entityTapeForm = this.fb.group({
-            program_name: [this.entityTapeForm.value['program_name'], [Validators.required]],
-            program_type: [pf.program_type, [Validators.required]],
-            name: [null, [Validators.required]],
-            episode: [null],
-            language: [null],
-            subtitle: [null],
-            ch1: [null],
-            ch2: [null],
-            ch3: [null],
-            ch4: [null],
-            ch5: [null],
-            ch6: [null],
-            sharpness: [null],
-            carrier: [null],
-            brand: [null],
-            model: [null],
-            storage_date: [null],
-            storage_location: [null],
-            detail_location: [null],
-          });
-          this.disabled = true;
-        }
-      });
-    });
+  onInput(form: FormGroup) {
+    const value = form.value['program_name'];
+    const programType = form.get('program_type');
+    const find = this.programList.find(item => item.name === value);
+    if (find) {
+      programType.setValue(find.program_type);
+      programType.disable();
+    } else {
+      form.get('program_type').reset();
+      programType.enable();
+    }
+    this.fetchFuzzyOptions(value);
+  }
+
+  onSourceTypeChange() {
+    if (this.source_type === 'online') {
+      this.fetchFuzzyOptions(this.onlineTapeForm.value['program_name'] || '');
+    } else {
+      this.fetchFuzzyOptions(this.entityTapeForm.value['program_name'] || '');
+    }
   }
 
   onlineSubmit(): Observable<any> {
@@ -303,7 +183,7 @@ export class AddTapeComponent implements OnInit {
         const ch4 = etForm.value['ch4'] || null;
         const ch5 = etForm.value['ch5'] || null;
         const ch6 = etForm.value['ch6'] || null;
-        const storage_date = new DatePipe('zh-CN').transform(etForm.value['storage_date'], 'yyyy-MM-dd');
+        const storage_date = Util.dateToString(etForm.value['storage_date']);
         this.sound_track = [ch1, ch2, ch3, ch4, ch5, ch6];
         const data = {
           program_name: etForm.value['program_name'] || null,

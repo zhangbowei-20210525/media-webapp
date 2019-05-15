@@ -4,7 +4,7 @@ import { SeriesBriefDto, SearchMetaDataDto } from './dtos';
 
 declare interface BriefSeriesResultDto {
   list: SeriesBriefDto[];
-  meta: { program_type_choices: SearchMetaDataDto[], release_year_choices: SearchMetaDataDto[] };
+  meta: { program_type_choices: string[], release_year_choices: SearchMetaDataDto[] };
 }
 
 @Injectable({

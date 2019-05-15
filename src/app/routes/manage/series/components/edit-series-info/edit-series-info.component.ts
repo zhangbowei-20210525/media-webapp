@@ -14,6 +14,10 @@ export class EditSeriesInfoComponent implements OnInit {
   @Input() id: number;
 
   validateForm: FormGroup;
+  programTypeOptions: string[];
+  filteredProgramTypes: string[];
+  programThemeOptions: string[];
+  filteredProgramThemes: string[];
 
   constructor(
     private fb: FormBuilder,
@@ -58,6 +62,19 @@ export class EditSeriesInfoComponent implements OnInit {
         language: [result.language],
       });
     });
+
+    this.service.getProgramTypes().subscribe(result => {
+      this.filteredProgramTypes = this.programTypeOptions = result.program_type_choices;
+      this.filteredProgramThemes = this.programThemeOptions = result.theme_choices;
+    });
+  }
+
+  onProgramTypeInput(value: string) {
+    this.filteredProgramTypes = this.programTypeOptions.filter(item => item.indexOf(value) >= 0);
+  }
+
+  onProgramThemeInput(value: string) {
+    this.filteredProgramThemes = this.programThemeOptions.filter(item => item.indexOf(value) >= 0);
   }
 
   validation() {

@@ -1,0 +1,142 @@
+<div *ngIf="isLoaded" [@fadeIn]>
+  <div nz-row style="margin-bottom: 1.5rem;">
+    <form nz-form [formGroup]="filtrateForm" style="width: 100%;">
+
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-label nzFor="investment_type" [nzSpan]="2">投资类型</nz-form-label>
+        <nz-form-control [nzSpan]="22">
+          <nz-radio-group formControlName="investment_type" (ngModelChange)="onFormValueChange()" nzSize="default">
+            <label nz-radio-button [nzValue]="null">所有</label>
+            <label nz-radio-button nzValue="homemade">自制</label>
+            <label nz-radio-button nzValue="purchase">购入</label>
+            <label nz-radio-button nzValue="proxy">代理</label>
+            <label nz-radio-button nzValue="main-vote">主投</label>
+            <label nz-radio-button nzValue="follow">跟投</label>
+            <label nz-radio-button nzValue="co-production">合拍</label>
+            <label nz-radio-button nzValue="contract">承制</label>
+            <label nz-radio-button nzValue="introduction">引进</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-label nzFor="program_type" [nzSpan]="2">节目类型</nz-form-label>
+        <nz-form-control [nzSpan]="22">
+          <nz-select style="width: 445px" nzMode="multiple" nzPlaceHolder="请选择节目类型" formControlName="program_type"
+            (ngModelChange)="onFormValueChange()" nzSize="default">
+            <nz-option *ngFor="let option of seriesType" [nzLabel]="option" [nzValue]="option">
+            </nz-option>
+          </nz-select>
+          <!-- <nz-radio-group formControlName="program_type" (ngModelChange)="onFormValueChange()">
+            <label nz-radio-button [nzValue]="null">所有</label>
+            <label nz-radio-button nzValue="tv">电视剧</label>
+            <label nz-radio-button nzValue="film">电影</label>
+            <label nz-radio-button nzValue="variety">综艺</label>
+            <label nz-radio-button nzValue="other">其他</label>
+          </nz-radio-group> -->
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-label nzFor="area" [nzSpan]="2">地域</nz-form-label>
+        <nz-form-control [nzSpan]="8">
+          <nz-tree-select style="width: 445px" [nzNodes]="areaOptions" nzShowSearch nzCheckable nzPlaceHolder="请选择地域"
+            formControlName="area" (ngModelChange)="onFormValueChange($event)" nzSize="default">
+          </nz-tree-select>
+          <!-- <nz-cascader formControlName="area" [nzOptions]="areaOptions" nzLabelProperty="name"
+              nzValueProperty="code" nzPlaceHolder="筛选地区" nzChangeOnSelect nzAllowClear="false"
+              (ngModelChange)="onFormValueChange()" nzSize="default">
+            </nz-cascader> -->
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-label nzFor="days" [nzSpan]="2">到期天数</nz-form-label>
+        <nz-form-control [nzSpan]="8">
+          <nz-select formControlName="days" (ngModelChange)="onFormValueChange()" nzSize="default">
+            <nz-option [nzValue]="null" nzLabel="所有"></nz-option>
+            <nz-option nzValue="365" nzLabel="一年"></nz-option>
+            <nz-option nzValue="180" nzLabel="180天"></nz-option>
+            <nz-option nzValue="30" nzLabel="30天"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-label nzFor="right" [nzSpan]="2">权利</nz-form-label>
+        <nz-form-control [nzSm]="8">
+          <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name" nzValueProperty="code"
+            nzChangeOnSelect nzAllowClear="false" (ngModelChange)="onFormValueChange()" nzSize="default">
+          </nz-cascader>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-label nzFor="date" [nzSpan]="2">期限</nz-form-label>
+        <nz-form-control [nzSpan]="8">
+          <nz-range-picker formControlName="date" (ngModelChange)="onFormValueChange()" nzSize="default">
+          </nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-label nzFor="is_salable" [nzSpan]="2">可发行</nz-form-label>
+        <nz-form-control [nzSpan]="2">
+          <label nz-checkbox formControlName="is_salable" (ngModelChange)="onPublishChange($event)"></label>
+        </nz-form-control>
+        <nz-form-label nzFor="sole" [nzSpan]="2">独家</nz-form-label>
+        <nz-form-control [nzSpan]="2">
+          <label nz-checkbox formControlName="sole" (ngModelChange)="onFormValueChange()"></label>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+  <div style="margin-top: 1.5rem;margin-bottom: 1.5rem">
+    <nz-tag nzMode="closeable" (nzOnClose)="closeTag(tag)" *ngFor="let tag of tags" style="margin-top: 4px; margin-bottom: 4px;">
+      {{ tag.project }}
+    </nz-tag>
+  </div>
+  <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
+    [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)"
+    (nzCurrentPageDataChange)="currentPageDataChange($event)">
+    <thead>
+      <tr>
+        <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate"
+          (nzCheckedChange)="checkAll($event, dataTable.data)"></th>
+        <th>#</th>
+        <th nzWidth="18rem">项目名称</th>
+        <th>投资类型</th>
+        <th>品类</th>
+        <th>集数</th>
+        <th>权利</th>
+        <th>地域</th>
+        <th nzWidth="18rem">期限</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of dataTable.data">
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0" nzShowCheckbox [(nzChecked)]="data.isChecked"
+          (nzCheckedChange)="onCheckedChange($event, data)"></td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 + pagination.page * 10 - 10}}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+          <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
+        </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.investmentType | investmentType }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.episode | emptyDefaultChar }}</td>
+        <td [ngClass]="{'sole': data.sole}">{{ data.right }}</td>
+        <td>{{ data.area }}</td>
+        <td>
+          {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+          (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+        </td>
+        <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+          <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+          <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid)"><i class="text-info"
+              nz-icon type="delete" theme="outline"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

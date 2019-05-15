@@ -60,6 +60,7 @@ export interface ProgramDto {
     program_id: number;
     program_name: string;
     program_type: string;
+    theme: string;
     episodes: number;
     investment_type: string;
     right_data: CopyrightDto[];
