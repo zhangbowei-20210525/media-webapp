@@ -1,12 +1,11 @@
 <header class="main-header">
-  <div class="container">
-    <div class="n-logo">
+  <div style="width: 1280px ; height: 100%; background-color: #fff;" >
+    <div class="container">
+    <a class="n-logo">
       <!-- <img src="../assets/images/logo-color.svg"> -->
-      <span style="font-size: 25px;font-weight: bold;font-family: sans-serif;" *ngIf="settings.user.company_name !== '个人用户'">{{ settings.user.company_name }}</span>
-      <span style="font-size: 25px;font-weight: bold;font-family: sans-serif;" *ngIf="settings.user.company_name == '个人用户'">Bctop影业助手</span>
-      <!-- <img src="../assets/images/logo.png"> -->
+      <img src="../assets/images/logo.png">
       <!-- <span class="push-l-15" style="font-size: 18px;">BCTOP 影业助手</span> -->
-    </div>
+    </a>
     <nav class="n-nav">
       <ul class="nav-list list">
         <li>
@@ -65,7 +64,7 @@
             <a nz-dropdown>
               <i nz-icon type="global"></i>
                {{ 'app.lang' | translate }}
-              <i nz-icon type="down"></i> 
+              <i nz-icon type="down"></i>
             </a>
             <ul nz-menu>
               <li nz-menu-item *ngFor="let item of langs" [nzSelected]="item.code === settings.lang" (click)="changeLanguage(item.code)">{{item.text}}</li>
@@ -92,7 +91,7 @@
                 <li nz-menu-item>
                     <a routerLink="/manage/teams">
                       <i nz-icon type="team" theme="outline"></i>
-                      {{ 'menu.manage.teams' | translate }} 
+                      {{ 'menu.manage.teams' | translate }}
                     </a>
                   </li>
                 <li nz-menu-divider></li>
@@ -105,11 +104,7 @@
               </ul>
             </nz-dropdown>
           </ng-container>
-          <ng-template #loginLink>
-            <span>{{ 'menu.account.not-logged' | translate }}</span>
-            <nz-divider nzType="vertical"></nz-divider>
-            <a (click)="login()" class="login-link">{{ 'menu.account.login' | translate }}</a>
-          </ng-template>
+
           <!-- <a *ngIf="isLoggedIn; else loginLink" nz-popover nzTrigger="click" nzPlacement="bottom" [nzContent]="contentTemplate">
             <nz-avatar nzIcon="user" [nzSrc]="settings.user.avatar"></nz-avatar>
           </a>
@@ -124,5 +119,6 @@
         </li>
       </ul>
     </nav>
+    </div>
   </div>
 </header>
