@@ -28,6 +28,7 @@ import { PublishedComponent } from './contracts/published/published.component';
 import { PublishedComponent as PublishedListComponent } from './copyrights/published/published.component';
 import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
 import { RelationImportFieldComponent } from './components/relation-import-field/relation-import-field.component';
+import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { RelationImportFieldComponent } from './components/relation-import-field
     PublishedListComponent,
     AllRightsComponent,
     RelationImportFieldComponent,
+    ContractDetailsComponent,
   ],
   imports: [
     CommonModule,

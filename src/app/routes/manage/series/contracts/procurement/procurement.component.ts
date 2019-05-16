@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { indexMap } from '@shared/rxjs/operators';
 import { fadeIn } from '@shared/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-procurement',
@@ -25,7 +25,8 @@ export class ProcurementComponent implements OnInit {
     private route: ActivatedRoute,
     private service: ContractsService,
     private message: NzMessageService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -57,6 +58,10 @@ export class ProcurementComponent implements OnInit {
     this.service.deleteContract(id).subscribe(() => {
       this.message.success(this.translate.instant('global.delete-success'));
     });
+  }
+
+  contractDetails(id: number) {
+    this.router.navigate([`/manage/series/cd/${id}`]);
   }
 
 }
