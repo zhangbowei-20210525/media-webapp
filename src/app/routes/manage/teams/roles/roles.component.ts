@@ -26,10 +26,12 @@ export class RolesComponent implements OnInit {
   @ViewChild('permissionTree') permissionTreeCom: NzTreeComponent;
 
   roles: RoleDto[];
+  originCheckedKeys: string[];
 
   isLoaded = false;
   editable = false;
   permissionNodes: NzTreeNodeOptions[];
+  selectedRole: RoleDto;
 
   constructor(
     private service: RolesService,
@@ -44,20 +46,99 @@ export class RolesComponent implements OnInit {
   fetchRoles() {
     this.service.getRoles().pipe(finalize(() => this.isLoaded = true)).subscribe(result => {
       this.roles = result;
+      this.selectedRole = this.roles[0];
+      this.onRoleChange();
     });
   }
 
-  onRoleChange(name: string) {
-    console.log(name);
+  fetchPermissions(id: number) {
+    this.service.getRolePermissions(id).subscribe(permissions => {
+      this.originCheckedKeys = this.ts.recursionNodesMapArray(permissions, p => p.code, p =>
+        p.status && (!p.children || p.children.length < 1));
+      // console.log(this.originCheckedKeys);
+      this.permissionNodes = this.ts.getNzTreeNodes(permissions, item => ({
+        title: item.name,
+        key: item.code,
+        isLeaf: !!item.children && item.children.length < 1,
+        selectable: false,
+        expanded: false,
+        disableCheckbox: true,
+        checked: false // this.originCheckedKeys.some(key => key === item.code),
+      }));
+      // console.log(this.permissionTreeCom.getTreeNodes());
+      setTimeout(() => {
+        const nodes = this.permissionTreeCom.getTreeNodes();
+        this.ts.recursionNodes(nodes, node => {
+          node.isChecked = this.originCheckedKeys.some(k => k === node.key);
+          if (node.parentNode) {
+            this.syncChecked(node.parentNode);
+          }
+        });
+        console.log(nodes);
+      }, 0);
+    });
+  }
+
+  // getNzTreeNodesByPermissions(origins: PermissionDto[]): NzTreeNodeOptions[] {
+  //   return this.ts.getNzTreeNodes(origins, item => ({
+  //     title: item.name,
+  //     key: item.code,
+  //     isLeaf: !!item.children && item.children.length < 1,
+  //     selectable: false,
+  //     expanded: true,
+  //     disableCheckbox: true,
+  //     checked: item.status
+  //   }));
+  // }
+
+  onRoleChange() {
+    this.permissionNodes = [];
+    this.fetchPermissions(this.selectedRole.id);
   }
 
   setEditable(state: boolean) {
     this.editable = state;
-    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, state);
+    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, !state);
+    if (!state) {
+      const nodes = this.permissionTreeCom.getTreeNodes();
+      // console.log(this.originCheckedKeys);
+      this.ts.recursionNodes(nodes, node => {
+        node.isChecked = this.originCheckedKeys.some(k => k === node.key);
+        if (node.parentNode) {
+          this.syncChecked(node.parentNode);
+        }
+      });
+    }
   }
 
-  saveRoleAndPermissions() {
+  syncChecked(node: NzTreeNode) {
+    if (node.title === '查看宣发') {
+      console.log(node);
+    }
+    const { isChecked, isHalfChecked } = node;
+    node.isChecked = node.children.every(n => n.isChecked);
+    if (!node.isChecked) {
+      console.log('isHalfChecked', node);
+      node.isHalfChecked = node.children.some(n => n.isChecked || n.isHalfChecked);
+    }
+    if (node.isChecked === isChecked && node.isHalfChecked === isHalfChecked) {
+      return;
+    }
+    if (node.parentNode) {
+      this.syncChecked(node.parentNode);
+    }
+  }
 
+  onPermissionCheckChange(event) {
+    console.log(event);
+  }
+
+  savePermissions() {
+    const nodes = this.permissionTreeCom.getTreeNodes();
+    const permissionKeys = this.ts.recursionNodesMapArray(nodes, node => node.key, node => node.isChecked || node.isHalfChecked);
+    this.service.updateRolePermissions(this.selectedRole.id, permissionKeys).subscribe(result => {
+      this.message.success('修改成功');
+    });
   }
 
   // showInput(): void {
@@ -103,18 +184,6 @@ export class RolesComponent implements OnInit {
   //     this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
   //     this.currentCheckedKeys = this.originCheckedKeys = this.getOwnedPermissionKeys(permissions);
   //   });
-  // }
-
-  // getNzTreeNodesByPermissions(origins: PermissionDto[]): NzTreeNodeOptions[] {
-  //   return this.ts.getNzTreeNodes(origins, item => ({
-  //     title: item.name,
-  //     key: item.code,
-  //     isLeaf: !!item.children && item.children.length < 1,
-  //     selectable: false,
-  //     expanded: true,
-  //     disableCheckbox: false,
-  //     checked: item.status
-  //   }));
   // }
 
   // getOwnedPermissionKeys(origins: PermissionDto[]) {

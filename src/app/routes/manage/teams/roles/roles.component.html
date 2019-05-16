@@ -1,8 +1,8 @@
 <div *ngIf="isLoaded">
   <div class="roles">
-    <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRoleName"
+    <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRole"
       (ngModelChange)="onRoleChange($event)">
-      <label nz-radio-button [nzValue]="role.name" [nzDisabled]="role.loading" class="role-radio"
+      <label nz-radio-button [nzValue]="role" [nzDisabled]="role.loading" class="role-radio"
         *ngFor="let role of roles">{{
         role.name }}</label>
     </nz-radio-group>
@@ -16,18 +16,19 @@
       <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelSavePermissions()">取消</button>
     </span> -->
   </div>
+  <p>
+    <button nz-button nzSize="small" (click)="setEditable(true)" [disabled]="editable">编辑权限</button>
+    <span [hidden]="!editable" style="margin-left: 1rem;">
+      <button nz-button nzSize="small" nzType="primary" (click)="saveRoleAndPermissions()">保存</button>
+      <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="setEditable(false)">取消</button>
+    </span>
+  </p>
   <div class="permission">
     <!-- <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
       (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
     </nz-tree> -->
-    <p>
-      <button nz-button nzSize="small" (click)="setEditable(true)" [disabled]="editable">编辑权限</button>
-      <span [hidden]="!editable" style="margin-left: 1rem;">
-        <button nz-button nzSize="small" nzType="primary" (click)="saveRoleAndPermissions()">保存</button>
-        <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="setEditable(false)">取消</button>
-      </span>
-    </p>
-    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true">
+
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" (nzCheckBoxChange)="onPermissionCheckChange($event)">
     </nz-tree>
   </div>
 </div>
