@@ -11,6 +11,8 @@ import { NzTreeNodeOptions, NzMessageService, NzModalService } from 'ng-zorro-an
 import { SeriesService } from '../series.service';
 import { RootTemplateDto } from './dtos';
 import { RelationImportFieldComponent } from '../components/relation-import-field/relation-import-field.component';
+import { ACLService } from '@delon/acl';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-copyrights',
@@ -23,11 +25,15 @@ export class CopyrightsComponent implements OnInit {
     private service: CopyrightsService,
     private message: NzMessageService,
     private modal: NzModalService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private acl: ACLService,
+    public ability: ACLAbility
   ) { }
 
   ngOnInit() {
-
+    console.log('ability', this.ability);
+    console.log('data', this.acl.data);
+    console.log('can', this.acl.canAbility('right_edit'));
   }
 
 }

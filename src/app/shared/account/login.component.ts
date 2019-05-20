@@ -15,6 +15,7 @@ import { SettingsService, I18nService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { TreeService } from '@shared/components/tree.service';
 
 declare const WxLogin: any;
 
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private translate: TranslateService,
     private i18n: I18nService,
+    private ts: TreeService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
   }
@@ -162,7 +164,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         .subscribe(result => {
           console.log(result);
           this.settings.user = result.auth;
-          this.settings.permissions = result.permissions;
+          this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
           this.token.set({
             token: result.token,
             time: +new Date

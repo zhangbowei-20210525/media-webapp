@@ -1,5 +1,17 @@
-export const ACLAbilitykeys = {
-    program: <ACLModule>{
+import { Injectable } from '@angular/core';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ACLAbility {
+    program: ProgramACLModule;
+    intention: IntentionACLModule;
+    custom: ACLModule;
+    company: CompanyACLModule;
+}
+
+export const aclAbility = <ACLAbility>{
+    program: <ProgramACLModule>{
         // name: 'program',
         view: null,
         add: null,
@@ -19,6 +31,7 @@ export const ACLAbilitykeys = {
             }
         },
         source: <SourceACLModule>{
+            view: null,
             add: null,
             edit: null,
             del: null,
@@ -30,15 +43,70 @@ export const ACLAbilitykeys = {
             }
         },
         right: <RightACLModule>{
+            view: null,
             add: null,
             edit: null,
             publish: null
         }
+    },
+    intention: <IntentionACLModule>{
+        view: null,
+        add: null,
+        review: <IntentionReviewACLModule>{
+            add: null,
+            conf: null,
+            pass: null,
+            end: null
+        }
+    },
+    custom: <ACLModule>{
+        view: null,
+        add: null,
+        edit: null,
+        del: null
+    },
+    company: <CompanyACLModule>{
+        view: null,
+        role: null,
+        employee: <EmployeeACLModule>{
+            view: null,
+            profile: null,
+            info: null,
+            role: null,
+            data: null,
+            department: null,
+            outside: null
+        }
     }
-
 };
 
-declare interface ACLModule {
+(function () {
+    for (const key in aclAbility) {
+        if (aclAbility.hasOwnProperty(key)) {
+            buildACLAbility(aclAbility[key], key);
+        }
+    }
+})();
+
+function buildACLAbility(ability: ACLModule, name: string) {
+    if (!(ability instanceof ACLAbility)) {
+        if (typeof ability.name !== 'string') {
+            ability.name = name;
+        }
+    }
+    for (const key in ability) {
+        if (ability.hasOwnProperty(key)) {
+            const item = ability[key];
+            if (item instanceof Object) {
+                buildACLAbility(item, key);
+            } else if (item == null || item === undefined) {
+                ability[key] = `${ability.name}_${key}`;
+            }
+        }
+    }
+}
+
+interface ACLModule {
     name?: string;
     view?: string;
     add?: string;
@@ -46,21 +114,45 @@ declare interface ACLModule {
     del?: string;
 }
 
-declare interface PublicityACLModule extends ACLModule {
+interface ProgramACLModule extends ACLModule {
+    publicity: PublicityACLModule;
+    source: SourceACLModule;
+    right: RightACLModule;
+}
+
+interface PublicityACLModule extends ACLModule {
     share?: string;
 }
 
-declare interface SourceACLModule extends ACLModule {
+interface SourceACLModule extends ACLModule {
     entity?: string;
     publish?: string;
 }
 
-declare interface RightACLModule extends ACLModule {
+interface RightACLModule extends ACLModule {
     publish?: string;
 }
 
-declare interface IntentionACLModule extends ACLModule {
+interface IntentionACLModule extends ACLModule {
+    review: IntentionReviewACLModule;
+}
+
+interface IntentionReviewACLModule extends ACLModule {
     conf?: string;
     pass?: string;
     end?: string;
+}
+
+interface CompanyACLModule extends ACLModule {
+    role?: string;
+    employee: EmployeeACLModule;
+}
+
+interface EmployeeACLModule extends ACLModule {
+    profile?: string;
+    info?: string;
+    role?: string;
+    data?: string;
+    department?: string;
+    outside?: string;
 }

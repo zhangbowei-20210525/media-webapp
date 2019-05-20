@@ -18,6 +18,8 @@ import { PublishedComponent } from './contracts/published/published.component';
 import { PublishedComponent as PublishedListComponent } from './copyrights/published/published.component';
 import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
 import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
+import { ACLGuard, ACLType } from '@delon/acl';
+import { aclAbility } from '@core/acl';
 
 
 
@@ -42,6 +44,13 @@ const routes: Routes = [
       {
         path: 'rights',
         component: CopyrightsComponent,
+        canActivate: [ACLGuard],
+        canActivateChild: [ACLGuard],
+        data: {
+          guard: <ACLType>{
+            ability: [aclAbility.program.right.view]
+          }
+        },
         children: [
           { path: '', redirectTo: 'all', pathMatch: 'full' },
           {

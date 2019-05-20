@@ -193,6 +193,7 @@ export class EmployeeDetailsComponent implements OnInit {
     this.service.updateEmployeePermissions(this.employeeId, permissionKeys).subscribe(() => {
       this.message.success('修改成功');
       this.setEditable(false, false);
+      this.settings.permissions = permissionKeys;
     });
   }
 

@@ -10,6 +10,7 @@ import { fadeIn } from '@shared/animations';
 import { QueueUploader } from '@shared/upload';
 import { PublicityService } from '../details/publicity/publicity.service';
 import * as _ from 'lodash';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-publicities',
@@ -37,6 +38,7 @@ export class PublicitiesComponent implements OnInit {
   company_ids = [];
 
   constructor(
+    public ability: ACLAbility,
     private router: Router,
     private service: SeriesService,
     private pservice: PublicityService,

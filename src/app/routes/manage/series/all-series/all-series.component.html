@@ -1,17 +1,17 @@
 <div *ngIf="isLoaded" [@fadeIn]>
   <div>
     <p class="clearfix">
-      <button nz-button nzType="default" class="rf" (click)="addSeries()">{{ 'app.series.add-series' | translate }}</button>
+      <button nz-button nzType="default" class="rf" (click)="addSeries()" acl
+        [acl-ability]="ability.program.edit">{{ 'app.series.add-series' | translate }}</button>
     </p>
   </div>
   <nz-table #table [nzData]="dataset" (nzPageIndexChange)="pageChange($event)" [nzFrontPagination]="false"
     [nzPageSize]="pagination?.page_size" [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count">
     <thead>
       <tr>
-          <!-- nzShowCheckbox -->
-        <th  [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
-          (nzCheckedChange)="checkAll($event)"></th>
-          <th>#</th>
+        <!-- nzShowCheckbox -->
+        <th [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+        <th>#</th>
         <th style="text-align: center">{{ 'app.series.series' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.program-type' | translate }}</th>
         <th style="text-align: center">{{ 'app.series.theme' | translate }}</th>
@@ -33,18 +33,20 @@
         <td style="text-align: center">{{ data.theme }}</td>
         <td style="text-align: center">{{ data.episode }}</td>
         <td style="text-align: center">
-            <span *ngIf="data?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
-            <span *ngIf="data?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
-      </td>
+          <span *ngIf="data?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+          <span *ngIf="data?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
+        </td>
         <td style="text-align: center">{{ data.release_date }}</td>
         <td style="text-align: center">
-          <span><a [routerLink]="['/manage/series/d', data.id, 'publicityd']">{{ 'app.series.publicity' | translate }}</a></span>
-          <span><a [routerLink]="['/manage/series/d', data.id, 'tape']" style="margin-left: 1rem">{{ 'app.series.source' | translate }}</a></span>
+          <span><a
+              [routerLink]="['/manage/series/d', data.id, 'publicityd']">{{ 'app.series.publicity' | translate }}</a></span>
+          <span><a [routerLink]="['/manage/series/d', data.id, 'tape']"
+              style="margin-left: 1rem">{{ 'app.series.source' | translate }}</a></span>
           <span><a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span>
         </td>
         <td style="text-align: center">
           <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline"></i></a>
-        </td> 
+        </td>
       </tr>
     </tbody>
   </nz-table>
