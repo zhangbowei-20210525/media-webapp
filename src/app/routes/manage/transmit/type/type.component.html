@@ -1,4 +1,5 @@
-    <nz-table #basicTable [nzData]="purchaseTapesList"
+<div *ngIf = 'isPurchaseTapesLoaded'> 
+  <nz-table #basicTable [nzData]="purchaseTapesList"
               [nzPageSize]="tapesPagination?.page_size"
               [nzFrontPagination]="false"
               [nzPageIndex]="purchaseTapesPagination?.page"
@@ -41,4 +42,5 @@
             </td>
           </tr>
       </tbody>
-</nz-table>
+  </nz-table>
+</div>

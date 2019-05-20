@@ -3,15 +3,18 @@ import { PaginationDto } from '@shared';
 import { finalize, switchMap } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
+import { isMonday } from 'date-fns';
+import { fadeIn } from '@shared/animations';
 
 @Component({
   selector: 'app-declared',
   templateUrl: './declared.component.html',
-  styleUrls: ['./declared.component.less']
+  styleUrls: ['./declared.component.less'],
+  animations: [fadeIn],
 })
 export class DeclaredComponent implements OnInit {
-  isMyTapesLoaded: boolean;
-  isMyTapesLoading: boolean;
+  isMyTapesLoaded = false;
+  isMyTapesLoading = true;
   tapesPagination: PaginationDto;
   purchaseTapesPagination: PaginationDto;
   tabIndex: number;
@@ -26,8 +29,6 @@ export class DeclaredComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isMyTapesLoaded = true;
-    this.isMyTapesLoading = true;
     this.tapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.purchaseTapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
     this.route.paramMap.pipe(
@@ -35,12 +36,15 @@ export class DeclaredComponent implements OnInit {
         this.tabIndex = +params.get('tabIndex');
         return  this.seriesService.getAllTapes(this.tapesPagination);
       })).pipe(finalize(() => {
+      // console.log('woyaozhixing')
       this.isMyTapesLoading = false;
       this.isMyTapesLoaded = true;
+      console.log(this.isMyTapesLoaded)
     })).subscribe(res => {
+      this.isMyTapesLoaded = true;
+      this.isMyTapesLoading = false;
       this.tapesList = res.list;
       this.tapesPagination = res.pagination;
-      console.log(res);
     });
     this.purchaseTapes();
   }
@@ -76,8 +80,6 @@ export class DeclaredComponent implements OnInit {
   }
 
   purchaseTapes() {
-    this.isPurchaseTapesLoaded = true;
-    this.isPurchaseTapesLoading = true;
     this.seriesService.purchaseTapes(this.purchaseTapesPagination).pipe(finalize(() => {
       this.isPurchaseTapesLoading = false;
       this.isPurchaseTapesLoaded = true;

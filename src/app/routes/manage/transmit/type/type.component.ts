@@ -5,17 +5,19 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { LocalRequestService } from '@shared/locals';
+import { fadeIn } from '@shared/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { TapeDownloadComponent } from '../components/tape-download/tape-download.component';
 
 @Component({
   selector: 'app-type',
   templateUrl: './type.component.html',
-  styleUrls: ['./type.component.less']
+  styleUrls: ['./type.component.less'],
+  animations: [fadeIn],
 })
 export class TypeComponent implements OnInit {
-  isMyTapesLoaded: boolean;
-  isMyTapesLoading: boolean;
+  isMyTapesLoaded = false;
+  isMyTapesLoading = true;
   tapesPagination: PaginationDto;
   purchaseTapesPagination: PaginationDto;
   tabIndex: number;
@@ -48,7 +50,6 @@ export class TypeComponent implements OnInit {
       this.isMyTapesLoaded = true;
     })).subscribe(res => {
       this.tapesPagination = res.pagination;
-      console.log(res);
     });
     this.purchaseTapes();
   }
@@ -82,11 +83,10 @@ export class TypeComponent implements OnInit {
   }
 
   purchaseTapes() {
-    this.isPurchaseTapesLoaded = true;
-    this.isPurchaseTapesLoading = true;
     this.seriesService.purchaseTapes(this.purchaseTapesPagination).pipe(finalize(() => {
       this.isPurchaseTapesLoading = false;
       this.isPurchaseTapesLoaded = true;
+      console.log('i am must run')
     })).subscribe(res => {
       this.purchaseTapesList = res.list;
       this.purchaseTapesPagination = res.pagination;

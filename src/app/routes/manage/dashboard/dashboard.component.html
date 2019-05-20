@@ -1,51 +1,59 @@
 <div class="fade-in-up">
   <div class="expire-info-box">
-    <div class="block pur">
-      <div class="block-content">
+    <div class="block" style="height: 249px">
+      <div class="block-content pur">
         <div class="pur-count">{{right?.count}}</div>
         <div class="title">{{ 'app.dashboard.purchase-imminent' | translate }}</div>
-        <ul>
+        <ul style=" width: 100%;height: 130px;">
           <li class="info-li" *ngFor="let right of right?.data">
-            <div class="expire-info program-name">{{right?.program_name}}</div>
-            <div class="expire-info custom-name">{{right?.custom_name}}</div>
-            <div class="expire-info expire-date">{{right?.expire_date}}</div>
+            <div nz-row>
+              <div nz-col nzSpan="8" class="text-ellipsis">{{right?.program_name}}</div>
+              <div nz-col nzSpan="8" class="text-ellipsis">{{right?.custom_name}}</div>
+              <div nz-col nzSpan="8" class="text-ellipsis">{{right?.expire_date}}</div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
-    <div class="block pub">
-      <div class="block-content">
+    <div class="block" style="margin-left: 20px;height:249px">
+      <div class="block-content pur">
         <div class="pub-count">{{publish_right?.count}}</div>
         <div class="title">{{ 'app.dashboard.publish-imminent' | translate }}</div>
-        <ul>
+        <ul style=" width: 100%;height: 130px;">
           <li class="info-li" *ngFor="let publish_right of publish_right?.data">
-            <div class="expire-info program-name">{{publish_right?.program_name}}</div>
-            <div class="expire-info custom-name">{{publish_right?.custom_name}}</div>
-            <div class="expire-info expire-date">{{publish_right?.expire_date}}</div>
+            <div nz-row>
+              <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.program_name}}</div>
+              <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.custom_name}}</div>
+              <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.expire_date}}</div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
-    <div class="block pub">
-      <div class="block-content">
+    <div class="block" style="margin-left: 20px;height:249px">
+      <div class="block-content pur">
         <div class="payment-count">{{payment?.count}}</div>
         <div class="title">{{ 'app.dashboard.payment-imminent' | translate }}</div>
-        <ul>
+        <ul style=" width: 100%;height: 130px;">
           <li class="info-li" *ngFor="let payment of payment?.data">
-            <div class="payment custom-name">{{payment?.custom_name}}</div>
-            <div class="payment expire-date">{{payment?.expire_date}}</div>
+            <div nz-row>
+              <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.custom_name}}</div>
+              <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.expire_date}}</div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
-    <div class="block pub">
-      <div class="block-content">
+    <div class="block" style="margin-left: 20px;height:249px">
+      <div class="block-content pur">
         <div class="receipt-count">{{receipt?.count}}</div>
         <div class="title">{{ 'app.dashboard.receivables-imminent' | translate }}</div>
-        <ul>
+        <ul style=" width: 100%;height: 130px;">
           <li class="info-li" *ngFor="let receipt of receipt?.data">
-            <div class="payment custom-name">{{receipt?.custom_name}}</div>
-            <div class="payment expire-date">{{receipt?.expire_date}}</div>
+            <div nz-row>
+              <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.custom_name}}</div>
+              <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.expire_date}}</div>
+            </div>
           </li>
         </ul>
       </div>
@@ -105,7 +113,8 @@
       <div class="block-header">
         <div class="block-title"><span style="font-size: 20px">客商</span></div>
         <div class="block-options">
-          <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onChange()" nzSize="small" style="width: 240px">
+          <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onChange()" nzSize="small"
+            style="width: 240px">
           </nz-range-picker>
           <nz-radio-group [(ngModel)]="seriesInOut" nzSize="small" (ngModelChange)="seriesInOutChange()">
             <label nz-radio-button nzValue="purchase">采购</label>
@@ -118,7 +127,7 @@
         </div>
       </div>
       <div class="block-content">
-        <div style="height: 450px;width: 505px">
+        <div class="chart-box">
           <nz-empty [hidden]="t5 > 0" style="line-height: 300px"></nz-empty>
           <div id="customerStatistics" [hidden]="t5 == 0"></div>
         </div>
@@ -136,7 +145,7 @@
         </div>
       </div>
       <div class="block-content">
-        <div style="height: 450px;width: 505px">
+        <div class="chart-box">
           <nz-empty [hidden]="t6 > 0" style="line-height: 300px"></nz-empty>
           <div id="tapeStatistics" [hidden]="t6 == 0"></div>
         </div>
@@ -174,7 +183,7 @@
       <div id="allStatistics"></div>
     </div>
   </div>
-  <div class="block tatistical-project">
+  <div class="block">
     <div class="block-header">
       <div class="block-title"><span style="font-size: 20px">活跃项目</span></div>
       <div class="block-options">
@@ -186,89 +195,97 @@
         </nz-radio-group>
       </div>
     </div>
-    <div class="block-content">
-      <nz-table #basicTable [nzData]="activeProjectRight" [hidden]="activeProject !== 'right'">
-        <thead>
-          <tr>
-            <th style="text-align: center">#</th>
-            <th style="text-align: center">节目名称</th>
-            <th style="text-align: center">权利</th>
-            <th style="text-align: center">地域</th>
-            <th style="text-align: center">授权开始</th>
-            <th style="text-align: center">授权结束</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable.data;let i = index">
-            <td>{{ i + 1 }}</td>
-            <td style="text-align: center">{{ data?.program_name }}</td>
-            <td style="text-align: center">{{ data?.right_type }}</td>
-            <td style="text-align: center">{{ data?.area }}</td>
-            <td style="text-align: center">{{ data?.start_date }}</td>
-            <td style="text-align: center">{{ data?.end_date }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-      <nz-table #basicTable1 [nzData]="activeProjectPubRight" [hidden]="activeProject !== 'publish_right'">
-        <thead>
-          <tr>
-            <th style="text-align: center">#</th>
-            <th style="text-align: center">节目名称</th>
-            <th style="text-align: center">权利</th>
-            <th style="text-align: center">地域</th>
-            <th style="text-align: center">授权开始</th>
-            <th style="text-align: center">授权结束</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable1.data;let i = index">
-            <td>{{ i + 1 }}</td>
-            <td style="text-align: center">{{ data?.program_name }}</td>
-            <td style="text-align: center">{{ data?.right_type }}</td>
-            <td style="text-align: center">{{ data?.area }}</td>
-            <td style="text-align: center">{{ data?.start_date }}</td>
-            <td style="text-align: center">{{ data?.end_date }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-      <nz-table #basicTable2 [nzData]="activeProjectPublicity" [hidden]="activeProject !== 'publicity'">
-        <thead>
-          <tr>
-            <th style="text-align: center">#</th>
-            <th style="text-align: center">节目名称</th>
-            <th style="text-align: center">类型</th>
-            <th style="text-align: center">集数</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable1.data;let i = index">
-            <td>{{ i + 1 }}</td>
-            <td style="text-align: center">{{ data?.program_name }}</td>
-            <td style="text-align: center">{{ data?.program_type }}</td>
-            <td style="text-align: center">{{ data?.episode }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-      <nz-table #basicTable2 [nzData]="activeProjectSource" [hidden]="activeProject !== 'source'">
-        <thead>
-          <tr>
-            <th style="text-align: center">#</th>
-            <th style="text-align: center">节目名称</th>
-            <th style="text-align: center">类型</th>
-            <th style="text-align: center">版本</th>
-            <th style="text-align: center">集数</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable1.data;let i = index">
-            <td>{{ i + 1 }}</td>
-            <td style="text-align: center">{{ data?.program_name }}</td>
-            <td style="text-align: center">{{ data?.program_type }}</td>
-            <td style="text-align: center">{{ data?.name }}</td>
-            <td style="text-align: center">{{ data?.episode }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
+    <div class="block-content" style="height: 378px">
+      <div *ngIf="isLoadedRight == true">
+        <nz-table #basicTable [nzData]="activeProjectRight" [hidden]="activeProject !== 'right'">
+          <thead>
+            <tr>
+              <th style="text-align: center">#</th>
+              <th style="text-align: center">节目名称</th>
+              <th style="text-align: center">权利</th>
+              <th style="text-align: center">地域</th>
+              <th style="text-align: center">授权开始</th>
+              <th style="text-align: center">授权结束</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data;let i = index">
+              <td>{{ i + 1 }}</td>
+              <td style="text-align: center">{{ data?.program_name }}</td>
+              <td style="text-align: center">{{ data?.right_type }}</td>
+              <td style="text-align: center">{{ data?.area }}</td>
+              <td style="text-align: center">{{ data?.start_date }}</td>
+              <td style="text-align: center">{{ data?.end_date }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <div *ngIf="isLoadedPubRight == true">
+        <nz-table #basicTable1 [nzData]="activeProjectPubRight" [hidden]="activeProject !== 'publish_right'">
+          <thead>
+            <tr>
+              <th style="text-align: center">#</th>
+              <th style="text-align: center">节目名称</th>
+              <th style="text-align: center">权利</th>
+              <th style="text-align: center">地域</th>
+              <th style="text-align: center">授权开始</th>
+              <th style="text-align: center">授权结束</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable1.data;let i = index">
+              <td>{{ i + 1 }}</td>
+              <td style="text-align: center">{{ data?.program_name }}</td>
+              <td style="text-align: center">{{ data?.right_type }}</td>
+              <td style="text-align: center">{{ data?.area }}</td>
+              <td style="text-align: center">{{ data?.start_date }}</td>
+              <td style="text-align: center">{{ data?.end_date }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <div *ngIf="isLoadedPublicity == true">
+        <nz-table #basicTable2 [nzData]="activeProjectPublicity" [hidden]="activeProject !== 'publicity'">
+          <thead>
+            <tr>
+              <th style="text-align: center">#</th>
+              <th style="text-align: center">节目名称</th>
+              <th style="text-align: center">类型</th>
+              <th style="text-align: center">集数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable2.data;let i = index">
+              <td>{{ i + 1 }}</td>
+              <td style="text-align: center">{{ data?.program_name }}</td>
+              <td style="text-align: center">{{ data?.program_type }}</td>
+              <td style="text-align: center">{{ data?.episode }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <div *ngIf="isLoadedSource == true">
+        <nz-table #basicTable3 [nzData]="activeProjectSource" [hidden]="activeProject !== 'source'">
+          <thead>
+            <tr>
+              <th style="text-align: center">#</th>
+              <th style="text-align: center">节目名称</th>
+              <th style="text-align: center">类型</th>
+              <th style="text-align: center">版本</th>
+              <th style="text-align: center">集数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable3.data;let i = index">
+              <td>{{ i + 1 }}</td>
+              <td style="text-align: center">{{ data?.program_name }}</td>
+              <td style="text-align: center">{{ data?.program_type }}</td>
+              <td style="text-align: center">{{ data?.name }}</td>
+              <td style="text-align: center">{{ data?.episode }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
     </div>
   </div>
 </div>
