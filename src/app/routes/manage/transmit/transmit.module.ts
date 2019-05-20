@@ -10,6 +10,7 @@ import { HistoricRecordComponent } from './historic-record/historic-record.compo
 import { TransmitScheduleComponent } from './components/transmit-schedule/transmit-schedule.component';
 import { DownloadRecordComponent } from './download-record/download-record.component';
 import { SharedModule } from '@shared';
+import { PurTapeDetailsComponent } from './pur-tape-details/pur-tape-details.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SharedModule } from '@shared';
     TapeDownloadComponent,
     HistoricRecordComponent,
     TransmitScheduleComponent,
-    DownloadRecordComponent
+    DownloadRecordComponent,
+    PurTapeDetailsComponent
   ],
   imports: [
     CommonModule,

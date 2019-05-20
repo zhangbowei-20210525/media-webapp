@@ -32,14 +32,14 @@ export class TeamsService {
   }
 
   getDepartments() {
-    return this.http.get<DepartmentDto[]>('/api/v1/departments');
+    return this.http.get<DepartmentDto[]>('/api/v1/companies/departments');
   }
 
   addDepartment(master_department_id: string, name: string) {
-    return this.http.post<any>('/api/v1/departments', { master_department_id, name });
+    return this.http.post<any>('/api/v1/companies/departments', { master_department_id, name });
   }
 
   deleteDepartment(id: number | string) {
-    return this.http.delete<any>(`/api/v1/departments/${id}`);
+    return this.http.delete<any>(`/api/v1/companies/departments/${id}`);
   }
 }

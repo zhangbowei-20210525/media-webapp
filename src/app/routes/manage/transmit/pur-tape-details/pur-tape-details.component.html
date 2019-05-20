@@ -1,0 +1,184 @@
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">
+      <span>{{ 'app.series.basic-info' | translate }}</span>
+    </div>
+  </div>
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.series-name' | translate }}</span>
+        <span>{{ info?.program?.name }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.episode' | translate }}</span>
+        <span>{{ info?.program?.episode }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.theme' | translate }}</span>
+        <span>{{ info?.program?.theme }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.language' | translate }}</span>
+        <span *ngIf="info?.program?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+        <span *ngIf="info?.program?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.series-nickname' | translate }}</span>
+        <span>{{ info?.program?.nickname }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.release-date' | translate }}</span>
+        <span>{{ info?.program?.release_date }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.supervisor' | translate }}</span>
+        <span>{{ info?.program?.supervisor }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.general-producer' | translate }}</span>
+        <span>{{ info?.program?.general_producer }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.program-type' | translate }}</span>
+        <span>{{ info?.program?.program_type | seriesType }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.director' | translate }}</span>
+        <span>{{ info?.program?.director }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.screen-writer' | translate }}</span>
+        <span>{{ info?.program?.screen_writer }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.producer' | translate }}</span>
+        <span>{{ info?.program?.producer }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">{{ 'app.series.protagonist' | translate }}</span>
+        <span>{{ info?.program?.protagonist }}</span>
+      </div>
+      <div nz-col nzSpan="18">
+        <span class="info-filed">{{ 'app.series.product-company' | translate }}</span>
+        <span>{{ info?.program?.product_company }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="24">
+        <span class="info-filed">{{ 'app.series.desc' | translate }}</span>
+        <span>{{ info?.program?.introduction }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="block clearfix">
+    <div class="block-header">
+      <div class="block-title">
+        <span>购入母带信息</span>
+      </div>
+    </div>
+    <div class="block-content">
+      <div nz-row class="series-info-row">
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.source-name' | translate }}</span>
+          <span>{{ info?.name }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+            <span class="info-filed">集数</span>
+            <span>{{ seriesInfo?.episode }}</span>
+          </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.source-language' | translate }}</span>
+          <span *ngIf="info?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+          <span *ngIf="info?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.source-subtitles' | translate }}</span>
+          <span *ngIf="info?.subtitle == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+          <span *ngIf="info?.subtitle == 'English'">{{ 'app.series.language-english' | translate }}</span>
+        </div>
+      </div>
+      <div nz-row class="series-info-row">
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.source-format' | translate }}</span>
+          <span>{{ info?.format }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.source-bit-rate' | translate }}</span>
+          <span>{{ info?.bit_rate }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">下载次数</span>
+          <span>{{ seriesInfo?.download_times }}</span>
+        </div>
+      </div>
+      <!-- <div nz-row class="series-info-row">
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.program-type' | translate }}</span>
+          <span>{{ seriesInfo?.program_type | seriesType }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.director' | translate }}</span>
+          <span>{{ seriesInfo?.director }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.screen-writer' | translate }}</span>
+          <span>{{ seriesInfo?.screen_writer }}</span>
+        </div>
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.producer' | translate }}</span>
+          <span>{{ seriesInfo?.producer }}</span>
+        </div>
+      </div> -->
+      <!-- <div nz-row class="series-info-row">
+        <div nz-col nzSpan="6">
+          <span class="info-filed">{{ 'app.series.protagonist' | translate }}</span>
+          <span>{{ seriesInfo?.protagonist }}</span>
+        </div>
+        <div nz-col nzSpan="18">
+          <span class="info-filed">{{ 'app.series.product-company' | translate }}</span>
+          <span>{{ seriesInfo?.product_company }}</span>
+        </div>
+      </div>
+      <div nz-row class="series-info-row">
+        <div nz-col nzSpan="24">
+          <span class="info-filed">{{ 'app.series.desc' | translate }}</span>
+          <span>{{ seriesInfo?.introduction }}</span>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">购入母带文件</div>
+  </div>
+  <div class="block-content">
+    <nz-table #basicTable [nzData]="dataSet" nzBordered >
+      <thead>
+        <tr>
+          <th style="text-align: center">#</th>
+          <th>{{ 'app.series.filename' | translate }}</th>
+          <th>{{ 'app.series.size' | translate }}</th>
+          <th>{{ 'app.series.created-time' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data;let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{data.name}}</td>
+          <td>{{data.size | byteFormat}}</td>
+          <td>{{data.created_at}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

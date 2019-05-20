@@ -17,11 +17,11 @@ export class SeriesSelectorService {
   ) { }
 
   getSeries(employee: number) {
-    return this.http.get<BriefSeriesResultDto>(`/api/v1/employees/${employee}/programs`);
+    return this.http.get<BriefSeriesResultDto>(`/api/v1/companies/employees/${employee}/programs`);
   }
 
   updateSeriesPermission(employee: number, status: boolean, program_ids: number[]) {
-    return this.http.post<BriefSeriesResultDto>(`/api/v1/employees/${employee}/programs`, { status, program_ids });
+    return this.http.post<BriefSeriesResultDto>(`/api/v1/companies/employees/${employee}/programs`, { status, program_ids });
   }
 
 }
