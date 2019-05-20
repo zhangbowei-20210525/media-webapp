@@ -36,7 +36,7 @@ export class EmployeeDetailsService {
     return this.http.get<PermissionDto[]>(`/api/v1/employees/${id}/permissions`);
   }
 
-  updateEmployeePermissions(id: number, permission_data: PermissionDto[]) {
+  updateEmployeePermissions(id: number, permission_data: string[]) {
     return this.http.post(`/api/v1/employees/${id}/permissions`, { permission_data });
   }
 

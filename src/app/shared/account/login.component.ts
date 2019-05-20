@@ -25,7 +25,7 @@ declare const WxLogin: any;
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  $close: Subject<boolean>;
+  $close = new Subject<boolean>();
   service: AccountService;
   form: FormGroup;
   emailRegisterForm: FormGroup;
@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     private i18n: I18nService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
-    this.$close = new Subject();
   }
 
   get phone(): AbstractControl {
@@ -161,7 +160,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.service.phoneValidate(this.phone.value, this.captcha.value)
         .pipe(finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
+          console.log(result);
           this.settings.user = result.auth;
+          this.settings.permissions = result.permissions;
           this.token.set({
             token: result.token,
             time: +new Date

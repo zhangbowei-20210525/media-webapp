@@ -23,15 +23,17 @@ import { SettingsService } from '@core';
 export class EmployeeDetailsComponent implements OnInit {
 
   @ViewChild('permissionTree') permissionTreeCom: NzTreeComponent;
+
   employeeId: number;
   employee: EmployeeDetailsDto;
-  isInfoLoading: boolean;
   roles: RoleDto[];
+
+  originCheckedKeys: string[];
+
+  isEditable = false;
+  isInfoLoading = false;
   selectedRole: RoleDto;
   permissionNodes: NzTreeNodeOptions[];
-  originCheckedKeys = [];
-  finalCheckedKeys = [];
-  editMode: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,14 +51,6 @@ export class EmployeeDetailsComponent implements OnInit {
       this.fetchSelectionRoles();
       this.fetchPermissions();
     });
-  }
-
-  equalsArray(a: any[], b: any[]) {
-    return a && b && a.filter(key => !b.includes(key)).length === 0 && b.filter(key => !a.includes(key)).length === 0;
-  }
-
-  sliceTagName(tag: string) {
-    return tag.length > 20 ? `${tag.slice(0, 20)}...` : tag;
   }
 
   fetchEmployeeDetails() {
@@ -79,8 +73,40 @@ export class EmployeeDetailsComponent implements OnInit {
 
   fetchPermissions() {
     this.service.getEmployeePermissions(this.employeeId).subscribe(permissions => {
-      this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
-      this.finalCheckedKeys = this.originCheckedKeys = this.getOwnedPermissionKeys(permissions);
+      this.setOriginCheckedKeysByPermissions(permissions);
+      this.setPermissionNodes(permissions, this.originCheckedKeys);
+    });
+  }
+
+  setPermissionNodes(permissions: PermissionDto[], checkedKeys?: string[]) {
+    this.permissionNodes = this.ts.getNzTreeNodes(permissions, item => ({
+      title: item.name,
+      key: item.code,
+      isLeaf: !!item.children && item.children.length < 1,
+      selectable: false,
+      expanded: false,
+      disableCheckbox: true,
+      checked: false // checkedKeys.some(key => key === item.code),
+    }));
+    if (checkedKeys) {
+      setTimeout(() => {
+        this.setCheckedNodesByKeys(checkedKeys);
+      }, 0);
+    }
+  }
+
+  setOriginCheckedKeysByPermissions(permissions: PermissionDto[]) {
+    this.originCheckedKeys = this.ts.recursionNodesMapArray(permissions, p => p.code, p =>
+      p.status && (!p.children || p.children.length < 1));
+  }
+
+  setCheckedNodesByKeys(keys: string[]) {
+    const nodes = this.permissionTreeCom.getTreeNodes();
+    this.ts.recursionNodes(nodes, node => {
+      node.isChecked = keys.some(k => k === node.key);
+      if (node.parentNode) {
+        this.syncChecked(node.parentNode);
+      }
     });
   }
 
@@ -124,99 +150,59 @@ export class EmployeeDetailsComponent implements OnInit {
   setEmployeeRole(role: number, isCover: boolean) {
     this.service.updateEmployeeRole(this.employeeId, role, isCover).subscribe(permissions => {
       if (isCover) {
-        this.permissionNodes = this.getNzTreeNodesByPermissions(permissions);
-        this.finalCheckedKeys = this.getOwnedPermissionKeys(permissions);
+        // this.setPermissionNodes(permissions);
+        this.setOriginCheckedKeysByPermissions(permissions);
+        this.setCheckedNodesByKeys(this.originCheckedKeys);
       }
     });
   }
 
-  getNzTreeNodesByPermissions(origins: PermissionDto[]): NzTreeNodeOptions[] {
-    return this.ts.getNzTreeNodes(origins, item => ({
-      title: item.name,
-      key: item.code,
-      isLeaf: !!item.children && item.children.length < 1,
-      selectable: false,
-      expanded: true,
-      disableCheckbox: true,
-      checked: item.status
-    }));
-  }
-
-  getOwnedPermissionKeys(origins: PermissionDto[]) {
-    return this.ts.getKeysWithStatus(origins, item => item.code + '');
-  }
-
-  enterEditMode() {
-    this.editMode = true;
-    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, false);
-  }
-
-  outEditMode() {
-    this.editMode = false;
-    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, true);
-  }
-
-  permissionCheck(event: NzFormatEmitEvent): void {
-    this.finalCheckedKeys = event.keys;
-    // if (event.node.isChecked) {
-    //   this.backCheckNodes(event.node.key);
-    // }
-  }
-
-  backCheckNodes(key: string) {
-    const node = this.ts.getNodeByKey(this.permissionTreeCom.getTreeNodes(), key);
-    if (node) {
-      this.checkParentNodes(node);
-    }
-  }
-
-  checkParentNodes(node: NzTreeNode) {
-    const parent = node.getParentNode();
-    if (parent) {
-      if (!parent.isChecked) {
-        parent.setChecked(true);
-        if (!this.finalCheckedKeys.find(e => e === parent.key)) {
-          this.finalCheckedKeys.push(parent.key);
+  setEditable(state: boolean, syncOriginChecked = true) {
+    this.isEditable = state;
+    this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, !state);
+    if (!state && syncOriginChecked) {
+      const nodes = this.permissionTreeCom.getTreeNodes();
+      this.ts.recursionNodes(nodes, node => {
+        node.isChecked = this.originCheckedKeys.some(k => k === node.key);
+        if (node.parentNode) {
+          this.syncChecked(node.parentNode);
         }
-        this.checkParentNodes(parent);
-      }
-    }
-  }
-
-  saveRoleAndPermissions() {
-    if (this.validationNodes()) {
-      this.service.updateEmployeePermissions(this.employeeId, this.finalCheckedKeys).subscribe(result => {
-        this.originCheckedKeys = this.finalCheckedKeys;
-        this.message.success('修改成功');
-        this.outEditMode();
-      }, error => {
-        this.message.success('修改失败');
       });
     }
   }
 
-  cancelsaveRoleAndPermissions() {
-    this.finalCheckedKeys = this.originCheckedKeys;
-    this.ts.setCheckedByKeys(this.permissionTreeCom.getTreeNodes(), this.originCheckedKeys);
-    this.outEditMode();
-  }
-
-  validationNodes(): boolean {
-    const invalid = this.ts.findInvalidNode(this.permissionTreeCom.getTreeNodes());
-    if (invalid) {
-      this.message.warning(`${invalid.title} 需要前置权限 ${invalid.parentNode.title}`);
-      return false;
+  syncChecked(node: NzTreeNode) {
+    const { isChecked, isHalfChecked } = node;
+    node.isChecked = node.children.every(n => n.isChecked);
+    if (node.isChecked) {
+      node.isHalfChecked = false;
+    } else {
+      node.isHalfChecked = node.children.some(n => n.isChecked || n.isHalfChecked);
     }
-    return true;
+    if (node.isChecked === isChecked && node.isHalfChecked === isHalfChecked) {
+      return;
+    }
+    if (node.parentNode) {
+      this.syncChecked(node.parentNode);
+    }
   }
 
-  seriesTagChange(event: { checked: boolean, tag: any }) {
-    this.service.updateSeriesPermission(this.settings.user.employee_id, event.checked, [event.tag.id])
-      .subscribe(result => {
-        event.tag.status = event.checked;
-      }, error => {
-        event.tag.status = !event.checked;
-      });
+  savePermissions() {
+    const nodes = this.permissionTreeCom.getTreeNodes();
+    const permissionKeys = this.ts.recursionNodesMapArray(nodes, node => node.key, node => node.isChecked || node.isHalfChecked);
+    this.service.updateEmployeePermissions(this.employeeId, permissionKeys).subscribe(() => {
+      this.message.success('修改成功');
+      this.setEditable(false, false);
+    });
   }
+
+  // seriesTagChange(event: { checked: boolean, tag: any }) {
+  //   this.service.updateSeriesPermission(this.settings.user.employee_id, event.checked, [event.tag.id])
+  //     .subscribe(result => {
+  //       event.tag.status = event.checked;
+  //     }, error => {
+  //       event.tag.status = !event.checked;
+  //     });
+  // }
 
 }
