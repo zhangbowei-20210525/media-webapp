@@ -27,7 +27,7 @@ export interface User {
 }
 
 export interface SettingsNotify {
-    type: 'lang' | 'user';
+    type: 'lang' | 'user' | 'permissions';
     /** Update `key` name, limited `layout` type */
     name?: string;
 

@@ -1,22 +1,33 @@
-<div>
+<div *ngIf="isLoaded">
   <div class="roles">
-    <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRoleName" (ngModelChange)="handleRoleChange($event)">
-      <label nz-radio-button [nzValue]="role.name" [nzDisabled]="role.loading" class="role-radio" *ngFor="let role of roles">{{
+    <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRole"
+      (ngModelChange)="onRoleChange($event)">
+      <label nz-radio-button [nzValue]="role" [nzDisabled]="role.loading" class="role-radio" *ngFor="let role of roles">{{
         role.name }}</label>
     </nz-radio-group>
-    <nz-tag *ngIf="!inputVisible" class="editable-tag" (click)="showInput()">
-      添加角色
-    </nz-tag>
-    <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue" class="add-input"
-      (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()">
-    <span class="rf" [hidden]="equalsArray(finalCheckedKeys, originCheckedKeys)">
-      <button nz-button nzType="primary" nzSize="small" (click)="savePermissions()">保存</button>
-      <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelSavePermissions()">取消</button>
-    </span>
   </div>
-  <div class="permission">
-    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
-      (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
+  <p>
+    <button nz-button nzSize="small" nz-popover nzTitle="新增角色" nzTrigger="click" [(nzVisible)]="addRoleVisible"
+      [nzContent]="addRoleTemplate" style="margin-right: 1rem">添加角色</button>
+    <button nz-button nzSize="small" (click)="setEditable(true)" *ngIf="selectedRole" [disabled]="isEditable"
+      style="margin-right: 1rem">编辑权限</button>
+    <span *ngIf="selectedRole" [hidden]="!isEditable" style="margin-right: 1rem">
+      <button nz-button nzSize="small" nzType="primary" (click)="savePermissions()">保存</button>
+      <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="setEditable(false)">取消</button>
+    </span>
+    <button nz-button *ngIf="selectedRole" nzSize="small" nzType="danger" (click)="deleteRole()">删除角色</button>
+  </p>
+  <div class="permission" *ngIf="selectedRole">
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true">
     </nz-tree>
   </div>
 </div>
+
+<ng-template #addRoleTemplate>
+  <p><input nz-input type="text" nzSize="small" placeholder="角色名" #addRoleInput></p>
+  <div class="clearfix">
+    <button class="rf" nz-button nzSize="small" style="margin-left: 1rem" (click)="cancelAddRole()">取消</button>
+    <button class="rf" nz-button nzSize="small" nzType="primary"
+      (click)="confirmAddRole(addRoleInput.value)">确定</button>
+  </div>
+</ng-template>

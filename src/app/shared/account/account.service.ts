@@ -115,7 +115,8 @@ export class AccountService {
   }
 
   phoneValidate(phone: string, code: string) {
-    return this.http.post<any>('/api/v1/login/phone', { phone, code }, { params: { _allow_anonymous: '' } });
+    return this.http.post<{ token: string, auth: any, permissions: any[] }>('/api/v1/login/phone',
+      { phone, code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
   }
 

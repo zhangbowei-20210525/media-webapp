@@ -5,7 +5,7 @@
       <p>{{ employee?.phone }}</p>
       <p>
         <nz-tag *ngFor="let department of employee?.department; let i = index;">
-          {{ sliceTagName(department.name) }}
+          {{ department.name | truncate:20 }}
         </nz-tag>
         <nz-tag class="editable-tag" (click)="editDepartments()">
           <i nz-icon type="edit"></i> 修改部门
@@ -16,7 +16,7 @@
   <nz-tab [nzTitle]="'角色/权限'">
     <p>
       <!-- <i nz-icon type="user" style="margin-right: 0.5rem;"></i> -->
-      <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomCenter'" [nzDisabled]="editMode">
+      <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomCenter'" [nzDisabled]="!isEditable">
         <a nz-dropdown>
           <span *ngIf="selectedRole; else noRole">{{ selectedRole.name }}</span>
           <ng-template #noRole>
@@ -32,14 +32,21 @@
       </nz-dropdown>
     </p>
     <p>
-      <button nz-button nzSize="small" (click)="enterEditMode()" [disabled]="editMode">编辑权限</button>
-      <span [hidden]="!editMode" style="margin-left: 1rem;">
-        <button nz-button nzSize="small" nzType="primary" (click)="saveRoleAndPermissions()" [disabled]="equalsArray(finalCheckedKeys, originCheckedKeys)">保存</button>
-        <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="cancelsaveRoleAndPermissions()">取消</button>
+      <button nz-button nzSize="small" (click)="setEditable(true)" [disabled]="isEditable">编辑权限</button>
+      <span [hidden]="!isEditable" style="margin-left: 1rem;">
+        <button nz-button nzSize="small" nzType="primary" (click)="savePermissions()">保存</button>
+        <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="setEditable(false)">取消</button>
       </span>
     </p>
-    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
+    <!-- <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
       (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
+      <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node">
+          <span>{{ node.title }}</span>
+        </span>
+      </ng-template>
+    </nz-tree> -->
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true">
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node">
           <span>{{ node.title }}</span>

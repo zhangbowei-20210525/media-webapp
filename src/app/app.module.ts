@@ -46,7 +46,7 @@ const I18NSERVICE_PROVIDES = [
 // #endregion
 
 // #region Http 拦截器
-import { DelonAuthModule, SimpleInterceptor } from '@delon/auth';
+import { SimpleInterceptor } from '@delon/auth';
 import { I18nInterceptor } from '@core/net/i18n.interceptor';
 import { DefaultInterceptor } from '@core/net/default.interceptor';
 
@@ -97,7 +97,7 @@ import { DelonModule } from './delon.module';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    DelonAuthModule,
+    // DelonAuthModule,
     DelonModule.forRoot(),
     ...I18NSERVICE_MODULES,
   ],
