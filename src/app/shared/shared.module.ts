@@ -18,9 +18,11 @@ const SERVICES = [
 
 // #region third libs 第三方模块
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { DelonACLModule } from '@delon/acl';
 
 const THIRD_MODULES = [
-  NgZorroAntdModule
+  NgZorroAntdModule,
+  DelonACLModule
 ];
 // #endregion
 
@@ -119,7 +121,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   ],
   providers: [
     // servises
-    ...SERVICES
+    // ...SERVICES
   ],
   entryComponents: [
     // inside components

@@ -3,12 +3,6 @@ import { User, SettingsNotify } from './interface';
 import { Subject, Observable } from 'rxjs';
 import { ACLService } from '@delon/acl';
 
-declare interface Permission {
-  name: string;
-  code: string;
-  children: Permission[];
-}
-
 export const LANG = '_lang';
 export const USER = '_user';
 export const PERMISSIONS = '_permissions';
@@ -21,11 +15,13 @@ export class SettingsService {
   private _notify$ = new Subject<SettingsNotify>();
   private _lang: string;
   private _user: User;
-  private _permissions: Permission[];
+  private _permissions: string[];
 
   constructor(
     private acl: ACLService
-  ) { }
+  ) {
+    this.permissions = this.get(PERMISSIONS);
+  }
 
   private set(key: string, value: any) {
     localStorage.setItem(key, key === LANG ? value : JSON.stringify(value));
@@ -33,8 +29,8 @@ export class SettingsService {
 
   private get(key: string) {
     return key === LANG
-    ? localStorage.getItem(key) || null
-    : JSON.parse(localStorage.getItem(key) || 'null') || null;
+      ? localStorage.getItem(key) || null
+      : JSON.parse(localStorage.getItem(key) || 'null') || null;
   }
 
   get notify(): Observable<SettingsNotify> {
@@ -68,7 +64,7 @@ export class SettingsService {
     this._notify$.next({ type: 'user', value });
   }
 
-  get permissions(): Permission[] {
+  get permissions(): string[] {
     if (!this._permissions) {
       this._permissions = { ...this.get(PERMISSIONS) };
       this.set(PERMISSIONS, this._permissions);
@@ -76,10 +72,13 @@ export class SettingsService {
     return this._permissions;
   }
 
-  set permissions(value: Permission[]) {
+  set permissions(value: string[]) {
     this._permissions = value;
     this.set(PERMISSIONS, this._permissions);
     this._notify$.next({ type: 'permissions', value });
-    // this.acl.set();
+    // this.acl.setRole(['default']);
+    // this.acl.setAbility(value.map(p => p.name));
+    this.acl.set({ role: ['default'], ability: value });
   }
+
 }

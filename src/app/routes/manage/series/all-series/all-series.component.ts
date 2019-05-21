@@ -12,6 +12,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 import * as _ from 'lodash';
 import { indexMap } from '@shared/rxjs/operators';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-all-series',
@@ -35,6 +36,7 @@ export class AllSeriesComponent implements OnInit {
   searchText: string;
 
   constructor(
+    public ability: ACLAbility,
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,

@@ -14,6 +14,8 @@ import {
 import { EmployeeDepartmentComponent } from './components/employee-department.component';
 import { TreeService } from '@shared';
 import { SettingsService } from '@core';
+import { ACLAbility } from '@core/acl';
+import { ACLService } from '@delon/acl';
 
 @Component({
   selector: 'app-employee-details',
@@ -36,12 +38,14 @@ export class EmployeeDetailsComponent implements OnInit {
   permissionNodes: NzTreeNodeOptions[];
 
   constructor(
+    public ability: ACLAbility,
     private route: ActivatedRoute,
     private settings: SettingsService,
     private service: EmployeeDetailsService,
     private modal: NzModalService,
     private message: NzMessageService,
-    private ts: TreeService
+    private ts: TreeService,
+    private acl: ACLService
   ) { }
 
   ngOnInit() {
@@ -51,6 +55,7 @@ export class EmployeeDetailsComponent implements OnInit {
       this.fetchSelectionRoles();
       this.fetchPermissions();
     });
+    // this.acl.removeAbility([this.ability.company.employee.role]);
   }
 
   fetchEmployeeDetails() {
@@ -193,6 +198,7 @@ export class EmployeeDetailsComponent implements OnInit {
     this.service.updateEmployeePermissions(this.employeeId, permissionKeys).subscribe(() => {
       this.message.success('修改成功');
       this.setEditable(false, false);
+      this.settings.permissions = permissionKeys;
     });
   }
 

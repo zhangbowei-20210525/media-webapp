@@ -4,6 +4,7 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { finalize } from 'rxjs/operators';
 import { AddEmployeeComponent } from './add-employee.component';
 import { ActivatedRoute } from '@angular/router';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-employees',
@@ -20,6 +21,7 @@ export class EmployeesComponent implements OnInit {
   dataset = [];
 
   constructor(
+    public ability: ACLAbility,
     private service: EmployeesService,
     private modal: NzModalService,
     private route: ActivatedRoute,

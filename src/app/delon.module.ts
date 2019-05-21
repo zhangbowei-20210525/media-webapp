@@ -18,12 +18,13 @@ export function delonFormConfigFactory(): DelonFormConfig {
 
 export function delonACLConfigFactory(): DelonACLConfig {
   return {
-    ...new DelonACLConfig(),
+    // ...new DelonACLConfig(),
     ...{
-      preCan: (roleOrAbility: ACLCanType) => {
-        const str = roleOrAbility.toString();
-        return str.startsWith('ability.') ? { ability: [ str ] } : null;
-      }
+      guard_url: '/',
+      // preCan: (roleOrAbility: ACLCanType) => {
+      //   const str = roleOrAbility.toString();
+      //   return str.startsWith('ability.') ? { ability: [ str ] } : null;
+      // }
     } as DelonACLConfig
   };
 }

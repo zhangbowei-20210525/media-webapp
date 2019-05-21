@@ -1,6 +1,6 @@
 import { DataSet } from '@antv/data-set';
 import { SeriesService } from 'app/routes/manage/series/series.service';
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,13 +16,15 @@ import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
+import { TreeService } from '@shared/components/tree.service';
 
 declare const WxLogin: any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less']
+  styleUrls: ['./login.component.less'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private i18n: I18nService,
     private modal: NzModalService,
+    private ts: TreeService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
   }
@@ -162,9 +165,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.service.phoneValidate(this.phone.value, this.captcha.value)
         .pipe(finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
-          console.log(result);
+          // console.log(result);
           this.settings.user = result.auth;
-          this.settings.permissions = result.permissions;
+          this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
           this.token.set({
             token: result.token,
             time: +new Date,
@@ -194,6 +197,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.service.emailValidate(this.emailLogInForm.value['email'], this.emailLogInForm.value['password']).subscribe(result => {
         this.message.success(this.translate.instant('app.login.email-login-successfully'));
         this.settings.user = result.auth;
+        this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
         this.token.set({
           token: result.token,
           time: +new Date

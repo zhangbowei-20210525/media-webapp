@@ -20,7 +20,7 @@
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/dashboard'"><span nzTitle="各项统计，提醒与图表"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.dashboard' | translate }}</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" acl [acl-ability]="ability.program.view">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series'"><span nzTitle="节目的版权，样片，高清母带管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.series' | translate }}</span></a>
             </li>
@@ -34,7 +34,7 @@
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/teams'">{{ 'menu.manage.teams' | translate }}</a>
             </li> -->
-            <li class="nav-item">
+            <li class="nav-item" acl [acl-ability]="ability.custom.view">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/customers'"><span nzTitle="客户及供应商的信息管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.customers' | translate }}</span></a>
             </li>
