@@ -12,7 +12,7 @@
             </li>
           </ul>
         </nz-dropdown>
-        <button nz-button (click)="editCompany()">{{ 'global.edit' | translate }}</button>
+        <button nz-button (click)="editCompany()" *ngIf="settings.user.is_admin">{{ 'global.edit' | translate }}</button>
         <button nz-button (click)="addCompany()">{{ 'global.create' | translate }}</button>
       </div>
     </div>
@@ -25,11 +25,11 @@
     </div>
   </section>
 
-  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany">
+  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany" acl [acl-ability]="ability.company.view">
     <div class="block-header">
       <div class="block-title">{{ 'app.teams.department-manage' | translate }}</div>
       <div class="block-options">
-        <button nz-button [routerLink]="'/manage/teams/roles'"><i nz-icon type="setting"
+        <button nz-button [routerLink]="'/manage/teams/roles'" acl [acl-ability]="ability.company.role"><i nz-icon type="setting"
             theme="outline"></i>{{ 'app.teams.option-role' | translate }}</button>
       </div>
     </div>

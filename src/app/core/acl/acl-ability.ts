@@ -67,6 +67,7 @@ export const aclAbility = <ACLAbility>{
     },
     company: <CompanyACLModule>{
         view: null,
+        edit: null,
         role: null,
         employee: <EmployeeACLModule>{
             view: null,
@@ -80,13 +81,13 @@ export const aclAbility = <ACLAbility>{
     }
 };
 
-(function () {
-    for (const key in aclAbility) {
-        if (aclAbility.hasOwnProperty(key)) {
-            buildACLAbility(aclAbility[key], key);
+(function (ab) {
+    for (const key in ab) {
+        if (ab.hasOwnProperty(key)) {
+            buildACLAbility(ab[key], key);
         }
     }
-})();
+})(aclAbility);
 
 function buildACLAbility(ability: ACLModule, name: string) {
     if (!(ability instanceof ACLAbility)) {

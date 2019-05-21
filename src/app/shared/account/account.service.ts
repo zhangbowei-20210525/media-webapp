@@ -9,6 +9,8 @@ import { BindPhoneComponent } from './bind-phone.component';
 import { BindWechatComponent } from './bind-wechat.component';
 import { DOCUMENT } from '@angular/common';
 
+interface LoginResultDto { token: string; auth: any; permissions: any[]; }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -115,33 +117,33 @@ export class AccountService {
   }
 
   phoneValidate(phone: string, code: string) {
-    return this.http.post<{ token: string, auth: any, permissions: any[] }>('/api/v1/login/phone',
+    return this.http.post<LoginResultDto>('/api/v1/login/phone',
       { phone, code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
   }
 
   wechatValidate(code: string) {
-    return this.http.post<any>('/api/v1/login/wechat', { code }, { params: { _allow_anonymous: '' } });
+    return this.http.post<LoginResultDto>('/api/v1/login/wechat', { code }, { params: { _allow_anonymous: '' } });
     // return of('ok');
   }
 
   bindPhoneValidate(phone: string, code: string) {
-    return this.http.post<any>('/api/v1/users/info/login/phone', { phone, code });
+    return this.http.post<LoginResultDto>('/api/v1/users/info/login/phone', { phone, code });
   }
 
   bindWechatValidate(code: string) {
-    return this.http.post<any>('/api/v1/users/info/login/wechat', { code });
+    return this.http.post<LoginResultDto>('/api/v1/users/info/login/wechat', { code });
   }
 
   emailRegister(email: string, password: string, nickname: string) {
-    return this.http.post('/api/v1/register/email', { email, password, nickname }, { params: { _allow_anonymous: '' } });
+    return this.http.post<LoginResultDto>('/api/v1/register/email', { email, password, nickname }, { params: { _allow_anonymous: '' } });
   }
 
   emailValidate(email: string, password: string) {
-    return this.http.post<any>('/api/v1/login/email', { email, password }, { params: { _allow_anonymous: '' } });
+    return this.http.post<LoginResultDto>('/api/v1/login/email', { email, password }, { params: { _allow_anonymous: '' } });
   }
 
   emailActivate(token: string) {
-    return this.http.post<any>('/api/v1/activate/email', { email_token: token }, { params: { _allow_anonymous: '' } });
+    return this.http.post<LoginResultDto>('/api/v1/activate/email', { email_token: token }, { params: { _allow_anonymous: '' } });
   }
 }

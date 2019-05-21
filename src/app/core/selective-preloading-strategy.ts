@@ -11,7 +11,7 @@ export class SelectivePreloadingStrategy implements PreloadingStrategy {
     if (route.data && route.data['preload']) {
       return load();
     } else {
-      return of(null);
+      return of();
     }
   }
 }

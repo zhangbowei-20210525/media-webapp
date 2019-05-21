@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { AccountService } from '@shared';
+import { AccountService, TreeService } from '@shared';
 import { switchMap } from 'rxjs/operators';
 import { SettingsService } from '@core';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
@@ -17,6 +17,7 @@ export class EmailComponent implements OnInit {
     private accountervice: AccountService,
     private route: ActivatedRoute,
     private settings: SettingsService,
+    private ts: TreeService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService
   ) { }
 
@@ -30,6 +31,7 @@ export class EmailComponent implements OnInit {
       })
     ).subscribe((result => {
       this.settings.user = result.auth;
+      this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
       this.tokenService.set({
         token: result.token,
         time: +new Date

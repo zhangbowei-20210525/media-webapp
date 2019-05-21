@@ -121,7 +121,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   ],
   providers: [
     // servises
-    ...SERVICES
+    // ...SERVICES
   ],
   entryComponents: [
     // inside components

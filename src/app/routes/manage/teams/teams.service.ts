@@ -28,7 +28,7 @@ export class TeamsService {
   }
 
   switchCompany(employeeId: number) {
-    return this.http.put<any>(`/api/v1/login/${employeeId}`, {});
+    return this.http.put<{ token: string, auth: any, permissions: any[] }>(`/api/v1/login/${employeeId}`, {});
   }
 
   getDepartments() {

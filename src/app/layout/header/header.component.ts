@@ -5,6 +5,8 @@ import { DOCUMENT } from '@angular/common';
 import { DA_SERVICE_TOKEN, ITokenService, SimpleTokenModel } from '@delon/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QueueUploader } from '@shared/upload';
+import { ACLAbility } from '@core/acl';
+import { ACLService } from '@delon/acl';
 
 @Component({
   selector: 'app-header',
@@ -18,14 +20,21 @@ export class HeaderComponent implements OnInit {
   uploads: number;
 
   constructor(
+    public ability: ACLAbility,
     public settings: SettingsService,
     private router: Router,
     private accountService: AccountService,
     private i18n: I18nService,
     private uploader: QueueUploader,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
-    @Inject(DOCUMENT) private doc: any
-  ) { }
+    @Inject(DOCUMENT) private doc: any,
+    private acl: ACLService
+  ) {
+    console.log('can', ability.program.view, acl.canAbility({ ability: [ability.program.view] }));
+    this.acl.change.subscribe(data => {
+      console.log(data);
+    });
+  }
 
   ngOnInit() {
     this.langs = this.i18n.getLangs();

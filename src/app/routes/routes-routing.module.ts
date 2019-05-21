@@ -10,6 +10,8 @@ import { SimpleGuard } from '@delon/auth';
 import { SeriesComponent } from './manage/series/series.component';
 import { BrowseRecordComponent } from './manage/personal-center/browse-record/browse-record.component';
 import { MarketDetailsComponent } from './market/market-details/market-details.component';
+import { ACLGuard, ACLType } from '@delon/acl';
+import { aclAbility } from '@core/acl';
 
 const routes: Routes = [
   {
@@ -34,7 +36,10 @@ const routes: Routes = [
             path: 'dashboard',
             component: DashboardComponent
           },
-          { path: 'series', loadChildren: './manage/series/series.module#SeriesModule' },
+          {
+            path: 'series', loadChildren: './manage/series/series.module#SeriesModule',
+            canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.view] } }
+          },
           { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
           { path: 'customers', loadChildren: './manage/customers/customers.module#CustomersModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },

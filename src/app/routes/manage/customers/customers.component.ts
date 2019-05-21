@@ -6,6 +6,8 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { AddCustomerComponent } from './components/add-customer/add-customer.component';
+import { ACLAbility } from '@core/acl';
+import { ACLService } from '@delon/acl';
 
 @Component({
   selector: 'app-customers',
@@ -20,12 +22,16 @@ export class CustomersComponent implements OnInit {
   dataset = [];
 
   constructor(
+    public ability: ACLAbility,
     private router: Router,
     private service: CustomersService,
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,
-  ) { }
+    private acl: ACLService
+  ) {
+    console.log('can', ability.custom.view, acl.canAbility({ ability: [ability.custom.view] }));
+  }
 
   ngOnInit() {
     this.fetchPublicities();
