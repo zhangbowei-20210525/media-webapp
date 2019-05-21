@@ -15,6 +15,7 @@ import { SettingsService, I18nService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd';
 
 declare const WxLogin: any;
 
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private translate: TranslateService,
     private i18n: I18nService,
+    private modal: NzModalService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
     this.$close = new Subject();
@@ -63,10 +65,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // zh-CN en-US
-   this.languageVersion = this.i18n.currentLang;
-   if (this.languageVersion === 'en-US') {
-    this.mode = 'emailLogIn';
-   }
+    this.languageVersion = this.i18n.currentLang;
+    if (this.languageVersion === 'en-US') {
+      this.mode = 'emailLogIn';
+    }
     this.form = this.fb.group({
       phone: [null, [Validators.required]],
       captcha: [null, [Validators.required]],
@@ -164,9 +166,11 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.settings.user = result.auth;
           this.token.set({
             token: result.token,
-            time: +new Date
+            time: +new Date,
+            is_new_user: result.is_new_user,
+            receipt_source_auth: result.receipt_source_auth
           });
-          this.close(true);
+            this.close(true);
           // this.router.navigate([`/manage/series`]);
         }, error => {
 
@@ -176,11 +180,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   emailRegisterSubmit() {
     if (this.validation(this.emailRegisterForm)) {
-    // tslint:disable-next-line:max-line-length
-    this.service.emailRegister(this.emailRegisterForm.value['emailAddress'], this.emailRegisterForm.value['emailPassword'], this.emailRegisterForm.value['nickname']).subscribe(result => {
-      this.message.success(this.translate.instant('app.login.email-registered-successfully'));
-     this.mode = 'emailLogIn';
-    });
+      // tslint:disable-next-line:max-line-length
+      this.service.emailRegister(this.emailRegisterForm.value['emailAddress'], this.emailRegisterForm.value['emailPassword'], this.emailRegisterForm.value['nickname']).subscribe(result => {
+        this.message.success(this.translate.instant('app.login.email-registered-successfully'));
+        this.mode = 'emailLogIn';
+      });
     }
   }
 

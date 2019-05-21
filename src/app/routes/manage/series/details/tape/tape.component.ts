@@ -211,7 +211,7 @@ export class TapeComponent implements OnInit {
 
   addPubTapeAgreed = (component: AddPubTapeComponent) => new Promise((resolve, reject) => {
     if (component.validation()) {
-      component.formSubmit()
+      component.submit()
         .subscribe(res => {
           this.message.success(this.translate.instant('global.add-success'));
           this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {

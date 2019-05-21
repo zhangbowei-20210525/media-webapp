@@ -33,11 +33,11 @@ export class TapeDownloadComponent implements OnInit {
         this.indeterminate = true;
         this.sources = res.list;
         console.log(res.list);
-        const b =[];
-        const aa = res.list.forEach(x =>b.push(x.id));
+        const b = [];
+        const aa = res.list.forEach(x => b.push(x.id));
         console.log(b);
         this.sourceCheckOptions = this.selectArray(b, e => Object.create({ value: e, checked: false }));
-        this.allChecked = true;
+        this.allChecked = false;
         this.updateAllChecked(); // 默认全选
       });
   }
