@@ -7,6 +7,7 @@ import { SharedModule } from '@shared';
 import { LayoutModule } from 'app/layout/layout.module';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
 import { BrowseRecordComponent } from './personal-center/browse-record/browse-record.component';
+import { PubAuthorizationReceiveComponent } from './pub-authorization-receive/pub-authorization-receive.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { BrowseRecordComponent } from './personal-center/browse-record/browse-re
     DashboardComponent,
     PersonalCenterComponent,
     BrowseRecordComponent,
+    PubAuthorizationReceiveComponent,
    ],
   imports: [
     CommonModule,

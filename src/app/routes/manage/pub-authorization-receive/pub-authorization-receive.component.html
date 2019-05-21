@@ -1,0 +1,93 @@
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">
+      <span>授权信息</span>
+    </div>
+  </div>
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="8">
+        <span class="info-filed">授权公司</span>
+        <span class="text-ellipsis">{{ authInfo?.company_full_name }}</span>
+      </div>
+      <div nz-col nzSpan="8">
+        <span class="info-filed">联系人</span>
+        <span>{{ authInfo?.created_name }}</span>
+      </div>
+      <div nz-col nzSpan="8">
+        <span class="info-filed">手机号码</span>
+        <span>{{ authInfo?.created_phone }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="8">
+        <span class="info-filed">节目名称</span>
+        <span>{{ authInfo?.source?.program_name }}</span>
+      </div>
+      <div nz-col nzSpan="8">
+        <span class="info-filed">母带版本</span>
+        <span>{{ authInfo?.source?.name }}</span>
+      </div>
+      <div nz-col nzSpan="8">
+        <span class="info-filed">集数</span>
+        <span>{{ authInfo?.source?.episode }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+        <div nz-col nzSpan="8">
+          <span class="info-filed">语言</span>
+          <span *ngIf="authInfo?.source?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+          <span *ngIf="authInfo?.source?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
+        </div>
+        <div nz-col nzSpan="8">
+          <span class="info-filed">格式</span>
+          <span>{{ authInfo?.source?.format }}</span>
+        </div>
+        <div nz-col nzSpan="8">
+          <span class="info-filed">码率</span>
+          <span>{{ authInfo?.source?.bit_rate }}</span>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="block clearfix" [hidden]="isShow == false">
+    <div class="block-header">
+      <div class="block-title">
+        <span>接收公司信息</span>
+      </div>
+    </div>
+    <div class="block-content">
+        <form nz-form [formGroup]="validateForm">
+            <nz-form-item>
+              <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
+              <nz-form-control [nzSm]="17" [nzXs]="24">
+                <input placeholder="请填写接受公司" nz-input id="companyFullName" formControlName="companyFullName"/>    
+                <nz-form-explain *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请填写接受公司
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label [nzSm]="5" nzRequired>公司简称</nz-form-label>
+              <nz-form-control [nzSm]="6">
+                <input placeholder="请填写公司简称" nz-input id="companyName" formControlName="companyName"/>
+                <nz-form-explain *ngIf="validateForm.get('companyName').dirty && validateForm.get('companyName').errors">请填写公司简称
+                </nz-form-explain>
+              </nz-form-control>
+              <nz-form-label [nzSm]="5"nzRequired>手机号码</nz-form-label>
+              <nz-form-control [nzSm]="6">
+                <input placeholder="请填写手机号码" nz-input id="phone" formControlName="phone"/>
+                <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.required">请选填手机号码
+                </nz-form-explain>
+                <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.pattern">
+                    请输入正确的手机号码
+                  </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+    </div>
+  </div>
+<div style="text-align: center;margin-top: 50px;margin-bottom: 100px">
+    <button nz-button nzType="danger" (click)="refused()">拒绝</button>
+    <button *ngIf="isShow == false" nz-button nzType="primary" style = "margin-left: 50px" (click)="getReceiveInfo()">获取接收公司信息</button>
+    <button *ngIf="isShow == true" nz-button nzType="primary" style = "margin-left: 50px" (click)="submit()">确认接受公司信息</button>
+  </div>

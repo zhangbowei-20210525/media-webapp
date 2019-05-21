@@ -8,7 +8,7 @@
     <nz-table #basicTable [nzData]="tapesList" nzShowPagination="false" style="padding-bottom: 20px">
       <thead>
         <tr>
-            <th style="text-align: center">#</th>
+          <th style="text-align: center">#</th>
           <th style="text-align: center">{{ 'app.series.source-name' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.source-type' | translate }}</th>
           <th style="text-align: center">{{ 'app.series.source-language' | translate }}</th>
@@ -21,7 +21,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data;let i = index" [ngClass]="{'selected': isId == data.id}">
-            <td>{{ i + 1 }}</td>
+          <td>{{ i + 1 }}</td>
           <td style="text-align: center">{{data.name}}</td>
           <td style="text-align: center">
             <span *ngIf="data.source_type == 'online'">{{ 'app.series.source-type-online' | translate }}</span>
@@ -30,8 +30,8 @@
           <td style="text-align: center">
             <span *ngIf="data?.language == 'Chinese'">中文</span>
             <span *ngIf="data?.language == 'English'">英语</span>
-             <span *ngIf="data?.language == 'other'">其他</span>
-        </td>
+            <span *ngIf="data?.language == 'other'">其他</span>
+          </td>
           <td style="text-align: center">
             <span *ngIf="data?.subtitle == 'Chinese'">中文</span>
             <span *ngIf="data?.subtitle == 'English'">英语</span>
@@ -39,7 +39,8 @@
           </td>
           <td style="text-align: center">{{data.format}}</td>
           <td style="text-align: center">{{data.bit_rate}}</td>
-          <td style="text-align: center"><a (click)="pitchOn(data.id, data.source_type)">{{ 'app.series.view' | translate }}</a></td>
+          <td style="text-align: center"><a
+              (click)="pitchOn(data.id, data.source_type)">{{ 'app.series.view' | translate }}</a></td>
           <td style="text-align: center">
             <a (click)="editTape(data.id, data.source_type)"><i nz-icon type="form" theme="outline"
                 style="font-size: 14px"></i></a>
@@ -102,7 +103,7 @@
           (nzPageIndexChange)="tapeFilePageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th>{{ 'app.series.filename' | translate }}</th>
               <th>{{ 'app.series.size' | translate }}</th>
               <th>{{ 'app.series.created-time' | translate }}</th>
@@ -110,7 +111,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable.data;let i = index">
-                <td>{{ i + 1 + tapeFilePagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + tapeFilePagination.page * 10 - 10}}</td>
               <td>{{data.name}}</td>
               <td>{{data.size | byteFormat}}</td>
               <td>{{data.created_at}}</td>
@@ -124,21 +125,28 @@
           (nzPageIndexChange)="pubTapePageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.release-man' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.release-date' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.company-nickname' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.download-count' | translate }}</th>
+              <th style="text-align: center">状态</th>
               <th style="text-align: center">{{ 'app.series.operation' | translate }}</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable1.data;let i = index">
-                <td>{{ i + 1 + pubTapePagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + pubTapePagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.created_name}}</td>
               <td style="text-align: center">{{data.created_at}}</td>
-              <td style="text-align: center">{{data.auth_company_name}}</td>
+              <td style="text-align: center">{{data.auth_custom_name}}</td>
               <td style="text-align: center">{{data.download_times}}</td>
+              <td style="text-align: center">
+                <span *ngIf="data.receipt_status == 0">等待中</span>
+                <span *ngIf="data.receipt_status == 1">生效中</span>
+                <span *ngIf="data.receipt_status == 2">已拒绝</span>
+                <span *ngIf="data.receipt_status == 3">已超时</span>
+              </td>
               <td style="text-align: center">
                 <a (click)="deletePubTape(data.auth_company_id)"><i nz-icon type="delete" theme="outline"
                     style="font-size: 14px;"></i></a>
@@ -200,7 +208,7 @@
         <span *ngIf="tapeDetailsInfo?.sharpness == 'HD'">高清</span>
         <span *ngIf="tapeDetailsInfo?.sharpness == 'BL'">蓝光</span>
         <span *ngIf="tapeDetailsInfo?.sharpness == 'SL'">模拟</span>
-        <span *ngIf="tapeDetailsInfo?.sharpness == '4K'">4K</span> 
+        <span *ngIf="tapeDetailsInfo?.sharpness == '4K'">4K</span>
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.brand' | translate }}</span>
@@ -209,54 +217,66 @@
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}1</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[0] == 'international'">{{ 'app.series.international' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'music'">{{ 'app.series.music' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[0] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[0] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>
       </div>
     </div>
     <div nz-row class="series-info-row">
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}2</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[1] == 'international'">{{ 'app.series.international' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'music'">{{ 'app.series.music' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[1] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[1] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}3</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[2] == 'international'">{{ 'app.series.international' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'music'">{{ 'app.series.music' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[2] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[2] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}4</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[3] == 'international'">{{ 'app.series.international' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'music'">{{ 'app.series.music' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[3] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[3] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}5</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[4] == 'international'">{{ 'app.series.international' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'music'">{{ 'app.series.music' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[4] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>       
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[4] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>
       </div>
     </div>
     <div nz-row class="series-info-row">
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.sound-track' | translate }}6</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'hybrid'">{{ 'app.series.hybrid' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'international'">{{ 'app.series.international' | translate }}</span>
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[5] == 'international'">{{ 'app.series.international' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'music'">{{ 'app.series.music' | translate }}</span>
         <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'dialogue'">{{ 'app.series.dialogue' | translate }}</span>
-        <span *ngIf="tapeDetailsInfo?.sound_track[5] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span> 
+        <span
+          *ngIf="tapeDetailsInfo?.sound_track[5] == 'DynamicEffect'">{{ 'app.series.DynamicEffect' | translate }}</span>
       </div>
       <div nz-col nzSpan="6">
         <span class="info-filed">{{ 'app.series.carrier' | translate }}</span>

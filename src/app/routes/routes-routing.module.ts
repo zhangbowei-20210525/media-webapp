@@ -10,6 +10,7 @@ import { SimpleGuard } from '@delon/auth';
 import { SeriesComponent } from './manage/series/series.component';
 import { BrowseRecordComponent } from './manage/personal-center/browse-record/browse-record.component';
 import { MarketDetailsComponent } from './market/market-details/market-details.component';
+import { PubAuthorizationReceiveComponent } from './manage/pub-authorization-receive/pub-authorization-receive.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
           {
             path: 'dashboard',
             component: DashboardComponent
+          },
+          {
+            path: 'pubAuthorizationReceive',
+            component: PubAuthorizationReceiveComponent
           },
           { path: 'series', loadChildren: './manage/series/series.module#SeriesModule' },
           { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
