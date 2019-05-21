@@ -23,7 +23,7 @@ import { PurTapeDetailsComponent } from './pur-tape-details/pur-tape-details.com
     DownloadRecordComponent,
     DeclaredComponent,
     TypeComponent,
-
+    PurTapeDetailsComponent
   ],
   imports: [
     CommonModule,

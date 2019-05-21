@@ -8,8 +8,6 @@ import { MessageService } from '@shared';
 @Component({
   selector: 'app-transmit-schedule',
   templateUrl: './transmit-schedule.component.html',
-  styleUrls: ['./transmit-schedule.component.less'],
-
 })
 export class TransmitScheduleComponent implements OnInit, OnDestroy {
 
