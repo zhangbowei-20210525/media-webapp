@@ -1,0 +1,111 @@
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">
+      <span>{{ 'app.series.basic-info' | translate }}</span>
+      <a style="margin-left: 1rem"><i nz-icon type="edit" theme="outline"></i></a>
+    </div>
+    <div class="block-options">
+      <nz-tag [nzColor]="'magenta'" *ngIf="condInfo?.contract_type == 'purchase'">采购合同</nz-tag>
+      <nz-tag [nzColor]="'orange'" *ngIf="condInfo?.contract_type == 'publish'">发行合同</nz-tag>
+    </div>
+  </div>
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed" style="font-weight: bold">合同名称：</span>
+        <span style="font-weight: bold">{{ condInfo?.contract_name }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">合同编号：</span>
+        <span>{{ condInfo?.contract_number }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">签约客户：</span>
+        <span>{{ condInfo?.custom_name }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">合同金额：</span>
+        <span>{{ condInfo?.total_amount }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">付款期数：</span>
+        <span>{{ condInfo?.payment_form }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">支付总额：</span>
+        <span>{{ condInfo?.paid_amount }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">总集数：</span>
+        <span>{{ condInfo?.total_episodes }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">每集单价：</span>
+        <span>{{ condInfo?.episode_price }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="6">
+        <span class="info-filed">节目费总价：</span>
+        <span>{{ condInfo?.total_episodes_price }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">磁复邮单价：</span>
+        <span>{{ condInfo?.tape_mail_price }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">磁复邮总价：</span>
+        <span>{{ condInfo?.total_tape_mail_price }}</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <span class="info-filed">经办人：</span>
+        <span>{{ condInfo?.charge_person }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">
+      <span *ngIf="condInfo?.contract_type == 'purchase'">采购节目及其权利</span>
+      <span *ngIf="condInfo?.contract_type == 'publish'">发行节目及其权利</span>
+    </div>
+  </div>
+  <div class="block-content">
+    <nz-table #dataTable nzBordered [nzData]="dataSet" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th nzWidth="18rem">项目名称</th>
+          <th>品类</th>
+          <th>权利</th>
+          <th>地域</th>
+          <th nzWidth="18rem">期限</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of dataTable.data">
+          <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex + 1 }}</td>
+          <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+            <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
+          </td>
+          <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type | seriesType | emptyDefaultChar }}</td>
+          <td [ngClass]="{'sole': data.sole}">{{ data.right }}</td>
+          <td>{{ data.area }}</td>
+          <td>
+            {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+          (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+          </td>
+          <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+            <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+            <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid)"><i class="text-info"
+                nz-icon type="delete" theme="outline"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

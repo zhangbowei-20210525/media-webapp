@@ -42,11 +42,11 @@ export class DashboardService {
   }
 
   getAllStatistics(year: any, areas: any, id: any) {
-    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/quarter?year=${year}&areas=${areas}&program_id=${id}`);
+    return this.http.get<any>(`/api/v1/analysis/rights/contracts/publish/quarter?year=${year}&areas=${areas}&program_id=${id}`);
   }
 
   getAnnualStatistics(year: any, areas: any, id: any) {
-    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/year?&year=${year}&areas=${areas}&program_id=${id}`);
+    return this.http.get<any>(`/api/v1/analysis/rights/contracts/publish/year?&year=${year}&areas=${areas}&program_id=${id}`);
   }
 
   searchSeries(name: string, program_ids: any) {
@@ -54,10 +54,10 @@ export class DashboardService {
   }
 
   getPurCustomer(start_date: any, end_date: any) {
-    return this.http.get<any>(`/api/v1/analysis/purchase_right_contract/custom?start_date=${start_date}&end_date=${end_date}`);
+    return this.http.get<any>(`/api/v1/analysis/rights/contracts/purchase/custom?start_date=${start_date}&end_date=${end_date}`);
   }
 
   getPubCustomer(start_date: any, end_date: any) {
-    return this.http.get<any>(`/api/v1/analysis/publish_right_contract/custom?start_date=${start_date}&end_date=${end_date}`);
+    return this.http.get<any>(`/api/v1/analysis/rights/contracts/publish/custom?start_date=${start_date}&end_date=${end_date}`);
   }
 }

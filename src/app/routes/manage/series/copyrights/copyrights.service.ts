@@ -63,7 +63,7 @@ export class CopyrightsService {
   }
 
   getSeries(pagination: PaginationDto, params: FiltrateSeriesParams) {
-    return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>('/api/v1/right_programs', {
+    return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>('/api/v1/rights/programs', {
       params: {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
@@ -74,7 +74,7 @@ export class CopyrightsService {
   }
 
   getPubRights(pagination: PaginationDto, params: FiltrateSeriesParams) {
-    return this.http.get<any>('/api/v1/rights/publish/right_programs', {
+    return this.http.get<any>('/api/v1/rights/publish/programs', {
       params: {
         page: pagination.page as any, page_size: pagination.page_size as any,
         due_date: params.due_date, area_number: params.area_number, right_type: params.right_type,
@@ -94,7 +94,7 @@ export class CopyrightsService {
   //   end_date: string,
   //   is_salable: string
   // ) {
-  //   return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>(`/api/v1/right_programs?q=${search}`,
+  //   return this.http.get<PaginationResponseDto<CopyrightSeriesDto>>(`/api/v1/rights/programs?q=${search}`,
   //     {
   //       params: {
   //         page: pagination.page as any, page_size: pagination.page_size as any,
@@ -104,11 +104,11 @@ export class CopyrightsService {
   // }
 
   deleteCopyrights(pid: number) {
-    return this.http.delete(`/api/v1/right_programs/${pid}`);
+    return this.http.delete(`/api/v1/rights/programs/${pid}`);
   }
 
   deletePubCopyrights(pid: number) {
-    return this.http.delete(`/api/v1/rights/publish/right_programs/${pid}`);
+    return this.http.delete(`/api/v1/rights/publish/programs/${pid}`);
   }
 
   getCopyrightAreaOptions() {
@@ -128,7 +128,7 @@ export class CopyrightsService {
   }
 
   publishRights(rightsData: PublishRightsDto) {
-    return this.http.post('/api/v1/publish_rights', rightsData);
+    return this.http.post('/api/v1/rights/publish', rightsData);
   }
 
   getSeriesNames(program_ids?: number[]) {

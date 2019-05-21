@@ -125,11 +125,11 @@ export class AccountService {
   }
 
   bindPhoneValidate(phone: string, code: string) {
-    return this.http.post<any>('/api/v1/users/login_info/phone', { phone, code });
+    return this.http.post<any>('/api/v1/users/info/login/phone', { phone, code });
   }
 
   bindWechatValidate(code: string) {
-    return this.http.post<any>('/api/v1/users/login_info/wechat', { code });
+    return this.http.post<any>('/api/v1/users/info/login/wechat', { code });
   }
 
   emailRegister(email: string, password: string, nickname: string) {

@@ -16,6 +16,8 @@ export class AddPubTapeComponent implements OnInit {
   phone: number;
   companiesName = [];
   isOpen: boolean;
+  companyOptions: any[];
+  filteredCompanyOptions: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -24,9 +26,13 @@ export class AddPubTapeComponent implements OnInit {
 
   ngOnInit() {
     // this.seriesService.getCompaniesName()
+    this.seriesService.getCompanyList().subscribe(res => {
+      this.filteredCompanyOptions = this.companyOptions = res;
+    });
     this.validateForm = this.fb.group({
-      companyName: [null, [Validators.required]],
-      phone: [null, [Validators.required]]
+      company: [null, [Validators.required]],
+      phone: [null, [Validators.required]],
+      contact: [null, [Validators.required]],
     });
   }
 
@@ -42,6 +48,22 @@ export class AddPubTapeComponent implements OnInit {
     return form.valid;
   }
 
+  onCompanyInput(value: string) {
+    this.filteredCompanyOptions = this.companyOptions.filter(item => item.name.indexOf(value) >= 0);
+    setTimeout(() => {
+      console.log('1', this.validateForm.value['company']);
+    }, 0);
+    const  company =  this.companyOptions.filter(f =>  f.name === this.validateForm.value['company']);
+    console.log(company);
+    // if (company.length > 0) {
+    //     this.seriesService.getContacts(company[0].id).subscribe(res => console.log(res));
+    // }
+  }
+
+  onContactInput() {}
+
+  onPhoneInput() {}
+
   formSubmit(): Observable<any> {
     const form = this.validateForm;
     const data = {
@@ -50,22 +72,22 @@ export class AddPubTapeComponent implements OnInit {
     return this.seriesService.addPubTape(this.id, data);
   }
 
-  openChange() {
-    console.log(this.isOpen);
-  }
+  // openChange() {
+  //   console.log(this.isOpen);
+  // }
 
-  inputChange() {
-    if (this.validateForm.value['phone'] === '') {
-      this.isOpen = false;
-    }
-  }
+  // inputChange() {
+  //   if (this.validateForm.value['phone'] === '') {
+  //     this.isOpen = false;
+  //   }
+  // }
 
-  search() {
-    this.phone = this.validateForm.value['phone'];
-    this.seriesService.getCompaniesName(this.phone).subscribe(res => {
-      this.companiesName = res;
-      this.isOpen = true;
-    });
-  }
+  // search() {
+  //   this.phone = this.validateForm.value['phone'];
+  //   this.seriesService.getCompaniesName(this.phone).subscribe(res => {
+  //     this.companiesName = res;
+  //     this.isOpen = true;
+  //   });
+  // }
 
 }

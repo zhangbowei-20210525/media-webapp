@@ -12,11 +12,11 @@ export class TransmitService {
   ) { }
 
   tapeFileList(id: number) {
-    return this.http.get<any>(`/api/v1/bought_sources/${id}/files/brief`);
+    return this.http.get<any>(`/api/v1/sources/bought/${id}/files/brief`);
   }
 
   tapeDownloadInfo(id: number) {
-    return this.http.get<any>(`/api/v1/bought_sources/${id}`);
+    return this.http.get<any>(`/api/v1/sources/bought/${id}`);
   }
 
   getUploadRecord(id: number, pagination: PaginationDto) {
@@ -28,7 +28,7 @@ export class TransmitService {
   }
 
   getPurchaseDownloadRecord(id: number, pagination: PaginationDto) {
-    return this.http.get<PaginationResponseDto<any[]>>(`/api/v1/bought_sources/${id}/task_groups/downloads`, {
+    return this.http.get<PaginationResponseDto<any[]>>(`/api/v1/sources/bought/${id}/task_groups/downloads`, {
       params: {
         page: pagination.page as any,
         page_size: pagination.page_size as any
@@ -37,10 +37,18 @@ export class TransmitService {
   }
 
   getTransmitSchedule(id: number) {
-    return this.http.get<any>(`/api/v1/task_groups/${id}/tasks`);
+    return this.http.get<any>(`/api/v1/sources/tasks/groups/${id}/tasks`);
   }
 
   cancelDownloadTask(id: number) {
-    return this.http.patch<any>(`/api/v1/source_tasks/${id}`, {});
+    return this.http.patch<any>(`/api/v1/sources/tasks/${id}`, {});
+  }
+
+  getPurTapeInfo(id: number) {
+    return this.http.get<any>(`/api/v1/sources/bought/${id}`);
+  }
+
+  getPurTapeFile(id: number) {
+    return this.http.get<any>(`/api/v1/sources/bought/${id}/files?page=${''}&page_size=${''}`);
   }
 }

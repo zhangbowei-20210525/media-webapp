@@ -17,6 +17,7 @@ import { ProcurementComponent } from './contracts/procurement/procurement.compon
 import { PublishedComponent } from './contracts/published/published.component';
 import { PublishedComponent as PublishedListComponent } from './copyrights/published/published.component';
 import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
+import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
 
 
 
@@ -61,10 +62,14 @@ const routes: Routes = [
           { path: 'procurement', component: ProcurementComponent },
           { path: 'published', component: PublishedComponent }
         ]
-      }
+      },
     ]
   },
   { path: 'publicity-details/:id', component: PublicityDetailsComponent },
+  {
+    path: 'cd/:id',
+    component: ContractDetailsComponent
+  },
   {
     path: 'd/:sid',
     component: SeriesDetailsComponent,

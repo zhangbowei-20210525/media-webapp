@@ -5,6 +5,7 @@ import { HistoricRecordComponent } from './historic-record/historic-record.compo
 import { DownloadRecordComponent } from './download-record/download-record.component';
 import { DeclaredComponent } from './declared/declared.component';
 import { TypeComponent } from './type/type.component';
+import { PurTapeDetailsComponent } from './pur-tape-details/pur-tape-details.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,6 @@ const routes: Routes = [
       }
     ]
   },
-  
   {
     path: 'transmit',
     component: TransmitComponent
@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path: 'download-record/:id',
     component: DownloadRecordComponent
+  },
+  {
+    path: 'pur-d/:id',
+    component: PurTapeDetailsComponent
   },
 ];
 

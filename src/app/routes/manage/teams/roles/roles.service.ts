@@ -14,19 +14,19 @@ export class RolesService {
   ) { }
 
   getRoles() {
-    return this.http.get<RoleDto[]>('/api/v1/roles');
+    return this.http.get<RoleDto[]>('/api/v1/companies/roles');
   }
 
   addRole(name: string) {
-    return this.http.post<any>('/api/v1/roles', { name, permission_data: [] });
+    return this.http.post<any>('/api/v1/companies/roles', { name, permission_data: [] });
   }
 
   getRolePermissions(id: number) {
-    return this.http.get<PermissionDto[]>(`/api/v1/roles/${id}`);
+    return this.http.get<PermissionDto[]>(`/api/v1/companies/roles/${id}`);
   }
 
   updateRolePermissions(roleId: number, permission_data: string[]) {
-    return this.http.put(`/api/v1/roles/${roleId}`, { permission_data });
+    return this.http.put(`/api/v1/companies/roles/${roleId}`, { permission_data });
   }
 
 }

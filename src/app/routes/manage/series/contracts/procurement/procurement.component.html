@@ -19,7 +19,7 @@
     <tbody>
       <tr *ngFor="let data of dataTable.data">
         <td>{{ data.displayIndex }}</td>
-        <td>{{ data.contract_number | emptyDefaultChar}}</td>
+        <td><a (click)="contractDetails(data.id)">{{ data.contract_number | emptyDefaultChar}}</a></td>
         <!-- <td>{{ data }}</td> -->
         <td>{{ data.custom_name }}</td>
         <td>{{ data.total_episodes | emptyDefaultChar }}</td>

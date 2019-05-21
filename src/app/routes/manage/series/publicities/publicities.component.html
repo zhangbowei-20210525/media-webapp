@@ -67,7 +67,7 @@
       <div class="home-page-navigation-wk-four">电影</div>
       <div class="home-page-navigation-wk-five">电视</div>
       <div class="home-page-navigation-wk-six">综艺</div>
-      <div class="home-page-navigation-wk-seven">其他</div>
+      <div class="home-page-naGitigation-wk-seven">其他</div>
     </div>
     <div class="home-page-navigation-wk-eight">
       <div class="home-page-navigation-wk-nine">
@@ -127,13 +127,12 @@
               </div>
             </div>
           </div>
-
         </li>
       </ul>
     </div>
     <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0  || mode == 'table'">
       <nz-pagination [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count" [nzPageSize]="pagination.page_size"
-        (nzPageIndexChange)="pageChnage()"></nz-pagination>
+        (nzPageIndexChange)="pageChange($event)"></nz-pagination>
     </div>
   </div>
 </div>

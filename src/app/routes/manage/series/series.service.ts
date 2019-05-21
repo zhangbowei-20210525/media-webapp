@@ -195,7 +195,7 @@ export class SeriesService {
   }
 
   getIpAddress() {
-    return this.http.get<any>(`/api/v1/source_clients/ip`);
+    return this.http.get<any>(`/api/v1/sources/client/ip`);
   }
 
   getCompaniesName(phone: number) {
@@ -215,7 +215,7 @@ export class SeriesService {
   }
 
   purchaseTapes(pagination: PaginationDto) {
-    return this.http.get<any>(`/api/v1/bought_sources?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<any>(`/api/v1/sources/bought?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
   getUserinfo(id: number) {
@@ -260,4 +260,13 @@ export class SeriesService {
     // return this.cache.isCold(CacheType.PROGRAM_TYPE) ? this.requestProgramTypes() : of(this.cache.get(CacheType.PROGRAM_TYPE));
     return this.requestProgramTypes();
   }
+
+  getCompanyList() {
+    return this.http.get<any>(`/api/v1/customs/brief`);
+  }
+
+  getContacts(id: number) {
+    return this.http.get<any>(`/api/v1/custom/${id}/liaison`);
+  }
+
 }

@@ -14,12 +14,12 @@ export class ContractsService {
 
   getProcurementContracts(pagination: PaginationDto) {
     return this.http.get<PaginationResponseDto<ContractDto>>('/api/v1/rights/contracts?contract_type=purchase',
-    { params: { page: pagination.page as any, page_size: pagination.page_size as any } });
+      { params: { page: pagination.page as any, page_size: pagination.page_size as any } });
   }
 
   getPublishedContracts(pagination: PaginationDto) {
     return this.http.get<PaginationResponseDto<ContractDto>>('/api/v1/rights/contracts?contract_type=publish',
-    { params: { page: pagination.page as any, page_size: pagination.page_size as any } });
+      { params: { page: pagination.page as any, page_size: pagination.page_size as any } });
   }
 
   // getContractsMock(pagination: PaginationDto) {
@@ -51,7 +51,7 @@ export class ContractsService {
 
   getChoiceFields(file_name: string, contract_type: string) {
     return this.http.get<{ program_type: any[], theme: any[] }>
-    ('/api/v1/rights/contracts/import/choice_fields', { params: { file_name, contract_type } });
+      ('/api/v1/rights/contracts/import/choice_fields', { params: { file_name, contract_type } });
   }
 
   importContracts(file_name: string, contract_type: string, program_type: any[], theme: any[]) {
@@ -79,4 +79,9 @@ export class ContractsService {
   getImportTemplateFilePath(contract_type: string) {
     return this.http.get<{ file_url: string }>('/api/v1/rights/contracts/import/template_file', { params: { contract_type } });
   }
+
+  getContractDetailsInfo(id: number) {
+    return this.http.get<any>(`/api/v1/rights/contracts/${id}`);
+  }
+
 }
