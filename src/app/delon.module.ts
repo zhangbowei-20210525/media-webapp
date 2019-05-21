@@ -25,6 +25,9 @@ export function delonACLConfigFactory(): DelonACLConfig {
       //   const str = roleOrAbility.toString();
       //   return str.startsWith('ability.') ? { ability: [ str ] } : null;
       // }
+      // preCan: (roleOrAbility: ACLCanType) => {
+
+      // }
     } as DelonACLConfig
   };
 }

@@ -7,13 +7,13 @@
         <nz-tag *ngFor="let department of employee?.department; let i = index;">
           {{ department.name | truncate:20 }}
         </nz-tag>
-        <nz-tag class="editable-tag" (click)="editDepartments()" *aclIf="{ ability: [ability.company.employee.department] }">
+        <nz-tag class="editable-tag" (click)="editDepartments()" *aclIf="{ role: ['admin'], ability: [ability.company.employee.department] }">
           <i nz-icon type="edit"></i> 修改部门
         </nz-tag>
       </p>
     </nz-skeleton>
   </nz-tab>
-  <nz-tab [nzTitle]="'角色/权限'" *aclIf="{ ability: [ability.company.employee.role] }">
+  <nz-tab [nzTitle]="'角色/权限'" *aclIf="{ role: ['admin'], ability: [ability.company.employee.role] }">
     <p>
       <!-- <i nz-icon type="user" style="margin-right: 0.5rem;"></i> -->
       <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomCenter'" [nzDisabled]="!isEditable">
@@ -54,7 +54,7 @@
       </ng-template>
     </nz-tree>
   </nz-tab>
-  <nz-tab [nzTitle]="'节目权限'" *aclIf="{ ability: [ability.company.employee.data] }">
+  <nz-tab [nzTitle]="'节目权限'" *aclIf="{ role: ['admin'], ability: [ability.company.employee.data] }">
     <!-- <app-series-selector [autoSelect]="true" (tagChange)="seriesTagChange($event)"></app-series-selector> -->
   </nz-tab>
 </nz-tabset>

@@ -3,13 +3,14 @@ import { QueueUploader } from '@shared/upload';
 import { UploadInfo } from '@shared/upload';
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../header.service';
+
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.less']
 })
 export class TaskComponent implements OnInit, OnDestroy {
-  message : any;
+  message: any;
 
   subscriptions: Subscription[] = [];
   uploads = [] as UploadInfo[];
@@ -20,7 +21,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   constructor(
     private uploader: QueueUploader,
     private service: HeaderService,
-  ) { 
+  ) {
     // this.subscription = this.messageService.getMessage().subscribe(res =>{
     //   console.log(res)
     // })
@@ -30,10 +31,9 @@ export class TaskComponent implements OnInit, OnDestroy {
     this.subscriptions = [
       this.uploader.change$.subscribe(() => {
         this.uploads = this.uploader.getList().reverse();
-        
       }),
       this.service.notifies().subscribe(result => {
-        this.sourceUploads = result.type.active_source_tasks;
+        this.sourceUploads = result.active_source_tasks;
       })
     ];
     this.service.nextNotifies();
@@ -67,6 +67,6 @@ export class TaskComponent implements OnInit, OnDestroy {
     // if (this.timer) {
     // clearInterval(this.timer);
     // }
-    this.service.setIsActiveSourceTasks(false);  
+    this.service.setIsActiveSourceTasks(false);
   }
 }
