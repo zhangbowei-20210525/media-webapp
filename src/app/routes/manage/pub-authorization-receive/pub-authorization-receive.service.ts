@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpClientJsonpModule } from '@angular/common/http';
 import { ResponseDto } from '@shared';
 
+interface LoginResultDto { [key: string]: any; token: string; auth: any; permissions: any[]; }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,6 +22,6 @@ export class PubAuthorizationReceiveService {
   }
 
   switchCompany(employeeId: number) {
-    return this.http.put<any>(`/api/v1/login/${employeeId}`, {});
+    return this.http.put<LoginResultDto>(`/api/v1/login/${employeeId}`, {});
   }
 }

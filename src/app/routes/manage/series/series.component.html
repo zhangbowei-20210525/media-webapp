@@ -28,10 +28,10 @@
       </nav>
     </div>
     <div class="block-options">
-      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
+      <!-- <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
         <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
           (keyup)="$event.which === 13 && search()" />
-      </nz-input-group>
+      </nz-input-group> -->
       <ng-template #suffixIconButton>
         <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
           <i nz-icon type="search"></i>
