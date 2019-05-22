@@ -38,14 +38,14 @@
         </td>
         <td style="text-align: center">{{ data.release_date }}</td>
         <td style="text-align: center">
-          <span><a
+          <span acl [acl-ability]="ability.program.publicity.view"><a
               [routerLink]="['/manage/series/d', data.id, 'publicityd']">{{ 'app.series.publicity' | translate }}</a></span>
-          <span><a [routerLink]="['/manage/series/d', data.id, 'tape']"
+          <span acl [acl-ability]="ability.program.source.view"><a [routerLink]="['/manage/series/d', data.id, 'tape']"
               style="margin-left: 1rem">{{ 'app.series.source' | translate }}</a></span>
-          <span><a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span>
+          <span acl [acl-ability]="ability.program.right.view"><a [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span>
         </td>
         <td style="text-align: center">
-          <a (click)="deleteSeries(data.id)"><i nz-icon type="delete" theme="outline"></i></a>
+          <a (click)="deleteSeries(data.id)" acl [acl-ability]="ability.program.del"><i nz-icon type="delete" theme="outline"></i></a>
         </td>
       </tr>
     </tbody>

@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AddTapeComponent } from '../components/add-tape/add-tape.component';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
 import { EditSeriesInfoComponent } from '../components/edit-series-info/edit-series-info.component';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-series-details',
@@ -30,6 +31,7 @@ export class SeriesDetailsComponent implements OnInit {
   publicityId: number;
 
   constructor(
+    public ability: ACLAbility,
     private router: Router,
     private route: ActivatedRoute,
     private message: MessageService,

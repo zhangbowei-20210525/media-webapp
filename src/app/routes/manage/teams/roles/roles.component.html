@@ -1,7 +1,7 @@
 <div *ngIf="isLoaded">
   <div class="roles">
     <nz-radio-group [nzButtonStyle]="'solid'" [nzSize]="'small'" [(ngModel)]="selectedRole"
-      (ngModelChange)="onRoleChange($event)">
+      (ngModelChange)="onRoleChange()">
       <label nz-radio-button [nzValue]="role" [nzDisabled]="role.loading" class="role-radio" *ngFor="let role of roles">{{
         role.name }}</label>
     </nz-radio-group>

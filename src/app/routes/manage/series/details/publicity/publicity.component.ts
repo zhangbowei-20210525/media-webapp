@@ -8,6 +8,7 @@ import { PublicityService } from './publicity.service';
 import { NzTabChangeEvent, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { QueueUploader } from '@shared/upload';
 import { LocalRequestService } from '@shared/locals';
+import { ACLAbility } from '@core/acl';
 
 declare type MaterielType = 'sample' | 'feature' | 'trailer' | 'poster' | 'still' | 'pdf';
 
@@ -30,6 +31,7 @@ export class PublicityComponent implements OnInit {
   company_ids = [];
 
   constructor(
+    public ability: ACLAbility,
     private message: MessageService,
     private notification: NzNotificationService,
     private translate: TranslateService,

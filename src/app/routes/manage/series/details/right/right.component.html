@@ -2,7 +2,7 @@
   <div class="block-header">
     <div class="block-title">已有权利</div>
     <div class="block-options">
-      <a nz-button [routerLink]="['/manage/series/add-copyrights', { pids: id }]">新增权利</a>
+      <a nz-button [routerLink]="['/manage/series/add-copyrights', { pids: id }]" acl [acl-ability]="ability.program.right.edit">新增权利</a>
     </div>
   </div>
   <div class="block-content">
@@ -37,7 +37,7 @@
             <td>{{ data.contract_number | emptyDefaultChar }}</td>
             <td><div style="width: 18rem" class="text-ellipsis" nz-tooltip [nzTitle]="data.remark">{{ data.remark }}</div></td>
             <td>
-              <a nz-popconfirm nzTitle="是否删除此权利？" (nzOnConfirm)="deleteOwnRight(data.id)"><i nz-icon type="delete"
+              <a nz-popconfirm nzTitle="是否删除此权利？" (nzOnConfirm)="deleteOwnRight(data.id)" acl [acl-ability]="ability.program.right.del"><i nz-icon type="delete"
                   theme="outline"></i></a>
             </td>
           </tr>
@@ -51,7 +51,7 @@
   <div class="block-header">
     <div class="block-title">已发行权利</div>
     <div class="block-options">
-      <a nz-button [routerLink]="['/manage/series/publish-rights', { pids: id }]">发行权利</a>
+      <a nz-button [routerLink]="['/manage/series/publish-rights', { pids: id }]" acl [acl-ability]="ability.program.right.publish">发行权利</a>
     </div>
   </div>
   <div class="block-content">
@@ -88,7 +88,7 @@
             <td>{{ data.contract_number }}</td>
             <td><div style="width: 18rem" class="text-ellipsis">{{ data.remark }}</div></td>
             <td>
-              <a nz-popconfirm nzTitle="是否删除此发行？" (nzOnConfirm)="deletePublishRight(data.id)"><i nz-icon type="delete"
+              <a nz-popconfirm nzTitle="是否删除此发行？" (nzOnConfirm)="deletePublishRight(data.id)" acl [acl-ability]="ability.program.right.del"><i nz-icon type="delete"
                   theme="outline"></i></a>
             </td>
           </tr>

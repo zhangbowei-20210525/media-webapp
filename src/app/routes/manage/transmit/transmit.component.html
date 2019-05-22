@@ -3,11 +3,11 @@
     <div class="s-nav-wapper">
       <nav class="s-nav">
         <ul class="list s-nav-list">
-          <li class="nav-item">
+          <li class="nav-item" acl [acl-ability]="ability.program.source.upload">
             <a class="s-nav-link" [routerLinkActive]="'active'"
               [routerLink]="'declared'">{{ 'app.transmit.source' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" acl [acl-ability]="ability.program.source.download">
             <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'type'" nz-tooltip>
               {{ 'app.transmit.purchased-source' | translate }}
             </a>

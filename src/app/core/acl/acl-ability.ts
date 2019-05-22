@@ -35,12 +35,16 @@ export const aclAbility = <ACLAbility>{
             add: null,
             edit: null,
             del: null,
-            entity: null,
+            // entity: null,
+            upload: null,
+            download: null,
             publish: null,
-            file: <ACLModule>{
-                name: 'source_file',
-                add: null,
-            }
+            // file: <SourceFileACLModule>{
+            //     name: 'source_file',
+            //     // add: null,
+            //     // del: null,
+            //     download: null
+            // }
         },
         right: <RightACLModule>{
             view: null,
@@ -126,8 +130,14 @@ interface PublicityACLModule extends ACLModule {
 }
 
 interface SourceACLModule extends ACLModule {
-    entity?: string;
-    publish?: string;
+    // entity?: string;
+    upload?: string; // 母带上传
+    download?: string; // 母带下载
+    publish?: string; // 母带发行
+}
+
+interface SourceFileACLModule extends ACLModule {
+    download?: string;
 }
 
 interface RightACLModule extends ACLModule {

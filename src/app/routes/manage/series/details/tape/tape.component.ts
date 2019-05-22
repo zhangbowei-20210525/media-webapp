@@ -11,6 +11,7 @@ import { AddPubTapeComponent } from '../../components/add-pub-tape/add-pub-tape.
 import { LocalRequestService } from '@shared/locals';
 import { EditTapeInfoComponent } from '../../components/edit-tape-info/edit-tape-info.component';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-tape',
@@ -33,6 +34,7 @@ export class TapeComponent implements OnInit {
   tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   constructor(
+    public ability: ACLAbility,
     private modalService: NzModalService,
     private seriesService: SeriesService,
     private route: ActivatedRoute,

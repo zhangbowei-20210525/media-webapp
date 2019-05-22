@@ -45,6 +45,9 @@ export class TeamsComponent implements OnInit {
     this.fetchCompanys();
     this.fetchDepartment();
     // this.acl.removeAbility([this.ability.company.view]);
+    // this.acl.set({ role: ['admin'] });
+    // console.log('can', this.ability.company.view, this.acl.can(this.ability.company.view));
+    // console.log(this.acl.data);
   }
 
   get activedNodeKey() {
@@ -207,9 +210,10 @@ export class TeamsComponent implements OnInit {
       nzOnOk: () => new Promise((resolve, reject) => {
         this.service.deleteDepartment(key).subscribe(result => {
           this.message.success(`已删除 ${name}`);
-          const deleted = this.removeNode(this.nodes, key);
-          console.log(this.nodes);
-          this.nodes = JSON.parse(JSON.stringify(this.nodes));
+          this.treeCom.getTreeNodeByKey(key).remove();
+          // const deleted = this.removeNode(this.nodes, key);
+          // console.log(this.nodes);
+          // this.nodes = JSON.parse(JSON.stringify(this.nodes));
           resolve();
         }, error => {
           this.message.success(error.message || '删除失败');
@@ -252,10 +256,10 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  removeNode(nodes: NzTreeNodeOptions[], key: string) {
-    this.ts.removeNode(nodes, (item, index) => {
-      return item.key === key;
-    });
-  }
+  // removeNode(nodes: NzTreeNodeOptions[], key: string) {
+  //   this.ts.removeNode(nodes, (item, index) => {
+  //     return item.key === key;
+  //   });
+  // }
 
 }

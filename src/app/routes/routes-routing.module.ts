@@ -45,7 +45,16 @@ const routes: Routes = [
             path: 'series', loadChildren: './manage/series/series.module#SeriesModule',
             canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.view] } }
           },
-          { path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule' },
+          {
+            path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule',
+            canLoad: [ACLGuard], data: {
+              guard: <ACLType>{
+                ability: [
+                  aclAbility.program.source.upload, aclAbility.program.source.download
+                ]
+              }
+            }
+          },
           { path: 'customers', loadChildren: './manage/customers/customers.module#CustomersModule' },
           // { path: 'contracts', loadChildren: './manage/contract.module#ContractModule' },
           {

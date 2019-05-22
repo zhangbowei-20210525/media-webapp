@@ -42,7 +42,7 @@
                 <span>
                   <i nz-icon class="folder-icon" [type]="node.isExpanded ? 'folder-open' : 'folder'"
                     (click)="openFolder(node)"></i>
-                  <span class="folder-name text-ellipsis">{{node.title}}</span>
+                  <span class="folder-name text-ellipsis">{{ node.title }}</span>
                   <nz-dropdown [nzTrigger]="'click'">
                     <!-- <a nz-dropdown>
                       Click me <i nz-icon type="down"></i>
@@ -52,7 +52,7 @@
                       <li nz-menu-item (click)="addDepartment(node.key)">
                         {{ 'app.teams.add-department' | translate }}</li>
                       <!-- <li nz-menu-item>修改名称</li> -->
-                      <li nz-menu-item (click)="deleteDepartment(node.key, node.title)">
+                      <li nz-menu-item (click)="deleteDepartment(node.key, node.title)" *ngIf="node.level > 0">
                         {{ 'global.delete' | translate }}</li>
                       <!-- <li nz-menu-item nzDisabled>id: {{ node.key }}</li> -->
                     </ul>

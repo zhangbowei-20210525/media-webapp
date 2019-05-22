@@ -130,11 +130,12 @@ export class RolesComponent implements OnInit {
     }
     this.service.addRole(roleName).subscribe(result => {
       this.message.success('新增角色成功');
-      this.roles = [...this.roles, {
+      this.roles = [...this.roles, this.selectedRole = {
         id: result.id,
         name: roleName,
         loading: false
       }];
+      this.onRoleChange();
       this.addRoleVisible = false;
     });
   }

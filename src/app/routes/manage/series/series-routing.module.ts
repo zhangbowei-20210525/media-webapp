@@ -85,6 +85,13 @@ const routes: Routes = [
       {
         path: 'contracts',
         component: ContractsComponent,
+        canActivate: [ACLGuard],
+        canActivateChild: [ACLGuard],
+        data: {
+          guard: <ACLType>{
+            ability: [aclAbility.program.right.view]
+          }
+        },
         children: [
           { path: '', redirectTo: 'procurement', pathMatch: 'full' },
           { path: 'procurement', component: ProcurementComponent },

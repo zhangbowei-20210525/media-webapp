@@ -24,7 +24,7 @@
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series'"><span nzTitle="节目的版权，样片，高清母带管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.series' | translate }}</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" [acl]="{ ability: [ability.program.source.upload, ability.program.source.download] }">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/transmit'"><span nzTitle="母带文件的传输分发管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.transmit' | translate }}</span></a>
             </li>

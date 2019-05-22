@@ -22,7 +22,7 @@ export class RolesService {
   }
 
   deleteRole(id: number) {
-    return this.http.delete(`/api/v1/roles/${id}`);
+    return this.http.delete(`/api/v1/companies/roles/${id}`);
   }
 
   getRolePermissions(id: number) {
