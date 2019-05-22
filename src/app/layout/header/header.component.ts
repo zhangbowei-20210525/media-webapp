@@ -9,6 +9,7 @@ import { QueueUploader } from '@shared/upload';
 import { ACLAbility } from '@core/acl';
 import { ACLService } from '@delon/acl';
 import { Subscription } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public ability: ACLAbility,
     public settings: SettingsService,
     private uploader: QueueUploader,
+    private modal: NzModalService,
     private router: Router,
     private accountService: AccountService,
     private i18n: I18nService,
@@ -78,8 +80,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   login() {
     this.accountService.openLoginModal().then(() => {
-      this.router.navigate([`/manage/series`]);
+      // this.router.navigate([`/manage/dashboard`]);
+      if (this.token.get().is_new_user === true) {
+        if (this.token.get().receipt_source_auth > 0) {
+          this.modal.confirm({
+            nzTitle: '您有一条新的授权信息，是否前往查看?',
+            nzOkText: '前往',
+            nzCancelText: '跳过',
+            nzOkType: 'primary',
+            nzOnCancel: () => new Promise((resolve) => {
+              resolve();
+              this.navigateToDefault();
+            }),
+            nzOnOk: () => new Promise((resolve) => {
+              resolve();
+              this.router.navigate([`/manage/pubAuthorizationReceive`]);
+            })
+          });
+        } else {
+          this.navigateToDefault();
+        }
+      } else {
+        this.navigateToDefault();
+      }
     });
+  }
+
+  navigateToDefault() {
+    this.router.navigate([`/manage/dashboard`]);
   }
 
   logout() {

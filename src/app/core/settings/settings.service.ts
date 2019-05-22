@@ -62,9 +62,9 @@ export class SettingsService {
     this._user = value;
     this.set(USER, value);
     this._notify$.next({ type: 'user', value });
-    if (value.is_admin) {
-      this.acl.setFull(true);
-    }
+    // if (value.is_admin) {
+    //   this.acl.setFull(true);
+    // }
   }
 
   get permissions(): string[] {
