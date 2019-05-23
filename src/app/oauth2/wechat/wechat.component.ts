@@ -1,4 +1,4 @@
-import { AccountService } from '@shared';
+import { AccountService, TreeService } from '@shared';
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'rxjs/operators';
@@ -37,6 +37,7 @@ export class WechatComponent implements OnInit {
     private route: ActivatedRoute,
     private accountervice: AccountService,
     private settings: SettingsService,
+    private ts: TreeService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService
   ) { }
 
@@ -55,6 +56,7 @@ export class WechatComponent implements OnInit {
     this.accountervice.wechatValidate(code)
       .subscribe(result => {
         this.settings.user = result.auth;
+        this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
         this.tokenService.set({
           token: result.token,
           time: +new Date
@@ -70,6 +72,7 @@ export class WechatComponent implements OnInit {
     this.accountervice.bindWechatValidate(code)
       .subscribe(result => {
         this.settings.user = result.auth;
+        this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
         this.tokenService.set({
           token: result.token,
           time: +new Date

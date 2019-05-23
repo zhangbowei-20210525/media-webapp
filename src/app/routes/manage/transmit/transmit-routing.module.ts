@@ -6,27 +6,36 @@ import { DownloadRecordComponent } from './download-record/download-record.compo
 import { DeclaredComponent } from './declared/declared.component';
 import { TypeComponent } from './type/type.component';
 import { PurTapeDetailsComponent } from './pur-tape-details/pur-tape-details.component';
+import { ACLGuard, ACLType } from '@delon/acl';
+import { aclAbility } from '@core/acl';
 
 const routes: Routes = [
   {
     path: '',
     component: TransmitComponent,
+    canActivate: [ ACLGuard ],
+    canActivateChild: [ ACLGuard ],
+    data: { guard: <ACLType>{ ability: [aclAbility.program.source.upload, aclAbility.program.source.download] } },
     children: [
-      {path: '', redirectTo: 'declared', pathMatch: 'full'},
+      // { path: '', redirectTo: 'declared', pathMatch: 'full' },
       {
         path: 'declared',
-        component: DeclaredComponent
+        component: DeclaredComponent,
+        canActivate: [ ACLGuard ],
+        data: { guard: <ACLType>{ ability: [aclAbility.program.source.upload] } }
       },
       {
         path: 'type',
-        component: TypeComponent
+        component: TypeComponent,
+        canActivate: [ ACLGuard ],
+        data: { guard: <ACLType>{ ability: [aclAbility.program.source.download] } }
       }
     ]
   },
-  {
-    path: 'transmit',
-    component: TransmitComponent
-  },
+  // {
+  //   path: 'transmit',
+  //   component: TransmitComponent
+  // },
   {
     path: 'historic-record/:id',
     component: HistoricRecordComponent

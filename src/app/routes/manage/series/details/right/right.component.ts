@@ -5,6 +5,7 @@ import { Route, ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { fadeIn } from '@shared/animations';
 import { TranslateService } from '@ngx-translate/core';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-right',
@@ -23,6 +24,7 @@ export class RightComponent implements OnInit {
   pagination = { page: 1, page_size: 10 } as PaginationDto;
 
   constructor(
+    public ability: ACLAbility,
     private service: RightService,
     private route: ActivatedRoute,
     private message: MessageService,

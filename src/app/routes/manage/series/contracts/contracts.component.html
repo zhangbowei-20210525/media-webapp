@@ -7,9 +7,9 @@
       </nz-radio-group>
     </div>
     <div class="options-wrapper">
-        <label for="file" nz-tooltip [nzTitle]="download"><a nz-button>{{ lastUrlType == 'purchase' ? '导入版权库' : '导入发行库' }}</a></label>
-        <a nz-button nzType="default" routerLink="/manage/series/add-copyrights">新增版权</a>
-        <a nz-button nzType="default" routerLink="/manage/series/publish-rights">新增发行</a>
+        <label for="file" nz-tooltip [nzTitle]="download" acl [acl-ability]="lastUrlType == 'purchase' ? ability.program.right.edit : ability.program.right.publish"><a nz-button>{{ lastUrlType == 'purchase' ? '导入版权库' : '导入发行库' }}</a></label>
+        <a nz-button nzType="default" acl [acl-ability]="ability.program.right.edit" routerLink="/manage/series/add-copyrights">新增版权</a>
+        <a nz-button nzType="default" acl [acl-ability]="ability.program.right.publish" routerLink="/manage/series/publish-rights">新增发行</a>
     </div>
   </div>
   <router-outlet></router-outlet>

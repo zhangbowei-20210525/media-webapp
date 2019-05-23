@@ -1,31 +1,32 @@
 <nz-table #table [nzData]="transmitScheduleList" nzShowPagination="false" nzPageSize="999" [nzSize]="'middle'">
-    <thead>
-      <tr>
-          <th style="text-align: center">#</th>
-        <th style="width:150px">文件名</th>
-        <th style="width:150px">状态</th>
-        <th style="text-align: center">时间</th>
-        <th style="text-align: center">操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of table.data;let i = index">
-          <td>{{ i + 1 }}</td>
-        <td style="width:150px">{{data?.source_file_name}}</td>
-        <td style="width:150px" *ngIf="data?.status == 8">
-          <nz-progress [nzPercent]="100" [nzStrokeWidth]="10" nzStatus="exception"></nz-progress>
-        </td>
-        <td style="width:150px" *ngIf="data?.status == 9">
-          <nz-progress [nzPercent]="100" [nzStrokeWidth]="10" nzStatus="exception"></nz-progress>
-        </td>
-        <td style="width:150px" *ngIf="data?.status == 10">
-          <nz-progress [nzPercent]="100" [nzStrokeWidth]="10" nzStatus="exception"></nz-progress>
-        </td>
-        <td style="width:150px" *ngIf="data?.status != 8 && data?.status != 9 && data?.status != 10">
-          <nz-progress [nzPercent]="data.percent" nzStrokeColor="green" [nzStrokeWidth]="10"></nz-progress>
-        </td>
-        <td style="text-align: center">{{data?.created_at}}</td>
-        <td class="text-info"  style="text-align: center"><a (click)="cancelTask(data.id, data?.status)" *ngIf="data?.status < 7">取消</a></td>
-      </tr>
-    </tbody>
-  </nz-table>
+  <thead>
+    <tr>
+      <th style="text-align: center">#</th>
+      <th style="width:150px">文件名</th>
+      <th style="width:150px">状态</th>
+      <th style="text-align: center">时间</th>
+      <th style="text-align: center">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of table.data;let i = index">
+      <td>{{ i + 1 }}</td>
+      <td style="width:150px">{{data?.source_file_name}}</td>
+      <td style="width:150px" *ngIf="data?.status == 8">
+        <nz-progress [nzPercent]="100" [nzStrokeWidth]="10" nzStatus="exception"></nz-progress>
+      </td>
+      <td style="width:150px" *ngIf="data?.status == 9">
+        <nz-progress [nzPercent]="100" [nzStrokeWidth]="10" nzStatus="exception"></nz-progress>
+      </td>
+      <td style="width:150px" *ngIf="data?.status == 10">
+        <nz-progress [nzPercent]="100" [nzStrokeWidth]="10" nzStatus="exception"></nz-progress>
+      </td>
+      <td style="width:150px" *ngIf="data?.status != 8 && data?.status != 9 && data?.status != 10">
+        <nz-progress [nzPercent]="data.percent" nzStrokeColor="green" [nzStrokeWidth]="10"></nz-progress>
+      </td>
+      <td style="text-align: center">{{data?.created_at}}</td>
+      <td class="text-info" style="text-align: center"><a (click)="cancelTask(data.id, data?.status)"
+          *ngIf="data?.status < 7">取消</a></td>
+    </tr>
+  </tbody>
+</nz-table>

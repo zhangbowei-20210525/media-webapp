@@ -22,12 +22,14 @@ export interface User {
     employee_id: number;
     /** Employee name for current user */
     employee_name: string;
-    /** Employee phone name for current user */
+    /** Employee phone for current user */
     employee_phone: string;
+    /** Employee is admin for current user */
+    is_admin: boolean;
 }
 
 export interface SettingsNotify {
-    type: 'lang' | 'user';
+    type: 'lang' | 'user' | 'permissions';
     /** Update `key` name, limited `layout` type */
     name?: string;
 

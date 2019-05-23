@@ -10,6 +10,7 @@ import { CopyrightsService } from '../copyrights/copyrights.service';
 import { RelationImportFieldComponent } from '../components/relation-import-field/relation-import-field.component';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-contracts',
@@ -29,6 +30,7 @@ export class ContractsComponent implements OnInit, OnDestroy {
   private eventsSubscription: Subscription;
 
   constructor(
+    public ability: ACLAbility,
     private route: ActivatedRoute,
     private router: Router,
     private service: ContractsService,

@@ -10,6 +10,8 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { Router } from '@angular/router';
 import { EditCompanyComponent } from './components/edit-company.component';
 import { TreeService } from '@shared';
+import { ACLAbility } from '@core/acl';
+import { ACLService } from '@delon/acl';
 
 @Component({
   selector: 'app-teams',
@@ -26,12 +28,14 @@ export class TeamsComponent implements OnInit {
   activedNode: NzTreeNode;
 
   constructor(
+    public ability: ACLAbility,
     public settings: SettingsService,
     private service: TeamsService,
     private modal: NzModalService,
     private message: NzMessageService,
     private router: Router,
     private ts: TreeService,
+    private acl: ACLService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) { }
 
@@ -40,6 +44,10 @@ export class TeamsComponent implements OnInit {
     this.fetchCompany();
     this.fetchCompanys();
     this.fetchDepartment();
+    // this.acl.removeAbility([this.ability.company.view]);
+    // this.acl.set({ role: ['admin'] });
+    // console.log('can', this.ability.company.view, this.acl.can(this.ability.company.view));
+    // console.log(this.acl.data);
   }
 
   get activedNodeKey() {
@@ -55,14 +63,8 @@ export class TeamsComponent implements OnInit {
   }
 
   getCompanyInfo() {
-    const user = this.settings.user;
-    this.currentCompany = {
-      company_id: user.company_id,
-      company_name: user.company_name,
-      company_full_name: user.company_full_name,
-      introduction: user.introduction,
-      is_default_company: user.is_default_company
-    };
+    const { company_id, company_name, company_full_name, introduction, is_default_company } = this.settings.user;
+    this.currentCompany = { company_id, company_name, company_full_name, introduction, is_default_company };
   }
 
   fetchCompany() {
@@ -134,6 +136,7 @@ export class TeamsComponent implements OnInit {
   switchCompany(id: number, companyName: string) {
     this.service.switchCompany(id).subscribe(result => {
       this.settings.user = result.auth;
+      this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
       this.token.set({
         token: result.token,
         time: +new Date
@@ -207,9 +210,10 @@ export class TeamsComponent implements OnInit {
       nzOnOk: () => new Promise((resolve, reject) => {
         this.service.deleteDepartment(key).subscribe(result => {
           this.message.success(`已删除 ${name}`);
-          const deleted = this.removeNode(this.nodes, key);
-          console.log(this.nodes);
-          this.nodes = JSON.parse(JSON.stringify(this.nodes));
+          this.treeCom.getTreeNodeByKey(key).remove();
+          // const deleted = this.removeNode(this.nodes, key);
+          // console.log(this.nodes);
+          // this.nodes = JSON.parse(JSON.stringify(this.nodes));
           resolve();
         }, error => {
           this.message.success(error.message || '删除失败');
@@ -252,10 +256,10 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  removeNode(nodes: NzTreeNodeOptions[], key: string) {
-    this.ts.removeNode(nodes, (item, index) => {
-      return item.key === key;
-    });
-  }
+  // removeNode(nodes: NzTreeNodeOptions[], key: string) {
+  //   this.ts.removeNode(nodes, (item, index) => {
+  //     return item.key === key;
+  //   });
+  // }
 
 }

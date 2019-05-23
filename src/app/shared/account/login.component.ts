@@ -1,6 +1,6 @@
 import { DataSet } from '@antv/data-set';
 import { SeriesService } from 'app/routes/manage/series/series.service';
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -15,17 +15,20 @@ import { SettingsService, I18nService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd';
+import { TreeService } from '@shared/components/tree.service';
 
 declare const WxLogin: any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less']
+  styleUrls: ['./login.component.less'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  $close: Subject<boolean>;
+  $close = new Subject<boolean>();
   service: AccountService;
   form: FormGroup;
   emailRegisterForm: FormGroup;
@@ -48,9 +51,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private translate: TranslateService,
     private i18n: I18nService,
+    private modal: NzModalService,
+    private ts: TreeService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) {
-    this.$close = new Subject();
   }
 
   get phone(): AbstractControl {
@@ -63,10 +67,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // zh-CN en-US
-   this.languageVersion = this.i18n.currentLang;
-   if (this.languageVersion === 'en-US') {
-    this.mode = 'emailLogIn';
-   }
+    this.languageVersion = this.i18n.currentLang;
+    if (this.languageVersion === 'en-US') {
+      this.mode = 'emailLogIn';
+    }
     this.form = this.fb.group({
       phone: [null, [Validators.required]],
       captcha: [null, [Validators.required]],
@@ -161,12 +165,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.service.phoneValidate(this.phone.value, this.captcha.value)
         .pipe(finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
+          // console.log(result);
           this.settings.user = result.auth;
+          this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
           this.token.set({
             token: result.token,
-            time: +new Date
+            time: +new Date,
+            is_new_user: result.is_new_user,
+            receipt_source_auth: result.receipt_source_auth
           });
-          this.close(true);
+            this.close(true);
           // this.router.navigate([`/manage/series`]);
         }, error => {
 
@@ -176,11 +184,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   emailRegisterSubmit() {
     if (this.validation(this.emailRegisterForm)) {
-    // tslint:disable-next-line:max-line-length
-    this.service.emailRegister(this.emailRegisterForm.value['emailAddress'], this.emailRegisterForm.value['emailPassword'], this.emailRegisterForm.value['nickname']).subscribe(result => {
-      this.message.success(this.translate.instant('app.login.email-registered-successfully'));
-     this.mode = 'emailLogIn';
-    });
+      // tslint:disable-next-line:max-line-length
+      this.service.emailRegister(this.emailRegisterForm.value['emailAddress'], this.emailRegisterForm.value['emailPassword'], this.emailRegisterForm.value['nickname']).subscribe(result => {
+        this.message.success(this.translate.instant('app.login.email-registered-successfully'));
+        this.mode = 'emailLogIn';
+      });
     }
   }
 
@@ -189,6 +197,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.service.emailValidate(this.emailLogInForm.value['email'], this.emailLogInForm.value['password']).subscribe(result => {
         this.message.success(this.translate.instant('app.login.email-login-successfully'));
         this.settings.user = result.auth;
+        this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
         this.token.set({
           token: result.token,
           time: +new Date

@@ -2,6 +2,7 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 import { throwIfAlreadyLoaded } from './module-import-guard';
+import { aclAbility, ACLAbility } from './acl';
 
 @NgModule({
   declarations: [],
@@ -9,7 +10,8 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
     CommonModule
   ],
   providers: [
-    SelectivePreloadingStrategy
+    SelectivePreloadingStrategy,
+    { provide: ACLAbility, useValue: aclAbility }
   ]
 })
 export class CoreModule {

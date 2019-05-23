@@ -202,7 +202,7 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/companies/search_by_phone?phone=${phone}`);
   }
 
-  addPubTape(id: number, newTape: { auth_company_id: number }) {
+  addPubTape(id: number, newTape: { custom_name: string,  liaison_name: string, liaison_phone: string, liaison_id: string}) {
     return this.http.post<ResponseDto<number>>(`/api/v1/sources/${id}/publish_auth`, newTape);
   }
 

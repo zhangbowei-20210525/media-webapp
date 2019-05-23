@@ -1,13 +1,14 @@
 <div class="block">
-  <nz-tabset [nzTabBarExtraContent]="extraTemplate" nzSize="large" nzAnimated="false" [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="tabSelectChange($event)">
+  <nz-tabset [nzTabBarExtraContent]="extraTemplate" nzSize="large" nzAnimated="false"
+    [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="tabSelectChange($event)">
     <nz-tab [nzTitle]="('app.series.sample' | translate) + '(' + publicity?.material?.sample + ')'">
       <div style="margin: 2rem;">
-        <nz-table #basicTable [nzData]="sampleList" [nzPageSize]="samplePagination?.page_size" [nzFrontPagination]="false"
-          [nzShowPagination]="false" [nzPageIndex]="samplePagination?.page" [nzTotal]="samplePagination?.count"
-          (nzPageIndexChange)="samplePageChange($event)">
+        <nz-table #basicTable [nzData]="sampleList" [nzPageSize]="samplePagination?.page_size"
+          [nzFrontPagination]="false" [nzShowPagination]="false" [nzPageIndex]="samplePagination?.page"
+          [nzTotal]="samplePagination?.count" (nzPageIndexChange)="samplePageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -17,7 +18,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable.data;let i = index">
-                <td>{{ i + 1 + samplePagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + samplePagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{ data.name }}</td>
               <td style="text-align: center">{{ data.extension }}</td>
               <td style="text-align: center">{{ data.size | byteFormat }}</td>
@@ -26,7 +27,8 @@
                 <!-- <span *ngIf="!data.uploadStatus">上传成功</span> -->
               </td>
               <td style="text-align: center">
-                <a (click)="deletePublicity(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+                <a (click)="deletePublicity(data.id)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
+                    style="font-size: 14px;"></i></a>
               </td>
             </tr>
           </tbody>
@@ -35,12 +37,12 @@
     </nz-tab>
     <nz-tab [nzTitle]="('app.series.feature' | translate) + '(' + publicity?.material?.feature + ')'">
       <div style="margin: 2rem;">
-        <nz-table #basicTable1 [nzData]="featureList" [nzPageSize]="featurePagination?.page_size" [nzFrontPagination]="false"
-          [nzShowPagination]="false" [nzPageIndex]="featurePagination?.page" [nzTotal]="featurePagination?.count"
-          (nzPageIndexChange)="featurePageChange($event)">
+        <nz-table #basicTable1 [nzData]="featureList" [nzPageSize]="featurePagination?.page_size"
+          [nzFrontPagination]="false" [nzShowPagination]="false" [nzPageIndex]="featurePagination?.page"
+          [nzTotal]="featurePagination?.count" (nzPageIndexChange)="featurePageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -50,7 +52,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable1.data;let i = index">
-                <td>{{ i + 1 + featurePagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + featurePagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -59,7 +61,8 @@
                 <!-- <span *ngIf="!data.uploadStatus">上传成功</span> -->
               </td>
               <td style="text-align: center">
-                <a (click)="deletePublicity(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+                <a (click)="deletePublicity(data.id)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
+                    style="font-size: 14px;"></i></a>
               </td>
             </tr>
           </tbody>
@@ -68,12 +71,12 @@
     </nz-tab>
     <nz-tab [nzTitle]="('app.series.trailer' | translate) + '(' + publicity?.material?.trailer + ')'">
       <div style="margin: 2rem;">
-        <nz-table #basicTable2 [nzData]="trailerList" [nzPageSize]="trailerPagination?.page_size" [nzFrontPagination]="false"
-          [nzShowPagination]="false" [nzPageIndex]="trailerPagination?.page" [nzTotal]="trailerPagination?.count"
-          (nzPageIndexChange)="trailerPageChange($event)">
+        <nz-table #basicTable2 [nzData]="trailerList" [nzPageSize]="trailerPagination?.page_size"
+          [nzFrontPagination]="false" [nzShowPagination]="false" [nzPageIndex]="trailerPagination?.page"
+          [nzTotal]="trailerPagination?.count" (nzPageIndexChange)="trailerPageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -83,7 +86,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable2.data;let i = index">
-                <td>{{ i + 1 + trailerPagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + trailerPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -92,7 +95,8 @@
                 <!-- <span *ngIf="!data.uploadStatus">上传成功</span> -->
               </td>
               <td style="text-align: center">
-                <a (click)="deletePublicity(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+                <a (click)="deletePublicity(data.id)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
+                    style="font-size: 14px;"></i></a>
               </td>
             </tr>
           </tbody>
@@ -101,12 +105,12 @@
     </nz-tab>
     <nz-tab [nzTitle]="('app.series.poster' | translate) + '(' + publicity?.material?.poster + ')'">
       <div style="margin: 2rem;">
-        <nz-table #basicTable3 [nzData]="posterList" [nzPageSize]="posterPagination?.page_size" [nzFrontPagination]="false"
-          [nzShowPagination]="false" [nzPageIndex]="posterPagination?.page" [nzTotal]="posterPagination?.count"
-          (nzPageIndexChange)="posterPageChange($event)">
+        <nz-table #basicTable3 [nzData]="posterList" [nzPageSize]="posterPagination?.page_size"
+          [nzFrontPagination]="false" [nzShowPagination]="false" [nzPageIndex]="posterPagination?.page"
+          [nzTotal]="posterPagination?.count" (nzPageIndexChange)="posterPageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -116,7 +120,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable3.data;let i = index">
-                <td>{{ i + 1 + posterPagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + posterPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -125,7 +129,8 @@
                 <!-- <span *ngIf="!data.uploadStatus">上传成功</span> -->
               </td>
               <td style="text-align: center">
-                <a (click)="deletePublicity(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+                <a (click)="deletePublicity(data.id)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
+                    style="font-size: 14px;"></i></a>
               </td>
             </tr>
           </tbody>
@@ -134,12 +139,12 @@
     </nz-tab>
     <nz-tab [nzTitle]="('app.series.still' | translate) + '(' + publicity?.material?.still + ')'">
       <div style="margin: 2rem;">
-        <nz-table #basicTable4 [nzData]="stillList" [nzPageSize]="stillPagination?.page_size" [nzFrontPagination]="false"
-          [nzShowPagination]="false" [nzPageIndex]="stillPagination?.page" [nzTotal]="stillPagination?.count"
-          (nzPageIndexChange)="stillPageChange($event)">
+        <nz-table #basicTable4 [nzData]="stillList" [nzPageSize]="stillPagination?.page_size"
+          [nzFrontPagination]="false" [nzShowPagination]="false" [nzPageIndex]="stillPagination?.page"
+          [nzTotal]="stillPagination?.count" (nzPageIndexChange)="stillPageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -149,7 +154,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable4.data;let i = index">
-                <td>{{ i + 1 + stillPagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + stillPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -158,7 +163,8 @@
                 <!-- <span *ngIf="!data.uploadStatus">上传成功</span> -->
               </td>
               <td style="text-align: center">
-                <a (click)="deletePublicity(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+                <a (click)="deletePublicity(data.id)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
+                    style="font-size: 14px;"></i></a>
               </td>
             </tr>
           </tbody>
@@ -172,7 +178,7 @@
           (nzPageIndexChange)="pdfPageChange($event)">
           <thead>
             <tr>
-                <th style="text-align: center">#</th>
+              <th style="text-align: center">#</th>
               <th style="text-align: center">{{ 'app.series.filename' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.format' | translate }}</th>
               <th style="text-align: center">{{ 'app.series.size' | translate }}</th>
@@ -182,7 +188,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable5.data;let i = index">
-                <td>{{ i + 1 + pdfPagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + pdfPagination.page * 10 - 10}}</td>
               <td style="text-align: center">{{data.name}}</td>
               <td style="text-align: center">{{data.extension}}</td>
               <td style="text-align: center">{{data.size | byteFormat}}</td>
@@ -191,7 +197,8 @@
                 <!-- <span *ngIf="!data.uploadStatus">上传成功</span> -->
               </td>
               <td style="text-align: center">
-                <a (click)="deletePublicity(data.id)"><i nz-icon type="delete" theme="outline" style="font-size: 14px;"></i></a>
+                <a (click)="deletePublicity(data.id)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
+                    style="font-size: 14px;"></i></a>
               </td>
             </tr>
           </tbody>
@@ -202,8 +209,11 @@
   <ng-template #extraTemplate>
     <div style="margin-right: 2rem;">
       <!-- <button nz-button (click)="requestClick()">请求</button> -->
-      <button nz-button nzType="primary" nzSize="small" style="margin-right: 10px;margin-top: 15px" (click)="publicityViews()">{{ 'app.series.view' | translate }}</button>
-      <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px">
+      <button nz-button nzType="primary" nzSize="small" style="margin-right: 10px;margin-top: 15px"
+        (click)="publicityViews()" acl
+        [acl-ability]="ability.program.publicity.review">{{ 'app.series.view' | translate }}</button>
+      <label nz-button for="fileUpload" style="width:72px;height: 24px;padding: 0px;margin-top: 15px" acl
+        [acl-ability]="ability.program.publicity.file.add">
         {{ 'app.series.upload' | translate }}
       </label>
       <input id="fileUpload" hidden type="file" (change)="filesChange($event)" multiple="multiple">

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { User, SettingsNotify } from './interface';
 import { Subject, Observable } from 'rxjs';
+import { ACLService } from '@delon/acl';
 
 export const LANG = '_lang';
-
 export const USER = '_user';
+export const PERMISSIONS = '_permissions';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,13 @@ export class SettingsService {
   private _notify$ = new Subject<SettingsNotify>();
   private _lang: string;
   private _user: User;
+  private _permissions: string[];
 
-  constructor() { }
+  constructor(
+    private acl: ACLService
+  ) {
+    this.permissions = this.get(PERMISSIONS);
+  }
 
   private set(key: string, value: any) {
     localStorage.setItem(key, key === LANG ? value : JSON.stringify(value));
@@ -23,8 +29,8 @@ export class SettingsService {
 
   private get(key: string) {
     return key === LANG
-    ? localStorage.getItem(key) || null
-    : JSON.parse(localStorage.getItem(key) || 'null') || null;
+      ? localStorage.getItem(key) || null
+      : JSON.parse(localStorage.getItem(key) || 'null') || null;
   }
 
   get notify(): Observable<SettingsNotify> {
@@ -56,5 +62,26 @@ export class SettingsService {
     this._user = value;
     this.set(USER, value);
     this._notify$.next({ type: 'user', value });
+    // if (value.is_admin) {
+    //   this.acl.setFull(true);
+    // }
   }
+
+  get permissions(): string[] {
+    if (!this._permissions) {
+      this._permissions = { ...this.get(PERMISSIONS) };
+      this.set(PERMISSIONS, this._permissions);
+    }
+    return this._permissions;
+  }
+
+  set permissions(value: string[]) {
+    this._permissions = value;
+    this.set(PERMISSIONS, this._permissions);
+    this._notify$.next({ type: 'permissions', value });
+    // this.acl.setRole(['default']);
+    // this.acl.setAbility(value.map(p => p.name));
+    this.acl.set({ role: ['default'], ability: value });
+  }
+
 }
