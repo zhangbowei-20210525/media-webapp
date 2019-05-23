@@ -1,5 +1,5 @@
 import { finalize, delay } from 'rxjs/operators';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, Optional } from '@angular/core';
 import { SeriesSelectorService } from './series-selector.service';
 import { SeriesBriefDto, SearchMetaDataDto } from './dtos';
 import { SettingsService } from '@core';
@@ -29,7 +29,7 @@ export class SeriesSelectorComponent implements OnInit {
   constructor(
     private service: SeriesSelectorService,
     private settings: SettingsService,
-    private drawerRef: NzDrawerRef
+    @Optional() private drawerRef: NzDrawerRef
   ) { }
 
   get checkedSeries() {

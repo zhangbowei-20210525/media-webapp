@@ -3,7 +3,8 @@
     <div>
       <p>
         <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-          <input type="text" nz-input placeholder="输入名称关键字搜索" [(ngModel)]="searchText" (keyup)="$event.which === 13 && search()"/>
+          <input type="text" nz-input placeholder="输入名称关键字搜索" [(ngModel)]="searchText"
+            (keyup)="$event.which === 13 && search()" />
         </nz-input-group>
         <ng-template #suffixIconButton>
           <button nz-button nzType="default" nzSearch (click)="search()"><i nz-icon type="search"></i></button>
@@ -36,7 +37,7 @@
       </nz-tag>
     </div>
   </nz-skeleton>
-  <div class="footer">
+  <div class="footer" *ngIf="drawerRef">
     <button nz-button (click)="close()" style="margin-right: 8px;"><span>取消</span></button>
     <button nz-button (click)="confirm()" nzType="primary"><span>确定</span></button>
   </div>
