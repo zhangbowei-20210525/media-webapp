@@ -33,7 +33,7 @@ export class TaskComponent implements OnInit, OnDestroy {
         
       }),
       this.service.notifies().subscribe(result => {
-        this.sourceUploads = result.type.active_source_tasks;
+        this.sourceUploads = result.active_source_tasks;
       })
     ];
     this.service.nextNotifies();
