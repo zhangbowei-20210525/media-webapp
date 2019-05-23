@@ -79,6 +79,7 @@ export class AddCustomerComponent implements OnInit {
             email: {
               type: 'string',
               title: '邮箱',
+              // nzRequired: true,
               ui: {
                 spanLabel: 5,
                 offsetControl: 0,
@@ -87,6 +88,9 @@ export class AddCustomerComponent implements OnInit {
                 validator: (value: any, property: FormProperty, form: PropertyGroup) => {
                   return EMAIL_EXGEXP.test(value) ? [] : [{ keyword: 'email', message: '请输入正确的邮箱地址'}];
                 },
+                // errors: {
+                //   required: '情输入联系人邮箱地址',
+                // }
               }
             },
             department: {
@@ -122,6 +126,7 @@ export class AddCustomerComponent implements OnInit {
           },
           ui: { offsetControl: 0 },
           required: ['name', 'phone']
+          // nzRequired: ['name','phone']
         },
         ui: {
           spanLabel: 3,
@@ -180,9 +185,18 @@ export class AddCustomerComponent implements OnInit {
   validation() {
     // return this.validationForm(this.enterpriseForm) && this.validationForm(this.liaisonForm);
     return this.validationForm(this.enterpriseForm);
+    // const enterpriseValid = this.validationForm(this.enterpriseForm);
+    // // console.log(enterpriseValid)
+    // this.sf.validator();
+    // // this.sf.refreshSchema();
+    // console.log(enterpriseValid);
+    // console.log(this.sf)
+
+    // return enterpriseValid && this.sf.valid;
   }
 
   submit(): Observable<any> {
+    console.log('ssss')
     if (this.sf.value.liaisons.length > 0 && !this.sf.valid) {
       return throwError({});
     }
@@ -190,11 +204,13 @@ export class AddCustomerComponent implements OnInit {
     custom.custom_type = this.baseForm.value['customType'] === 'enterprise' ? 0 : 1;
     // const liaisons = [this.liaisonForm.value, ...this.sf.value.liaisons];
     const liaisons = [...this.sf.value.liaisons];
+    console.log(custom);
+    console.log(liaisons);
     return this.service.addCustomer({ custom, liaisons });
+    
   }
 
   schemaSubmit(value: any) {
     this.messsage.success(JSON.stringify(value));
   }
-
 }
