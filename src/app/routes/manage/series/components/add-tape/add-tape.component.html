@@ -308,21 +308,21 @@
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label [nzSm]="3" nzFor="brand">载体品牌</nz-form-label>
+      <nz-form-label [nzSm]="3" nzFor="brand" nzRequired>载体品牌</nz-form-label>
       <nz-form-control [nzSm]="9">
         <nz-select nzMode="tags" nzPlaceHolder="请选择载体品牌" id="brand" formControlName="brand" nzMaxMultipleCount= 1>
           <nz-option *ngFor="let option of carrierBrandList" [nzLabel]="option" [nzValue]="option"> </nz-option>
         </nz-select>
 
-        <nz-form-explain *ngIf="entityTapeForm.get('brand').dirty && entityTapeForm.get('brand').errors">请选择载体品牌
+        <nz-form-explain *ngIf="entityTapeForm.get('brand').dirty && entityTapeForm.get('brand').errors">请填写载体品牌
         </nz-form-explain>
       </nz-form-control>
-      <nz-form-label [nzSm]="3" nzFor="model">载体型号</nz-form-label>
+      <nz-form-label [nzSm]="3" nzFor="model" nzRequired>载体型号</nz-form-label>
       <nz-form-control [nzSm]="9">
         <nz-select nzMode="tags" nzPlaceHolder="请选择载体型号" id="model" formControlName="model" nzMaxMultipleCount= 1>
           <nz-option *ngFor="let option of carrierModelList" [nzLabel]="option" [nzValue]="option"> </nz-option>
         </nz-select>
-        <nz-form-explain *ngIf="entityTapeForm.get('model').dirty && entityTapeForm.get('model').errors">请选择载体型号
+        <nz-form-explain *ngIf="entityTapeForm.get('model').dirty && entityTapeForm.get('model').errors">请填写载体型号
         </nz-form-explain>
       </nz-form-control>
     </nz-form-item>
