@@ -1,7 +1,8 @@
 import { finalize, delay } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { NotifyService } from './notify.service';
-import { PaginationDto } from '@shared';
+import { PaginationDto, MessageService } from '@shared';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notify',
@@ -26,8 +27,24 @@ export class NotifyComponent implements OnInit {
   srcNotifys = [];
   outNotifys = [];
 
+  visible: boolean;
+  drawerTitle: string;
+  drawerCreated_at: string;
+  drawerContent: string;
+  acceptCompany: string;
+  authInfo: any;
+  related_id: number;
+  type: string;
+  isShowInput = false;
+  isShowRadio = false;
+  companyList = [];
+  companyId: number;
+  acceptCompanyId: number;
+
   constructor(
-    private service: NotifyService
+    private service: NotifyService,
+    private message: MessageService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -35,6 +52,7 @@ export class NotifyComponent implements OnInit {
   }
 
   loadSysNotifys() {
+    this.visible = false;
     this.isSysLoding = true;
     this.service.getSystemNotify(this.sysPagination)
       .pipe(finalize(() => {
@@ -137,6 +155,74 @@ export class NotifyComponent implements OnInit {
         this.loadOutNotifys();
       }
     }
+  }
+
+  close() {
+    this.visible = false;
+  }
+
+  messageDetails(title: string, created_at: string, content: string, id: number, type: string) {
+    this.visible = true;
+    this.drawerTitle = title;
+    this.drawerCreated_at = created_at;
+    this.drawerContent = content;
+    this.related_id = id;
+    this.type = type;
+    if (type === 'SOU005') {
+      this.service.getAuthorizationInfo(this.related_id).subscribe(res => {
+        this.authInfo = res;
+        this.companyId = res.auth_company_id;
+        if (this.companyId === null) {
+          this.isShowRadio = true;
+          this.isShowInput = false;
+          this.service.getCompanyList().subscribe(cl => {
+            this.companyList = cl;
+            this.companyList = this.companyList.filter(f => f.id_default_company === false);
+          });
+        } else {
+          this.isShowInput = true;
+          this.isShowRadio = false;
+          this.acceptCompany = res.auth_company_full_name;
+        }
+      });
+    }
+  }
+
+  submit() {
+    if (this.companyId === null) {
+      if (this.acceptCompanyId === undefined) {
+        this.message.warning(this.translate.instant('global.please-select-receivr-company'));
+      } else {
+        const data = {
+          status: true,
+          company_id: this.acceptCompanyId
+        };
+        this.service.pubAuth(this.related_id, data).subscribe(res => {
+          this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+          this.visible = false;
+        });
+      }
+    } else {
+      const data = {
+        status: true,
+        company_id: this.companyId
+      };
+      this.service.pubAuth(this.related_id, data).subscribe(res => {
+        this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+        this.visible = false;
+      });
+    }
+  }
+
+  refused() {
+    const data = {
+      status: false,
+      company_id: null,
+    };
+    this.service.pubAuth(this.related_id, data).subscribe(res => {
+      this.message.warning(this.translate.instant('global.refused-authorization-information'));
+      this.visible = false;
+    });
   }
 
 }

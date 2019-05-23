@@ -72,7 +72,7 @@ export class PubAuthorizationReceiveComponent implements OnInit {
             time: +new Date
           });
           this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-          this.router.navigate([`/manage/series`]);
+          this.router.navigate([`/manage/transmit`, {tabIndex: 1}]);
         });
       });
   }

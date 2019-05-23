@@ -1,4 +1,5 @@
 @import '~styles/theme';
+
 :host ::ng-deep .ant-tabs-bar {
     margin: 0;
 }
@@ -9,7 +10,7 @@ a {
 
 .notity-box {
     width: 28rem;
-    border-top: 2px solid @primary-color;// #409EFF;
+    border-top: 2px solid @primary-color; // #409EFF;
 }
 
 .notitys-tab-panel {
@@ -21,6 +22,7 @@ a {
     line-height: 3.6rem;
     border-top: 1px solid @color-border;
     display: flex;
+    text-align: center;
 }
 
 .n-operations-button {
@@ -56,4 +58,16 @@ a {
     float: right;
     width: 60%;
     text-align: right;
+}
+
+.series-info-row {
+    margin-bottom: 1rem;
+}
+
+.info-filed::after {
+    content: '：';
+}
+
+[nz-radio] {
+    display: block;
 }
