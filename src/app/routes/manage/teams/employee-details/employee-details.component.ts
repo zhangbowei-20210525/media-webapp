@@ -202,13 +202,13 @@ export class EmployeeDetailsComponent implements OnInit {
     });
   }
 
-  // seriesTagChange(event: { checked: boolean, tag: any }) {
-  //   this.service.updateSeriesPermission(this.settings.user.employee_id, event.checked, [event.tag.id])
-  //     .subscribe(result => {
-  //       event.tag.status = event.checked;
-  //     }, error => {
-  //       event.tag.status = !event.checked;
-  //     });
-  // }
+  seriesTagChange(event: { checked: boolean, tag: any }) {
+    this.service.updateSeriesPermission(this.settings.user.employee_id, event.checked, [event.tag.id])
+      .subscribe(result => {
+        event.tag.status = event.checked;
+      }, error => {
+        event.tag.status = !event.checked;
+      });
+  }
 
 }

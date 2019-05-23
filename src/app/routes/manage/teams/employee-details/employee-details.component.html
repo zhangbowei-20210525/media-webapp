@@ -55,6 +55,6 @@
     </nz-tree>
   </nz-tab>
   <nz-tab [nzTitle]="'节目权限'" *aclIf="{ role: ['admin'], ability: [ability.company.employee.data] }">
-    <!-- <app-series-selector [autoSelect]="true" (tagChange)="seriesTagChange($event)"></app-series-selector> -->
+    <app-series-selector [autoSelect]="true" (tagChange)="seriesTagChange($event)"></app-series-selector>
   </nz-tab>
 </nz-tabset>
