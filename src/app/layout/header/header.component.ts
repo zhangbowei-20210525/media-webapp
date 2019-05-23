@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   upload: number;
   sourceUpload: number;
   sourceUploads = [];
+  notifies: number;
   uploadsLength: number;
   uploadStatus: any;
   activeSourceTasks = false;
@@ -65,6 +66,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscription = this.service.notifies().subscribe(result => {
       this.sourceUploads = result.active_source_tasks;
       this.uploadsLength = result.base.source.active_source_task_num;
+      this.notifies = result.base.notify.unread_num;
       this.uploads = this.upload + this.uploadsLength;
     });
   }
