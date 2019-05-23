@@ -63,8 +63,11 @@
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
           <a class="nav-item-link" nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="notifyTemplate"
-            nzTrigger="click" nzPlacement="bottom"><i nz-icon type="bell" theme="outline"
-              style="font-size: 1.75rem"></i></a>
+            nzTrigger="click" nzPlacement="bottom">
+            <nz-badge [nzCount]="notifies"><i nz-icon type="bell" theme="outline" style="font-size: 1.75rem"></i>
+              <!-- thunderbolt -->
+            </nz-badge>
+          </a>
           <ng-template #notifyTemplate>
             <app-notify></app-notify>
           </ng-template>

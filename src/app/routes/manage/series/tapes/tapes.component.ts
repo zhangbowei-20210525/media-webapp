@@ -9,6 +9,7 @@ import { finalize, timeout, switchMap } from 'rxjs/operators';
 import { LocalRequestService } from '@shared/locals';
 import { fadeIn } from '@shared/animations';
 import * as _ from 'lodash';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-tapes',
@@ -25,6 +26,7 @@ export class TapesComponent implements OnInit {
   searchText: string;
 
   constructor(
+    public ability: ACLAbility,
     private router: Router,
     private service: SeriesService,
     private modal: NzModalService,

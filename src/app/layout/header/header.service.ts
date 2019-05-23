@@ -4,15 +4,23 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, interval, Subject, Observable, Subscription } from 'rxjs';
 // import { mergeMap } from 'rxjs/operators';
 
-interface NotifiesDto { base: any; active_source_tasks: any[]; }
+interface NotifiesDto {
+  base: {
+    source: { has_active_source_task: boolean, active_source_task_num: number },
+    notify: { has_unread: boolean, unread_num: number };
+  };
+  active_source_tasks: any[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeaderService {
 
-  private readonly notifies$: Subject<any> = new Subject();
-  private readonly result$: Subject<any> = new Subject();
+  private readonly timeSpan = 15 * 1e3;
+
+  private readonly notifies$: Subject<never> = new Subject();
+  private readonly result$: Subject<NotifiesDto> = new Subject();
 
   private subscriptions: Subscription[] = [];
 
@@ -30,7 +38,7 @@ export class HeaderService {
     this.subscriptions = [
       this.notifies$.subscribe(() => this.getNotifies()
         .subscribe(result => this.result$.next(result))),
-      interval(5000).subscribe(() => this.nextNotifies())
+      interval(this.timeSpan).subscribe(() => this.nextNotifies())
     ];
 
     // this.intervalSubscription = interval(5000)
