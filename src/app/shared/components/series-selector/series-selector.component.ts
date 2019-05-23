@@ -29,7 +29,7 @@ export class SeriesSelectorComponent implements OnInit {
   constructor(
     private service: SeriesSelectorService,
     private settings: SettingsService,
-    @Optional() private drawerRef: NzDrawerRef
+    @Optional() public drawerRef: NzDrawerRef
   ) { }
 
   get checkedSeries() {
