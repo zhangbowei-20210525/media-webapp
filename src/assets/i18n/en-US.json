@@ -198,5 +198,7 @@
     "global.select-series": "Please select at least one program",
     "global.search": "Please enter the search content",
     "global.accept-authorization-successfully": "Accept authorization successfully！",
-    "global.refused-authorization-information": "Authorization information has been refused！"
+    "global.refused-authorization-information": "Authorization information has been refused！",
+    "global.please-select-receivr-company": "Please select the receiving company!"
+
 }

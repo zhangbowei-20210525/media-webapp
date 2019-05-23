@@ -39,4 +39,16 @@ export class NotifyService {
       page_size: pagination.page_size as any
     } });
   }
+
+  getAuthorizationInfo(id: number) {
+    return this.http.get<any>(`/api/v1/sources/auth/receipt/${id}`);
+  }
+
+  pubAuth(id: number, newCompany: { status: boolean,  company_id: number }) {
+    return this.http.patch<any>(`/api/v1/sources/auth/receipt/${id}`, newCompany);
+  }
+
+  getCompanyList() {
+    return this.http.get<any>(`/api/v1/users/info/employees`);
+  }
 }

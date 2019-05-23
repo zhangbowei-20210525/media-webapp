@@ -201,6 +201,7 @@
     "global.select-series": "请至少选择一个节目",
     "global.search": "请输入搜索内容",
     "global.accept-authorization-successfully": "接受授权成功！",
-    "global.refused-authorization-information": "已拒绝接受授权信息！"
+    "global.refused-authorization-information": "已拒绝接受授权信息！",
+    "global.please-select-receivr-company": "请选择接收公司！"
 
 }
