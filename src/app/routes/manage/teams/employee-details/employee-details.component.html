@@ -14,6 +14,15 @@
     </nz-skeleton>
   </nz-tab>
   <nz-tab [nzTitle]="'角色/权限'" *aclIf="{ role: ['admin'], ability: [ability.company.employee.role] }">
+    <div class="options-bar">
+      <div class="options-wrapper">
+        <button nz-button nzSize="small" (click)="setEditable(true)" [disabled]="isEditable">编辑权限</button>
+      </div>
+      <div class="options-wrapper" [hidden]="!isEditable">
+        <button nz-button nzSize="small" nzType="primary" (click)="savePermissions()">保存</button>
+        <button nz-button nzSize="small" (click)="setEditable(false)">取消</button>
+      </div>
+    </div>
     <p>
       <!-- <i nz-icon type="user" style="margin-right: 0.5rem;"></i> -->
       <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomCenter'" [nzDisabled]="!isEditable">
@@ -30,14 +39,15 @@
           </li>
         </ul>
       </nz-dropdown>
+      <!-- <nz-checkbox-group [(ngModel)]="roleCheckOptions" (ngModelChange)="onRoleCheckChange()"></nz-checkbox-group> -->
     </p>
-    <p>
+    <!-- <p>
       <button nz-button nzSize="small" (click)="setEditable(true)" [disabled]="isEditable">编辑权限</button>
       <span [hidden]="!isEditable" style="margin-left: 1rem;">
         <button nz-button nzSize="small" nzType="primary" (click)="savePermissions()">保存</button>
         <button nz-button nzSize="small" style="margin-left: 1rem;" (click)="setEditable(false)">取消</button>
       </span>
-    </p>
+    </p> -->
     <!-- <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" [nzCheckedKeys]="originCheckedKeys"
       (nzCheckBoxChange)="permissionCheck($event)" nzCheckStrictly="true">
       <ng-template #nzTreeTemplate let-node>

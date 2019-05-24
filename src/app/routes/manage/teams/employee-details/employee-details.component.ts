@@ -36,6 +36,10 @@ export class EmployeeDetailsComponent implements OnInit {
   isInfoLoading = false;
   selectedRole: RoleDto;
   permissionNodes: NzTreeNodeOptions[];
+  roleCheckOptions: { label: string, value: string, checked: boolean }[] = [
+    { label: '管理员', value: 'admin', checked: true },
+    { label: '人事', value: 'renshi', checked: false }
+  ];
 
   constructor(
     public ability: ACLAbility,
@@ -198,7 +202,9 @@ export class EmployeeDetailsComponent implements OnInit {
     this.service.updateEmployeePermissions(this.employeeId, permissionKeys).subscribe(() => {
       this.message.success('修改成功');
       this.setEditable(false, false);
-      this.settings.permissions = permissionKeys;
+      if (this.employeeId === this.settings.user.employee_id) {
+        this.settings.permissions = permissionKeys;
+      }
     });
   }
 
@@ -209,6 +215,10 @@ export class EmployeeDetailsComponent implements OnInit {
       }, error => {
         event.tag.status = !event.checked;
       });
+  }
+
+  onRoleCheckChange() {
+    console.log(this.roleCheckOptions);
   }
 
 }
