@@ -107,14 +107,18 @@
               <th>{{ 'app.series.filename' | translate }}</th>
               <th>{{ 'app.series.size' | translate }}</th>
               <th>{{ 'app.series.created-time' | translate }}</th>
+              <th>本地存储</th>
+              <th>线上存储</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable.data;let i = index">
               <td>{{ i + 1 + tapeFilePagination.page * 10 - 10}}</td>
-              <td>{{data.name}}</td>
-              <td>{{data.size | byteFormat}}</td>
-              <td>{{data.created_at}}</td>
+              <td>{{ data.name }}</td>
+              <td>{{ data.size | byteFormat }}</td>
+              <td>{{ data.created_at }}</td>
+              <td>{{ data.local_file_status | sourceFileStatus }}</td>
+              <td>{{ data.hashlink_file_status |sourceFileStatus }}</td>
             </tr>
           </tbody>
         </nz-table>

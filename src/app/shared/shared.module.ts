@@ -62,6 +62,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
 import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 import { ArrayMapPipe } from './pipes/array-map.pipe';
+import { SourceFileStatusPipe } from './pipes/source-file-status.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -76,7 +77,8 @@ const PIPES = [
   TruncatePipe,
   YesOrNoPipe,
   PaymentFormatPipe,
-  ArrayMapPipe
+  ArrayMapPipe,
+  SourceFileStatusPipe
 ];
 // #endregion
 
@@ -91,7 +93,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ...INSIDE_COMPONENTS,
     ...COMPONENTS,
     ...DIRECTIVES,
-    ...PIPES
+    ...PIPES,
   ],
   imports: [
     CommonModule,

@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { QueueUploader } from '@shared/upload';
 import { UploadInfo } from '@shared/upload';
 import { Subscription } from 'rxjs';
-import { HeaderService } from '../../header.service';
+import { NotifiesPolling } from '@core/notifies';
+
 
 @Component({
   selector: 'app-task',
@@ -20,23 +21,25 @@ export class TaskComponent implements OnInit, OnDestroy {
   // private timer;
   constructor(
     private uploader: QueueUploader,
-    private service: HeaderService,
+    private ntf: NotifiesPolling,
+
   ) {
     // this.subscription = this.messageService.getMessage().subscribe(res =>{
     //   console.log(res)
     // })
   }
   ngOnInit() {
-    this.service.setIsActiveSourceTasks(true);
+    this.ntf.setIsActiveSourceTasks(true);
     this.subscriptions = [
       this.uploader.change$.subscribe(() => {
         this.uploads = this.uploader.getList().reverse();
       }),
-      this.service.notifies().subscribe(result => {
+      this.ntf.notifies().subscribe(result => {
+        console.log(result);
         this.sourceUploads = result.active_source_tasks;
       })
     ];
-    this.service.nextNotifies();
+    this.ntf.nextNotifies();
     // this.setTime();
     // this.getUploadsProgress();
   }
@@ -67,6 +70,6 @@ export class TaskComponent implements OnInit, OnDestroy {
     // if (this.timer) {
     // clearInterval(this.timer);
     // }
-    this.service.setIsActiveSourceTasks(false);
+    this.ntf.setIsActiveSourceTasks(false);
   }
 }
