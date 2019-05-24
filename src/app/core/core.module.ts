@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { aclAbility, ACLAbility } from './acl';
+import { NotifiesPolling } from './notifies/notifies-polling';
 
 @NgModule({
   declarations: [],
@@ -10,6 +11,7 @@ import { aclAbility, ACLAbility } from './acl';
     CommonModule
   ],
   providers: [
+    NotifiesPolling,
     SelectivePreloadingStrategy,
     { provide: ACLAbility, useValue: aclAbility }
   ]

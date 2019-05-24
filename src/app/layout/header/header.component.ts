@@ -4,12 +4,12 @@ import { SettingsService, I18nService } from '@core';
 import { DOCUMENT } from '@angular/common';
 import { DA_SERVICE_TOKEN, ITokenService, SimpleTokenModel } from '@delon/auth';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HeaderService } from './header.service';
 import { QueueUploader } from '@shared/upload';
 import { ACLAbility } from '@core/acl';
 import { ACLService } from '@delon/acl';
 import { Subscription } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd';
+import { NotifiesPolling } from '@core/notifies';
 
 @Component({
   selector: 'app-header',
@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private accountService: AccountService,
     private i18n: I18nService,
-    private service: HeaderService,
+    private ntf: NotifiesPolling,
     // private userSource : Subject<result>
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
     @Inject(DOCUMENT) private doc: any,
@@ -62,8 +62,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
     });
     this.isLoggedIn = this.checkSimple(this.token.get());
-    this.service.startNotifiesPolling();
-    this.subscription = this.service.notifies().subscribe(result => {
+    this.ntf.startNotifiesPolling();
+    this.subscription = this.ntf.notifies().subscribe(result => {
       this.sourceUploads = result.active_source_tasks;
       this.uploadsLength = result.base.source.active_source_task_num;
       this.notifies = result.base.notify.unread_num;
@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.service.stopNotifiesPolling();
+    this.ntf.stopNotifiesPolling();
     this.subscription.unsubscribe();
   }
 

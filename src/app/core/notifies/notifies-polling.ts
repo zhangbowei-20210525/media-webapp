@@ -3,20 +3,18 @@ import { HttpClient } from '@angular/common/http';
 // import { PaginationResponseDto, PaginationDto } from '@shared';
 import { BehaviorSubject, interval, Subject, Observable, Subscription } from 'rxjs';
 // import { mergeMap } from 'rxjs/operators';
-
 interface NotifiesDto {
   base: {
     source: { has_active_source_task: boolean, active_source_task_num: number },
     notify: { has_unread: boolean, unread_num: number };
   };
   active_source_tasks: any[];
+  source_id: any[];
+  source_files: any[];
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HeaderService {
-
+@Injectable()
+export class NotifiesPolling {
   private readonly timeSpan = 15 * 1e3;
 
   private readonly notifies$: Subject<never> = new Subject();
@@ -25,6 +23,8 @@ export class HeaderService {
   private subscriptions: Subscription[] = [];
 
   private isActiveSourceTasks = false;
+
+  private sourceId = null;
 
   constructor(private http: HttpClient) {
     // this.notifies$ = new Subject().pipe(mergeMap(() => this.getNotifies()));
@@ -50,11 +50,21 @@ export class HeaderService {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
+
+  private getParams() {
+    const map = {} as any;
+    if (this.isActiveSourceTasks) {
+      map.active_source_tasks = 1;
+    }
+    if (this.sourceId) {
+      map.source_id = this.sourceId;
+    }
+    return map;
+  }
+
   private getNotifies() {
     return this.http.get<NotifiesDto>('/api/v1/polling', {
-      params: {
-        active_source_tasks: (this.isActiveSourceTasks ? 1 : 0) as any,
-      }
+      params: this.getParams()
     });
   }
 
@@ -68,5 +78,13 @@ export class HeaderService {
 
   setIsActiveSourceTasks(state: boolean) {
     this.isActiveSourceTasks = state;
+  }
+
+  setIsActiveSourceFileStatus(state: boolean, id?: number) {
+    if (state) {
+      this.sourceId = id;
+    } else {
+      this.sourceId = null;
+    }
   }
 }

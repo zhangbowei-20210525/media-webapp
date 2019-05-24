@@ -1,5 +1,4 @@
-
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
 import { switchMap, timeout, tap } from 'rxjs/operators';
@@ -12,18 +11,18 @@ import { LocalRequestService } from '@shared/locals';
 import { EditTapeInfoComponent } from '../../components/edit-tape-info/edit-tape-info.component';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLAbility } from '@core/acl';
+import { NotifiesPolling } from '@core/notifies';
 
 @Component({
   selector: 'app-tape',
   templateUrl: './tape.component.html',
   styleUrls: ['./tape.component.less']
 })
-export class TapeComponent implements OnInit {
+export class TapeComponent implements OnInit, OnDestroy {
 
   isId: number;
   id: number;
   tapesList = [];
-
   tapeDetailsInfo: any;
   tapeFileList = [];
   pubTapeList = [];
@@ -42,6 +41,7 @@ export class TapeComponent implements OnInit {
     private translate: TranslateService,
     private router: Router,
     private localRequestService: LocalRequestService,
+    private ntf: NotifiesPolling,
   ) { }
 
   ngOnInit() {
@@ -52,6 +52,7 @@ export class TapeComponent implements OnInit {
         this.tapesList = res;
         this.route.paramMap.subscribe(tapeParams => {
           this.isId = +tapeParams.get('tapeId');
+          this.ntf.setIsActiveSourceFileStatus(true, this.isId);
           this.source_type = tapeParams.get('source_type');
           if (this.isId === 0) {
             if (this.tapesList.length > 0) {
@@ -69,6 +70,17 @@ export class TapeComponent implements OnInit {
         });
       });
     });
+    this.ntf.notifies().subscribe(result => {
+      // console.log(result);
+      this.tapeFileList.forEach(item => {
+        const file = result.source_files.find(f => f.id === item.id);
+        if (file) {
+          item.local_file_status = file.local_file_status;
+          item.hashlink_file_status = file.hashlink_file_status;
+        }
+      });
+    });
+    this.ntf.nextNotifies();
   }
 
   getTapeFileList() {
@@ -81,6 +93,7 @@ export class TapeComponent implements OnInit {
     })).subscribe(x => {
       this.tapeFileList = x.list;
       this.tapeFilePagination = x.pagination;
+      console.log(x);
     });
   }
 
@@ -286,4 +299,7 @@ export class TapeComponent implements OnInit {
       });
   })
 
+  ngOnDestroy() {
+    this.ntf.setIsActiveSourceFileStatus(false);
+  }
 }
