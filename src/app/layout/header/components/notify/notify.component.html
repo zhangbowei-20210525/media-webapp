@@ -1,7 +1,11 @@
 <div class="notity-box">
   <div class="notitys-tab-panel">
-    <nz-tabset nzAnimated="false" (nzSelectChange)="onTabChange($event)">
-      <nz-tab [nzTitle]="'menu.notify.system' | translate">
+    <nz-tabset nzAnimated="false" [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="onTabChange($event)">
+      <nz-tab [nzTitle]="systemTitle">
+        <ng-template #systemTitle>
+          <!-- <nz-badge nzDot><span>{{ 'menu.notify.system' | translate }}</span></nz-badge> -->
+          <span>{{ 'menu.notify.system' | translate }}{{ sysUnread > 0 ? ('(' + sysUnread + ')') : '' }}</span>
+        </ng-template>
         <div class="notitys">
           <!-- <nz-skeleton [nzLoading]="!isSysLoaded" class="notify-skeleton">
           </nz-skeleton> -->
@@ -11,9 +15,9 @@
                 [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onSysScrollDown()">
                 <div class="n-card" *ngFor="let item of sysNotifys">
                   <div class="clearfix">
-                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1"
-                      style="font-size: 14px;font-weight: bold">
-                      {{ item.title }}</div>
+                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
+                      <nz-badge [nzDot]="!item.is_read"><span>{{ item.title }}</span></nz-badge>
+                    </div>
                     <div class="n-time" style="font-size: 12px;font-weight: bold">{{ item.created_at }}</div>
                   </div>
                   <div class="n-contont text-ellipsis" style="font-size: 12px;margin-top: 5px" nz-tooltip
@@ -30,7 +34,11 @@
           </nz-spin>
         </div>
       </nz-tab>
-      <nz-tab [nzTitle]="'menu.notify.source' | translate">
+      <nz-tab [nzTitle]="sourceTitle">
+        <ng-template #sourceTitle>
+          <!-- <nz-badge nzDot><span>{{ 'menu.notify.source' | translate }}</span></nz-badge> -->
+          <span>{{ 'menu.notify.source' | translate }}{{ srcUnread > 0 ? ('(' + srcUnread + ')') : '' }}</span>
+        </ng-template>
         <div class="notitys">
           <nz-spin [nzSpinning]="!isSrcLoaded" style="min-height: 360px;">
             <div *ngIf="isSrcLoaded">
@@ -38,9 +46,9 @@
                 [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onSrcScrollDown()">
                 <div class="n-card" *ngFor="let item of srcNotifys">
                   <div class="clearfix">
-                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1"
-                      style="font-size: 14px;font-weight: bold">
-                      {{ item.title }}</div>
+                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
+                      <nz-badge [nzDot]="!item.is_read"><span>{{ item.title }}</span></nz-badge>
+                    </div>
                     <div class="n-time" style="font-size: 12px;font-weight: bold">{{ item.created_at }}</div>
                   </div>
                   <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1"
@@ -57,7 +65,11 @@
           </nz-spin>
         </div>
       </nz-tab>
-      <nz-tab [nzTitle]="'menu.notify.outside' | translate">
+      <nz-tab [nzTitle]="outsideTitle">
+        <ng-template #outsideTitle>
+          <!-- <nz-badge nzDot><span>{{ 'menu.notify.outside' | translate }}</span></nz-badge> -->
+          <span>{{ 'menu.notify.outside' | translate }}{{ outUnread > 0 ? ('(' + outUnread + ')') : '' }}</span>
+        </ng-template>
         <div class="notitys">
           <nz-spin [nzSpinning]="!isOutLoaded" style="min-height: 360px;">
             <div *ngIf="isOutLoaded">
@@ -65,9 +77,9 @@
                 [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="onOutScrollDown()">
                 <div class="n-card" *ngFor="let item of outNotifys">
                   <div class="clearfix">
-                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1"
-                      style="font-size: 14px;font-weight: bold">
-                      {{ item.title }}</div>
+                    <div class="n-title text-ellipsis" nz-tooltip [nzTitle]="item.title" [nzMouseEnterDelay]="1">
+                      <nz-badge [nzDot]="!item.is_read"><span>{{ item.title }}</span></nz-badge>
+                    </div>
                     <div class="n-time" style="font-size: 12px;font-weight: bold">{{ item.created_at }}</div>
                   </div>
                   <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1"
@@ -127,7 +139,7 @@
         </div>
         <div nz-row class="series-info-row">
           <div nz-col nzSpan="12">
-            <span class="info-filed" >母带版本</span>
+            <span class="info-filed">母带版本</span>
             <span>{{ authInfo?.source?.name }}</span>
           </div>
           <div nz-col nzSpan="12">
@@ -160,10 +172,11 @@
       </div>
     </div>
     <nz-divider nzText="接受公司"></nz-divider>
-    <input nz-input [(ngModel)]="acceptCompany" [disabled]="true" *ngIf="isShowInput == true"/>
+    <input nz-input [(ngModel)]="acceptCompany" [disabled]="true" *ngIf="isShowInput == true" />
     <nz-radio-group [(ngModel)]="acceptCompanyId" *ngIf="isShowRadio == true">
-        <label nz-radio [ngStyle]="style" *ngFor="let option of companyList" [nzValue]="option.company_id">{{option.company_full_name}}</label>
-      </nz-radio-group>
+      <label nz-radio [ngStyle]="style" *ngFor="let option of companyList"
+        [nzValue]="option.company_id">{{option.company_full_name}}</label>
+    </nz-radio-group>
     <div style="text-align: center;margin-top: 50px;margin-bottom: 100px">
       <button nz-button nzType="danger" (click)="refused()">拒绝</button>
       <button nz-button nzType="primary" style="margin-left: 50px" (click)="submit()">确认接受</button>
