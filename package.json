@@ -22,7 +22,7 @@
     "@ant-design/icons-angular": "^2.0.2",
     "@antv/data-set": "^0.10.1",
     "@antv/g2": "^3.4.10",
-    "@delon/acl": "^7.4.0",
+    "@delon/acl": "^7.5.0",
     "@delon/auth": "^7.2.0",
     "@delon/form": "^7.2.0",
     "@delon/theme": "^7.2.0",

@@ -62,6 +62,7 @@ export class PublicitiesComponent implements OnInit {
     const mode = this.mode;
     const q = _.isString(this.searchText) ? this.searchText : '';
     this.isLoading = true;
+    this.isLoaded = false;
     (mode === 'table' ?
       this.service.searchPublicities(q, this.pagination) :
       this.service.searchThumbnail(q, this.pagination))
