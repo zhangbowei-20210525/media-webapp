@@ -126,6 +126,9 @@
               <div class="info-wk-nine">
                 <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
               </div>
+              <div class="info-wk-ten">
+                  {{ thumbnail?.company?.full_name }}
+                </div>
             </div>
           </div>
         </li>

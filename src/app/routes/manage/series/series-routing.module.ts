@@ -20,6 +20,8 @@ import { AllRightsComponent } from './copyrights/all-rights/all-rights.component
 import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
 import { ACLGuard, ACLType } from '@delon/acl';
 import { aclAbility } from '@core/acl';
+import { ChoreographyComponent } from './choreography/choreography.component';
+import { TheatreComponent } from './choreography/theatre/theatre.component';
 
 
 
@@ -59,6 +61,20 @@ const routes: Routes = [
             ability: [aclAbility.program.source.view]
           }
         }
+      },
+      {
+        path: 'choreography', component: ChoreographyComponent,
+        children: [
+          {
+            path: 'theatre',
+            component: TheatreComponent
+          },
+          {
+            path: 'info',
+            component: TheatreComponent
+          },
+
+        ]
       },
       {
         path: 'rights',

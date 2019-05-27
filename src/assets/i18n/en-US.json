@@ -81,6 +81,7 @@
     "app.series.source": "Source",
     "app.series.right": "Right",
     "app.series.contract": "Contract",
+    "app.series.choreography": "Choreography",
     "app.series.add-series": "Add series",
     "app.series.series": "Programs",
     "app.series.program-type": "Program type",

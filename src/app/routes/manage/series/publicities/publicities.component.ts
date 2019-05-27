@@ -26,7 +26,7 @@ export class PublicitiesComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   disabledButton: boolean;
-  pagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
+  pagination = { page: 1, count: 10, page_size: 12 } as PaginationDto;
   addPublicityModal: NzModalRef;
   publicityId: number;
   isLoading: boolean;
