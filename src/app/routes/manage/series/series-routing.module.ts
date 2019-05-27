@@ -18,6 +18,8 @@ import { PublishedComponent } from './contracts/published/published.component';
 import { PublishedComponent as PublishedListComponent } from './copyrights/published/published.component';
 import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
 import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
+import { ChoreographyComponent } from './choreography/choreography.component';
+import { TheatreComponent } from './choreography/theatre/theatre.component';
 
 
 
@@ -38,6 +40,20 @@ const routes: Routes = [
       {
         path: 'tapes',
         component: TapesComponent
+      },
+      {
+        path: 'choreography', component: ChoreographyComponent,
+        children: [
+          {
+            path: 'theatre',
+            component: TheatreComponent
+          },
+          {
+            path: 'info',
+            component: TheatreComponent
+          },
+
+        ]
       },
       {
         path: 'rights',
