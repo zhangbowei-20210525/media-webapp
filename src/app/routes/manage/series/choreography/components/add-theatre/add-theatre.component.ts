@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChoreographyComponent } from '../../choreography.component';
+import { ChoreographyService } from '../../choreography.service';
 
 @Component({
   selector: 'app-add-theatre',
@@ -13,7 +14,7 @@ export class AddTheatreComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: ChoreographyComponent
+    private service: ChoreographyService
   ) { }
 
   ngOnInit() {
