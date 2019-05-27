@@ -214,7 +214,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   })
   publishTape() {
     this.modalService.create({
-      nzTitle: '发行母带',
+      nzTitle: '母带发行',
       nzContent: AddPubTapeComponent,
       nzComponentParams: { id: this.isId },
       nzMaskClosable: false,

@@ -1,9 +1,9 @@
-<div class="modal-panel">
+<div class="modal-panel" *ngIf="validateForm">
   <form nz-form [formGroup]="validateForm">
     <nz-form-item>
       <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>公司</nz-form-label>
       <nz-form-control [nzSm]="21" [nzXs]="24">
-        <input placeholder="请选填公司" nz-input id="company" formControlName="company"
+        <input placeholder="请选填公司" nz-input id="company" formControlName="company" #companyInput
           (input)="onCompanyInput($event.target?.value)" (ngModelChange)="companyChange()" [nzAutocomplete]="autoCompanies" />
         <nz-autocomplete nzBackfill #autoCompanies>
           <nz-auto-option *ngFor="let option of filteredCompanyOptions" [nzValue]="option.name">

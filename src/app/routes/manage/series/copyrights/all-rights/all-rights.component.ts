@@ -1,22 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PaginationDto, MessageService, TreeService, Util } from '@shared';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, NavigationStart } from '@angular/router';
 import { CopyrightsService } from '../copyrights.service';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeIn } from '@shared/animations';
-import { finalize, switchMap } from 'rxjs/operators';
+import { finalize, switchMap, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { NzTreeNodeOptions } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
 import { RootTemplateDto } from '../dtos';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-all-rights',
   templateUrl: './all-rights.component.html',
   animations: [fadeIn]
 })
-export class AllRightsComponent implements OnInit {
+export class AllRightsComponent implements OnInit, OnDestroy {
+
+  subs: Subscription[];
 
   isLoaded = false;
   isLoading = false;
@@ -33,6 +36,7 @@ export class AllRightsComponent implements OnInit {
   tags = [];
   search: string;
   seriesType = [];
+
   constructor(
     private service: CopyrightsService,
     private router: Router,
@@ -45,6 +49,16 @@ export class AllRightsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subs = [this.service.change().subscribe(state => {
+      if (state.type === 'navigate' && state.value === 'publish') {
+        const pids = this.tags.map(t => t.pid);
+        if (pids.length > 0) {
+          this.router.navigate(['/manage/series/publish-rights', { pids: pids }]);
+        } else {
+          this.router.navigate(['/manage/series/publish-rights']);
+        }
+      }
+    })];
     this.route.paramMap.subscribe(param => {
       this.search = param.get('search');
       this.fetchCopyrights(this.service.getDefaultFiltrateSeriesParams(this.search));
@@ -65,6 +79,10 @@ export class AllRightsComponent implements OnInit {
       program_type: [null]
     });
     this.filtrateForm.get('sole').disable();
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
 
@@ -154,15 +172,6 @@ export class AllRightsComponent implements OnInit {
 
   addCopyrights() {
     this.router.navigate([`/manage/series/add-copyrights`]);
-  }
-
-  addPublishConpyrights() {
-    const pids = this.tags.map(t => t.pid);
-    if (pids.length > 0) {
-      this.router.navigate([`/manage/series/publish-rights`, { pids: pids }]);
-    } else {
-      this.message.success(this.translate.instant('global.select-series'));
-    }
   }
 
   // loadCopyrights() {
