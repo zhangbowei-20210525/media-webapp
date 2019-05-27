@@ -36,28 +36,27 @@ export class MarketComponent implements OnInit {
             nzOkText: '前往',
             nzCancelText: '跳过',
             nzOkType: 'primary',
-            nzOnCancel: () => this.skip(),
-            nzOnOk: () => this.AccessAuthInfo()
+            nzOnCancel: () => new Promise((resolve) => {
+              resolve();
+              this.navigateToDefault();
+            }),
+            nzOnOk: () => new Promise((resolve) => {
+              resolve();
+              this.router.navigate([`/manage/pubAuthorizationReceive`]);
+            })
           });
         } else {
-          this.router.navigate([`/manage/series`]);
+          this.navigateToDefault();
         }
       } else {
-        this.router.navigate([`/manage/series`]);
+        this.navigateToDefault();
       }
     });
   }
 
-
-  skip = () => new Promise((resolve) => {
-    resolve();
-    this.router.navigate([`/manage/series`]);
-  })
-
-  AccessAuthInfo = () => new Promise((resolve) => {
-    resolve();
-    this.router.navigate([`/manage/pubAuthorizationReceive`]);
-  })
+  navigateToDefault() {
+    this.router.navigate([`/manage/dashboard`]);
+  }
 
   marketDetail() {
     this.router.navigate([`/d`]);

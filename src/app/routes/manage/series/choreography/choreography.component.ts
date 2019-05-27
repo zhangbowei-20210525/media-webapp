@@ -18,7 +18,7 @@ export class ChoreographyComponent implements OnInit {
 
   addTheatre () {
     this.modal.create({
-      nzTitle: '新增栏目',
+      nzTitle: '新增节目',
       nzContent: AddTheatreComponent,
       nzMaskClosable: false,
       nzClosable: false,

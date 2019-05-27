@@ -12,7 +12,7 @@
             </li>
           </ul>
         </nz-dropdown>
-        <button nz-button (click)="editCompany()">{{ 'global.edit' | translate }}</button>
+        <button nz-button (click)="editCompany()" *ngIf="settings.user.is_admin">{{ 'global.edit' | translate }}</button>
         <button nz-button (click)="addCompany()">{{ 'global.create' | translate }}</button>
       </div>
     </div>
@@ -25,11 +25,11 @@
     </div>
   </section>
 
-  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany">
+  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany" acl="admin" [acl-ability]="ability.company.view">
     <div class="block-header">
       <div class="block-title">{{ 'app.teams.department-manage' | translate }}</div>
       <div class="block-options">
-        <button nz-button [routerLink]="'/manage/teams/roles'"><i nz-icon type="setting"
+        <button nz-button [routerLink]="'/manage/teams/roles'" acl="admin" [acl-ability]="ability.company.role"><i nz-icon type="setting"
             theme="outline"></i>{{ 'app.teams.option-role' | translate }}</button>
       </div>
     </div>
@@ -42,7 +42,7 @@
                 <span>
                   <i nz-icon class="folder-icon" [type]="node.isExpanded ? 'folder-open' : 'folder'"
                     (click)="openFolder(node)"></i>
-                  <span class="folder-name text-ellipsis">{{node.title}}</span>
+                  <span class="folder-name text-ellipsis">{{ node.title }}</span>
                   <nz-dropdown [nzTrigger]="'click'">
                     <!-- <a nz-dropdown>
                       Click me <i nz-icon type="down"></i>
@@ -52,7 +52,7 @@
                       <li nz-menu-item (click)="addDepartment(node.key)">
                         {{ 'app.teams.add-department' | translate }}</li>
                       <!-- <li nz-menu-item>修改名称</li> -->
-                      <li nz-menu-item (click)="deleteDepartment(node.key, node.title)">
+                      <li nz-menu-item (click)="deleteDepartment(node.key, node.title)" *ngIf="node.level > 0">
                         {{ 'global.delete' | translate }}</li>
                       <!-- <li nz-menu-item nzDisabled>id: {{ node.key }}</li> -->
                     </ul>

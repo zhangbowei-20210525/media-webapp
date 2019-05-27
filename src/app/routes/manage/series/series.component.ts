@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from './series.service';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-series',
@@ -17,10 +17,11 @@ export class SeriesComponent implements OnInit {
   content: any;
 
   constructor(
+    public ability: ACLAbility,
     private router: Router,
     private message: NzMessageService,
     private translate: TranslateService,
-    private seriesService: SeriesService,
+    private seriesService: SeriesService
   ) { }
 
   ngOnInit() {

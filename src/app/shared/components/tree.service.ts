@@ -68,7 +68,7 @@ export class TreeService {
   }
 
   /**
-   * 递归节点并映射为平行数组
+   * 递归节点并映射为平行数组 flattenMapNodes
    * @param nodes 节点
    * @param map 映射回调
    * @param selector 条件回调

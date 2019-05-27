@@ -1,6 +1,6 @@
 <div class="table-operations">
-  <button nz-button (click)="addEmployee()">添加成员</button>
-  <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()">删除</button>
+  <button nz-button (click)="addEmployee()" acl="admin" [acl-ability]="ability.company.employee.profile">添加成员</button>
+  <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin" [acl-ability]="ability.company.employee.profile">删除</button>
 </div>
 
 <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>

@@ -1,7 +1,7 @@
 <div class="block clearfix fade-in-up">
   <div class="block-header">
     <div class="block-title">客商列表</div>
-    <div class="block-options"><button nz-button nzType="default" (click)="addCustomer()">新增客商</button></div>
+    <div class="block-options"><button nz-button nzType="default" (click)="addCustomer()" acl [acl-ability]="ability.custom.edit">新增客商</button></div>
   </div>
   <div class="block-content">
     <div *ngIf="isLoaded">
@@ -11,7 +11,7 @@
           <tr>
             <th>公司/个人</th>
             <th>联系人</th>
-            <th>电话</th>
+            <th>手机</th>
             <th>客户类型</th>
             <th>客户标签</th>
             <!-- <th>已发行</th>
@@ -33,7 +33,7 @@
             <td>{{ data.remark }}</td>
             <td>
               <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
-              <a><i class="text-info" nz-icon type="delete" theme="outline" (click)="deleteCustomer(data)"></i></a>
+              <a acl [acl-ability]="ability.custom.del"><i class="text-info" nz-icon type="delete" theme="outline" (click)="deleteCustomer(data)"></i></a>
             </td>
           </tr>
         </tbody>

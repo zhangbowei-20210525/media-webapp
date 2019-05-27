@@ -20,11 +20,11 @@
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/dashboard'"><span nzTitle="各项统计，提醒与图表"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.dashboard' | translate }}</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" acl [acl-ability]="ability.program.view">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series'"><span nzTitle="节目的版权，样片，高清母带管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.series' | translate }}</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" [acl]="{ ability: [ability.program.source.upload, ability.program.source.download] }">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/transmit'"><span nzTitle="母带文件的传输分发管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.transmit' | translate }}</span></a>
             </li>
@@ -34,7 +34,7 @@
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/teams'">{{ 'menu.manage.teams' | translate }}</a>
             </li> -->
-            <li class="nav-item">
+            <li class="nav-item" acl [acl-ability]="ability.custom.view">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/customers'"><span nzTitle="客户及供应商的信息管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.customers' | translate }}</span></a>
             </li>
@@ -63,8 +63,11 @@
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
           <a class="nav-item-link" nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="notifyTemplate"
-            nzTrigger="click" nzPlacement="bottom"><i nz-icon type="bell" theme="outline"
-              style="font-size: 1.75rem"></i></a>
+            nzTrigger="click" nzPlacement="bottom">
+            <nz-badge [nzCount]="notifies"><i nz-icon type="bell" theme="outline" style="font-size: 1.75rem"></i>
+              <!-- thunderbolt -->
+            </nz-badge>
+          </a>
           <ng-template #notifyTemplate>
             <app-notify></app-notify>
           </ng-template>
@@ -74,7 +77,7 @@
             <a nz-dropdown>
               <i nz-icon type="global"></i>
                {{ 'app.lang' | translate }}
-              <i nz-icon type="down"></i> 
+              <i nz-icon type="down"></i>
             </a>
             <ul nz-menu>
               <li nz-menu-item *ngFor="let item of langs" [nzSelected]="item.code === settings.lang" (click)="changeLanguage(item.code)">{{item.text}}</li>

@@ -18,9 +18,11 @@ const SERVICES = [
 
 // #region third libs 第三方模块
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { DelonACLModule } from '@delon/acl';
 
 const THIRD_MODULES = [
-  NgZorroAntdModule
+  NgZorroAntdModule,
+  DelonACLModule
 ];
 // #endregion
 
@@ -60,6 +62,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
 import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 import { ArrayMapPipe } from './pipes/array-map.pipe';
+import { SourceFileStatusPipe } from './pipes/source-file-status.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -74,7 +77,8 @@ const PIPES = [
   TruncatePipe,
   YesOrNoPipe,
   PaymentFormatPipe,
-  ArrayMapPipe
+  ArrayMapPipe,
+  SourceFileStatusPipe
 ];
 // #endregion
 
@@ -89,7 +93,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ...INSIDE_COMPONENTS,
     ...COMPONENTS,
     ...DIRECTIVES,
-    ...PIPES
+    ...PIPES,
   ],
   imports: [
     CommonModule,
@@ -119,7 +123,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   ],
   providers: [
     // servises
-    ...SERVICES
+    // ...SERVICES
   ],
   entryComponents: [
     // inside components

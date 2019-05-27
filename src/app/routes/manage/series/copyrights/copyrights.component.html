@@ -9,8 +9,8 @@
       </nz-radio-group>
     </div>
     <div class="options-wrapper">
-      <a nz-button nzType="default" routerLink="/manage/series/add-copyrights">新增版权</a>
-      <a nz-button nzType="default" routerLink="/manage/series/publish-rights">新增发行</a>
+      <a nz-button acl [acl-ability]="ability.program.right.edit" nzType="default" routerLink="/manage/series/add-copyrights">新增版权</a>
+      <a nz-button acl [acl-ability]="ability.program.right.publish" nzType="default" routerLink="/manage/series/publish-rights">新增发行</a>
     </div>
   </div>
   <router-outlet></router-outlet>

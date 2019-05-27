@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PubAuthorizationReceiveService } from './pub-authorization-receive.service';
-import { MessageService } from '@shared';
+import { MessageService, TreeService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsService } from '@core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
@@ -20,12 +20,13 @@ export class PubAuthorizationReceiveComponent implements OnInit {
   id: number;
 
   constructor(
+    public settings: SettingsService,
     private router: Router,
     private fb: FormBuilder,
     private service: PubAuthorizationReceiveService,
     private message: MessageService,
     private translate: TranslateService,
-    public settings: SettingsService,
+    private ts: TreeService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
   ) { }
 
@@ -67,12 +68,13 @@ export class PubAuthorizationReceiveComponent implements OnInit {
       this.service.pubAuth(this.id, data).subscribe(res => {
         this.service.switchCompany(res.employee_id).subscribe(result => {
           this.settings.user = result.auth;
+          this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
           this.token.set({
             token: result.token,
             time: +new Date
           });
           this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-          this.router.navigate([`/manage/transmit`, {tabIndex: 1}]);
+          this.router.navigate(['/manage/transmit/type']);
         });
       });
   }

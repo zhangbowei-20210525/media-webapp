@@ -18,6 +18,8 @@ import { PublishedComponent } from './contracts/published/published.component';
 import { PublishedComponent as PublishedListComponent } from './copyrights/published/published.component';
 import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
 import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
+import { ACLGuard, ACLType } from '@delon/acl';
+import { aclAbility } from '@core/acl';
 import { ChoreographyComponent } from './choreography/choreography.component';
 import { TheatreComponent } from './choreography/theatre/theatre.component';
 
@@ -27,6 +29,13 @@ const routes: Routes = [
   {
     path: '',
     component: SeriesComponent,
+    canActivate: [ACLGuard],
+    canActivateChild: [ACLGuard],
+    data: {
+      guard: <ACLType>{
+        ability: [aclAbility.program.view]
+      }
+    },
     children: [
       { path: '', redirectTo: 'all', pathMatch: 'full' },
       {
@@ -35,11 +44,23 @@ const routes: Routes = [
       },
       {
         path: 'publicity',
-        component: PublicitiesComponent
+        component: PublicitiesComponent,
+        canActivate: [ACLGuard],
+        data: {
+          guard: <ACLType>{
+            ability: [aclAbility.program.publicity.view]
+          }
+        }
       },
       {
         path: 'tapes',
-        component: TapesComponent
+        component: TapesComponent,
+        canActivate: [ACLGuard],
+        data: {
+          guard: <ACLType>{
+            ability: [aclAbility.program.source.view]
+          }
+        }
       },
       {
         path: 'choreography', component: ChoreographyComponent,
@@ -58,6 +79,13 @@ const routes: Routes = [
       {
         path: 'rights',
         component: CopyrightsComponent,
+        canActivate: [ACLGuard],
+        canActivateChild: [ACLGuard],
+        data: {
+          guard: <ACLType>{
+            ability: [aclAbility.program.right.view]
+          }
+        },
         children: [
           { path: '', redirectTo: 'all', pathMatch: 'full' },
           {
@@ -73,6 +101,13 @@ const routes: Routes = [
       {
         path: 'contracts',
         component: ContractsComponent,
+        canActivate: [ACLGuard],
+        canActivateChild: [ACLGuard],
+        data: {
+          guard: <ACLType>{
+            ability: [aclAbility.program.right.view]
+          }
+        },
         children: [
           { path: '', redirectTo: 'procurement', pathMatch: 'full' },
           { path: 'procurement', component: ProcurementComponent },
@@ -81,22 +116,40 @@ const routes: Routes = [
       },
     ]
   },
-  { path: 'publicity-details/:id', component: PublicityDetailsComponent },
   {
-    path: 'cd/:id',
-    component: ContractDetailsComponent
+    path: 'publicity-details/:id', component: PublicityDetailsComponent,
+    canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.publicity.view] } }
+  },
+  {
+    path: 'cd/:id', component: ContractDetailsComponent,
+    canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.right.view] } }
   },
   {
     path: 'd/:sid',
     component: SeriesDetailsComponent,
     children: [
-      { path: 'publicityd', component: PublicityComponent },
-      { path: 'right', component: RightComponent },
-      { path: 'tape', component: TapeComponent }
+      {
+        path: 'publicityd', component: PublicityComponent,
+        canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.publicity.view] } }
+      },
+      {
+        path: 'right', component: RightComponent,
+        canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.right.view] } }
+      },
+      {
+        path: 'tape', component: TapeComponent,
+        canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.source.view] } }
+      }
     ]
   },
-  { path: 'add-copyrights', component: AddCopyrightsComponent },
-  { path: 'publish-rights', component: PublishRightsComponent }
+  {
+    path: 'add-copyrights', component: AddCopyrightsComponent,
+    canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.right.edit] } }
+  },
+  {
+    path: 'publish-rights', component: PublishRightsComponent,
+    canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.right.publish] } }
+  }
 ];
 
 @NgModule({

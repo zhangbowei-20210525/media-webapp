@@ -17,11 +17,11 @@ export class AddTheatreComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.validateForm = this.fb.group({
-      channel: [null, [Validators.required]],
-      theatre: [null, [Validators.required]],
-      broadcastDate: [null, [Validators.required]],
-    });
+    // this.validateForm = this.fb.group({
+    //   channel: [null, [Validators.required]],
+    //   theatre: [null, [Validators.required]],
+    //   broadcastDate: [null, [Validators.required]],
+    // });
   }
 
 }

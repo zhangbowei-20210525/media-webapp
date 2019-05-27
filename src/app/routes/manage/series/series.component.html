@@ -7,19 +7,19 @@
             <a class="s-nav-link" [routerLinkActive]="'active'"
               [routerLink]="'all'">{{ 'app.series.all' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" acl [acl-ability]="ability.program.publicity.view">
             <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'publicity'" nz-tooltip
               nzTitle="样片，片花，海报，文档等物料的上传，分享管理">{{ 'app.series.publicity' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" acl [acl-ability]="ability.program.source.view">
             <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'tapes'" nz-tooltip
               nzTitle="母带文件的上传与管理">{{ 'app.series.source' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" acl [acl-ability]="ability.program.right.view">
             <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'rights'" nz-tooltip
               nzTitle="节目版权的采购，发行及管理">{{ 'app.series.right' | translate }}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" acl [acl-ability]="ability.program.right.view">
             <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'contracts'">
               <span>{{ 'app.series.contract' | translate }}</span>
             </a>
@@ -33,10 +33,10 @@
       </nav>
     </div>
     <div class="block-options">
-      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
+      <!-- <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
         <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
           (keyup)="$event.which === 13 && search()" />
-      </nz-input-group>
+      </nz-input-group> -->
       <ng-template #suffixIconButton>
         <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
           <i nz-icon type="search"></i>
