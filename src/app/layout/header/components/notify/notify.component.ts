@@ -58,8 +58,8 @@ export class NotifyComponent implements OnInit {
       this.srcUnread = result.base.notify.unread_source_num;
       this.outUnread = result.base.notify.unread_outside_num;
       const sort = [{ tab: 0, unread: this.sysUnread }, { tab: 1, unread: this.srcUnread }, { tab: 2, unread: this.outUnread }];
-      sort.sort((a, b) => a.unread - b.unread);
-      this.tabIndex = sort[sort.length - 1].tab;
+      sort.sort((a, b) => a.unread - b.unread).reverse();
+      this.tabIndex = sort[0].tab;
       subscription.unsubscribe();
     });
     this.np.nextNotifies();
