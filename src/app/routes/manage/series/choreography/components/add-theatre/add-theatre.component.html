@@ -1,3 +1,30 @@
-<p>
-  add-theatre works!
-</p>
+<form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+        <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>频道</nz-form-label>
+        <nz-form-control [nzSm]="21" [nzXs]="24">
+          <input placeholder="请填写频道名称" nz-input id="channel" formControlName="channel"/>
+          <nz-form-explain *ngIf="validateForm.get('channel').dirty && validateForm.get('channel').errors">请填写频道名称
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+          <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>栏目</nz-form-label>
+          <nz-form-control [nzSm]="21" [nzXs]="24">
+            <input placeholder="请填写栏目名称" nz-input id="theatre" formControlName="theatre"/>
+            <nz-form-explain *ngIf="validateForm.get('theatre').dirty && validateForm.get('theatre').errors">请填写栏目名称
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-slider [nzMarks]="marks" [nzIncluded]="false" [ngModel]="37"></nz-slider>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>播出日期</nz-form-label>
+            <nz-form-control [nzSm]="21" [nzXs]="24">
+                <nz-slider [nzMarks]="marks" [nzIncluded]="false" id="broadcastDate" formControlName="broadcastDate"></nz-slider>
+              <nz-form-explain *ngIf="validateForm.get('broadcastDate').dirty && validateForm.get('broadcastDate').errors">请填写栏目名称
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+  </form>
