@@ -24,9 +24,9 @@ export class NotifyComponent implements OnInit {
   isSrcLoding = false;
   isOutLoding = false;
 
-  sysUnread: number;
-  srcUnread: number;
-  outUnread: number;
+  sysUnread = 0;
+  srcUnread = 0;
+  outUnread = 0;
 
   sysNotifys = [];
   srcNotifys = [];

@@ -4,6 +4,12 @@
     margin: 0;
 }
 
+:host ::ng-deep .ant-tabs-nav .ant-tabs-tab {
+    padding-left: 0;
+    padding-right: 0;
+    width: 80px;
+}
+
 a {
     color: @color-content;
 }
@@ -46,6 +52,14 @@ a {
     height: 6rem;
     padding: 1.2rem;
     border-bottom: 1px solid @color-border;
+}
+
+
+.n-card-read {
+    color: rgba(0, 0, 0, .35);
+    a {
+        color: rgba(0, 0, 0, .35);
+    }
 }
 
 .n-title {

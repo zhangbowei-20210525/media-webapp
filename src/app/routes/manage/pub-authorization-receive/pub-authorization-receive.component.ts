@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PubAuthorizationReceiveService } from './pub-authorization-receive.service';
 import { MessageService, TreeService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingsService } from '@core';
+import { SettingsService, AuthService } from '@core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 
 @Component({
@@ -27,7 +27,7 @@ export class PubAuthorizationReceiveComponent implements OnInit {
     private message: MessageService,
     private translate: TranslateService,
     private ts: TreeService,
-    @Inject(DA_SERVICE_TOKEN) private token: ITokenService
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -67,12 +67,13 @@ export class PubAuthorizationReceiveComponent implements OnInit {
       };
       this.service.pubAuth(this.id, data).subscribe(res => {
         this.service.switchCompany(res.employee_id).subscribe(result => {
-          this.settings.user = result.auth;
-          this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
-          this.token.set({
-            token: result.token,
-            time: +new Date
-          });
+          this.auth.login(
+            {
+              token: result.token,
+              time: +new Date
+            },
+            result.auth,
+            this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
           this.message.success(this.translate.instant('global.accept-authorization-successfully'));
           this.router.navigate(['/manage/transmit/type']);
         });

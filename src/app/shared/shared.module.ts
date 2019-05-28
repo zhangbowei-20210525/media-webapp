@@ -63,6 +63,7 @@ import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
 import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 import { ArrayMapPipe } from './pipes/array-map.pipe';
 import { SourceFileStatusPipe } from './pipes/source-file-status.pipe';
+import { MaxNumberPipe } from './pipes/max-number.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -78,7 +79,8 @@ const PIPES = [
   YesOrNoPipe,
   PaymentFormatPipe,
   ArrayMapPipe,
-  SourceFileStatusPipe
+  SourceFileStatusPipe,
+  MaxNumberPipe
 ];
 // #endregion
 
