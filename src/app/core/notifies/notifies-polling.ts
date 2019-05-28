@@ -6,7 +6,7 @@ import { BehaviorSubject, interval, Subject, Observable, Subscription } from 'rx
 interface NotifiesDto {
   base: {
     source: { has_active_source_task: boolean, active_source_task_num: number },
-    notify: { has_unread: boolean, unread_num: number };
+    notify: { has_unread: boolean, unread_num: number, unread_system_num: number, unread_source_num: number, unread_outside_num: number };
   };
   active_source_tasks: any[];
   source_id: any[];
@@ -21,6 +21,7 @@ export class NotifiesPolling {
   private readonly result$: Subject<NotifiesDto> = new Subject();
 
   private subscriptions: Subscription[] = [];
+  private isStarted = false;
 
   private isActiveSourceTasks = false;
 
@@ -35,12 +36,15 @@ export class NotifiesPolling {
   // }
 
   startNotifiesPolling() {
-    this.subscriptions = [
-      this.notifies$.subscribe(() => this.getNotifies()
-        .subscribe(result => this.result$.next(result))),
-      interval(this.timeSpan).subscribe(() => this.nextNotifies())
-    ];
-
+    if (!this.isStarted) {
+      this.subscriptions = [
+        this.notifies$.subscribe(() => this.getNotifies()
+          .subscribe(result => this.result$.next(result))),
+        interval(this.timeSpan).subscribe(() => this.nextNotifies())
+      ];
+      this.isStarted = true;
+    }
+    this.nextNotifies();
     // this.intervalSubscription = interval(5000)
     // .pipe(mergeMap(() => this.notifiesMerge()))
     // .subscribe(this.result$.next);
@@ -48,6 +52,7 @@ export class NotifiesPolling {
 
   stopNotifiesPolling() {
     this.subscriptions.forEach(s => s.unsubscribe());
+    this.isStarted = false;
   }
 
 

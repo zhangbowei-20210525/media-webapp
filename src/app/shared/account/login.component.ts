@@ -11,7 +11,7 @@ import { Subject, Observable } from 'rxjs';
 import { delay, finalize, map } from 'rxjs/operators';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { AccountService, PaginationDto } from '@shared';
-import { SettingsService, I18nService } from '@core';
+import { SettingsService, I18nService, AuthService } from '@core';
 import { MessageService } from '../message/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private i18n: I18nService,
     private modal: NzModalService,
     private ts: TreeService,
-    @Inject(DA_SERVICE_TOKEN) private token: ITokenService
+    private auth: AuthService
   ) {
   }
 
@@ -166,15 +166,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         .pipe(finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
           // console.log(result);
-          this.settings.user = result.auth;
-          this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
-          this.token.set({
-            token: result.token,
-            time: +new Date,
-            is_new_user: result.is_new_user,
-            receipt_source_auth: result.receipt_source_auth
-          });
-            this.close(true);
+          this.auth.login(
+            {
+              token: result.token,
+              time: +new Date,
+              is_new_user: result.is_new_user,
+              receipt_source_auth: result.receipt_source_auth
+            },
+            result.auth,
+            this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
+          this.close(true);
           // this.router.navigate([`/manage/series`]);
         }, error => {
 
@@ -196,12 +197,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.validation(this.emailLogInForm)) {
       this.service.emailValidate(this.emailLogInForm.value['email'], this.emailLogInForm.value['password']).subscribe(result => {
         this.message.success(this.translate.instant('app.login.email-login-successfully'));
-        this.settings.user = result.auth;
-        this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
-        this.token.set({
-          token: result.token,
-          time: +new Date
-        });
+        this.auth.login(
+          {
+            token: result.token,
+            time: +new Date,
+          },
+          result.auth,
+          this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
         this.close(true);
         // this.router.navigate([`/manage/series`]);
       }, error => {

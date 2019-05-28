@@ -1,6 +1,6 @@
 import { AccountService } from '@shared';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { SettingsService, I18nService } from '@core';
+import { SettingsService, I18nService, AuthService } from '@core';
 import { DOCUMENT } from '@angular/common';
 import { DA_SERVICE_TOKEN, ITokenService, SimpleTokenModel } from '@delon/auth';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private i18n: I18nService,
     private ntf: NotifiesPolling,
     // private userSource : Subject<result>
-    @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
+    private auth: AuthService,
     @Inject(DOCUMENT) private doc: any,
     private acl: ACLService
   ) {
@@ -52,23 +52,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.langs = this.i18n.getLangs();
-    this.token.change().subscribe(t => {
-      this.isLoggedIn = this.checkSimple(t);
+    this.auth.state$.subscribe(state => {
+      this.isLoggedIn = state;
       // this.uploader.change$.subscribe(n => this.upload = n);
       this.uploader.change$.subscribe(n => {
         this.upload = n;
         this.uploads = this.upload + this.uploadsLength;
-        console.log(this.uploads);
+        // console.log(this.uploads);
       });
     });
-    this.isLoggedIn = this.checkSimple(this.token.get());
-    this.ntf.startNotifiesPolling();
+    this.isLoggedIn = this.auth.isLoggedIn;
     this.subscription = this.ntf.notifies().subscribe(result => {
       this.sourceUploads = result.active_source_tasks;
       this.uploadsLength = result.base.source.active_source_task_num;
       this.notifies = result.base.notify.unread_num;
       this.uploads = this.upload + this.uploadsLength;
     });
+    if (this.isLoggedIn) {
+      this.ntf.startNotifiesPolling();
+    }
   }
 
   ngOnDestroy() {
@@ -76,15 +78,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  checkSimple(model: SimpleTokenModel): boolean {
-    return model != null && typeof model.token === 'string' && model.token.length > 0;
-  }
-
   login() {
     this.accountService.openLoginModal().then(() => {
       // this.router.navigate([`/manage/dashboard`]);
-      if (this.token.get().is_new_user === true) {
-        if (this.token.get().receipt_source_auth > 0) {
+      if (this.auth.token.is_new_user === true) {
+        if (this.auth.token.receipt_source_auth > 0) {
           this.modal.confirm({
             nzTitle: '您有一条新的授权信息，是否前往查看?',
             nzOkText: '前往',
@@ -113,8 +111,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.token.clear();
-    this.settings.user = null;
+    this.auth.logout();
     this.router.navigateByUrl('/');
   }
 
