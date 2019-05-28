@@ -1,4 +1,4 @@
-<!-- <form nz-form [formGroup]="validateForm">
+<form nz-form [formGroup]="validateForm">
     <nz-form-item>
         <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>频道</nz-form-label>
         <nz-form-control [nzSm]="21" [nzXs]="24">
@@ -16,15 +16,14 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-
-        <nz-slider [nzMarks]="marks" [nzIncluded]="false" [ngModel]="37"></nz-slider>
-
-        <nz-form-item>
+        <!-- <nz-form-item>
             <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>播出日期</nz-form-label>
             <nz-form-control [nzSm]="21" [nzXs]="24">
-                <nz-slider [nzMarks]="marks" [nzIncluded]="false" id="broadcastDate" formControlName="broadcastDate"></nz-slider>
+                <nz-slider [nzMarks]="marks" nzIncluded  id="broadcastDate"  nzRange = "true" formControlName="broadcastDate"></nz-slider>
               <nz-form-explain *ngIf="validateForm.get('broadcastDate').dirty && validateForm.get('broadcastDate').errors">请填写栏目名称
               </nz-form-explain>
             </nz-form-control>
-          </nz-form-item>
-  </form> -->
+          </nz-form-item> -->
+
+  </form>
+  <!-- <nz-slider [nzMarks]="marks" nzIncluded nzRange [ngModel]="[1, 2, 3, 4, 5, 6, 7]"></nz-slider> -->

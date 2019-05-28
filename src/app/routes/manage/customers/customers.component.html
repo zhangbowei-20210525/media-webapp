@@ -24,7 +24,7 @@
           <tr *ngFor="let data of basicTable.data">
             <td><a routerLink="/manage/customers/d/{{data.id}}">{{ data.name }}</a></td>
             <td>{{ data.liaison_name }}</td>
-            <td>{{ data.telephone }}</td>
+            <td>{{ data.liaison_phone }}</td>
             <td>企业</td>
             <td>{{ data.tags | arrayFormat }}</td>
             <!-- <td><nz-tag *ngFor="let tag of data.tags">{{ tag }}</nz-tag></td> -->

@@ -40,17 +40,17 @@
         <td style="text-align: center">
           <span acl [acl-ability]="ability.program.publicity.view" *ngIf="data.has_publicity == true"><a
               [routerLink]="['/manage/series/d', data.id, 'publicityd']">{{ 'app.series.publicity' | translate }}</a></span>
-          <span acl [acl-ability]="ability.program.source.view" *ngIf="data.has_source == true"><a [routerLink]="['/manage/series/d', data.id, 'tape']"
-              style="margin-left: 1rem">{{ 'app.series.source' | translate }}</a></span>
-          <span acl [acl-ability]="ability.program.right.view" *ngIf="data.has_right == true"><a [routerLink]="['/manage/series/d', data.id, 'right']"
-              style="margin-left: 1rem">版权</a></span>
-
-
           <span acl [acl-ability]="ability.program.publicity.view" *ngIf="data.has_publicity == false"
-            style="margin-left: 1rem;color: darkgrey">{{ 'app.series.publicity' | translate }}</span>
+            style="color: darkgrey">{{ 'app.series.publicity' | translate }}</span>
+          <span acl [acl-ability]="ability.program.source.view" *ngIf="data.has_source == true"><a
+              [routerLink]="['/manage/series/d', data.id, 'tape']"
+              style="margin-left: 1rem">{{ 'app.series.source' | translate }}</a></span>
           <span acl [acl-ability]="ability.program.source.view" *ngIf="data.has_source == false"
             style="margin-left: 1rem;color: darkgrey">{{ 'app.series.source' | translate }}</span>
-          <span acl [acl-ability]="ability.program.right.view" style="margin-left: 1rem;color: darkgrey" *ngIf="data.has_right == false">版权</span>
+          <span acl [acl-ability]="ability.program.right.view" *ngIf="data.has_right == true"><a
+              [routerLink]="['/manage/series/d', data.id, 'right']" style="margin-left: 1rem">版权</a></span>
+          <span acl [acl-ability]="ability.program.right.view" style="margin-left: 1rem;color: darkgrey"
+            *ngIf="data.has_right == false">版权</span>
         </td>
         <td style="text-align: center">
           <a (click)="deleteSeries(data.id)" acl [acl-ability]="ability.program.del"><i nz-icon type="delete"
