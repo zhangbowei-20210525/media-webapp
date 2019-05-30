@@ -39,6 +39,7 @@
           </li>
         </ul>
       </nz-dropdown> -->
+      <span style="margin-right: 1rem;">角色：</span>
       <nz-checkbox-group [nzDisabled]="!isEditable" [(ngModel)]="roleCheckOptions" (ngModelChange)="onRoleCheckChange($event)"></nz-checkbox-group>
     </p>
     <!-- <p>
@@ -56,7 +57,8 @@
         </span>
       </ng-template>
     </nz-tree> -->
-    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true" (nzCheckBoxChange)="onPermissionsTreeCheckBoxChange($event)">
+    <span>权限：</span>
+    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true">
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node">
           <span>{{ node.title }}</span>

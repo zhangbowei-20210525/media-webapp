@@ -94,7 +94,7 @@ export class EmployeeDetailsComponent implements OnInit {
       this.originPermissions = result[1].permission_data;
       // this.originCheckedKeys = this.getKeysByPermissions(this.originPermissions);
       this.originCheckedKeys = this.filterRolePermissions(this.getKeysByPermissions(this.originPermissions), this.originRoles);
-      console.log(this.originCheckedKeys);
+      // console.log(this.originCheckedKeys);
       this.setRoleOptions(this.originRoles, this.roleTemplates);
       // this.setOriginCheckedKeysByPermissions(this.currentPermissions);
       this.setPermissionNodes(this.originPermissions, this.originRoles, this.originCheckedKeys);
@@ -225,7 +225,9 @@ export class EmployeeDetailsComponent implements OnInit {
       // this.updateRoleCheckedKeys();
       this.setEditable(false, false);
       if (this.employeeId === this.settings.user.employee_id) {
-        this.settings.permissions = this.getKeysByPermissions(permissions); // permissionKeys;
+        // this.settings.permissions = this.getKeysByPermissions(permissions); // permissionKeys;
+        this.settings.permissions = this.ts.recursionNodesMapArray(permissions, p => p.code, p => p.status);
+        // console.log(this.settings.permissions);
       }
     });
   }
@@ -244,38 +246,17 @@ export class EmployeeDetailsComponent implements OnInit {
     this.updateRoleCheckedKeys();
     const roleDiff = [..._.difference(old, this.roleCheckedkeys), ..._.difference(this.roleCheckedkeys, old)];
     const currentkey = roleDiff[0];
-    // const current = this.roleCheckOptions.find(r => r.value === currentkey);
-    // this.onRoleChecked(current);
     const nodes = this.permissionTreeCom.getTreeNodes();
     const currentKeys = this.ts.recursionNodesMapArray(nodes, node => node.key, node => node.isChecked);
-    // const rolePermissionKeys = this.getKeysByPermissions(
-    //   _.flatten(this.roleTemplates.filter(r => this.roleCheckedkeys.includes(r.id)).map(r => r.permissions)));
-    // const originKeys = this.filterRolePermissions(this.originCheckedKeys, this.originRoles);
     const currentRoleKeys = [...this.originRoles, currentkey];
     const rolePermissionKeys = this.getKeysByPermissions(
       _.flatten(this.roleTemplates.filter(r => currentRoleKeys.includes(r.id)).map(r => r.permissions)));
     const originKeys = [...this.originCheckedKeys, ...rolePermissionKeys];
     const diff = _.difference(currentKeys, originKeys);
-    console.log(diff);
     this.setPermissionsTreeChecked(this.roleCheckedkeys, [...this.originCheckedKeys, ...diff]);
   }
 
-  // onRoleChecked(value: { label: string, value: number, checked: boolean }) {
-  //   const role = this.roleTemplates.find(r => r.id === value.value);
-  //   if (value.checked) {
-  //     const templateKeys = this.ts.recursionNodesMapArray(role.permissions, n => n.code, n => n.status);
-  //     this.setCheckedNodesByKeys(templateKeys);
-  //   } else {
-
-  //   }
-  // }
-
-  onPermissionsTreeCheckBoxChange(event: any) {
-    console.log(event);
-  }
-
   updateRoleCheckedKeys() {
-    // console.log(this.roleCheckOptions);
     this.roleCheckedkeys = this.roleCheckOptions.filter(r => r.checked).map(r => r.value);
   }
 
