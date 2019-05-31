@@ -7,6 +7,8 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 })
 export class LocalRequestService {
 
+  address = '127.0.0.1:8756';
+
   constructor(
     private http: HttpClient,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
@@ -27,22 +29,22 @@ export class LocalRequestService {
 
   downloadTape(idArray: number[]) {
     // return this.callHttpApp('download', { id: idArray });
-    return this.jsonpCallHttpApp('127.0.0.1:8756', 'download', { id: idArray });
+    return this.jsonpCallHttpAppAddTask(this.address, 'download', { id: idArray });
   }
 
   uploadTape(id: number) {
     // return this.callHttpApp('upload_public', { id: id });
-    return this.jsonpCallHttpApp('127.0.0.1:8756', 'upload_public', { id });
+    return this.jsonpCallHttpAppAddTask(this.address, 'upload_public', { id });
+  }
+
+  deleteTapeLocalFile(id: number) {
+    // return this.callHttpApp('upload_public', { id: id });
+    // return this.jsonpCallHttpAppAddTask('127.0.0.1:8756', 'delfiles', { id });
+    return this.http.jsonp(`http://${this.address}/delfiles?id=${id}`, 'callback');
   }
 
   private callHttpApp(action: string, data: { id: number | number[] }) {
-    let id;
-    if (Array.isArray(data.id)) {
-      const idArr = data.id as number[];
-      id = idArr.join(',');
-    } else {
-      id = data.id;
-    }
+    const id = this.getId(data.id);
     return this.http.get(`http://127.0.0.1:8756/add_task?type=${action}&ids=${id}&token=${this.getToken()}`,
       { params: { _allow_anonymous: '', _allow_no_language: '' } });
   }
@@ -51,13 +53,18 @@ export class LocalRequestService {
     return this.http.jsonp(`http://${address}/status`, 'callback');
   }
 
-  private jsonpCallHttpApp(address: string, action: string, data: { id: number | number[] }) {
-    let id;
-    if (Array.isArray(data.id)) {
-      id = data.id.join(',');
+  private getId(id: number | number[]) {
+    let rtn: string;
+    if (Array.isArray(id)) {
+      rtn = id.join(',');
     } else {
-      id = data.id;
+      rtn = id + '';
     }
+    return rtn;
+  }
+
+  private jsonpCallHttpAppAddTask(address: string, action: string, data: { id: number | number[] }) {
+    const id = this.getId(data.id);
     return this.http.jsonp(`http://${address}/AddTask?type=${action}&ids=${id}&token=${this.getToken()}`, 'callback');
   }
 }

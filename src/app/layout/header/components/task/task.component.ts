@@ -22,7 +22,6 @@ export class TaskComponent implements OnInit, OnDestroy {
   constructor(
     private uploader: QueueUploader,
     private ntf: NotifiesPolling,
-
   ) {
     // this.subscription = this.messageService.getMessage().subscribe(res =>{
     //   console.log(res)
@@ -35,7 +34,7 @@ export class TaskComponent implements OnInit, OnDestroy {
         this.uploads = this.uploader.getList().reverse();
       }),
       this.ntf.notifies().subscribe(result => {
-        console.log(result);
+        // console.log(result);
         this.sourceUploads = result.active_source_tasks;
       })
     ];

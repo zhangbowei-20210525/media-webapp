@@ -14,6 +14,7 @@ import { AddCopyrightsComponent } from './copyrights/add-copyrights/add-copyrigh
 import { RightComponent } from './details/right/right.component';
 import { PublishRightsComponent } from './copyrights/publish-rights/publish-rights.component';
 import { AddTapeComponent } from './components/add-tape/add-tape.component';
+import { DeleteTapeComponent } from './components/delete-tape/delete-tape.component';
 import { AddPubTapeComponent } from './components/add-pub-tape/add-pub-tape.component';
 import { TapesComponent } from './tapes/tapes.component';
 import { PublicityDetailsComponent } from './publicities/publicity-details/publicity-details.component';
@@ -49,6 +50,7 @@ import { AddTheatreComponent } from './choreography/components/add-theatre/add-t
     RightComponent,
     PublishRightsComponent,
     AddTapeComponent,
+    DeleteTapeComponent,
     AddPubTapeComponent,
     AddPublicityComponent,
     PublicityComponent,
@@ -76,6 +78,7 @@ import { AddTheatreComponent } from './choreography/components/add-theatre/add-t
   entryComponents: [
     AddSeriesInfoComponent,
     AddTapeComponent,
+    DeleteTapeComponent,
     AddPubTapeComponent,
     AddPublicityComponent,
     EditTapeInfoComponent,
