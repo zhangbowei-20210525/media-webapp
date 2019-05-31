@@ -86,7 +86,6 @@ export class TypeComponent implements OnInit {
     this.seriesService.purchaseTapes(this.purchaseTapesPagination).pipe(finalize(() => {
       this.isPurchaseTapesLoading = false;
       this.isPurchaseTapesLoaded = true;
-      console.log('i am must run')
     })).subscribe(res => {
       this.purchaseTapesList = res.list;
       this.purchaseTapesPagination = res.pagination;

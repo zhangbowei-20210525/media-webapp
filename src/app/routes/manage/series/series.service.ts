@@ -40,11 +40,11 @@ export class SeriesService {
   }
 
   interceptionVideo(id: number, programId: number,
-    segment_start_num: number, startFrame: number, segment_end_num: number, endFrame: number) {
+    segment_start_num: number, segment_start_frame: number, segment_end_num: number, endFrame: number) {
     return this.http.post<any>(`/api/v1/medias/add_segment/${id}/${programId}`,
       {
-        segment_start_num: segment_start_num, segment_start_frame: startFrame,
-        segment_end_num: segment_end_num, segment_end_frame: endFrame
+        segment_start_num, segment_start_frame,
+        segment_end_num, segment_end_frame: endFrame
       });
   }
 
@@ -202,7 +202,7 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/companies/search_by_phone?phone=${phone}`);
   }
 
-  addPubTape(id: number, newTape: { custom_name: string,  liaison_name: string, liaison_phone: string, liaison_id: string}) {
+  addPubTape(id: number, newTape: { custom_name: string, liaison_name: string, liaison_phone: string, liaison_id: string }) {
     return this.http.post<ResponseDto<number>>(`/api/v1/sources/${id}/publish_auth`, newTape);
   }
 
@@ -268,5 +268,12 @@ export class SeriesService {
   getContacts(id: number) {
     return this.http.get<any>(`/api/v1/custom/${id}/liaison`);
   }
-
+  // 删除在线存储
+  deleteOnlineStorage(id: number) {
+    return this.http.delete<any>(`/api/v1/sources/${id}/files/hashlink`);
+  }
+  // 删除在线和本地存储当前行
+  deleteTapeSave(id: number) {
+      return this.http.delete<any>(`/api/v1/sources/files/${id}`);
+    }
 }

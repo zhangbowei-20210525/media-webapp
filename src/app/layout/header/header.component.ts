@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.uploader.change$.subscribe(n => {
         this.upload = n;
         this.uploads = this.upload + this.uploadsLength;
-        console.log(this.uploads);
+        // console.log(this.uploads);
       });
     });
     this.isLoggedIn = this.checkSimple(this.token.get());

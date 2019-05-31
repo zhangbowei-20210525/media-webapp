@@ -27,7 +27,7 @@ export class TransmitComponent implements OnInit {
     private seriesService: TransmitService,
     private acl: ACLService
   ) {
-    console.log(this.router.url);
+    // console.log(this.router.url);
     if (this.router.url.endsWith('transmit')) {
       if (this.acl.canAbility([this.ability.program.source.upload])) {
         this.router.navigate([this.router.url + '/declared']);

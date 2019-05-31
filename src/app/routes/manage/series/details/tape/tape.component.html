@@ -98,17 +98,24 @@
         </div>
       </nz-tab> -->
       <nz-tab nzTitle="母带文件" (nzClick)="tapeFile()">
-        <nz-table #basicTable [nzData]="tapeFileList" nzBordered [nzPageSize]="tapeFilePagination.page_size"
-          [nzFrontPagination]="false" [nzPageIndex]="tapeFilePagination.page" [nzTotal]="tapeFilePagination.count"
-          (nzPageIndexChange)="tapeFilePageChange($event)">
+        <nz-table #basicTable 
+                  nzBordered 
+                  [nzData]="tapeFileList" 
+                  [nzPageSize]="tapeFilePagination.page_size"
+                  [nzFrontPagination]="false" 
+                  [nzPageIndex]="tapeFilePagination.page" 
+                  [nzTotal]="tapeFilePagination.count"
+                  (nzPageIndexChange)="tapeFilePageChange($event)" >
           <thead>
             <tr>
               <th style="text-align: center">#</th>
               <th>{{ 'app.series.filename' | translate }}</th>
               <th>{{ 'app.series.size' | translate }}</th>
               <th>{{ 'app.series.created-time' | translate }}</th>
-              <th>本地存储</th>
-              <th>线上存储</th>
+              <th>工作站存储</th>
+              <!-- <th *ngIf="isActive">服务器存储</th> -->
+              <th>加速存储</th>
+              <th>{{ 'app.series.operation' | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -117,8 +124,19 @@
               <td>{{ data.name }}</td>
               <td>{{ data.size | byteFormat }}</td>
               <td>{{ data.created_at }}</td>
-              <td>{{ data.local_file_status | sourceFileStatus }}</td>
-              <td>{{ data.hashlink_file_status |sourceFileStatus }}</td>
+              <td *ngIf="data.local_file_status === 'active'" class="active" >{{ data.local_file_status | sourceFileStatus }}</td>
+              <td *ngIf="data.local_file_status === 'deleting'" class="deleting" >{{ data.local_file_status | sourceFileStatus }}</td>
+              <td *ngIf="data.local_file_status === 'deleted'" class="deleted" >{{ data.local_file_status | sourceFileStatus }}</td>
+
+              <!-- <td *ngIf="data.local_file_status !== ''">{{ data.local_file_status | sourceFileStatus }}</td>              -->
+              
+              <td *ngIf="data.hashlink_file_status === 'backend'" class="backend" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
+              <td *ngIf="data.hashlink_file_status === 'active'" class="active" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
+              <td *ngIf="data.hashlink_file_status === 'deleting'" class="deleting" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
+              <td *ngIf="data.hashlink_file_status === 'deleted'" class="deleted" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
+              <td style="text-align: center">
+                <a (click)="deleteTape(data.id, index)"><i nz-icon type="delete" theme="outline"></i></a>
+              </td>
             </tr>
           </tbody>
         </nz-table>
@@ -163,6 +181,8 @@
     <ng-template #extraTemplate>
       <button nz-button nzType="primary" nzSize="small" [hidden]="tab !== 0" style="margin-top: 15px;"
         (click)="uploadTape()">{{ 'app.series.upload-source' | translate }}</button>
+        <button nz-button nzType="primary" nzSize="small" [hidden]="tab !== 0" style="margin-top: 15px; margin-left: 15px;"
+        (click)="deteleAllTape()">删除母带</button> 
       <button nz-button nzType="primary" nzSize="small" [hidden]="tab !== 1" style="margin-top: 15px;"
         (click)="publishTape()">{{ 'app.series.publish-source' | translate }}</button>
     </ng-template>
