@@ -18,7 +18,7 @@
     <tbody>
       <tr *ngFor="let data of employeesTable.data">
         <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()" [nzDisabled]="data.disabled"></td>
-        <td><a [routerLink]="'/manage/teams/employee-details/' + data.id">{{data.name}}</a></td>
+        <td><a [routerLink]="'/manage/teams/employee-details/' + data.id">{{ data.name }}</a></td>
         <td>{{ data.department }}</td>
         <td nz-tooltip [nzTitle]="data.roles | arrayMap:'name' | arrayFormat">{{ data.roles | arrayMap:'name' | arrayFormat | truncate:16 }}</td>
         <td>{{ data.phone }}</td>

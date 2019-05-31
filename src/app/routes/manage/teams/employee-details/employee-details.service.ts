@@ -44,4 +44,7 @@ export class EmployeeDetailsService {
     return this.http.post<any>(`/api/v1/companies/employees/${employee}/programs`, { status, program_ids });
   }
 
+  editEmployee(id: number, name: string/*, phone: string */) {
+    return this.http.put<EmployeeDetailsDto>(`/api/v1/companies/employees/${id}`, { name/*, phone*/ });
+  }
 }

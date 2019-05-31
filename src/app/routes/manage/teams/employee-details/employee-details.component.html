@@ -1,7 +1,7 @@
 <nz-tabset nzAnimated="false">
   <nz-tab [nzTitle]="'基本信息'">
     <nz-skeleton [nzLoading]="isInfoLoading">
-      <h3>{{ employee?.name }}</h3>
+      <h3>{{ employee?.name }}<button nz-button nzSize="small" style="margin-left: 1rem" (click)="editEmployee()"><i nz-icon nzType="edit" nzTheme="outline"></i></button></h3>
       <p>{{ employee?.phone }}</p>
       <p>
         <nz-tag *ngFor="let department of employee?.department; let i = index;">
