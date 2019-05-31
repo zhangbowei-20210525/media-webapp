@@ -19,6 +19,7 @@ import { ACLService } from '@delon/acl';
 import { difference } from 'lodash';
 import { zip } from 'rxjs';
 import * as _ from 'lodash';
+import { EditEmployeeComponent } from '../components/edit-employee.component';
 
 @Component({
   selector: 'app-employee-details',
@@ -134,6 +135,29 @@ export class EmployeeDetailsComponent implements OnInit {
   //     }
   //   });
   // }
+
+  editEmployee() {
+    this.modal.create({
+      nzTitle: '编辑员工信息',
+      nzContent: EditEmployeeComponent,
+      nzComponentParams: { employeeName: this.employee.name, employeePhone: this.employee.phone },
+      nzOnOk: (component: EditEmployeeComponent) => new Promise((resolve, reject) => {
+        if (component.validation()) {
+          const value = component.getValue();
+          this.service.editEmployee(this.employeeId, value.name).subscribe(update => {
+            // this.employee = update;
+            this.employee.name = update.name;
+            this.message.success('修改成功');
+            resolve();
+          }, () => {
+            reject(false);
+          });
+        } else {
+          reject(false);
+        }
+      })
+    });
+  }
 
   editDepartments() {
     this.modal.create({
