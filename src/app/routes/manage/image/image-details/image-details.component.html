@@ -1,6 +1,5 @@
-<div class="content-container theme-text">
-  <div class="left-view">
-    <div class="player-panel">
+<div class="content-container">
+    <div class="publicity-details-left">
       <div [hidden]="ishidden">
         <div class="video-box">
           <video id="video_player" (contextmenu)="nomenu($event)" class="video-js vjs-default-skin vjs-big-play-centered" type="application/x-mpegURL"
@@ -8,26 +7,19 @@
           </video>
           </div>
         <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+          <div class="widthBisection">
             <span>{{publicityName}}：</span>
             <span *ngIf="publicityType == 'sample'">{{sampleName}}</span>
             <span *ngIf="publicityType == 'feature'">{{featureName}}</span>
             <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
           </div>
-          <!-- <span style="position:absolute;right: 30px"><a><i class="anticon anticon-share-alt text-info" nz-popover
-                [nzTitle]="titleTemplate" [nzContent]="contentTemplate" nzTrigger="click"></i></a></span> -->
-                <!-- *ngIf ="languageVersion == 'zh-CN'" -->
-                <div class="fixationInfo-info">
-                  <a (click)="getTwoDimensionalCode()">
-                    <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
-                      nzTrigger="click"></i>
-                  </a>
-                </div>
+          <div class="fixationInfo-info">
+            <a (click)="getTwoDimensionalCode()">
+              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
+                nzTrigger="click"></i>
+            </a>
+          </div>
         </div>
-        <ng-template #titleTemplate>
-          <!-- <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div> -->
-          <!-- <div *ngIf ="languageVersion == 'en-US'" style="text-align: center;">{{ 'app.series.publicity-share-email' | translate }}</div> -->
-        </ng-template>
         <ng-template #contentTemplate>
           <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
           <div style="text-align: center;margin-top: 1.5rem" *ngIf ="languageVersion == 'zh-CN'" ><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
@@ -51,7 +43,7 @@
           </a>
         </div>
         <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+          <div class="widthBisection">
             <span>{{publicityName}}：</span>
             <span>{{posterName}}</span>
           </div>
@@ -76,7 +68,7 @@
           <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
-
+  
       <div *ngIf="publicityType == 'still'">
         <div class="video-box" style="position: relative;text-align: center;">
           <img [src]="stillSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
@@ -90,7 +82,7 @@
           </a>
         </div>
         <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+          <div class="widthBisection">
             <span>{{publicityName}}：</span>
             <span>{{stillName}}</span>
           </div>
@@ -115,7 +107,7 @@
           <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
-
+  
       <div *ngIf="publicityType == 'pdf'">
         <div class="video-box" style="position: relative;text-align: center; display: table-cell;vertical-align: middle;">
           <pdf-viewer [src]="pdfSrc" [page]="pdfPage" [zoom]="0.6" [show-all]="false" [original-size]="true"></pdf-viewer>
@@ -129,7 +121,7 @@
           </a>
         </div>
         <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+          <div class="widthBisection">
             <span *ngIf="fixationInfo">{{publicityName}}：</span>
             <span *ngIf="detail">{{pdfName}}</span>
           </div>
@@ -154,9 +146,7 @@
           <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
-
-
-
+  
       <nz-tabset [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabSelectChange($event)">
         <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="sample()" [nzDisabled]="sampleDisabled">
           <div class="program-panel">
@@ -202,7 +192,7 @@
               </li>
             </ul>
           </div>
-
+  
         </nz-tab>
         <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'"  (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
           <div class="program-panel">
@@ -215,50 +205,52 @@
         </nz-tab>
       </nz-tabset>
     </div>
-  </div>
-
-  <div class="right-view">
-    <div style="display: inline-block;margin-top: 20px; margin-left: 20px; float: left; width: 38px; height: 38px;">
-      <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;"></nz-avatar>
-    </div>
-    <div style="display: inline-block;width: 270px;margin-top: 20px;margin-left: 12px">
-      <div style="font-size: 12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-        <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">上传人：{{userinfo?.user?.nickname}}</span>
-      </div>
-      <div style="font-size: 12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-top: 5px">
-        <span>所属公司：{{userinfo?.company?.full_name}}</span>
-        <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
-      </div>
-    </div>
-    <div class="detail-tabs">
-      <nz-tabset>
-        <nz-tab nzTitle="基本信息">
-          <div style="height: 600px;line-height: 26px;margin-left: 50px">
-          <div>节目名称：{{ seriesInfo?.name }}</div>
-          <div>集数：{{ seriesInfo?.episode }}</div>
-          <div>题材：{{ seriesInfo?.theme }}</div>
-          <div>语言：{{ seriesInfo?.language }}</div>
-          <div>节目别名：{{ seriesInfo?.nickname }}</div>
-          <div>发行时间：{{ seriesInfo?.release_date }}</div>
-          <div>监制：{{ seriesInfo?.supervisor }}</div>
-          <div>总制片人：{{ seriesInfo?.general_producer }}</div>
-          <div>节目类型：{{ seriesInfo?.program_type | seriesType }}</div>
-          <div>导演：{{ seriesInfo?.director }}</div>
-          <div>编剧：{{ seriesInfo?.screen_writer }}</div>
-          <div>出品人：{{ seriesInfo?.producer }}</div>
-          <div>主演：{{ seriesInfo?.protagonist }}</div>
-          <div>出品方：{{ seriesInfo?.product_company }}</div>
-          <div>简介：{{ seriesInfo?.introduction }}</div>
+  
+    <div class="publicity-details-right">
+      <div class="details-title">
+        <div class="title-avater">
+          <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;"></nz-avatar>
+        </div>
+        <div class='title-info'>
+          <div class='info-item'>
+            <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">上传人：{{userinfo?.user?.nickname}}</span>
           </div>
-        </nz-tab>
-        <!-- <nz-tab nzTitle="关键帧">
-
-        </nz-tab>
-        <nz-tab nzTitle="图集">
-
-        </nz-tab> -->
-      </nz-tabset>
-
+          <div class='info-item'>
+            <span>所属公司：{{userinfo?.company?.full_name}}</span>
+            <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
+          </div>
+        </div>
+      </div>
+     
+      <div class="detail-tabs">
+        <nz-tabset>
+          <nz-tab nzTitle="基本信息">
+            <div style="line-height: 26px;margin-left: 18px;">
+              <div>节目名称：{{ seriesInfo?.name }}</div>
+              <div>集数：{{ seriesInfo?.episode }}</div>
+              <div>题材：{{ seriesInfo?.theme }}</div>
+              <div>语言：{{ seriesInfo?.language }}</div>
+              <div>节目别名：{{ seriesInfo?.nickname }}</div>
+              <div>发行时间：{{ seriesInfo?.release_date }}</div>
+              <div>监制：{{ seriesInfo?.supervisor }}</div>
+              <div>总制片人：{{ seriesInfo?.general_producer }}</div>
+              <div>节目类型：{{ seriesInfo?.program_type | seriesType }}</div>
+              <div>导演：{{ seriesInfo?.director }}</div>
+              <div>编剧：{{ seriesInfo?.screen_writer }}</div>
+              <div>出品人：{{ seriesInfo?.producer }}</div>
+              <div>主演：{{ seriesInfo?.protagonist }}</div>
+              <div>出品方：{{ seriesInfo?.product_company }}</div>
+              <div>简介：{{ seriesInfo?.introduction }}</div>
+            </div>
+          </nz-tab>
+          <!-- <nz-tab nzTitle="关键帧">
+  
+          </nz-tab>
+          <nz-tab nzTitle="图集">
+  
+          </nz-tab> -->
+        </nz-tabset>
+  
+      </div>
     </div>
   </div>
-</div>

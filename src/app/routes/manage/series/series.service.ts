@@ -89,7 +89,10 @@ export class SeriesService {
   getSeriesDetailsInfo(id: number) {
     return this.http.get<any>(`/api/v1/program/${id}`);
   }
-
+  // 获取意向基本信息
+  getDetailsInfo(id: number) {
+    return this.http.get<any>(`/api/v1/pub/program/${id}`);
+  }
   deleteSeries(id: number) {
     return this.http.delete<any>(`/api/v1/program/${id}`);
   }
@@ -132,7 +135,10 @@ export class SeriesService {
   getPublicitiesTypeList(pagination: PaginationDto, id: number, type: string) {
     return this.http.get<any>(`/api/v1/publicity/${id}/${type}?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
-
+  // 获取意向类型数据
+  getPubDetialsTypeList(pagination: PaginationDto, id: number, type: string) {
+    return this.http.get<any>(`/api/v1/pub/publicity/${id}/${type}?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
   getPublicities(pagination: PaginationDto) {
     return this.http.get<PaginationResponseDto<any[]>>('/api/v1/publicity', { params: pagination as any });
   }
@@ -144,7 +150,9 @@ export class SeriesService {
   publicityDetail(id: number) {
     return this.http.get<any>(`/api/v1/publicity/${id}`);
   }
-
+  pubDetail(id: number) {
+    return this.http.get<any>(`/api/v1/pub/publicity/${id}`);
+  }
   // tslint:disable-next-line:max-line-length
   addTape(newTape: { program_id: number; name: string, language: string, subtitle: string, remark: string, source_type: string, }) {
     return this.http.post<ResponseDto<number>>('/api/v1/sources', newTape);
@@ -275,5 +283,9 @@ export class SeriesService {
   // 删除在线和本地存储当前行
   deleteTapeSave(id: number) {
       return this.http.delete<any>(`/api/v1/sources/files/${id}`);
-    }
+  }
+  // 获取意向列表
+  getIntentionTypeList(pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
 }

@@ -8,6 +8,8 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
 import { BrowseRecordComponent } from './personal-center/browse-record/browse-record.component';
 import { PubAuthorizationReceiveComponent } from './pub-authorization-receive/pub-authorization-receive.component';
+// import { ImageComponent } from './image/image/image.component';
+// import { ImageDetailsComponent } from './image/image/image-details/image-details.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { PubAuthorizationReceiveComponent } from './pub-authorization-receive/pu
     PersonalCenterComponent,
     BrowseRecordComponent,
     PubAuthorizationReceiveComponent,
+    // ImageComponent,
+    // ImageDetailsComponent,
    ],
   imports: [
     CommonModule,

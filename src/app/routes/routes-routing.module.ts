@@ -7,12 +7,13 @@ import { ManageComponent } from './manage/manage.component';
 import { DashboardComponent } from './manage/dashboard/dashboard.component';
 import { PersonalCenterComponent } from './manage/personal-center/personal-center.component';
 import { SimpleGuard } from '@delon/auth';
-import { SeriesComponent } from './manage/series/series.component';
+// import { SeriesComponent } from './manage/series/series.component';
 import { BrowseRecordComponent } from './manage/personal-center/browse-record/browse-record.component';
 import { MarketDetailsComponent } from './market/market-details/market-details.component';
 import { PubAuthorizationReceiveComponent } from './manage/pub-authorization-receive/pub-authorization-receive.component';
 import { ACLGuard, ACLType } from '@delon/acl';
 import { aclAbility } from '@core/acl';
+// import { ImageComponent } from './manage/image/image/image.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,11 @@ const routes: Routes = [
           {
             path: 'pubAuthorizationReceive',
             component: PubAuthorizationReceiveComponent
+          },
+          {
+            path: 'image', loadChildren: './manage/image/image.module#ImageModule',
+            canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.view] } }
+            // component: ImageComponent
           },
           {
             path: 'series', loadChildren: './manage/series/series.module#SeriesModule',

@@ -72,6 +72,7 @@ export class PublicitiesComponent implements OnInit {
       .subscribe(result => {
         if (mode === 'table') {
           this.dataset = result.list;
+          console.log(this.dataset);
         } else {
           this.list = result.list;
         }

@@ -21,7 +21,7 @@ export class TapesComponent implements OnInit {
 
   isLoaded = false;
   isLoading = false;
-  pagination = { page: 1, page_size: 10 } as PaginationDto;
+  pagination = { page: 1, page_size: 5 } as PaginationDto;
   dataset = [];
   searchText: string;
 
@@ -77,6 +77,7 @@ export class TapesComponent implements OnInit {
       .subscribe(result => {
         this.dataset = result.list;
         this.pagination = result.pagination;
+        console.log(this.pagination);
       });
   }
 
