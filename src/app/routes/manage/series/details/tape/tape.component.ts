@@ -312,20 +312,19 @@ export class TapeComponent implements OnInit, OnDestroy {
       });
   })
   // 删除 本地和在线存储(单条数据)
-  deleteTape(id: number) {
+  deleteTape(id: number , index: number) {
     this.modalService.confirm({
       nzTitle: '是否删除本条母带信息?',
       nzOkText: '删除',
       nzCancelText: '取消',
       nzOkType: 'danger',
       // nzNoAnimation: true,
-      nzOnOk: () => this.deleteTapeAgreed(id)
+      nzOnOk: () => this.deleteTapeAgreed(id, index)
     });
   }
-  deleteTapeAgreed(id: number) {
+  deleteTapeAgreed(id: number, index: number) {
     this.seriesService.deleteTapeSave(id).subscribe(res => {
-      console.log(res);
-      // this.tapeFileList.splice(index, 1);
+      this.tapeFileList.splice(index, 1);
       if ((this.TapePage.count - 1) % this.TapePage.page_size === 0) {
         this.tapeFilePagination.page = this.TapePage.page - 1;
         this.getTapeFileList();
@@ -358,7 +357,7 @@ export class TapeComponent implements OnInit, OnDestroy {
     resolve();
     reject(false);
   })
-  // 删除本地存储函数
+  // 删除工作站存储函数
   deleteTapeAllLocal(id) {
     this.localRequestService.deleteTapeLocalFile(id).subscribe(res => {
       this.message.success('正在删除中');
@@ -367,10 +366,10 @@ export class TapeComponent implements OnInit, OnDestroy {
       this.message.error('删除失败');
     });
   }
-  // 删除在线存储函数
+  // 删除加速存储函数
   deleteOnlineSave(id) {
     this.seriesService.deleteOnlineStorage(id).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       // this.arrList = localStorage.getItem('firstRequset');
       // console.log(!this.arrList);
       // if (!this.arrList) {

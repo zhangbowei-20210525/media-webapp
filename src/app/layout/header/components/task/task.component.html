@@ -1,7 +1,8 @@
 <div class="tasks-box">
   <div class="tasks-tab-panel">
     <nz-tabset nzAnimated="false">
-      <nz-tab [nzTitle]="'app.task.material-upload' | translate">
+      <!-- <nz-tab [nzTitle]="'app.task.material-upload' | translate"> -->
+      <nz-tab [nzTitle]="'物料进度'">
         <div class="tasks">
           <div class="t-list scrollbar" *ngIf="uploads.length > 0; else none">
             <div class="t-card" *ngFor="let item of uploads">
@@ -22,7 +23,7 @@
       </nz-tab>
       <!-- it's my modify -->
       <!-- <nz-tab [nzTitle]="'menu.notify.source' | translate"> -->
-      <nz-tab [nzTitle]="'母带上传'">
+      <nz-tab [nzTitle]="'母带进度'">
         <div class="tasks">
           <div class="t-list scrollbar" *ngIf="sourceUploads.length > 0; else none">
             <div class="t-card" *ngFor="let items of sourceUploads">
@@ -32,8 +33,10 @@
                   {{ items.source_file_name }}</div>
                 <div class="t-ti4me t-text">
                   <div>{{ items.created_at | date:'yyyy-MM-dd' }}</div>
-                  <div><span style="color: cornflowerblue" *ngIf="items.task_type === 'upload'"><i nz-icon nzType="cloud-upload" nzTheme="outline"></i></span>
-                       <span style="color: cornflowerblue" *ngIf="items.task_type === 'download'"><i nz-icon nzType="cloud-download" nzTheme="outline"></i></span></div>
+                  <div><span style="color: cornflowerblue" *ngIf="items.task_type === 'upload'"><i nz-icon
+                        nzType="cloud-upload" nzTheme="outline"></i></span>
+                    <span style="color: cornflowerblue" *ngIf="items.task_type === 'download'"><i nz-icon
+                        nzType="cloud-download" nzTheme="outline"></i></span></div>
                 </div>
               </div>
               <div class="t-contont">

@@ -26,7 +26,7 @@ export class PublicitiesComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   disabledButton: boolean;
-  pagination = { page: 1, count: 10, page_size: 12 } as PaginationDto;
+  pagination = { page: 1, page_size: 12 } as PaginationDto;
   addPublicityModal: NzModalRef;
   publicityId: number;
   isLoading: boolean;
@@ -36,6 +36,7 @@ export class PublicitiesComponent implements OnInit {
   list = [];
   searchText: string;
   company_ids = [];
+  isPublicities: boolean;
 
   constructor(
     public ability: ACLAbility,
@@ -69,10 +70,13 @@ export class PublicitiesComponent implements OnInit {
       .pipe(finalize(() => {
         this.isLoading = false;
         this.isLoaded = true;
+        this.isPublicities = true;
       }))
       .subscribe(result => {
+        console.log(result);
         if (mode === 'table') {
           this.dataset = result.list;
+          console.log(this.dataset);
         } else {
           this.list = result.list;
         }
@@ -146,6 +150,8 @@ export class PublicitiesComponent implements OnInit {
         });
       });
     });
+    this.fetchPublicities();
+
   }
 
   publicityUpload(event) {

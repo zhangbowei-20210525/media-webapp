@@ -120,7 +120,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of basicTable.data;let i = index">
-              <td>{{ i + 1 + tapeFilePagination.page * 10 - 10}}</td>
+              <td>{{ i + 1 + tapeFilePagination.page * 5 - 5}}</td>
               <td>{{ data.name }}</td>
               <td>{{ data.size | byteFormat }}</td>
               <td>{{ data.created_at }}</td>
