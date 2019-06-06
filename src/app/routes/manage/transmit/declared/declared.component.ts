@@ -38,7 +38,7 @@ export class DeclaredComponent implements OnInit {
       })).pipe(finalize(() => {
       this.isMyTapesLoading = false;
       this.isMyTapesLoaded = true;
-      // console.log(this.isMyTapesLoaded);
+      console.log(this.isMyTapesLoaded);
     })).subscribe(res => {
       this.isMyTapesLoaded = true;
       this.isMyTapesLoading = false;

@@ -24,10 +24,11 @@ export class ImageComponent implements OnInit {
   addPublicityModal: NzModalRef;
   publicityId: number;
   isLoading: boolean;
-  isLoaded: boolean;  dataset = [];
+  isLoaded: boolean; dataset = [];
   list = [];
   searchText: string;
   company_ids = [];
+  isMyDeatilsLoaded: boolean;
 
   constructor(
     public ability: ACLAbility,
@@ -48,7 +49,7 @@ export class ImageComponent implements OnInit {
     this.service.getIntentionTypeList(this.pagination)
       .pipe(finalize(() => {
         this.isLoading = false;
-        this.isLoaded = true;
+        this.isMyDeatilsLoaded = true;
       }))
       .subscribe(result => {
         this.list = result.list;

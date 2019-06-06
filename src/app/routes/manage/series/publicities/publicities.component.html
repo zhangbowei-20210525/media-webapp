@@ -38,7 +38,7 @@
     <tbody>
       <tr *ngFor="let data of table.data;let i = index">
         <!-- <td  [(nzChecked)]="data.checked" (nzCheckedChange)="checkedChange()"></td> -->
-        <td>{{ i + 1 + pagination.page * 10 - 10}}</td>
+        <td>{{ i + 1 + pagination.page * 12 - 12}}</td>
         <td>
           <a (click)="publicityDetails(data.program_id)">{{ data.name }}</a>
         </td>
@@ -88,56 +88,67 @@
         <a>筛选</a>
       </div>
     </div> -->
+<div *ngIf="isPublicities">
+  <div [hidden]="mode == 'table'">
+    <div *ngIf="list.length > 0 else empty">
+      <div class="videos-info-big-box">
+        <ul>
+          <li class="video-info" *ngFor="let thumbnail of list">
 
-<div [hidden]="mode == 'table'">
-  <div *ngIf="list.length > 0 else empty">
-    <div class="video-info-wk">
-      <ul>
-        <li class="video-info" *ngFor="let thumbnail of list">
-
-          <div class="video">
-            <img class="video-img" [src]="thumbnail?.src" />
-            <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
-              <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
-            </div>
-          </div>
-
-          <div class="info">
-            <div class="info-wk-one">
-              <div class="info-name"><a (click)="publicityDetails(thumbnail?.program_id)">{{ thumbnail?.name }}</a>
-              </div>
-              <div class="info-type">{{ thumbnail?.program_type | seriesType }}</div>
-              <a style="font-size: 13px;margin-left: 4rem;"
-                (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)"><i nz-icon nzType="eye"
-                  nzTheme="outline"></i></a>
-            </div>
-            <div class="info-wk-three">
-              <div>导演:</div>
-              <div class="info-wk-four">{{ thumbnail?.director }}</div>
-            </div>
-            <div class="info-wk-five">
-              主演:
-              <span class="info-wk-six">{{ thumbnail?.protagonist }}</span>
-            </div>
-          </div>
-
-          <div class="info-wk-seven">
-            <div class="info-wk-eight">
-              <div class="info-wk-nine">
-                <img class="info-hp" *ngIf="thumbnail?.user?.avatar?.length > 0" [src]="thumbnail?.user?.avatar" />
+            <div class="video">
+              <img class="video-img" [src]="thumbnail?.src" />
+              <!-- <img class="video-img" -->
+              <!-- src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559741106224&di=1e8c9e985a5a92f4d535392866bf1f15&imgtype=0&src=http%3A%2F%2Fcs.vmovier.com%2FUploads%2Fpost%2F2018-07-18%2F5b4f19890dc48.jpg" -->
+              <!-- alt=""> -->
+              <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
+                <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
               </div>
             </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0  || mode == 'table'">
-      <nz-pagination [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count" [nzPageSize]="pagination.page_size"
-        (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+
+            <div class="info">
+              <div class="info-container-big-box">
+                <div class="info-container">
+                  <div class="info-container-name">
+                    <a (click)="publicityDetails(thumbnail?.program_id)">{{ thumbnail?.name }}</a>
+                  </div>
+                  <div class="info-container-type">{{ thumbnail?.program_type | seriesType }}</div>
+                </div>
+                <a style="font-size: 13px; margin-right: 6px"
+                  (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
+                  <i nz-icon nzType="eye" nzTheme="outline"></i>
+                </a>
+              </div>
+              <div class="info-small-box-director">
+                <div class="info-small-box-director-left">导演: </div>
+                <div class="info-small-box-director-right">{{ thumbnail?.director }}</div>
+                <!-- <div class="info-small-box-director-right">社会王哥</div> -->
+              </div>
+              <div class="info-small-box-tostar"> 主演:
+                <span class="info-small-box-tostar-right">{{ thumbnail?.protagonist }}</span>
+                <!-- <span class="info-small-box-tostar-right">啊啊啊啊啊，哦哦哦哦哦，哈哈哈哈哈，诶诶诶</span> -->
+              </div>
+            </div>
+            <div class="info-small-box-bottom">
+              <!-- <div class="info-wk-eight"> -->
+              <div class="info-small-box-bottom-left" *ngIf="thumbnail?.user?.avatar !== '' ">
+                <img class="info-hp" [src]="thumbnail?.user?.avatar">
+                <!-- <img class="info-hp" -->
+                <!-- src="http://b-ssl.duitang.com/uploads/item/201510/23/20151023111035_AcCun.thumb.700_0.jpeg" /> -->
+              </div>
+                <span class="info-small-box-bottom-right">{{ thumbnail?.company?.full_name === '' ? '-' : thumbnail?.company?.full_name }}</span>
+              <!-- <span class="info-small-box-bottom-right">黑龙江大庆好莱坞电影院</span> -->
+              <!-- </div> -->
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0  || mode == 'table'">
+        <nz-pagination style="margin: 15px 15px" [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count"
+          [nzPageSize]="pagination.page_size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+      </div>
     </div>
   </div>
+  <ng-template #empty>
+    <nz-empty></nz-empty>
+  </ng-template>
 </div>
-
-<ng-template #empty>
-  <nz-empty></nz-empty>
-</ng-template>
