@@ -9,7 +9,7 @@ interface FormValue {
 @Component({
     selector: 'app-edit-employee',
     template: `
-  <form nz-form [formGroup]="form" (ngSubmit)="submit()">
+  <form nz-form [formGroup]="form">
     <nz-form-item>
       <nz-form-control>
         <input nz-input formControlName="name" id="name" placeholder="名称">
