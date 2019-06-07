@@ -36,10 +36,9 @@ export class DeclaredComponent implements OnInit {
         this.tabIndex = +params.get('tabIndex');
         return  this.seriesService.getAllTapes(this.tapesPagination);
       })).pipe(finalize(() => {
-      // console.log('woyaozhixing')
       this.isMyTapesLoading = false;
       this.isMyTapesLoaded = true;
-      console.log(this.isMyTapesLoaded)
+      console.log(this.isMyTapesLoaded);
     })).subscribe(res => {
       this.isMyTapesLoaded = true;
       this.isMyTapesLoading = false;

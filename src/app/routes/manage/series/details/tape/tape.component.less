@@ -1,3 +1,4 @@
+@import '~styles.less';
 .program-details-tapes-box {
     width: 1140px;
     height: auto;
@@ -49,4 +50,16 @@
 
 .info-filed::after {
     content: '：';
+}
+.active {
+    color: @success-color;
+}
+.deleting {
+    color: @warning-color;
+}
+.deleted {
+    color: @error-color;
+}
+.backend {
+    color: @warning-color;
 }

@@ -144,6 +144,7 @@ export class AddTapeComponent implements OnInit {
     if (this.source_type === 'online') {
       this.tapeVersion = 'online';
       if (this.id === undefined) {
+        console.log(this.id);
         const data = {
           program_name: this.onlineTapeForm.value['program_name'] || null,
           program_type: this.onlineTapeForm.value['program_type'] || null,

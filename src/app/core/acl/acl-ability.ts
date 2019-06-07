@@ -30,6 +30,19 @@ export const aclAbility = <ACLAbility>{
                 del: null
             }
         },
+        image: <ImageACLModule>{
+            // name: 'publicity',
+            view: null,
+            add: null,
+            edit: null,
+            del: null,
+            share: null,
+            file: <ACLModule>{
+                name: 'image_file',
+                add: null,
+                del: null
+            }
+        },
         source: <SourceACLModule>{
             view: null,
             add: null,
@@ -121,14 +134,18 @@ interface ACLModule {
 
 interface ProgramACLModule extends ACLModule {
     publicity: PublicityACLModule;
+    image: ImageACLModule;
     source: SourceACLModule;
     right: RightACLModule;
+}
+
+interface ImageACLModule extends ACLModule {
+    share?: string;
 }
 
 interface PublicityACLModule extends ACLModule {
     share?: string;
 }
-
 interface SourceACLModule extends ACLModule {
     // entity?: string;
     upload?: string; // 母带上传

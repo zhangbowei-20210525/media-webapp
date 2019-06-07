@@ -26,7 +26,6 @@ import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/e
 import { InfoComponent } from './choreography/info/info.component';
 
 
-
 const routes: Routes = [
   {
     path: '',
@@ -126,6 +125,7 @@ const routes: Routes = [
     path: 'publicity-details/:id', component: PublicityDetailsComponent,
     canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.publicity.view] } }
   },
+
   {
     path: 'cd/:id', component: ContractDetailsComponent,
     canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.right.view] } }

@@ -1,12 +1,3 @@
-//  ul, menu, dir {
-//     display: block;
-//     list-style-type: none;
-//     margin-block-start: 0em;
-//     margin-block-end: 0em;
-//     margin-inline-start: 0px;
-//     margin-inline-end: 0px;
-//     padding-inline-start: 0px;
-//   }
 ul {
   margin: 0;
   padding: 0;
@@ -145,6 +136,7 @@ ul > li {
   margin-top: 20px;
   border: 1px solid #f0f0f0;
   box-sizing: content-box;
+  background-color: transparent;
 }
 .video-info:nth-of-type(4n) {
   margin-right: 0;
@@ -161,13 +153,24 @@ ul > li {
 .video-info:nth-of-type(4) {
   margin-top: 0;
 }
-.video-img {
-  width: 256px;
-  height: 162px;
-}
 .video {
   height: 162px;
   position: relative;
+  overflow: hidden;
+  border-radius: 4px 4px 0 0;
+}
+.video-img {
+  // height: 100%;
+  // width: auto;
+  // position: absolute;
+  // top: 0;
+  // left: 50%;
+  // transform: translateX(-50%);
+  // -webkit-background-size: cover;
+  // -o-background-size: cover;
+  width: 100%;
+  height: 162px;
+  object-fit: cover;
 }
 .video div.price {
   width: 256px;
@@ -196,17 +199,12 @@ ul > li {
   color: #636363;
   font-size: 12px;
 }
-.info-container {
-  display: flex;
-  flex: 1;
-}
 .info-container-big-box {
   height: 36px;
   display: flex;
   align-items: center;
   font-size: 14px;
   font-family: SourceHanSansSC-regular;
-  justify-content: space-between;
 }
 .info-container-name {
   max-width: 109px;
@@ -214,11 +212,12 @@ ul > li {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-// .info-container-name a {
-// font-size: 14px;
-// font-weight: bolder;
-// font-family: SourceHanSansSC-regular;
-// }
+.info-container-name a {
+  font-size: 14px;
+  color: #101010;
+  font-weight: bolder;
+  font-family: SourceHanSansSC-regular;
+}
 .info-container-type {
   padding: 0 8px;
   height: 22px;
@@ -291,24 +290,4 @@ ul > li {
   font-size: 12px;
   text-align: left;
   font-family: SourceHanSansSC-regular;
-}
-input::-webkit-input-placeholder {
-  color: #636363;
-  font-size: 14px;
-  padding-left: 10px;
-}
-input::-moz-placeholder {
-  color: #636363;
-  font-size: 14px;
-  padding-left: 10px;
-}
-input:-moz-placeholder {
-  color: #636363;
-  font-size: 14px;
-  padding-left: 10px;
-}
-input:-ms-input-placeholder {
-  color: #636363;
-  font-size: 14px;
-  padding-left: 10px;
 }

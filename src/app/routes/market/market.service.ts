@@ -98,6 +98,7 @@ getSeriesDetailsInfo(id: number) {
 }
 
 getPublicitiesTypeList(pagination: PaginationDto, id: number, type: string) {
+  // tslint:disable-next-line:max-line-length
   return this.http.get<any>(`/api/v1/pub/publicity/${id}/${type}?page=${pagination.page}&page_size=${pagination.page_size}`, { params: { _allow_anonymous: '' } });
 }
 

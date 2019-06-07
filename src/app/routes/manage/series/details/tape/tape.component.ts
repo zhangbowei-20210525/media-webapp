@@ -1,17 +1,19 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
-import { switchMap, timeout, tap } from 'rxjs/operators';
+import { switchMap, timeout, tap, count } from 'rxjs/operators';
 import { ParamMap, ActivatedRoute, Router } from '@angular/router';
 import { MessageService, PaginationDto } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { AddTapeComponent } from '../../components/add-tape/add-tape.component';
+import { DeleteTapeComponent } from '../../components/delete-tape/delete-tape.component';
 import { AddPubTapeComponent } from '../../components/add-pub-tape/add-pub-tape.component';
 import { LocalRequestService } from '@shared/locals';
 import { EditTapeInfoComponent } from '../../components/edit-tape-info/edit-tape-info.component';
-import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+// import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLAbility } from '@core/acl';
 import { NotifiesPolling } from '@core/notifies';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-tape',
@@ -23,6 +25,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   isId: number;
   id: number;
   tapesList = [];
+  source_data: any;
   tapeDetailsInfo: any;
   tapeFileList = [];
   pubTapeList = [];
@@ -32,6 +35,10 @@ export class TapeComponent implements OnInit, OnDestroy {
   showTape: boolean;
   tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
+  isActive: any;
+  // getHash: any;
+  // getIp: any;
+  TapePage: any;
   constructor(
     public ability: ACLAbility,
     private modalService: NzModalService,
@@ -49,6 +56,7 @@ export class TapeComponent implements OnInit, OnDestroy {
     this.route.parent.paramMap.subscribe(params => {
       this.id = +params.get('sid');
       this.seriesService.getTapeList(this.id).subscribe(res => {
+        // console.log(res);
         this.tapesList = res;
         this.route.paramMap.subscribe(tapeParams => {
           this.isId = +tapeParams.get('tapeId');
@@ -71,7 +79,6 @@ export class TapeComponent implements OnInit, OnDestroy {
       });
     });
     this.ntf.notifies().subscribe(result => {
-      // console.log(result);
       this.tapeFileList.forEach(item => {
         const file = result.source_files.find(f => f.id === item.id);
         if (file) {
@@ -82,18 +89,23 @@ export class TapeComponent implements OnInit, OnDestroy {
     });
     this.ntf.nextNotifies();
   }
-
   getTapeFileList() {
     this.seriesService.tapeFileList(this.tapesList[0].id, this.tapeFilePagination).pipe(tap(x => {
+      this.TapePage = x.pagination;
       x.list.forEach(f => {
+        // this.getHash = f.hash;
+        // this.getIp = f.ip;
+        // console.log(f);
         if (f.created_at) {
           f.created_at = f.created_at.substring(0, 10);
         }
       });
+      this.isActive = x.list.every(item => {
+        return item.local_file_status !== '';
+      });
     })).subscribe(x => {
       this.tapeFileList = x.list;
       this.tapeFilePagination = x.pagination;
-      console.log(x);
     });
   }
 
@@ -106,8 +118,7 @@ export class TapeComponent implements OnInit, OnDestroy {
         }
       });
     })).subscribe(res => {
-      this.tapeFileList = res.list;
-      this.tapeFilePagination = res.pagination;
+      // console.log(res, 'jjjj');
     });
   }
 
@@ -187,6 +198,7 @@ export class TapeComponent implements OnInit, OnDestroy {
     });
   }
 
+
   deletePubTape(id: number) {
     this.modalService.confirm({
       nzTitle: '是否删除本条节目信息?',
@@ -205,9 +217,9 @@ export class TapeComponent implements OnInit, OnDestroy {
         this.pubTapePagination = p.pagination;
       });
       resolve();
-    }, error => {
-      if (error.message) {
-        this.message.error(error.message);
+    }, err => {
+      if (err.message) {
+        this.message.error(err.message);
       }
       resolve(false);
     });
@@ -234,7 +246,7 @@ export class TapeComponent implements OnInit, OnDestroy {
             this.pubTapePagination = p.pagination;
           });
           resolve();
-        }, error => {
+        }, err => {
           reject(false);
         });
     } else {
@@ -245,6 +257,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   tapeFilePageChange(page: number) {
     this.tapeFilePagination.page = page;
     this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).subscribe(res => {
+      // console.log(res);
       this.tapeFileList = res.list;
       this.tapeFilePagination = res.pagination;
     });
@@ -292,12 +305,84 @@ export class TapeComponent implements OnInit, OnDestroy {
           this.message.success(this.translate.instant('global.edit-success'));
           resolve();
         });
-      }, error => {
-        if (error.message) {
-          this.message.error(error.message);
+      }, err => {
+        if (err.message) {
+          this.message.error(err.message);
         }
       });
   })
+  // 删除 本地和在线存储(单条数据)
+  deleteTape(id: number , index: number) {
+    this.modalService.confirm({
+      nzTitle: '是否删除本条母带信息?',
+      nzOkText: '删除',
+      nzCancelText: '取消',
+      nzOkType: 'danger',
+      // nzNoAnimation: true,
+      nzOnOk: () => this.deleteTapeAgreed(id, index)
+    });
+  }
+  deleteTapeAgreed(id: number, index: number) {
+    this.seriesService.deleteTapeSave(id).subscribe(res => {
+      this.tapeFileList.splice(index, 1);
+      if ((this.TapePage.count - 1) % this.TapePage.page_size === 0) {
+        this.tapeFilePagination.page = this.TapePage.page - 1;
+        this.getTapeFileList();
+      }
+      this.message.success('删除成功');
+      this.getTapeFileList();
+    });
+  }
+  // 删除存储弹框
+  deteleAllTape() {
+    this.modalService.create({
+      nzTitle: `请选择要删除的存储`,
+      nzContent: DeleteTapeComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 340,
+      nzOkText: '删除',
+      nzCancelText: '取消',
+      nzOnOk: this.deleteTapeAllFilesAgreed,
+      nzNoAnimation: true,
+    });
+  }
+  // 复选框判断删除
+  deleteTapeAllFilesAgreed = (component: DeleteTapeComponent) => new Promise((resolve, reject) => {
+    if (component.source_data === 'onlineSave') {
+      this.deleteOnlineSave(this.isId);
+    } else {
+      this.deleteTapeAllLocal(this.isId);
+    }
+    resolve();
+    reject(false);
+  })
+  // 删除工作站存储函数
+  deleteTapeAllLocal(id) {
+    this.localRequestService.deleteTapeLocalFile(id).subscribe(res => {
+      this.message.success('正在删除中');
+      this.getTapeFileList();
+    }, err => {
+      this.message.error('删除失败');
+    });
+  }
+  // 删除加速存储函数
+  deleteOnlineSave(id) {
+    this.seriesService.deleteOnlineStorage(id).subscribe(res => {
+      // console.log(res);
+      // this.arrList = localStorage.getItem('firstRequset');
+      // console.log(!this.arrList);
+      // if (!this.arrList) {
+      this.message.success('正在删除中');
+      // } else {
+      // this.message.error('警告！请勿重复操作');
+      // }
+      // this.arrList = localStorage.setItem('firstRequset', '1');
+      this.getTapeFileList();
+    }, err => {
+      this.message.error('删除失败');
+    });
+  }
 
   ngOnDestroy() {
     this.ntf.setIsActiveSourceFileStatus(false);
