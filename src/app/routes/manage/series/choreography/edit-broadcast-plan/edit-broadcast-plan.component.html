@@ -1,0 +1,258 @@
+<nz-table #table nzBordered [nzShowPagination]="false" [nzTitle]="Header" [nzData]="theatres">
+  <thead>
+    <tr>
+      <th></th>
+      <th style="width: 180px;text-align: center" *ngIf="theatres[0] == undefined; else theatre1">暂无栏目</th>
+      <th style="width: 180px;text-align: center" *ngIf="theatres[1] == undefined; else theatre2">暂无栏目</th>
+      <th style="width: 180px;text-align: center" *ngIf="theatres[2] == undefined; else theatre3">暂无栏目</th>
+      <th style="width: 180px;text-align: center" *ngIf="theatres[3] == undefined; else theatre4">暂无栏目</th>
+      <th style="width: 180px;text-align: center" *ngIf="theatres[4] == undefined; else theatre5">暂无栏目</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="width: 180px;text-align: center">当下播出</td>
+      <td style="width: 180px;text-align: center" *ngIf="theatres[0] == undefined; else theatre1ps"></td>
+      <td style="width: 180px;text-align: center" *ngIf="theatres[0] == undefined; else theatre2ps"></td>
+      <td style="width: 180px;text-align: center" *ngIf="theatres[0] == undefined; else theatre3ps"></td>
+      <td style="width: 180px;text-align: center" *ngIf="theatres[0] == undefined; else theatre4ps"></td>
+      <td style="width: 180px;text-align: center" *ngIf="theatres[0] == undefined; else theatre5ps"></td>
+    </tr>
+    <tr>
+      <td style="width: 180px;text-align: center">预排一</td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL1y1()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l1y1z="cdkDropList" [cdkDropListData]="l1y1" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l1y1" cdkDrag>
+            <div class="text-ellipsis">{{ item?.program_name }}</div>
+            <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL2y1()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l2y1z="cdkDropList" [cdkDropListData]="l2y1" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l2y1" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL3y1()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l3y1z="cdkDropList" [cdkDropListData]="l3y1" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l3y1" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL4y1()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l4y1z="cdkDropList" [cdkDropListData]="l4y1" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l4y1" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL5y1()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l5y1z="cdkDropList" [cdkDropListData]="l5y1" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l5y1" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>预排二</td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL1y2()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l1y2z="cdkDropList" [cdkDropListData]="l1y2" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l1y2" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL2y2()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l2y2z="cdkDropList" [cdkDropListData]="l2y2" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l2y2" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL3y2()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l3y2z="cdkDropList" [cdkDropListData]="l3y2" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l3y2" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL4y2()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l4y2z="cdkDropList" [cdkDropListData]="l4y2" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l4y2" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 180px;text-align: center">
+        <a (click)="deleteL5y2()"><i nz-icon nzType="close-circle" nzTheme="outline" style="color:red;float: right;"></i></a>
+        <div cdkDropList #l5y2z="cdkDropList" [cdkDropListData]="l5y2" [cdkDropListConnectedTo]="[series]"
+          [cdkDropListEnterPredicate]="evenPredicate" class="example-list-c" (cdkDropListDropped)="drop($event)">
+          <div class="example-box-c" *ngFor="let item of l5y2" cdkDrag>
+              <div class="text-ellipsis">{{ item?.program_name }}</div>
+              <div>{{ item?.broadcast_start_date }}</div>
+              <div>~</div>
+              <div>{{ item?.broadcast_end_date }}</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<ng-template #theatre1ps>
+  <td>
+    <div style="text-align: center;font-size: 12px" *ngIf="theatres[0]?.program_schedules.length > 0">
+      <div class="text-ellipsis">{{ theatres[0]?.program_schedules[0].program_name }}</div>
+      <div>{{ theatres[0]?.program_schedules[0].program_episode }}集</div>
+      <div class="text-ellipsis">
+        {{ theatres[0]?.program_schedules[0].broadcasting.broadcast_date }}&nbsp;/&nbsp;{{ theatres[0]?.program_schedules[0].broadcasting.episode_index }}
+        ~
+        {{  theatres[0]?.program_schedules[0].broadcasting.episode_index + theatres[0]?.program_schedules[0].broadcasting.episode_num}}集
+      </div>
+    </div>
+  </td>
+</ng-template>
+<ng-template #theatre2ps>
+  <td>
+    <div style="text-align: center;font-size: 12px" *ngIf="theatres[1]?.program_schedules.length > 0">
+      <div class="text-ellipsis">{{ theatres[1]?.program_schedules[0].program_name }}</div>
+      <div>{{ theatres[1]?.program_schedules[0].program_episode }}集</div>
+      <div class="text-ellipsis">
+        {{ theatres[1]?.program_schedules[0].broadcasting.broadcast_date }}&nbsp;/&nbsp;{{ theatres[1]?.program_schedules[0].broadcasting.episode_index }}
+        ~
+        {{  theatres[1]?.program_schedules[0].broadcasting.episode_index + theatres[1]?.program_schedules[0].broadcasting.episode_num}}集
+      </div>
+    </div>
+  </td>
+</ng-template>
+<ng-template #theatre3ps>
+  <td>
+    <div style="text-align: center;font-size: 12px" *ngIf="theatres[2]?.program_schedules.length > 0">
+      <div class="text-ellipsis">{{ theatres[2]?.program_schedules[0].program_name }}</div>
+      <div>{{ theatres[2]?.program_schedules[0].program_episode }}集</div>
+      <div class="text-ellipsis">
+        {{ theatres[2]?.program_schedules[0].broadcasting.broadcast_date }}&nbsp;/&nbsp;{{ theatres[2]?.program_schedules[0].broadcasting.episode_index }}
+        ~
+        {{  theatres[2]?.program_schedules[0].broadcasting.episode_index + theatres[2]?.program_schedules[0].broadcasting.episode_num}}集
+      </div>
+    </div>
+  </td>
+</ng-template>
+<ng-template #theatre4ps>
+  <td>
+    <div style="text-align: center;font-size: 12px" *ngIf="theatres[3]?.program_schedules.length > 0">
+      <div class="text-ellipsis">{{ theatres[3]?.program_schedules[0].program_name }}</div>
+      <div>{{ theatres[3]?.program_schedules[0].program_episode }}集</div>
+      <div class="text-ellipsis">
+        {{ theatres[3]?.program_schedules[0].broadcasting.broadcast_date }}&nbsp;/&nbsp;{{ theatres[3]?.program_schedules[0].broadcasting.episode_index }}
+       ~ 
+        {{  theatres[3]?.program_schedules[0].broadcasting.episode_index + theatres[3]?.program_schedules[0].broadcasting.episode_num}}集
+      </div>
+    </div>
+  </td>
+</ng-template>
+<ng-template #theatre5ps>
+  <td>
+    <div style="text-align: center;font-size: 12px" *ngIf="theatres[4]?.program_schedules.length > 0">
+      <div class="text-ellipsis">{{ theatres[4]?.program_schedules[0].program_name }}</div>
+      <div>{{ theatres[4]?.program_schedules[0].program_episode }}集</div>
+      <div class="text-ellipsis">
+        {{ theatres[4]?.program_schedules[0].broadcasting.broadcast_date }}&nbsp;/&nbsp;{{ theatres[4]?.program_schedules[0].broadcasting.episode_index }}
+        ~
+        {{  theatres[4]?.program_schedules[0].broadcasting.episode_index + theatres[4]?.program_schedules[0].broadcasting.episode_num}}集
+      </div>
+    </div>
+  </td>
+</ng-template>
+<ng-template #theatre1>
+  <th>{{ theatres[0]?.name }}</th>
+</ng-template>
+<ng-template #theatre2>
+  <th>{{ theatres[1]?.name }}</th>
+</ng-template>
+<ng-template #theatre3>
+  <th>{{ theatres[2]?.name }}</th>
+</ng-template>
+<ng-template #theatre4>
+  <th>{{ theatres[3]?.name }}</th>
+</ng-template>
+<ng-template #theatre5>
+  <th>{{ theatres[4]?.name }}</th>
+</ng-template>
+<ng-template #Header>
+  <!-- <button nz-button nzType="danger" nzSmall="small" style="float:right;" (click)="addRow()">清空编排</button> -->
+  <!-- <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="10" [(ngModel)]="selectedIndex"></nz-input-number> -->
+  <nz-tabset [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="channelChange($event)">
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name">
+    </nz-tab>
+  </nz-tabset>
+</ng-template>
+<nz-divider nzText="预排清单"></nz-divider>
+<div  cdkDropList #series="cdkDropList" [cdkDropListData]="seriesList"
+  [cdkDropListConnectedTo]="[l1y1z, l2y1z, l3y1z, l4y1z, l5y1z, l1y2z, l2y2z, l3y2z, l4y2z, l5y2z]" class="example-list"
+  (cdkDropListDropped)="drop($event)" [cdkDropListEnterPredicate]="noReturnPredicate">
+  <div class="example-box" *ngFor="let item of seriesList" [cdkDragDisabled]="item.episode == null || item.episode == 0"
+    (click)="isEpisode(item.episode)" cdkDrag>
+    <div class="text-ellipsis">{{ item.name }}</div>
+    <div>{{ item.program_type }}</div>
+    <div>{{ item.episode }}集</div>
+  </div>
+</div>
+<!-- <div class="example-container">
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="done"
+      [cdkDropListConnectedTo]="[todoList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+    </div>
+  </div>  -->

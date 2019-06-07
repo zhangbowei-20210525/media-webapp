@@ -33,6 +33,7 @@ import { ChoreographyComponent } from './choreography/choreography.component';
 import { TheatreComponent } from './choreography/theatre/theatre.component';
 import { InfoComponent } from './choreography/info/info.component';
 import { AddTheatreComponent } from './choreography/components/add-theatre/add-theatre.component';
+import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/edit-broadcast-plan.component';
 
 
 @NgModule({
@@ -66,12 +67,14 @@ import { AddTheatreComponent } from './choreography/components/add-theatre/add-t
     TheatreComponent,
     InfoComponent,
     AddTheatreComponent,
+    EditBroadcastPlanComponent,
   ],
   imports: [
     CommonModule,
     SeriesRoutingModule,
     PdfViewerModule,
-    SharedModule
+    SharedModule,
+    DragDropModule
   ],
   entryComponents: [
     AddSeriesInfoComponent,

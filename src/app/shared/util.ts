@@ -6,6 +6,13 @@ export class Util {
   static dateToString(value: Date, format: string = 'yyyy-MM-dd') {
     return this.pipe.transform(value, format);
   }
+  static dateFullToString(value: Date, format: string = 'yyyy-MM-dd hh:mm:ss') {
+    return this.pipe.transform(value, format);
+  }
+
+  static weekDay(value: string) {
+    return this.pipe.transform(new Date(value).getDay());
+  }
 
   static validationForm(form: FormGroup) {
     for (const i in form.controls) {

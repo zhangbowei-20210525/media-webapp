@@ -203,6 +203,11 @@
     "global.search": "请输入搜索内容",
     "global.accept-authorization-successfully": "接受授权成功！",
     "global.refused-authorization-information": "已拒绝接受授权信息！",
-    "global.please-select-receivr-company": "请选择接收公司！"
+    "global.please-select-receivr-company": "请选择接收公司！",
+    "global.please-select-episode": "请选择集数！",
+    "global.not-choose-repeat-week": "星期选择不可重叠！",
+    "global.please-fill-episodes": "请先去节目编辑填写集数",
+    "global.please-select-correct-range-of-episodes": "请填写正确的播放集数范围"
+
 
 }

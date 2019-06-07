@@ -200,6 +200,10 @@
     "global.search": "Please enter the search content",
     "global.accept-authorization-successfully": "Accept authorization successfully！",
     "global.refused-authorization-information": "Authorization information has been refused！",
-    "global.please-select-receivr-company": "Please select the receiving company!"
+    "global.please-select-receivr-company": "Please select the receiving company!",
+    "global.please-select-episode": "Please select episode!",
+    "global.not-choose-repeat-week": "Please do not choose a repeat week！",
+    "global.please-fill-episodes": "Please fill in the number of episodes",
+    "global.please-select-correct-range-of-episodes": "Please select the correct range of episodes!"
 
 }

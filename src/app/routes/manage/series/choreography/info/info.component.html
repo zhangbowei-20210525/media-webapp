@@ -1,1 +1,40 @@
-
+<nz-table #table [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false" [nzScroll]="{ x: '1150px'}"
+    style="margin-top: 10px">
+    <thead>
+        <tr>
+            <th [attr.rowspan]="2" nzWidth="150px" nzLeft="0px"></th>
+            <th [attr.colspan]="data.count" [nzAlign]="'center'" *ngFor="let data of table.data"
+                [hidden]="data.index !== 0">
+                {{ data.channelName }}</th>
+                <!-- [attr.data-raw]="data.id" -->
+        </tr>
+        <tr>
+            <th *ngFor="let data of table.data" [nzAlign]="'center'"><div>{{ data.theatreName }}</div></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of events">
+            <td nzLeft="0px" [nzAlign]="'center'">
+                <div>{{ data.week }}</div>
+                <div>
+                    <span>{{ data.week | weekDay}}</span>
+                </div>
+            </td>
+            <td *ngFor="let event of data.events; let i = index" [nzAlign]="'center'">
+                <div *ngFor="let en of event.event">
+                    <div>{{ en.program_name}}</div>
+                    <div>{{ en.episode_index}} ~ {{ en.episode_index + en.episode_num}}集</div>
+                </div>
+            </td>
+        </tr>
+        <!-- <tr *ngFor="let data of dataList; let i=index">
+                <td  *ngFor="let data1 of dataList[i]">{{data1}}</td>  
+                </tr> -->
+        <!-- <tr *ngFor="let event of events;let i=index">
+                   <tr *ngFor="let data of event;">
+                   <td> {{ data.list }}</td>
+                    <td>  </td>
+                  </tr>
+               </tr> -->
+    </tbody>
+</nz-table>
