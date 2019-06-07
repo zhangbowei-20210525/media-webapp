@@ -80,11 +80,8 @@ const PIPES = [
   PaymentFormatPipe,
   ArrayMapPipe,
   SourceFileStatusPipe,
-<<<<<<< HEAD
-  WeekDayPipe
-=======
+  WeekDayPipe,
   MaxNumberPipe
->>>>>>> f8c93485f5759599f5fbd311463121fc0338633f
 ];
 // #endregion
 
