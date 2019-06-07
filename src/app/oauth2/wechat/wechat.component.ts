@@ -3,7 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'rxjs/operators';
 import { SocialService, ITokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
-import { SettingsService } from '@core';
+import { SettingsService, AuthService } from '@core';
 
 @Component({
   selector: 'app-wechat',
@@ -36,9 +36,8 @@ export class WechatComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private accountervice: AccountService,
-    private settings: SettingsService,
     private ts: TreeService,
-    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -55,12 +54,13 @@ export class WechatComponent implements OnInit {
   wxloginRequest(code: string) {
     this.accountervice.wechatValidate(code)
       .subscribe(result => {
-        this.settings.user = result.auth;
-        this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
-        this.tokenService.set({
-          token: result.token,
-          time: +new Date
-        });
+        this.auth.login(
+          {
+            token: result.token,
+            time: +new Date
+          },
+          result.auth,
+          this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
         this.validateStatus = 'successful';
         window.parent.location.reload();
       }, error => {
@@ -71,12 +71,13 @@ export class WechatComponent implements OnInit {
   wxBindRequest(code: string) {
     this.accountervice.bindWechatValidate(code)
       .subscribe(result => {
-        this.settings.user = result.auth;
-        this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
-        this.tokenService.set({
-          token: result.token,
-          time: +new Date
-        });
+        this.auth.login(
+          {
+            token: result.token,
+            time: +new Date
+          },
+          result.auth,
+          this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
         this.validateStatus = 'successful';
         window.parent.location.reload();
       }, error => {

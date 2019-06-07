@@ -14,7 +14,7 @@ export class AddPubTapeComponent implements OnInit {
 
 
   @Input() id: number;
-  @ViewChild('inputFocus') inputFocus: ElementRef;
+  @ViewChild('companyInput') companyInput: ElementRef<HTMLInputElement>;
   validateForm: FormGroup;
   phone: number;
   companiesName = [];
@@ -26,6 +26,7 @@ export class AddPubTapeComponent implements OnInit {
   company: any[];
   contactInfo: any[];
   contactId: number;
+
   constructor(
     private fb: FormBuilder,
     private seriesService: SeriesService,
@@ -35,11 +36,14 @@ export class AddPubTapeComponent implements OnInit {
     // this.seriesService.getCompaniesName()
     this.seriesService.getCompanyList().subscribe(res => {
       this.filteredCompanyOptions = this.companyOptions = res;
-    });
-    this.validateForm = this.fb.group({
-      company: [null, [Validators.required]],
-      phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
-      contact: [null, [Validators.required]],
+      this.validateForm = this.fb.group({
+        company: [null, [Validators.required]],
+        phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
+        contact: [null, [Validators.required]],
+      });
+      // setTimeout(() => {
+      //   this.companyInput.nativeElement.focus();
+      // }, 10);
     });
   }
 
