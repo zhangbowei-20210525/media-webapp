@@ -286,6 +286,11 @@
           </a>
         </div>
       </div>
+      <ng-template #titleTemplate>
+        <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+        <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+          {{ 'app.series.publicity-share-email' | translate }}</div>
+      </ng-template>
       <ng-template #contentTemplate>
         <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
         <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img

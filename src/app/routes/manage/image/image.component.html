@@ -3,7 +3,8 @@
     <div class="block-title">发现列表</div>
   </div>
   <div class="block-content">
-    <div [hidden]="mode == 'table'">
+    <div>
+      <!-- <div [hidden]="mode == 'table'"> -->
       <div *ngIf="isMyDeatilsLoaded">
         <div *ngIf="list.length > 0 else empty">
           <div class="videos-info-big-box">
@@ -41,12 +42,13 @@
                 </div>
                 <div class="info-small-box-bottom">
                   <!-- <div class="info-wk-eight"> -->
-                      <div class="info-small-box-bottom-left" *ngIf="thumbnail?.user?.avatar !== '' ">
-                          <img class="info-hp" [src]="thumbnail?.user?.avatar">
-                          <!-- <img class="info-hp" -->
-                          <!-- src="http://b-ssl.duitang.com/uploads/item/201510/23/20151023111035_AcCun.thumb.700_0.jpeg" /> -->
-                        </div>
-                  <span class="info-small-box-bottom-right">{{ thumbnail?.company?.full_name === '' ? '-' : thumbnail?.company?.full_name }}</span>
+                  <div class="info-small-box-bottom-left" *ngIf="thumbnail?.user?.avatar !== '' ">
+                    <img class="info-hp" [src]="thumbnail?.user?.avatar">
+                    <!-- <img class="info-hp" -->
+                    <!-- src="http://b-ssl.duitang.com/uploads/item/201510/23/20151023111035_AcCun.thumb.700_0.jpeg" /> -->
+                  </div>
+                  <span
+                    class="info-small-box-bottom-right">{{ thumbnail?.company?.full_name === '' ? '-' : thumbnail?.company?.full_name }}</span>
                   <!-- <span class="info-small-box-bottom-right">黑龙江大庆好莱坞电影院</span> -->
                   <!-- </div> -->
                 </div>
