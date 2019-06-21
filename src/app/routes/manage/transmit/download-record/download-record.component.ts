@@ -75,6 +75,10 @@ export class DownloadRecordComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate([`/manage/transmit`, {tabIndex: 1}]);
+    this.router.navigate([`/manage/transmit/type`]);
+  }
+
+  purTapeDetails (id: number) {
+    this.router.navigate([`/manage/transmit/pur-d/${id}`]);
   }
 }

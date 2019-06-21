@@ -89,7 +89,8 @@ import { RouterModule } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { WeekDayPipe } from './pipes/weekDay.pipe';
+import { WeekDayPipe } from './pipes/week-day.pipe';
+
 
 
 @NgModule({

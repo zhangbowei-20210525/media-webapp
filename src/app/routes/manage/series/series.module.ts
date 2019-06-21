@@ -35,6 +35,9 @@ import { TheatreComponent } from './choreography/theatre/theatre.component';
 import { InfoComponent } from './choreography/info/info.component';
 import { AddTheatreComponent } from './choreography/components/add-theatre/add-theatre.component';
 import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/edit-broadcast-plan.component';
+import { InsertBroadcastInfoComponent } from './choreography/components/insert-broadcast-info/insert-broadcast-info.component';
+import { AddBroadcastingInfoComponent } from './choreography/components/add-broadcasting-info/add-broadcasting-info.component';
+import { RightConfigComponent } from './copyrights/components/right-config/right-config.component';
 
 
 @NgModule({
@@ -70,6 +73,9 @@ import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/e
     InfoComponent,
     AddTheatreComponent,
     EditBroadcastPlanComponent,
+    InsertBroadcastInfoComponent,
+    AddBroadcastingInfoComponent,
+    RightConfigComponent,
   ],
   imports: [
     CommonModule,
@@ -88,7 +94,10 @@ import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/e
     EditSeriesInfoComponent,
     SeriesSelectorComponent,
     RelationImportFieldComponent,
-    AddTheatreComponent
+    AddTheatreComponent,
+    InsertBroadcastInfoComponent,
+    AddBroadcastingInfoComponent,
+    RightConfigComponent
   ]
 })
 export class SeriesModule { }

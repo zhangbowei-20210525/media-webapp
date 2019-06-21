@@ -38,9 +38,11 @@
       </td>
       <td>{{ data.air_date }}</td>
       <td>{{ data.broadcast_time }}</td>
-      <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
-        <a nz-popconfirm nzTitle="是否删除此频道？" (nzOnConfirm)="deleteChannel(data.channelId)"><i class="text-info" nz-icon
+      <td>
+        <a  *ngIf="data.isHasTheatre == true" nz-popconfirm nzTitle="是否删除此栏目？" (nzOnConfirm)="deleteTheatre(data.theatreId)" ><i class="text-info" nz-icon
             type="delete" theme="outline"></i></a>
+            <a   *ngIf="data.isHasTheatre == false" nz-popconfirm nzTitle="是否删除此频道？" (nzOnConfirm)="deleteChannel(data.channelId)" ><i class="text-info" nz-icon
+              type="delete" theme="outline"></i></a>
       </td>
     </tr>
   </tbody>

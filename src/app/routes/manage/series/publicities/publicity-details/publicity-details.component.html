@@ -284,6 +284,11 @@
             <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
               [nzContent]="contentTemplate" nzTrigger="click"></i>
           </a>
+          <ng-template #titleTemplate>
+              <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+              <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+                {{ 'app.series.publicity-share-email' | translate }}</div>
+            </ng-template>
         </div>
       </div>
       <ng-template #contentTemplate>

@@ -154,8 +154,8 @@ export class QueueUploader {
 export interface UploadInfo {
   target: number;
   url: string;
-  name: string;
   size: number;
+  name: string;
   extension: string;
   progress: number;
   file: File;

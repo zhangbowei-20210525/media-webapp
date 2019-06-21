@@ -1,0 +1,41 @@
+<form nz-form [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzRequired>插播节目</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <input nz-input formControlName="series"/>
+      <nz-form-explain *ngIf="validateForm.get('series').dirty && validateForm.get('series').errors">请选择节目
+      </nz-form-explain>
+    </nz-form-control>
+    <nz-form-label [nzSm]="3" nzRequired>集数</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <nz-input-number formControlName="num" [nzMin]="1" [nzMax]="999" [nzStep]="1" [nzDisabled]="true">
+      </nz-input-number>&nbsp;&nbsp;集
+      <nz-form-explain *ngIf="validateForm.get('num').dirty && validateForm.get('num').errors">
+        请填写集数
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzRequired>播出日期</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <nz-date-picker id="currentBroadcastDate" formControlName="currentBroadcastDate"
+        [nzStyle]="{ 'width' : '282px' }"></nz-date-picker>
+      <nz-form-explain currentBroadcastDate
+        *ngIf="validateForm.get('currentBroadcastDate').dirty && validateForm.get('currentBroadcastDate').errors">
+        请选择播出日期
+      </nz-form-explain>
+    </nz-form-control>
+    <nz-form-label [nzSm]="3" nzRequired>播出集数</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <nz-input-number formControlName="start_episode" [nzMin]="1" [nzMax]="999" [nzStep]="1"></nz-input-number>
+      &nbsp;&nbsp;~&nbsp;&nbsp;
+      <nz-input-number formControlName="end_episode" [nzMin]="1" [nzMax]="999" [nzStep]="1"></nz-input-number>
+      &nbsp;&nbsp;集
+      <nz-form-explain
+        *ngIf="validateForm.get('start_episode').dirty && validateForm.get('start_episode').errors && validateForm.get('end_episode').dirty && validateForm.get('end_episode').errors">
+        请选择播出集数
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>

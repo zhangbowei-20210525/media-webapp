@@ -18,7 +18,8 @@ export class InfoComponent implements OnInit {
   num = 0;
   theatres = [];
   q: any;
-  num1 = 0;
+  w = [];
+  num1 = 1;
   num2 = 0;
   constructor(
     private service: ChoreographyService,
@@ -32,7 +33,7 @@ export class InfoComponent implements OnInit {
   }
 
   dataConversion(list: any[]) {
-    console.log(list);
+    // console.log(list);
     const aa = [];
     const info = [];
     list.forEach(a => {
@@ -45,11 +46,11 @@ export class InfoComponent implements OnInit {
           channelName: a.name,
           theatreName: t.name,
           count: a.columns.length,
-          broadcast_events: _.groupBy(t.broadcast_events, g => g.broadcast_date)
+          // broadcast_events: _.groupBy(t.broadcast_events, g => g.broadcast_date)
         });
         t.broadcast_events.forEach(c => {
           aa.push({
-            lnum: this.num1,
+            lnum: this.num1 - 1,
             index: this.num2++,
             tid: c.column_id,
             broadcast_date: c.broadcast_date,
@@ -60,23 +61,19 @@ export class InfoComponent implements OnInit {
         });
       });
     });
-    console.log(info);
+    info.forEach(a => {
+      this.w.push(a.num1);
+    });
     this.q = _.groupBy(aa, g => g.broadcast_date);
-    this.q = Object.keys(this.q).map(k => ({ week: k, events: this.q[k]}));
+    this.q = Object.keys(this.q).map(k => ({ week: k, events: this.q[k] }));
     this.q.forEach(a => {
-      a.events = _.groupBy(a.events, g => g.tid);
+      a.events = _.groupBy(a.events, g => g.tid + '|' + g.lnum);
     });
     this.q.forEach(a => {
-      a.events = Object.keys(a.events).map(k => ({ id: k, event: a.events[k] }));
+      a.events = Object.keys(a.events).map(k => ({ id: k.substring(k.indexOf('|') + 1, k.length), event: a.events[k] }));
     });
     this.events = this.q;
     console.log(this.events);
-const as = [];
-    list.forEach(a => {
-      a.columns.forEach(b => {
-        as.push(b.id);
-      });
-    });
     return info;
   }
 }

@@ -111,6 +111,10 @@ export class TypeComponent implements OnInit {
     });
 }
 
+purTapeDetails (id: number) {
+  this.router.navigate([`/manage/transmit/pur-d/${id}`]);
+}
+
   downloadTape(id: number) {
     this.modalService.create({
       nzTitle: '下载母带文件',

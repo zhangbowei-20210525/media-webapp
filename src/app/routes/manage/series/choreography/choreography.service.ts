@@ -42,7 +42,8 @@ export class ChoreographyService {
   //   return broadcastEpisodes;
   // }
 
-  addTheatre(newTheatre: { channel_name: string, name: string, air_date: string, broadcast_time: string, weekday_schedules: any[],
+  addTheatre(newTheatre: {
+    channel_name: string, name: string, air_date: string, broadcast_time: string, weekday_schedules: any[],
     program_id: number, broadcast_date: string, start_episode: number, end_episode: number, episode: number
   }) {
     return this.http.post<any>(`/api/v1/editing/columns`, newTheatre);
@@ -50,6 +51,10 @@ export class ChoreographyService {
 
   getTheatreList() {
     return this.http.get<any>(`/api/v1/editing/channels`);
+  }
+
+  deleteTheatre(id: number) {
+    return this.http.delete<any>(`/api/v1/editing/columns/${id}`);
   }
 
   deleteChannel(id: number) {
@@ -61,7 +66,26 @@ export class ChoreographyService {
   }
 
   addTheatreSeries(column_id: number, program_id: number) {
-    return this.http.post<any>(`/api/v1/editing/schedules/programs`, { column_id: column_id, program_id: program_id});
+    return this.http.post<any>(`/api/v1/editing/schedules/programs`, { column_id: column_id, program_id: program_id });
+  }
+
+  addInsertBroadcastInfo(column_id: number, program_id: number, old_program_id: number, insertSeries: {
+    broadcast_date: string,
+    start_episode: number,
+    end_episode: number,
+    episode: number,
+  }) {
+    return this.http.post<any>(`/api/v1/editing/schedules/programs`,
+    { column_id: column_id, program_id: program_id,  old_program_id: old_program_id, insertSeries});
+  }
+
+  addBroadcastingInfo(column_id: number, program_id: number, insertSeries: {
+    broadcast_date: string,
+    start_episode: number,
+    end_episode: number,
+    episode: number,
+  }) {
+    return this.http.post<any>(`/api/v1/editing/schedules/programs`, { column_id: column_id, program_id: program_id,  insertSeries});
   }
 
   deleteTheatreSeries(id: number) {

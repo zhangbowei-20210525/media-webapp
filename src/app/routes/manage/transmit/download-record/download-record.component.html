@@ -22,7 +22,7 @@
               <tr *ngFor="let data of basicTable.data;let i = index">
                   <td>{{ i + 1 + pgination.page * 10 - 10}}</td>
                 <td style="text-align: center">{{data.program_name}}</td>
-                <td style="text-align: center">{{data.source_name}}</td>
+                <td style="text-align: center"><a (click)="purTapeDetails(data.id)">{{data.source_name}}</a></td>
                 <td style="text-align: center">{{data.tasks_num}}</td>
                 <td style="text-align: center">
                   <span *ngIf="data.status == 0">下载中</span>

@@ -3,7 +3,7 @@
     <div class="block-title">发现列表</div>
   </div>
   <div class="block-content">
-    <div [hidden]="mode == 'table'">
+    <div>
       <div *ngIf="isMyDeatilsLoaded">
         <div *ngIf="list.length > 0 else empty">
           <div class="videos-info-big-box">

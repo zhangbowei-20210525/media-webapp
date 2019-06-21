@@ -44,22 +44,39 @@ export class TheatreComponent implements OnInit {
     const data = [];
     res.forEach(f => {
       let index = 0;
-      f.columns.forEach(x => {
+      if (f.columns.length === 0) {
         data.push({
           index: index++,
           channelId: f.id,
           channelName: f.name,
-          theatreId: x.id,
-          theatreName: x.name,
-          air_date: x.air_date,
-          broadcast_time: x.broadcast_time,
-          weekday_schedules: x.weekday_schedules,
-          count: f.columns.length
+          count: f.columns.length,
+          isHasTheatre: false
         });
-      });
+      } else {
+        f.columns.forEach(x => {
+          data.push({
+            index: index++,
+            channelId: f.id,
+            channelName: f.name,
+            theatreId: x.id,
+            theatreName: x.name,
+            air_date: x.air_date,
+            isHasTheatre: true,
+            broadcast_time: x.broadcast_time,
+            weekday_schedules: x.weekday_schedules,
+            count: f.columns.length
+          });
+        });
+      }
     });
-    console.log(data);
     return data;
+  }
+
+  deleteTheatre(id: number) {
+    this.service.deleteTheatre(id).subscribe(result => {
+      this.message.success(this.translate.instant('global.delete-successfully'));
+      this.filtrate();
+    });
   }
 
   deleteChannel(id: number) {

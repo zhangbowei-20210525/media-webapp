@@ -142,30 +142,35 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
           if (this.userinfo.material.pdf === 0) {
             this.pdfDisabled = true;
           }
+          if (this.tabIndex === 0) {
+            this.publicityType = 'sample';
+            this.sample();
+          }
+          if (this.tabIndex === 1) {
+            this.publicityType = 'feature';
+            this.feature();
+          }
+          if (this.tabIndex === 2) {
+            this.publicityType = 'trailer';
+            this.trailer();
+          }
+          if (this.tabIndex === 3) {
+            this.publicityType = 'poster';
+            this.poster();
+          }
+          if (this.tabIndex === 4) {
+            this.publicityType = 'still';
+            this.still();
+          }
+          if (this.tabIndex === 5) {
+            this.publicityType = 'pdf';
+            this.pdf();
+          }
         });
         this.seriesService.getSeriesDetailsInfo(this.sid).subscribe(cpd => {
           this.seriesInfo = cpd;
         });
         this.publicityName = res.name;
-        if (!this.publicityType || this.publicityType === 'sample') {
-          this.publicityType = 'sample';
-          this.getSampleInfo();
-        }
-        if (this.publicityType === 'feature') {
-          this.getFeatureInfo();
-        }
-        if (this.publicityType === 'trailer') {
-          this.getTrailerInfo();
-        }
-        if (this.publicityType === 'poster') {
-          this.getPosterInfo();
-        }
-        if (this.publicityType === 'still') {
-          this.getStillInfo();
-        }
-        if (this.publicityType === 'pdf') {
-          this.getPdfInfo();
-        }
       });
   }
 
@@ -484,7 +489,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   getTwoDimensionalCode() {
     // zh-CN en-US
     this.languageVersion = this.i18n.currentLang;
-    console.log(this.languageVersion);
     if (this.languageVersion === 'zh-CN') {
       this.seriesService.getTwoDimensionalCode(this.id)
         .pipe(map(x => x = `data:image/png;base64,${x}`))
@@ -498,11 +502,10 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   tabSelectChange(event) {
-    console.log(event.index);
+    // console.log(event.index);
   }
 
   shareEmail() {
-    console.log(this.tabIndex);
     // tslint:disable-next-line:max-line-length
     this.seriesService.shareEmail(this.emailAddress, `http://test1.bctop.net/d/${this.id}`, this.publicityName, this.sid).subscribe();
   }

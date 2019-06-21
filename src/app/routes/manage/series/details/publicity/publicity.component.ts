@@ -99,7 +99,7 @@ export class PublicityComponent implements OnInit {
   }
 
   publicityViews() {
-    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`, { sid: this.seriesId, tabIndex: this.tabIndex  }]);
+    this.router.navigate([`/manage/series/publicity-details/${this.publicityId}`, { sid: this.seriesId, tabIndex: this.tabIndex }]);
   }
 
   pageChange(page: number, type: MaterielType) {
@@ -108,7 +108,7 @@ export class PublicityComponent implements OnInit {
   }
 
   tabSelectChange(event: NzTabChangeEvent) {
-    this.tabIndex  =  event.index;
+    this.tabIndex = event.index;
     this.fetchMateriels(this.materielTypes[event.index]);
   }
 
@@ -143,12 +143,17 @@ export class PublicityComponent implements OnInit {
         progress: 0,
         createAt: new Date,
         success: (upload, data) => {
-          this.service.bindingMateriel(upload.target, data.id, materielType, '').subscribe(result => {
-            this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-            this.fetchMateriels(materielType);
-            this.fetchPublicity();
-          });
-          return true;
+          if (data.code === 0) {
+            this.service.bindingMateriel(upload.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
+              materielType, '').subscribe(result => {
+                this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                this.fetchMateriels(materielType);
+                this.fetchPublicity();
+              });
+            return true;
+          } else {
+            this.notification.error('上传文件失败', `${data.detail}`);
+          }
         }
       });
     });
@@ -167,7 +172,7 @@ export class PublicityComponent implements OnInit {
   }
 
   deletePublicityAgreed = (id: number) => new Promise((resolve) => {
-    this.seriesService.deletePublicity(this.publicityId,  this.materielTypes[this.selectedIndex], id).subscribe(res => {
+    this.seriesService.deletePublicity(this.publicityId, this.materielTypes[this.selectedIndex], id).subscribe(res => {
       this.message.success(this.translate.instant('global.delete-success'));
       this.fetchMateriels(this.materielTypes[this.selectedIndex]);
       resolve();

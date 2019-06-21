@@ -109,7 +109,7 @@ export class AddTheatreComponent implements OnInit {
     const series = this.seriesOption.filter(f => {
       return this.validateForm.get('series').value === f.id;
     });
-    if (series[0].episode === null) {
+    if (series[0].episode === null || series[0].episode === 0) {
       this.validateForm.get('num').reset();
       this.disabled = false;
     } else {
