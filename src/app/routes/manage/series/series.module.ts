@@ -34,6 +34,7 @@ import { ChoreographyComponent } from './choreography/choreography.component';
 import { TheatreComponent } from './choreography/theatre/theatre.component';
 import { InfoComponent } from './choreography/info/info.component';
 import { AddTheatreComponent } from './choreography/components/add-theatre/add-theatre.component';
+import { RightFilterComponent } from './components/right-filter/right-filter.component';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import { AddTheatreComponent } from './choreography/components/add-theatre/add-t
     TheatreComponent,
     InfoComponent,
     AddTheatreComponent,
+    RightFilterComponent,
   ],
   imports: [
     CommonModule,
@@ -85,7 +87,8 @@ import { AddTheatreComponent } from './choreography/components/add-theatre/add-t
     EditSeriesInfoComponent,
     SeriesSelectorComponent,
     RelationImportFieldComponent,
-    AddTheatreComponent
+    AddTheatreComponent,
+    RightFilterComponent
   ]
 })
 export class SeriesModule { }

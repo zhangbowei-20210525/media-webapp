@@ -1,0 +1,80 @@
+<form nz-form [formGroup]="filtrateForm" style="width: 100%;">
+
+  <nz-form-item style="margin-bottom: 0;">
+    <nz-form-label nzFor="investment_type" [nzSpan]="4">投资类型</nz-form-label>
+    <nz-form-control [nzSpan]="20">
+      <nz-radio-group formControlName="investment_type" (ngModelChange)="onFormValueChange()" nzSize="default">
+        <label nz-radio-button [nzValue]="null">所有</label>
+        <label nz-radio-button nzValue="homemade">自制</label>
+        <label nz-radio-button nzValue="purchase">购入</label>
+        <label nz-radio-button nzValue="proxy">代理</label>
+        <label nz-radio-button nzValue="main-vote">主投</label>
+        <label nz-radio-button nzValue="follow">跟投</label>
+        <label nz-radio-button nzValue="co-production">合拍</label>
+        <label nz-radio-button nzValue="contract">承制</label>
+        <label nz-radio-button nzValue="introduction">引进</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item style="margin-bottom: 0;">
+    <nz-form-label nzFor="program_type" [nzSpan]="4">节目类型</nz-form-label>
+    <nz-form-control [nzSpan]="20">
+      <nz-select nzMode="multiple" nzPlaceHolder="请选择节目类型" formControlName="program_type"
+        (ngModelChange)="onFormValueChange()" nzSize="default">
+        <nz-option *ngFor="let option of seriesType" [nzLabel]="option" [nzValue]="option">
+        </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item style="margin-bottom: 0;">
+    <nz-form-label nzFor="area" [nzSpan]="4">地域</nz-form-label>
+    <nz-form-control [nzSpan]="20">
+      <nz-tree-select [nzNodes]="areaOptions" nzShowSearch nzCheckable nzPlaceHolder="请选择地域"
+        formControlName="area" (ngModelChange)="onFormValueChange($event)" nzSize="default">
+      </nz-tree-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item style="margin-bottom: 0;">
+    <nz-form-label nzFor="days" [nzSpan]="4">到期天数</nz-form-label>
+    <nz-form-control [nzSpan]="20">
+      <nz-select formControlName="days" (ngModelChange)="onFormValueChange()" nzSize="default">
+        <nz-option [nzValue]="null" nzLabel="所有"></nz-option>
+        <nz-option nzValue="365" nzLabel="一年"></nz-option>
+        <nz-option nzValue="180" nzLabel="180天"></nz-option>
+        <nz-option nzValue="30" nzLabel="30天"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item style="margin-bottom: 0;">
+    <nz-form-label nzFor="right" [nzSpan]="4">权利</nz-form-label>
+    <nz-form-control [nzSm]="20">
+      <nz-cascader formControlName="right" [nzOptions]="rightOptions" nzLabelProperty="name" nzValueProperty="code"
+        nzChangeOnSelect nzAllowClear="false" (ngModelChange)="onFormValueChange()" nzSize="default">
+      </nz-cascader>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item style="margin-bottom: 0;">
+    <nz-form-label nzFor="date" [nzSpan]="4">期限</nz-form-label>
+    <nz-form-control [nzSpan]="20">
+      <nz-range-picker formControlName="date" (ngModelChange)="onFormValueChange()" nzSize="default">
+      </nz-range-picker>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item style="margin-bottom: 0;">
+    <nz-form-label nzFor="is_salable" [nzSpan]="4">可发行</nz-form-label>
+    <nz-form-control [nzSpan]="4">
+      <label nz-checkbox formControlName="is_salable" (ngModelChange)="onPublishChange($event)"></label>
+    </nz-form-control>
+    <nz-form-label nzFor="sole" [nzSpan]="4">独家</nz-form-label>
+    <nz-form-control [nzSpan]="4">
+      <label nz-checkbox formControlName="sole" (ngModelChange)="onFormValueChange()"></label>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>

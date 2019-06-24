@@ -2,13 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 interface FormValue {
-    name: string;
-    phone: string;
+  name: string;
+  phone: string;
+  roles: number[];
 }
 
 @Component({
-    selector: 'app-edit-employee',
-    template: `
+  selector: 'app-edit-employee',
+  template: `
   <form nz-form [formGroup]="form">
     <nz-form-item>
       <nz-form-control>
@@ -26,46 +27,60 @@ interface FormValue {
         </nz-form-explain>
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item *ngIf="needRole">
+      <nz-form-control>
+        <nz-select
+          nzMode="multiple"
+          nzPlaceHolder="选择角色"
+          formControlName="roles"
+        >
+          <nz-option *ngFor="let option of roleOfOptions" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+        </nz-select>
+      </nz-form-control>
+  </nz-form-item>
   </form>
   `
 })
 export class EditEmployeeComponent implements OnInit {
 
-    @Input() employeeName: string;
-    @Input() employeePhone: string;
+  @Input() employeeName: string;
+  @Input() employeePhone: string;
+  @Input() needRole: boolean;
+  @Input() roleOfOptions: any[];
 
-    form: FormGroup;
+  form: FormGroup;
 
-    constructor(
-        private fb: FormBuilder
-    ) { }
+  constructor(
+    private fb: FormBuilder
+  ) { }
 
-    ngOnInit() {
-        this.form = this.fb.group({
-            name: [this.employeeName || null, [Validators.required]],
-            phone: [this.employeePhone || null, [Validators.required]]
-        });
-        if (this.employeePhone !== undefined) {
-            this.form.get('phone').disable();
-        }
+  ngOnInit() {
+    this.form = this.fb.group({
+      name: [this.employeeName || null, [Validators.required]],
+      phone: [this.employeePhone || null, [Validators.required]],
+      roles: [[]]
+    });
+    if (this.employeePhone !== undefined) {
+      this.form.get('phone').disable();
     }
+  }
 
-    validation(): boolean {
-        for (const i in this.form.controls) {
-            if (this.form.controls.hasOwnProperty(i)) {
-                this.form.controls[i].markAsDirty();
-                this.form.controls[i].updateValueAndValidity();
-            }
-        }
-        return this.form.valid;
+  validation(): boolean {
+    for (const i in this.form.controls) {
+      if (this.form.controls.hasOwnProperty(i)) {
+        this.form.controls[i].markAsDirty();
+        this.form.controls[i].updateValueAndValidity();
+      }
     }
+    return this.form.valid;
+  }
 
-    //   submit() {
-    //     return this.service.addEmployee(this.id, this.form.value['name'], this.form.value['phone']);
-    //   }
+  //   submit() {
+  //     return this.service.addEmployee(this.id, this.form.value['name'], this.form.value['phone']);
+  //   }
 
-    getValue() {
-        return Object.assign(this.form.value) as FormValue;
-    }
+  getValue() {
+    return Object.assign(this.form.value) as FormValue;
+  }
 
 }

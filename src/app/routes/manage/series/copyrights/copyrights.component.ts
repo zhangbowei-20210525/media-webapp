@@ -40,4 +40,8 @@ export class CopyrightsComponent implements OnInit {
     this.service.notify({ type: 'navigate', value: 'publish' });
   }
 
+  filter() {
+    this.service.notify({ type: 'drawer', value: 'filter' });
+  }
+
 }

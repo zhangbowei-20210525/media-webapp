@@ -135,13 +135,11 @@ export class TeamsComponent implements OnInit {
 
   switchCompany(id: number, companyName: string) {
     this.service.switchCompany(id).subscribe(result => {
-      this.auth.login(
-        {
-          token: result.token,
-          time: +new Date,
-        },
-        result.auth,
-        this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
+      this.auth.onLogin({
+        token: result.token,
+        userInfo: result.auth,
+        permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
+      });
       this.getCompanyInfo();
       this.fetchDepartment();
       this.navigateToTeams();

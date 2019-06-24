@@ -63,23 +63,26 @@ export class EmployeesComponent implements OnInit {
   }
 
   addEmployee() {
-    this.modal.create({
-      nzTitle: '新增员工',
-      nzContent: EditEmployeeComponent,
-      nzOnOk: (component: EditEmployeeComponent) => new Promise((resolve, reject) => {
-        if (component.validation()) {
-          const value = component.getValue();
-          this.service.addEmployee(this.department, value.name, value.phone).subscribe(() => {
-            this.message.success('新增成功');
-            this.refreshDataSet();
-            resolve();
-          }, () => {
+    this.service.getRoles().subscribe(roles => {
+      this.modal.create({
+        nzTitle: '新增员工',
+        nzContent: EditEmployeeComponent,
+        nzComponentParams: { needRole: true, roleOfOptions:  roles },
+        nzOnOk: (component: EditEmployeeComponent) => new Promise((resolve, reject) => {
+          if (component.validation()) {
+            const value = component.getValue();
+            this.service.addEmployee(this.department, value.name, value.phone, value.roles).subscribe(() => {
+              this.message.success('新增成功');
+              this.refreshDataSet();
+              resolve();
+            }, () => {
+              reject(false);
+            });
+          } else {
             reject(false);
-          });
-        } else {
-          reject(false);
-        }
-      })
+          }
+        })
+      });
     });
   }
 

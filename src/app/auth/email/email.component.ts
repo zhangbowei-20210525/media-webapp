@@ -30,13 +30,11 @@ export class EmailComponent implements OnInit {
         return this.accountervice.emailActivate(token);
       })
     ).subscribe((result => {
-      this.auth.login(
-        {
-          token: result.token,
-          time: +new Date
-        },
-        result.auth,
-        this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
+      this.auth.onLogin({
+        token: result.token,
+        userInfo: result.auth,
+        permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
+      });
       this.router.navigate([`/manage/series`]);
       // window.parent.location.reload();
     }));

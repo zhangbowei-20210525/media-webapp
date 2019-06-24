@@ -67,13 +67,11 @@ export class PubAuthorizationReceiveComponent implements OnInit {
       };
       this.service.pubAuth(this.id, data).subscribe(res => {
         this.service.switchCompany(res.employee_id).subscribe(result => {
-          this.auth.login(
-            {
-              token: result.token,
-              time: +new Date
-            },
-            result.auth,
-            this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
+          this.auth.onLogin({
+            token: result.token,
+            userInfo: result.auth,
+            permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
+          });
           this.message.success(this.translate.instant('global.accept-authorization-successfully'));
           this.router.navigate(['/manage/transmit/type']);
         });

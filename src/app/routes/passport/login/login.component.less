@@ -1,0 +1,31 @@
+@import "~styles.less";
+
+.switch-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    min-width: 32px;
+    margin-left: 10px;
+    padding: 0 8px;
+    background-color: #f4f8fb;
+    border-radius: 16px;
+}
+
+.switch-login:first-child {
+    margin-left: 0;
+}
+
+.switch-login i {
+    font-size: 1.5rem;
+}
+
+.switch-login span {
+    margin-left: 5px;
+}
+
+.switch-login.current {
+    color: @disabled-color;
+    pointer-events: none;
+    cursor: default;
+}

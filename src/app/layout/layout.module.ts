@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 import { NotifyComponent } from './header/components/notify/notify.component';
 import { TaskComponent } from './header/components/task/task.component';
+import { PassportComponent } from './passport/passport.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { TaskComponent } from './header/components/task/task.component';
     MainComponent,
     NotifyComponent,
     TaskComponent,
+    PassportComponent
   ],
   imports: [
     CommonModule,

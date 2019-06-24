@@ -54,13 +54,11 @@ export class WechatComponent implements OnInit {
   wxloginRequest(code: string) {
     this.accountervice.wechatValidate(code)
       .subscribe(result => {
-        this.auth.login(
-          {
-            token: result.token,
-            time: +new Date
-          },
-          result.auth,
-          this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
+        this.auth.onLogin({
+          token: result.token,
+          userInfo: result.auth,
+          permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
+        });
         this.validateStatus = 'successful';
         window.parent.location.reload();
       }, error => {
@@ -71,13 +69,11 @@ export class WechatComponent implements OnInit {
   wxBindRequest(code: string) {
     this.accountervice.bindWechatValidate(code)
       .subscribe(result => {
-        this.auth.login(
-          {
-            token: result.token,
-            time: +new Date
-          },
-          result.auth,
-          this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status));
+        this.auth.onLogin({
+          token: result.token,
+          userInfo: result.auth,
+          permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
+        });
         this.validateStatus = 'successful';
         window.parent.location.reload();
       }, error => {

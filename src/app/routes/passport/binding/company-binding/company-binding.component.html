@@ -1,0 +1,31 @@
+<form nz-form [formGroup]="form" class="passport-form fade-in-left" (ngSubmit)="onSubmit()" *ngIf="form">
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzSize="large" nzAddOnBefore="用户称呼">
+        <input type="text" nz-input formControlName="name" placeholder="输入称呼" nzSize="large">
+      </nz-input-group>
+      <nz-form-explain *ngIf="name.dirty && name.errors">必须输入称呼</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzSize="large" nzAddOnBefore="公司全名">
+        <input type="text" nz-input formControlName="company_full_name" placeholder="输入公司全名" id="company_full_name">
+      </nz-input-group>
+      <nz-form-explain *ngIf="companyFullName.dirty && companyFullName.errors">必须输入公司全名</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzSize="large" nzAddOnBefore="公司简称">
+        <input type="text" nz-input formControlName="company_name" placeholder="输入公司简称" id="company_name">
+      </nz-input-group>
+      <nz-form-explain *ngIf="companyName.dirty && companyName.errors">必须输入公司简称</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button class="submit-button" nzSize="large" nzType="primary" [nzLoading]="isLoggingIn">提交</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

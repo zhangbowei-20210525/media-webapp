@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 
 export function delonAuthConfigFactory(): DelonAuthConfig {
   return Object.assign(new DelonAuthConfig(), <DelonAuthConfig>{
-    login_url: '/',
+    login_url: '/passport/login',
     ignores: [/assets\//]
   });
 }

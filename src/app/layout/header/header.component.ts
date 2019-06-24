@@ -111,8 +111,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.auth.logout();
-    this.router.navigateByUrl('/');
+    this.auth.onLogout();
+    this.router.navigateByUrl('/passport/login');
   }
 
   changeLanguage(lang: string) {

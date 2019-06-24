@@ -7,10 +7,11 @@ import { fadeIn } from '@shared/animations';
 import { finalize, switchMap, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
-import { NzTreeNodeOptions } from 'ng-zorro-antd';
+import { NzTreeNodeOptions, NzDrawerService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
 import { RootTemplateDto } from '../dtos';
 import { Subscription } from 'rxjs';
+import { RightFilterComponent } from '../../components/right-filter/right-filter.component';
 
 @Component({
   selector: 'app-all-rights',
@@ -19,8 +20,9 @@ import { Subscription } from 'rxjs';
 })
 export class AllRightsComponent implements OnInit, OnDestroy {
 
-  subs: Subscription[];
+  subscriptions: Subscription[];
 
+  drawerVisible = false;
   isLoaded = false;
   isLoading = false;
   dataSet = [];
@@ -46,10 +48,11 @@ export class AllRightsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private ts: TreeService,
     private seriesService: SeriesService,
+    private drawer: NzDrawerService
   ) { }
 
   ngOnInit() {
-    this.subs = [this.service.change().subscribe(state => {
+    this.subscriptions = [this.service.change().subscribe(state => {
       if (state.type === 'navigate' && state.value === 'publish') {
         const pids = this.tags.map(t => t.pid);
         if (pids.length > 0) {
@@ -57,6 +60,9 @@ export class AllRightsComponent implements OnInit, OnDestroy {
         } else {
           this.router.navigate(['/manage/series/publish-rights']);
         }
+      } else if (state.type === 'drawer' && state.value === 'filter') {
+        // this.filter();
+        this.drawerVisible = true;
       }
     })];
     this.route.paramMap.subscribe(param => {
@@ -82,7 +88,7 @@ export class AllRightsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 
@@ -230,14 +236,14 @@ export class AllRightsComponent implements OnInit, OnDestroy {
 
   mapCopyrights(list: any[]) { // 可考虑使用公共方法
     const rights = [];
-    let itemIndex = 0;
+    let itemIndex = 1;
     list.forEach(item => {
       let index = 0;
       item.rights.forEach(right => {
         rights.push({
           isChecked: this.tags.find(e => e.pid === item.id),
           index: index++,
-          itemIndex: itemIndex,
+          itemIndex: itemIndex + (this.pagination.page - 1) * this.pagination.page_size,
           pid: item.id,
           rid: right.id,
           project: item.name,
@@ -312,6 +318,18 @@ export class AllRightsComponent implements OnInit, OnDestroy {
       this.filtrateForm.get('sole').enable();
     }
     this.onFormValueChange();
+  }
+
+  filter() {
+    this.drawer.create({
+      nzTitle: '筛选权利',
+      nzContent: RightFilterComponent,
+      nzWidth: 600
+    }).afterClose.subscribe(result => {
+      if (result && result.length > 0) {
+
+      }
+    });
   }
 
 }

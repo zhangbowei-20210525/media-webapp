@@ -23,7 +23,7 @@ declare interface FiltrateSeriesParams {
   sole: string;
 }
 
-declare interface NotifyState { type: 'navigate'; value: any; }
+declare interface NotifyState { type: 'navigate' | 'drawer'; value: any; }
 
 @Injectable({
   providedIn: 'root'
