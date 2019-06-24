@@ -43,6 +43,7 @@ export class AddSeriesInfoComponent implements OnInit {
     });
     this.service.getProgramTypes().subscribe(result => {
       this.filteredProgramTypes = this.programTypeOptions = result.program_type_choices;
+      console.log(result);
       this.filteredProgramThemes = this.programThemeOptions = result.theme_choices;
     });
   }

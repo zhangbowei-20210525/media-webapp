@@ -233,6 +233,7 @@ export class SeriesDetailsComponent implements OnInit {
         }
         this.seriesService.getUploadVideoId(fileList[0]).subscribe(res => {
           const id = res.id;
+          // this.token.set(id)
           this.seriesService.getPublicitiesList(this.id).subscribe(pl => {
             this.publicityId = pl.list[0].id;
             this.seriesService.addUpload(this.publicityId, id, component.submit()).subscribe(i => {

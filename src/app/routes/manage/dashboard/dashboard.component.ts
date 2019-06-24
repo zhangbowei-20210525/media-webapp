@@ -1100,8 +1100,7 @@ export class DashboardComponent implements OnInit {
           //   const nodes = this.allStatisticsTree.treeRef.getTreeNodes();
           //   this.ts.recursionNodes(nodes, node => {
           //     node.isDisabled = true;
-          //   });
-          // }
+          //   });          // }
           // this.spread = ['000000'];
           this.statisticsSelectYear = res.meta.year_choices;
           this.allStatisticsChart.source(res.list);

@@ -30,6 +30,7 @@ import { PublishedComponent as PublishedListComponent } from './copyrights/publi
 import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
 import { RelationImportFieldComponent } from './components/relation-import-field/relation-import-field.component';
 import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
+import { PublicityFilmsComponent } from './components/publicity-films/publicity-films.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { ContractDetailsComponent } from './contracts/contract-details/contract-
     AllRightsComponent,
     RelationImportFieldComponent,
     ContractDetailsComponent,
+    PublicityFilmsComponent,
   ],
   imports: [
     CommonModule,
@@ -76,7 +78,8 @@ import { ContractDetailsComponent } from './contracts/contract-details/contract-
     EditTapeInfoComponent,
     EditSeriesInfoComponent,
     SeriesSelectorComponent,
-    RelationImportFieldComponent
+    RelationImportFieldComponent,
+    PublicityFilmsComponent,
   ]
 })
 export class SeriesModule { }

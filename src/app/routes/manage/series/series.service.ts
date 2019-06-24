@@ -282,10 +282,28 @@ export class SeriesService {
   }
   // 删除在线和本地存储当前行
   deleteTapeSave(id: number) {
-      return this.http.delete<any>(`/api/v1/sources/files/${id}`);
+    return this.http.delete<any>(`/api/v1/sources/files/${id}`);
   }
   // 获取意向列表
   getIntentionTypeList(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+  // 宣发分享授权
+  getSharingAuthorization(liaison_ids: any, publicityId: any) {
+    return this.http.post<ResponseDto<number>>(`/api/v1/publicity/share`,
+      { liaison_ids: liaison_ids, publicity_id: publicityId }
+    );
+  }
+  // 生成样片征集令
+  getSampleCollection(program_type: any, program_theme: any, description) {
+    return this.http.post<any>(`/api/v1/publicity/collections`, { program_type: program_type, program_theme: program_theme, description  });
+  }
+  // 征集令提交
+  submitCollection(program: any, id: any) {
+    return this.http.post<any>(`api/v1/publicity/collections/${id}/reports`, program);
+  }
+  // 征集令表单
+  getSamplePublicitys () {
+    return this.http.get<any>(`api/v1/publicitys`);
   }
 }

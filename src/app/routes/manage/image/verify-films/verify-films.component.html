@@ -1,0 +1,99 @@
+<div class="block">
+  <div class="block-header">
+    <div class="block-left">
+      <div>意向库</div>
+      <div><a routerLink="/manage/image">意向</a></div>
+      <div (click)="firstVerify(1)" [ngClass]="{'active': verifyStatus === 1}">一审</div>
+      <div (click)="secondVerify(2)" [ngClass]="{'active': verifyStatus === 2}">二审</div>
+      <div (click)="thirdVerify(3)" [ngClass]="{'active': verifyStatus === 3}">三审</div>
+    </div>
+    <div class="block-right">
+        <nz-dropdown [nzTrigger]="'click'">
+          <a nz-dropdown> 票数排序 <i nz-icon type="down"></i> </a>
+          <ul nz-menu>
+            <li nz-menu-item (click)='ordrbyTop(1)'>从高到低</li>
+            <li nz-menu-item (click)='orderbyBottom(2)'>从低到高</li>
+          </ul>
+        </nz-dropdown>
+      <button [hidden]="verifyStatus === 2 || verifyStatus === 3" nz-button nzType="primary" (click)="goSecondVerify(2)">进入二审</button>
+      <button [hidden]="verifyStatus === 1 || verifyStatus === 3"  nz-button nzType="primary" (click)="goThirdVerify(3)">进入三审</button>
+      <button nz-button nzType="primary" (click)="launchFilms()">再审</button>
+    </div>
+    <!-- <button class="block-title-right" (click)="launchFilms">发起审片</button> -->
+  </div>
+  <div class="block-content">
+    <div class='content-list'>
+      <div class='img-box'>
+        <img src="" alt="">
+      </div>
+      <div class='films-info'>
+        <div class='info-top'>
+          <div class='top-name'>大江大河duuudududu</div>
+          <div class='top-type'>电视剧</div>
+          <div class='top-status'>正在审片</div>
+        </div>
+        <div class='info-bottom'>集数： 47</div>
+      </div>
+      <div class='item-info'>
+        <div class='info-top'>导演：走走走， 邹邹</div>
+        <div class='info-bottom'>主演： kayak，就睡觉睡觉睡觉，就睡觉睡觉睡觉</div>
+      </div>
+      <div class='item-info'>
+        <div class='info-top'>编剧：走走走， 邹邹</div>
+        <div class='info-bottom'>题材： kayak，就睡觉睡觉睡觉，就睡觉睡觉睡觉</div>
+      </div>
+      <div class='item-info'>
+        <div class='info-top'>报价：100完</div>
+        <div class='info-bottom'>备注：.....</div>
+      </div>
+      <div class='ticket-info'>
+        <div class='info-top'>票数：100完</div>
+        <div class='info-bottom' (click)='checkoutDetails()'>查看</div>
+      </div>
+
+      <nz-checkbox-wrapper (nzOnChange)="checkChangeData($event, i)">
+        <div nz-row>
+          <div nz-col><label nz-checkbox [nzValue]="thumbnail?.id"></label></div>
+        </div>
+      </nz-checkbox-wrapper>
+    </div>
+    <!-- <div class='content-list'>
+      <div class='img-box'>
+        <img src="" alt="">
+      </div>
+      <div class='films-info'>
+        <div class='info-top'>
+          <div class='top-name'>大江大河duuudududu</div>
+          <div class='top-type'>电视剧</div>
+          <div class='top-status'>正在审片</div>
+        </div>
+        <div class='info-bottom'>集数： 47</div>
+      </div>
+      <div class='item-info'>
+        <div class='info-top'>导演：走走走， 邹邹</div>
+        <div class='info-bottom'>主演： kayak，就睡觉睡觉睡觉，就睡觉睡觉睡觉</div>
+      </div>
+      <div class='item-info'>
+        <div class='info-top'>编剧：走走走， 邹邹</div>
+        <div class='info-bottom'>题材： kayak，就睡觉睡觉睡觉，就睡觉睡觉睡觉</div>
+      </div>
+      <div class='item-info'>
+        <div class='info-top'>报价：100完</div>
+        <div class='info-bottom'>备注：.....</div>
+      </div>
+      <div class='ticket-info'>
+        <div class='info-top'>票数：100完</div>
+        <div class='info-bottom' (click)='checkoutDetails()'>查看</div>
+      </div>
+
+      <nz-checkbox-wrapper (nzOnChange)="checkChangeData($event, i)">
+        <div nz-row>
+          <div nz-col><label nz-checkbox [nzValue]="thumbnail?.id"></label></div>
+        </div>
+      </nz-checkbox-wrapper>
+    </div> -->
+  </div>
+</div>
+<ng-template #empty>
+  <nz-empty nzNotFoundContent='暂时没有样片审核哦!'></nz-empty>
+</ng-template>

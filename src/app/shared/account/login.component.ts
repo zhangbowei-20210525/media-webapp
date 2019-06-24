@@ -165,14 +165,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.service.phoneValidate(this.phone.value, this.captcha.value)
         .pipe(finalize(() => this.isLoggingIn = false))
         .subscribe(result => {
-          // console.log(result);
+          console.log(result.auth.company_name);
           this.settings.user = result.auth;
+          console.log(this.settings.user);
           this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
           this.token.set({
             token: result.token,
             time: +new Date,
-            is_new_user: result.is_new_user,
-            receipt_source_auth: result.receipt_source_auth
+            user: result.auth,
+            // is_new_user: result.is_new_user,
+            // receipt_source_auth: result.receipt_source_auth
           });
             this.close(true);
           // this.router.navigate([`/manage/series`]);

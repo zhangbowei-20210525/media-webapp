@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class PublicityService {
+  [x: string]: any;
 
   readonly videoFilters = ['mp4', 'wmv',  'rmvb', 'mkv', 'mov', 'avi', 'mpg'];
   readonly imageFilters = ['.jpg', '.jpeg', '.png'];

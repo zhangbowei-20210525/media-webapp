@@ -1,0 +1,23 @@
+<div class="modal-panel">
+  <div class='launch-films-info'>
+    <div class='item-title'>上海北丞科技股份有限公司</div>
+    <div class='info-content'>
+      <div>《斗破苍穹》</div>
+      <div>《斗破苍穹》</div>
+      <div>《斗破苍穹》</div>
+    </div>
+  </div>
+  <div class='launch-films-process'>
+    <div class='item-title'>审片流程</div>
+    <div class='process-content'>
+      <nz-radio-group [(ngModel)]="source_data" (ngModelChange)="launchFilmsProcess()" style="height: 50px;">
+        <label nz-radio nzValue="firstInstance">一审</label>
+        <label nz-radio nzValue="SecondInstance">二审</label>
+      </nz-radio-group> 
+    </div>
+  </div>
+  <div class='launch-films-person'>
+    <div class='item-title'>选择审片人</div>
+    <input type="text" nz-input placeholder="请输入输入审片人" [(ngModel)]="content" (ngModelChange)="searchChange()"/>    
+  </div>
+</div>

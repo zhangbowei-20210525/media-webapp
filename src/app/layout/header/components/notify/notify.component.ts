@@ -1,6 +1,7 @@
 import { finalize, delay } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { NotifyService } from './notify.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaginationDto, MessageService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -10,7 +11,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./notify.component.less']
 })
 export class NotifyComponent implements OnInit {
-
+  validateForm: FormGroup;
+  choseCompany = '';
+  disparCompany = '';
   sysPagination = { page: 1, page_size: 10 } as PaginationDto;
   srcPagination = { page: 1, page_size: 10 } as PaginationDto;
   outPagination = { page: 1, page_size: 10 } as PaginationDto;
@@ -40,17 +43,46 @@ export class NotifyComponent implements OnInit {
   companyList = [];
   companyId: number;
   acceptCompanyId: number;
+  publicity: any;
+  created_employee: any;
+  disperCompanyName: any;
+  shareId: any;
+  typeId: any;
+  id: any;
+  company: any;
+  typeCompany: any;
+  grantId: any;
+  isChoseShow = false;
+  isDisparShow = false;
 
   constructor(
     private service: NotifyService,
     private message: MessageService,
     private translate: TranslateService,
+    private fb: FormBuilder,
+
   ) { }
 
   ngOnInit() {
     this.loadSysNotifys();
+    this.validateForm = this.fb.group({
+      companyFullName: [null, [Validators.required]],
+      phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
+      companyName: [null, [Validators.required]],
+      customType: ['1', [Validators.required]]
+    });
   }
-
+  validation() {
+    const form = this.validateForm;
+    for (const i in form.controls) {
+      if (form.controls.hasOwnProperty(i)) {
+        const control = form.controls[i];
+        control.markAsDirty();
+        control.updateValueAndValidity();
+      }
+    }
+    return form.valid;
+  }
   loadSysNotifys() {
     this.visible = false;
     this.isSysLoding = true;
@@ -61,6 +93,7 @@ export class NotifyComponent implements OnInit {
       }))
       .subscribe(result => {
         this.sysNotifys = result.list;
+        console.log(result.list);
         // this.sysNotifys = [...result.list, ...result.list, ...result.list, ...result.list];
         this.sysPagination.count = result.pagination.count;
         this.sysPagination.pages = result.pagination.pages;
@@ -68,6 +101,7 @@ export class NotifyComponent implements OnInit {
   }
 
   loadSrcNotifys() {
+    this.visible = false;
     this.isSrcLoding = true;
     this.service.getSourceNotify(this.srcPagination)
       .pipe(finalize(() => {
@@ -75,6 +109,7 @@ export class NotifyComponent implements OnInit {
         this.isSrcLoaded = true;
       }))
       .subscribe(result => {
+        console.log(result);
         this.srcNotifys = result.list;
         this.srcPagination.count = result.pagination.count;
       });
@@ -160,7 +195,35 @@ export class NotifyComponent implements OnInit {
   close() {
     this.visible = false;
   }
-
+  // 获取宣发分享信息
+  messageShareDetails(title: string, created_at: string, content: string, id: number, type: string) {
+    this.visible = true;
+    this.drawerTitle = title;
+    this.drawerCreated_at = created_at;
+    this.drawerContent = content;
+    this.related_id = id;
+    this.type = type;
+    if (type === 'PUB001') {
+      this.service.getSharingInfo(this.related_id).subscribe(res => {
+        console.log(res);
+        this.id = res.id;
+        this.publicity = res.publicity;
+        this.created_employee = res.created_employee;
+        this.company = res.liaison.custom.name;
+        this.validateForm.get('companyName').setValue(res.liaison.custom.name);
+        this.disperCompanyName = this.validateForm.get('companyName').setValue(res.liaison.custom.name);
+        this.validateForm.get('phone').setValue(res.liaison.phone);
+        this.validateForm.get('phone').disable();
+        this.service.getCompanyList().subscribe(cl => {
+          console.log(cl);
+          this.companyList = cl;
+          this.acceptCompany = res.company_full_name;
+          console.log(this.acceptCompany);
+        });
+      });
+    }
+  }
+  // 获取母带授权信息
   messageDetails(title: string, created_at: string, content: string, id: number, type: string) {
     this.visible = true;
     this.drawerTitle = title;
@@ -169,60 +232,81 @@ export class NotifyComponent implements OnInit {
     this.related_id = id;
     this.type = type;
     if (type === 'SOU005') {
+      console.log(type === 'SOU005');
       this.service.getAuthorizationInfo(this.related_id).subscribe(res => {
+        console.log(res);
         this.authInfo = res;
+        this.typeCompany = res.auth_custom_name;
         this.companyId = res.auth_company_id;
-        if (this.companyId === null) {
-          this.isShowRadio = true;
-          this.isShowInput = false;
-          this.service.getCompanyList().subscribe(cl => {
-            this.companyList = cl;
-            this.companyList = this.companyList.filter(f => f.id_default_company === false);
-          });
-        } else {
-          this.isShowInput = true;
-          this.isShowRadio = false;
-          this.acceptCompany = res.auth_company_full_name;
-        }
-      });
-    }
-  }
-
-  submit() {
-    if (this.companyId === null) {
-      if (this.acceptCompanyId === undefined) {
-        this.message.warning(this.translate.instant('global.please-select-receivr-company'));
-      } else {
-        const data = {
-          status: true,
-          company_id: this.acceptCompanyId
-        };
-        this.service.pubAuth(this.related_id, data).subscribe(res => {
-          this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-          this.visible = false;
+        this.service.getCompanyList().subscribe(cl => {
+          this.acceptCompany = res.company_full_name;
+          this.companyList = cl;
         });
-      }
-    } else {
-      const data = {
-        status: true,
-        company_id: this.companyId
-      };
-      this.service.pubAuth(this.related_id, data).subscribe(res => {
-        this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-        this.visible = false;
+        this.validateForm.get('companyFullName').setValue(res.auth_custom_name);
+        this.validateForm.get('phone').setValue(res.auth_phone);
+        this.validateForm.get('phone').disable();
       });
     }
   }
-
+  // 母带授权接受
+  submit() {
+    const status = true;
+    if (this.typeId === undefined) {
+      console.log(this.typeId);
+      this.typeId = '';
+      // this.message.warning('您已拒绝请勿重复操作');
+    }
+    this.service.pubAuth(status, this.typeId, this.typeCompany, this.related_id).subscribe(res => {
+      this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+      this.visible = false;
+    });
+  }
+  // 母带授权拒绝
   refused() {
-    const data = {
-      status: false,
-      company_id: null,
-    };
-    this.service.pubAuth(this.related_id, data).subscribe(res => {
+    const status = false;
+    this.service.pubAuth(status, this.typeId, this.typeCompany, this.related_id).subscribe(res => {
       this.message.warning(this.translate.instant('global.refused-authorization-information'));
       this.visible = false;
     });
   }
-
+  // 宣发分享接受
+  sharedSubmit() {
+    console.log(this.company);
+    const status = true;
+    console.log(this.shareId === undefined);
+    if (this.shareId === undefined) {
+      this.shareId = '';
+      console.log(this.shareId);
+    }
+    this.service.getAccept(status, this.shareId, this.company, this.id).subscribe(res => {
+      this.message.success(this.translate.instant('成功分享'));
+      this.visible = false;
+    });
+  }
+  // 宣发分享拒绝
+  sharedRefused() {
+    const status = false;
+    this.service.getAccept(status, this.shareId, this.company, this.id).subscribe(res => {
+      this.message.warning(this.translate.instant('拒绝分享'));
+      this.visible = false;
+    });
+  }
+  onDisperChange(data) {
+    console.log(data);
+    this.shareId = data;
+    if (!!data) {
+      this.isDisparShow = true;
+    } else {
+      this.isDisparShow = false;
+    }
+  }
+  onChoseCompany(data) {
+    console.log(data);
+    this.typeId = data;
+    if (!!data) {
+      this.isChoseShow = true;
+    } else {
+      this.isChoseShow = false;
+    }
+  }
 }

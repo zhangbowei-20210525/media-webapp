@@ -34,8 +34,9 @@ export class TaskComponent implements OnInit, OnDestroy {
         this.uploads = this.uploader.getList().reverse();
       }),
       this.ntf.notifies().subscribe(result => {
-        // console.log(result);
+        console.log(result);
         this.sourceUploads = result.active_source_tasks;
+        console.log(this.sourceUploads);
       })
     ];
     this.ntf.nextNotifies();

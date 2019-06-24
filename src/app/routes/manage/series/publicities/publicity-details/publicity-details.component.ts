@@ -5,6 +5,9 @@ import { switchMap, tap, map } from 'rxjs/operators';
 import { PaginationDto } from '@shared';
 import { I18nService } from '@core';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { PublicityFilmsComponent } from '../../components/publicity-films/publicity-films.component';
+import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
+
 
 declare function videojs(selector: string);
 
@@ -15,6 +18,7 @@ declare function videojs(selector: string);
 })
 export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  liaison_ids: any;
   id: number;
   player: any;
   pdfPage: number;
@@ -55,6 +59,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   pdfIndex: number;
 
   publicityName: string;
+  publicityId: any;
   samplePagination: PaginationDto;
   featurePagination: PaginationDto;
   trailerPagination: PaginationDto;
@@ -88,6 +93,9 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     private router: Router,
     private seriesService: SeriesService,
     private i18n: I18nService,
+    private modalService: NzModalService,
+    private message: NzMessageService,
+
   ) { }
 
   ngOnInit() {
@@ -136,6 +144,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
           this.seriesInfo = cpd;
         });
         this.publicityName = res.name;
+        this.publicityId = res.id;
         if (!this.publicityType || this.publicityType === 'sample') {
           this.publicityType = 'sample';
           this.getSampleInfo();
@@ -495,5 +504,41 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     // tslint:disable-next-line:max-line-length
     this.seriesService.shareEmail(this.emailAddress, `http://test1.bctop.net/d/${this.id}`, this.publicityName, this.sid).subscribe();
   }
+
+  getBusinessmen() {
+    this.modalService.create({
+      // nzTitle: `客商信息`,
+      nzContent: PublicityFilmsComponent,
+      nzComponentParams: { id: this.publicityId },
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 850,
+      nzOkText: '分享',
+      nzCancelText: '取消',
+      // nzOnOk: () => new Promise((resolve) => {
+      //   resolve();
+      //   this.router.navigate([`manage/series/publicity-films`]);
+      // }),
+      nzOnOk: (component: PublicityFilmsComponent) => this.shareBusinessmen(component),
+      nzNoAnimation: true,
+    });
+  }
+  // 点击分享时调用的接口
+  shareBusinessmen = (component: PublicityFilmsComponent) => new Promise((resolve, reject) => {
+    this.liaison_ids = component.checkedIds;
+    if (this.liaison_ids === undefined) {
+      this.message.error('请选择要分享的客商');
+      reject(false);
+      return;
+    }
+    this.seriesService.getSharingAuthorization([...this.liaison_ids], this.publicityId)
+      .subscribe(result => {
+        this.message.success('分享成功');
+      }, error => {
+        this.message.error('分享失败');
+      });
+    resolve();
+    reject(false);
+  })
 
 }

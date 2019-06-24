@@ -1,0 +1,56 @@
+<form nz-form [formGroup]="SolicitationForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzFor="companyName">征集单位</nz-form-label>
+    <nz-form-control [nzSm]="21">
+      <input nz-input placeholder="请输入征集单位" id="companyName" formControlName="companyName" [(ngModel)]="companyName">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzFor="userName">征集人</nz-form-label>
+    <nz-form-control [nzSm]="21">
+      <input nz-input placeholder="请输入征集人" id="userName" formControlName="userName" [(ngModel)]="userName">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzFor="filmType" nzRequired>节目类型</nz-form-label>
+    <nz-form-control [nzSm]="21">
+      <input nz-input placeholder="请输入节目类型" id="filmType" formControlName="filmType" [(ngModel)]="filmType">
+      <nz-form-explain *ngIf="SolicitationForm.get('filmType').dirty && SolicitationForm.get('filmType').errors">
+        请输入节目类型
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzFor="meterial" nzRequired>题材</nz-form-label>
+    <nz-form-control [nzSm]="21">
+      <input nz-input placeholder="请输入题材" id="meterial" formControlName="meterial" [(ngModel)]="meterial">
+      <nz-form-explain *ngIf="SolicitationForm.get('meterial').dirty && SolicitationForm.get('meterial').errors">
+        请输入题材
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzFor="intro" nzRequired>说明</nz-form-label>
+    <nz-form-control [nzSm]="21">
+      <textarea rows="4" nz-input formControlName="intro" placeholder="备注"></textarea>
+      <nz-form-explain *ngIf="SolicitationForm.get('intro').dirty && SolicitationForm.get('intro').errors">
+        请输入说明
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<div>
+  <button *ngIf="isCollection == false" (click)="collection()"
+    style="width: 100%; height: 50px; background-color: rgba(0, 150, 136, 1); border-radius: 4px;">生成征集令</button>
+</div>
+<div *ngIf="isCollection == true">
+  <button
+    style="width: 100%; height: 50px; background-color: rgba(244, 130, 134, 1); border-radius: 4px;">样片征集中</button>
+  <div style="display: flex;justify-content:center;margin: 1.5rem 0">
+    <img style='width:200px;height:200px' [src]="getCollectionData.QRCode">
+  </div>
+</div>
+<div class='copy' *ngIf="isCollection == true">
+  <input nz-input id="url" placeholder="" [(ngModel)]="getCollectionData.url" (ngModelChange)="linkChange($event)" />
+  <button (click)='copy(getCollectionData.url)'>复制</button>
+</div>
