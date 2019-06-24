@@ -75,10 +75,11 @@ export class CallUpComponent implements OnInit {
   }
   // 复制
   copy(data) {
-    const input = document.getElementById('url');
+    const input = document.getElementById('url') as HTMLInputElement;
     console.log(input);
     // 选中文本
     input.select();
+    // input.onselect()
     // 执行浏览器复制命令
     document.execCommand('copy');
     this.message.success('复制成功');

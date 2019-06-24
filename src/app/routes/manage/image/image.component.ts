@@ -40,6 +40,7 @@ export class ImageComponent implements OnInit {
   listOfDisplayData: any[] = [];
   listOfAllData: any[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
+  id: any;
   constructor(
     public ability: ACLAbility,
     private router: Router,
@@ -52,6 +53,7 @@ export class ImageComponent implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.searchText = params.get('search');
       this.fetchPublicities();
+      const id = 1;
     });
   }
 

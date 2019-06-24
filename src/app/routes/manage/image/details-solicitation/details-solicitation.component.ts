@@ -16,7 +16,7 @@ import { CollectionUpComponent } from '../components/collection-up/collection-up
   styleUrls: ['./details-solicitation.component.less']
 })
 export class DetailsSolicitationComponent implements OnInit {
-  objParams: { program: any; materials: any[]; };
+  objParams: { program: any; materials: any[]; publicity_id: any; };
   [x: string]: any;
 
   readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
@@ -181,6 +181,7 @@ export class DetailsSolicitationComponent implements OnInit {
     if (this.validation()) {
       const params = this.validateForm.value;
       const materials = [];
+      const shareId = 1;
       const obj = {
         material_id: '',
         material_type: '',
@@ -193,8 +194,9 @@ export class DetailsSolicitationComponent implements OnInit {
     this.objParams = {
         program: params,
         materials: materials,
+        publicity_id: this.publicityId,
       };
-    this.seriesService.submitCollection(this.objParams, this.publicityId).subscribe(res => {
+    this.seriesService.submitCollection(this.objParams, shareId).subscribe(res => {
       if (res.message === 'OK') {
         this.modalService.create({
           nzTitle: ``,
