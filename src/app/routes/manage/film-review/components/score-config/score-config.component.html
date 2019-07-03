@@ -1,0 +1,43 @@
+<!-- <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <div style="text-align: center"><span style="margin-right: 9px"><a (click)="conclusionConfig()" style="font-size: 16px"><i nz-icon nzType="setting"></i></a></span><span><a>评分项</a></span><span style="margin-left: 200px"><a>百分比统计60%</a></span></div>
+      <nz-form-control style="margin-left: 194px">
+            <label nz-checkbox style="display: block;margin-left: 0 !important;margin-top: 10px" formControlName="scoreSelect" (ngModelChange)="scoreSelectChange($event, data)" *ngFor="let data of checkOptionsOne">
+              <div style="display: inline-block; width: 200px">{{ data.label }}</div><div style="display: inline-block;margin-left: 77px"><input style="" nz-input placeholder="Basic usage" [(ngModel)]="data.value" /></div>
+            </label>
+        <nz-form-explain *ngIf="validateForm.get('scoreSelect').dirty && validateForm.get('scoreSelect').errors">
+          请选择结论选项
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form> -->
+
+  <nz-table #table [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false" [nzTitle]="Header">
+      <thead>
+        <tr>
+          <th [nzAlign] = "'center'">#</th>
+          <th [nzAlign] = "'center'">评分项</th>
+          <th [nzAlign] = "'center'">百分比统计({{ sum }}%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of table.data">
+            <td [nzAlign] = "'center'" nzShowCheckbox (nzCheckedChange)="refreshStatus($event,data.id,data.proportion)"></td>
+            <td [nzAlign] = "'center'">{{ data.name }}</td>
+            <td [nzAlign] = "'center'">
+                <div *ngIf="editId !== data.id; else editTpl">
+                  <div (click)="startEdit(data.id, $event)">
+                    {{ data.proportion }}
+                  </div>
+                </div>
+                <ng-template #editTpl>
+                    <nz-input-number [(ngModel)]="data.proportion" [nzMin]="0" [nzMax]="100" [nzStep]="1" (ngModelChange)="onChange($event, data.id, data.proportion)"></nz-input-number>
+                  <!-- <input type="text" nz-input [(ngModel)]="data.proportion" [disabled]="disabled" (ngModelChange)="onChange($event, data.id, data.proportion)"/> -->
+                </ng-template>
+              </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <ng-template #Header>
+        <button nz-button nzType="primary" nzSize="small" (click)="add()">新增</button>
+    </ng-template>

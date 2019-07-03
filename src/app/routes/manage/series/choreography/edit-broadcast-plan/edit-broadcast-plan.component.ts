@@ -237,10 +237,7 @@ export class EditBroadcastPlanComponent implements OnInit {
       event.container.data,
       event.previousIndex,
       event.currentIndex);
-    this.service.addTheatreSeries(this.theatres[index].id, event.container.data[0].id).pipe(tap(x => {
-      x.broadcast_start_date = x.broadcast_start_date.substring(5, 10);
-      x.broadcast_end_date = x.broadcast_end_date.substring(5, 10);
-    })).subscribe(res => {
+    this.service.addTheatreSeries('Insert', this.theatres[index].id, event.container.data[0].id).subscribe(res => {
       this.refresh();
     });
   }
@@ -263,8 +260,24 @@ export class EditBroadcastPlanComponent implements OnInit {
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: 800,
-      // nzOnOk: this.addCustomerAgreed,
+      nzOnOk: this.addInsertInfoAgreed,
     });
+  })
+
+  addInsertInfoAgreed = (component: InsertBroadcastInfoComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      this.l1d1 = [];
+      component.submit()
+        .subscribe(result => {
+          this.message.success('插入信息成功');
+          this.refresh();
+          resolve();
+        }, error => {
+          reject(false);
+        });
+    } else {
+      reject(false);
+    }
   })
 
   isAddBroadcastingInfo(event: any, tid: number) {
@@ -291,11 +304,10 @@ export class EditBroadcastPlanComponent implements OnInit {
 
   addBroadcastingInfoAgreed = (event: any, tid: number, component: AddBroadcastingInfoComponent) => new Promise((resolve, reject) => {
     if (component.validation()) {
-      this.l1d1 = [];
       component.submit()
         .subscribe(result => {
           this.message.success(this.translate.instant('global.add-success'));
-          // this.copySeries(event, 0, this.l1d1);
+          this.refresh();
           resolve();
         }, error => {
           reject(false);
@@ -308,73 +320,83 @@ export class EditBroadcastPlanComponent implements OnInit {
   drop(event: CdkDragDrop<any[]>) {
     switch (event.container.id) {
       case 'l1d1':
-        if (this.theatres.length >= 1 && this.l1d1.length === 0) {
-          this.isAddBroadcastingInfo(event, this.theatres[0].id);
-          // this.l1d1 = [];
-          // this.copySeries(event, 0, this.l1d1);
+        if (this.theatres.length >= 1 && this.l1d1.length >= 0) {
+          if (this.l1d1.length === 0) {
+            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+          }
+          if (this.l1d1.length === 1) {
+            this.isInsert(event, this.l1d1[0].id, this.theatres[0].id);
+          }
         }
-
-        if (this.theatres.length >= 1 && this.l1d1.length === 1) {
-          this.isInsert(event, this.l1d1[0].id, this.theatres[0].id);
-        }
-
         break;
       case 'l2d1':
-        if (this.theatres.length >= 1 && this.l1y1.length === 0) {
-          console.log('001');
-          this.l1d1 = [];
-          this.copySeries(event, 0, this.l1d1);
+        if (this.theatres.length >= 2 && this.l2d1.length >= 0) {
+          if (this.l2d1.length === 0) {
+            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+          }
+          if (this.l2d1.length === 1) {
+            this.isInsert(event, this.l2d1[0].id, this.theatres[0].id);
+          }
         }
         break;
       case 'l3d1':
-        if (this.theatres.length >= 1 && this.l1y1.length === 0) {
-          console.log('001');
-          this.l1d1 = [];
-          this.copySeries(event, 0, this.l1d1);
+        if (this.theatres.length >= 3 && this.l3d1.length >= 0) {
+          if (this.l3d1.length === 0) {
+            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+          }
+          if (this.l3d1.length === 1) {
+            this.isInsert(event, this.l3d1[0].id, this.theatres[0].id);
+          }
         }
         break;
       case 'l4d1':
-        if (this.theatres.length >= 1 && this.l1y1.length === 0) {
-          console.log('001');
-          this.l1d1 = [];
-          this.copySeries(event, 0, this.l1d1);
+        if (this.theatres.length >= 4 && this.l4d1.length >= 0) {
+          if (this.l4d1.length === 0) {
+            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+          }
+          if (this.l4d1.length === 1) {
+            this.isInsert(event, this.l4d1[0].id, this.theatres[0].id);
+          }
         }
         break;
       case 'l5d1':
-        if (this.theatres.length >= 1 && this.l1y1.length === 0) {
-          console.log('001');
-          this.l1d1 = [];
-          this.copySeries(event, 0, this.l1d1);
+        if (this.theatres.length >= 5 && this.l5d1.length >= 0) {
+          if (this.l5d1.length === 0) {
+            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+          }
+          if (this.l5d1.length === 1) {
+            this.isInsert(event, this.l5d1[0].id, this.theatres[0].id);
+          }
         }
         break;
       case 'l1y1':
-        if (this.theatres.length >= 1 && this.l1y1.length === 0) {
+        if (this.theatres.length >= 1 && this.l1y1.length === 0 && this.l1d1.length > 0) {
           console.log('1');
           this.l1y1 = [];
           this.copySeries(event, 0, this.l1y1);
         }
         break;
       case 'l2y1':
-        if (this.theatres.length >= 2 && this.l2y1.length === 0) {
+        if (this.theatres.length >= 2 && this.l2y1.length === 0 && this.l2d1.length > 0) {
           console.log('2');
           this.l2y1 = [];
           this.copySeries(event, 1, this.l2y1);
         }
         break;
       case 'l3y1':
-        if (this.theatres.length >= 3 && this.l3y1.length === 0) {
+        if (this.theatres.length >= 3 && this.l3y1.length === 0 && this.l3d1.length > 0) {
           console.log('3');
           this.copySeries(event, 2, this.l3y1);
         }
         break;
       case 'l4y1':
-        if (this.theatres.length >= 4 && this.l4y1.length === 0) {
+        if (this.theatres.length >= 4 && this.l4y1.length === 0 && this.l4d1.length > 0) {
           console.log('4');
           this.copySeries(event, 3, this.l4y1);
         }
         break;
       case 'l5y1':
-        if (this.theatres.length >= 5 && this.l5y1.length === 0) {
+        if (this.theatres.length >= 5 && this.l5y1.length === 0 && this.l5d1.length > 0) {
           console.log('5');
           this.copySeries(event, 4, this.l5y1);
         }
@@ -527,7 +549,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l1y1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l1y1 = [];
+        this.refresh();
       }
     );
   }
@@ -535,7 +557,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l2y1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l2y1 = [];
+        this.refresh();
       }
     );
   }
@@ -543,7 +565,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l3y1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l3y1 = [];
+        this.refresh();
       }
     );
   }
@@ -551,7 +573,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l4y1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l4y1 = [];
+        this.refresh();
       }
     );
   }
@@ -559,7 +581,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l5y1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l5y1 = [];
+        this.refresh();
       }
     );
   }
@@ -567,7 +589,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l1y2[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l1y2 = [];
+        this.refresh();
       }
     );
   }
@@ -575,7 +597,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l2y2[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l2y2 = [];
+        this.refresh();
       }
     );
   }
@@ -583,7 +605,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l3y2[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l3y2 = [];
+        this.refresh();
       }
     );
   }
@@ -591,7 +613,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l4y2[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l4y2 = [];
+        this.refresh();
       }
     );
   }
@@ -599,7 +621,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l5y2[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l5y2 = [];
+        this.refresh();
       }
     );
   }
@@ -608,7 +630,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l1d1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l1d1 = [];
+        this.refresh();
       }
     );
   }
@@ -616,7 +638,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l2d1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l2d1 = [];
+        this.refresh();
       }
     );
   }
@@ -624,7 +646,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l3d1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l3d1 = [];
+        this.refresh();
       }
     );
   }
@@ -632,7 +654,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l4d1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l4d1 = [];
+        this.refresh();
       }
     );
   }
@@ -640,7 +662,7 @@ export class EditBroadcastPlanComponent implements OnInit {
     this.service.deleteTheatreSeries(this.l5d1[0].id).subscribe(
       res => {
         this.message.success(this.translate.instant('global.delete-successfully'));
-        this.l5d1 = [];
+        this.refresh();
       }
     );
   }

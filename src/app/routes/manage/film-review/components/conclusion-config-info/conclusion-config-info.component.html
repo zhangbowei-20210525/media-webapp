@@ -1,0 +1,14 @@
+<form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="5">结论选项</nz-form-label>
+      <nz-form-control [nzSm]="19">
+          <nz-radio-group formControlName ="conclusionSelect">
+              <label nz-radio [ngStyle]="style" [nzValue]="data.id" *ngFor="let data of info">
+                <span>{{ data.agree_name }}</span><span style="margin-left: 10px">or</span><span style="margin-left: 10px">{{ data.oppose_name }}</span></label>
+            </nz-radio-group>
+        <nz-form-explain *ngIf="validateForm.get('conclusionSelect').dirty && validateForm.get('conclusionSelect').errors">
+          请选择结论选项
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>

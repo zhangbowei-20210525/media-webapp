@@ -52,18 +52,10 @@ export class AddBroadcastingInfoComponent implements OnInit {
 
   submit(): Observable<any> {
     const form = this.validateForm;
-      const data = {
-        // program_id: this.data.id,
-        broadcast_date: Util.dateToString(form.get('currentBroadcastDate').value) || null,
-        start_episode: form.value['start_episode'] || null,
-        end_episode: form.value['end_episode'] || null,
-        episode: form.value['num'] || null,
-      };
-      console.log(data);
-      return this.service.addBroadcastingInfo(this.tid, this.data.id, data).pipe(tap(x => {
-        x.broadcast_start_date = x.broadcast_start_date.substring(5, 10);
-        x.broadcast_end_date = x.broadcast_end_date.substring(5, 10);
-      }));
+      return this.service.addBroadcastingInfo('Insert', this.tid, this.data.id,
+      Util.dateToString(form.get('currentBroadcastDate').value),
+      form.value['start_episode'],
+      form.value['end_episode']);
     }
 
 

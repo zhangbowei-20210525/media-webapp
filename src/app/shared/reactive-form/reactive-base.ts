@@ -3,6 +3,7 @@ export class ReactiveBase<T> {
   key: string;
   label: string;
   required: boolean;
+  pattern: boolean;
   order: number;
   controlType: string;
   customerType: string;

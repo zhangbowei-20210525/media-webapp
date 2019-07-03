@@ -19,6 +19,7 @@ export class InsertBroadcastInfoComponent implements OnInit {
   @Input() sid: number;
 
   validateForm: FormGroup;
+  insertMethod: string;
 
   constructor(
     private fb: FormBuilder,
@@ -34,10 +35,12 @@ export class InsertBroadcastInfoComponent implements OnInit {
       start_episode: [null, [Validators.required]],
       end_episode: [null, [Validators.required]],
       num: [null, [Validators.required]],
+      insertMethod: [null, [Validators.required]],
     });
     this.validateForm.get('series').setValue(this.data.name);
     this.validateForm.get('num').setValue(this.data.episode);
     this.validateForm.get('currentBroadcastDate').setValue(new Date());
+    this.validateForm.get('insertMethod').setValue('A');
   }
 
   validation() {
@@ -54,18 +57,18 @@ export class InsertBroadcastInfoComponent implements OnInit {
 
   submit(): Observable<any> {
     const form = this.validateForm;
-    const data = {
-      // program_id: this.data.id,
-      broadcast_date: Util.dateToString(form.get('currentBroadcastDate').value) || null,
-      start_episode: form.value['start_episode'] || null,
-      end_episode: form.value['end_episode'] || null,
-      episode: form.value['num'] || null,
-    };
-    console.log(data);
-    return this.service.addInsertBroadcastInfo(this.tid, this.data.id, this.sid, data).pipe(tap(x => {
-      x.broadcast_start_date = x.broadcast_start_date.substring(5, 10);
-      x.broadcast_end_date = x.broadcast_end_date.substring(5, 10);
-    }));
+    if (form.get('insertMethod').value === 'A') {
+      this.insertMethod = 'Insert';
+    }
+    if (form.get('insertMethod').value === 'B') {
+      this.insertMethod = 'Replace';
+    }
+
+    return this.service.addInsertBroadcastInfo(this.insertMethod, this.tid, this.data.id,
+      Util.dateToString(form.get('currentBroadcastDate').value),
+      form.value['start_episode'],
+      form.value['end_episode'],
+      this.sid);
   }
 
 }

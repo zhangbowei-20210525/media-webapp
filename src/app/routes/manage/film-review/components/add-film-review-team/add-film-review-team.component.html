@@ -1,0 +1,11 @@
+<form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>审片部门</nz-form-label>
+      <nz-form-control [nzSm]="12" [nzXs]="24">
+          <input nz-input placeholder="请输入审片部门名称" formControlName="teamName"/>
+        <nz-form-explain *ngIf="validateForm.get('teamName').dirty && validateForm.get('teamName').errors">
+            请输入审片部门名称
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>

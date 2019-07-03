@@ -21,7 +21,7 @@
     <nz-form-control [nzSm]="9">
       <nz-date-picker id="currentBroadcastDate" formControlName="currentBroadcastDate"
         [nzStyle]="{ 'width' : '282px' }"></nz-date-picker>
-      <nz-form-explain currentBroadcastDate
+      <nz-form-explain
         *ngIf="validateForm.get('currentBroadcastDate').dirty && validateForm.get('currentBroadcastDate').errors">
         请选择播出日期
       </nz-form-explain>
@@ -38,4 +38,18 @@
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzRequired>当下节目</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <nz-radio-group formControlName="insertMethod">
+        <label nz-radio nzValue="A">顺延</label>
+        <label nz-radio nzValue="B">停播</label>
+      </nz-radio-group>
+      <!-- <nz-form-explain
+        *ngIf="validateForm.get('insertMethod').dirty && validateForm.get('insertMethod').errors">
+        请选择插播方式
+      </nz-form-explain> -->
+    </nz-form-control>
+    </nz-form-item>
 </form>

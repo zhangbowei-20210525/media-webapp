@@ -65,27 +65,42 @@ export class ChoreographyService {
     return this.http.get<PaginationResponseDto<any>>(`/api/v1/programs/brief?q=`);
   }
 
-  addTheatreSeries(column_id: number, program_id: number) {
-    return this.http.post<any>(`/api/v1/editing/schedules/programs`, { column_id: column_id, program_id: program_id });
+  addTheatreSeries(method: string, column_id: number, program_id: number) {
+    return this.http.post<any>(`/api/v1/editing/schedules/programs`, { method: method, column_id: column_id, program_id: program_id });
   }
 
-  addInsertBroadcastInfo(column_id: number, program_id: number, old_program_id: number, insertSeries: {
+  addInsertBroadcastInfo( method: string,
+    column_id: number,
+    program_id: number,
     broadcast_date: string,
     start_episode: number,
     end_episode: number,
-    episode: number,
-  }) {
+    program_schedule_id: number
+  ) {
     return this.http.post<any>(`/api/v1/editing/schedules/programs`,
-    { column_id: column_id, program_id: program_id,  old_program_id: old_program_id, insertSeries});
+    { method: method,
+      column_id: column_id,
+      program_id: program_id,
+      broadcast_date: broadcast_date,
+      start_episode: start_episode,
+      end_episode: end_episode,
+      program_schedule_id: program_schedule_id });
   }
 
-  addBroadcastingInfo(column_id: number, program_id: number, insertSeries: {
+  addBroadcastingInfo(
+    method: string,
+    column_id: number,
+    program_id: number,
     broadcast_date: string,
     start_episode: number,
     end_episode: number,
-    episode: number,
-  }) {
-    return this.http.post<any>(`/api/v1/editing/schedules/programs`, { column_id: column_id, program_id: program_id,  insertSeries});
+  ) {
+    return this.http.post<any>(`/api/v1/editing/schedules/programs`, {  method: method,
+      column_id: column_id,
+      program_id: program_id,
+      broadcast_date: broadcast_date,
+      start_episode: start_episode,
+      end_episode: end_episode, });
   }
 
   deleteTheatreSeries(id: number) {

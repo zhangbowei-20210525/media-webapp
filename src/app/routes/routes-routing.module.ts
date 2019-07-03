@@ -13,6 +13,7 @@ import { MarketDetailsComponent } from './market/market-details/market-details.c
 import { PubAuthorizationReceiveComponent } from './manage/pub-authorization-receive/pub-authorization-receive.component';
 import { ACLGuard, ACLType } from '@delon/acl';
 import { aclAbility } from '@core/acl';
+import { FilmReviewComponent } from './manage/film-review/film-review.component';
 // import { ImageComponent } from './manage/image/image/image.component';
 
 const routes: Routes = [
@@ -37,6 +38,10 @@ const routes: Routes = [
           {
             path: 'dashboard',
             component: DashboardComponent
+          },
+          {
+            path: 'film-review',
+            component: FilmReviewComponent
           },
           {
             path: 'pubAuthorizationReceive',

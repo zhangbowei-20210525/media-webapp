@@ -8,6 +8,17 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
 import { BrowseRecordComponent } from './personal-center/browse-record/browse-record.component';
 import { PubAuthorizationReceiveComponent } from './pub-authorization-receive/pub-authorization-receive.component';
+import { FilmReviewComponent } from './film-review/film-review.component';
+import { EditFilmReviewTeamComponent } from './film-review/components/edit-film-review-team/edit-film-review-team.component';
+import { AddFilmReviewTeamComponent } from './film-review/components/add-film-review-team/add-film-review-team.component';
+import { DeleteFilmReviewTeamComponent } from './film-review/components/delete-film-review-team/delete-film-review-team.component';
+import { DeleteFilmReviewPeopleComponent } from './film-review/components/delete-film-review-people/delete-film-review-people.component';
+import { AddFilmReviewPeopleComponent } from './film-review/components/add-film-review-people/add-film-review-people.component';
+import { ConclusionConfigInfoComponent } from './film-review/components/conclusion-config-info/conclusion-config-info.component';
+import { ScoreConfigComponent } from './film-review/components/score-config/score-config.component';
+import { AddScoreComponent } from './film-review/components/add-score/add-score.component';
+import { DeleteScoreComponent } from './film-review/components/delete-score/delete-score.component';
+import { IdeaConfigComponent } from './film-review/components/idea-config/idea-config.component';
 // import { ImageComponent } from './image/image/image.component';
 // import { ImageDetailsComponent } from './image/image/image-details/image-details.component';
 
@@ -18,6 +29,17 @@ import { PubAuthorizationReceiveComponent } from './pub-authorization-receive/pu
     PersonalCenterComponent,
     BrowseRecordComponent,
     PubAuthorizationReceiveComponent,
+    FilmReviewComponent,
+    EditFilmReviewTeamComponent,
+    AddFilmReviewTeamComponent,
+    DeleteFilmReviewTeamComponent,
+    DeleteFilmReviewPeopleComponent,
+    AddFilmReviewPeopleComponent,
+    ConclusionConfigInfoComponent,
+    ScoreConfigComponent,
+    AddScoreComponent,
+    DeleteScoreComponent,
+    IdeaConfigComponent,
     // ImageComponent,
     // ImageDetailsComponent,
    ],
@@ -26,6 +48,18 @@ import { PubAuthorizationReceiveComponent } from './pub-authorization-receive/pu
     SharedModule,
     LayoutModule,
     FormsModule
+  ],
+  entryComponents: [
+    EditFilmReviewTeamComponent,
+    AddFilmReviewTeamComponent,
+    DeleteFilmReviewTeamComponent,
+    DeleteFilmReviewPeopleComponent,
+    AddFilmReviewPeopleComponent,
+    ConclusionConfigInfoComponent,
+    ScoreConfigComponent,
+    AddScoreComponent,
+    DeleteScoreComponent,
+    IdeaConfigComponent,
   ]
 })
 export class ManageModule { }

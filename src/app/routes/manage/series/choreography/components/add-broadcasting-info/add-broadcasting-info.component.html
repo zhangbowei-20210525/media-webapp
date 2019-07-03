@@ -21,7 +21,7 @@
     <nz-form-control [nzSm]="9">
       <nz-date-picker id="currentBroadcastDate" formControlName="currentBroadcastDate"
         [nzStyle]="{ 'width' : '282px' }"></nz-date-picker>
-      <nz-form-explain currentBroadcastDate
+      <nz-form-explain
         *ngIf="validateForm.get('currentBroadcastDate').dirty && validateForm.get('currentBroadcastDate').errors">
         请选择播出日期
       </nz-form-explain>

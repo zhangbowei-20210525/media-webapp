@@ -1,0 +1,11 @@
+<form nz-form [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>意见/评论</nz-form-label>
+    <nz-form-control [nzSm]="19" [nzXs]="24">
+      <nz-radio-group formControlName ="ideaSelect">
+        <label nz-radio nzValue="A">有</label>
+        <label nz-radio nzValue="B">无</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+</form>
