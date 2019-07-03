@@ -34,12 +34,12 @@ export class PublicityService {
       case 'sample':
       case 'feature':
       case 'trailer':
-        return '/api/v1/upload/video';
+        return 'https://cs.bctop.net:7000/upload/video';
       case 'poster':
       case 'still':
-        return '/api/v1/upload/image';
+        return 'https://cs.bctop.net:7000/upload/image';
       case 'pdf':
-        return '/api/v1/upload/docment';
+        return 'https://cs.bctop.net:7000/upload/document';
     }
   }
 
@@ -56,8 +56,8 @@ export class PublicityService {
     { params: { page: pagination.page as any, page_size: pagination.page_size as any } });
   }
 
-  bindingMateriel(publicity_id: number, material_id: number, material_type: string, company_ids: any) {
-    return this.http.post<any>(`/api/v1/publicity/${publicity_id}`, { material_id, material_type, company_ids: company_ids });
+  bindingMateriel(id: number, extension: string, filename: string, name: string, size: number, material_type: string, company_ids: any) {
+    return this.http.post<any>(`/api/v1/publicity/${id}`, { extension, filename, name, size, material_type, company_ids: company_ids });
   }
 
   request() {

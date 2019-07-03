@@ -35,6 +35,10 @@ import { TheatreComponent } from './choreography/theatre/theatre.component';
 import { InfoComponent } from './choreography/info/info.component';
 import { AddTheatreComponent } from './choreography/components/add-theatre/add-theatre.component';
 import { RightFilterComponent } from './components/right-filter/right-filter.component';
+import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/edit-broadcast-plan.component';
+import { InsertBroadcastInfoComponent } from './choreography/components/insert-broadcast-info/insert-broadcast-info.component';
+import { AddBroadcastingInfoComponent } from './choreography/components/add-broadcasting-info/add-broadcasting-info.component';
+import { RightConfigComponent } from './copyrights/components/right-config/right-config.component';
 
 
 @NgModule({
@@ -70,12 +74,17 @@ import { RightFilterComponent } from './components/right-filter/right-filter.com
     InfoComponent,
     AddTheatreComponent,
     RightFilterComponent,
+    EditBroadcastPlanComponent,
+    InsertBroadcastInfoComponent,
+    AddBroadcastingInfoComponent,
+    RightConfigComponent,
   ],
   imports: [
     CommonModule,
     SeriesRoutingModule,
     PdfViewerModule,
-    SharedModule
+    SharedModule,
+    DragDropModule
   ],
   entryComponents: [
     AddSeriesInfoComponent,
@@ -88,7 +97,10 @@ import { RightFilterComponent } from './components/right-filter/right-filter.com
     SeriesSelectorComponent,
     RelationImportFieldComponent,
     AddTheatreComponent,
-    RightFilterComponent
+    RightFilterComponent,
+    InsertBroadcastInfoComponent,
+    AddBroadcastingInfoComponent,
+    RightConfigComponent
   ]
 })
 export class SeriesModule { }

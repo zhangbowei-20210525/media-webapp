@@ -20,6 +20,7 @@ import { WechatLoginComponent } from './passport/login/wechat-login/wechat-login
 import { BindingComponent } from './passport/binding/binding.component';
 import { PhoneBindingComponent } from './passport/binding/phone-binding/phone-binding.component';
 import { CompanyBindingComponent } from './passport/binding/company-binding/company-binding.component';
+import { FilmReviewComponent } from './manage/film-review/film-review.component';
 // import { ImageComponent } from './manage/image/image/image.component';
 
 const routes: Routes = [
@@ -45,6 +46,10 @@ const routes: Routes = [
           {
             path: 'dashboard',
             component: DashboardComponent
+          },
+          {
+            path: 'film-review',
+            component: FilmReviewComponent
           },
           {
             path: 'pubAuthorizationReceive',

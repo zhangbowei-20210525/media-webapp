@@ -1,0 +1,93 @@
+<form nz-form [formGroup]="form">
+    <nz-form-item>
+      <nz-form-label [nzSm]="3" [nzXs]="24">投资类型</nz-form-label>
+      <nz-form-control [nzSm]="21" [nzXs]="24">
+          <nz-tag
+          *ngFor="let tag of tags1; let i = index"
+          [nzMode]="i === 0 ? 'default' : 'closeable'"
+          (nzAfterClose)="onTagClose(tag, 'IT')"
+        >
+          {{ tag | truncate:20 }}
+        </nz-tag>
+        <nz-tag *ngIf="!isITInputVisible" class="editable-tag" nzNoAnimation (click)="onShowInput('IT')">
+          <i nz-icon type="plus"></i>
+        </nz-tag>
+        <input
+          #ITInputElement
+          nz-input
+          nzSize="small"
+          *ngIf="isITInputVisible"
+          type="text"
+          formControlName="investsType"
+          style="width: 78px;"
+          (blur)="onHandleInputConfirm('IT')"
+          (keydown.enter)="onHandleInputConfirm('IT')"
+        />
+
+        <!-- <nz-form-explain *ngIf="form.get('series').dirty && form.get('series').errors">请选择节目
+        </nz-form-explain> -->
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+        <nz-form-label [nzSm]="3" [nzXs]="24">节目类型</nz-form-label>
+        <nz-form-control [nzSm]="21" [nzXs]="24">
+  
+            <nz-tag
+            *ngFor="let tag of tags2; let i = index"
+            [nzMode]="i === 0 ? 'default' : 'closeable'"
+            (nzAfterClose)="onTagClose(tag, 'ST')"
+          >
+          {{ tag | truncate:20 }}
+          </nz-tag>
+          <nz-tag *ngIf="!isSTInputVisible" class="editable-tag" nzNoAnimation (click)="onShowInput('ST')">
+            <i nz-icon type="plus"></i>
+          </nz-tag>
+          <input
+          #STInputElement
+            nz-input
+            nzSize="small"
+            *ngIf="isSTInputVisible"
+            type="text"
+            formControlName="seriesType"
+            style="width: 78px;"
+            (blur)="onHandleInputConfirm('ST')"
+            (keydown.enter)="onHandleInputConfirm('ST')"
+          />
+  
+          <!-- <nz-form-explain *ngIf="form.get('series').dirty && form.get('series').errors">请选择节目
+          </nz-form-explain> -->
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+          <nz-form-label [nzSm]="3" [nzXs]="24">题材</nz-form-label>
+          <nz-form-control [nzSm]="21" [nzXs]="24">
+    
+              <nz-tag
+              *ngFor="let tag of tags3; let i = index"
+              [nzMode]="i === 0 ? 'default' : 'closeable'"
+              (nzAfterClose)="onTagClose(tag, 'TH')"
+            >
+            {{ tag | truncate:20 }}
+            </nz-tag>
+            <nz-tag *ngIf="!isTHInputVisible" class="editable-tag" nzNoAnimation (click)="onShowInput('TH')">
+              <i nz-icon type="plus"></i>
+            </nz-tag>
+            <input
+            #THInputElement
+              nz-input
+              nzSize="small"
+              *ngIf="isTHInputVisible"
+              type="text"
+              formControlName="themes"
+              style="width: 78px;"
+              (blur)="onHandleInputConfirm('TH')"
+              (keydown.enter)="onHandleInputConfirm('TH')"
+            />
+    
+            <!-- <nz-form-explain *ngIf="form.get('series').dirty && form.get('series').errors">请选择节目
+            </nz-form-explain> -->
+          </nz-form-control>
+        </nz-form-item>
+  </form>

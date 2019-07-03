@@ -7,11 +7,11 @@
       <div class="info-item-grid">
         <div class="info-item">
           <span class="info-item-label">节目名：</span>
-          <span class="info-item-text">{{tapeDownloadInfo?.program_name}}</span>
+          <span class="info-item-text">{{tapeDownloadInfo?.program?.name}}</span>
         </div>
         <div class="info-item">
-          <span class="info-item-label">集数</span>
-          <span class="info-item-text">{{tapeDownloadInfo?.episode}}</span>
+          <span class="info-item-label">集数：</span>
+          <span class="info-item-text">{{tapeDownloadInfo?.episode}}集</span>
         </div>
         <!-- <div class="info-item">
           <span class="info-item-label">字幕：</span>
@@ -23,7 +23,8 @@
         </div> -->
         <div class="info-item">
           <span class="info-item-label">语言：</span>
-          <span class="info-item-text">{{tapeDownloadInfo?.language}}</span>
+          <span *ngIf="tapeDownloadInfo?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+          <span *ngIf="tapeDownloadInfo?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
         </div>
         <div class="info-item">
           <span class="info-item-label">被下载次数：</span>
@@ -67,9 +68,8 @@
       [nzType]="sourceCheckOptions[i].checked ? 'primary' : 'default'" 
       (click)="clickCheck(i)" 
       nz-tooltip 
-      [nzTitle]="source.source_name"
       [nzMouseEnterDelay]="0.5"
-      [nzTitle]="source.source_name" nzPlacement="top" nz-tooltip
+      [nzTitle]="source.name" nzPlacement="top" nz-tooltip
       >
       {{i + 1}}
     </button>
@@ -78,6 +78,7 @@
       <nz-checkbox-group [(ngModel)]="sourceCheckOptions" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
     </div>
   </div>
+  <div style="text-align: right"><a>*请留意下载选择窗口可能在下方，请检查</a></div>
 
   <div *ngIf="isDownloaded" class="download-hint">
     <span class="rf text-hint push-10">如已进入下载程序，可关闭该页面。&nbsp;点击下载没反应？请先下载安装&nbsp;
@@ -88,6 +89,5 @@
         </a>
       </nz-tooltip>
     </span>
-    <span>请留意下载选择窗口可能在下方，请检查</span>
   </div>
 </div>

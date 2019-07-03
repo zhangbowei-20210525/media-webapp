@@ -73,10 +73,8 @@ export class PublicitiesComponent implements OnInit {
         this.isPublicities = true;
       }))
       .subscribe(result => {
-        console.log(result);
         if (mode === 'table') {
           this.dataset = result.list;
-          console.log(this.dataset);
         } else {
           this.list = result.list;
         }
@@ -142,10 +140,15 @@ export class PublicitiesComponent implements OnInit {
           progress: 0,
           createAt: new Date,
           success: (obj, data) => {
-            this.pservice.bindingMateriel(obj.target, data.id, materielType, this.company_ids).subscribe(() => {
-              this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
-            });
-            return true;
+            if (data.code === 0) {
+              this.pservice.bindingMateriel(obj.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
+                materielType, this.company_ids).subscribe(() => {
+                  this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
+                });
+              return true;
+            } else {
+              this.notification.error('上传文件失败', `${data.detail}`);
+            }
           }
         });
       });
@@ -161,7 +164,7 @@ export class PublicitiesComponent implements OnInit {
         this.company_ids = [''];
       } else {
         component.checkChange().forEach(x => this.company_ids.push(x.value));
-    }
+      }
       this.addPublicityModal.close();
       const value = component.getValue();
       let fileList: FileList, folder: string;

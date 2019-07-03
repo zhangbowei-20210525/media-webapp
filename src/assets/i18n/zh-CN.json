@@ -7,7 +7,7 @@
     "menu.market": "市场",
     "menu.manage": "管理",
     "menu.manage.dashboard": "首页",
-    "menu.manage.series": "节目",
+    "menu.manage.series": "片库",
     "menu.manage.customers": "客商",
     "menu.manage.contracts": "合同",
     "menu.manage.personal-center": "个人中心",
@@ -78,7 +78,7 @@
     "app.series.source": "母带",
     "app.series.right": "版权",
     "app.series.contract": "合同",
-    "app.series.choreography": "编播",
+    "app.series.choreography": "播表",
     "app.series.add-series": "新增节目",
     "app.series.series": "节目",
     "app.series.program-type": "节目类型",
@@ -202,6 +202,11 @@
     "global.search": "请输入搜索内容",
     "global.accept-authorization-successfully": "接受授权成功！",
     "global.refused-authorization-information": "已拒绝接受授权信息！",
-    "global.please-select-receivr-company": "请选择接收公司！"
+    "global.please-select-receivr-company": "请选择接收公司！",
+    "global.please-select-episode": "请选择集数！",
+    "global.not-choose-repeat-week": "星期选择不可重叠！",
+    "global.please-fill-episodes": "请先去节目编辑填写集数",
+    "global.please-select-correct-range-of-episodes": "请填写正确的播放集数范围"
+
 
 }

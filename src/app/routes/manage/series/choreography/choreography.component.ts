@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddTheatreComponent } from './components/add-theatre/add-theatre.component';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { ChoreographyService } from './choreography.service';
 
 @Component({
   selector: 'app-choreography',
@@ -9,8 +12,14 @@ import { AddTheatreComponent } from './components/add-theatre/add-theatre.compon
 })
 export class ChoreographyComponent implements OnInit {
 
+  radioValue: string;
+
   constructor(
     private modal: NzModalService,
+    private message: NzMessageService,
+    private translate: TranslateService,
+    private router: Router,
+    private service: ChoreographyService,
   ) { }
 
   ngOnInit() {
@@ -18,7 +27,7 @@ export class ChoreographyComponent implements OnInit {
 
   addTheatre () {
     this.modal.create({
-      nzTitle: '新增节目',
+      nzTitle: '新增栏目',
       nzContent: AddTheatreComponent,
       nzMaskClosable: false,
       nzClosable: false,
@@ -29,17 +38,21 @@ export class ChoreographyComponent implements OnInit {
 
 
   addTheatreAgreed = (component: AddTheatreComponent) => new Promise((resolve, reject) => {
-    // if (component.validation()) {
-    //   component.submit().subscribe(res => {
-    //     this.message.success(this.translate.instant('global.add-success'));
-    //     this.refreshDataSet();
-    //     resolve();
-    //   }, error => {
-    //     reject(false);
-    //   });
-    // } else {
-    //   reject(false);
-    // }
+    if (component.validation()) {
+      component.submit().subscribe(res => {
+        this.message.success(this.translate.instant('global.add-success'));
+          this.service.eventEmit.emit( { type: 'theatre', method: 'refresh'});
+        resolve();
+      }, error => {
+        reject(false);
+      });
+    } else {
+      reject(false);
+    }
   })
+
+  view() {
+    this.router.navigate([`/manage/series/choreography`]);
+  }
 
 }

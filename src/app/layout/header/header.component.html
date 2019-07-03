@@ -23,7 +23,7 @@
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/image'"><span nzTitle="别人分享给您的内容哦"
                   nzPlacement="bottom" nz-tooltip>发现</span></a>
-            </li>            
+            </li>
             <li class="nav-item" acl [acl-ability]="ability.program.view">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series'"><span nzTitle="节目的版权，样片，高清母带管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.series' | translate }}</span></a>
@@ -42,6 +42,16 @@
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/customers'"><span nzTitle="客户及供应商的信息管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.customers' | translate }}</span></a>
             </li>
+            <li class="nav-item">
+              <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series/choreography'"><span
+                  nzTitle="编辑频道栏目信息" nzPlacement="bottom"
+                  nz-tooltip>{{ 'app.series.choreography' | translate }}</span></a>
+            </li>
+            <li class="nav-item">
+                <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/film-review'"><span
+                    nzTitle="编辑频道栏目信息" nzPlacement="bottom"
+                    nz-tooltip>审片</span></a>
+              </li>
           </ul>
         </li>
         <li class="nav-item search">

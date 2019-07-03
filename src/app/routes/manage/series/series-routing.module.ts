@@ -22,6 +22,8 @@ import { ACLGuard, ACLType } from '@delon/acl';
 import { aclAbility } from '@core/acl';
 import { ChoreographyComponent } from './choreography/choreography.component';
 import { TheatreComponent } from './choreography/theatre/theatre.component';
+import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/edit-broadcast-plan.component';
+import { InfoComponent } from './choreography/info/info.component';
 
 
 const routes: Routes = [
@@ -62,20 +64,6 @@ const routes: Routes = [
         }
       },
       {
-        path: 'choreography', component: ChoreographyComponent,
-        children: [
-          {
-            path: 'theatre',
-            component: TheatreComponent
-          },
-          {
-            path: 'info',
-            component: TheatreComponent
-          },
-
-        ]
-      },
-      {
         path: 'rights',
         component: CopyrightsComponent,
         canActivate: [ACLGuard],
@@ -112,6 +100,24 @@ const routes: Routes = [
           { path: 'procurement', component: ProcurementComponent },
           { path: 'published', component: PublishedComponent }
         ]
+      },
+    ]
+  },
+  {
+    path: 'choreography', component: ChoreographyComponent,
+    children: [
+      { path: '', redirectTo: 'info', pathMatch: 'full' },
+      {
+        path: 'info',
+        component: InfoComponent
+      },
+      {
+        path: 'edit-broadcast-plan',
+        component: EditBroadcastPlanComponent
+      },
+      {
+        path: 'theatre',
+        component: TheatreComponent
       },
     ]
   },
