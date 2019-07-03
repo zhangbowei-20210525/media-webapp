@@ -287,10 +287,7 @@ export class ImageComponent implements OnInit {
       }
     }
     this.service.submitFirstInstance(review_ids).subscribe(res => {
-      if (res.code === 0) {
         this.message.success('提交审片成功');
-      }
-      console.log(res);
     });
     this.selectedTabIndex = 2;
     this.selectedIndex = 2;
@@ -305,11 +302,9 @@ export class ImageComponent implements OnInit {
         review_ids.push(Number(key));
       }
     }
-    console.log(review_ids);
-    // this.review_ids = this.checkedFirstIds;
     console.log(this.checkedFirstIds);
     this.service.submitFirstInstance(review_ids).subscribe(res => {
-      console.log(res);
+        this.message.success('提交审片成功');
     });
     this.selectedTabIndex = 3;
     this.selectedIndex = 3;

@@ -3,6 +3,7 @@ import { SeriesService } from '../../../series/series.service';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from '@shared';
+import { SettingsService } from '@core';
 
 @Component({
   selector: 'app-call-up',
@@ -24,15 +25,14 @@ export class CallUpComponent implements OnInit {
     private seriesService: SeriesService,
     private fb: FormBuilder,
     private message: MessageService,
-
+    private settings: SettingsService,
     @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
 
   ) { }
 
   ngOnInit() {
-    console.log(this.token.get().user);
-    this.companyName = this.token.get().user.company_name;
-    this.userName = this.token.get().user.username;
+    this.companyName = this.settings.user.company_name;
+    this.userName = this.settings.user.username;
     this.SolicitationForm = this.fb.group({
       companyName: [null],
       userName: [null],
