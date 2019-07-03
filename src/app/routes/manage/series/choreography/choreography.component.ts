@@ -23,6 +23,7 @@ export class ChoreographyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.radioValue);
   }
 
   addTheatre () {

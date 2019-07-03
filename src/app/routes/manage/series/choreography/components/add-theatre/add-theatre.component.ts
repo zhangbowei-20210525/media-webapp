@@ -39,7 +39,7 @@ export class AddTheatreComponent implements OnInit {
   channels = [];
   theatres = [];
   channelOptions = [];
-  seriesOption = [];
+  // seriesOption = [];
   marks: any = {
     0: '星期一',
     2: '星期二',
@@ -66,11 +66,11 @@ export class AddTheatreComponent implements OnInit {
       startBroadcastTime: [null, [Validators.required]],
       broadcastDate: [[1, 2], [Validators.required]],
       episodes: [null, [Validators.required]],
-      series: [null, [Validators.required]],
-      currentBroadcastDate: [null, [Validators.required]],
-      start_episode: [null, [Validators.required]],
-      end_episode: [null, [Validators.required]],
-      num: [null, [Validators.required]],
+      // series: [null, [Validators.required]],
+      // currentBroadcastDate: [null, [Validators.required]],
+      // start_episode: [null, [Validators.required]],
+      // end_episode: [null, [Validators.required]],
+      // num: [null, [Validators.required]],
     });
     this.service.getTheatreList().subscribe(res => {
       this.data = res;
@@ -78,7 +78,7 @@ export class AddTheatreComponent implements OnInit {
         this.channels.push(x.name);
       });
     });
-    this.service.getSeriesList().subscribe(res => this.seriesOption = res.list);
+    // this.service.getSeriesList().subscribe(res => this.seriesOption = res.list);
   }
 
   handleDateOpenChange(open: boolean): void {
@@ -105,18 +105,18 @@ export class AddTheatreComponent implements OnInit {
     }
   }
 
-  seriesChange() {
-    const series = this.seriesOption.filter(f => {
-      return this.validateForm.get('series').value === f.id;
-    });
-    if (series[0].episode === null || series[0].episode === 0) {
-      this.validateForm.get('num').reset();
-      this.disabled = false;
-    } else {
-      this.validateForm.get('num').setValue(series[0].episode);
-      this.disabled = true;
-    }
-  }
+  // seriesChange() {
+  //   const series = this.seriesOption.filter(f => {
+  //     return this.validateForm.get('series').value === f.id;
+  //   });
+  //   if (series[0].episode === null || series[0].episode === 0) {
+  //     this.validateForm.get('num').reset();
+  //     this.disabled = false;
+  //   } else {
+  //     this.validateForm.get('num').setValue(series[0].episode);
+  //     this.disabled = true;
+  //   }
+  // }
 
   validation() {
     const form = this.validateForm;
@@ -207,27 +207,26 @@ export class AddTheatreComponent implements OnInit {
         number: l.episode
       });
     });
-    const seriesNum = form.get('num').value;
-
-    if (form.get('start_episode').value > seriesNum || form.get('start_episode').value > form.get('end_episode').value ||
-      form.get('end_episode').value > seriesNum
-    ) {
-       this.message.warning(this.translate.instant('global.please-select-correct-range-of-episodes'));
-    } else {
+    // const seriesNum = form.get('num').value;
+    // if (form.get('start_episode').value > seriesNum || form.get('start_episode').value > form.get('end_episode').value ||
+    //   form.get('end_episode').value > seriesNum
+    // ) {
+    //    this.message.warning(this.translate.instant('global.please-select-correct-range-of-episodes'));
+    // } else {
       const data = {
         channel_name: form.value['channel'] || null,
         name: form.value['theatre'] || null,
         air_date: Util.dateToString(form.get('premiereTime').value) || null,
         broadcast_time: Util.dateFullToString(form.get('startBroadcastTime').value).substring(11, 19) || null,
         weekday_schedules: this.weekday_schedules || null,
-        program_id: form.value['series'] || null,
-        broadcast_date: Util.dateToString(form.get('currentBroadcastDate').value) || null,
-        start_episode: form.value['start_episode'] || null,
-        end_episode: form.value['end_episode'] || null,
-        episode: form.value['num'] || null,
+        // program_id: form.value['series'] || null,
+        // broadcast_date: Util.dateToString(form.get('currentBroadcastDate').value) || null,
+        // start_episode: form.value['start_episode'] || null,
+        // end_episode: form.value['end_episode'] || null,
+        // episode: form.value['num'] || null,
       };
       console.log(data);
       return this.service.addTheatre(data);
-    }
+    // }
   }
 }

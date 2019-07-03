@@ -43,9 +43,7 @@ export class ChoreographyService {
   // }
 
   addTheatre(newTheatre: {
-    channel_name: string, name: string, air_date: string, broadcast_time: string, weekday_schedules: any[],
-    program_id: number, broadcast_date: string, start_episode: number, end_episode: number, episode: number
-  }) {
+    channel_name: string, name: string, air_date: string, broadcast_time: string, weekday_schedules: any[]}) {
     return this.http.post<any>(`/api/v1/editing/columns`, newTheatre);
   }
 
