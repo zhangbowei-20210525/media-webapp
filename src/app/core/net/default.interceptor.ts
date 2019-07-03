@@ -62,7 +62,7 @@ export class DefaultInterceptor implements HttpInterceptor {
                 this.errorNotify(body.message);
               }
               this.token.clear(); // 清除登录状态
-              this.goTo('/'); // 回到主页
+              this.goTo('/passport/login'); // 回到主页
             } else {
               this.errorNotify(body.message);
             }
@@ -79,7 +79,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         }
         break;
       case 401: // 未登录状态码
-        this.goTo('/');
+        this.goTo('/passport/login');
         break;
       case 403:
       case 404:

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../login.service';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '@core/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateStoreService } from '../../state-store.service';
 import { TreeService } from '@shared';
+import { LoginResultDto } from '@shared/dtos';
+import { NotifyAlertComponent } from '@shared/components';
 
 @Component({
   selector: 'app-phone-login',
@@ -28,7 +30,8 @@ export class PhoneLoginComponent implements OnInit {
     private stateStore: StateStoreService,
     private route: ActivatedRoute,
     private router: Router,
-    private ts: TreeService
+    private ts: TreeService,
+    private modal: NzModalService
   ) { }
 
   get phone() {
@@ -95,13 +98,7 @@ export class PhoneLoginComponent implements OnInit {
         // result.auth.company_full_name = null; // 测试
         if (result.auth.company_full_name) {  // 登录成功
           this.message.success('登录成功');
-          this.stateStore.clearState();
-          this.auth.onLogin({
-            userInfo: result.auth,
-            token: result.token,
-            permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
-          });
-          this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
+          this.login(result);
         } else {
           this.stateStore.setState({
             userInfo: result.auth,
@@ -113,4 +110,19 @@ export class PhoneLoginComponent implements OnInit {
     }
   }
 
+  login(data: LoginResultDto) {
+    this.stateStore.clearState();
+    this.auth.onLogin({
+      userInfo: data.auth,
+      token: data.token,
+      permissions: this.ts.recursionNodesMapArray(data.permissions, p => p.code, p => p.status)
+    });
+    this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
+    setTimeout(() => {
+      this.modal.create({
+        nzTitle: '重要待处理消息',
+        nzContent: NotifyAlertComponent
+      });
+    }, 0);
+  }
 }

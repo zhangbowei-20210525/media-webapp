@@ -34,6 +34,7 @@ import { EmptyComponent } from './components/empty/empty.component';
 import { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { TagMergeComponent } from './components/tag-merge/tag-merge.component';
+import { NotifyAlertComponent } from './components/notify-alert/notify-alert.component';
 
 const INSIDE_COMPONENTS = [
   LoginComponent,
@@ -44,7 +45,8 @@ const COMPONENTS = [
   EmptyComponent,
   SeriesSelectorComponent,
   LoadingComponent,
-  TagMergeComponent
+  TagMergeComponent,
+  NotifyAlertComponent
 ];
 
 const DIRECTIVES = [];
@@ -128,6 +130,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     // ...SERVICES
   ],
   entryComponents: [
+    ...COMPONENTS,
     // inside components
     ...INSIDE_COMPONENTS
   ]
