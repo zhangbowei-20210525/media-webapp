@@ -32,7 +32,7 @@
     <nz-form-label nzFor="area" [nzSpan]="4">地域</nz-form-label>
     <nz-form-control [nzSpan]="20">
       <nz-tree-select [nzNodes]="areaOptions" nzShowSearch nzCheckable nzPlaceHolder="请选择地域"
-        formControlName="area" (ngModelChange)="onFormValueChange($event)" nzSize="default">
+        formControlName="area" (ngModelChange)="onFormValueChange()" nzSize="default">
       </nz-tree-select>
     </nz-form-control>
   </nz-form-item>
