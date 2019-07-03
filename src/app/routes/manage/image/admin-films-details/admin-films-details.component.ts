@@ -13,11 +13,11 @@ import { FirstInstanceDetailsComponent } from '../components/first-instance-deta
 declare function videojs(selector: string);
 
 @Component({
-  selector: 'app-films-details',
-  templateUrl: './films-details.component.html',
-  styleUrls: ['./films-details.component.less']
+  selector: 'app-admin-films-details',
+  templateUrl: './admin-films-details.component.html',
+  styleUrls: ['./admin-films-details.component.less']
 })
-export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   id: number;
   player: any;
@@ -86,17 +86,20 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   emailAddress: string;
   tabIndex: number;
   fixationInfo: any; // 可能是用户信息
-  verify: number;
-  comment = '';
+  firstVerify: boolean;
+  secondVerify: boolean;
+  threeVerify: boolean;
+  firstComment = '';
+  secondComment = '';
+  threeComment = '';
   starArray = [];
-  // firstObj = {};
+  firstObj = {};
   secondObj = {};
   threeObj = {};
   fourObj = {};
   fiveObj = {};
   step_number = 0;
   selectedIndex = 0;
-  ids = 5;
   reviewRecodesStatistic: any;
   reviewRecords: any;
   reviewFirstSteps = {};
@@ -104,7 +107,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   reviewThirdSteps = {};
   firstLike = 0;
   firstOppose = 0;
-  reviewSteps = [];
+  // reviewSteps = [];
   secondAvg: any;
   thirdAvg: any;
   stepsNumber: any;
@@ -114,12 +117,10 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   secondDisLikePeople: any;
   secondLike: number;
   secondOppose: number;
-  thirdLikePeople: any;
   thirdDisLikePeople: any;
   thirdLike: number;
   thirdOppose: number;
-  starId = [];
-  reviewId: any;
+  reviewList = {};
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -202,7 +203,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     this.getVerifyData(this.step_number);
     this.seriesService.getReviewDetails(this.id).subscribe(res => {
-      this.reviewSteps = res.data.review_steps;
+      this.reviewList = res.data;
+      // this.reviewSteps = res.data.review_steps;
+      console.log(res.data);
       this.reviewFirstSteps = res.data.review_steps[0];
       // 一审喜欢人数及通过率
       this.likePeople = res.data.review_steps[0].review_records_statistic.conclusion_statistic.agree;
@@ -212,23 +215,27 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.firstOppose = (res.data.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
       res.data.review_steps[0].review_records_statistic.reviewed_count) * 100;
       // 二审喜欢人数及通过率
+
       this.secondLikePeople = res.data.review_steps[1].review_records_statistic.conclusion_statistic.agree;
       this.secondDisLikePeople = res.data.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
       this.secondLike = (res.data.review_steps[1].review_records_statistic.conclusion_statistic.agree /
       res.data.review_steps[1].review_records_statistic.reviewed_count) * 100;
       this.secondOppose = (res.data.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
       res.data.review_steps[1].review_records_statistic.reviewed_count) * 100;
+      // 三审喜欢人数及通过率
+      this.disLikePeople = res.data.review_steps[2].review_records_statistic.conclusion_statistic.agree;
+      this.thirdDisLikePeople = res.data.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
+      this.thirdLike = (res.data.review_steps[2].review_records_statistic.conclusion_statistic.agree /
+      res.data.review_steps[2].review_records_statistic.reviewed_count) * 100;
+      this.thirdOppose = (res.data.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
+      res.data.review_steps[2].review_records_statistic.reviewed_count) * 100;
       // 总分
       this.reviewSecondSteps = res.data.review_steps[1];
       this.reviewThirdSteps = res.data.review_steps[2];
-      res.data.review_steps[2].scoring_items.forEach((item) => {
-        this.starId.push({id: item.id, score: 0});
-      });
+      console.log(res);
       this.secondAvg = res.data.review_steps[1].review_records_statistic.score_statistic.avg;
       this.thirdAvg = res.data.review_steps[2].review_records_statistic.score_statistic.avg;
       this.stepsNumber = res.data.step_number;
-      this.reviewId = res.data.reviewer_status.review_step_number;
-      console.log(this.reviewId);
       // this.stepsNumber = 3;
     });
   }
@@ -569,7 +576,6 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   verifySelectChange(event) {
     this.selectedIndex = event.index;
-    console.log(this.selectedIndex);
   }
 
   shareEmail() {
@@ -598,12 +604,16 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // 选择是否喜欢
   choseIsLike(data) {
-    this.verify = Number(data);
+    if (data === 'like') {
+      this.firstVerify = true;
+    } else {
+      this.firstVerify = false;
+    }
     console.log(data);
   }
   // 文本框
   textareaValue(data) {
-    this.comment = data;
+    this.firstComment = data;
   }
   // 提交一审详情
   // submit() {
@@ -655,9 +665,18 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   //   });
   // }
 
+  choseIsPass(data) {
+    if (data === 'pass') {
+      this.secondVerify = true;
+    } else {
+      this.secondVerify = false;
+    }
+    console.log(this.secondVerify);
+    console.log(data);
+  }
   // 文本框
   textareaValueSecond(data) {
-    this.comment = data;
+    this.secondComment = data;
     console.log(data);
   }
   // 提交二审详情
@@ -710,27 +729,20 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
   // 三审
 
+  // choseIsPassThird(data) {
+  //   if (data === 'threePass') {
+  //     this.threeVerify = true;
+  //   } else {
+  //     this.threeVerify = false;
+  //   }
+  //   console.log(data);
+  // }
   textareaValueThird(data) {
-    this.comment = data;
+    this.threeComment = data;
     console.log(data);
   }
   // 提交三审详情
   submitThird() {
-    console.log(this.verify, '11111');
-    if (this.verify === undefined) {
-      console.log('ddddd');
-      this.message.success('请填写完整信息');
-      return;
-    }
-    const starList = this.starId.filter(item => {
-      return item.score === 0;
-    });
-    console.log(starList);
-    if (starList.length > 0) {
-      console.log('cccc');
-      this.message.success('请填写完整信息');
-      return;
-    }
     this.modalService.create({
       nzTitle: `提交信息`,
       nzContent: FirstInstanceDetailsComponent,
@@ -743,42 +755,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       nzNoAnimation: true,
       nzOnOk: () => new Promise((resolve) => {
         resolve();
-        const conclusion = this.verify;
-        console.log(conclusion);
-        const comment = this.comment;
-        const scoring = this.starId;
-        // if (JSON.stringify(this.firstObj) !== '{}') {
-        //   scoring.push(this.firstObj);
-        // }
-        // if (JSON.stringify(this.secondObj) !== '{}') {
-        //   scoring.push(this.secondObj);
-        // }
-        // if (JSON.stringify(this.threeObj) !== '{}') {
-        //   scoring.push(this.threeObj);
-        // }
-        // if (JSON.stringify(this.fourObj) !== '{}') {
-        //   scoring.push(this.fourObj);
-        // }
-        // if (JSON.stringify(this.fiveObj) !== '{}') {
-        //   scoring.push(this.fiveObj);
-        // }
-        // if (conclusion === undefined || scoring === []) {
-          // this.message.error('请填写完整信息');
-        // } else {
-        this.seriesService.submitThreeInstanceDetails(conclusion, scoring, comment, this.reviewId).subscribe(res => {
-          console.log(res);
-          console.log(this.id);
-          });
-          this.router.navigate([`manage/image`]);
-          this.message.success('审片成功');
-        // }
       }),
     });
-  }
-  // 小星星十分制
-  firstChange(score, item, index: number) {
-    this.starId[index].id = item.id;
-    this.starId[index].score = score * 2;
-    console.log(this.starId, 'i am zouzou');
   }
 }

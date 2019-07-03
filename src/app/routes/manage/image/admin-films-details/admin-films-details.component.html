@@ -1,0 +1,488 @@
+<div class="content-container">
+    <div class='container-top'>
+      <div class="publicity-details-left">
+        <div [hidden]="ishidden">
+          <div class="video-box">
+            <video id="video_player" (contextmenu)="nomenu($event)"
+              class="video-js vjs-default-skin vjs-big-play-centered" type="application/x-mpegURL" preload="none"
+              data-setup="{}" controls autoplay>
+            </video>
+          </div>
+          <div class="video-title">
+            <div class="widthBisection">
+              <span>{{publicityName}}：</span>
+              <span *ngIf="publicityType == 'sample'">{{sampleName}}</span>
+              <span *ngIf="publicityType == 'feature'">{{featureName}}</span>
+              <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
+            </div>
+          </div>
+          <ng-template #contentTemplate>
+            <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+            <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
+                src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+            <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
+              <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small"
+                style="margin-top: 1.5rem">
+              <button nz-button nzType="primary" nzSize="small" style="margin-top: 1.5rem"
+                (click)="shareEmail()">Share</button>
+            </div>
+            <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
+          </ng-template>
+        </div>
+        <div *ngIf="publicityType == 'poster'">
+          <div class="video-box" style="position: relative;text-align: center;">
+            <img [src]="posterSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
+            <a>
+              <i class="anticon anticon-left-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="lastPoster()"></i>
+            </a>
+            <a>
+              <i class="anticon anticon-right-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="nextPoster()"></i>
+            </a>
+          </div>
+          <div class="video-title">
+            <div class="widthBisection">
+              <span>{{publicityName}}：</span>
+              <span>{{posterName}}</span>
+            </div>
+            <div class="fixationInfo-info">
+              <a (click)="getTwoDimensionalCode()">
+                <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
+                <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
+              </a>
+            </div>
+          </div>
+          <!-- <ng-template #titleTemplate>
+                <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+                <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+                  {{ 'app.series.publicity-share-email' | translate }}</div>
+              </ng-template> -->
+          <ng-template #contentTemplate>
+            <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+            <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
+                src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+            <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
+              <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small"
+                style="margin-top: 1.5rem">
+              <button nz-button nzType="primary" nzSize="small" style="margin-top: 1.5rem"
+                (click)="shareEmail()">Share</button>
+            </div>
+            <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
+          </ng-template>
+        </div>
+  
+        <div *ngIf="publicityType == 'still'">
+          <div class="video-box" style="position: relative;text-align: center;">
+            <img [src]="stillSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
+            <a>
+              <i class="anticon anticon-left-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="lastStill()"></i>
+            </a>
+            <a>
+              <i class="anticon anticon-right-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="nextStill()"></i>
+            </a>
+          </div>
+          <div class="video-title">
+            <div class="widthBisection">
+              <span>{{publicityName}}：</span>
+              <span>{{stillName}}</span>
+            </div>
+            <div class="fixationInfo-info">
+              <a (click)="getTwoDimensionalCode()">
+                <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                  [nzContent]="contentTemplate" nzTrigger="click"></i>
+              </a>
+            </div>
+          </div>
+          <!-- <ng-template #titleTemplate>
+                <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+                <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+                  {{ 'app.series.publicity-share-email' | translate }}</div>
+              </ng-template> -->
+          <ng-template #contentTemplate>
+            <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+            <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
+                src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+            <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
+              <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small"
+                style="margin-top: 1.5rem">
+              <button nz-button nzType="primary" nzSize="small" style="margin-top: 1.5rem"
+                (click)="shareEmail()">Share</button>
+            </div>
+            <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
+          </ng-template>
+        </div>
+  
+        <div *ngIf="publicityType == 'pdf'">
+          <div class="video-box"
+            style="position: relative;text-align: center; display: table-cell;vertical-align: middle;">
+            <pdf-viewer [src]="pdfSrc" [page]="pdfPage" [zoom]="0.6" [show-all]="false" [original-size]="true">
+            </pdf-viewer>
+            <a>
+              <i class="anticon anticon-left-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="lastPdf()"></i>
+            </a>
+            <a>
+              <i class="anticon anticon-right-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="nextPdf()"></i>
+            </a>
+          </div>
+          <div class="video-title">
+            <div class="widthBisection">
+              <span *ngIf="fixationInfo">{{publicityName}}：</span>
+              <span *ngIf="detail">{{pdfName}}</span>
+            </div>
+            <div class="fixationInfo-info">
+              <a (click)="getTwoDimensionalCode()">
+                <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                  [nzContent]="contentTemplate" nzTrigger="click"></i>
+              </a>
+            </div>
+          </div>
+          <!-- <ng-template #titleTemplate>
+                <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+                <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+                  {{ 'app.series.publicity-share-email' | translate }}</div>
+              </ng-template> -->
+          <ng-template #contentTemplate>
+            <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+            <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
+                src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+            <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
+              <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small"
+                style="margin-top: 1.5rem">
+              <button nz-button nzType="primary" nzSize="small" style="margin-top: 1.5rem"
+                (click)="shareEmail()">Share</button>
+            </div>
+            <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
+          </ng-template>
+        </div>
+  
+        <nz-tabset [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabSelectChange($event)">
+          <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="sample()"
+            [nzDisabled]="sampleDisabled">
+            <div class="program-panel">
+              <ul class="program-list">
+                <li *ngFor="let sample of sampleNum" (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
+                  <div style="height: 100%; width: 100%;"><a>{{sample.displayText}}</a></div>
+                </li>
+              </ul>
+            </div>
+          </nz-tab>
+          <nz-tab [nzTitle]="'片花' + '(' +userinfo?.material?.feature + ')'" (nzClick)="feature()"
+            [nzDisabled]="featureDisabled">
+            <div class="program-panel">
+              <ul class="program-list">
+                <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
+                  <div style="height: 100%; width: 100%;"><a>{{feature.displayText}}</a></div>
+                </li>
+              </ul>
+            </div>
+          </nz-tab>
+          <nz-tab [nzTitle]="'先导片' + '(' +userinfo?.material?.trailer + ')'" (nzClick)="trailer()"
+            [nzDisabled]="trailerDisabled">
+            <div class="program-panel">
+              <ul class="program-list">
+                <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
+                  <div style="height: 100%; width: 100%;"><a>{{trailer.displayText}}</a></div>
+                </li>
+              </ul>
+            </div>
+          </nz-tab>
+          <nz-tab [nzTitle]="'海报' + '(' +userinfo?.material?.poster + ')'" (nzClick)="poster()"
+            [nzDisabled]="posterDisabled">
+            <div class="program-panel">
+              <ul class="program-list">
+                <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i)">
+                  <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+                </li>
+              </ul>
+            </div>
+          </nz-tab>
+          <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="still()"
+            [nzDisabled]="stillDisabled">
+            <div class="program-panel">
+              <ul class="program-list">
+                <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i)">
+                  <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+                </li>
+              </ul>
+            </div>
+  
+          </nz-tab>
+          <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'" (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
+            <div class="program-panel">
+              <ul class="program-list">
+                <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i)">
+                  <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+                </li>
+              </ul>
+            </div>
+          </nz-tab>
+        </nz-tabset>
+  
+      </div>
+      <div class="publicity-details-right">
+        <div class="details-title">
+          <div class="title-avater">
+            <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;">
+            </nz-avatar>
+          </div>
+          <div class='title-info'>
+            <div class='info-item'>
+              <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">上传人：{{userinfo?.user?.nickname}}</span>
+            </div>
+            <div class='info-item'>
+              <span>所属公司：{{userinfo?.company?.full_name}}</span>
+              <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="detail-tabs">
+          <nz-tabset>
+            <nz-tab nzTitle="基本信息">
+              <div style="line-height: 26px;margin-left: 18px;">
+                <div>节目名称：{{ seriesInfo?.name }}</div>
+                <div>集数：{{ seriesInfo?.episode }}</div>
+                <div>题材：{{ seriesInfo?.theme }}</div>
+                <div>语言：{{ seriesInfo?.language }}</div>
+                <div>节目别名：{{ seriesInfo?.nickname }}</div>
+                <div>发行时间：{{ seriesInfo?.release_date }}</div>
+                <div>监制：{{ seriesInfo?.supervisor }}</div>
+                <div>总制片人：{{ seriesInfo?.general_producer }}</div>
+                <div>节目类型：{{ seriesInfo?.program_type | seriesType }}</div>
+                <div>导演：{{ seriesInfo?.director }}</div>
+                <div>编剧：{{ seriesInfo?.screen_writer }}</div>
+                <div>出品人：{{ seriesInfo?.producer }}</div>
+                <div>主演：{{ seriesInfo?.protagonist }}</div>
+                <div>出品方：{{ seriesInfo?.product_company }}</div>
+                <div>简介：{{ seriesInfo?.introduction }}</div>
+              </div>
+            </nz-tab>
+            <!-- <nz-tab nzTitle="关键帧">
+        
+                </nz-tab>
+                <nz-tab nzTitle="图集">
+        
+                </nz-tab> -->
+          </nz-tabset>
+  
+        </div>
+      </div>
+    </div>
+    <div class='container-bottom'>
+      <!-- 一审 -->
+      <!-- <div class='verify-des'>
+        <div class='des-title'>
+          <div class='title-left'>一审</div>
+          <div class='title-right'>
+            <button nz-button (click)="submit()">提交</button>
+          </div>
+        </div>
+        <div class='des-content' style='padding: 20px 40px 20px 20px; display:flex;justify-content: space-between'>
+          <nz-radio-group [(ngModel)]="choseCompany" (ngModelChange)="choseIsLike($event)"
+            style="width: 26%; display:flex;flex-direction: column;justify-content: center;align-items: center">
+            <label nz-radio [ngStyle]="style" nzValue="like" style='width:80px'>喜欢</label>
+            <label nz-radio [ngStyle]="style" nzValue="dislike" style="width: 80px">不喜欢</label>
+          </nz-radio-group>
+          <div class='comment' style='width: 300px'>
+            <div class='comment-item'>
+              <div style="height: 30px; line-height: 33px" nzValue="first">故事情节</div>
+              <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="firstChange($event)"></nz-rate>
+            </div>
+            <div class='comment-item'>
+              <div style="height: 30px; line-height: 33px">导演</div>
+              <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="secondChange($event)"></nz-rate>
+            </div>
+            <div class='comment-item'>
+              <div style="height: 30px; line-height: 33px">演员阵容</div>
+              <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="threeChange($event)"></nz-rate>
+            </div>
+            <div class='comment-item'>
+              <div style="height: 30px; line-height: 33px">城市相关收视率</div>
+              <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="fourChange($event)"></nz-rate>
+            </div>
+            <div class='comment-item'>
+              <div style="height: 30px; line-height: 33px">制作公司既往业绩</div>
+              <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="fiveChange($event)"></nz-rate>
+            </div>
+          </div>
+          <textarea rows="6" nz-input (ngModelChange)="textareaValue($event)" [(ngModel)]="inputValue" placeholder='意见或评论'
+            style='flex:1; margin-left: 40px'></textarea>
+        </div>
+      </div> -->
+      <!-- 二审 -->
+      <!-- <div class='verify-des' style='padding-top: 10px;position: relative;'>
+        <button nz-button (click)="submitSecond()"
+          style='position: absolute;right: 20px; top: 20px; z-index: 9999'>提交</button>
+        <nz-tabset [nzType]="'card'">
+          <nz-tab nzTitle="一审">
+            <div class='title' style='display: flex'>
+              <div
+                style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE;margin-right: 20px'>
+                喜欢 40人 80%</div>
+              <div style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE'>不喜欢 60人
+                20%</div>
+            </div>
+            <nz-table #basicTable [nzData]="" style="margin-top: 20px">
+              <thead>
+                <tr>
+                  <th style="text-align: center">审片人</th>
+                  <th style="text-align: center">结论</th>
+                  <th style="text-align: center">意见／评论</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of basicTable.data;let i = index">
+                  <td style="text-align: center">1111</td>
+                  <td style="text-align: center">2222</td>
+                  <td style="text-align: center">3333</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+          <nz-tab nzTitle="二审">
+            <div class='des-content' style='padding: 20px 40px 20px 20px; display:flex;justify-content: space-between'>
+              <nz-radio-group [(ngModel)]="choseCompany" (ngModelChange)="choseIsPass($event)"
+                style="width: 26%; display:flex;flex-direction: column;justify-content: center;align-items: center">
+                <label nz-radio [ngStyle]="style" nzValue="pass" style='width:80px'>通过</label>
+                <label nz-radio [ngStyle]="style" nzValue="notPass" style="width: 80px">不通过</label>
+              </nz-radio-group>
+              <div class='comment' style='width: 300px'>
+                <div class='comment-item'>
+                  <div style="height: 30px; line-height: 33px" nzValue="first">故事情节</div>
+                  <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="firstChange($event)"></nz-rate>
+                </div>
+                <div class='comment-item'>
+                  <div style="height: 30px; line-height: 33px">导演</div>
+                  <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="secondChange($event)"></nz-rate>
+                </div>
+                <div class='comment-item'>
+                  <div style="height: 30px; line-height: 33px">演员阵容</div>
+                  <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="threeChange($event)"></nz-rate>
+                </div>
+                <div class='comment-item'>
+                  <div style="height: 30px; line-height: 33px">城市相关收视率</div>
+                  <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="fourChange($event)"></nz-rate>
+                </div>
+                <div class='comment-item'>
+                  <div style="height: 30px; line-height: 33px">制作公司既往业绩</div>
+                  <nz-rate [ngModel]="0" nzAllowHalf (ngModelChange)="fiveChange($event)"></nz-rate>
+                </div>
+              </div>
+              <textarea rows="4" nz-input (ngModelChange)="textareaValueSecond($event)" [(ngModel)]="inputValue"
+                placeholder='意见或评论' style='flex:1; margin-left: 40px'></textarea>
+            </div>
+          </nz-tab>
+        </nz-tabset>
+      </div> -->
+      <!-- 三审 -->
+      <div class='verify-des' style='padding-top: 10px;position: relative;'>
+        <!-- <button *ngIf='selectedIndex === 1 || selectedIndex === 3 || selectedIndex === 5' nz-button
+          (click)="submitThird()" style='position: absolute;right: 20px; top: 20px; z-index: 9999'>提交</button> -->
+        <!-- <button nz-button (click)="submitThird()"
+        style='position: absolute;right: 20px; top: 20px; z-index: 9999'>提交</button>
+        <button nz-button (click)="submitThird()"
+        style='position: absolute;right: 20px; top: 20px; z-index: 9999'>提交</button> -->
+        <nz-tabset [nzType]="'card'" (nzSelectChange)="verifySelectChange($event)">
+          <nz-tab nzTitle="一审">
+            <div class='title' style='display: flex'>
+              <div
+                style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE;margin-right: 20px'>
+                喜欢 {{likePeople}}人{{firstLike}}%</div>
+              <div style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE'>不喜欢
+                {{disLikePeople}}人{{firstOppose}}%</div>
+            </div>
+            <nz-table #reviewFirstSteps.review_record [nzShowPagination]='false' [nzData]="reviewFirstSteps.review_records" style="margin-top: 20px"
+              *ngIf='reviewFirstSteps.review_records?.length > 0 else noResults'>
+              <thead>
+                <tr>
+                  <th style="text-align: center">审片人</th>
+                  <th style="text-align: center">结论</th>
+                  <th style="text-align: center">意见／评论</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let b of reviewFirstSteps.review_records">
+                  <td style="text-align: center">{{b.employee.name}}</td>
+                  <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td>
+                  <td style="text-align: center">{{b.comment === null ? '-': b.comment}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+          <nz-tab nzTitle="二审" *ngIf='reviewList?.step_number === 2 || reviewList?.step_number === 3'>
+            <div class='title' style='display: flex'>
+              <div
+                style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE;margin-right: 20px'>
+                喜欢 {{secondLikePeople}}人{{secondLike}}%</div>
+              <div
+                style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE;margin-right: 40px'>
+                不喜欢 {{secondDisLikePeople}}人{{secondOppose}}%</div>
+              <div style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE'>总分
+                {{secondAvg}}
+              </div>
+            </div>
+            <nz-table #reviewSecondSteps.review_records [nzData]="reviewSecondSteps.review_records" [nzShowPagination]='false'
+              style="margin-top: 20px" *ngIf='reviewSecondSteps.review_records?.length > 0 else noResults'>
+              <thead>
+                <tr>
+                  <th style="text-align: center">审片人</th>
+                  <th style="text-align: center">结论</th>
+                  <th style="text-align: center">意见／评论</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let b of reviewSecondSteps.review_records">
+                  <td style="text-align: center">{{b.employee.name}}</td>
+                  <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td>
+                  <td style="text-align: center">{{b.comment === null ? '-': b.comment}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+        <nz-tab nzTitle="三审" *ngIf='reviewList?.step_number === 3'>
+          <div class='title' style='display: flex'>
+            <div
+              style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE;margin-right: 20px'>
+              喜欢 {{disLikePeople}}人{{thirdLike}}%</div>
+            <div
+              style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE;margin-right: 40px'>
+              不喜欢 {{thirdDisLikePeople}}人{{thirdOppose}}%</div>
+            <div style='width:249px;height: 55px;text-align: center;line-height: 55px;background-color: #CEDBDE'>总分 {{thirdAvg}}
+            </div>
+          </div>
+          <nz-table #reviewSecondSteps.review_records [nzData]="reviewSecondSteps.review_records" [nzShowPagination]='false'
+            style="margin-top: 20px" *ngIf='reviewSecondSteps.review_records?.length > 0 else noResults'>
+            <thead>
+              <tr>
+                <th style="text-align: center">审片人</th>
+                <th style="text-align: center">结论</th>
+                <th style="text-align: center">意见／评论</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let b of reviewThirdSteps.review_records">
+                <td style="text-align: center">{{b.employee.name}}</td>
+                <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td>
+                <td style="text-align: center">{{b.comment === null ? '-': b.comment}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+        </nz-tabset>
+      </div>
+    </div>
+  </div>
+  <ng-template #noResults>
+    <app-empty></app-empty>
+  </ng-template>

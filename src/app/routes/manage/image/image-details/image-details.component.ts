@@ -110,10 +110,13 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.posterIndex = +params.get('posterIndex');
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
-        return this.seriesService.pubDetail(this.id);
+        console.log(this.id);
+        console.log(this.sid);
+        console.log(this.tabIndex);
+        return this.seriesService.pubDetail(this.sid);
       })).subscribe(res => {
         // console.log(res);
-        this.seriesService.getUserinfo(this.id).subscribe(cpd => {
+        this.seriesService.getUserinfo(this.sid).subscribe(cpd => {
           this.userinfo = cpd;
           if (this.userinfo.material.sample === 0) {
             this.sampleDisabled = true;
@@ -188,7 +191,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getSampleInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.samplePagination, this.sid, 'sample').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -209,7 +212,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getFeatureInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.featurePagination, this.sid, 'feature').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -229,7 +232,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getTrailerInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.trailerPagination, this.sid, 'trailer').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -249,7 +252,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getPosterInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.posterPagination, this.sid, 'poster').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -267,7 +270,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getStillInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.stillPagination, this.sid, 'still').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -285,7 +288,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getPdfInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.pdfPagination, this.sid, 'pdf').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;

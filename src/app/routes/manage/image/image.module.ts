@@ -12,7 +12,8 @@ import { VerifyFilmsComponent } from './verify-films/verify-films.component';
 import { FilmsDetailsComponent } from './films-details/films-details.component';
 import { CallUpComponent } from './components/call-up/call-up.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
-
+import { FirstInstanceDetailsComponent } from './components/first-instance-details/first-instance-details.component';
+import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
 @NgModule({
   declarations: [
     ImageComponent,
@@ -24,6 +25,8 @@ import { DetailsSolicitationComponent } from './details-solicitation/details-sol
     FilmsDetailsComponent,
     CallUpComponent,
     DetailsSolicitationComponent,
+    FirstInstanceDetailsComponent,
+    AdminFilmsDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +41,9 @@ import { DetailsSolicitationComponent } from './details-solicitation/details-sol
     TendencyInfoComponent,
     CollectionUpComponent,
     CallUpComponent,
-    DetailsSolicitationComponent
+    DetailsSolicitationComponent,
+    FirstInstanceDetailsComponent,
+    AdminFilmsDetailsComponent,
   ]
 })
 export class ImageModule { }

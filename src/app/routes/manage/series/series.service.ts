@@ -284,7 +284,11 @@ export class SeriesService {
   deleteTapeSave(id: number) {
     return this.http.delete<any>(`/api/v1/sources/files/${id}`);
   }
-  // 获取意向列表
+  // 获取审片工作视图接口
+  getReviewView(pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/reviews/tasks?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+  // 获取审片列表接口
   getIntentionTypeList(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
@@ -296,14 +300,65 @@ export class SeriesService {
   }
   // 生成样片征集令
   getSampleCollection(program_type: any, program_theme: any, description) {
-    return this.http.post<any>(`/api/v1/publicity/collections`, { program_type: program_type, program_theme: program_theme, description  });
+    return this.http.post<any>(`/api/v1/publicity/collections`, { program_type: program_type, program_theme: program_theme, description });
   }
   // 征集令提交
   submitCollection(program: any, id: any) {
-    return this.http.post<any>(`api/v1/publicity/collections/${id}/reports`, program);
+    return this.http.post<any>(`/api/v1/publicity/collections/${id}/reports`, program);
   }
   // 征集令表单
-  getSamplePublicitys () {
-    return this.http.get<any>(`api/v1/publicitys`);
+  getSamplePublicitys() {
+    return this.http.get<any>(`/api/v1/publicitys`);
+  }
+  // 获取审片列表
+  getReviewList(pagination: PaginationDto, step_number: any) {
+    return this.http.get<any>(`/api/v1/reviews?page=${pagination.page}&page_size=${pagination.page_size}`, {
+      params : {
+      step_number: step_number,
+      }
+    });
+  }
+  // 一审提交
+  submitFirstInstance(review_ids: any) {
+    return this.http.post<any>(`/api/v1/reviews/results`, {
+      review_ids: review_ids,
+    });
+  }
+  // 一审详情提交
+  // submitFirstInstanceDetails(conclusion: boolean, scoring: any, comment: any, id: number) {
+  //   return this.http.post<any>(`/reviews/${id}/records`, {
+  //     conclusion: conclusion,
+  //     scoring: scoring,
+  //     comment: comment,
+  //   });
+  // }
+
+  // 二审详情提交
+  // submitSecondInstanceDetails(conclusion: boolean, scoring: any, comment: any, id: number) {
+  //   return this.http.post<any>(`reviews/${id}/records`, {
+  //     conclusion: conclusion,
+  //     scoring: scoring,
+  //     comment: comment,
+  //   });
+  // }
+
+  // 三审详情提交
+  submitThreeInstanceDetails(conclusion: number, scoring: any, comment: any, reviewId: number) {
+    return this.http.post<any>(`api/v1/reviews/records`, {
+      review_step_id: reviewId,
+      conclusion: conclusion,
+      scores: scoring,
+      comment: comment,
+    });
+  }
+  // 获取审片详情
+  getReviewDetails(id: number) {
+    return this.http.get<any>(`api/v1/reviews/${id}`);
+  }
+  // 新建审片
+  creatReview(intention_ids) {
+    return this.http.post<any>(`api/v1/reviews`, {
+      intention_ids,
+    });
   }
 }

@@ -8,13 +8,14 @@ import { NzModalService, NzMessageService, NzModalRef} from 'ng-zorro-antd';
 })
 export class LaunchFilmsComponent implements OnInit {
   @Input() id: number;
+  @Input() intentonName = [];
   source_data: 'firstInstance' | 'SecondInstance' = 'firstInstance';
   constructor(
     private component: NzModalRef,
   ) { }
 
   ngOnInit() {
-
+    console.log(this.intentonName);
   }
 
   launchFilmsProcess() {

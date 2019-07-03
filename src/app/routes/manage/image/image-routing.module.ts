@@ -7,7 +7,7 @@ import { aclAbility } from '@core/acl';
 import { VerifyFilmsComponent } from './verify-films/verify-films.component';
 import { FilmsDetailsComponent } from './films-details/films-details.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
-
+import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
 const routes: Routes = [
   {
     path: '',
@@ -27,7 +27,7 @@ const routes: Routes = [
         canActivate: [ACLGuard],
         data: {
           guard: <ACLType>{
-            ability: [aclAbility.program.image.view]
+            ability: [aclAbility.review.edit]
           }
         }
       },
@@ -42,11 +42,15 @@ const routes: Routes = [
     // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
   },
   {
-    path: 'films-details', component: FilmsDetailsComponent,
+    path: 'films-details/:id', component: FilmsDetailsComponent,
     // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
   },
   {
     path: 'details-solicitation', component: DetailsSolicitationComponent,
+    // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
+  },
+    {
+    path: 'admin-films-details/:id', component: AdminFilmsDetailsComponent,
     // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
   },
 ];
