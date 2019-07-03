@@ -5,6 +5,7 @@ interface IResponseDto {
 }
 
 export interface PaginationResponseDto<T> {
+  meta: any;
     list: T[];
     pagination: PaginationDto;
 }

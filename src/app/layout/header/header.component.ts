@@ -80,29 +80,41 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   login() {
     this.accountService.openLoginModal().then(() => {
-      // this.router.navigate([`/manage/dashboard`]);
-      if (this.auth.token.is_new_user === true) {
-        if (this.auth.token.receipt_source_auth > 0) {
-          this.modal.confirm({
-            nzTitle: '您有一条新的授权信息，是否前往查看?',
-            nzOkText: '前往',
-            nzCancelText: '跳过',
-            nzOkType: 'primary',
-            nzOnCancel: () => new Promise((resolve) => {
-              resolve();
-              this.navigateToDefault();
-            }),
-            nzOnOk: () => new Promise((resolve) => {
-              resolve();
-              this.router.navigate([`/manage/pubAuthorizationReceive`]);
-            })
-          });
-        } else {
-          this.navigateToDefault();
-        }
-      } else {
-        this.navigateToDefault();
-      }
+    // console.log(this.token.get().callback.status === 'publicity_share');
+      this.router.navigate([`/manage/dashboard`]);
+      // if (this.token.get().callback.status === 'source_auth') {
+      //     this.modal.confirm({
+      //       nzTitle: '您有一条新的授权信息，是否前往查看?',
+      //       nzOkText: '前往',
+      //       nzCancelText: '跳过',
+      //       nzOkType: 'primary',
+      //       nzOnCancel: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.navigateToDefault();
+      //       }),
+      //       nzOnOk: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.router.navigate([`/manage/pubAuthorizationReceive`]);
+      //       })
+      //     });
+      //   } else if ((this.token.get().callback.status === 'publicity_share')) {
+      //     this.modal.confirm({
+      //       nzTitle: '您有一条新的接收信息，是否前往查看?',
+      //       nzOkText: '前往',
+      //       nzCancelText: '跳过',
+      //       nzOkType: 'primary',
+      //       nzOnCancel: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.navigateToDefault();
+      //       }),
+      //       nzOnOk: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.router.navigate([`/manage/DeclareAuthorizationReceive`]);
+      //       })
+      //     });
+      // } else {
+      //   this.navigateToDefault();
+      // }
     });
   }
 

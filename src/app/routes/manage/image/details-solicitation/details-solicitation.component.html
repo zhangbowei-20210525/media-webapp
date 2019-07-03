@@ -1,0 +1,189 @@
+<div class="block clearfix fade-in-up">
+  <div class="block-header">
+    <div class="block-title">上传样片</div>
+    <div class="block-options">
+      <button nz-button nzType="default" (click)="submit()">提交</button>
+    </div>
+  </div>
+  <div class="block-content">
+    <div class="details-box-left">
+      <div class="details-box-left-top">
+        <p>信息</p>
+      </div>
+      <div class="details-box-left-btm">
+        <form nz-form [formGroup]="validateForm">
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>节目名称</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input (blur)="getNewList($event)" placeholder="请输入节目名称" nz-input id="name" formControlName="name"
+                (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramName">
+              <nz-autocomplete nzBackfill #autoProgramName>
+                <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">
+                  {{ program.name }}
+                </nz-auto-option>
+              </nz-autocomplete>
+              <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">请输入节目名称
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>节目别名</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入节目别名" nz-input id="nickname" formControlName="nickname" (ngModelChange)="onInput()">
+              <nz-form-explain *ngIf="validateForm.get('nickname').dirty && validateForm.get('nickname').errors">请输入节目别名
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type">宣发类型</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <nz-select id="type" formControlName="type" nzPlaceHolder="请选择宣发类型" (ngModelChange)='fileType($event)'>
+                <nz-option nzLabel="样片" nzValue="sample"></nz-option>
+                <nz-option nzLabel="片花" nzValue="feature"></nz-option>
+                <nz-option nzLabel="先导片" nzValue="trailer"></nz-option>
+                <nz-option nzLabel="海报" nzValue="poster"></nz-option>
+                <nz-option nzLabel="剧照" nzValue="still"></nz-option>
+                <nz-option nzLabel="PDF" nzValue="pdf"></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="validateForm.get('type').dirty && validateForm.get('type').errors">请选择节目类型
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_type" nzRequired>节目类型</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入节目类型" nz-input id="program_type" formControlName="program_type"
+                (ngModelChange)="onInput()">
+              <nz-form-explain
+                *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请输入节目名称
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="theme">题材</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入题材" nz-input id="theme" formControlName="theme" (ngModelChange)="onInput()">
+              <nz-form-explain *ngIf="validateForm.get('theme').dirty && validateForm.get('theme').errors">请输入节目名称
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="episode">集数</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入集数" nz-input id="episode" formControlName="episode" (ngModelChange)="onInput()">
+              <nz-form-explain *ngIf="validateForm.get('episode').dirty && validateForm.get('episode').errors">请输入节目名称
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="protagonist">主演</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入主演" nz-input id="protagonist" formControlName="protagonist"
+                (ngModelChange)="onInput()">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="director">导演</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入导演" nz-input id="director" formControlName="director" (ngModelChange)="onInput()">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="screen_writer">编剧</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入编剧" nz-input id="screen_writer" formControlName="screen_writer"
+                (ngModelChange)="onInput()">
+            </nz-form-control>
+          </nz-form-item>
+          <!-- <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="supervisor">监制</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入监制" nz-input id="supervisor" formControlName="supervisor"
+                (ngModelChange)="onInput()">
+            </nz-form-control>
+          </nz-form-item> -->
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="general_producer">制片人</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入制片人" nz-input id="general_producer" formControlName="general_producer"
+                (ngModelChange)="onInput()">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="producer">出品人</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入出品人" nz-input id="producer" formControlName="producer" (ngModelChange)="onInput()">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="product_company">出品公司</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <input placeholder="请输入出品公司" nz-input id="product_company" formControlName="product_company"
+                (ngModelChange)="onInput()">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="progress">当前进度</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <nz-select id="progress" formControlName="progress" nzPlaceHolder="请选择当前进度">
+                <!-- <nz-option nzLabel="剧本阶段" nzValue="screenplay"></nz-option>
+                  <nz-option nzLabel="筹备中" nzValue="preparation"></nz-option>
+                  <nz-option nzLabel="拍摄中" nzValue="shooting"></nz-option>
+                  <nz-option nzLabel="后制中" nzValue="production"></nz-option>
+                  <nz-option nzLabel="已完成" nzValue="finished"></nz-option>
+                  <nz-option nzLabel="二轮" nzValue="tworound"></nz-option> -->
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction">说明</nz-form-label>
+            <nz-form-control [nzSm]="17" [nzXs]="17">
+              <textarea rows="3" nz-input formControlName="introduction" placeholder="请输入说明"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+
+      </div>
+    </div>
+    <div class="details-box-content">
+      <div class="details-box-content-top">
+        <p>文件</p>
+      </div>
+      <div class="details-box-content-btm">
+        <div class='video-item' *ngFor="let item of files; let i = index">
+          <!-- <div class='item-left'> -->
+          <nz-tag class="item-left" nzMode="closeable" (nzOnClose)="onClose(i)" (nzAfterClose)="afterClose()">
+            <div>{{item.name}}</div>
+            <nz-progress nzStatus="" [hidden]="item.close === true" class='item-right' [nzPercent]="item.percent">
+            </nz-progress>
+          </nz-tag>
+          <!-- <nz-tag class="item-left" nzMode="closeable" (nzOnClose)="onClose()" (nzAfterClose)="afterClose()">11888899999881</nz-tag> -->
+          <!-- </div> -->
+        </div>
+        <!-- <div>{{files.name}}</div> -->
+        <!-- <nz-progress [nzPercent]="100"></nz-progress> -->
+      </div>
+    </div>
+    <div class="details-box-right">
+      <div class="details-box-right-top">
+        <p>上传样片视频</p>
+      </div>
+      <div class="details-box-right-btm">
+        <nz-upload nzType="drag" [nzLimit]="2" [nzFileType]="text" [nzAction]="docType"
+          [nzBeforeUpload]='beforeUpload' (nzChange)="handleChange($event)">
+          <p class="ant-upload-drag-icon">
+            <i nz-icon nzType="upload" nzTheme="outline" style="color: skyblue"></i>
+          </p>
+          <p class="ant-upload-text">请点击或拖拽到此处进行上传</p>
+          <p class="ant-upload-hint">
+            <a>视频的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv", "rmvb", "mkv", "mov", "avi", "mpg"。</a>
+            <br>
+            <a>海报，剧照支持的图片格式为："jpg", "jpeg", "png"。</a>
+            <br>
+            <a>PDF支持的文档格式为："pdf"。</a>
+          </p>
+        </nz-upload>
+      </div>
+    </div>
+  </div>
+</div>

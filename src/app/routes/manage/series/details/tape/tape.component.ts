@@ -101,7 +101,8 @@ export class TapeComponent implements OnInit, OnDestroy {
         }
       });
       this.isActive = x.list.every(item => {
-        return item.local_file_status !== '';
+        console.log(item);
+        return item.local_file_status === '';
       });
     })).subscribe(x => {
       this.tapeFileList = x.list;
@@ -242,6 +243,7 @@ export class TapeComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           this.message.success(this.translate.instant('global.add-success'));
           this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
+            console.log(p);
             this.pubTapeList = p.list;
             this.pubTapePagination = p.pagination;
           });

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SeriesService } from '../series.service';
 import { PaginationDto } from '@shared';
@@ -11,6 +11,7 @@ import { QueueUploader } from '@shared/upload';
 import { PublicityService } from '../details/publicity/publicity.service';
 import * as _ from 'lodash';
 import { ACLAbility } from '@core/acl';
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 
 @Component({
   selector: 'app-publicities',
@@ -49,7 +50,9 @@ export class PublicitiesComponent implements OnInit {
     private route: ActivatedRoute,
     private uploader: QueueUploader,
     private notification: NzNotificationService,
-    private ps: PublicityService
+    private ps: PublicityService,
+    @Inject(DA_SERVICE_TOKEN) private token: ITokenService
+
   ) { }
 
   ngOnInit() {
@@ -108,7 +111,7 @@ export class PublicitiesComponent implements OnInit {
     this.refreshStatus();
   }
 
-  publicityDetails(id: number) {
+  publicityDetails(id) {
     this.router.navigate([`/manage/series/d/${id}/publicityd`]);
   }
 
@@ -127,8 +130,10 @@ export class PublicitiesComponent implements OnInit {
 
   upload(sid: number, list: File[], materielType: string) {
     this.service.getPublicitiesList(sid).subscribe(result => {
+      console.log(result);
       this.publicityId = result.list[0].id;
       list.map(item => {
+        console.log(item);
         const dotIndex = item.name.lastIndexOf('.');
         return this.uploader.enqueue({
           target: this.publicityId,
@@ -198,7 +203,9 @@ export class PublicitiesComponent implements OnInit {
     }
   }
 
-  publicityPlay(id: number, sid: number) {
+  publicityPlay(id, sid: number) {
+    console.log(id);
+    // localStorage.setItem('shareId', id);
     this.router.navigate([`/manage/series/publicity-details/${id}`, { sid: sid }]);
   }
 }

@@ -39,6 +39,7 @@ import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/e
 import { InsertBroadcastInfoComponent } from './choreography/components/insert-broadcast-info/insert-broadcast-info.component';
 import { AddBroadcastingInfoComponent } from './choreography/components/add-broadcasting-info/add-broadcasting-info.component';
 import { RightConfigComponent } from './copyrights/components/right-config/right-config.component';
+import { PublicityFilmsComponent } from './components/publicity-films/publicity-films.component';
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import { RightConfigComponent } from './copyrights/components/right-config/right
     InsertBroadcastInfoComponent,
     AddBroadcastingInfoComponent,
     RightConfigComponent,
+    PublicityFilmsComponent,
   ],
   imports: [
     CommonModule,
@@ -100,7 +102,8 @@ import { RightConfigComponent } from './copyrights/components/right-config/right
     RightFilterComponent,
     InsertBroadcastInfoComponent,
     AddBroadcastingInfoComponent,
-    RightConfigComponent
+    RightConfigComponent,
+    PublicityFilmsComponent,
   ]
 })
 export class SeriesModule { }

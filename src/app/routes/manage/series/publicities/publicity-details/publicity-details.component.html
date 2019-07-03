@@ -280,15 +280,18 @@
           <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
         </div>
         <div class="fixationInfo-info">
-          <a (click)="getTwoDimensionalCode()">
-            <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
-              [nzContent]="contentTemplate" nzTrigger="click"></i>
-          </a>
-          <ng-template #titleTemplate>
-              <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
-              <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
-                {{ 'app.series.publicity-share-email' | translate }}</div>
-            </ng-template>
+          <div class='like'>客商
+            <a (click)="getBusinessmen()">
+              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                 nzTrigger="click"></i>
+            </a>
+          </div>
+          <div class='like'>微信
+            <a (click)="getTwoDimensionalCode()">
+              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                [nzContent]="contentTemplate" nzTrigger="click"></i>
+            </a>
+          </div>
         </div>
       </div>
       <ng-template #titleTemplate>

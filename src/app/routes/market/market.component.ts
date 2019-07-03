@@ -27,33 +27,71 @@ export class MarketComponent implements OnInit {
     }
   }
 
+  // login() {
+  //   this.account.openLoginModal().then(() => {
+  //     if (this.token.get().callback.status === 'source_auth') {
+  //       if (this.token.get().receipt_source_auth > 0) {
+  //         this.modal.confirm({
+  //           nzTitle: '您有一条新的授权信息，是否前往查看?',
+  //           nzOkText: '前往',
+  //           nzCancelText: '跳过',
+  //           nzOkType: 'primary',
+  //           nzOnCancel: () => new Promise((resolve) => {
+  //             resolve();
+  //             this.navigateToDefault();
+  //           }),
+  //           nzOnOk: () => new Promise((resolve) => {
+  //             resolve();
+  //             this.router.navigate([`/manage/pubAuthorizationReceive`]);
+  //           })
+  //         });
+  //       } else {
+  //         this.navigateToDefault();
+  //       }
+  //     } else {
+  //       this.navigateToDefault();
+  //     }
+  //   });
+  // }
   login() {
     this.account.openLoginModal().then(() => {
-      if (this.token.get().is_new_user === true) {
-        if (this.token.get().receipt_source_auth > 0) {
-          this.modal.confirm({
-            nzTitle: '您有一条新的授权信息，是否前往查看?',
-            nzOkText: '前往',
-            nzCancelText: '跳过',
-            nzOkType: 'primary',
-            nzOnCancel: () => new Promise((resolve) => {
-              resolve();
-              this.navigateToDefault();
-            }),
-            nzOnOk: () => new Promise((resolve) => {
-              resolve();
-              this.router.navigate([`/manage/pubAuthorizationReceive`]);
-            })
-          });
-        } else {
-          this.navigateToDefault();
-        }
-      } else {
-        this.navigateToDefault();
-      }
+    // console.log(this.token.get().callback.status === 'source_auth');
+      this.router.navigate([`/manage/dashboard`]);
+      // if (this.token.get().callback.status === 'source_auth') {
+      //     this.modal.confirm({
+      //       nzTitle: '您有一条新的授权信息，是否前往查看?',
+      //       nzOkText: '前往',
+      //       nzCancelText: '跳过',
+      //       nzOkType: 'primary',
+      //       nzOnCancel: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.navigateToDefault();
+      //       }),
+      //       nzOnOk: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.router.navigate([`/manage/pubAuthorizationReceive`]);
+      //       })
+      //     });
+      // } else if ((this.token.get().callback.status === 'publicity_share')) {
+      //     this.modal.confirm({
+      //       nzTitle: '您有一条新的接受信息，是否前往查看?',
+      //       nzOkText: '前往',
+      //       nzCancelText: '跳过',
+      //       nzOkType: 'primary',
+      //       nzOnCancel: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.navigateToDefault();
+      //       }),
+      //       nzOnOk: () => new Promise((resolve) => {
+      //         resolve();
+      //         this.router.navigate([`/manage/DeclareAuthorizationReceive`]);
+      //       })
+      //     });
+      // } else {
+      //   this.navigateToDefault();
+      // }
     });
   }
-
   navigateToDefault() {
     this.router.navigate([`/manage/dashboard`]);
   }

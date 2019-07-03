@@ -1,0 +1,84 @@
+<div class="block clearfix fade-in-up">
+  <div class="block-header">
+    <div class="block-title-left">客商列表</div>
+    <div class="block-title-right-box">
+      <div class="block-title-right-small-l">
+      <nz-dropdown [nzTrigger]="'click'">
+        <a nz-dropdown> 客户标签 <i nz-icon type="down"></i> </a>
+        <ul nz-menu>
+          <!-- <li nz-menu-item  *ngFor="let data of dataset" (click)='searchRemark(data.remark)'>{{data.remark}}</li> -->
+          <li nz-menu-item  *ngFor="let data of tagdataset.tag_choices" [hidden]='tagdataset.tag_choices.length === 0' (click)='searchRemark(data)'>{{data}}
+            <!-- <div  (click)='searchRemark(item)' *ngFor="let item of data.tags">{{item}}</div> -->
+          </li>
+        </ul>
+      </nz-dropdown>
+    </div>
+    <div class="block-title-right-small-r"></div>
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
+        <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+          (change)="getSearchData(content)" />
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+          <i nz-icon type="search"></i>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+  <div class="block-content">
+    <div *ngIf="isLoaded">
+      <nz-table #basicTable [nzData]="dataset" [nzPageSize]="pagination?.page_size" [nzFrontPagination]="false"
+        [nzPageIndex]="pagination?.page" [nzTotal]="pagination?.count" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+        (nzPageIndexChange)="pageChange($event)"
+        #rowSelectionTable
+        >
+        <thead>
+          <tr>
+            <th 
+            nzShowCheckbox
+            [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate"
+            (nzCheckedChange)="checkAll($event)"
+            >
+            </th>
+            <th>公司/个人</th>
+            <th>客户标签</th>
+            <th>联系人</th>
+            <th>手机</th>
+            <th>客户类型</th>
+            <!-- <th>已发行</th>
+                  <th>合同总金额（元）</th> -->
+            <!-- <th>操作</th> -->
+          </tr>
+
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <!-- <nz-checkbox-wrapper (nzOnChange)="checkChangeData($event)">
+              <div nz-row>
+                <div nz-col><label nz-checkbox [nzValue]="data.id"></label></div>
+              </div>
+            </nz-checkbox-wrapper> -->
+            <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()"></td>
+            <td >{{ data.custom.name }}</td>
+            <td>{{ data.custom.tags | arrayFormat }}</td>
+            <td>
+              <!-- <div *ngFor="let item of data.name">item</div> -->
+              {{ data.name }}
+            </td>
+            <td>{{ data.phone }}</td>
+            <td>{{ data.custom.custom_type === 0 ? '企业' : '个人' }}</td>
+            <!-- <td><nz-tag *ngFor="let tag of data.tags">{{ tag }}</nz-tag></td> -->
+            <!-- <td>{{data.publish_num}}</td>
+                  <td>{{data.total_amount}}</td> -->
+            <!-- <td>{{ data.remark }}</td> -->
+            <!-- <td> -->
+            <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
+            <!-- </td> -->
+          </tr>
+
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

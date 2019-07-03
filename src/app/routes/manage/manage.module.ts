@@ -19,6 +19,7 @@ import { ScoreConfigComponent } from './film-review/components/score-config/scor
 import { AddScoreComponent } from './film-review/components/add-score/add-score.component';
 import { DeleteScoreComponent } from './film-review/components/delete-score/delete-score.component';
 import { IdeaConfigComponent } from './film-review/components/idea-config/idea-config.component';
+import { DeclareAuthorizationReceiveComponent } from './declare-authorization-receive/declare-authorization-receive.component';
 // import { ImageComponent } from './image/image/image.component';
 // import { ImageDetailsComponent } from './image/image/image-details/image-details.component';
 
@@ -40,6 +41,7 @@ import { IdeaConfigComponent } from './film-review/components/idea-config/idea-c
     AddScoreComponent,
     DeleteScoreComponent,
     IdeaConfigComponent,
+    DeclareAuthorizationReceiveComponent,
     // ImageComponent,
     // ImageDetailsComponent,
    ],

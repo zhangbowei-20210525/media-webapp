@@ -14,41 +14,63 @@ export class NotifyService {
    * 获取系统消息
    */
   getSystemNotify(pagination: PaginationDto) {
-    return this.http.get<PaginationResponseDto<NotifyDto>>('/api/v1/notifies?title=system', { params: {
-      page: pagination.page as any,
-      page_size: pagination.page_size as any
-    } });
+    return this.http.get<PaginationResponseDto<NotifyDto>>('/api/v1/notifies?title=system', {
+      params: {
+        page: pagination.page as any,
+        page_size: pagination.page_size as any
+      }
+    });
   }
 
   /**
    * 获取母带消息
    */
   getSourceNotify(pagination: PaginationDto) {
-    return this.http.get<PaginationResponseDto<NotifyDto>>('/api/v1/notifies?title=source', { params: {
-      page: pagination.page as any,
-      page_size: pagination.page_size as any
-    } });
+    return this.http.get<PaginationResponseDto<NotifyDto>>('/api/v1/notifies?title=source', {
+      params: {
+        page: pagination.page as any,
+        page_size: pagination.page_size as any
+      }
+    });
   }
 
   /**
    * 获取外部消息
    */
   getOutsideNotify(pagination: PaginationDto) {
-    return this.http.get<PaginationResponseDto<NotifyDto>>('/api/v1/notifies?title=outside', { params: {
-      page: pagination.page as any,
-      page_size: pagination.page_size as any
-    } });
+    return this.http.get<PaginationResponseDto<NotifyDto>>('/api/v1/notifies?title=outside', {
+      params: {
+        page: pagination.page as any,
+        page_size: pagination.page_size as any
+      }
+    });
   }
 
   getAuthorizationInfo(id: number) {
     return this.http.get<any>(`/api/v1/sources/auth/receipt/${id}`);
   }
+  getSharingInfo(id: number) {
+    return this.http.get<any>(`/api/v1/publicity/share/${id}`);
+  }
 
-  pubAuth(id: number, newCompany: { status: boolean,  company_id: number }) {
-    return this.http.patch<any>(`/api/v1/sources/auth/receipt/${id}`, newCompany);
+  getAccept(status, company_id, company_full_name, id: number) {
+    return this.http.put<any>(`/api/v1/publicity/share/${id}`, {
+      company_id,
+      status,
+      company_full_name
+    });
+  }
+  pubAuth(status, company_id, company_full_name, id: number) {
+    return this.http.patch<any>(`/api/v1/sources/auth/receipt/${id}`, {
+      status,
+      company_full_name,
+      company_id
+    });
   }
 
   getCompanyList() {
     return this.http.get<any>(`/api/v1/users/info/employees`);
   }
+
+
 }

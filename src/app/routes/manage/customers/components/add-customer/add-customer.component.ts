@@ -154,7 +154,8 @@ export class AddCustomerComponent implements OnInit {
       abbreviation: [null],
       telephone: [null, [Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]], // [Validators.required, Validators.pattern(/^0\d{2,3}-?\d{7,8}$/)]
       remark: [null],
-      tags: [[]]
+      tags: [[]],
+      customTagOptions: [Validators.required]
     });
     // this.liaisonForm = this.fb.group({
     //   name: [null, [Validators.required]],
@@ -168,6 +169,7 @@ export class AddCustomerComponent implements OnInit {
 
     this.service.getTags().subscribe(tags => {
       this.customTagOptions = tags;
+      console.log(this.customTagOptions);
     });
   }
 
@@ -196,7 +198,7 @@ export class AddCustomerComponent implements OnInit {
   }
 
   submit(): Observable<any> {
-    console.log('ssss')
+    console.log('ssss');
     if (this.sf.value.liaisons.length > 0 && !this.sf.valid) {
       return throwError({});
     }
@@ -207,7 +209,7 @@ export class AddCustomerComponent implements OnInit {
     console.log(custom);
     console.log(liaisons);
     return this.service.addCustomer({ custom, liaisons });
-    
+
   }
 
   schemaSubmit(value: any) {

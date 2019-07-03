@@ -113,7 +113,7 @@
               <th>{{ 'app.series.size' | translate }}</th>
               <th>{{ 'app.series.created-time' | translate }}</th>
               <th>工作站存储</th>
-              <!-- <th *ngIf="isActive">服务器存储</th> -->
+              <th *ngIf="isActive">服务器存储</th>
               <th>加速存储</th>
               <th>{{ 'app.series.operation' | translate }}</th>
             </tr>
@@ -128,7 +128,7 @@
               <td *ngIf="data.local_file_status === 'deleting'" class="deleting" >{{ data.local_file_status | sourceFileStatus }}</td>
               <td *ngIf="data.local_file_status === 'deleted'" class="deleted" >{{ data.local_file_status | sourceFileStatus }}</td>
 
-              <!-- <td *ngIf="data.local_file_status !== ''">{{ data.local_file_status | sourceFileStatus }}</td>              -->
+              <td *ngIf="data.local_file_status === ''">{{ data.local_file_status | sourceFileStatus }}</td>             
               
               <td *ngIf="data.hashlink_file_status === 'backend'" class="backend" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
               <td *ngIf="data.hashlink_file_status === 'active'" class="active" >{{ data.hashlink_file_status |sourceFileStatus }}</td>

@@ -37,7 +37,6 @@ export class CustomersService {
   getCustomers(pagination: PaginationDto) {
     return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom?page=${pagination.page}&limit=${pagination.page_size}`);
   }
-
   addCustomer(customer: OptionCustomer) {
     return this.http.post<any>('/api/v1/custom', customer);
   }
@@ -64,7 +63,10 @@ export class CustomersService {
     return this.http.get<PaginationResponseDto<any>>(`/api/v1/custom/${id}/contract`,
       { params: { page: pagination.page as any, page_size: pagination.page_size as any, contract_type } });
   }
-
+  getPublicityFilms(pagination: PaginationDto, tag: any, q: any) {
+    return this.http.get<PaginationResponseDto<any>>(`/api/v1/customs/liaisons`,
+    { params: { page: pagination.page as any , page_size: pagination.page_size as any, tag, q } });
+  }
   getLogs(pagination: PaginationDto, id: number) {
     return this.http.get<any>(`/api/v1/custom/${id}/follow?page=${pagination.page}&page_size=${pagination.page_size}`);
   }

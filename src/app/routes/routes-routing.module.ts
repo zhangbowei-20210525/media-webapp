@@ -11,6 +11,7 @@ import { SimpleGuard } from '@delon/auth';
 import { BrowseRecordComponent } from './manage/personal-center/browse-record/browse-record.component';
 import { MarketDetailsComponent } from './market/market-details/market-details.component';
 import { PubAuthorizationReceiveComponent } from './manage/pub-authorization-receive/pub-authorization-receive.component';
+import { DeclareAuthorizationReceiveComponent } from './manage/declare-authorization-receive/declare-authorization-receive.component';
 import { ACLGuard, ACLType } from '@delon/acl';
 import { aclAbility } from '@core/acl';
 import { PassportComponent } from 'app/layout/passport/passport.component';
@@ -54,6 +55,10 @@ const routes: Routes = [
           {
             path: 'pubAuthorizationReceive',
             component: PubAuthorizationReceiveComponent
+          },
+          {
+            path: 'DeclareAuthorizationReceive',
+            component: DeclareAuthorizationReceiveComponent
           },
           {
             path: 'image', loadChildren: './manage/image/image.module#ImageModule',
