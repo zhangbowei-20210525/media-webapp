@@ -8,12 +8,12 @@ import { SharedModule, SeriesSelectorComponent } from '@shared';
 import { LaunchFilmsComponent } from './components/launch-films/launch-films.component';
 import { TendencyInfoComponent } from './components/tendency-info/tendency-info.component';
 import { CollectionUpComponent } from './components/collection-up/collection-up.component';
-import { VerifyFilmsComponent } from './verify-films/verify-films.component';
 import { FilmsDetailsComponent } from './films-details/films-details.component';
 import { CallUpComponent } from './components/call-up/call-up.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
 import { FirstInstanceDetailsComponent } from './components/first-instance-details/first-instance-details.component';
 import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
+import { ReceiveSolicitationComponent } from './receive-solicitation/receive-solicitation.component';
 @NgModule({
   declarations: [
     ImageComponent,
@@ -21,12 +21,12 @@ import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-de
     LaunchFilmsComponent,
     TendencyInfoComponent,
     CollectionUpComponent,
-    VerifyFilmsComponent,
     FilmsDetailsComponent,
     CallUpComponent,
     DetailsSolicitationComponent,
     FirstInstanceDetailsComponent,
     AdminFilmsDetailsComponent,
+    ReceiveSolicitationComponent,
   ],
   imports: [
     CommonModule,
@@ -36,7 +36,6 @@ import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-de
   ],
   entryComponents: [
     LaunchFilmsComponent,
-    VerifyFilmsComponent,
     FilmsDetailsComponent,
     TendencyInfoComponent,
     CollectionUpComponent,

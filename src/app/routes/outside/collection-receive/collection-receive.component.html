@@ -1,0 +1,10 @@
+<div style="display: flex;flex-direction: column;align-items: center;margin-top: 50px">
+    <div style="margin-top: 10px">来自<span style="font-weight: bold;color: black">{{ solicitationInfo?.created_employee?.company?.full_name }}</span>的样片征集令</div>
+    <div style="margin-top: 10px">{{ solicitationInfo?.created_employee?.name }}</div>
+    <div style="margin-top: 10px">征集类型：<span>{{ solicitationInfo?.program_type }}</span></div>
+    <div style="margin-top: 10px">征集题材：<span>{{ solicitationInfo?.program_theme }}</span></div>
+    <div style="margin-top: 10px">{{ solicitationInfo?.description }}</div>
+    <div style="margin-top: 30px">
+    <button nz-button nzType="default" (click)="swichUrl()">上传样片</button>
+    </div>
+  </div>

@@ -4,10 +4,10 @@ import { ImageComponent } from './image.component';
 import { ImageDetailsComponent } from './image-details/image-details.component';
 import { ACLGuard, ACLType } from '@delon/acl';
 import { aclAbility } from '@core/acl';
-import { VerifyFilmsComponent } from './verify-films/verify-films.component';
 import { FilmsDetailsComponent } from './films-details/films-details.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
 import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
+import { ReceiveSolicitationComponent } from './receive-solicitation/receive-solicitation.component';
 const routes: Routes = [
   {
     path: '',
@@ -34,11 +34,10 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'image-details/:id', component: ImageDetailsComponent,
-    // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
+    path: 'receive-solicitation/:id', component: ReceiveSolicitationComponent,
   },
   {
-    path: 'verify-films', component: VerifyFilmsComponent,
+    path: 'image-details/:id', component: ImageDetailsComponent,
     // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
   },
   {
@@ -46,7 +45,7 @@ const routes: Routes = [
     // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
   },
   {
-    path: 'details-solicitation', component: DetailsSolicitationComponent,
+    path: 'details-solicitation/:id', component: DetailsSolicitationComponent,
     // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
   },
     {

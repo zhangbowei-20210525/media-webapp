@@ -66,7 +66,7 @@ export class DetailsSolicitationComponent implements OnInit {
       introduction: [null]
     });
     this.seriesService.getSamplePublicitys().subscribe(res => {
-      this.programList = res.data.list;
+      this.programList = res.list;
     });
   }
   fileType(value) {

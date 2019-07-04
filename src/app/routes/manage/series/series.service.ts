@@ -361,4 +361,8 @@ export class SeriesService {
       intention_ids,
     });
   }
+
+  getSolicitationDetails(id: number) {
+    return this.http.get<any>(`/api/v1/publicity/collections/${id}`,  { params: { _allow_anonymous: '' } });
+  }
 }

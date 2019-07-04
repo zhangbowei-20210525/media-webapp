@@ -117,7 +117,8 @@ export class PhoneLoginComponent implements OnInit {
       token: data.token,
       permissions: this.ts.recursionNodesMapArray(data.permissions, p => p.code, p => p.status)
     });
-    this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
+    // this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
+    this.router.navigate([this.stateStore.getDirectionUrl() || '/']);
     setTimeout(() => {
       this.modal.create({
         nzTitle: '重要待处理消息',

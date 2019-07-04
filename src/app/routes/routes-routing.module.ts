@@ -92,6 +92,7 @@ const routes: Routes = [
       }
     ]
   },
+  { path: 'outside', loadChildren: './outside/outside.module#OutsideModule' },
   {
     path: 'passport',
     component: PassportComponent,

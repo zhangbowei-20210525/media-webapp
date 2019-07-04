@@ -2,19 +2,19 @@
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="companyName">征集单位</nz-form-label>
     <nz-form-control [nzSm]="21">
-      <input nz-input placeholder="请输入征集单位" id="companyName" formControlName="companyName" [(ngModel)]="companyName">
+      <input nz-input placeholder="请输入征集单位" id="companyName" formControlName="companyName">
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="userName">征集人</nz-form-label>
     <nz-form-control [nzSm]="21">
-      <input nz-input placeholder="请输入征集人" id="userName" formControlName="userName" [(ngModel)]="userName">
+      <input nz-input placeholder="请输入征集人" id="userName" formControlName="userName">
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="filmType" nzRequired>节目类型</nz-form-label>
     <nz-form-control [nzSm]="21">
-      <input nz-input placeholder="请输入节目类型" id="filmType" formControlName="filmType" [(ngModel)]="filmType">
+      <input nz-input placeholder="请输入节目类型" id="filmType" formControlName="filmType">
       <nz-form-explain *ngIf="SolicitationForm.get('filmType').dirty && SolicitationForm.get('filmType').errors">
         请输入节目类型
       </nz-form-explain>
@@ -23,7 +23,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="meterial" nzRequired>题材</nz-form-label>
     <nz-form-control [nzSm]="21">
-      <input nz-input placeholder="请输入题材" id="meterial" formControlName="meterial" [(ngModel)]="meterial">
+      <input nz-input placeholder="请输入题材" id="meterial" formControlName="meterial">
       <nz-form-explain *ngIf="SolicitationForm.get('meterial').dirty && SolicitationForm.get('meterial').errors">
         请输入题材
       </nz-form-explain>
