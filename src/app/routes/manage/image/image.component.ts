@@ -94,7 +94,7 @@ export class ImageComponent implements OnInit {
         .subscribe(result => {
           this.list = result.list;
           this.pagination = result.pagination;
-          console.log(this.list);
+          // console.log(this.list);
         });
     } else if (this.mode === 'table') {
       if (step_number === 0) {
@@ -107,13 +107,12 @@ export class ImageComponent implements OnInit {
             this.intentionList = result.list;
             this.pagination = result.pagination;
             // this.paginationName = result.pagination.name;
-            console.log(result);
+            // console.log(result);
           });
       } else {
         this.service.getReviewList(this.pagination, step_number).subscribe(res => {
-          console.log(res);
+          // console.log(res);
           this.reviewList = res.list;
-          console.log(this.reviewList);
           this.reviewList.forEach(item => {
             this.reviewId = item.id;
           });
@@ -148,11 +147,11 @@ export class ImageComponent implements OnInit {
     this.isFirstAllDisplayDataChecked = this.firstListOfDisplayData.every(item => this.firstMapOfCheckedId[item.id]);
     this.isFirstIndeterminate =
       this.firstListOfDisplayData.some(item => this.firstListOfDisplayData[item.id]) && !this.isFirstAllDisplayDataChecked;
-    console.log(this.firstMapOfCheckedId);
+    // console.log(this.firstMapOfCheckedId);
 
   }
   firstPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
-    console.log($event);
+    // console.log($event);
     this.firstListOfDisplayData = $event;
     this.firstRefreshStatus();
   }
@@ -165,7 +164,7 @@ export class ImageComponent implements OnInit {
     this.isSecondAllDisplayDataChecked = this.secondListOfDisplayData.every(item => this.secondMapOfCheckedId[item.id]);
     this.isSecondIndeterminate =
       this.secondListOfDisplayData.some(item => this.secondMapOfCheckedId[item.id]) && !this.isSecondAllDisplayDataChecked;
-    console.log(this.secondMapOfCheckedId);
+    // console.log(this.secondMapOfCheckedId);
 
   }
   secondPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -181,7 +180,7 @@ export class ImageComponent implements OnInit {
     this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.id]);
     this.isThreeIndeterminate =
       this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.id]) && !this.isThreeAllDisplayDataChecked;
-    console.log(this.threeMapOfCheckedId);
+    // console.log(this.threeMapOfCheckedId);
 
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -193,7 +192,7 @@ export class ImageComponent implements OnInit {
     this.threeRefreshStatus();
   }
   publicityPlay(id: number, sid: number) {
-    console.log(id);
+    // console.log(id);
     this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
   }
   // 发起审片弹框
@@ -240,8 +239,8 @@ export class ImageComponent implements OnInit {
   }
   creatReview() {
     this.service.creatReview(this.checkedIntentionIds).subscribe(res => {
-      console.log(res);
-      console.log(this.checkedIntentionIds);
+      // console.log(res);
+      // console.log(this.checkedIntentionIds);
     });
   }
   // 发起样片征集令弹框
@@ -264,12 +263,10 @@ export class ImageComponent implements OnInit {
 
   // 进入一审详情页
   firstCheck(id, sid) {
-    console.log(id, sid, 'wwwww');
     this.router.navigate([`/manage/image/films-details/${id}`, { sid: sid }]);
   }
   // 节目名跳转详情
   AdministratorViewDetails(id, sid) {
-    console.log(id, sid, '1231');
     this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid }]);
   }
   // 设置面板改变
@@ -302,11 +299,10 @@ export class ImageComponent implements OnInit {
         review_ids.push(Number(key));
       }
     }
-    console.log(review_ids);
     // this.review_ids = this.checkedFirstIds;
-    console.log(this.checkedFirstIds);
+    // console.log(this.checkedFirstIds);
     this.service.submitFirstInstance(review_ids).subscribe(res => {
-      console.log(res);
+      // console.log(res);
     });
     this.selectedTabIndex = 3;
     this.selectedIndex = 3;
