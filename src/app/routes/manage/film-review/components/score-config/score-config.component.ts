@@ -58,10 +58,8 @@ export class ScoreConfigComponent implements OnInit {
         }
         this.sum = 0;
         this.brr.forEach(x => {
-          console.log(x);
           this.sum = this.sum + x.proportion;
         });
-        console.log(this.sum);
       }
       if (this.brr.length === 0) {
         this.brr.push({
@@ -70,10 +68,8 @@ export class ScoreConfigComponent implements OnInit {
         });
         this.sum = 0;
         this.brr.forEach(x => {
-          console.log(x);
           this.sum = this.sum + x.proportion;
         });
-        console.log(this.sum);
       }
     }
     if ($event === false) {

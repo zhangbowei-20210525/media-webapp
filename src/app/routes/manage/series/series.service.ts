@@ -365,4 +365,8 @@ export class SeriesService {
   getSolicitationDetails(id: number) {
     return this.http.get<any>(`/api/v1/publicity/collections/${id}`,  { params: { _allow_anonymous: '' } });
   }
+
+  getAcceptEmployeeEnvitationsInfo(id: number) {
+    return this.http.get<any>(`/api/v1/companies/employees/${id}/invitation`,  { params: { _allow_anonymous: '' } });
+  }
 }
