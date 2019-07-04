@@ -34,6 +34,7 @@ import { EmptyComponent } from './components/empty/empty.component';
 import { SeriesSelectorComponent } from './components/series-selector/series-selector.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { TagMergeComponent } from './components/tag-merge/tag-merge.component';
+import { NotifyAlertComponent } from './components/notify-alert/notify-alert.component';
 
 const INSIDE_COMPONENTS = [
   LoginComponent,
@@ -44,7 +45,8 @@ const COMPONENTS = [
   EmptyComponent,
   SeriesSelectorComponent,
   LoadingComponent,
-  TagMergeComponent
+  TagMergeComponent,
+  NotifyAlertComponent
 ];
 
 const DIRECTIVES = [];
@@ -63,6 +65,7 @@ import { YesOrNoPipe } from './pipes/yes-or-no.pipe';
 import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 import { ArrayMapPipe } from './pipes/array-map.pipe';
 import { SourceFileStatusPipe } from './pipes/source-file-status.pipe';
+import { MaxNumberPipe } from './pipes/max-number.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -78,7 +81,9 @@ const PIPES = [
   YesOrNoPipe,
   PaymentFormatPipe,
   ArrayMapPipe,
-  SourceFileStatusPipe
+  SourceFileStatusPipe,
+  WeekDayPipe,
+  MaxNumberPipe
 ];
 // #endregion
 
@@ -86,6 +91,8 @@ import { RouterModule } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { WeekDayPipe } from './pipes/week-day.pipe';
+
 
 
 @NgModule({
@@ -126,6 +133,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     // ...SERVICES
   ],
   entryComponents: [
+    ...COMPONENTS,
     // inside components
     ...INSIDE_COMPONENTS
   ]

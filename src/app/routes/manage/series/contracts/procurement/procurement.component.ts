@@ -57,6 +57,7 @@ export class ProcurementComponent implements OnInit {
   delete(id: number) {
     this.service.deleteContract(id).subscribe(() => {
       this.message.success(this.translate.instant('global.delete-success'));
+      this.fetchContracts();
     });
   }
 

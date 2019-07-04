@@ -1,0 +1,166 @@
+<form nz-form [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzRequired>频道</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <input placeholder="请填写频道名称" nz-input id="channel" formControlName="channel" [nzAutocomplete]="autoChannel"
+        (input)="onChannelInput($event.target?.value)" (ngModelChange)="channelChange()" />
+      <nz-autocomplete nzBackfill #autoChannel>
+        <nz-auto-option *ngFor="let option of channelOptions" [nzValue]="option">
+          {{ option }}
+        </nz-auto-option>
+      </nz-autocomplete>
+      <nz-form-explain *ngIf="validateForm.get('channel').dirty && validateForm.get('channel').errors">请填写频道名称
+      </nz-form-explain>
+    </nz-form-control>
+    <nz-form-label [nzSm]="3" nzRequired>栏目</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <input placeholder="请填写栏目名称" nz-input id="theatre" formControlName="theatre" [nzAutocomplete]="autoTheatre" />
+      <nz-autocomplete nzBackfill #autoTheatre>
+        <nz-auto-option *ngFor="let option of theatres" [nzValue]="option">
+          {{ option }}
+        </nz-auto-option>
+      </nz-autocomplete>
+      <nz-form-explain *ngIf="validateForm.get('theatre').dirty && validateForm.get('theatre').errors">请填写栏目名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" nzRequired>首播日期</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <nz-date-picker id="premiereTime" formControlName="premiereTime" [nzStyle]="{ 'width' : '282px' }">
+      </nz-date-picker>
+      <nz-form-explain *ngIf="validateForm.get('premiereTime').dirty && validateForm.get('premiereTime').errors">请选择开播时间
+      </nz-form-explain>
+    </nz-form-control>
+    <nz-form-label [nzSm]="3" nzRequired>开播时间</nz-form-label>
+    <nz-form-control [nzSm]="9">
+      <nz-time-picker id="startBroadcastTime" formControlName="startBroadcastTime" style="width: 282px">
+      </nz-time-picker>
+      <nz-form-explain
+        *ngIf="validateForm.get('startBroadcastTime').dirty && validateForm.get('startBroadcastTime').errors">请选择开播时间
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>播出日期</nz-form-label>
+    <nz-form-control [nzSm]="21" [nzXs]="24">
+      <nz-slider [nzMarks]="marks" nzIncluded nzRange [nzMax]="7" [nzMin]="1" id="broadcastDate"
+        formControlName="broadcastDate"></nz-slider>
+      <nz-form-explain *ngIf="validateForm.get('broadcastDate').dirty && validateForm.get('broadcastDate').errors">
+        请选择播出日期
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>集数</nz-form-label>
+    <nz-form-control [nzSm]="21" [nzXs]="24">
+      <nz-select style="width: 282px;" id="episodes" formControlName="episodes" nzPlaceHolder="请填写集数">
+        <nz-option nzValue=1 nzLabel=1></nz-option>
+        <nz-option nzValue=2 nzLabel=2></nz-option>
+        <nz-option nzValue=3 nzLabel=3></nz-option>
+        <nz-option nzValue=4 nzLabel=4></nz-option>
+        <nz-option nzValue=5 nzLabel=5></nz-option>
+        <nz-option nzValue=6 nzLabel=6></nz-option>
+        <nz-option nzValue=7 nzLabel=7></nz-option>
+        <nz-option nzValue=8 nzLabel=8></nz-option>
+        <nz-option nzValue=9 nzLabel=9></nz-option>
+        <nz-option nzValue=10 nzLabel=10></nz-option>
+      </nz-select>
+      <button nz-button nzType="primary" nzSmall="small" (click)="addBroadcastMethod()"
+        style="margin-left: 50px ">添加</button>
+    </nz-form-control>
+    <nz-form-explain *ngIf="validateForm.get('theatre').dirty && validateForm.get('theatre').errors">请填写栏目名称
+    </nz-form-explain>
+  </nz-form-item>
+  <div style=" background-color: #fff;zoom: 1;border-radius: 2px;margin-bottom: 1.3rem;">
+    <div style="margin: 2rem;min-height: 1rem;">
+      <nz-list [nzDataSource]="listOfData" nzBordered nzSize="small" [nzHeader]="head" [nzRenderItem]="item">
+        <ng-template #item let-item>
+          <nz-list-item [nzContent]="content">
+            <ng-template #content>
+              <div *ngIf="item.weeks[0] !== item.weeks[item.weeks.length - 1]">
+                <span *ngIf="item.weeks[0] == 1">星期一</span>
+                <span *ngIf="item.weeks[0] == 2">星期二</span>
+                <span *ngIf="item.weeks[0] == 3">星期三</span>
+                <span *ngIf="item.weeks[0] == 4">星期四</span>
+                <span *ngIf="item.weeks[0] == 5">星期五</span>
+                <span *ngIf="item.weeks[0] == 6">星期六</span>
+                <span *ngIf="item.weeks[0] == 7">星期日</span>
+                &nbsp;&nbsp;~&nbsp;&nbsp;
+                <span *ngIf="item.weeks[item.weeks.length - 1] == 1">星期一</span>
+                <span *ngIf="item.weeks[item.weeks.length - 1] == 2">星期二</span>
+                <span *ngIf="item.weeks[item.weeks.length - 1] == 3">星期三</span>
+                <span *ngIf="item.weeks[item.weeks.length - 1] == 4">星期四</span>
+                <span *ngIf="item.weeks[item.weeks.length - 1] == 5">星期五</span>
+                <span *ngIf="item.weeks[item.weeks.length - 1] == 6">星期六</span>
+                <span *ngIf="item.weeks[item.weeks.length - 1] == 7">星期日</span>
+                &nbsp;&nbsp;：&nbsp;&nbsp;
+                <span>播出{{ item.episode }}集</span>
+              </div>
+              <div *ngIf="item.weeks[0] == item.weeks[item.weeks.length - 1]">
+                <span *ngIf="item.weeks[0] == 1">星期一</span>
+                <span *ngIf="item.weeks[0] == 2">星期二</span>
+                <span *ngIf="item.weeks[0] == 3">星期三</span>
+                <span *ngIf="item.weeks[0] == 4">星期四</span>
+                <span *ngIf="item.weeks[0] == 5">星期五</span>
+                <span *ngIf="item.weeks[0] == 6">星期六</span>
+                <span *ngIf="item.weeks[0] == 7">星期日</span>
+                &nbsp;&nbsp;：&nbsp;&nbsp;
+                <span>播出{{ item.episode }}集</span>
+              </div>
+            </ng-template>
+          </nz-list-item>
+        </ng-template>
+
+        <ng-template #head>
+          <span>播出计划</span>
+          <span> <a (click)="deleteListOfData()" style="float: right"><i nz-icon type="delete" theme="outline"
+                style="font-size: 14px;"></i></a></span>
+        </ng-template>
+      </nz-list>
+      <!-- <nz-divider nzText="当下播出"></nz-divider>
+      <nz-form-item>
+        <nz-form-label [nzSm]="3" nzRequired>节目</nz-form-label>
+        <nz-form-control [nzSm]="9">
+          <nz-select formControlName="series" nzAllowClear nzPlaceHolder="请选择节目" (ngModelChange)="seriesChange()">
+            <nz-option *ngFor="let option of seriesOption" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('series').dirty && validateForm.get('series').errors">请选择节目
+          </nz-form-explain>
+        </nz-form-control>
+        <nz-form-label [nzSm]="3" nzRequired>集数</nz-form-label>
+        <nz-form-control [nzSm]="9">
+          <nz-input-number formControlName="num" [nzMin]="1" [nzMax]="999" [nzStep]="1" [nzDisabled]="disabled">
+          </nz-input-number>&nbsp;&nbsp;集
+          <nz-form-explain *ngIf="validateForm.get('num').dirty && validateForm.get('num').errors">
+            请选择集数
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="3" nzRequired>播出日期</nz-form-label>
+        <nz-form-control [nzSm]="9">
+          <nz-date-picker id="currentBroadcastDate" formControlName="currentBroadcastDate"
+            [nzStyle]="{ 'width' : '265px' }"></nz-date-picker>
+          <nz-form-explain currentBroadcastDate
+            *ngIf="validateForm.get('currentBroadcastDate').dirty && validateForm.get('currentBroadcastDate').errors">
+            请选择播出日期
+          </nz-form-explain>
+        </nz-form-control>
+        <nz-form-label [nzSm]="3" nzRequired>播出集数</nz-form-label>
+        <nz-form-control [nzSm]="9">
+          <nz-input-number formControlName="start_episode" [nzMin]="1" [nzMax]="999" [nzStep]="1"></nz-input-number>
+          &nbsp;&nbsp;~&nbsp;&nbsp;
+          <nz-input-number formControlName="end_episode" [nzMin]="1" [nzMax]="999" [nzStep]="1"></nz-input-number>
+          &nbsp;&nbsp;集
+          <nz-form-explain
+            *ngIf="validateForm.get('start_episode').dirty && validateForm.get('start_episode').errors && validateForm.get('end_episode').dirty && validateForm.get('end_episode').errors">
+            请选择播出集数
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item> -->
+    </div>
+  </div>
+</form>

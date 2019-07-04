@@ -1,72 +1,66 @@
-// import { Injectable, Inject } from '@angular/core';
-// import { DA_SERVICE_TOKEN, ITokenService, SimpleTokenModel } from '@delon/auth';
-// import { Subject } from 'rxjs';
-// import { TokenModel } from './token';
+import { Injectable, Inject } from '@angular/core';
+import { DA_SERVICE_TOKEN, ITokenService, SimpleTokenModel, ITokenModel } from '@delon/auth';
+import { Subject, Observable } from 'rxjs';
+import { TokenModel } from './token';
+import { SettingsService } from '@core/settings/settings.service';
+import { NotifiesPolling } from '@core/notifies';
+import { User } from '@core/settings/interface';
+import { map } from 'rxjs/operators';
 
-// const TERM = 1000000;
+interface LoginData {
+    userInfo: any;
+    token: string;
+    permissions: string[];
+  }
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthService {
+@Injectable({
+    providedIn: 'root'
+})
+export class AuthService {
 
-//   private _notify$ = new Subject<boolean>();
-//   private _isLoggedIn: boolean;
+    state$: Observable<boolean>;
 
-//   constructor(
-//     @Inject(DA_SERVICE_TOKEN) private token: ITokenService
-//   ) {
-//     this.token.change().subscribe(t => {
-//       if (t) {
-//         this.isLoggedIn = true;
-//       } else {
-//         if (!this.checkToken()) { // 忽略初始值
-//           this.isLoggedIn = false;
-//         }
-//       }
-//     });
-//   }
+    constructor(
+        @Inject(DA_SERVICE_TOKEN) private its: ITokenService,
+        private settings: SettingsService,
+        private ntf: NotifiesPolling
+    ) {
+        this.state$ = its.change().pipe(map(t => this.checkToken(t)));
+    }
 
-//   private checkSimple(model: SimpleTokenModel): boolean {
-//     return model != null && typeof model.token === 'string' && model.token.length > 0;
-//   }
+    get isLoggedIn() {
+        return this.checkToken(this.token);
+    }
 
-//   private checkToken(): boolean {
-//     return this.checkSimple(this.token.get());
-//   }
+    get token() {
+        return this.its.get();
+    }
 
-//   CheckTokenValid() {
-//     const tk = this.token.get() as TokenModel;
-//     this._isLoggedIn = this.checkSimple(tk);
-//     if (this._isLoggedIn) {
-//       if (tk.time + TERM < +new Date) {
-//         this._isLoggedIn = false;
-//         this.token.clear();
-//       }
-//     }
-//   }
+    private checkToken(model: SimpleTokenModel) {
+        return model != null && typeof model.token === 'string' && model.token.length > 0;
+    }
 
-//   get notify() {
-//     return this._notify$.asObservable();
-//   }
+    // login(token: TokenModel, user: User, permissions: string[]) {
+    //     this.its.set(token);
+    //     this.settings.user = user;
+    //     this.settings.permissions = permissions;
+    //     this.ntf.startNotifiesPolling();
+    // }
 
-//   get isLoggedIn() {
-//     if (this._isLoggedIn === undefined) {
-//       this._isLoggedIn = this.checkToken();
-//     }
-//     return this._isLoggedIn;
-//   }
+    onLogin(data: LoginData) {
+        this.its.set({
+            token: data.token,
+            time: +new Date
+        });
+        this.settings.user = data.userInfo;
+        this.settings.permissions = data.permissions;
+        this.ntf.startNotifiesPolling();
+    }
 
-//   set isLoggedIn(value: boolean) {
-//     this._isLoggedIn = value;
-//     this._notify$.next(value);
-//   }
-
-//   setLogin(token: TokenModel) {
-//     this.token.set(token);
-//   }
-
-//   setLogout() {
-//     this.token.clear();
-//   }
-// }
+    onLogout() {
+        this.ntf.stopNotifiesPolling();
+        this.its.clear();
+        this.settings.user = null;
+        this.settings.permissions = null;
+    }
+}

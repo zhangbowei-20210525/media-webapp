@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AccountService, TreeService } from '@shared';
 import { switchMap } from 'rxjs/operators';
-import { SettingsService } from '@core';
+import { SettingsService, AuthService } from '@core';
 import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
 @Component({
@@ -18,7 +18,7 @@ export class EmailComponent implements OnInit {
     private route: ActivatedRoute,
     private settings: SettingsService,
     private ts: TreeService,
-    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -27,14 +27,13 @@ export class EmailComponent implements OnInit {
     this.route.queryParamMap.pipe(
       switchMap((params: ParamMap) => {
         const token = params.get('token');
-        return  this.accountervice.emailActivate(token);
+        return this.accountervice.emailActivate(token);
       })
     ).subscribe((result => {
-      this.settings.user = result.auth;
-      this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
-      this.tokenService.set({
+      this.auth.onLogin({
         token: result.token,
-        time: +new Date
+        userInfo: result.auth,
+        permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
       });
       this.router.navigate([`/manage/series`]);
       // window.parent.location.reload();

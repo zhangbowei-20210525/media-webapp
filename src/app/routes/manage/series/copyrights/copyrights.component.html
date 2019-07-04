@@ -9,8 +9,10 @@
       </nz-radio-group>
     </div>
     <div class="options-wrapper">
+      <!-- <button nz-button (click)="filter()"><i nz-icon nzType="filter" nzTheme="outline"></i>筛选</button> -->
+      <a (click)="filter()"><i nz-icon nzType="filter" nzTheme="outline" style="margin-right: .5rem"></i>筛选</a>
       <a nz-button acl [acl-ability]="ability.program.right.edit" nzType="default" routerLink="/manage/series/add-copyrights">新增版权</a>
-      <a nz-button acl [acl-ability]="ability.program.right.publish" nzType="default" routerLink="/manage/series/publish-rights">新增发行</a>
+      <a nz-button acl [acl-ability]="ability.program.right.publish" nzType="default" (click)="addPublish()">新增发行</a>
     </div>
   </div>
   <router-outlet></router-outlet>

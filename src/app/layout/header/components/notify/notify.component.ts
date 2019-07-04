@@ -1,9 +1,10 @@
 import { finalize, delay } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NotifyService } from './notify.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaginationDto, MessageService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
+import { NotifiesPolling } from '@core/notifies';
 
 @Component({
   selector: 'app-notify',
@@ -26,11 +27,16 @@ export class NotifyComponent implements OnInit {
   isSrcLoding = false;
   isOutLoding = false;
 
+  sysUnread = 0;
+  srcUnread = 0;
+  outUnread = 0;
+
   sysNotifys = [];
   srcNotifys = [];
   outNotifys = [];
 
-  visible: boolean;
+  tabIndex = 0;
+  visible = false;
   drawerTitle: string;
   drawerCreated_at: string;
   drawerContent: string;
@@ -60,11 +66,22 @@ export class NotifyComponent implements OnInit {
     private message: MessageService,
     private translate: TranslateService,
     private fb: FormBuilder,
-
-  ) { }
+    private np: NotifiesPolling
+  ) {
+    const subscription = this.np.notifies().subscribe(result => {
+      this.sysUnread = result.base.notify.unread_system_num;
+      this.srcUnread = result.base.notify.unread_source_num;
+      this.outUnread = result.base.notify.unread_outside_num;
+      const sort = [{ tab: 0, unread: this.sysUnread }, { tab: 1, unread: this.srcUnread }, { tab: 2, unread: this.outUnread }];
+      sort.sort((a, b) => a.unread - b.unread).reverse();
+      this.tabIndex = sort[0].tab;
+      subscription.unsubscribe();
+    });
+    this.np.nextNotifies();
+  }
 
   ngOnInit() {
-    this.loadSysNotifys();
+    this.fetchSysNotifys();
     this.validateForm = this.fb.group({
       companyFullName: [null, [Validators.required]],
       phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
@@ -72,66 +89,16 @@ export class NotifyComponent implements OnInit {
       customType: ['1', [Validators.required]]
     });
   }
-  validation() {
-    const form = this.validateForm;
-    for (const i in form.controls) {
-      if (form.controls.hasOwnProperty(i)) {
-        const control = form.controls[i];
-        control.markAsDirty();
-        control.updateValueAndValidity();
-      }
-    }
-    return form.valid;
-  }
-  loadSysNotifys() {
-    this.visible = false;
-    this.isSysLoding = true;
-    this.service.getSystemNotify(this.sysPagination)
-      .pipe(finalize(() => {
-        this.isSysLoding = false;
-        this.isSysLoaded = true;
-      }))
-      .subscribe(result => {
-        this.sysNotifys = result.list;
-        console.log(result.list);
-        // this.sysNotifys = [...result.list, ...result.list, ...result.list, ...result.list];
-        this.sysPagination.count = result.pagination.count;
-        this.sysPagination.pages = result.pagination.pages;
-      });
-  }
-
-  loadSrcNotifys() {
-    this.visible = false;
-    this.isSrcLoding = true;
-    this.service.getSourceNotify(this.srcPagination)
-      .pipe(finalize(() => {
-        this.isSrcLoding = false;
-        this.isSrcLoaded = true;
-      }))
-      .subscribe(result => {
-        console.log(result);
-        this.srcNotifys = result.list;
-        this.srcPagination.count = result.pagination.count;
-      });
-  }
-
-  loadOutNotifys() {
-    this.isSysLoding = true;
-    this.service.getOutsideNotify(this.outPagination)
-      .pipe(finalize(() => {
-        this.isOutLoding = false;
-        this.isOutLoaded = true;
-      }))
-      .subscribe(result => {
-        this.outNotifys = result.list;
-        this.outPagination.count = result.pagination.count;
-      });
-  }
 
   fetchSysNotifys() {
     this.isSysLoding = true;
     this.service.getSystemNotify(this.sysPagination)
-      .pipe(finalize(() => this.isSysLoding = false))
+      .pipe(finalize(() => {
+        this.isSysLoding = false;
+        if (!this.isSysLoaded) {
+          this.isSysLoaded = true;
+        }
+      }))
       .subscribe(result => {
         this.sysNotifys = [...this.sysNotifys, ...result.list];
         this.sysPagination.count = result.pagination.count;
@@ -142,20 +109,44 @@ export class NotifyComponent implements OnInit {
   fetchSrcNotifys() {
     this.isSrcLoding = true;
     this.service.getSourceNotify(this.srcPagination)
-      .pipe(finalize(() => this.isSrcLoding = false))
+      .pipe(finalize(() => {
+        this.isSrcLoding = false;
+        if (!this.isSrcLoaded) {
+          this.isSrcLoaded = true;
+        }
+      }))
       .subscribe(result => {
         this.srcNotifys = [...this.srcNotifys, ...result.list];
         this.srcPagination.count = result.pagination.count;
+        this.srcPagination.pages = result.pagination.pages;
       });
   }
 
+  // validation() {
+  //   const form = this.validateForm;
+  //   for (const i in form.controls) {
+  //     if (form.controls.hasOwnProperty(i)) {
+  //       const control = form.controls[i];
+  //       control.markAsDirty();
+  //       control.updateValueAndValidity();
+  //     }
+  //   }
+  //   return form.valid;
+  // }
+
   fetchOutNotifys() {
-    this.isSysLoding = true;
+    this.isOutLoding = true;
     this.service.getOutsideNotify(this.outPagination)
-      .pipe(finalize(() => this.isOutLoding = false))
+      .pipe(finalize(() => {
+        this.isOutLoding = false;
+        if (!this.isOutLoaded) {
+          this.isOutLoaded = true;
+        }
+      }))
       .subscribe(result => {
         this.outNotifys = [...this.outNotifys, ...result.list];
         this.outPagination.count = result.pagination.count;
+        this.outPagination.pages = result.pagination.pages;
       });
   }
 
@@ -183,11 +174,11 @@ export class NotifyComponent implements OnInit {
   onTabChange(event: any) {
     if (event.index === 1) {
       if (!this.isSrcLoaded) {
-        this.loadSrcNotifys();
+        this.fetchSrcNotifys();
       }
     } else if (event.index === 2) {
       if (!this.isOutLoaded) {
-        this.loadOutNotifys();
+        this.fetchOutNotifys();
       }
     }
   }

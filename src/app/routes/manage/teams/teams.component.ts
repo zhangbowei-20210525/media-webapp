@@ -2,7 +2,7 @@ import { finalize } from 'rxjs/operators';
 import { DepartmentDto, CompanyDto } from './dtos';
 import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
 import { TeamsService } from './teams.service';
-import { SettingsService } from '@core';
+import { SettingsService, AuthService } from '@core';
 import { NzTreeNodeOptions, NzTreeNode, NzTreeComponent, NzFormatEmitEvent, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
@@ -36,7 +36,7 @@ export class TeamsComponent implements OnInit {
     private router: Router,
     private ts: TreeService,
     private acl: ACLService,
-    @Inject(DA_SERVICE_TOKEN) private token: ITokenService
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -135,11 +135,10 @@ export class TeamsComponent implements OnInit {
 
   switchCompany(id: number, companyName: string) {
     this.service.switchCompany(id).subscribe(result => {
-      this.settings.user = result.auth;
-      this.settings.permissions = this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status);
-      this.token.set({
+      this.auth.onLogin({
         token: result.token,
-        time: +new Date
+        userInfo: result.auth,
+        permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
       });
       this.getCompanyInfo();
       this.fetchDepartment();

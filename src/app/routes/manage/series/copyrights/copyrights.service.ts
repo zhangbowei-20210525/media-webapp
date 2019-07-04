@@ -6,7 +6,7 @@ import {
   CopyrightSeriesDto, AddCopyrightsDto, ContractDto, OrderPayDto, CopyrightDto, ProgramDto, PublishRightsDto, RootTemplateDto
 } from './dtos';
 import * as _ from 'lodash';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 declare interface FiltrateSeriesParams {
@@ -23,14 +23,26 @@ declare interface FiltrateSeriesParams {
   sole: string;
 }
 
+declare interface NotifyState { type: 'navigate' | 'drawer'; value: any; }
+
 @Injectable({
   providedIn: 'root'
 })
 export class CopyrightsService {
 
+  private notify$ = new Subject<NotifyState>();
+
   constructor(
     protected http: HttpClient,
   ) { }
+
+  notify(state: NotifyState) {
+    this.notify$.next(state);
+  }
+
+  change() {
+    return this.notify$.asObservable();
+  }
 
   // getCopyrightAreaOptions() {
   //   return this.http.get<any[]>('/api/v1/rights/area_numbers');

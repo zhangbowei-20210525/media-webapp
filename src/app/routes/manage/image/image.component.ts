@@ -302,9 +302,11 @@ export class ImageComponent implements OnInit {
         review_ids.push(Number(key));
       }
     }
+    console.log(review_ids);
+    // this.review_ids = this.checkedFirstIds;
     console.log(this.checkedFirstIds);
     this.service.submitFirstInstance(review_ids).subscribe(res => {
-        this.message.success('提交审片成功');
+      console.log(res);
     });
     this.selectedTabIndex = 3;
     this.selectedIndex = 3;

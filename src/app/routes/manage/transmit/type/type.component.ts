@@ -86,6 +86,7 @@ export class TypeComponent implements OnInit {
     this.seriesService.purchaseTapes(this.purchaseTapesPagination).pipe(finalize(() => {
       this.isPurchaseTapesLoading = false;
       this.isPurchaseTapesLoaded = true;
+      console.log('i am must run');
     })).subscribe(res => {
       this.purchaseTapesList = res.list;
       this.purchaseTapesPagination = res.pagination;
@@ -108,6 +109,10 @@ export class TypeComponent implements OnInit {
     }, err => {
       this.message.success(this.translate.instant('global.start-client'));
     });
+}
+
+purTapeDetails (id: number) {
+  this.router.navigate([`/manage/transmit/pur-d/${id}`]);
 }
 
   downloadTape(id: number) {

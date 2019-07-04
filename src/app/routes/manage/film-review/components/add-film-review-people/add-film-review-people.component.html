@@ -1,0 +1,55 @@
+<form nz-form [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" nzFor="num" nzRequired>新增审片人个数</nz-form-label>
+    <nz-form-control [nzSm]="12">
+      <nz-select formControlName="num" nzPlaceHolder="请选择新增审片人个数" (ngModelChange)="onPeopleNumChange($event)">
+        <nz-option nzValue="1" nzLabel="一"></nz-option>
+        <nz-option nzValue="2" nzLabel="二"></nz-option>
+        <nz-option nzValue="3" nzLabel="三"></nz-option>
+        <nz-option nzValue="4" nzLabel="四"></nz-option>
+        <nz-option nzValue="5" nzLabel="五"></nz-option>
+      </nz-select>
+      <nz-form-explain *ngIf="validateForm.get('num').dirty && validateForm.get('num').errors">
+        请选择新增审片人个数
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<form nz-form [formGroup]="reviewPeopleInfoForm" *ngIf="reviewPeopleInfoForm" #reviewPeopleInfoRef>
+  <nz-form-item *ngFor="let reviewPeopleInfo of reviewPeopleInfos; let i = index">
+    <ng-container *ngFor="let reactive of reviewPeopleInfo">
+      <nz-form-label [nzSm]="3" [nzFor]="reactive.key" [nzRequired]="reactive.required">{{ reactive.label }}
+      </nz-form-label>
+      <nz-form-control [nzSm]="9">
+        <ng-container [ngSwitch]="reactive.customerType">
+          <ng-container *ngSwitchCase="'reviewPeople'">
+            <input nz-input [formControlName]="reactive.key" [type]="reactive.type" [placeholder]="reactive.label">
+          </ng-container>
+          <ng-container *ngSwitchCase="'phone'">
+            <input nz-input [formControlName]="reactive.key" [type]="reactive.type" [placeholder]="reactive.label">
+          </ng-container>
+        </ng-container>
+        <ng-container [ngSwitch]="reactive.customerType">
+          <ng-container *ngSwitchCase="'reviewPeople'">
+            <nz-form-explain
+              *ngIf="reviewPeopleInfoForm.get(reactive.key).dirty && reviewPeopleInfoForm.get(reactive.key).errors">
+              请填写审片人
+            </nz-form-explain>
+          </ng-container>
+          <ng-container *ngSwitchCase="'phone'">
+            <nz-form-explain
+              *ngIf="reviewPeopleInfoForm.get(reactive.key).dirty && reviewPeopleInfoForm.get(reactive.key).errors?.required">
+              请选填手机号码
+            </nz-form-explain>
+            <nz-form-explain
+              *ngIf="reviewPeopleInfoForm.get(reactive.key).dirty && reviewPeopleInfoForm.get(reactive.key).errors?.pattern">
+              请输入正确的手机号码
+            </nz-form-explain>
+          </ng-container>
+        </ng-container>
+      </nz-form-control>
+    </ng-container>
+  </nz-form-item>
+
+</form>

@@ -164,10 +164,10 @@
               <td style="text-align: center">{{ data.auth_custom_name }}</td>
               <td style="text-align: center">{{ data.download_times }}</td>
               <td style="text-align: center">
-                <span *ngIf="data.receipt_status == 0" style="color: yellow">等待中</span>
-                <span *ngIf="data.receipt_status == 1" style="color: green">生效中</span>
-                <span *ngIf="data.receipt_status == 2" style="color: red">已拒绝</span>
-                <span *ngIf="data.receipt_status == 3" style="color: red">已超时</span>
+                <span *ngIf="data.receipt_status == 0"><nz-tag [nzColor]="'orange'">等待中</nz-tag></span>
+                <span *ngIf="data.receipt_status == 1"><nz-tag [nzColor]="'green'">生效中</nz-tag></span>
+                <span *ngIf="data.receipt_status == 2"><nz-tag [nzColor]="'red'">已拒绝</nz-tag></span>
+                <span *ngIf="data.receipt_status == 3"><nz-tag [nzColor]="'red'">已超时</nz-tag></span>
               </td>
               <td style="text-align: center">
                 <a (click)="deletePubTape(data.id)" acl [acl-ability]="ability.program.source.del"><i nz-icon type="delete" theme="outline"

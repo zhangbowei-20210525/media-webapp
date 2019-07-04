@@ -1,0 +1,17 @@
+<div>
+  <h2 class="text-center">登录</h2>
+  <router-outlet></router-outlet>
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex">
+      <a class="switch-login" [routerLink]="['/passport/login/phone']" [class.current]="method == 'phone'">
+        <i nz-icon type="mobile" theme="outline"></i>
+        <span [hidden]="method == 'phone'">使用手机登录</span>
+      </a>
+      <a class="switch-login" [routerLink]="['/passport/login/wechat']" [class.current]="method == 'wechat'">
+        <i nz-icon type="wechat" theme="outline"></i>
+        <span [hidden]="method == 'wechat'">使用微信登录</span>
+      </a>
+    </div>
+    <span>切换登录方式</span>
+  </div>
+</div>

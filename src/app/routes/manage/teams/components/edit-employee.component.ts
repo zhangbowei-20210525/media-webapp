@@ -1,12 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { TeamsService } from '../teams.service';
-import { EmployeesService } from './employees.service';
+
+interface FormValue {
+  name: string;
+  phone: string;
+  roles: number[];
+}
 
 @Component({
-  selector: 'app-add-employee',
+  selector: 'app-edit-employee',
   template: `
-  <form nz-form [formGroup]="form" (ngSubmit)="submit()">
+  <form nz-form [formGroup]="form">
     <nz-form-item>
       <nz-form-control>
         <input nz-input formControlName="name" id="name" placeholder="名称">
@@ -23,24 +27,42 @@ import { EmployeesService } from './employees.service';
         </nz-form-explain>
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item *ngIf="needRole">
+      <nz-form-control>
+        <nz-select
+          nzMode="multiple"
+          nzPlaceHolder="选择角色"
+          formControlName="roles"
+        >
+          <nz-option *ngFor="let option of roleOfOptions" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+        </nz-select>
+      </nz-form-control>
+  </nz-form-item>
   </form>
   `
 })
-export class AddEmployeeComponent implements OnInit {
+export class EditEmployeeComponent implements OnInit {
 
-  @Input() id: string;
+  @Input() employeeName: string;
+  @Input() employeePhone: string;
+  @Input() needRole: boolean;
+  @Input() roleOfOptions: any[];
+
   form: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private service: EmployeesService
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
-      name: [null, [Validators.required]],
-      phone: [null, [Validators.required]]
+      name: [this.employeeName || null, [Validators.required]],
+      phone: [this.employeePhone || null, [Validators.required]],
+      roles: [[]]
     });
+    if (this.employeePhone !== undefined) {
+      this.form.get('phone').disable();
+    }
   }
 
   validation(): boolean {
@@ -53,8 +75,12 @@ export class AddEmployeeComponent implements OnInit {
     return this.form.valid;
   }
 
-  submit() {
-    return this.service.addEmployee(this.id, this.form.value['name'], this.form.value['phone']);
+  //   submit() {
+  //     return this.service.addEmployee(this.id, this.form.value['name'], this.form.value['phone']);
+  //   }
+
+  getValue() {
+    return Object.assign(this.form.value) as FormValue;
   }
 
 }

@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { fadeIn } from '@shared/animations';
 import { SeriesService } from '../../series.service';
 import { RootTemplateDto } from '../dtos';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -19,6 +20,9 @@ import { RootTemplateDto } from '../dtos';
 })
 export class PublishedComponent implements OnInit {
 
+  subscriptions: Subscription[];
+
+  drawerVisible = false;
   isLoaded = false;
   isLoading = false;
   dataSet = [];
@@ -33,6 +37,7 @@ export class PublishedComponent implements OnInit {
   search: string;
   companyList = [];
   seriesType = [];
+
   constructor(
     private service: CopyrightsService,
     private router: Router,
@@ -45,6 +50,11 @@ export class PublishedComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subscriptions = [this.service.change().subscribe(state => {
+      if (state.type === 'drawer' && state.value === 'filter') {
+        this.drawerVisible = true;
+      }
+    })];
     this.route.paramMap.subscribe(param => {
       this.search = param.get('search');
       this.fetchCopyrights(this.service.getDefaultFiltrateSeriesParams(this.search));
@@ -112,13 +122,13 @@ export class PublishedComponent implements OnInit {
 
   mapCopyrights(list: any[]) { // 可考虑使用公共方法
     const rights = [];
-    let itemIndex = 0;
+    let itemIndex = 1;
     list.forEach(item => {
       let index = 0;
       item.rights.forEach(right => {
         rights.push({
           index: index++,
-          itemIndex: itemIndex,
+          itemIndex: itemIndex + (this.pagination.page - 1) * this.pagination.page_size,
           pid: item.program_id,
           rid: right.id,
           cid: item.custom_id,

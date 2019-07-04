@@ -1,6 +1,6 @@
 import { AccountService } from '@shared';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { SettingsService, I18nService } from '@core';
+import { SettingsService, I18nService, AuthService } from '@core';
 import { DOCUMENT } from '@angular/common';
 import { DA_SERVICE_TOKEN, ITokenService, SimpleTokenModel } from '@delon/auth';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private i18n: I18nService,
     private ntf: NotifiesPolling,
     // private userSource : Subject<result>
-    @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
+    private auth: AuthService,
     @Inject(DOCUMENT) private doc: any,
     private acl: ACLService
   ) {
@@ -52,8 +52,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.langs = this.i18n.getLangs();
-    this.token.change().subscribe(t => {
-      this.isLoggedIn = this.checkSimple(t);
+    this.auth.state$.subscribe(state => {
+      this.isLoggedIn = state;
       // this.uploader.change$.subscribe(n => this.upload = n);
       this.uploader.change$.subscribe(n => {
         this.upload = n;
@@ -61,23 +61,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // console.log(this.uploads);
       });
     });
-    this.isLoggedIn = this.checkSimple(this.token.get());
-    this.ntf.startNotifiesPolling();
+    this.isLoggedIn = this.auth.isLoggedIn;
     this.subscription = this.ntf.notifies().subscribe(result => {
       this.sourceUploads = result.active_source_tasks;
       this.uploadsLength = result.base.source.active_source_task_num;
       this.notifies = result.base.notify.unread_num;
       this.uploads = this.upload + this.uploadsLength;
     });
+    if (this.isLoggedIn) {
+      this.ntf.startNotifiesPolling();
+    }
   }
 
   ngOnDestroy() {
     this.ntf.stopNotifiesPolling();
     this.subscription.unsubscribe();
-  }
-
-  checkSimple(model: SimpleTokenModel): boolean {
-    return model != null && typeof model.token === 'string' && model.token.length > 0;
   }
 
   login() {
@@ -125,9 +123,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.token.clear();
-    this.settings.user = null;
-    this.router.navigateByUrl('/');
+    this.auth.onLogout();
+    this.router.navigateByUrl('/passport/login');
   }
 
   changeLanguage(lang: string) {

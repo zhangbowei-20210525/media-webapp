@@ -45,6 +45,8 @@ export class ContractsComponent implements OnInit, OnDestroy {
         this.lastUrlType = 'purchase';
       } else if (url[url.length - 1].path === 'published') {
         this.lastUrlType = 'publish';
+      } else {
+        throw new Error('Unexpected URL');
       }
     });
     this.eventsSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
@@ -52,6 +54,8 @@ export class ContractsComponent implements OnInit, OnDestroy {
         this.lastUrlType = 'purchase';
       } else if (event.url.endsWith('published')) {
         this.lastUrlType = 'publish';
+      } else {
+        throw new Error('Unexpected URL');
       }
     });
     this.service.getImportTemplateFilePath('purchase').subscribe(result => {

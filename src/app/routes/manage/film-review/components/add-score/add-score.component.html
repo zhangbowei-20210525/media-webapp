@@ -1,0 +1,11 @@
+<form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="5" nzRequired>评分项</nz-form-label>
+      <nz-form-control [nzSm]="19"> 
+            <input nz-input placeholder="请填写评分项名称" formControlName="scoreName" />
+        <nz-form-explain *ngIf="validateForm.get('scoreName').dirty && validateForm.get('scoreName').errors">
+            请填写评分项名称
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>

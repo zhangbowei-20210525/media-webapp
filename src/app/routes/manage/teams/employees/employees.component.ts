@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { EmployeesService } from './employees.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { finalize } from 'rxjs/operators';
-import { AddEmployeeComponent } from './add-employee.component';
 import { ActivatedRoute } from '@angular/router';
 import { ACLAbility } from '@core/acl';
+import { EditEmployeeComponent } from '../components/edit-employee.component';
 
 @Component({
   selector: 'app-employees',
@@ -63,25 +63,26 @@ export class EmployeesComponent implements OnInit {
   }
 
   addEmployee() {
-    this.modal.create({
-      nzTitle: '新增员工',
-      nzContent: AddEmployeeComponent,
-      nzComponentParams: { id: this.department + '' },
-      nzWidth: 800,
-      nzOnOk: (component: AddEmployeeComponent) => new Promise((resolve, reject) => {
-        if (component.validation()) {
-          component.submit()
-          .subscribe(result => {
-            this.message.success('新增成功');
-            this.refreshDataSet();
-            resolve();
-          }, error => {
+    this.service.getRoles().subscribe(roles => {
+      this.modal.create({
+        nzTitle: '新增员工',
+        nzContent: EditEmployeeComponent,
+        nzComponentParams: { needRole: true, roleOfOptions:  roles },
+        nzOnOk: (component: EditEmployeeComponent) => new Promise((resolve, reject) => {
+          if (component.validation()) {
+            const value = component.getValue();
+            this.service.addEmployee(this.department, value.name, value.phone, value.roles).subscribe(() => {
+              this.message.success('新增成功');
+              this.refreshDataSet();
+              resolve();
+            }, () => {
+              reject(false);
+            });
+          } else {
             reject(false);
-          });
-        } else {
-          reject(false);
-        }
-      })
+          }
+        })
+      });
     });
   }
 

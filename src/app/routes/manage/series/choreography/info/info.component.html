@@ -1,0 +1,58 @@
+<nz-table #table [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false" [nzScroll]="{ x: '150%'}"
+    style="margin-top: 10px">
+    <!-- [nzScroll]="{ x: '1000px'}" -->
+    <thead>
+        <tr>
+            <th [attr.rowspan]="2" nzWidth="150px" nzLeft="0px"></th>
+            <th [attr.colspan]="data.count" [nzAlign]="'center'" *ngFor="let data of table.data"
+                [hidden]="data.index !== 0">
+                {{ data.channelName }}</th>
+            <!-- [attr.data-raw]="data.id" -->
+        </tr>
+        <tr>
+            <th *ngFor="let data of table.data" [nzAlign]="'center'">
+                <div>{{ data.theatreName }}</div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- <tr *ngFor="let data of events">
+            <td nzLeft="0px" [nzAlign]="'center'">
+                <div>{{ data.week }}</div>
+                <div>
+                    <span>{{ data.week | weekDay}}</span>
+                </div>
+            </td>
+            <td *ngFor="let event of data.events; let i = index" [nzAlign]="'center'">
+                <div *ngFor="let en of event.event">
+                    <div >{{ en.program_name}}</div>
+                    <div>{{ en.episode_index}} ~ {{ en.episode_index + en.episode_num}}集</div>
+                </div>
+            </td>
+            <td *ngFor="let event of data.events; let i = index" [nzAlign]="'center'">
+                    <div *ngFor="let en of event.event" [hidden]="data.events.length !== en.lnum">
+                    </div>
+                </td>
+        </tr> -->
+
+        <tr *ngFor="let data of events">
+            <td nzLeft="0px" [nzAlign]="'center'">
+                <div>{{ data.week }}</div>
+                <div>
+                    <span>{{ data.week | weekDay}}</span>
+                </div>
+            </td>
+
+            <td *ngFor="let wd of w;let c = index" [nzAlign]="'center'">
+                <ng-container *ngFor="let event of data.events; let i = index">
+                    <div *ngFor="let en of event.event">
+                        <div *ngIf="event.id == wd">
+                        <div>{{ en.program_name}}</div>
+                        <div>{{ en.episode_index}} ~ {{ en.episode_index + en.episode_num - 1}}集</div>
+                        </div>
+                    </div>
+                </ng-container>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

@@ -36,4 +36,12 @@ export class CopyrightsComponent implements OnInit {
     console.log('can', this.acl.canAbility('right_edit'));
   }
 
+  addPublish() {
+    this.service.notify({ type: 'navigate', value: 'publish' });
+  }
+
+  filter() {
+    this.service.notify({ type: 'drawer', value: 'filter' });
+  }
+
 }

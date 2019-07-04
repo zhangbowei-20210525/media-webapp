@@ -3,6 +3,7 @@ export class ReactiveBase<T> {
   key: string;
   label: string;
   required: boolean;
+  pattern: boolean;
   order: number;
   controlType: string;
   customerType: string;
@@ -18,7 +19,7 @@ export class ReactiveBase<T> {
     controlType?: string,
     customerType?: string,
     disabled?: boolean,
-    readonly?: boolean
+    readonly?: boolean,
   } = {}) {
     this.value = options.value;
     this.key = options.key || '';

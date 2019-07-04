@@ -108,7 +108,6 @@ export class TapesComponent implements OnInit {
   }
 
   nzAfterClose() {
-    console.log('222');
     this.fetchPublicities();
   }
 

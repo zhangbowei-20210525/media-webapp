@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PaginationDto, MessageService, TreeService, Util } from '@shared';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, NavigationStart } from '@angular/router';
 import { CopyrightsService } from '../copyrights.service';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeIn } from '@shared/animations';
-import { finalize, switchMap } from 'rxjs/operators';
+import { finalize, switchMap, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
-import { NzTreeNodeOptions } from 'ng-zorro-antd';
+import { NzTreeNodeOptions, NzDrawerService } from 'ng-zorro-antd';
 import { SeriesService } from '../../series.service';
 import { RootTemplateDto } from '../dtos';
+import { Subscription } from 'rxjs';
+import { RightFilterComponent } from '../../components/right-filter/right-filter.component';
 
 @Component({
   selector: 'app-all-rights',
   templateUrl: './all-rights.component.html',
   animations: [fadeIn]
 })
-export class AllRightsComponent implements OnInit {
+export class AllRightsComponent implements OnInit, OnDestroy {
 
+  subscriptions: Subscription[];
+
+  drawerVisible = false;
   isLoaded = false;
   isLoading = false;
   dataSet = [];
@@ -33,6 +38,7 @@ export class AllRightsComponent implements OnInit {
   tags = [];
   search: string;
   seriesType = [];
+
   constructor(
     private service: CopyrightsService,
     private router: Router,
@@ -42,9 +48,23 @@ export class AllRightsComponent implements OnInit {
     private route: ActivatedRoute,
     private ts: TreeService,
     private seriesService: SeriesService,
+    private drawer: NzDrawerService
   ) { }
 
   ngOnInit() {
+    this.subscriptions = [this.service.change().subscribe(state => {
+      if (state.type === 'navigate' && state.value === 'publish') {
+        const pids = this.tags.map(t => t.pid);
+        if (pids.length > 0) {
+          this.router.navigate(['/manage/series/publish-rights', { pids: pids }]);
+        } else {
+          this.router.navigate(['/manage/series/publish-rights']);
+        }
+      } else if (state.type === 'drawer' && state.value === 'filter') {
+        // this.filter();
+        this.drawerVisible = true;
+      }
+    })];
     this.route.paramMap.subscribe(param => {
       this.search = param.get('search');
       this.fetchCopyrights(this.service.getDefaultFiltrateSeriesParams(this.search));
@@ -65,6 +85,10 @@ export class AllRightsComponent implements OnInit {
       program_type: [null]
     });
     this.filtrateForm.get('sole').disable();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 
@@ -156,15 +180,6 @@ export class AllRightsComponent implements OnInit {
     this.router.navigate([`/manage/series/add-copyrights`]);
   }
 
-  addPublishConpyrights() {
-    const pids = this.tags.map(t => t.pid);
-    if (pids.length > 0) {
-      this.router.navigate([`/manage/series/publish-rights`, { pids: pids }]);
-    } else {
-      this.message.success(this.translate.instant('global.select-series'));
-    }
-  }
-
   // loadCopyrights() {
   //   this.isLoading = true;
   //   this.isLoaded = true;
@@ -221,14 +236,14 @@ export class AllRightsComponent implements OnInit {
 
   mapCopyrights(list: any[]) { // 可考虑使用公共方法
     const rights = [];
-    let itemIndex = 0;
+    let itemIndex = 1;
     list.forEach(item => {
       let index = 0;
       item.rights.forEach(right => {
         rights.push({
           isChecked: this.tags.find(e => e.pid === item.id),
           index: index++,
-          itemIndex: itemIndex,
+          itemIndex: itemIndex + (this.pagination.page - 1) * this.pagination.page_size,
           pid: item.id,
           rid: right.id,
           project: item.name,
@@ -303,6 +318,18 @@ export class AllRightsComponent implements OnInit {
       this.filtrateForm.get('sole').enable();
     }
     this.onFormValueChange();
+  }
+
+  filter() {
+    this.drawer.create({
+      nzTitle: '筛选权利',
+      nzContent: RightFilterComponent,
+      nzWidth: 600
+    }).afterClose.subscribe(result => {
+      if (result && result.length > 0) {
+
+      }
+    });
   }
 
 }

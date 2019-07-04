@@ -14,6 +14,14 @@ import { PubAuthorizationReceiveComponent } from './manage/pub-authorization-rec
 import { DeclareAuthorizationReceiveComponent } from './manage/declare-authorization-receive/declare-authorization-receive.component';
 import { ACLGuard, ACLType } from '@delon/acl';
 import { aclAbility } from '@core/acl';
+import { PassportComponent } from 'app/layout/passport/passport.component';
+import { LoginComponent } from './passport/login/login.component';
+import { PhoneLoginComponent } from './passport/login/phone-login/phone-login.component';
+import { WechatLoginComponent } from './passport/login/wechat-login/wechat-login.component';
+import { BindingComponent } from './passport/binding/binding.component';
+import { PhoneBindingComponent } from './passport/binding/phone-binding/phone-binding.component';
+import { CompanyBindingComponent } from './passport/binding/company-binding/company-binding.component';
+import { FilmReviewComponent } from './manage/film-review/film-review.component';
 // import { ImageComponent } from './manage/image/image/image.component';
 
 const routes: Routes = [
@@ -21,6 +29,7 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     data: { breadcrumb: 'Home' },
+    canActivate: [SimpleGuard],
     children: [
       { path: '', redirectTo: 'market', pathMatch: 'full' },
       {
@@ -32,12 +41,16 @@ const routes: Routes = [
         path: 'manage',
         component: ManageComponent,
         data: { breadcrumb: 'Manage' },
-        canActivate: [SimpleGuard],
+        // canActivate: [SimpleGuard],
         children: [
           { path: '', redirectTo: 'series', pathMatch: 'full' },
           {
             path: 'dashboard',
             component: DashboardComponent
+          },
+          {
+            path: 'film-review',
+            component: FilmReviewComponent
           },
           {
             path: 'pubAuthorizationReceive',
@@ -75,6 +88,29 @@ const routes: Routes = [
             ]
           },
           { path: 'teams', loadChildren: './manage/teams/teams.module#TeamsModule' }
+        ]
+      }
+    ]
+  },
+  {
+    path: 'passport',
+    component: PassportComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent,
+        children: [
+          { path: '', redirectTo: 'phone', pathMatch: 'full' },
+          { path: 'phone', component: PhoneLoginComponent },
+          { path: 'wechat', component: WechatLoginComponent }
+        ]
+      },
+      {
+        path: 'binding',
+        component: BindingComponent,
+        children: [
+          { path: 'phone', component: PhoneBindingComponent },
+          { path: 'company', component: CompanyBindingComponent }
         ]
       }
     ]

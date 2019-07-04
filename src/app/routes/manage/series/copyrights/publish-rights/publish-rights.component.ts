@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject, Injector } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService, SeriesSelectorComponent } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
@@ -57,7 +57,8 @@ export class PublishRightsComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private route: ActivatedRoute,
     private scroll: ScrollService,
-    private drawer: NzDrawerService
+    private drawer: NzDrawerService,
+    private injector: Injector
   ) { }
 
   get projects() {
