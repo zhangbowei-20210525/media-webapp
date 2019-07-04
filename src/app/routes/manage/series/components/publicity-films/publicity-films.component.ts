@@ -20,7 +20,7 @@ export class PublicityFilmsComponent implements OnInit {
   isLoading = false;
   pagination = { page: 1, page_size: 10 } as PaginationDto;
   dataset: any;
-  tagdataset = [];
+  tagdataset: any;
   q = '';
   tag = '';
   customArray = [];
@@ -45,10 +45,11 @@ export class PublicityFilmsComponent implements OnInit {
     // private translate: TranslateService,
     private acl: ACLService
   ) {
-    console.log('can', ability.custom.view, acl.canAbility({ ability: [ability.custom.view] }));
+    // console.log('can', ability.custom.view, acl.canAbility({ ability: [ability.custom.view] }));
   }
 
   ngOnInit() {
+    console.log('234');
     this.fetchPublicities();
   }
 
@@ -65,6 +66,8 @@ export class PublicityFilmsComponent implements OnInit {
         // console.log(result);
         this.dataset = result.list;
         this.tagdataset = result.meta;
+        console.log('334');
+        console.log(this.tagdataset);
         // console.log(result.meta.tag_choices);
         // console.log(this.tagdataset);
         this.pagination = result.pagination;

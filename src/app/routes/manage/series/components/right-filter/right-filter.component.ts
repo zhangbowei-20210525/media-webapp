@@ -17,6 +17,7 @@ export class RightFilterComponent implements OnInit {
   filtrateForm: FormGroup;
   areaOptions = [];
   rightOptions = [];
+  seriesType = [];
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +52,8 @@ export class RightFilterComponent implements OnInit {
       disabled: item.disabled
     }));
   }
+
+  onPublishChange($event) {}
 
   fetchAreaOptions() {
     this.service.getCopyrightAreaOptions().subscribe(result => {

@@ -102,7 +102,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   selectedIndex = 0;
   reviewRecodesStatistic: any;
   reviewRecords: any;
-  reviewFirstSteps = {};
+  reviewFirstSteps: any;
   reviewSecondSteps = {};
   reviewThirdSteps = {};
   firstLike = 0;
@@ -120,7 +120,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   thirdDisLikePeople: any;
   thirdLike: number;
   thirdOppose: number;
-  reviewList = {};
+  reviewList: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -149,9 +149,6 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         this.posterIndex = +params.get('posterIndex');
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
-        console.log(this.id);
-        console.log(this.sid);
-        console.log(this.tabIndex);
         return this.seriesService.pubDetail(this.sid);
       })).subscribe(res => {
         // console.log(res);
@@ -203,39 +200,39 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
       });
     this.getVerifyData(this.step_number);
     this.seriesService.getReviewDetails(this.id).subscribe(res => {
-      this.reviewList = res.data;
-      // this.reviewSteps = res.data.review_steps;
-      console.log(res.data);
-      this.reviewFirstSteps = res.data.review_steps[0];
+      console.log('23423423423423424');
+      console.log(res);
+      this.reviewList = res;
+      this.reviewFirstSteps = res.review_steps[0];
       // 一审喜欢人数及通过率
-      this.likePeople = res.data.review_steps[0].review_records_statistic.conclusion_statistic.agree;
-      this.disLikePeople = res.data.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
-      this.firstLike = (res.data.review_steps[0].review_records_statistic.conclusion_statistic.agree /
-      res.data.review_steps[0].review_records_statistic.reviewed_count) * 100;
-      this.firstOppose = (res.data.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
-      res.data.review_steps[0].review_records_statistic.reviewed_count) * 100;
+      this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
+      this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
+      this.firstLike = (res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
+      res.review_steps[0].review_records_statistic.reviewed_count) * 100;
+      this.firstOppose = (res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
+      res.review_steps[0].review_records_statistic.reviewed_count) * 100;
       // 二审喜欢人数及通过率
 
-      this.secondLikePeople = res.data.review_steps[1].review_records_statistic.conclusion_statistic.agree;
-      this.secondDisLikePeople = res.data.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
-      this.secondLike = (res.data.review_steps[1].review_records_statistic.conclusion_statistic.agree /
-      res.data.review_steps[1].review_records_statistic.reviewed_count) * 100;
-      this.secondOppose = (res.data.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
-      res.data.review_steps[1].review_records_statistic.reviewed_count) * 100;
+      this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
+      this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
+      this.secondLike = (res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
+      res.review_steps[1].review_records_statistic.reviewed_count) * 100;
+      this.secondOppose = (res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
+      res.review_steps[1].review_records_statistic.reviewed_count) * 100;
       // 三审喜欢人数及通过率
-      this.disLikePeople = res.data.review_steps[2].review_records_statistic.conclusion_statistic.agree;
-      this.thirdDisLikePeople = res.data.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
-      this.thirdLike = (res.data.review_steps[2].review_records_statistic.conclusion_statistic.agree /
-      res.data.review_steps[2].review_records_statistic.reviewed_count) * 100;
-      this.thirdOppose = (res.data.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
-      res.data.review_steps[2].review_records_statistic.reviewed_count) * 100;
+      this.disLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.agree;
+      this.thirdDisLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
+      this.thirdLike = (res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
+      res.review_steps[2].review_records_statistic.reviewed_count) * 100;
+      this.thirdOppose = (res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
+      res.review_steps[2].review_records_statistic.reviewed_count) * 100;
       // 总分
-      this.reviewSecondSteps = res.data.review_steps[1];
-      this.reviewThirdSteps = res.data.review_steps[2];
+      this.reviewSecondSteps = res.review_steps[1];
+      this.reviewThirdSteps = res.review_steps[2];
       console.log(res);
-      this.secondAvg = res.data.review_steps[1].review_records_statistic.score_statistic.avg;
-      this.thirdAvg = res.data.review_steps[2].review_records_statistic.score_statistic.avg;
-      this.stepsNumber = res.data.step_number;
+      this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
+      this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
+      this.stepsNumber = res.step_number;
       // this.stepsNumber = 3;
     });
   }

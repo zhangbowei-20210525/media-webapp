@@ -403,7 +403,7 @@
                 {{disLikePeople}}人{{firstOppose}}%</div>
             </div>
             <nz-table #reviewFirstSteps.review_record [nzShowPagination]='false' [nzData]="reviewFirstSteps.review_records" style="margin-top: 20px"
-              *ngIf='reviewFirstSteps.review_records?.length > 0 else noResults'>
+              *ngIf="reviewFirstSteps?.review_records?.length > 0; else noResults">
               <thead>
                 <tr>
                   <th style="text-align: center">审片人</th>
@@ -433,7 +433,7 @@
               </div>
             </div>
             <nz-table #reviewSecondSteps.review_records [nzData]="reviewSecondSteps.review_records" [nzShowPagination]='false'
-              style="margin-top: 20px" *ngIf='reviewSecondSteps.review_records?.length > 0 else noResults'>
+              style="margin-top: 20px" *ngIf='reviewSecondSteps.review_records?.length > 0; else noResults'>
               <thead>
                 <tr>
                   <th style="text-align: center">审片人</th>
@@ -462,7 +462,7 @@
             </div>
           </div>
           <nz-table #reviewSecondSteps.review_records [nzData]="reviewSecondSteps.review_records" [nzShowPagination]='false'
-            style="margin-top: 20px" *ngIf='reviewSecondSteps.review_records?.length > 0 else noResults'>
+            style="margin-top: 20px" *ngIf='reviewSecondSteps.review_records?.length > 0; else noResults'>
             <thead>
               <tr>
                 <th style="text-align: center">审片人</th>

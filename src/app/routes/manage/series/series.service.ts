@@ -344,7 +344,7 @@ export class SeriesService {
 
   // 三审详情提交
   submitThreeInstanceDetails(conclusion: number, scoring: any, comment: any, reviewId: number) {
-    return this.http.post<any>(`api/v1/reviews/records`, {
+    return this.http.post<any>(`/api/v1/reviews/records`, {
       review_step_id: reviewId,
       conclusion: conclusion,
       scores: scoring,
@@ -353,11 +353,11 @@ export class SeriesService {
   }
   // 获取审片详情
   getReviewDetails(id: number) {
-    return this.http.get<any>(`api/v1/reviews/${id}`);
+    return this.http.get<any>(`/api/v1/reviews/${id}`);
   }
   // 新建审片
   creatReview(intention_ids) {
-    return this.http.post<any>(`api/v1/reviews`, {
+    return this.http.post<any>(`/api/v1/reviews`, {
       intention_ids,
     });
   }

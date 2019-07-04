@@ -112,7 +112,7 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="producer">出品人</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input placeholder="请输入出品人" nz-input id="producer" formControlName="producer" (ngModelChange)="onInput()">
+              <input placeholder="请输入出品人" nz-input id="producer" formControlName="producer" (ngModelChange)="onInput($event)">
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
