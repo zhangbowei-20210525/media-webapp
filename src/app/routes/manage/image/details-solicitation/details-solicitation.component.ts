@@ -48,6 +48,8 @@ export class DetailsSolicitationComponent implements OnInit {
     private seriesService: SeriesService,
     private router: Router,
     private modalService: NzModalService,
+    private route: ActivatedRoute,
+
   ) { }
 
   ngOnInit() {
@@ -74,7 +76,6 @@ export class DetailsSolicitationComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
       console.log(this.id);
-      this.refresh();
     });
   }
   fileType(value) {
