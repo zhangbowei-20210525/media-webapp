@@ -34,7 +34,7 @@ export class CollectionReceiveComponent implements OnInit {
   }
 
   swichUrl() {
-    this.router.navigate([`/passport/login`, { returnUrl:  encodeURIComponent(`/manage/image/details-solicitation/${this.id}`)}]);
+    this.router.navigate([`/passport/login/phone`, { returnUrl:  encodeURIComponent(`/manage/image/details-solicitation/${this.id}`)}]);
   }
 
 }

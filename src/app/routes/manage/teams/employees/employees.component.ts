@@ -19,6 +19,7 @@ export class EmployeesComponent implements OnInit {
   disabledButton = true;
   isDatasetLoading = false;
   dataset = [];
+  invitationData: { qrcode: string, link: string };
 
   constructor(
     public ability: ACLAbility,
@@ -100,6 +101,19 @@ export class EmployeesComponent implements OnInit {
           });
       })
     });
+  }
+
+  onInvitationChange(state: boolean, id: number) {
+    if (state) {
+      this.service.getEmployeeInvitationData(id).subscribe(result => {
+        this.invitationData = {
+          qrcode: `data:image/jpeg;base64,${result}`,
+          link: `${location.origin}/outside/accept-employee-invitations/${id}`
+        };
+      });
+    } else {
+      this.invitationData = null;
+    }
   }
 
 }
