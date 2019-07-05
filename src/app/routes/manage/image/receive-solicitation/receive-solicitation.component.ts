@@ -11,6 +11,7 @@ export class ReceiveSolicitationComponent implements OnInit {
 
   id: number;
   solicitationInfo: any;
+
   constructor(
     private service: SeriesService,
     private route: ActivatedRoute,

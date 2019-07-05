@@ -1,16 +1,27 @@
 <nz-tabset nzAnimated="false">
   <nz-tab [nzTitle]="'基本信息'">
     <nz-skeleton [nzLoading]="isInfoLoading">
-      <h3>{{ employee?.name }}<button nz-button nzSize="small" style="margin-left: 1rem" (click)="editEmployee()"><i nz-icon nzType="edit" nzTheme="outline"></i></button></h3>
+      <h3>{{ employee?.name }}<button nz-button nzSize="small" style="margin-left: 1rem" (click)="editEmployee()"><i
+            nz-icon nzType="edit" nzTheme="outline"></i></button></h3>
       <p>{{ employee?.phone }}</p>
       <p>
         <nz-tag *ngFor="let department of employee?.department; let i = index;">
           {{ department.name | truncate:20 }}
         </nz-tag>
-        <nz-tag class="editable-tag" (click)="editDepartments()" *aclIf="{ role: ['admin'], ability: [ability.company.employee.department] }">
+        <nz-tag class="editable-tag" (click)="editDepartments()"
+          *aclIf="{ role: ['admin'], ability: [ability.company.employee.department] }">
           <i nz-icon type="edit"></i> 修改部门
         </nz-tag>
       </p>
+      <!-- <p>
+        <button nz-button
+        nz-popover
+        nzTitle="邀请员工"
+        [(nzVisible)]="employeeInvitationVisible"
+        (nzVisibleChange)="onEmployeeInvitationPopoverChange($event)"
+        nzTrigger="click"
+        nzContent="contentTemplate">邀请员工</button>
+      </p> -->
     </nz-skeleton>
   </nz-tab>
   <nz-tab [nzTitle]="'角色/权限'" *aclIf="{ role: ['admin'], ability: [ability.company.employee.role] }">
@@ -40,7 +51,8 @@
         </ul>
       </nz-dropdown> -->
       <span style="margin-right: 1rem;">角色：</span>
-      <nz-checkbox-group [nzDisabled]="!isEditable" [(ngModel)]="roleCheckOptions" (ngModelChange)="onRoleCheckChange($event)"></nz-checkbox-group>
+      <nz-checkbox-group [nzDisabled]="!isEditable" [(ngModel)]="roleCheckOptions"
+        (ngModelChange)="onRoleCheckChange($event)"></nz-checkbox-group>
     </p>
     <!-- <p>
       <button nz-button nzSize="small" (click)="setEditable(true)" [disabled]="isEditable">编辑权限</button>

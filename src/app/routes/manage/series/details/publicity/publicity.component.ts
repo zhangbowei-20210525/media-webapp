@@ -143,7 +143,7 @@ export class PublicityComponent implements OnInit {
         progress: 0,
         createAt: new Date,
         success: (upload, data) => {
-          if (data.code === 0) {
+          if (data.code === '0') {
             this.service.bindingMateriel(upload.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
               materielType, '').subscribe(result => {
                 this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);

@@ -27,4 +27,8 @@ export class EmployeesService {
   getRoles() {
     return this.http.get<RoleDto[]>('/api/v1/companies/roles');
   }
+
+  getEmployeeInvitationData(employee_id: any) {
+    return this.http.get<any>('/api/v1/share_code/wechat/employee_invitation', { params: { employee_id } });
+  }
 }

@@ -208,28 +208,33 @@ export class FilmReviewComponent implements OnInit {
 
   scoreConfigAgreed = (component: ScoreConfigComponent) => new Promise((resolve, reject) => {
     if (component.validation()) {
-      component.submit()
-        .subscribe(result => {
-          this.message.success(this.translate.instant('global.add-success'));
-          if (this.switchTab === 0) {
-            this.service.getFilmReviewList().subscribe(res => {
-              this.refresh(res, 0);
-            });
-          }
-          if (this.switchTab === 1) {
-            this.service.getFilmReviewList().subscribe(res => {
-              this.refresh(res, 1);
-            });
-          }
-          if (this.switchTab === 2) {
-            this.service.getFilmReviewList().subscribe(res => {
-              this.refresh(res, 2);
-            });
-          }
-          resolve();
-        }, error => {
-          reject(false);
-        });
+      if (component.validationZero()) {
+        component.submit()
+          .subscribe(result => {
+            this.message.success(this.translate.instant('global.add-success'));
+            if (this.switchTab === 0) {
+              this.service.getFilmReviewList().subscribe(res => {
+                this.refresh(res, 0);
+              });
+            }
+            if (this.switchTab === 1) {
+              this.service.getFilmReviewList().subscribe(res => {
+                this.refresh(res, 1);
+              });
+            }
+            if (this.switchTab === 2) {
+              this.service.getFilmReviewList().subscribe(res => {
+                this.refresh(res, 2);
+              });
+            }
+            resolve();
+          }, error => {
+            reject(false);
+          });
+      } else {
+        this.message.warning(this.translate.instant('请重新修改百分比统计(占比值不可为0)'));
+        reject(false);
+      }
     } else {
       this.message.warning(this.translate.instant('请重新修改百分比统计(占比值需等于100%)'));
       reject(false);

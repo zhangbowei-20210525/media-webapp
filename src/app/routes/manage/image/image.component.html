@@ -1,28 +1,28 @@
-  <div class="block clearfix fade-in-up">
-    <div class="block-header">
-      <div class="block-title">
-        <div class="s-nav-wapper">
-          <nav class="s-nav">
-            <ul class="list s-nav-list">
-              <li class="nav-item">
-                <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'sample-view'" nz-tooltip
-                  nzTitle="样片，片花，海报，文档等物料的上传，分享管理">样片</a>
-              </li>
-              <li class="nav-item">
-                <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'review-view'" nz-tooltip
-                  nzTitle="母带文件的上传与管理">审片</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+<div class="block clearfix fade-in-up">
+  <div class="block-header">
+    <div class="block-title">
+      <div class="s-nav-wapper">
+        <nav class="s-nav">
+          <ul class="list s-nav-list">
+            <li class="nav-item">
+              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'sample-view'" nz-tooltip
+                nzTitle="样片，片花，海报，文档等物料的上传，分享管理">样片</a>
+            </li>
+            <li class="nav-item">
+              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'review-view'" nz-tooltip
+                nzTitle="母带文件的上传与管理">审片</a>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <div class="block-title-right">
-        <button class="block-title-box-left" nz-button nzType="primary" (click)="callUp()">样片征集令</button>
-        <!-- <button class="block-title-box-right" nz-button nzType="primary" (click)="launchFilms()">发起审片</button> -->
-      </div>
-      <!-- <button class="block-title-right" (click)="launchFilms">发起审片</button> -->
     </div>
-    <div class="block-content">
-      <router-outlet></router-outlet>
+    <div class="block-title-right">
+      <button class="block-title-box-left" nz-button nzType="primary" (click)="callUp()">样片征集令</button>
+      <!-- <button class="block-title-box-right" nz-button nzType="primary" (click)="launchFilms()">发起审片</button> -->
     </div>
+    <!-- <button class="block-title-right" (click)="launchFilms">发起审片</button> -->
   </div>
+  <div class="block-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

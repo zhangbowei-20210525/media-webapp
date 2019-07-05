@@ -37,17 +37,32 @@ export class EditFilmReviewTeamComponent implements OnInit {
     });
     this.service.getFilmReviewTeam().subscribe(res => {
       this.teamInfo = res;
-      this.tid = this.filmReview.department.id;
-      this.validateForm.get('filmReviewTeam').setValue(this.tid);
-      this.service.getFilmReviewPeople(this.tid).subscribe(ress => {
-        this.peopleInfo = ress.map(item => ({
-          value: item.id,
-          label: item.name,
-          phone: item.phone,
-          checked: this.filmReview.employees.some(e => e.id === item.id)
-        }));
-        this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
-      });
+      if (this.filmReview.department !== null) {
+        this.tid = this.filmReview.department.id;
+        this.validateForm.get('filmReviewTeam').setValue(this.tid);
+        this.service.getFilmReviewPeople(this.tid).subscribe(ress => {
+          this.peopleInfo = ress.map(item => ({
+            value: item.id,
+            label: item.name,
+            phone: item.phone,
+            checked: this.filmReview.employees.some(e => e.id === item.id)
+          }));
+          this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
+        });
+      }
+      if (this.filmReview.department === null) {
+        this.tid = res[0].id;
+        this.validateForm.get('filmReviewTeam').setValue(this.tid);
+        this.service.getFilmReviewPeople(this.tid).subscribe(ress => {
+          this.peopleInfo = ress.map(item => ({
+            value: item.id,
+            label: item.name,
+            phone: item.phone,
+            checked: this.filmReview.employees.some(e => e.id === item.id)
+          }));
+          this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
+        });
+      }
     });
   }
 

@@ -13,8 +13,6 @@ import { SettingsService } from '@core';
 export class CallUpComponent implements OnInit {
   isShow = false;
   isCollection = false;
-  companyName: any;
-  userName: any;
   SolicitationForm: FormGroup;
   program_type: any;
   program_theme: any;
@@ -31,18 +29,17 @@ export class CallUpComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.companyName = this.settings.user.company_name;
-    this.userName = this.settings.user.username;
     this.SolicitationForm = this.fb.group({
-      companyName: [null],
-      userName: [null],
+      companyName: [this.settings.user.company_name],
+      userName: [this.settings.user.username],
       filmType: [null, [Validators.required]],
       meterial: [null, [Validators.required]],
-      intro: [null, [Validators.required]],
+      intro: [null],
     });
     this.SolicitationForm.get('companyName').disable();
     this.SolicitationForm.get('userName').disable();
   }
+
   // 样片征集令生成
   collection() {
     const custom = this.SolicitationForm.value;
@@ -51,7 +48,7 @@ export class CallUpComponent implements OnInit {
     this.program_theme = custom.meterial;
     this.program_type = custom.filmType;
 
-    if (this.program_theme && this.program_type === undefined || this.description === null) {
+    if (this.program_theme && this.program_type === undefined ) {
       this.message.error('请填写相关信息');
     } else {
       this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description).subscribe(res => {
@@ -60,6 +57,7 @@ export class CallUpComponent implements OnInit {
       });
     }
   }
+
   validationForm(form: FormGroup) {
     for (const i in form.controls) {
       if (form.controls.hasOwnProperty(i)) {
@@ -70,6 +68,7 @@ export class CallUpComponent implements OnInit {
     }
     return form.valid;
   }
+
   validation() {
     return this.validationForm(this.SolicitationForm);
   }
