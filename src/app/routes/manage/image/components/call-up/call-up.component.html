@@ -30,12 +30,9 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSm]="3" nzFor="intro" nzRequired>说明</nz-form-label>
+    <nz-form-label [nzSm]="3" nzFor="intro" >说明</nz-form-label>
     <nz-form-control [nzSm]="21">
       <textarea rows="4" nz-input formControlName="intro" placeholder="备注"></textarea>
-      <nz-form-explain *ngIf="SolicitationForm.get('intro').dirty && SolicitationForm.get('intro').errors">
-        请输入说明
-      </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
 </form>
