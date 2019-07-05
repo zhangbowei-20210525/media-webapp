@@ -735,7 +735,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.seriesService.submitThreeInstanceDetails(conclusion, scoring, comment, this.reviewId).subscribe(res => {
           console.log(res);
           });
-          this.router.navigate([`manage/image`]);
+          this.router.navigate([`manage/image/review-view`]);
           this.message.success('您已提交信息,谢谢参与!');
         // }
       }),

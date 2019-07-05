@@ -13,7 +13,8 @@ import { CallUpComponent } from './components/call-up/call-up.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
 import { FirstInstanceDetailsComponent } from './components/first-instance-details/first-instance-details.component';
 import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
-import { ReceiveSolicitationComponent } from './receive-solicitation/receive-solicitation.component';
+import { SampleViewComponent } from './sample-view/sample-view.component';
+import { ReviewViewComponent } from './review-view/review-view.component';
 @NgModule({
   declarations: [
     ImageComponent,
@@ -26,7 +27,8 @@ import { ReceiveSolicitationComponent } from './receive-solicitation/receive-sol
     DetailsSolicitationComponent,
     FirstInstanceDetailsComponent,
     AdminFilmsDetailsComponent,
-    ReceiveSolicitationComponent,
+    SampleViewComponent,
+    ReviewViewComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,8 @@ import { ReceiveSolicitationComponent } from './receive-solicitation/receive-sol
     DetailsSolicitationComponent,
     FirstInstanceDetailsComponent,
     AdminFilmsDetailsComponent,
+    SampleViewComponent,
+    ReviewViewComponent,
   ]
 })
 export class ImageModule { }

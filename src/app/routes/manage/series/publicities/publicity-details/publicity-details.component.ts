@@ -566,6 +566,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     }
     this.seriesService.getSharingAuthorization([...this.liaison_ids], this.publicityId)
       .subscribe(result => {
+        console.log(result);
         this.message.success('分享成功');
       }, error => {
         this.message.error('分享失败');

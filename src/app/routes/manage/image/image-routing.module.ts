@@ -7,6 +7,8 @@ import { aclAbility } from '@core/acl';
 import { FilmsDetailsComponent } from './films-details/films-details.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
 import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
+import { SampleViewComponent } from './sample-view/sample-view.component';
+import { ReviewViewComponent } from './review-view/review-view.component';
 import { ReceiveSolicitationComponent } from './receive-solicitation/receive-solicitation.component';
 const routes: Routes = [
   {
@@ -20,7 +22,7 @@ const routes: Routes = [
       }
     },
     children: [
-      { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: '', redirectTo: 'sample-view', pathMatch: 'full' },
       {
         path: 'image',
         component: ImageComponent,
@@ -31,6 +33,14 @@ const routes: Routes = [
           }
         }
       },
+      {
+        path: 'sample-view',
+        component: SampleViewComponent,
+      },
+      {
+        path: 'review-view',
+        component: ReviewViewComponent,
+      }
     ]
   },
   {

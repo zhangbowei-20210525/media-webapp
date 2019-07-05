@@ -66,37 +66,7 @@ export class PublicityFilmsComponent implements OnInit {
         // console.log(result);
         this.dataset = result.list;
         this.tagdataset = result.meta;
-        console.log('334');
-        console.log(this.tagdataset);
-        // console.log(result.meta.tag_choices);
-        // console.log(this.tagdataset);
         this.pagination = result.pagination;
-        // for (let i = 0; i < result.list.length; i++) {
-        //   console.log(result.list[i].cumtom.id );
-        //   if (result.list[i].cumtom.id === this.array.list.cumtom.id) {
-        //     return false;
-        //   }
-        //   this.array[this.array.length].push(result.list[i]);
-        // }
-        // console.log(this.array, '0000');
-
-        // function uniq(array) {
-        //   const temp = [];
-        //   const index = [];
-        //   const l = array.length;
-        //   for (let i = 0; i < l; i++) {
-        //     for (let j = i + 1; j < l; j++) {
-        //       if (array[i].name === array[j].name) {
-        //         i++;
-        //         j = i;
-        //       }
-        //     }
-        //     temp.push(array[i]);
-        //     index.push(i);
-        //   }
-        //   console.log(index);
-        //   return temp;
-        // }
       });
   }
 
