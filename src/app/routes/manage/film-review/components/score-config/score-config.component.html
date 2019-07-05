@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of table.data">
-            <td [nzAlign] = "'center'" nzShowCheckbox (nzCheckedChange)="refreshStatus($event,data.id,data.proportion)"></td>
+            <td [nzAlign] = "'center'" nzShowCheckbox [(nzChecked)]= "data.ischecked"(nzCheckedChange)="refreshStatus($event,data.id,data.proportion)"></td>
             <td [nzAlign] = "'center'">{{ data.name }}</td>
             <td [nzAlign] = "'center'">
                 <div *ngIf="editId !== data.id; else editTpl">
@@ -31,7 +31,7 @@
                   </div>
                 </div>
                 <ng-template #editTpl>
-                    <nz-input-number [(ngModel)]="data.proportion" [nzMin]="0" [nzMax]="100" [nzStep]="1" (ngModelChange)="onChange($event, data.id, data.proportion)"></nz-input-number>
+                    <nz-input-number [(ngModel)]="data.proportion" nzPrecision="0" [nzMin]="0" [nzMax]="100" [nzStep]="1" (ngModelChange)="onChange($event, data.id, data.proportion)"></nz-input-number>
                   <!-- <input type="text" nz-input [(ngModel)]="data.proportion" [disabled]="disabled" (ngModelChange)="onChange($event, data.id, data.proportion)"/> -->
                 </ng-template>
               </td>
