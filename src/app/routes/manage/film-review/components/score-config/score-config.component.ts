@@ -40,10 +40,24 @@ export class ScoreConfigComponent implements OnInit {
         arr.push({
           id: x.id,
           name: x.name,
-          proportion: 0,
+          proportion: this.filmReview.scoring_items.find(f => f.id === x.id) ?
+            this.filmReview.scoring_items.filter(f => f.id === x.id)[0].proportion * 100 : 0,
+          ischecked: this.filmReview.scoring_items.some(f => f.id === x.id)
         });
       });
       this.listOfData = arr;
+      this.sum = 0;
+      const a = this.listOfData.filter(f => f.ischecked === true);
+      a.forEach(f => {
+        this.brr.push({
+          id: f.id,
+          proportion: f.proportion,
+        });
+      });
+      this.brr.forEach(x => {
+        this.sum = this.sum + x.proportion;
+      });
+      console.log(this.brr);
     });
   }
 
@@ -76,16 +90,12 @@ export class ScoreConfigComponent implements OnInit {
       this.brr = this.brr.filter(x => x.id !== id);
       this.sum = 0;
       this.brr.forEach(x => {
-        console.log(x);
         this.sum = this.sum + x.proportion;
       });
-      console.log(this.sum);
     }
-    console.log(this.brr);
   }
 
   startEdit(id: number, event: MouseEvent): void {
-    console.log(id);
     event.preventDefault();
     event.stopPropagation();
     this.editId = id;
@@ -104,8 +114,6 @@ export class ScoreConfigComponent implements OnInit {
   // }
 
   // scoreSelectChange(event, data: any) {
-  //   console.log(event);
-  //   console.log(data);
   // }
 
   // submit(): Observable<any> {
@@ -191,13 +199,20 @@ export class ScoreConfigComponent implements OnInit {
   validation() {
     this.sum = 0;
     this.brr.forEach(x => {
-      console.log(x);
       this.sum = this.sum + x.proportion;
     });
     if (this.sum !== 100) {
       return false;
     }
     if (this.sum === 100) {
+      return true;
+    }
+  }
+
+  validationZero() {
+    if (this.brr.some(e => e.proportion === 0)) {
+      return false;
+    } else {
       return true;
     }
   }
