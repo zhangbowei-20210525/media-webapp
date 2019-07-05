@@ -137,8 +137,8 @@
           </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction">说明</nz-form-label>
-            <nz-form-control [nzSm]="17" [nzXs]="17">
-              <textarea rows="3" nz-input formControlName="introduction" placeholder="请输入说明"></textarea>
+            <nz-form-control [nzSm]="17" [nzXs]="6" >
+              <textarea rows="3" nz-input formControlName="introduction" placeholder="请输入说明" [nzAutosize]="{ minRows: 2, maxRows: 6 }" ></textarea>
             </nz-form-control>
           </nz-form-item>
         </form>
