@@ -204,6 +204,8 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
       console.log(res);
       this.reviewList = res;
       this.reviewFirstSteps = res.review_steps[0];
+      console.log(res);
+      console.log(this.reviewFirstSteps);
       // 一审喜欢人数及通过率
       this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
       this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;

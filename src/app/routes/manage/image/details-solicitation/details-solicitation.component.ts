@@ -17,6 +17,9 @@ import { CollectionUpComponent } from '../components/collection-up/collection-up
 })
 export class DetailsSolicitationComponent implements OnInit {
   objParams: { program: any; materials: any[]; publicity_id: any; };
+  name: any;
+  extension: any;
+  filename: any;
   [x: string]: any;
 
   readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
@@ -45,6 +48,8 @@ export class DetailsSolicitationComponent implements OnInit {
     private seriesService: SeriesService,
     private router: Router,
     private modalService: NzModalService,
+    private route: ActivatedRoute,
+
   ) { }
 
   ngOnInit() {
@@ -68,13 +73,17 @@ export class DetailsSolicitationComponent implements OnInit {
     this.seriesService.getSamplePublicitys().subscribe(res => {
       this.programList = res.list;
     });
+    this.route.paramMap.subscribe(params => {
+      this.id = +params.get('id');
+      console.log(this.id);
+    });
   }
   fileType(value) {
     this.docType = this.getUploadUrl(value);
   }
   beforeUpload = (file: File, fileList: any) => {
     const list = [] as File[];
-    if (this.docType === '/api/v1/upload/video') {
+    if (this.docType === 'https://cs.bctop.net:7000/upload/video') {
       for (const key in fileList) {
         if (fileList.hasOwnProperty(key)) {
           const element = fileList[key];
@@ -133,6 +142,7 @@ export class DetailsSolicitationComponent implements OnInit {
         this.statusType = '';
       }
       item.percent = String(item.percent).split('.')[0];
+      console.log(fileList);
     });
 
     if (this.validateForm.value.type === 'feature'
@@ -148,7 +158,11 @@ export class DetailsSolicitationComponent implements OnInit {
     }
      fileList.forEach( b => {
        if (!!b.response) {
-         this.id = b.response.id ;
+        //  this.id = b.response.id ;
+        this.extension = b.response.data.extension;
+        this.filename = b.response.data.filename;
+        this.name = b.response.data.name;
+        this.size = b.response.data.size;
        }
     });
   }
@@ -157,7 +171,7 @@ export class DetailsSolicitationComponent implements OnInit {
       case 'sample':
       case 'feature':
       case 'trailer':
-        return '/api/v1/upload/video';
+        return 'https://cs.bctop.net:7000/upload/video';
       case 'poster':
       case 'still':
         return '/api/v1/upload/image';
@@ -181,13 +195,20 @@ export class DetailsSolicitationComponent implements OnInit {
     if (this.validation()) {
       const params = this.validateForm.value;
       const materials = [];
-      const shareId = 1;
       const obj = {
-        material_id: '',
         material_type: '',
+        name: '',
+        filename: '',
+        extension: '',
+        size: '',
       };
       this.files.forEach(item => {
-        obj.material_id = this.id;
+        console.log(item);
+        // obj.material_id = this.id;
+        obj.name = this.name;
+        obj.filename = this.filename;
+        obj.extension = this.extension;
+        obj.size = this.size;
         obj.material_type = this.validateForm.value.type;
         materials.push(obj);
       });
@@ -196,8 +217,9 @@ export class DetailsSolicitationComponent implements OnInit {
         materials: materials,
         publicity_id: this.publicityId,
       };
-    this.seriesService.submitCollection(this.objParams, shareId).subscribe(res => {
-      if (res.message === 'OK') {
+      console.log(this.publicityId);
+
+    this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
         this.modalService.create({
           nzTitle: ``,
           nzContent: CollectionUpComponent,
@@ -217,13 +239,11 @@ export class DetailsSolicitationComponent implements OnInit {
             resolve();
             this.router.navigate([`/manage/series/publicity`]);
             this.filterList = [];
-
           }),
           nzNoAnimation: true,
         });
-      } else {
-        this.message.warning(res.message);
-      }
+    }, error => {
+      this.message.warning(error.message);
     });
     }
   }
@@ -241,6 +261,7 @@ export class DetailsSolicitationComponent implements OnInit {
     this.filterList = this.programList.filter(item => {
       return item.name === this.blurData;
     });
+    console.log(this.filterList);
     this.publicityId = this.filterList[0].id || null;
     // this.validateForm.get('nickname').setValue(this.filterList[0].program.nickname);
     // if (this.filterList[0].program.nickname === null ) {

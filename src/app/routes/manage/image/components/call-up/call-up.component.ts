@@ -38,7 +38,7 @@ export class CallUpComponent implements OnInit {
       userName: [null],
       filmType: [null, [Validators.required]],
       meterial: [null, [Validators.required]],
-      intro: [null, [Validators.required]],
+      intro: [null],
     });
     this.SolicitationForm.get('companyName').disable();
     this.SolicitationForm.get('userName').disable();
@@ -51,7 +51,7 @@ export class CallUpComponent implements OnInit {
     this.program_theme = custom.meterial;
     this.program_type = custom.filmType;
 
-    if (this.program_theme && this.program_type === undefined || this.description === null) {
+    if (this.program_theme && this.program_type === undefined) {
       this.message.error('请填写相关信息');
     } else {
       this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description).subscribe(res => {

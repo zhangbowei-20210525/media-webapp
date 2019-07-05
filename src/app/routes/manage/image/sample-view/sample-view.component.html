@@ -1,0 +1,45 @@
+<!-- <div *ngIf="isMyDeatilsLoaded" > -->
+<div *ngIf="list.length > 0 else empty">
+  <div class="videos-info-big-box">
+    <ul>
+      <li class="video-info" *ngFor="let thumbnail of list index as i">
+        <div class="video">
+          <img class="video-img" [src]="thumbnail?.src" />
+          <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program_id)">
+            <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
+          </div>
+        </div>
+        <div class="info">
+          <div class="info-container-big-box">
+            <div class="info-container-name"><a>{{ thumbnail?.name }}</a>
+            </div>
+            <div class="info-container-type">{{ thumbnail?.program_type | seriesType }}</div>
+          </div>
+          <div class="info-small-box-director">
+            <div class="info-small-box-director-left">导演: </div>
+            <div class="info-small-box-director-right">{{ thumbnail?.director }}</div>
+          </div>
+          <div class="info-small-box-tostar"> 主演:
+            <span class="info-small-box-tostar-right">{{ thumbnail?.protagonist }}</span>
+          </div>
+        </div>
+        <div class="info-small-box-bottom">
+          <!-- <div class="info-wk-eight"> -->
+          <div class="info-small-box-bottom-left">
+            <img class="info-hp" [src]="thumbnail?.user.avatar">
+            <span
+              class="info-small-box-bottom-right">{{ thumbnail?.user.nickname === '' ? '-' : thumbnail?.user.nickname }}</span>
+          </div>
+          <!-- </div> -->
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0">
+    <nz-pagination style="margin: 15px 15px" [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count"
+      [nzPageSize]="pagination.page_size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+  </div>
+</div>
+<ng-template #empty>
+  <nz-empty nzNotFoundContent='暂时没有人分享样片给您哦!'></nz-empty>
+</ng-template>
