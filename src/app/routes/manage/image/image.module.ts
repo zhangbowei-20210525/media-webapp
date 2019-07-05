@@ -14,6 +14,8 @@ import { CallUpComponent } from './components/call-up/call-up.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
 import { FirstInstanceDetailsComponent } from './components/first-instance-details/first-instance-details.component';
 import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
+import { SampleViewComponent } from './sample-view/sample-view.component';
+import { ReviewViewComponent } from './review-view/review-view.component';
 @NgModule({
   declarations: [
     ImageComponent,
@@ -27,6 +29,8 @@ import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-de
     DetailsSolicitationComponent,
     FirstInstanceDetailsComponent,
     AdminFilmsDetailsComponent,
+    SampleViewComponent,
+    ReviewViewComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +48,8 @@ import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-de
     DetailsSolicitationComponent,
     FirstInstanceDetailsComponent,
     AdminFilmsDetailsComponent,
+    SampleViewComponent,
+    ReviewViewComponent,
   ]
 })
 export class ImageModule { }

@@ -7,7 +7,7 @@
         <a nz-dropdown> 客户标签 <i nz-icon type="down"></i> </a>
         <ul nz-menu>
           <!-- <li nz-menu-item  *ngFor="let data of dataset" (click)='searchRemark(data.remark)'>{{data.remark}}</li> -->
-          <li nz-menu-item  *ngFor="let data of tagdataset.tag_choices" [hidden]='tagdataset.tag_choices.length === 0' (click)='searchRemark(data)'>{{data}}
+          <li nz-menu-item  *ngFor="let data of tagdataset?.tag_choices" [hidden]='tagdataset?.tag_choices.length === 0' (click)='searchRemark(data)'>{{data}}
             <!-- <div  (click)='searchRemark(item)' *ngFor="let item of data.tags">{{item}}</div> -->
           </li>
         </ul>

@@ -1,0 +1,257 @@
+<div *ngIf="list.length > 0 else empty">
+    <div class="clearfix" style='margin-bottom: 20px' style="display:flex;">
+      <nz-radio-group [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
+        <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
+            style="font-size: 1.5rem"></i></label>
+        <label acl [acl-ability]="ability.review.edit" nz-radio-button nzValue="table"><i nz-icon type="table"
+            theme="outline" style="font-size: 1.5rem"></i></label>
+      </nz-radio-group>
+      <div *ngIf="mode === 'table'" style='flex:1;display: flex;justify-content: flex-end;'>
+        <button *ngIf='selectedIndex == 0' nz-button (click)="launchFilms()">发起审片</button>
+        <button *ngIf='selectedIndex === 1' nz-button (click)="submitNext()">提交下轮</button>
+        <button *ngIf='selectedIndex === 2' nz-button (click)="secondSubmit()">提交下轮</button>
+        <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">提交</button> -->
+        <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">入库</button> -->
+      </div>
+    </div>
+    <!-- <div *ngIf="isMyDeatilsLoaded" > -->
+    <div *ngIf="mode === 'figure'">
+      <div *ngIf="list.length > 0 else empty">
+        <div class="videos-info-big-box">
+          <ul>
+            <li class="video-info" *ngFor="let thumbnail of list index as i">
+              <div class="video">
+                <img class="video-img" [src]="thumbnail?.publicity.src" />
+                <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.publicity.id)">
+                  <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
+                </div>
+              </div>
+              <div class="info">
+                <div class="info-container-big-box">
+                  <div class="info-container-name"><a>{{ thumbnail?.publicity.program.name }}</a>
+                  </div>
+                  <div class="info-container-type">{{ thumbnail?.publicity.program.program_type | seriesType }}</div>
+                </div>
+                <div class="info-small-box-director">
+                  <div class="info-small-box-director-left">导演: </div>
+                  <div class="info-small-box-director-right">{{ thumbnail?.publicity.program.director }}</div>
+                </div>
+                <div class="info-small-box-tostar"> 主演:
+                  <span class="info-small-box-tostar-right">{{ thumbnail?.publicity.program.protagonist }}</span>
+                </div>
+              </div>
+              <div class="info-small-box-bottom">
+                <!-- <div class="info-wk-eight"> -->
+                <div class="info-small-box-bottom-left">
+                  <img class="info-hp" [src]="thumbnail?.created_employee.user.avatar">
+                  <span
+                    class="info-small-box-bottom-right">{{ thumbnail?.created_employee.user.nickname === '' ? '-' : thumbnail?.created_employee.user.nickname }}</span>
+                </div>
+                <div class="info-small-box-bottom-right">
+                  <!-- <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="checkChangeData($event, i)">
+                <div nz-row>
+                  <div nz-col><label nz-checkbox [nzValue]="thumbnail?.id"></label></div>
+                </div>
+              </nz-checkbox-wrapper> -->
+                  <button *ngIf="thumbnail.step_number === 1 && thumbnail?.reviewer_status.status === 0" nz-button
+                    nzType="primary" (click)="firstCheck(thumbnail?.id, thumbnail?.publicity.id)">一审</button>
+                  <button *ngIf="thumbnail.step_number === 2 && thumbnail?.reviewer_status.status === 0" nz-button
+                    nzType="primary" (click)="firstCheck(thumbnail?.id, thumbnail?.publicity.id)">二审</button>
+                  <button *ngIf="thumbnail.step_number === 3 && thumbnail?.reviewer_status.status === 0" nz-button
+                    nzType="primary" (click)="firstCheck(thumbnail?.id, thumbnail?.publicity.id)">三审</button>
+                  <button
+                    *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 1 "
+                    nz-button nzType="danger">已一审</button>
+                  <button
+                    *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 2 "
+                    nz-button nzType="danger">已二审</button>
+                  <button
+                    *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 3 "
+                    nz-button nzType="danger">已三审</button>
+                </div>
+                <!-- </div> -->
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0  || mode == 'table'">
+          <nz-pagination style="margin: 15px 15px" [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count"
+            [nzPageSize]="pagination.page_size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+        </div>
+      </div>
+    </div>
+    <!-- <div *ngIf="isLoaded" [hidden]="mode == 'figure'"> -->
+    <div *ngIf="mode === 'table'">
+      <div>
+        <nz-tabset [nzType]="'card'" [nzSelectedIndex]="selectedTabIndex" (nzSelectChange)='onSelectChange($event)'
+          *ngIf="list.length > 0 else empty">
+          <nz-tab nzTitle="意向">
+            <nz-table #rowSelectionTable [nzData]="intentionList"
+              (nzCurrentPageDataChange)="currentPageDataChange($event)">
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate"
+                    (nzCheckedChange)="checkAll($event)"></th>
+                  <th>节目</th>
+                  <th>类型</th>
+                  <th>集数</th>
+                  <th>题材</th>
+                  <th>主演</th>
+                  <th>导演</th>
+                  <th>公司</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of listOfDisplayData">
+                  <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.intention_id]"
+                    (nzCheckedChange)="refreshStatus()"></td>
+                  <td>{{data.name}}</td>
+                  <td>{{data.program_type}}</td>
+                  <td>{{data.episode}}</td>
+                  <td>{{data.theme}}</td>
+                  <td>{{data.protagonist}}</td>
+                  <td>{{data.director}}</td>
+                  <td>{{data.company.full_name}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+          <nz-tab nzTitle="一审">
+            <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="firstPageDataChange($event)">
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="isFirstAllDisplayDataChecked" [nzIndeterminate]="isFirstIndeterminate"
+                    (nzCheckedChange)="firstCheckAll($event)"></th>
+                  <th>节目</th>
+                  <th>类型</th>
+                  <th>集数</th>
+                  <th>题材</th>
+                  <th>主演</th>
+                  <th>导演</th>
+                  <th>公司</th>
+                  <th>一审</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of firstListOfDisplayData">
+                  <td nzShowCheckbox [(nzChecked)]="firstMapOfCheckedId[data.id]"
+                    (nzCheckedChange)="firstRefreshStatus()"></td>
+                  <td>
+  
+                    <a (click)="AdministratorViewDetails(data?.id, data?.publicity.id)">{{data.publicity.program.name}}
+                    </a>
+  
+                  </td>
+                  <td>{{data.publicity.program.program_type}}</td>
+                  <td>{{data.publicity.program.episode}}</td>
+                  <td>{{data.publicity.program.theme}}</td>
+                  <td>{{data.publicity.program.protagonist}}</td>
+                  <td>{{data.publicity.program.director}}</td>
+                  <td>{{data.publicity.program.product_company}}</td>
+                  <td>
+                    {{data.review_steps[0].review_records_statistic.reviewed_count}} /
+                    {{data.review_steps[0].review_records_statistic.count}}
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+          <nz-tab nzTitle="二审">
+            <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="secondPageDataChange($event)">
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="isSecondAllDisplayDataChecked"
+                    [nzIndeterminate]="isSecondIndeterminate" (nzCheckedChange)="secondCheckAll($event)"></th>
+                  <th>节目</th>
+                  <th>类型</th>
+                  <th>集数</th>
+                  <th>题材</th>
+                  <th>主演</th>
+                  <th>导演</th>
+                  <th>公司</th>
+                  <th>一审</th>
+                  <th>二审</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of secondListOfDisplayData">
+                  <td nzShowCheckbox [(nzChecked)]="secondMapOfCheckedId[data.id]"
+                    (nzCheckedChange)="secondRefreshStatus()"></td>
+                  <td>
+                    <a (click)="AdministratorViewDetails(data?.id, data?.publicity.id)">{{data.publicity.program.name}}
+                    </a>
+                  </td>
+                  <td>{{data.publicity.program.program_type}}</td>
+                  <td>{{data.publicity.program.episode}}</td>
+                  <td>{{data.publicity.program.theme}}</td>
+                  <td>{{data.publicity.program.protagonist}}</td>
+                  <td>{{data.publicity.program.director}}</td>
+                  <td>{{data.publicity.program.product_company}}</td>
+                  <td>
+                    {{data.review_steps[0].review_records_statistic.reviewed_count}} /
+                    {{data.review_steps[0].review_records_statistic.count}}
+                  </td>
+                  <td>
+                    {{data.review_steps[1].review_records_statistic.reviewed_count}} /
+                    {{data.review_steps[1].review_records_statistic.count}}
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+          <nz-tab nzTitle="三审">
+            <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="threePageDataChange($event)">
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="isThreeAllDisplayDataChecked" [nzIndeterminate]="isThreeIndeterminate"
+                    (nzCheckedChange)="threeCheckAll($event)"></th>
+                  <th>节目</th>
+                  <th>类型</th>
+                  <th>集数</th>
+                  <th>题材</th>
+                  <th>主演</th>
+                  <th>导演</th>
+                  <th>公司</th>
+                  <th>一审</th>
+                  <th>二审</th>
+                  <th>三审</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of threeListOfDisplayData">
+                  <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data.id]"
+                    (nzCheckedChange)="threeRefreshStatus()"></td>
+                  <td>
+                    <a (click)="AdministratorViewDetails(data?.id, data?.publicity.id)">{{data.publicity.program.name}}
+                    </a>
+                  </td>
+                  <td>{{data.publicity.program.program_type}}</td>
+                  <td>{{data.publicity.program.episode}}</td>
+                  <td>{{data.publicity.program.theme}}</td>
+                  <td>{{data.publicity.program.protagonist}}</td>
+                  <td>{{data.publicity.program.director}}</td>
+                  <td>{{data.publicity.program.product_company}}</td>
+                  <td>
+                    {{data.review_steps[0]?.review_records_statistic.reviewed_count}} /
+                    {{data.review_steps[0]?.review_records_statistic.count}}
+                  </td>
+                  <td>
+                    {{data.review_steps[1]?.review_records_statistic.reviewed_count}} /
+                    {{data.review_steps[1]?.review_records_statistic.count}}
+                  </td>
+                  <td>
+                    {{data.review_steps[2]?.review_records_statistic.reviewed_count}} /
+                    {{data.review_steps[2]?.review_records_statistic.count}}
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+          <!-- <nz-tab nzTitle="入库"></nz-tab> -->
+        </nz-tabset>
+      </div>
+    </div>
+  </div>
+  <ng-template #empty>
+    <nz-empty nzNotFoundContent='暂时没有审片视频哦!'></nz-empty>
+  </ng-template>
