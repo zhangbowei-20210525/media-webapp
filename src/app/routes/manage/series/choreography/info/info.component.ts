@@ -21,46 +21,61 @@ export class InfoComponent implements OnInit {
   w = [];
   num1 = 1;
   num2 = 0;
+
+  selectedIndex = 0;
+  tabs: any[] = [];
+
+
+
   constructor(
     private service: ChoreographyService,
     private el: ElementRef
   ) { }
 
   ngOnInit() {
-    this.service.getChannelInfo().subscribe(res => {
-      this.listOfData = this.dataConversion(res);
+    this.service.getTheatreList().subscribe(res => {
+      this.tabs = res;
+      this.service.getSpecifiedChannelInfo(this.tabs[0].id).subscribe(s => {
+        this.listOfData = this.dataConversion(s.columns);
+      });
+    });
+    // this.service.getChannelInfo().subscribe(res => {
+    //   this.listOfData = this.dataConversion(res);
+    // });
+  }
+
+  onClick(id: number) {
+    this.service.getSpecifiedChannelInfo(id).subscribe(res => {
+      this.listOfData = this.dataConversion(res.columns);
     });
   }
 
   dataConversion(list: any[]) {
-    // console.log(list);
     const aa = [];
     const info = [];
-    list.forEach(a => {
+    console.log('1133');
+    list.forEach(t => {
       let index = 0;
-      a.columns.forEach(t => {
-        info.push({
-          index: index++,
-          num1: this.num1++,
-          id: t.id,
-          channelName: a.name,
-          theatreName: t.name,
-          count: a.columns.length,
-          // broadcast_events: _.groupBy(t.broadcast_events, g => g.broadcast_date)
-        });
-        t.broadcast_events.forEach(c => {
-          aa.push({
-            lnum: this.num1 - 1,
-            index: this.num2++,
-            tid: c.column_id,
-            broadcast_date: c.broadcast_date,
-            episode_index: c.episode_index,
-            episode_num: c.episode_num,
-            program_name: c.program_name
-          });
+      info.push({
+        index: index++,
+        num1: this.num1++,
+        id: t.id,
+        theatreName: t.name,
+        count: t.broadcast_events.length,
+      });
+      t.broadcast_events.forEach(c => {
+        aa.push({
+          lnum: this.num1 - 1,
+          index: this.num2++,
+          tid: c.column_id,
+          broadcast_date: c.broadcast_date,
+          episode_index: c.episode_index,
+          episode_num: c.episode_num,
+          program_name: c.program_name
         });
       });
     });
+    this.w = [];
     info.forEach(a => {
       this.w.push(a.num1);
     });
