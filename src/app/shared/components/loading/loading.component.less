@@ -75,7 +75,64 @@
     100% {
         transform: scale(0);
     }
+
     80% {
         transform: scale(1);
+    }
+}
+
+.loading-dots {
+    padding: 16px 0;
+    margin: 0 auto;
+    width: 100%;
+    min-width: 36px;
+    text-align: center;
+}
+
+.loading-dots .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #ccc;
+    border-radius: 100%;
+    display: inline-block;
+    animation: sk-bouncedelay 1s infinite ease-in-out both;
+}
+
+.loading-dots .dot.first {
+    animation-delay: -0.32s;
+}
+
+.loading-dots .dot.second {
+    animation-delay: -0.16s;
+}
+
+.loading-dots .dot.third {
+    animation-delay: 0;
+}
+
+// @keyframes sk-bouncedelay {
+
+//     0%,
+//     40%,
+//     100% {
+//         transform: scale(0);
+//     }
+
+//     80% {
+//         transform: scale(1);
+//     }
+// }
+
+@keyframes sk-bouncedelay {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0)
+    }
+
+    40% {
+        transform: scale(1)
     }
 }

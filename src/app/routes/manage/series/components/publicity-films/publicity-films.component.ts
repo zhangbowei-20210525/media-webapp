@@ -49,7 +49,7 @@ export class PublicityFilmsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('234');
+    // console.log('234');
     this.fetchPublicities();
   }
 
@@ -66,6 +66,10 @@ export class PublicityFilmsComponent implements OnInit {
         // console.log(result);
         this.dataset = result.list;
         this.tagdataset = result.meta;
+        // console.log('334');
+        // console.log(this.tagdataset);
+        // console.log(result.meta.tag_choices);
+        // console.log(this.tagdataset);
         this.pagination = result.pagination;
       });
   }

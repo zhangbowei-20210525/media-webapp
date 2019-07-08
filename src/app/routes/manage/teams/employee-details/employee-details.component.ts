@@ -48,6 +48,7 @@ export class EmployeeDetailsComponent implements OnInit {
   permissionNodes: NzTreeNodeOptions[];
   roleCheckedkeys: number[];
   roleCheckOptions: { label: string, value: number, checked: boolean }[];
+  employeeInvitationVisible = false;
 
   constructor(
     public ability: ACLAbility,
@@ -316,5 +317,11 @@ export class EmployeeDetailsComponent implements OnInit {
     const diff = _.difference(keys, this.getKeysByPermissions(rolePermissions));
     return diff;
   }
+
+  // onEmployeeInvitationPopoverChange(state: boolean) {
+  //   if (state) {
+
+  //   }
+  // }
 
 }

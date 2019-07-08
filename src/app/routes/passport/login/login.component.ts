@@ -18,7 +18,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.route.url.subscribe(urls => {
       const urlSegments = this.router.url.split('/');
-      this.method = urlSegments[urlSegments.length - 1] as ('phone' | 'wechat');
+      const lastUrl = urlSegments[urlSegments.length - 1];
+      if (lastUrl.startsWith('phone')) {
+        this.method = 'phone';
+      } else if (lastUrl.startsWith('wechat')) {
+        this.method = 'wechat';
+      }
     });
   }
 

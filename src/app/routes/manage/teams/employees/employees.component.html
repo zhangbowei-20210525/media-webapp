@@ -1,27 +1,38 @@
 <div class="table-operations">
   <button nz-button (click)="addEmployee()" acl="admin" [acl-ability]="ability.company.employee.profile">添加成员</button>
-  <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin" [acl-ability]="ability.company.employee.profile">删除</button>
+  <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin"
+    [acl-ability]="ability.company.employee.profile">删除</button>
 </div>
 
 <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>
   <nz-table #employeesTable [nzData]="dataset" [nzSize]="'middle'" [nzNoResult]="noResult">
     <thead>
       <tr>
-        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" [nzDisabled]="dataset.length < 1"
-          (nzCheckedChange)="checkAll($event)"></th>
+        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+          [nzDisabled]="dataset.length < 1" (nzCheckedChange)="checkAll($event)"></th>
         <th>姓名</th>
         <th>部门</th>
         <th>角色</th>
         <th>手机</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of employeesTable.data">
-        <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()" [nzDisabled]="data.disabled"></td>
+        <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"
+          [nzDisabled]="data.disabled"></td>
         <td><a [routerLink]="'/manage/teams/employee-details/' + data.id">{{ data.name }}</a></td>
         <td>{{ data.department }}</td>
-        <td nz-tooltip [nzTitle]="data.roles | arrayMap:'name' | arrayFormat">{{ data.roles | arrayMap:'name' | arrayFormat | truncate:16 }}</td>
+        <td nz-tooltip [nzTitle]="data.roles | arrayMap:'name' | arrayFormat">
+          {{ data.roles | arrayMap:'name' | arrayFormat | truncate:16 }}</td>
         <td>{{ data.phone }}</td>
+        <td>
+          <div *ngIf="!data.is_joined">
+            <button nz-button nzSize="small" nz-popover nzTitle="邀请员工"
+              (nzVisibleChange)="onInvitationChange($event, data.id)" nzTrigger="click"
+              [nzContent]="invitationTemplate">邀请</button>
+          </div>
+        </td>
       </tr>
     </tbody>
   </nz-table>
@@ -29,3 +40,21 @@
     <app-empty></app-empty>
   </ng-template>
 </nz-spin>
+
+<ng-template #invitationTemplate>
+  <div class="invitation-panel">
+    <ng-container *ngIf="invitationData else invitationLoading">
+      <p>在小程序中转发</p>
+      <div class="invitation-qrcode">
+        <img [src]="invitationData.qrcode">
+      </div>
+      <p>复制链接</p>
+      <div class="invitation-link">
+        <span>{{ invitationData.link }}</span>
+      </div>
+    </ng-container>
+    <ng-template #invitationLoading>
+      <app-loading></app-loading>
+    </ng-template>
+  </div>
+</ng-template>

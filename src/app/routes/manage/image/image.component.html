@@ -1,8 +1,20 @@
-<<<<<<< HEAD
 <div class="block clearfix fade-in-up">
   <div class="block-header">
     <div class="block-title">
-      <p>发现列表</p>
+      <div class="s-nav-wapper">
+        <nav class="s-nav">
+          <ul class="list s-nav-list">
+            <li class="nav-item">
+              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'sample-view'" nz-tooltip
+                nzTitle="样片，片花，海报，文档等物料的上传，分享管理">样片</a>
+            </li>
+            <li class="nav-item">
+              <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'review-view'" nz-tooltip
+                nzTitle="母带文件的上传与管理">审片</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
     <div class="block-title-right">
       <button class="block-title-box-left" nz-button nzType="primary" (click)="callUp()">样片征集令</button>
@@ -11,86 +23,6 @@
     <!-- <button class="block-title-right" (click)="launchFilms">发起审片</button> -->
   </div>
   <div class="block-content">
-    <div class="clearfix" style='margin-bottom: 20px' style="display:flex;">
-      <nz-radio-group [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
-        <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
-            style="font-size: 1.5rem"></i></label>
-        <label acl [acl-ability]="ability.review.edit" nz-radio-button nzValue="table"><i nz-icon type="table"
-            theme="outline" style="font-size: 1.5rem"></i></label>
-      </nz-radio-group>
-      <div *ngIf="mode === 'table'" style='flex:1;display: flex;justify-content: flex-end;'>
-        <button *ngIf='selectedIndex == 0' nz-button (click)="launchFilms()">发起审片</button>
-        <button *ngIf='selectedIndex === 1' nz-button (click)="submitNext()">提交下轮</button>
-        <button *ngIf='selectedIndex === 2' nz-button (click)="secondSubmit()">提交下轮</button>
-        <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">提交</button> -->
-        <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">入库</button> -->
-      </div>
-      <a style="margin-left: 20px;font-size: 21px" [routerLink]="'/manage/film-review'"><i nz-icon nzType="setting"></i></a>
-    </div>
-    <!-- <div *ngIf="isMyDeatilsLoaded" > -->
-    <div *ngIf="mode === 'figure'">
-      <div *ngIf="list.length > 0 else empty">
-        <div class="videos-info-big-box">
-          <ul>
-            <li class="video-info" *ngFor="let thumbnail of list index as i">
-              <div class="video">
-                <img class="video-img" [src]="thumbnail?.publicity.src" />
-                <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.publicity.id)">
-                  <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
-                </div>
-              </div>
-              <div class="info">
-                <div class="info-container-big-box">
-                  <div class="info-container-name"><a>{{ thumbnail?.publicity.program.name }}</a>
-                  </div>
-                  <div class="info-container-type">{{ thumbnail?.publicity.program.program_type | seriesType }}</div>
-                </div>
-                <div class="info-small-box-director">
-                  <div class="info-small-box-director-left">导演: </div>
-                  <div class="info-small-box-director-right">{{ thumbnail?.publicity.program.director }}</div>
-                </div>
-                <div class="info-small-box-tostar"> 主演:
-                  <span class="info-small-box-tostar-right">{{ thumbnail?.publicity.program.protagonist }}</span>
-                </div>
-              </div>
-              <div class="info-small-box-bottom">
-                <!-- <div class="info-wk-eight"> -->
-                <div class="info-small-box-bottom-left">
-                  <img class="info-hp" [src]="thumbnail?.created_employee.user.avatar">
-                  <span
-                    class="info-small-box-bottom-right">{{ thumbnail?.created_employee.user.nickname === '' ? '-' : thumbnail?.created_employee.user.nickname }}</span>
-                </div>
-                <div class="info-small-box-bottom-right">
-                  <!-- <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="checkChangeData($event, i)">
-                  <div nz-row>
-                    <div nz-col><label nz-checkbox [nzValue]="thumbnail?.id"></label></div>
-                  </div>
-                </nz-checkbox-wrapper> -->
-                  <button *ngIf="thumbnail.step_number === 1 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.id, thumbnail?.publicity.id)">一审</button>
-                  <button *ngIf="thumbnail.step_number === 2 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.id, thumbnail?.publicity.id)">二审</button>
-                  <button *ngIf="thumbnail.step_number === 3 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.id, thumbnail?.publicity.id)">三审</button>
-                  <button
-                    *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 1 "
-                    nz-button nzType="danger">已一审</button>
-                  <button
-                    *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 2 "
-                    nz-button nzType="danger">已二审</button>
-                  <button
-                    *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 3 "
-                    nz-button nzType="danger">已三审</button>
-                </div>
-                <!-- </div> -->
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0  || mode == 'table'">
-          <nz-pagination style="margin: 15px 15px" [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count"
-            [nzPageSize]="pagination.page_size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
-=======
   <div class="block clearfix fade-in-up">
     <div class="block-header">
       <div class="block-title">
@@ -107,7 +39,6 @@
               </li>
             </ul>
           </nav>
->>>>>>> yu
         </div>
       </div>
       <div class="block-title-right">
@@ -119,4 +50,6 @@
     <div class="block-content">
       <router-outlet></router-outlet>
     </div>
+    <router-outlet></router-outlet>
   </div>
+</div>

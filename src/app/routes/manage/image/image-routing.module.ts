@@ -7,9 +7,9 @@ import { aclAbility } from '@core/acl';
 import { FilmsDetailsComponent } from './films-details/films-details.component';
 import { DetailsSolicitationComponent } from './details-solicitation/details-solicitation.component';
 import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-details.component';
+import { ReceiveSolicitationComponent } from './receive-solicitation/receive-solicitation.component';
 import { SampleViewComponent } from './sample-view/sample-view.component';
 import { ReviewViewComponent } from './review-view/review-view.component';
-import { ReceiveSolicitationComponent } from './receive-solicitation/receive-solicitation.component';
 const routes: Routes = [
   {
     path: '',

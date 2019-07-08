@@ -22,6 +22,8 @@ export class PhoneLoginComponent implements OnInit {
   countdown: number;
   isLoggingIn = false;
 
+  employeeInvitationId: number;
+
   constructor(
     private fb: FormBuilder,
     private service: LoginService,
@@ -48,6 +50,10 @@ export class PhoneLoginComponent implements OnInit {
       const url = params.get('returnUrl');
       if (url) {
         this.stateStore.setDirectionUrl(decodeURIComponent(url));
+      }
+      const employeeInvitationId = params.get('emp_invitation');
+      if (employeeInvitationId) {
+        this.employeeInvitationId = +employeeInvitationId;
       }
     });
     this.form = this.fb.group({
@@ -92,7 +98,7 @@ export class PhoneLoginComponent implements OnInit {
   onSubmit() {
     if (this.validation(this.form)) {
       this.isLoggingIn = true;
-      this.service.loginByPhone(this.phone.value, this.captcha.value).pipe(finalize(() => {
+      this.service.loginByPhone(this.phone.value, this.captcha.value, this.employeeInvitationId).pipe(finalize(() => {
         this.isLoggingIn = false;
       })).subscribe(result => {
         // result.auth.company_full_name = null; // 测试

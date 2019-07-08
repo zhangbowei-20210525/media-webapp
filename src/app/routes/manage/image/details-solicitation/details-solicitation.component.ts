@@ -48,6 +48,8 @@ export class DetailsSolicitationComponent implements OnInit {
     private seriesService: SeriesService,
     private router: Router,
     private modalService: NzModalService,
+    private route: ActivatedRoute,
+
   ) { }
 
   ngOnInit() {
@@ -70,6 +72,10 @@ export class DetailsSolicitationComponent implements OnInit {
     });
     this.seriesService.getSamplePublicitys().subscribe(res => {
       this.programList = res.list;
+    });
+    this.route.paramMap.subscribe(params => {
+      this.id = +params.get('id');
+      console.log(this.id);
     });
   }
   fileType(value) {
@@ -189,7 +195,6 @@ export class DetailsSolicitationComponent implements OnInit {
     if (this.validation()) {
       const params = this.validateForm.value;
       const materials = [];
-      const shareId = 1;
       const obj = {
         material_type: '',
         name: '',
@@ -214,7 +219,7 @@ export class DetailsSolicitationComponent implements OnInit {
       };
       console.log(this.publicityId);
 
-    this.seriesService.submitCollection(this.objParams, shareId).subscribe(res => {
+    this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
         this.modalService.create({
           nzTitle: ``,
           nzContent: CollectionUpComponent,

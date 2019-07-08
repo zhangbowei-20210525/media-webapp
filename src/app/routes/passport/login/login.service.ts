@@ -15,7 +15,7 @@ export class LoginService {
     return this.http.get<any>('/api/v1/sms', { params: { phone } });
   }
 
-  loginByPhone(phone: string, code: string) {
-    return this.http.post<LoginResultDto>('/api/v1/login/phone', { phone, code }, { params: { _allow_anonymous: '' } });
+  loginByPhone(phone: string, code: string, invitation_id?: number) {
+    return this.http.post<LoginResultDto>('/api/v1/login/phone', { phone, code, invitation_id }, { params: { _allow_anonymous: '' } });
   }
 }
