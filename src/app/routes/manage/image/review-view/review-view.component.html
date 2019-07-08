@@ -1,4 +1,4 @@
-<div >
+<div *ngIf="list.length > 0 else empty">
     <div class="clearfix" style='margin-bottom: 20px;'>
       <nz-radio-group [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
         <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
