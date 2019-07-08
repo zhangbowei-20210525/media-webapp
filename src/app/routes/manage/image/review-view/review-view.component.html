@@ -1,20 +1,22 @@
-<div *ngIf="list.length > 0 else empty">
-    <div class="clearfix" style='margin-bottom: 20px;'>
-      <nz-radio-group [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
-        <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
-            style="font-size: 1.5rem"></i></label>
-        <label acl [acl-ability]="ability.review.edit" nz-radio-button nzValue="table"><i nz-icon type="table"
-            theme="outline" style="font-size: 1.5rem"></i></label>
-      </nz-radio-group>
-      <div *ngIf="mode === 'table'" style='float: right;'>
-        <button *ngIf='selectedIndex == 0' nz-button (click)="launchFilms()">发起审片</button>
-        <button *ngIf='selectedIndex === 1' nz-button (click)="submitNext()">提交下轮</button>
-        <button *ngIf='selectedIndex === 2' nz-button (click)="secondSubmit()">提交下轮</button>
-        <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">提交</button> -->
-        <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">入库</button> -->
-      </div>
-      <a style="float: right;margin-right: 20px;font-size: 17px;margin-top: 3px;" routerLink="/manage/film-review"><i nz-icon nzType="setting"></i></a>
+<div>
+  <div class="clearfix" style='margin-bottom: 20px;'>
+    <nz-radio-group [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
+      <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
+          style="font-size: 1.5rem"></i></label>
+      <label acl [acl-ability]="ability.review.edit" nz-radio-button nzValue="table"><i nz-icon type="table"
+          theme="outline" style="font-size: 1.5rem"></i></label>
+    </nz-radio-group>
+    <div *ngIf="mode === 'table'" style='float: right;'>
+      <button *ngIf='selectedIndex == 0' nz-button (click)="launchFilms()">发起审片</button>
+      <button *ngIf='selectedIndex === 1' nz-button (click)="submitNext()">提交下轮</button>
+      <button *ngIf='selectedIndex === 2' nz-button (click)="secondSubmit()">提交下轮</button>
+      <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">提交</button> -->
+      <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">入库</button> -->
     </div>
+    <a style="float: right;margin-right: 20px;font-size: 17px;margin-top: 3px;" routerLink="/manage/film-review"><i
+        nz-icon nzType="setting"></i></a>
+  </div>
+  <div>
     <!-- <div *ngIf="isMyDeatilsLoaded" > -->
     <div *ngIf="mode === 'figure'">
       <div *ngIf="list.length > 0 else empty">
@@ -121,8 +123,8 @@
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="firstPageDataChange($event)">
               <thead>
                 <tr>
-                  <th nzShowCheckbox [(nzChecked)]="isFirstAllDisplayDataChecked" [nzIndeterminate]="isFirstIndeterminate"
-                    (nzCheckedChange)="firstCheckAll($event)"></th>
+                  <th nzShowCheckbox [(nzChecked)]="isFirstAllDisplayDataChecked"
+                    [nzIndeterminate]="isFirstIndeterminate" (nzCheckedChange)="firstCheckAll($event)"></th>
                   <th>节目</th>
                   <th>类型</th>
                   <th>集数</th>
@@ -138,10 +140,10 @@
                   <td nzShowCheckbox [(nzChecked)]="firstMapOfCheckedId[data.id]"
                     (nzCheckedChange)="firstRefreshStatus()"></td>
                   <td>
-  
+
                     <a (click)="AdministratorViewDetails(data?.id, data?.publicity.id)">{{data.publicity.program.name}}
                     </a>
-  
+
                   </td>
                   <td>{{data.publicity.program.program_type}}</td>
                   <td>{{data.publicity.program.episode}}</td>
@@ -204,8 +206,8 @@
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="threePageDataChange($event)">
               <thead>
                 <tr>
-                  <th nzShowCheckbox [(nzChecked)]="isThreeAllDisplayDataChecked" [nzIndeterminate]="isThreeIndeterminate"
-                    (nzCheckedChange)="threeCheckAll($event)"></th>
+                  <th nzShowCheckbox [(nzChecked)]="isThreeAllDisplayDataChecked"
+                    [nzIndeterminate]="isThreeIndeterminate" (nzCheckedChange)="threeCheckAll($event)"></th>
                   <th>节目</th>
                   <th>类型</th>
                   <th>集数</th>
@@ -253,6 +255,7 @@
       </div>
     </div>
   </div>
-  <ng-template #empty>
-    <nz-empty nzNotFoundContent='暂时没有审片视频哦!'></nz-empty>
-  </ng-template>
+</div>
+<ng-template #empty>
+  <nz-empty nzNotFoundContent='暂时没有审片视频哦!'></nz-empty>
+</ng-template>

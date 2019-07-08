@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SeriesService } from 'app/routes/manage/series/series.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '@core';
 
 @Component({
   selector: 'app-collection-receive',
@@ -14,7 +15,8 @@ export class CollectionReceiveComponent implements OnInit {
   constructor(
     private service: SeriesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -34,7 +36,11 @@ export class CollectionReceiveComponent implements OnInit {
   }
 
   swichUrl() {
-    this.router.navigate([`/passport/login/phone`, { returnUrl:  encodeURIComponent(`/manage/image/details-solicitation/${this.id}`)}]);
+    if (this.auth.isLoggedIn) {
+      this.router.navigate([`/manage/image/details-solicitation/${this.id}`]);
+    } else {
+      this.router.navigate([`/passport/login/phone`, { returnUrl:  encodeURIComponent(`/manage/image/details-solicitation/${this.id}`)}]);
+    }
   }
 
 }
