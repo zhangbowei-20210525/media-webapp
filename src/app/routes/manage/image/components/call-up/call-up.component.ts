@@ -55,6 +55,7 @@ export class CallUpComponent implements OnInit {
       this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description).subscribe(res => {
         this.isCollection = true;
         this.getCollectionData = res;
+        // this.getCollectionData.url = `${location.origin}/outside/accept-employee-invitations/${id}`;
       });
     }
   }

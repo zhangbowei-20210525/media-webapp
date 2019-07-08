@@ -212,8 +212,10 @@ export class DetailsSolicitationComponent implements OnInit {
         obj.material_type = this.validateForm.value.type;
         materials.push(obj);
       });
+      const postParams = Object.assign(params);
+      delete postParams.type;
     this.objParams = {
-        program: params,
+        program: postParams,
         materials: materials,
         publicity_id: this.publicityId,
       };
