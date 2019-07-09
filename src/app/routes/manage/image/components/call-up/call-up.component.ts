@@ -17,7 +17,9 @@ export class CallUpComponent implements OnInit {
   program_type: any;
   program_theme: any;
   description: any;
-  getCollectionData = {};
+  getCollectionData: any;
+  programTypeList = [];
+  themeList = [];
 
   constructor(
     private seriesService: SeriesService,
@@ -38,6 +40,12 @@ export class CallUpComponent implements OnInit {
     });
     this.SolicitationForm.get('companyName').disable();
     this.SolicitationForm.get('userName').disable();
+    this.seriesService.programType().subscribe(res => {
+      console.log(res);
+      this.programTypeList = res.program_type_choices;
+      this.themeList = res.theme_choices;
+      console.log(this.themeList);
+    });
   }
 
   // 样片征集令生成
@@ -48,12 +56,17 @@ export class CallUpComponent implements OnInit {
     this.program_theme = custom.meterial;
     this.program_type = custom.filmType;
 
-    if (this.program_theme && this.program_type === undefined ) {
+    if (!this.program_theme || this.program_type === null ) {
+      console.log(1);
       this.message.error('请填写相关信息');
     } else {
+      console.log(2);
       this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description).subscribe(res => {
         this.isCollection = true;
         this.getCollectionData = res;
+        this.SolicitationForm.get('filmType').disable();
+        this.SolicitationForm.get('meterial').disable();
+        this.SolicitationForm.get('intro').disable();
       });
     }
   }

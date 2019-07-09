@@ -39,7 +39,9 @@ export class DetailsSolicitationComponent implements OnInit {
   blurData: any;
   forList: any;
   id: any;
-  mode: 'figure' | 'table' |  'figure';
+  mode: 'figure' | 'table' | 'figure';
+  programTypeList = [];
+  themeList = [];
   constructor(
     private msg: NzMessageService,
     private fb: FormBuilder,
@@ -55,7 +57,7 @@ export class DetailsSolicitationComponent implements OnInit {
   ngOnInit() {
     this.validateForm = this.fb.group({
       name: [null, [Validators.required]],
-      nickname: [null, [Validators.required]],
+      nickname: [null],
       program_type: [null, [Validators.required]],
       theme: [null],
       episode: [null],
@@ -77,6 +79,13 @@ export class DetailsSolicitationComponent implements OnInit {
       this.id = +params.get('id');
       console.log(this.id);
     });
+    this.seriesService.programType().subscribe(res => {
+      console.log(res);
+      this.programTypeList = res.program_type_choices;
+      this.themeList = res.theme_choices;
+      console.log(this.themeList);
+    });
+    console.log(1111);
   }
   fileType(value) {
     this.docType = this.getUploadUrl(value);
@@ -156,14 +165,14 @@ export class DetailsSolicitationComponent implements OnInit {
         this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
       }
     }
-     fileList.forEach( b => {
-       if (!!b.response) {
+    fileList.forEach(b => {
+      if (!!b.response) {
         //  this.id = b.response.id ;
         this.extension = b.response.data.extension;
         this.filename = b.response.data.filename;
         this.name = b.response.data.name;
         this.size = b.response.data.size;
-       }
+      }
     });
   }
   getUploadUrl(type: string) {
@@ -212,43 +221,49 @@ export class DetailsSolicitationComponent implements OnInit {
         obj.material_type = this.validateForm.value.type;
         materials.push(obj);
       });
-    this.objParams = {
+      this.objParams = {
         program: params,
         materials: materials,
         publicity_id: this.publicityId,
       };
       console.log(this.publicityId);
+      if (this.objParams.materials === []) {
+        this.message.error('请填写完整信息');
+      } else {
+        this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
 
-    this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
-        this.modalService.create({
-          nzTitle: ``,
-          nzContent: CollectionUpComponent,
-          nzMaskClosable: false,
-          nzClosable: false,
-          nzWidth: 800,
-          // nzComponentParams: { programThemes: result.theme, programTypes: result.program_type },
-          nzOkText: '前往宣发库',
-          nzCancelText: '上传新节目',
-          nzOnCancel: () => new Promise((resolve) => {
-          resolve();
-          this.router.navigate([`/manage/image/details-solicitation`]);
-          this.validateForm.reset();
-          this.files = [];
-          }),
-          nzOnOk: () => new Promise((resolve) => {
-            resolve();
-            this.router.navigate([`/manage/series/publicity`]);
-            this.filterList = [];
-          }),
-          nzNoAnimation: true,
+          this.modalService.create({
+            nzTitle: ``,
+            nzContent: CollectionUpComponent,
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzWidth: 800,
+            // nzComponentParams: { programThemes: result.theme, programTypes: result.program_type },
+            nzOkText: '前往宣发库',
+            nzCancelText: '上传新节目',
+            nzOnCancel: () => new Promise((resolve) => {
+              resolve();
+              this.router.navigate([`/manage/image/details-solicitation`]);
+              this.validateForm.reset();
+              this.files = [];
+            }),
+            nzOnOk: () => new Promise((resolve) => {
+              resolve();
+              this.router.navigate([`/manage/series/publicity`]);
+              this.filterList = [];
+            }),
+            nzNoAnimation: true,
+          });
+
+        }, error => {
+          this.message.warning(error.message);
         });
-    }, error => {
-      this.message.warning(error.message);
-    });
+      }
     }
   }
   onInput(data) {
     this.blurData = data;
+    this.getDisplayDate();
   }
   onClose(index): void {
     this.files.splice(index, 1);
@@ -257,41 +272,51 @@ export class DetailsSolicitationComponent implements OnInit {
     e.preventDefault();
     e.stopPropagation();
   }
-  getNewList(data) {
+  getNewList() {
+    this.getDisplayDate();
+  }
+  getDisplayDate() {
     this.filterList = this.programList.filter(item => {
       return item.name === this.blurData;
     });
-    console.log(this.filterList);
-    this.publicityId = this.filterList[0].id || null;
-    // this.validateForm.get('nickname').setValue(this.filterList[0].program.nickname);
-    // if (this.filterList[0].program.nickname === null ) {
-    //   this.filterList[0].program.nickname = '';
-    // }
-    this.validateForm.get('nickname').setValue(
-      this.filterList[0].program.nickname = null ? '' : this.filterList[0].program.nickname);
-    this.validateForm.get('program_type').setValue(
-      this.filterList[0].program.program_type = null ? '' : this.filterList[0].program.program_type);
-    this.validateForm.get('theme').setValue(
-      this.filterList[0].program.theme = null ? '' : this.filterList[0].program.theme);
-    this.validateForm.get('episode').setValue(
-      this.filterList[0].program.episode = null ? '' : this.filterList[0].program.episode);
-    this.validateForm.get('protagonist').setValue(
-      this.filterList[0].program.protagonist = null ? '' : this.filterList[0].program.protagonist);
-    this.validateForm.get('director').setValue(
-      this.filterList[0].program.director = null ? '' : this.filterList[0].program.director);
-    this.validateForm.get('screen_writer').setValue(
-      this.filterList[0].program.screen_writer = null ? '' : this.filterList[0].program.screen_writer);
-    this.validateForm.get('supervisor').setValue(
-      this.filterList[0].program.supervisor = null ? '' : this.filterList[0].program.supervisor);
-    this.validateForm.get('general_producer').setValue(
-      this.filterList[0].program.general_producer = null ? '' : this.filterList[0].program.general_producer);
-    this.validateForm.get('producer').setValue(
-      this.filterList[0].program.producer = null ? '' : this.filterList[0].program.producer);
-    this.validateForm.get('product_company').setValue(
-      this.filterList[0].program.product_company = null ? '' : this.filterList[0].program.product_company);
-    this.validateForm.get('progress').setValue(
-      this.filterList[0].program.progress = null ? '' : this.filterList[0].program.progress);
-    this.validateForm.get('introduction').setValue(
-      this.filterList[0].program.introduction = null ? '' : this.filterList[0].program.introduction);
+    console.log(this.filterList.length, 'eeeee');
+    if (this.filterList.length === 0) {
+      console.log(8888);
+      return;
+    } else {
+      this.publicityId = this.filterList[0].id || null;
+      console.log(this.publicityId);
+      console.log(this.filterList);
+      // this.validateForm.get('nickname').setValue(this.filterList[0].program.nickname);
+      // if (this.filterList[0].program.nickname === null ) {
+      //   this.filterList[0].program.nickname = '';
+      // }
+      this.validateForm.get('nickname').setValue(
+        this.filterList[0].program.nickname = null ? '' : this.filterList[0].program.nickname);
+      this.validateForm.get('program_type').setValue(
+        this.filterList[0].program.program_type = null ? '' : this.filterList[0].program.program_type);
+      this.validateForm.get('theme').setValue(
+        this.filterList[0].program.theme = null ? '' : this.filterList[0].program.theme);
+      this.validateForm.get('episode').setValue(
+        this.filterList[0].program.episode = null ? '' : this.filterList[0].program.episode);
+      this.validateForm.get('protagonist').setValue(
+        this.filterList[0].program.protagonist = null ? '' : this.filterList[0].program.protagonist);
+      this.validateForm.get('director').setValue(
+        this.filterList[0].program.director = null ? '' : this.filterList[0].program.director);
+      this.validateForm.get('screen_writer').setValue(
+        this.filterList[0].program.screen_writer = null ? '' : this.filterList[0].program.screen_writer);
+      this.validateForm.get('supervisor').setValue(
+        this.filterList[0].program.supervisor = null ? '' : this.filterList[0].program.supervisor);
+      this.validateForm.get('general_producer').setValue(
+        this.filterList[0].program.general_producer = null ? '' : this.filterList[0].program.general_producer);
+      this.validateForm.get('producer').setValue(
+        this.filterList[0].program.producer = null ? '' : this.filterList[0].program.producer);
+      this.validateForm.get('product_company').setValue(
+        this.filterList[0].program.product_company = null ? '' : this.filterList[0].program.product_company);
+      this.validateForm.get('progress').setValue(
+        this.filterList[0].program.progress = null ? '' : this.filterList[0].program.progress);
+      this.validateForm.get('introduction').setValue(
+        this.filterList[0].program.introduction = null ? '' : this.filterList[0].program.introduction);
+    }
   }
 }
