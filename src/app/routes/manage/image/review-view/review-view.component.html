@@ -87,7 +87,7 @@
     <div *ngIf="mode === 'table'">
       <div>
         <nz-tabset [nzType]="'card'" [nzSelectedIndex]="selectedTabIndex" (nzSelectChange)='onSelectChange($event)'
-          *ngIf="list.length > 0 else empty">
+          *ngIf="intentionList.length > 0 else empty">
           <nz-tab nzTitle="意向">
             <nz-table #rowSelectionTable [nzData]="intentionList"
               (nzCurrentPageDataChange)="currentPageDataChange($event)">
