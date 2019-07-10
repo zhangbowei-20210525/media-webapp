@@ -196,7 +196,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getPdfInfo();
         }
       });
-    this.seriesService.getReviewDetails(this.id).subscribe(res => {
+    this.seriesService.getReviewDetails(this.sid).subscribe(res => {
       this.reviewSteps = res.review_steps;
       this.reviewFirstSteps = res.review_steps[0];
       // 一审喜欢人数及通过率

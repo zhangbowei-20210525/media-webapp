@@ -123,7 +123,7 @@
 
   
 </nz-drawer> -->
-<nz-drawer nzClosable="false" nzWidth="35%" [nzVisible]="visible" nzPlacement="left" [nzTitle]="drawerTitle" 
+<!-- <nz-drawer nzClosable="false" nzWidth="35%" [nzVisible]="visible" nzPlacement="left" [nzTitle]="drawerTitle" 
   (nzOnClose)="close()">
   <div style="font-size: 12px;font-weight: bold;margin-top: 10px">{{drawerCreated_at}}</div>
   <div style="font-size: 12px;margin-top: 5px;margin-bottom: 25px">{{drawerContent}}</div>
@@ -216,10 +216,10 @@
       <button nz-button nzType="danger" (click)="refused()">拒绝</button>
       <button nz-button nzType="primary" style="margin-left: 50px" (click)="submit()">确认接受</button>
     </div>
-  </div>
+  </div> -->
 
 
-  <div *ngIf="type === 'PUB001'">
+  <!-- <div *ngIf="type === 'PUB001'">
     <nz-divider nzText="发送信息"></nz-divider>
     <div class="block clearfix">
       <div class="block-content">
@@ -284,12 +284,11 @@
       </div>
     </div>
     <nz-divider nzText="接收公司"></nz-divider>
-    <!-- <input nz-input [(ngModel)]="acceptCompany" [disabled]="true" *ngIf="isShowInput == true" /> -->
     <nz-radio-group [(ngModel)]="disparCompany" (ngModelChange)="onDisperChange($event)">
       <label nz-radio [ngStyle]="style" *ngFor="let option of companyList"
         [nzValue]="option.id">{{option.company_full_name}}</label>
-    </nz-radio-group>
-    <form nz-form [formGroup]="validateForm">
+    </nz-radio-group> -->
+    <!-- <form nz-form [formGroup]="validateForm">
       <nz-form-item *ngIf='isDisparShow === false'>
         <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
         <nz-form-control [nzSm]="17" [nzXs]="24">
@@ -310,11 +309,11 @@
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
-    </form>
+    </form> -->
 
-    <div style="text-align: center;margin-top: 50px;margin-bottom: 100px">
+    <!-- <div style="text-align: center;margin-top: 50px;margin-bottom: 100px">
       <button nz-button nzType="danger" (click)="sharedRefused()">拒绝</button>
       <button nz-button nzType="primary" style="margin-left: 50px" (click)="sharedSubmit()">确认接受公司</button>
-    </div>
-  </div>
-</nz-drawer>
+    </div> -->
+  <!-- </div> -->
+<!-- </nz-drawer> -->
