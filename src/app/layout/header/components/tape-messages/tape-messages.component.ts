@@ -18,7 +18,7 @@ export class TapeMessagesComponent implements OnInit {
   isDisparShow = false;
   authInfo: any;
   typeCompany: any;
-  companyId: number;
+  companyId: any;
   acceptCompany: any;
   typeId: any;
   companyList = [];
@@ -64,7 +64,7 @@ export class TapeMessagesComponent implements OnInit {
   }
 
   onChoseCompany(data) {
-    this.typeId = data;
+    this.companyId = data;
     if (!!data) {
       this.isChoseShow = true;
     } else {
@@ -74,11 +74,11 @@ export class TapeMessagesComponent implements OnInit {
 
   submit() {
     const status = true;
-    if (this.typeId === undefined) {
-      console.log(this.typeId);
-      this.typeId = '';
+    if (this.companyId === undefined) {
+      console.log(this.companyId);
+      this.companyId = '';
     }
-   return this.service.pubAuth(status, this.typeId, this.typeCompany, this.id);
+   return this.service.pubAuth(status, this.companyId, this.typeCompany, this.id);
   }
 
 }
