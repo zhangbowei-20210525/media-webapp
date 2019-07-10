@@ -14,7 +14,12 @@
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="filmType" nzRequired>节目类型</nz-form-label>
     <nz-form-control [nzSm]="21">
-      <input nz-input placeholder="请输入节目类型" id="filmType" formControlName="filmType">
+      <input nz-input placeholder="请输入节目类型" id="filmType" formControlName="filmType" [nzAutocomplete]="autoProgramTypeList">
+      <nz-autocomplete nzBackfill #autoProgramTypeList>
+        <nz-auto-option *ngFor="let item of programTypeList" [nzValue]="item">
+          {{ item }}
+        </nz-auto-option>
+      </nz-autocomplete>
       <nz-form-explain *ngIf="SolicitationForm.get('filmType').dirty && SolicitationForm.get('filmType').errors">
         请输入节目类型
       </nz-form-explain>
@@ -23,7 +28,12 @@
   <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="meterial" nzRequired>题材</nz-form-label>
     <nz-form-control [nzSm]="21">
-      <input nz-input placeholder="请输入题材" id="meterial" formControlName="meterial">
+      <input nz-input placeholder="请输入题材" id="meterial" formControlName="meterial" [nzAutocomplete]="autoThemeList" >
+      <nz-autocomplete nzBackfill #autoThemeList>
+        <nz-auto-option *ngFor="let item of themeList" [nzValue]="item">
+          {{ item }}
+        </nz-auto-option>
+      </nz-autocomplete>
       <nz-form-explain *ngIf="SolicitationForm.get('meterial').dirty && SolicitationForm.get('meterial').errors">
         请输入题材
       </nz-form-explain>

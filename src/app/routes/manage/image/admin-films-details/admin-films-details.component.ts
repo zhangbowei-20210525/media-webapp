@@ -149,7 +149,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         this.posterIndex = +params.get('posterIndex');
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
-        return this.seriesService.pubDetail(this.sid);
+        return this.seriesService.publicityDetail(this.id);
       })).subscribe(res => {
         // console.log(res);
         this.seriesService.getUserinfo(this.sid).subscribe(cpd => {
