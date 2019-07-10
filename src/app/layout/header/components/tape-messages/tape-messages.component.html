@@ -61,7 +61,7 @@
     </div>
     <nz-radio-group [(ngModel)]="choseCompany" (ngModelChange)="onChoseCompany($event)">
       <label nz-radio *ngFor="let option of companyList"
-        [nzValue]="option.id">{{option.company_full_name}}</label>
+        [nzValue]="option.company_id">{{option.company_full_name}}</label>
     </nz-radio-group>
     <div style="margin-top: 50px">
     <form nz-form [formGroup]="validateForm">

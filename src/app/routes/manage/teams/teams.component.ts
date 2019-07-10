@@ -129,6 +129,8 @@ export class TeamsComponent implements OnInit {
 
   fetchCompanys() {
     this.service.getCompanys().subscribe(result => {
+      console.log('3355');
+      console.log(result);
       this.companys = result;
     });
   }
