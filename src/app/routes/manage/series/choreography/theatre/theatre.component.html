@@ -3,7 +3,7 @@
     <tr>
       <th>#</th>
       <th>频道</th>
-      <th>栏目</th>
+      <th>剧场</th>
       <th>首播日期</th>
       <th>播出时间</th>
       <th>操作</th>
@@ -39,7 +39,7 @@
       <td>{{ data.air_date }}</td>
       <td>{{ data.broadcast_time }}</td>
       <td>
-        <a  *ngIf="data.isHasTheatre == true" nz-popconfirm nzTitle="是否删除此栏目？" (nzOnConfirm)="deleteTheatre(data.theatreId)" ><i class="text-info" nz-icon
+        <a  *ngIf="data.isHasTheatre == true" nz-popconfirm nzTitle="是否删除此剧场？" (nzOnConfirm)="deleteTheatre(data.theatreId)" ><i class="text-info" nz-icon
             type="delete" theme="outline"></i></a>
             <a   *ngIf="data.isHasTheatre == false" nz-popconfirm nzTitle="是否删除此频道？" (nzOnConfirm)="deleteChannel(data.channelId)" ><i class="text-info" nz-icon
               type="delete" theme="outline"></i></a>

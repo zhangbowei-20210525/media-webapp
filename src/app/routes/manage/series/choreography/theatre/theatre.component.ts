@@ -3,6 +3,7 @@ import { ChoreographyService } from '../choreography.service';
 import { finalize } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-theatre',

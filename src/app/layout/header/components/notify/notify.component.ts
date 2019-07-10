@@ -5,6 +5,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaginationDto, MessageService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifiesPolling } from '@core/notifies';
+import { NzModalService, NzModalRef } from 'ng-zorro-antd';
+import { SystemMessagesComponent } from '../system-messages/system-messages.component';
+import { TapeMessagesComponent } from '../tape-messages/tape-messages.component';
 
 @Component({
   selector: 'app-notify',
@@ -60,13 +63,15 @@ export class NotifyComponent implements OnInit {
   grantId: any;
   isChoseShow = false;
   isDisparShow = false;
+  ref: NzModalRef;
 
   constructor(
     private service: NotifyService,
     private message: MessageService,
     private translate: TranslateService,
     private fb: FormBuilder,
-    private np: NotifiesPolling
+    private np: NotifiesPolling,
+    private model: NzModalService
   ) {
     const subscription = this.np.notifies().subscribe(result => {
       this.sysUnread = result.base.notify.unread_system_num;
@@ -82,12 +87,12 @@ export class NotifyComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSysNotifys();
-    this.validateForm = this.fb.group({
-      companyFullName: [null, [Validators.required]],
-      phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
-      companyName: [null, [Validators.required]],
-      customType: ['1', [Validators.required]]
-    });
+    // this.validateForm = this.fb.group({
+    //   companyFullName: [null, [Validators.required]],
+    //   phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
+    //   companyName: [null, [Validators.required]],
+    //   customType: ['1', [Validators.required]]
+    // });
   }
 
   fetchSysNotifys() {
@@ -187,100 +192,185 @@ export class NotifyComponent implements OnInit {
     this.visible = false;
   }
   // 获取宣发分享信息
+  // messageShareDetails(title: string, created_at: string, content: string, id: number, type: string) {
+  //   this.visible = true;
+  //   this.drawerTitle = title;
+  //   this.drawerCreated_at = created_at;
+  //   this.drawerContent = content;
+  //   this.related_id = id;
+  //   this.type = type;
+  //   if (type === 'PUB001') {
+  //     this.service.getSharingInfo(this.related_id).subscribe(res => {
+  //       console.log(res);
+  //       this.id = res.id;
+  //       this.publicity = res.publicity;
+  //       this.created_employee = res.created_employee;
+  //       this.company = res.liaison.custom.name;
+  //       this.validateForm.get('companyName').setValue(res.liaison.custom.name);
+  //       this.disperCompanyName = this.validateForm.get('companyName').setValue(res.liaison.custom.name);
+  //       this.validateForm.get('phone').setValue(res.liaison.phone);
+  //       this.validateForm.get('phone').disable();
+  //       this.service.getCompanyList().subscribe(cl => {
+  //         console.log(cl);
+  //         this.companyList = cl;
+  //         this.acceptCompany = res.company_full_name;
+  //         console.log(this.acceptCompany);
+  //       });
+  //     });
+  //   }
+  // }
+
   messageShareDetails(title: string, created_at: string, content: string, id: number, type: string) {
-    this.visible = true;
-    this.drawerTitle = title;
-    this.drawerCreated_at = created_at;
-    this.drawerContent = content;
-    this.related_id = id;
     this.type = type;
+    this.related_id = id;
+    console.log(type);
     if (type === 'PUB001') {
-      this.service.getSharingInfo(this.related_id).subscribe(res => {
-        console.log(res);
-        this.id = res.id;
-        this.publicity = res.publicity;
-        this.created_employee = res.created_employee;
-        this.company = res.liaison.custom.name;
-        this.validateForm.get('companyName').setValue(res.liaison.custom.name);
-        this.disperCompanyName = this.validateForm.get('companyName').setValue(res.liaison.custom.name);
-        this.validateForm.get('phone').setValue(res.liaison.phone);
-        this.validateForm.get('phone').disable();
-        this.service.getCompanyList().subscribe(cl => {
-          console.log(cl);
-          this.companyList = cl;
-          this.acceptCompany = res.company_full_name;
-          console.log(this.acceptCompany);
-        });
+      this.model.create({
+        nzTitle: `系统消息：${title}`,
+        nzContent: SystemMessagesComponent,
+        nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzOkText: '确认接收公司',
+        nzCancelText: '拒绝',
+        nzWidth: 800,
+        nzOnCancel: () => this.sharedRefused(),
+        nzOnOk: this.showSystemMessagesAgreed,
+        nzNoAnimation: true
+      });
+    } else {
+     this.ref =  this.model.create({
+        nzTitle: `系统消息：${title}`,
+        nzContent: SystemMessagesComponent,
+        nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzOkText: '确认',
+        nzCancelText: '取消',
+        nzWidth: 800,
+        nzOnOk: () => this.ref.destroy(),
+        nzNoAnimation: true
       });
     }
   }
+
+
+  showSystemMessagesAgreed = (component: SystemMessagesComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      component.submit()
+        .subscribe(result => {
+          this.message.success(this.translate.instant('成功分享'));
+          resolve();
+        }, error => {
+          reject(false);
+        });
+    } else {
+      reject(false);
+    }
+  })
+
+
   // 获取母带授权信息
   messageDetails(title: string, created_at: string, content: string, id: number, type: string) {
-    this.visible = true;
-    this.drawerTitle = title;
-    this.drawerCreated_at = created_at;
-    this.drawerContent = content;
+    // this.visible = true;
+    // this.drawerTitle = title;
+    // this.drawerCreated_at = created_at;
+    // this.drawerContent = content;
     this.related_id = id;
     this.type = type;
     if (type === 'SOU005') {
-      console.log(type === 'SOU005');
-      this.service.getAuthorizationInfo(this.related_id).subscribe(res => {
-        console.log(res);
-        this.authInfo = res;
-        this.typeCompany = res.auth_custom_name;
-        this.companyId = res.auth_company_id;
-        this.service.getCompanyList().subscribe(cl => {
-          this.acceptCompany = res.company_full_name;
-          this.companyList = cl;
-        });
-        this.validateForm.get('companyFullName').setValue(res.auth_custom_name);
-        this.validateForm.get('phone').setValue(res.auth_phone);
-        this.validateForm.get('phone').disable();
+      this.model.create({
+        nzTitle: `${title}`,
+        nzContent: TapeMessagesComponent,
+        nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzOkText: '确认接受',
+        nzCancelText: '拒绝',
+        nzWidth: 800,
+        nzOnCancel: () => this.refused(),
+        nzOnOk: this.showTapeMessagesAgreed,
+        nzNoAnimation: true
+      });
+    } else {
+     this.ref =  this.model.create({
+        nzTitle: `${title}`,
+        nzContent: TapeMessagesComponent,
+        nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzOkText: '确认',
+        nzCancelText: '取消',
+        nzWidth: 800,
+        nzOnOk: () => this.ref.destroy(),
+        nzNoAnimation: true
       });
     }
   }
-  // 母带授权接受
-  submit() {
-    const status = true;
-    if (this.typeId === undefined) {
-      console.log(this.typeId);
-      this.typeId = '';
-      // this.message.warning('您已拒绝请勿重复操作');
+
+  showTapeMessagesAgreed = (component: TapeMessagesComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      component.submit()
+        .subscribe(result => {
+          this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+          resolve();
+        }, error => {
+          reject(false);
+        });
+    } else {
+      reject(false);
     }
-    this.service.pubAuth(status, this.typeId, this.typeCompany, this.related_id).subscribe(res => {
-      this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-      this.visible = false;
-    });
-  }
+  })
+
+
+  // 母带授权接受
+  // submit() {
+  //   const status = true;
+  //   if (this.typeId === undefined) {
+  //     console.log(this.typeId);
+  //     this.typeId = '';
+  //     // this.message.warning('您已拒绝请勿重复操作');
+  //   }
+  //   this.service.pubAuth(status, this.typeId, this.typeCompany, this.related_id).subscribe(res => {
+  //     this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+  //     this.visible = false;
+  //   });
+  // }
   // 母带授权拒绝
   refused() {
     const status = false;
-    this.service.pubAuth(status, this.typeId, this.typeCompany, this.related_id).subscribe(res => {
-      this.message.warning(this.translate.instant('global.refused-authorization-information'));
-      this.visible = false;
-    });
+    if (this.type === 'SOU005') {
+      this.service.pubAuth(status, this.typeId, this.typeCompany, this.related_id).subscribe(res => {
+        this.message.warning(this.translate.instant('global.refused-authorization-information'));
+        // this.visible = false;
+      });
+    }
   }
   // 宣发分享接受
-  sharedSubmit() {
-    console.log(this.company);
-    const status = true;
-    console.log(this.shareId === undefined);
-    if (this.shareId === undefined) {
-      this.shareId = '';
-      console.log(this.shareId);
-    }
-    this.service.getAccept(status, this.shareId, this.company, this.id).subscribe(res => {
-      this.message.success(this.translate.instant('成功分享'));
-      this.visible = false;
-    });
-  }
+  // sharedSubmit() {
+  //   console.log(this.company);
+  //   const status = true;
+  //   console.log(this.shareId === undefined);
+  //   if (this.shareId === undefined) {
+  //     this.shareId = '';
+  //     console.log(this.shareId);
+  //   }
+  //   this.service.getAccept(status, this.shareId, this.company, this.id).subscribe(res => {
+  //     this.message.success(this.translate.instant('成功分享'));
+  //     this.visible = false;
+  //   });
+  // }
   // 宣发分享拒绝
   sharedRefused() {
     const status = false;
-    this.service.getAccept(status, this.shareId, this.company, this.id).subscribe(res => {
-      this.message.warning(this.translate.instant('拒绝分享'));
-      this.visible = false;
-    });
+    if (this.type === 'PUB001') {
+      this.service.getSharingInfo(this.related_id).subscribe(res => {
+        this.id = res.id;
+        this.service.getAccept(status, this.shareId, this.company, this.id).subscribe(r => {
+          this.message.warning(this.translate.instant('拒绝分享'));
+        });
+      });
+    }
   }
   onDisperChange(data) {
     console.log(data);
