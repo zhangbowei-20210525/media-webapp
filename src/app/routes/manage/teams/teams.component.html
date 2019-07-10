@@ -8,7 +8,7 @@
           <button nz-button nz-dropdown>{{ 'app.teams.switch-teams' | translate }}<i nz-icon type="down"></i></button>
           <ul nz-menu>
             <li nz-menu-item *ngFor="let cmp of companys">
-              <a (click)="switchCompany(cmp.id, cmp.company_name)">{{ cmp.company_name }}</a>
+              <a (click)="switchCompany(cmp.id, cmp.company_full_name)">{{ cmp.company_full_name }}</a>
             </li>
           </ul>
         </nz-dropdown>
