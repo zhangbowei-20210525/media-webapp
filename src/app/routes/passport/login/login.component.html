@@ -7,10 +7,12 @@
         <i nz-icon type="mobile" theme="outline"></i>
         <span [hidden]="method == 'phone'">使用手机登录</span>
       </a>
-      <a class="switch-login" [routerLink]="['/passport/login/wechat']" [class.current]="method == 'wechat'">
-        <i nz-icon type="wechat" theme="outline"></i>
-        <span [hidden]="method == 'wechat'">使用微信登录</span>
-      </a>
+      <ng-container *ngIf="!isOnlyPhoneMethod">
+        <a class="switch-login" [routerLink]="['/passport/login/wechat']" [class.current]="method == 'wechat'">
+          <i nz-icon type="wechat" theme="outline"></i>
+          <span [hidden]="method == 'wechat'">使用微信登录</span>
+        </a>
+      </ng-container>
     </div>
     <span>切换登录方式</span>
   </div>

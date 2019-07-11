@@ -6,6 +6,7 @@ import { ScoreConfigComponent } from './components/score-config/score-config.com
 import { IdeaConfigComponent } from './components/idea-config/idea-config.component';
 import { FilmReviewService } from './film-review.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-film-review',
@@ -33,6 +34,7 @@ export class FilmReviewComponent implements OnInit {
     private service: FilmReviewService,
     private message: NzMessageService,
     private translate: TranslateService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,10 @@ export class FilmReviewComponent implements OnInit {
     this.service.getFilmReviewList().subscribe(res => {
       this.refresh(res, 0);
     });
+  }
+
+  goBack() {
+    this.router.navigate([`/manage/image/review-view`]);
   }
 
   onClick(tab: number) {

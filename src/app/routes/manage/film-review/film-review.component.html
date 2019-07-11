@@ -1,4 +1,4 @@
-<nz-tabset>
+<nz-tabset  [nzTabBarExtraContent]="extraTemplate">
   <nz-tab nzTitle="一审设置" (nzClick)="onClick(0)">
     <div class="block" style="border:solid 1px">
       <nz-collapse [nzAccordion]="false">
@@ -127,3 +127,6 @@
         </div>
   </nz-tab>
 </nz-tabset>
+<ng-template #extraTemplate>
+    <button nz-button nzType="default" nzSize="small" (click)="goBack()">前往审片</button>
+  </ng-template>

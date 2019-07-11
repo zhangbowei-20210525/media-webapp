@@ -12,7 +12,7 @@ export class LoginService {
   ) { }
 
   sendCaptcha(phone: string) {
-    return this.http.get<any>('/api/v1/sms', { params: { phone } });
+    return this.http.get<any>('/api/v1/sms', { params: { phone, _allow_anonymous: '' } });
   }
 
   loginByPhone(phone: string, code: string, invitation_id?: number) {

@@ -8,6 +8,9 @@ import { MainComponent } from './main/main.component';
 import { NotifyComponent } from './header/components/notify/notify.component';
 import { TaskComponent } from './header/components/task/task.component';
 import { PassportComponent } from './passport/passport.component';
+import { SystemMessagesComponent } from './header/components/system-messages/system-messages.component';
+import { TapeMessagesComponent } from './header/components/tape-messages/tape-messages.component';
+import { ExternalMessagesComponent } from './header/components/external-messages/external-messages.component';
 
 @NgModule({
   declarations: [
@@ -17,11 +20,19 @@ import { PassportComponent } from './passport/passport.component';
     MainComponent,
     NotifyComponent,
     TaskComponent,
-    PassportComponent
+    PassportComponent,
+    SystemMessagesComponent,
+    TapeMessagesComponent,
+    ExternalMessagesComponent
   ],
   imports: [
     CommonModule,
     SharedModule
+  ],
+  entryComponents: [
+    SystemMessagesComponent,
+    TapeMessagesComponent,
+    ExternalMessagesComponent
   ]
 })
 export class LayoutModule { }

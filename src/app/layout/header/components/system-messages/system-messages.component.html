@@ -1,0 +1,95 @@
+<div style="font-size: 12px;font-weight: bold;margin-top: 10px">{{ created_at }}</div>
+<div style="font-size: 12px;margin-top: 5px;margin-bottom: 25px">{{ content }}</div>
+<div *ngIf="type === 'PUB001'">
+  <nz-divider nzText="发送信息"></nz-divider>
+  <div class="block clearfix">
+    <div class="block-content">
+      <div nz-row class="series-info-row">
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">节目名称</span>
+          <span>{{ publicity?.program?.name }}</span>
+        </div>
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">节目类型</span>
+          <span>{{ publicity?.program?.program_type }}</span>
+        </div>
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">集数</span>
+          <span>{{ publicity?.program?.episode }}</span>
+        </div>
+        <div nz-col nzSpan="12">
+          <span class="info-filed">语言</span>
+          <span *ngIf="publicity?.source?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+          <span *ngIf="publicity?.source?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
+        </div>
+      </div>
+      <div nz-row class="series-info-row">
+
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">发行时间</span>
+          <span>{{ publicity?.program?.release_date }}</span>
+        </div>
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">主题</span>
+          <span>{{ publicity?.program?.theme }}</span>
+        </div>
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">出品方</span>
+          <span>{{ created_employee?.company_name }}</span>
+        </div>
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">总制片人</span>
+          <span>{{ publicity?.program?.general_producer }}</span>
+        </div>
+      </div>
+      <div nz-row class="series-info-row">
+        <div nz-col nzSpan="12">
+          <span class="info-filed">发送公司</span>
+          <span>{{ created_employee?.company_full_name }}</span>
+        </div>
+        <div nz-col nzSpan="12">
+          <span class="info-filed">联系人</span>
+          <span>{{ created_employee?.name }}</span>
+        </div>
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">手机号码</span>
+          <span>{{ created_employee?.phone }}</span>
+        </div>
+        <div nz-col nzSpan="12" class="text-ellipsis">
+          <span class="info-filed">部门</span>
+          <span>{{ created_employee?.department }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nz-divider nzText="接收公司"></nz-divider>
+  <!-- <input nz-input [(ngModel)]="acceptCompany" [disabled]="true" *ngIf="isShowInput == true" /> -->
+  <nz-radio-group [(ngModel)]="disparCompany" (ngModelChange)="onDisperChange($event)">
+    <label nz-radio *ngFor="let option of companyList"
+      [nzValue]="option.id">{{option.company_full_name}}</label>
+  </nz-radio-group>
+  <div style="margin-top: 50px">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item *ngIf='isDisparShow === false'>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
+      <nz-form-control [nzSm]="17" [nzXs]="24">
+        <input nz-input id="companyName" formControlName="companyName" placeholder="请填写接受公司" />
+        <nz-form-explain *ngIf="validateForm.get('companyName').dirty && validateForm.get('companyName').errors">
+          请填写接受公司
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>手机号码</nz-form-label>
+      <nz-form-control [nzSm]="17" [nzXs]="24">
+        <input placeholder="请填写手机号码" nz-input id="phone" formControlName="phone" />
+        <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.required">请选填手机号码
+        </nz-form-explain>
+        <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.pattern">
+          请输入正确的手机号码
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  </div>
+</div>

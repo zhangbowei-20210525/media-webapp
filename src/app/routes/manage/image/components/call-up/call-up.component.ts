@@ -63,7 +63,9 @@ export class CallUpComponent implements OnInit {
       console.log(2);
       this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description).subscribe(res => {
         this.isCollection = true;
+        res.QRCode = `data:image/jpeg;base64,${res.QRCode}`;
         this.getCollectionData = res;
+        // this.getCollectionData.url = `${location.origin}/outside/accept-employee-invitations/${id}`;
         this.SolicitationForm.get('filmType').disable();
         this.SolicitationForm.get('meterial').disable();
         this.SolicitationForm.get('intro').disable();

@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   method: 'phone' | 'wechat';
+  isOnlyPhoneMethod = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
       } else if (lastUrl.startsWith('wechat')) {
         this.method = 'wechat';
       }
+      this.isOnlyPhoneMethod = this.route.firstChild.snapshot.paramMap.has('emp_invitation');
     });
   }
 

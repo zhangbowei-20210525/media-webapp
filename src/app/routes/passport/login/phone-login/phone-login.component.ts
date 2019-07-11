@@ -125,11 +125,11 @@ export class PhoneLoginComponent implements OnInit {
     });
     // this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
     this.router.navigate([this.stateStore.getDirectionUrl() || '/']);
-    setTimeout(() => {
-      this.modal.create({
-        nzTitle: '重要待处理消息',
-        nzContent: NotifyAlertComponent
-      });
-    }, 0);
+    // setTimeout(() => {
+    //   this.modal.create({
+    //     nzTitle: '重要待处理消息',
+    //     nzContent: NotifyAlertComponent
+    //   });
+    // }, 0);
   }
 }

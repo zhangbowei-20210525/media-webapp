@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddTheatreComponent } from './components/add-theatre/add-theatre.component';
 import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ChoreographyService } from './choreography.service';
 
 @Component({
@@ -18,17 +18,24 @@ export class ChoreographyComponent implements OnInit {
     private modal: NzModalService,
     private message: NzMessageService,
     private translate: TranslateService,
+    private route: ActivatedRoute,
     private router: Router,
     private service: ChoreographyService,
   ) { }
 
   ngOnInit() {
-    console.log(this.radioValue);
+    this.route.url.subscribe(urls => {
+      const urlSegments = this.router.url.split('/');
+      const lastUrl = urlSegments[urlSegments.length - 1];
+      if (lastUrl.startsWith('theatre')) {
+            this.radioValue = 'theatre';
+          }
+    });
   }
 
   addTheatre () {
     this.modal.create({
-      nzTitle: '新增栏目',
+      nzTitle: '新增剧场',
       nzContent: AddTheatreComponent,
       nzMaskClosable: false,
       nzClosable: false,

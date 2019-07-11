@@ -125,15 +125,52 @@ export class TapeComponent implements OnInit, OnDestroy {
 
   pitchOn(id: number, source_type: string) {
     if (source_type === 'online') {
+      console.log(id);
       this.tab = 0;
       this.source_type = 'online';
-      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }]);
+      // this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }]);
       this.isId = id;
+      this.seriesService.tapeFileList(id, this.tapeFilePagination).pipe(tap(x => {
+        this.TapePage = x.pagination;
+        x.list.forEach(f => {
+          // this.getHash = f.hash;
+          // this.getIp = f.ip;
+          // console.log(f);
+          if (f.created_at) {
+            f.created_at = f.created_at.substring(0, 10);
+          }
+        });
+        this.isActive = x.list.every(item => {
+          console.log(item);
+          return item.local_file_status === '';
+        });
+      })).subscribe(x => {
+        this.tapeFileList = x.list;
+        this.tapeFilePagination = x.pagination;
+      });
     }
     if (source_type === 'entity') {
       this.source_type = 'entity';
-      this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }]);
+      // this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }]);
       this.isId = id;
+      this.seriesService.tapeFileList(id, this.tapeFilePagination).pipe(tap(x => {
+        this.TapePage = x.pagination;
+        x.list.forEach(f => {
+          // this.getHash = f.hash;
+          // this.getIp = f.ip;
+          // console.log(f);
+          if (f.created_at) {
+            f.created_at = f.created_at.substring(0, 10);
+          }
+        });
+        this.isActive = x.list.every(item => {
+          console.log(item);
+          return item.local_file_status === '';
+        });
+      })).subscribe(x => {
+        this.tapeFileList = x.list;
+        this.tapeFilePagination = x.pagination;
+      });
     }
   }
 

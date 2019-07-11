@@ -72,7 +72,7 @@ export class CompanyBindingComponent implements OnInit {
   onSubmit() {
     if (this.validation(this.form)) {
       this.isSubmitting = true;
-      this.service.bindingCompany(this.stateStore.getState().token, this.name.value, this.companyName.value, this.companyName.value)
+      this.service.bindingCompany(this.stateStore.getState().token, this.name.value, this.companyName.value, this.companyFullName.value)
         .pipe(finalize(() => {
           this.isSubmitting = false;
         })).subscribe(result => {
