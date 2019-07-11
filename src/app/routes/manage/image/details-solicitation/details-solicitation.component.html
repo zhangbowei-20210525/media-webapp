@@ -15,7 +15,7 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>节目名称</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input (change)="getNewList()" placeholder="请输入节目名称" nz-input id="name" formControlName="name"
+              <input (input)="getNewList()" (blur)='onBlur()' placeholder="请输入节目名称" nz-input id="name" formControlName="name"
                 (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramName">
               <nz-autocomplete nzBackfill #autoProgramName>
                 <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">

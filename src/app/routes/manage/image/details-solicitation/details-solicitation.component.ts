@@ -72,9 +72,9 @@ export class DetailsSolicitationComponent implements OnInit {
       progress: [null],
       introduction: [null]
     });
-    this.seriesService.getSamplePublicitys().subscribe(res => {
+     this.seriesService.getSamplePublicitys().subscribe(res => {
       this.programList = res.list;
-    });
+     });
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
       console.log(this.id);
@@ -227,8 +227,9 @@ export class DetailsSolicitationComponent implements OnInit {
         publicity_id: this.publicityId,
       };
       console.log(this.publicityId);
-      if (this.objParams.materials === []) {
+      if (this.objParams.materials.length === 0) {
         this.message.error('请填写完整信息');
+        return;
       } else {
         this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
 
@@ -263,6 +264,13 @@ export class DetailsSolicitationComponent implements OnInit {
   }
   onInput(data) {
     this.blurData = data;
+    // console.log(this.blurData);
+  }
+  getNewList () {
+    console.log('rrrrrr');
+    this.getDisplayDate();
+  }
+  onBlur () {
     this.getDisplayDate();
   }
   onClose(index): void {
@@ -272,16 +280,11 @@ export class DetailsSolicitationComponent implements OnInit {
     e.preventDefault();
     e.stopPropagation();
   }
-  getNewList() {
-    this.getDisplayDate();
-  }
   getDisplayDate() {
     this.filterList = this.programList.filter(item => {
       return item.name === this.blurData;
     });
-    console.log(this.filterList.length, 'eeeee');
     if (this.filterList.length === 0) {
-      console.log(8888);
       return;
     } else {
       this.publicityId = this.filterList[0].id || null;
@@ -291,32 +294,34 @@ export class DetailsSolicitationComponent implements OnInit {
       // if (this.filterList[0].program.nickname === null ) {
       //   this.filterList[0].program.nickname = '';
       // }
+      if (this.filterList[0].program) {
       this.validateForm.get('nickname').setValue(
-        this.filterList[0].program.nickname = null ? '' : this.filterList[0].program.nickname);
+        this.filterList[0].program.nickname === null ? '' : this.filterList[0].program.nickname);
       this.validateForm.get('program_type').setValue(
-        this.filterList[0].program.program_type = null ? '' : this.filterList[0].program.program_type);
+        this.filterList[0].program.program_type === null ? '' : this.filterList[0].program.program_type);
       this.validateForm.get('theme').setValue(
-        this.filterList[0].program.theme = null ? '' : this.filterList[0].program.theme);
+        this.filterList[0].program.theme === null ? '' : this.filterList[0].program.theme);
       this.validateForm.get('episode').setValue(
-        this.filterList[0].program.episode = null ? '' : this.filterList[0].program.episode);
+        this.filterList[0].program.episode === null ? '' : this.filterList[0].program.episode);
       this.validateForm.get('protagonist').setValue(
-        this.filterList[0].program.protagonist = null ? '' : this.filterList[0].program.protagonist);
+        this.filterList[0].program.protagonist === null ? '' : this.filterList[0].program.protagonist);
       this.validateForm.get('director').setValue(
-        this.filterList[0].program.director = null ? '' : this.filterList[0].program.director);
+        this.filterList[0].program.director === null ? '' : this.filterList[0].program.director);
       this.validateForm.get('screen_writer').setValue(
-        this.filterList[0].program.screen_writer = null ? '' : this.filterList[0].program.screen_writer);
+        this.filterList[0].program.screen_writer === null ? '' : this.filterList[0].program.screen_writer);
       this.validateForm.get('supervisor').setValue(
-        this.filterList[0].program.supervisor = null ? '' : this.filterList[0].program.supervisor);
+        this.filterList[0].program.supervisor === null ? '' : this.filterList[0].program.supervisor);
       this.validateForm.get('general_producer').setValue(
-        this.filterList[0].program.general_producer = null ? '' : this.filterList[0].program.general_producer);
+        this.filterList[0].program.general_producer === null ? '' : this.filterList[0].program.general_producer);
       this.validateForm.get('producer').setValue(
-        this.filterList[0].program.producer = null ? '' : this.filterList[0].program.producer);
+        this.filterList[0].program.producer === null ? '' : this.filterList[0].program.producer);
       this.validateForm.get('product_company').setValue(
-        this.filterList[0].program.product_company = null ? '' : this.filterList[0].program.product_company);
+        this.filterList[0].program.product_company === null ? '' : this.filterList[0].program.product_company);
       this.validateForm.get('progress').setValue(
-        this.filterList[0].program.progress = null ? '' : this.filterList[0].program.progress);
+        this.filterList[0].program.progress === null ? '' : this.filterList[0].program.progress);
       this.validateForm.get('introduction').setValue(
-        this.filterList[0].program.introduction = null ? '' : this.filterList[0].program.introduction);
+        this.filterList[0].program.introduction === null ? '' : this.filterList[0].program.introduction);
     }
+  }
   }
 }
