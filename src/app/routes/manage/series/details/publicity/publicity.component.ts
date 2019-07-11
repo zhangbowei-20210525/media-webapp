@@ -133,29 +133,40 @@ export class PublicityComponent implements OnInit {
     }
     const uploads = list.map(item => {
       const dotIndex = item.name.lastIndexOf('.');
-      return this.uploader.enqueue({
-        target: this.publicityId,
-        url: this.service.getUploadUrl(materielType),
-        file: item,
-        name: item.name.substring(0, dotIndex),
-        extension: item.name.substring(dotIndex + 1, item.name.length),
-        size: item.size,
-        progress: 0,
-        createAt: new Date,
-        success: (upload, data) => {
-          if (data.code === '0') {
-            this.service.bindingMateriel(upload.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
-              materielType, '').subscribe(result => {
-                this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                this.fetchMateriels(materielType);
-                this.fetchPublicity();
-              });
-            return true;
-          } else {
-            this.notification.error('上传文件失败', `${data.detail}`);
+      if (
+        (materielType === 'feature' && item.size < 3221225472) ||
+        (materielType === 'sample' && item.size < 3221225472) ||
+        (materielType === 'trailer' && item.size < 3221225472) ||
+        (materielType === 'poster' && item.size < 2097152) ||
+        (materielType === 'still' && item.size < 2097152) ||
+        (materielType === 'pdf' && item.size < 2097152)
+      ) {
+        return this.uploader.enqueue({
+          target: this.publicityId,
+          url: this.service.getUploadUrl(materielType),
+          file: item,
+          name: item.name.substring(0, dotIndex),
+          extension: item.name.substring(dotIndex + 1, item.name.length),
+          size: item.size,
+          progress: 0,
+          createAt: new Date,
+          success: (upload, data) => {
+            if (data.code === '0') {
+              this.service.bindingMateriel(upload.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
+                materielType, '').subscribe(result => {
+                  this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                  this.fetchMateriels(materielType);
+                  this.fetchPublicity();
+                });
+              return true;
+            } else {
+              this.notification.error('上传文件失败', `${data.detail}`);
+            }
           }
-        }
-      });
+        });
+      } else {
+        this.message.warning('所传文件大小超出指定范围（视频文件不大于3GB，图片、PDF不大于2MB）');
+      }
     });
     // const listString = this.getListString(materielType);
     // this[listString] = [...this[listString], ...uploads];

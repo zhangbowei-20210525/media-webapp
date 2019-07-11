@@ -247,7 +247,7 @@ export class ReviewViewComponent implements OnInit {
   }
   creatReview() {
     this.service.creatReview(this.checkedIntentionIds).subscribe(res => {
-      // console.log(res);
+      console.log(res);
       // console.log(this.checkedIntentionIds);
     });
   }
@@ -256,8 +256,8 @@ export class ReviewViewComponent implements OnInit {
     this.router.navigate([`/manage/image/films-details/${id}`, { sid: sid, rid: rid}]);
   }
   // 节目名跳转详情
-  AdministratorViewDetails(id, sid) {
-    this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid }]);
+  AdministratorViewDetails(sid: number, id: number, rid: number) {
+    this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid, rid: rid }]);
   }
   // 设置面板改变
   onSelectChange(event) {

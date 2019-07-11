@@ -139,7 +139,7 @@
                     (nzCheckedChange)="firstRefreshStatus()"></td>
                   <td>
   
-                    <a (click)="AdministratorViewDetails(data?.id, data?.publicity.id)">{{data.publicity.program.name}}
+                    <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                     </a>
   
                   </td>
@@ -179,7 +179,7 @@
                   <td nzShowCheckbox [(nzChecked)]="secondMapOfCheckedId[data.id]"
                     (nzCheckedChange)="secondRefreshStatus()"></td>
                   <td>
-                    <a (click)="AdministratorViewDetails(data?.id, data?.publicity.id)">{{data.publicity.program.name}}
+                    <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                     </a>
                   </td>
                   <td>{{data.publicity.program.program_type}}</td>
@@ -223,7 +223,7 @@
                   <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data.id]"
                     (nzCheckedChange)="threeRefreshStatus()"></td>
                   <td>
-                    <a (click)="AdministratorViewDetails(data?.id, data?.publicity.id)">{{data.publicity.program.name}}
+                    <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                     </a>
                   </td>
                   <td>{{data.publicity.program.program_type}}</td>

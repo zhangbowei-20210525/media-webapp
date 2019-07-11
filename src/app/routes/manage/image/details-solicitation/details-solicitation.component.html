@@ -15,7 +15,7 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>节目名称</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input (blur)="getNewList($event)" placeholder="请输入节目名称" nz-input id="name" formControlName="name"
+              <input (input)="getNewList()" (blur)='onBlur()' placeholder="请输入节目名称" nz-input id="name" formControlName="name"
                 (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramName">
               <nz-autocomplete nzBackfill #autoProgramName>
                 <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">
@@ -27,7 +27,7 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>节目别名</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname">节目别名</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <input placeholder="请输入节目别名" nz-input id="nickname" formControlName="nickname" (ngModelChange)="onInput($event)">
               <nz-form-explain *ngIf="validateForm.get('nickname').dirty && validateForm.get('nickname').errors">请输入节目别名
@@ -53,17 +53,28 @@
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="program_type" nzRequired>节目类型</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <input placeholder="请输入节目类型" nz-input id="program_type" formControlName="program_type"
-                (ngModelChange)="onInput($event)">
+                (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramTypeList">
+                <nz-autocomplete nzBackfill #autoProgramTypeList>
+                  <nz-auto-option *ngFor="let item of programTypeList" [nzValue]="item">
+                    {{ item }}
+                  </nz-auto-option>
+                </nz-autocomplete>
               <nz-form-explain
-                *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请输入节目名称
+                *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请输入节目类型
               </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="theme">题材</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input placeholder="请输入题材" nz-input id="theme" formControlName="theme" (ngModelChange)="onInput($event)">
-              <nz-form-explain *ngIf="validateForm.get('theme').dirty && validateForm.get('theme').errors">请输入节目名称
+              <input placeholder="请输入题材" nz-input id="theme" formControlName="theme" (ngModelChange)="onInput($event)"
+              [nzAutocomplete]="autoThemeList">
+              <nz-autocomplete nzBackfill #autoThemeList>
+                <nz-auto-option *ngFor="let item of themeList" [nzValue]="item">
+                  {{ item }}
+                </nz-auto-option>
+              </nz-autocomplete>
+              <nz-form-explain *ngIf="validateForm.get('theme').dirty && validateForm.get('theme').errors">请输入节题材
               </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
@@ -176,7 +187,7 @@
           </p>
           <p class="ant-upload-text">请点击或拖拽到此处进行上传</p>
           <p class="ant-upload-hint">
-            <a>视频的单个文件必须小于1G， 其支持视频格式为：<br>"mp4", "wmv", "rmvb", "mkv", "mov", "avi", "mpg"。</a>
+            <a>视频的单个文件必须小于3G， 其支持视频格式为：<br>"mp4", "wmv", "rmvb", "mkv", "mov", "avi", "mpg"。</a>
             <br>
             <a>海报，剧照支持的图片格式为："jpg", "jpeg", "png"。</a>
             <br>

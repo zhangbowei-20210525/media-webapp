@@ -151,7 +151,7 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/publicity/${id}`);
   }
   pubDetail(id: number) {
-    return this.http.get<any>(`/api/v1/pub/publicity/${id}`);
+    return this.http.get<any>(`/api/v1/publicity/${id}`);
   }
   // tslint:disable-next-line:max-line-length
   addTape(newTape: { program_id: number; name: string, language: string, subtitle: string, remark: string, source_type: string, }) {
@@ -301,6 +301,10 @@ export class SeriesService {
   // 生成样片征集令
   getSampleCollection(program_type: any, program_theme: any, description) {
     return this.http.post<any>(`/api/v1/publicity/collections`, { program_type: program_type, program_theme: program_theme, description });
+  }
+  // 节目类型
+  programType () {
+    return this.http.get<any>(`/api/v1/programs/template`);
   }
   // 征集令提交
   submitCollection(program: any, id: any) {

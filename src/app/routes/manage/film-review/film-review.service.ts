@@ -19,16 +19,16 @@ export class FilmReviewService {
     return this.http.get<any>(`/api/v1/reviews/configs/${id}`);
   }
 
-  getFilmReviewTeam() {
-    return this.http.get<any>(`/api/v1/companies/departments/reviews`);
+  getFilmReviewTeam(id: any) {
+    return this.http.get<any>(`/api/v1/reviews/configs/departments`, { params: { step_config_id: id } });
   }
 
   addFilmReviewTeam(name: string) {
-    return this.http.post<any>(`/api/v1/companies/departments/reviews`, { name: name});
+    return this.http.post<any>(`/api/v1/companies/departments/reviews`, { name: name });
   }
 
-  getFilmReviewPeople(id: number) {
-    return this.http.get<any>(`/api/v1/companies/departments/reviews/${id}/employees`);
+  getFilmReviewPeople(lid: any, bid: any) {
+    return this.http.get<any>(`/api/v1/reviews/configs/departments/employees`, { params: { step_config_id: lid, department_id: bid } });
   }
 
   addFilmReviewPeople(id: number, arr: any) {

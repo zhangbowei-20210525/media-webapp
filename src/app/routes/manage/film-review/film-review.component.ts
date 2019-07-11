@@ -49,9 +49,7 @@ export class FilmReviewComponent implements OnInit {
   }
 
   onClick(tab: number) {
-    console.log('3434');
     this.switchTab = tab;
-    console.log(this.switchTab);
     if (tab === 0) {
       this.service.getFilmReviewList().subscribe(res => {
         this.refresh(res, 0);
