@@ -63,7 +63,7 @@ export class SampleViewComponent implements OnInit {
   publicityPlay(id: number, sid: number) {
     // console.log(id);
     // this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
-    this.router.navigate([`/manage/image/image-details/${sid}`, { sid: id }]);
+    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
   }
 
 }
