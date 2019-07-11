@@ -245,7 +245,7 @@ export class ReviewViewComponent implements OnInit {
   }
   creatReview() {
     this.service.creatReview(this.checkedIntentionIds).subscribe(res => {
-      // console.log(res);
+      console.log(res);
       // console.log(this.checkedIntentionIds);
     });
   }
