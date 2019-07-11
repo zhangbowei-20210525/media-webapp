@@ -20,6 +20,7 @@ export class DetailsSolicitationComponent implements OnInit {
   name: any;
   extension: any;
   filename: any;
+  photoSize: any;
   [x: string]: any;
 
   readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
@@ -72,9 +73,9 @@ export class DetailsSolicitationComponent implements OnInit {
       progress: [null],
       introduction: [null]
     });
-     this.seriesService.getSamplePublicitys().subscribe(res => {
+    this.seriesService.getSamplePublicitys().subscribe(res => {
       this.programList = res.list;
-     });
+    });
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
       console.log(this.id);
@@ -142,6 +143,7 @@ export class DetailsSolicitationComponent implements OnInit {
   handleChange({ file, fileList }: { [key: string]: any }): void {
     this.files = fileList;
     this.size = file.size / 1000000;
+    this.photoSize = file.size / 1000000 / 1024;
     this.status = file.status;
     this.type = file.type.split('/')[1];
     fileList.forEach(item => {
@@ -157,8 +159,18 @@ export class DetailsSolicitationComponent implements OnInit {
     if (this.validateForm.value.type === 'feature'
       || this.validateForm.value.type === 'sample'
       || this.validateForm.value.type === 'trailer') {
-      if (this.size > '1024' && this.status === 'done') {
+      if (this.size > '3072' && this.status === 'done') {
         this.notification.error('文件上传失败', `请选择符合要求的视频`);
+      } else if (this.status === 'done') {
+        this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+      } else if (this.status === 'error') {
+        this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
+      }
+
+    }
+    if (this.validateForm.value.type === 'poster' || this.validateForm.value.type === 'still') {
+      if (this.size > '2' && this.status === 'done') {
+        this.notification.error('文件上传失败', `请选择符合要求的照片`);
       } else if (this.status === 'done') {
         this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
       } else if (this.status === 'error') {
@@ -266,11 +278,11 @@ export class DetailsSolicitationComponent implements OnInit {
     this.blurData = data;
     // console.log(this.blurData);
   }
-  getNewList () {
+  getNewList() {
     console.log('rrrrrr');
     this.getDisplayDate();
   }
-  onBlur () {
+  onBlur() {
     this.getDisplayDate();
   }
   onClose(index): void {
@@ -295,33 +307,33 @@ export class DetailsSolicitationComponent implements OnInit {
       //   this.filterList[0].program.nickname = '';
       // }
       if (this.filterList[0].program) {
-      this.validateForm.get('nickname').setValue(
-        this.filterList[0].program.nickname === null ? '' : this.filterList[0].program.nickname);
-      this.validateForm.get('program_type').setValue(
-        this.filterList[0].program.program_type === null ? '' : this.filterList[0].program.program_type);
-      this.validateForm.get('theme').setValue(
-        this.filterList[0].program.theme === null ? '' : this.filterList[0].program.theme);
-      this.validateForm.get('episode').setValue(
-        this.filterList[0].program.episode === null ? '' : this.filterList[0].program.episode);
-      this.validateForm.get('protagonist').setValue(
-        this.filterList[0].program.protagonist === null ? '' : this.filterList[0].program.protagonist);
-      this.validateForm.get('director').setValue(
-        this.filterList[0].program.director === null ? '' : this.filterList[0].program.director);
-      this.validateForm.get('screen_writer').setValue(
-        this.filterList[0].program.screen_writer === null ? '' : this.filterList[0].program.screen_writer);
-      this.validateForm.get('supervisor').setValue(
-        this.filterList[0].program.supervisor === null ? '' : this.filterList[0].program.supervisor);
-      this.validateForm.get('general_producer').setValue(
-        this.filterList[0].program.general_producer === null ? '' : this.filterList[0].program.general_producer);
-      this.validateForm.get('producer').setValue(
-        this.filterList[0].program.producer === null ? '' : this.filterList[0].program.producer);
-      this.validateForm.get('product_company').setValue(
-        this.filterList[0].program.product_company === null ? '' : this.filterList[0].program.product_company);
-      this.validateForm.get('progress').setValue(
-        this.filterList[0].program.progress === null ? '' : this.filterList[0].program.progress);
-      this.validateForm.get('introduction').setValue(
-        this.filterList[0].program.introduction === null ? '' : this.filterList[0].program.introduction);
+        this.validateForm.get('nickname').setValue(
+          this.filterList[0].program.nickname === null ? '' : this.filterList[0].program.nickname);
+        this.validateForm.get('program_type').setValue(
+          this.filterList[0].program.program_type === null ? '' : this.filterList[0].program.program_type);
+        this.validateForm.get('theme').setValue(
+          this.filterList[0].program.theme === null ? '' : this.filterList[0].program.theme);
+        this.validateForm.get('episode').setValue(
+          this.filterList[0].program.episode === null ? '' : this.filterList[0].program.episode);
+        this.validateForm.get('protagonist').setValue(
+          this.filterList[0].program.protagonist === null ? '' : this.filterList[0].program.protagonist);
+        this.validateForm.get('director').setValue(
+          this.filterList[0].program.director === null ? '' : this.filterList[0].program.director);
+        this.validateForm.get('screen_writer').setValue(
+          this.filterList[0].program.screen_writer === null ? '' : this.filterList[0].program.screen_writer);
+        this.validateForm.get('supervisor').setValue(
+          this.filterList[0].program.supervisor === null ? '' : this.filterList[0].program.supervisor);
+        this.validateForm.get('general_producer').setValue(
+          this.filterList[0].program.general_producer === null ? '' : this.filterList[0].program.general_producer);
+        this.validateForm.get('producer').setValue(
+          this.filterList[0].program.producer === null ? '' : this.filterList[0].program.producer);
+        this.validateForm.get('product_company').setValue(
+          this.filterList[0].program.product_company === null ? '' : this.filterList[0].program.product_company);
+        this.validateForm.get('progress').setValue(
+          this.filterList[0].program.progress === null ? '' : this.filterList[0].program.progress);
+        this.validateForm.get('introduction').setValue(
+          this.filterList[0].program.introduction === null ? '' : this.filterList[0].program.introduction);
+      }
     }
-  }
   }
 }
