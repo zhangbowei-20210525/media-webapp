@@ -56,8 +56,10 @@ export class PublicitiesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('34');
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.searchText = params.get('search');
+      console.log(this.searchText);
       this.fetchPublicities();
     });
   }
