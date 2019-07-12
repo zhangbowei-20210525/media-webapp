@@ -198,7 +198,9 @@ export class ReviewViewComponent implements OnInit {
     this.threeListOfDisplayData.forEach(item => (this.threeMapOfCheckedId[item.id] = value));
     this.threeRefreshStatus();
   }
-  publicityPlay(id: number, sid: number) {
+  publicityPlay(sid: number, id: number) {
+    console.log(sid);
+    console.log(id);
     // console.log(id);
     this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
   }
@@ -257,12 +259,12 @@ export class ReviewViewComponent implements OnInit {
     });
   }
   // 进入一审详情页
-  firstCheck(id, sid) {
-    this.router.navigate([`/manage/image/films-details/${id}`, { sid: sid }]);
+  firstCheck(sid, id, rid) {
+    this.router.navigate([`/manage/image/films-details/${id}`, { sid: sid, rid: rid}]);
   }
   // 节目名跳转详情
-  AdministratorViewDetails(id, sid) {
-    this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid }]);
+  AdministratorViewDetails(sid: number, id: number, rid: number) {
+    this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid, rid: rid }]);
   }
   // 设置面板改变
   onSelectChange(event) {

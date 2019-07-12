@@ -71,6 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.isLoggedIn) {
       this.ntf.startNotifiesPolling();
     }
+    console.log(this.settings);
   }
 
   ngOnDestroy() {

@@ -119,6 +119,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   thirdOppose: number;
   starId = [];
   reviewId: any;
+  rid: number;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -140,6 +141,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       switchMap((params: ParamMap) => {
         this.id = +params.get('id');
         this.sid = +params.get('sid');
+        this.rid = +params.get('rid');
         this.tabIndex = +params.get('tabIndex');
         this.sampleIndex = +params.get('sampleIndex');
         this.featureIndex = +params.get('featureIndex');
@@ -147,7 +149,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.posterIndex = +params.get('posterIndex');
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
-        return this.seriesService.publicityDetail(this.id);
+        return this.seriesService.pubDetail(this.id);
       })).subscribe(res => {
         // console.log(res);
         this.seriesService.getUserinfo(this.id).subscribe(cpd => {
@@ -196,7 +198,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getPdfInfo();
         }
       });
-    this.seriesService.getReviewDetails(this.sid).subscribe(res => {
+    this.seriesService.getReviewDetails(this.rid).subscribe(res => {
       this.reviewSteps = res.review_steps;
       this.reviewFirstSteps = res.review_steps[0];
       // 一审喜欢人数及通过率

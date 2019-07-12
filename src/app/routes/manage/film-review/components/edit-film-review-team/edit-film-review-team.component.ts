@@ -35,39 +35,52 @@ export class EditFilmReviewTeamComponent implements OnInit {
       filmReviewTeam: [null, [Validators.required]],
       filmReviewPeople: [null, [Validators.required]],
     });
-    this.service.getFilmReviewTeam().subscribe(res => {
+    this.service.getFilmReviewTeam(this.filmReview.step_number).subscribe(res => {
       this.teamInfo = res;
-      if (this.filmReview.department !== null) {
-        this.tid = this.filmReview.department.id;
-        this.validateForm.get('filmReviewTeam').setValue(this.tid);
-        this.service.getFilmReviewPeople(this.tid).subscribe(ress => {
+      this.tid = this.teamInfo.filter(x => x.status === true)[0].id;
+      this.validateForm.get('filmReviewTeam').setValue(this.tid);
+         this.service.getFilmReviewPeople(this.filmReview.step_number,
+          this.tid).subscribe(ress => {
+           console.log(ress);
           this.peopleInfo = ress.map(item => ({
             value: item.id,
             label: item.name,
             phone: item.phone,
-            checked: this.filmReview.employees.some(e => e.id === item.id)
+            checked: item.status
           }));
           this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
         });
-      }
-      if (this.filmReview.department === null) {
-        this.tid = res[0].id;
-        this.validateForm.get('filmReviewTeam').setValue(this.tid);
-        this.service.getFilmReviewPeople(this.tid).subscribe(ress => {
-          this.peopleInfo = ress.map(item => ({
-            value: item.id,
-            label: item.name,
-            phone: item.phone,
-            checked: this.filmReview.employees.some(e => e.id === item.id)
-          }));
-          this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
-        });
-      }
+      // if (this.filmReview.department !== null) {
+      //   this.tid = this.filmReview.department.id;
+      //   this.validateForm.get('filmReviewTeam').setValue(this.tid);
+      //   this.service.getFilmReviewPeople(this.tid).subscribe(ress => {
+      //     this.peopleInfo = ress.map(item => ({
+      //       value: item.id,
+      //       label: item.name,
+      //       phone: item.phone,
+      //       checked: this.filmReview.employees.some(e => e.id === item.id)
+      //     }));
+      //     this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
+      //   });
+      // }
+      // if (this.filmReview.department === null) {
+      //   this.tid = res[0].id;
+      //   this.validateForm.get('filmReviewTeam').setValue(this.tid);
+      //   this.service.getFilmReviewPeople(this.tid).subscribe(ress => {
+      //     this.peopleInfo = ress.map(item => ({
+      //       value: item.id,
+      //       label: item.name,
+      //       phone: item.phone,
+      //       checked: this.filmReview.employees.some(e => e.id === item.id)
+      //     }));
+      //     this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
+      //   });
+      // }
     });
   }
 
   teamRefresh() {
-    this.service.getFilmReviewTeam().subscribe(res => {
+    this.service.getFilmReviewTeam(this.filmReview.step_number).subscribe(res => {
       this.teamInfo = res;
       this.tid = this.filmReview.department.id;
       this.peopleRefresh(this.tid);
@@ -75,18 +88,20 @@ export class EditFilmReviewTeamComponent implements OnInit {
   }
 
   peopleRefresh(id: number) {
-    this.service.getFilmReviewPeople(id).subscribe(res => {
+    this.service.getFilmReviewPeople(this.filmReview.step_number, id).subscribe(res => {
       res.forEach(f => {
         this.peopleInfo.push({
           value: f.id,
           label: f.name,
           phone: f.phone,
-          checked: false
+          checked: f.status
         });
       });
       this.validateForm.get('filmReviewPeople').setValue(this.peopleInfo);
     });
   }
+
+
 
   teamConfig() {
     this.ref = this.modal.create({
@@ -152,7 +167,10 @@ export class EditFilmReviewTeamComponent implements OnInit {
 
   onPeopleChange() {
     this.pid = [];
-    this.validateForm.get('filmReviewPeople').value.filter(x => x.checked === true).forEach(f => {
+    // this.validateForm.get('filmReviewPeople').value.filter(x => x.checked === true).forEach(f => {
+    //   this.pid.push(f.value);
+    // });
+     this.validateForm.get('filmReviewPeople').value.filter(x => x.checked === true).forEach(f => {
       this.pid.push(f.value);
     });
   }

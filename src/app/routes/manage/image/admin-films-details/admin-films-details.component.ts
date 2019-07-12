@@ -121,6 +121,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   thirdLike: number;
   thirdOppose: number;
   reviewList: any;
+  rid: number;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -142,6 +143,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
       switchMap((params: ParamMap) => {
         this.id = +params.get('id');
         this.sid = +params.get('sid');
+        this.rid = +params.get('rid');
         this.tabIndex = +params.get('tabIndex');
         this.sampleIndex = +params.get('sampleIndex');
         this.featureIndex = +params.get('featureIndex');
@@ -152,7 +154,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         return this.seriesService.publicityDetail(this.id);
       })).subscribe(res => {
         // console.log(res);
-        this.seriesService.getUserinfo(this.sid).subscribe(cpd => {
+        this.seriesService.getUserinfo(this.id).subscribe(cpd => {
           this.userinfo = cpd;
           if (this.userinfo.material.sample === 0) {
             this.sampleDisabled = true;
@@ -199,8 +201,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         }
       });
     this.getVerifyData(this.step_number);
-    this.seriesService.getReviewDetails(this.id).subscribe(res => {
-      console.log('23423423423423424');
+    this.seriesService.getReviewDetails(this.rid).subscribe(res => {
       console.log(res);
       this.reviewList = res;
       this.reviewFirstSteps = res.review_steps[0];

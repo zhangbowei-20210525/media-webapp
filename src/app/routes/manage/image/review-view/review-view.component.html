@@ -25,7 +25,7 @@
             <li class="video-info" *ngFor="let thumbnail of list index as i">
               <div class="video">
                 <img class="video-img" [src]="thumbnail?.publicity.src" />
-                <div class="price" (click)="publicityPlay(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">
+                <div class="price" (click)="publicityPlay(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id)">
                   <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
                 </div>
               </div>
@@ -57,11 +57,11 @@
                 </div>
               </nz-checkbox-wrapper> -->
                   <button *ngIf="thumbnail.step_number === 1 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">一审</button>
+                    nzType="primary" (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">一审</button>
                   <button *ngIf="thumbnail.step_number === 2 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">二审</button>
+                    nzType="primary" (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">二审</button>
                   <button *ngIf="thumbnail.step_number === 3 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">三审</button>
+                    nzType="primary" (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">三审</button>
                   <button
                     *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 1 "
                     nz-button nzType="danger">已一审</button>
@@ -140,8 +140,8 @@
                   <td nzShowCheckbox [(nzChecked)]="firstMapOfCheckedId[data.id]"
                     (nzCheckedChange)="firstRefreshStatus()"></td>
                   <td>
-
-                    <a (click)="AdministratorViewDetails(data?.publicity.id, data?.publicity.program.id, data?.id)">{{data.publicity.program.name}}
+  
+                    <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                     </a>
 
                   </td>
@@ -181,7 +181,7 @@
                   <td nzShowCheckbox [(nzChecked)]="secondMapOfCheckedId[data.id]"
                     (nzCheckedChange)="secondRefreshStatus()"></td>
                   <td>
-                    <a (click)="AdministratorViewDetails(data?.publicity.id, data?.publicity.program.id)">{{data.publicity.program.name}}
+                    <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                     </a>
                   </td>
                   <td>{{data.publicity.program.program_type}}</td>
@@ -225,7 +225,7 @@
                   <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data.id]"
                     (nzCheckedChange)="threeRefreshStatus()"></td>
                   <td>
-                    <a (click)="AdministratorViewDetails(data?.publicity.id, data?.publicity.program.id)">{{data.publicity.program.name}}
+                    <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                     </a>
                   </td>
                   <td>{{data.publicity.program.program_type}}</td>
