@@ -257,6 +257,9 @@ export class ReviewViewComponent implements OnInit {
   }
   // 节目名跳转详情
   AdministratorViewDetails(sid: number, id: number, rid: number) {
+    console.log(rid);
+    console.log(sid);
+    console.log(id);
     this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid, rid: rid }]);
   }
   // 设置面板改变
