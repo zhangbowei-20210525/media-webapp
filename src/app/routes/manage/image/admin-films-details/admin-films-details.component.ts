@@ -211,24 +211,24 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
       this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
       this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
       this.firstLike = (res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
-      res.review_steps[0].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[0].review_records_statistic.reviewed_count) * 100;
       this.firstOppose = (res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
-      res.review_steps[0].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[0].review_records_statistic.reviewed_count) * 100;
       // 二审喜欢人数及通过率
 
       this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
       this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
       this.secondLike = (res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
-      res.review_steps[1].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[1].review_records_statistic.reviewed_count) * 100;
       this.secondOppose = (res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
-      res.review_steps[1].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[1].review_records_statistic.reviewed_count) * 100;
       // 三审喜欢人数及通过率
       this.disLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.agree;
       this.thirdDisLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
       this.thirdLike = (res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
-      res.review_steps[2].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[2].review_records_statistic.reviewed_count) * 100;
       this.thirdOppose = (res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
-      res.review_steps[2].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[2].review_records_statistic.reviewed_count) * 100;
       // 总分
       this.reviewSecondSteps = res.review_steps[1];
       this.reviewThirdSteps = res.review_steps[2];
@@ -270,7 +270,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   getSampleInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.samplePagination, this.sid, 'sample').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -291,7 +291,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   getFeatureInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.featurePagination, this.sid, 'feature').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -311,7 +311,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   getTrailerInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.trailerPagination, this.sid, 'trailer').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -331,7 +331,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   getPosterInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.posterPagination, this.sid, 'poster').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -349,7 +349,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   getStillInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.stillPagination, this.sid, 'still').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -367,7 +367,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   getPdfInfo() {
     // tslint:disable-next-line:max-line-length
-    this.seriesService.getPubDetialsTypeList(this.pdfPagination, this.sid, 'pdf').pipe(tap(x => {
+    this.seriesService.getPubDetialsTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;

@@ -43,88 +43,90 @@
     </div>
   </nz-tab>
   <nz-tab nzTitle="二审设置" (nzClick)="onClick(1)">
-      <div class="block" style="border:solid 1px">
-          <nz-collapse [nzAccordion]="false">
-            <nz-collapse-panel nzHeader="审片人" [nzActive]="active1" [nzShowArrow]="false">
-              <div style="margin-bottom: 10px">
-                  <a style="margin-right: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
-                审片团：<span
-                  style="margin-left: 5px;">{{ filmReview2?.department?.name }}</span>
-              </div>
-              <div style="margin-left: 27px">审片人：
-                <nz-tag *ngFor="let data of filmReview2?.employees">
-                  <span>{{ data.name }}</span>
-                  <span style="margin-left: 10px">{{ data.phone }}</span>
-                </nz-tag>
-              </div>
-            </nz-collapse-panel>
-            <nz-collapse-panel nzHeader="结论" [nzActive]="active2" [nzShowArrow]="false">
-              <div>
-                <a style="margin-right: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
-                <span>{{ filmReview2?.conclusion_item?.agree_name }}</span>
-                <span style="margin-left: 20px">{{ filmReview2?.conclusion_item?.oppose_name }}</span>
-              </div>
-            </nz-collapse-panel>
-            <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
-              <div>
-                <a style="margin-right: 10px;" (click)="scoreConfig()"><i nz-icon nzType="setting"></i></a>
-                <nz-tag *ngFor="let data of filmReview2?.scoring_items">
-                  <span>{{ data.name }}</span>
-                  <span style="margin-left: 10px">{{ data.proportion * 100 }}%</span>
-                </nz-tag>
-              </div>
-            </nz-collapse-panel>
-            <nz-collapse-panel nzHeader="意见或评论" [nzActive]="active4" [nzShowArrow]="false">
-              <div>
-                <a style="margin-right: 10px;" (click)="ideaConfig()"><i nz-icon nzType="setting"></i></a>
-                <span *ngIf="filmReview2?.comment_status == true">有</span>
-                <span *ngIf="filmReview2?.comment_status == false">无</span>
-              </div>
-            </nz-collapse-panel>
-          </nz-collapse>
-        </div>
+    <div class="block" style="border:solid 1px">
+      <nz-collapse [nzAccordion]="false">
+        <nz-collapse-panel nzHeader="审片人" [nzActive]="active1" [nzShowArrow]="false">
+          <div style="margin-bottom: 10px">
+            审片团：<span
+              style="margin-left: 5px;">{{ filmReview2?.department?.name }}</span>
+              <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+          <div>审片人：
+            <nz-tag *ngFor="let data of filmReview2?.employees">
+              <span>{{ data.name }}</span>
+              <span style="margin-left: 10px">{{ data.phone }}</span>
+            </nz-tag>
+          </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="结论" [nzActive]="active2" [nzShowArrow]="false">
+          <div>
+            <span>{{ filmReview2?.conclusion_item?.agree_name }}</span>
+            <span style="margin-left: 10px">or</span>
+            <span style="margin-left: 10px">{{ filmReview2?.conclusion_item?.oppose_name }}</span>
+            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
+          <div>
+            <nz-tag *ngFor="let data of filmReview2?.scoring_items">
+              <span>{{ data.name }}</span>
+              <span style="margin-left: 10px">{{ data.proportion * 100 }}%</span>
+            </nz-tag>
+            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="意见或评论" [nzActive]="active4" [nzShowArrow]="false">
+          <div>
+            <span *ngIf="filmReview2?.comment_status == true">有</span>
+            <span *ngIf="filmReview2?.comment_status == false">无</span>
+            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
   </nz-tab>
   <nz-tab nzTitle="三审设置" (nzClick)="onClick(2)">
-      <div class="block" style="border:solid 1px">
-          <nz-collapse [nzAccordion]="false">
-            <nz-collapse-panel nzHeader="审片人" [nzActive]="active1" [nzShowArrow]="false">
-              <div style="margin-bottom: 10px">
-                  <a style="margin-right: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
-                审片团：<span
-                  style="margin-left: 5px;">{{ filmReview3?.department?.name }}</span>
-              </div>
-              <div style="margin-left: 27px">审片人：
-                <nz-tag *ngFor="let data of filmReview3?.employees">
-                  <span>{{ data.name }}</span>
-                  <span style="margin-left: 10px">{{ data.phone }}</span>
-                </nz-tag>
-              </div>
-            </nz-collapse-panel>
-            <nz-collapse-panel nzHeader="结论" [nzActive]="active2" [nzShowArrow]="false">
-              <div>
-                <a style="margin-right: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
-                <span>{{ filmReview3?.conclusion_item?.agree_name }}</span>
-                <span style="margin-left: 20px">{{ filmReview3?.conclusion_item?.oppose_name }}</span>
-              </div>
-            </nz-collapse-panel>
-            <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
-              <div>
-                <a style="margin-right: 10px;" (click)="scoreConfig()"><i nz-icon nzType="setting"></i></a>
-                <nz-tag *ngFor="let data of filmReview3?.scoring_items">
-                  <span>{{ data.name }}</span>
-                  <span style="margin-left: 10px">{{ data.proportion * 100 }}%</span>
-                </nz-tag>
-              </div>
-            </nz-collapse-panel>
-            <nz-collapse-panel nzHeader="意见或评论" [nzActive]="active4" [nzShowArrow]="false">
-              <div>
-                <a style="margin-right: 10px;" (click)="ideaConfig()"><i nz-icon nzType="setting"></i></a>
-                <span *ngIf="filmReview3?.comment_status == true">有</span>
-                <span *ngIf="filmReview3?.comment_status == false">无</span>
-              </div>
-            </nz-collapse-panel>
-          </nz-collapse>
-        </div>
+    <div class="block" style="border:solid 1px">
+      <nz-collapse [nzAccordion]="false">
+        <nz-collapse-panel nzHeader="审片人" [nzActive]="active1" [nzShowArrow]="false">
+          <div style="margin-bottom: 10px">
+            审片团：<span
+              style="margin-left: 5px;">{{ filmReview3?.department?.name }}</span>
+              <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+          <div>审片人：
+            <nz-tag *ngFor="let data of filmReview3?.employees">
+              <span>{{ data.name }}</span>
+              <span style="margin-left: 10px">{{ data.phone }}</span>
+            </nz-tag>
+          </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="结论" [nzActive]="active2" [nzShowArrow]="false">
+          <div>
+            <span>{{ filmReview3?.conclusion_item?.agree_name }}</span>
+            <span style="margin-left: 10px">or</span>
+            <span style="margin-left: 10px">{{ filmReview3?.conclusion_item?.oppose_name }}</span>
+            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
+          <div>
+            <nz-tag *ngFor="let data of filmReview3?.scoring_items">
+              <span>{{ data.name }}</span>
+              <span style="margin-left: 10px">{{ data.proportion * 100 }}%</span>
+            </nz-tag>
+            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="意见或评论" [nzActive]="active4" [nzShowArrow]="false">
+          <div>
+            <span *ngIf="filmReview3?.comment_status == true">有</span>
+            <span *ngIf="filmReview3?.comment_status == false">无</span>
+            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="setting"></i></a>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
   </nz-tab>
 </nz-tabset>
 <ng-template #extraTemplate>
