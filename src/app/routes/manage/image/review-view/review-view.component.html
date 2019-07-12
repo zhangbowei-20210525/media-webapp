@@ -57,11 +57,14 @@
                 </div>
               </nz-checkbox-wrapper> -->
                   <button *ngIf="thumbnail.step_number === 1 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">一审</button>
+                    nzType="primary"
+                    (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">一审</button>
                   <button *ngIf="thumbnail.step_number === 2 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">二审</button>
+                    nzType="primary"
+                    (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">二审</button>
                   <button *ngIf="thumbnail.step_number === 3 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">三审</button>
+                    nzType="primary"
+                    (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">三审</button>
                   <button
                     *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 1 "
                     nz-button nzType="danger">已一审</button>
@@ -102,6 +105,7 @@
                   <th>主演</th>
                   <th>导演</th>
                   <th>公司</th>
+                  <!---<th>操作</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -115,6 +119,12 @@
                   <td>{{data.protagonist}}</td>
                   <td>{{data.director}}</td>
                   <td>{{data.company.full_name}}</td>
+                 <!--<td style="text-align: center">
+                    <a (click)="deleteView(data.id)" acl [acl-ability]="ability.program.del">
+                      <i nz-icon type="delete" theme="outline"></i>
+                    </a>
+                  </td>
+                  --> 
                 </tr>
               </tbody>
             </nz-table>

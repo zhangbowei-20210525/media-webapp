@@ -14,10 +14,9 @@
           <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
         </div>
         <div class="fixationInfo-info">
-          <a (click)="getTwoDimensionalCode()">
-            <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
-            <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
-          </a>
+            <button nz-button nzType="default" nzGhost routerLink="/manage/image/review-view">发起审片</button>
+          <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
+          <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
         </div>
       </div>
       <ng-template #titleTemplate>
@@ -26,7 +25,7 @@
           {{ 'app.series.publicity-share-email' | translate }}</div>
       </ng-template>
       <ng-template #contentTemplate>
-        <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+        <div style="text-align: center;">{{ uqserinfo?.company?.name }}</div>
         <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
             src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
         <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
@@ -58,16 +57,15 @@
           <span>{{posterName}}</span>
         </div>
         <div class="fixationInfo-info">
-          <a (click)="getTwoDimensionalCode()">
-            <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
-            <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
-          </a>
+          <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
+          <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
+          <button style="background-color: aliceblue">1111</button>
         </div>
       </div>
       <ng-template #titleTemplate>
         <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
         <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
-          {{ 'app.series.publicity-share-email' | translate }}</div>
+          {{ 'app.series.publicity-share-email' | translate }}</div>da
       </ng-template>
       <ng-template #contentTemplate>
         <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
