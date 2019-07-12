@@ -156,6 +156,17 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         // console.log(res);
         this.seriesService.getUserinfo(this.id).subscribe(cpd => {
           this.userinfo = cpd;
+          if (this.tabIndex === 0) {
+            const arr = [{ key: 0, num: this.userinfo.material.sample },
+            { key: 1, num: this.userinfo.material.feature },
+            { key: 2, num: this.userinfo.material.trailer },
+            { key: 3, num: this.userinfo.material.poster },
+            { key: 4, num: this.userinfo.material.still },
+            { key: 5, num: this.userinfo.material.pdf }];
+            const arr1 = [];
+            arr.forEach(x => arr1.push(x.num));
+            this.tabIndex = arr.filter(f => Math.max(...arr1) === f.num)[0].key;
+          }
           if (this.userinfo.material.sample === 0) {
             this.sampleDisabled = true;
           }
@@ -173,6 +184,30 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
           }
           if (this.userinfo.material.pdf === 0) {
             this.pdfDisabled = true;
+          }
+          if (this.tabIndex === 0) {
+            this.publicityType = 'sample';
+            this.sample();
+          }
+          if (this.tabIndex === 1) {
+            this.publicityType = 'feature';
+            this.feature();
+          }
+          if (this.tabIndex === 2) {
+            this.publicityType = 'trailer';
+            this.trailer();
+          }
+          if (this.tabIndex === 3) {
+            this.publicityType = 'poster';
+            this.poster();
+          }
+          if (this.tabIndex === 4) {
+            this.publicityType = 'still';
+            this.still();
+          }
+          if (this.tabIndex === 5) {
+            this.publicityType = 'pdf';
+            this.pdf();
           }
         });
         this.seriesService.getDetailsInfo(this.sid).subscribe(cpd => {

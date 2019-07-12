@@ -16,7 +16,7 @@
         <div class="fixationInfo-info">
           <a (click)="getTwoDimensionalCode()">
             <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
-              <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
+            <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
           </a>
         </div>
       </div>
@@ -60,7 +60,7 @@
         <div class="fixationInfo-info">
           <a (click)="getTwoDimensionalCode()">
             <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
-              <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
+            <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
           </a>
         </div>
       </div>
@@ -270,13 +270,13 @@
             <div>出品人：{{ seriesInfo?.producer }}</div>
             <div>出品方：{{ seriesInfo?.product_company }}</div>
             <div>监制：{{ seriesInfo?.supervisor }}</div>
-            <div *ngIf = "seriesInfo?.progress === null">进度：</div>
-            <div *ngIf = "seriesInfo?.progress === 'scenario'">进度：剧本阶段</div>
-            <div *ngIf = "seriesInfo?.progress === 'preparation'">进度：筹备中</div>
-            <div *ngIf = "seriesInfo?.progress === 'filming'">进度：拍摄中</div>
-            <div *ngIf = "seriesInfo?.progress === 'production'">进度：后制中</div>
-            <div *ngIf = "seriesInfo?.progress === 'completed'">进度：已完成</div>
-            <div *ngIf = "seriesInfo?.progress === 'second'">进度：二审</div>
+            <div *ngIf="seriesInfo?.progress === null">进度：</div>
+            <div *ngIf="seriesInfo?.progress === 'scenario'">进度：剧本阶段</div>
+            <div *ngIf="seriesInfo?.progress === 'preparation'">进度：筹备中</div>
+            <div *ngIf="seriesInfo?.progress === 'filming'">进度：拍摄中</div>
+            <div *ngIf="seriesInfo?.progress === 'production'">进度：后制中</div>
+            <div *ngIf="seriesInfo?.progress === 'completed'">进度：已完成</div>
+            <div *ngIf="seriesInfo?.progress === 'second'">进度：二审</div>
             <div>简介：{{ seriesInfo?.introduction }}</div>
           </div>
         </nz-tab>
