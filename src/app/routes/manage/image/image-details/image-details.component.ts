@@ -138,7 +138,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
         this.seriesService.getDetailsInfo(this.sid).subscribe(cpd => {
-          // console.log(cpd);
+           console.log(cpd);
           this.seriesInfo = cpd;
         });
         this.publicityName = res.name;

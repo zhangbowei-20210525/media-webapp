@@ -114,7 +114,7 @@
             </nz-form-control>
           </nz-form-item> -->
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="general_producer">制片人</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="general_producer" ng-disabled="true">制片人</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <input placeholder="请输入制片人" nz-input id="general_producer" formControlName="general_producer"
                 (ngModelChange)="onInput($event)">
@@ -136,13 +136,13 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="progress">当前进度</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <nz-select id="progress" formControlName="progress" nzPlaceHolder="请选择当前进度">
-                <!-- <nz-option nzLabel="剧本阶段" nzValue="screenplay"></nz-option>
+              <nz-select id="progress" formControlName="progress" nzPlaceHolder="请选择当前进度" >
+                  <nz-option nzLabel="剧本阶段" nzValue="scenario"></nz-option>
                   <nz-option nzLabel="筹备中" nzValue="preparation"></nz-option>
-                  <nz-option nzLabel="拍摄中" nzValue="shooting"></nz-option>
+                  <nz-option nzLabel="拍摄中" nzValue="filming"></nz-option>
                   <nz-option nzLabel="后制中" nzValue="production"></nz-option>
-                  <nz-option nzLabel="已完成" nzValue="finished"></nz-option>
-                  <nz-option nzLabel="二轮" nzValue="tworound"></nz-option> -->
+                  <nz-option nzLabel="已完成" nzValue="completed"></nz-option>
+                  <nz-option nzLabel="二轮" nzValue="second"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -171,6 +171,16 @@
           <!-- <nz-tag class="item-left" nzMode="closeable" (nzOnClose)="onClose()" (nzAfterClose)="afterClose()">11888899999881</nz-tag> -->
           <!-- </div> -->
         </div>
+        <div class='video-item' *ngFor="let item of videoList; let i = index">
+          <!-- <div class='item-left'> -->
+          <nz-tag class="item-left" nzMode="closeable" (nzOnClose)="onClose(i)" (nzAfterClose)="afterClose()">
+            <div>{{item.name}}</div>
+            <nz-progress nzStatus="" [hidden]="item.close === true" class='item-right' [nzPercent]="100">
+            </nz-progress>
+          </nz-tag>
+          <!-- <nz-tag class="item-left" nzMode="closeable" (nzOnClose)="onClose()" (nzAfterClose)="afterClose()">11888899999881</nz-tag> -->
+          <!-- </div> -->
+        </div>
         <!-- <div>{{files.name}}</div> -->
         <!-- <nz-progress [nzPercent]="100"></nz-progress> -->
       </div>
@@ -181,7 +191,7 @@
       </div>
       <div class="details-box-right-btm">
         <nz-upload nzType="drag" [nzLimit]="2" [nzFileType]="text" [nzAction]="docType"
-          [nzBeforeUpload]='beforeUpload' (nzChange)="handleChange($event)">
+          [nzBeforeUpload]='beforeUpload' (nzChange)="handleChange($event)" [nzDisabled]="uploadVideo ? 'true' : 'false'">
           <p class="ant-upload-drag-icon">
             <i nz-icon nzType="upload" nzTheme="outline" style="color: skyblue"></i>
           </p>

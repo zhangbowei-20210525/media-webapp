@@ -303,7 +303,7 @@ export class SeriesService {
     return this.http.post<any>(`/api/v1/publicity/collections`, { program_type: program_type, program_theme: program_theme, description });
   }
   // 节目类型
-  programType () {
+  programType() {
     return this.http.get<any>(`/api/v1/programs/template`);
   }
   // 征集令提交
@@ -317,8 +317,8 @@ export class SeriesService {
   // 获取审片列表
   getReviewList(pagination: PaginationDto, step_number: any) {
     return this.http.get<any>(`/api/v1/reviews?page=${pagination.page}&page_size=${pagination.page_size}`, {
-      params : {
-      step_number: step_number,
+      params: {
+        step_number: step_number,
       }
     });
   }
@@ -367,10 +367,18 @@ export class SeriesService {
   }
 
   getSolicitationDetails(id: number) {
-    return this.http.get<any>(`/api/v1/publicity/collections/${id}`,  { params: { _allow_anonymous: '' } });
+    return this.http.get<any>(`/api/v1/publicity/collections/${id}`, { params: { _allow_anonymous: '' } });
   }
 
   getAcceptEmployeeEnvitationsInfo(id: number) {
-    return this.http.get<any>(`/api/v1/companies/employees/${id}/invitation`,  { params: { _allow_anonymous: '' } });
+    return this.http.get<any>(`/api/v1/companies/employees/${id}/invitation`, { params: { _allow_anonymous: '' } });
+  }
+  // 拉取视频信息
+  getPublicityVideo(id: number) {
+    return this.http.get<any>(`/api/v1/publicitys/${id}/materials`);
+  }
+  // 发起审片限制
+  sendView() {
+    return this.http.get<any>(`api/v1/reviews/configs/status`);
   }
 }

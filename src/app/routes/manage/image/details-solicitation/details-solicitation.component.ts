@@ -21,6 +21,8 @@ export class DetailsSolicitationComponent implements OnInit {
   extension: any;
   filename: any;
   photoSize: any;
+  vid: any;
+  videoList = [];
   [x: string]: any;
 
   readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
@@ -43,6 +45,7 @@ export class DetailsSolicitationComponent implements OnInit {
   mode: 'figure' | 'table' | 'figure';
   programTypeList = [];
   themeList = [];
+  uploadVideo = false;
   constructor(
     private msg: NzMessageService,
     private fb: FormBuilder,
@@ -75,6 +78,10 @@ export class DetailsSolicitationComponent implements OnInit {
     });
     this.seriesService.getSamplePublicitys().subscribe(res => {
       this.programList = res.list;
+      res.list.forEach(item => {
+        this.vid = item.id;
+      });
+      console.log(res);
     });
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
@@ -143,7 +150,6 @@ export class DetailsSolicitationComponent implements OnInit {
   handleChange({ file, fileList }: { [key: string]: any }): void {
     this.files = fileList;
     this.size = file.size / 1000000;
-    this.photoSize = file.size / 1000000 / 1024;
     this.status = file.status;
     this.type = file.type.split('/')[1];
     fileList.forEach(item => {
@@ -179,7 +185,7 @@ export class DetailsSolicitationComponent implements OnInit {
     }
     fileList.forEach(b => {
       if (!!b.response) {
-        //  this.id = b.response.id ;
+        // this.id = b.response.id ;
         this.extension = b.response.data.extension;
         this.filename = b.response.data.filename;
         this.name = b.response.data.name;
@@ -213,7 +219,16 @@ export class DetailsSolicitationComponent implements OnInit {
     return form.valid;
   }
   submit() {
-    if (this.validation()) {
+    if (this.filterList.length > 0) {
+      this.submitConent();
+    } else {
+      if (this.validation()) {
+        this.submitConent();
+      }
+    }
+  }
+  submitConent () {
+      console.log('eeee');
       const params = this.validateForm.value;
       const materials = [];
       const obj = {
@@ -225,7 +240,7 @@ export class DetailsSolicitationComponent implements OnInit {
       };
       this.files.forEach(item => {
         console.log(item);
-        // obj.material_id = this.id;
+       // obj.material_id = this.id;
         obj.name = this.name;
         obj.filename = this.filename;
         obj.extension = this.extension;
@@ -234,14 +249,14 @@ export class DetailsSolicitationComponent implements OnInit {
         materials.push(obj);
       });
       const postParams = Object.assign(params);
+      console.log(postParams);
       delete postParams.type;
       this.objParams = {
         program: postParams,
         materials: materials,
         publicity_id: this.publicityId,
       };
-      console.log(this.publicityId);
-      if (this.objParams.materials.length === 0) {
+      if (this.objParams.materials.length === 0 && this.videoList.length === 0) {
         this.message.error('请填写完整信息');
         return;
       } else {
@@ -258,8 +273,13 @@ export class DetailsSolicitationComponent implements OnInit {
             nzCancelText: '上传新节目',
             nzOnCancel: () => new Promise((resolve) => {
               resolve();
-              this.router.navigate([`/manage/image/details-solicitation`]);
+              console.log(new Date().getTime());
+              this.router.navigate([`/manage/image/details-solicitation/${this.id}`]);
               this.validateForm.reset();
+              this.validateForm.enable();
+              this.uploadVideo = false;
+              this.validateForm = this.validateForm;
+              this.videoList = [];
               this.files = [];
             }),
             nzOnOk: () => new Promise((resolve) => {
@@ -274,11 +294,10 @@ export class DetailsSolicitationComponent implements OnInit {
           this.message.warning(error.message);
         });
       }
-    }
   }
   onInput(data) {
     this.blurData = data;
-    // console.log(this.blurData);
+    console.log(this.blurData);
   }
   getNewList() {
     console.log('rrrrrr');
@@ -304,13 +323,19 @@ export class DetailsSolicitationComponent implements OnInit {
       this.publicityId = this.filterList[0].id || null;
       console.log(this.publicityId);
       console.log(this.filterList);
+      this.seriesService.getPublicityVideo(this.vid).subscribe(res => {
+        this.videoList = res;
+        console.log(res);
+        this.validateForm.get('type').setValue(
+          this.videoList[0].material_type === null ? '' : this.videoList[0].material_type);
+      });
       // this.validateForm.get('nickname').setValue(this.filterList[0].program.nickname);
       // if (this.filterList[0].program.nickname === null ) {
       //   this.filterList[0].program.nickname = '';
       // }
+
       if (this.filterList[0].program) {
-        this.validateForm.get('nickname').setValue(
-          this.filterList[0].program.nickname === null ? '' : this.filterList[0].program.nickname);
+
         this.validateForm.get('program_type').setValue(
           this.filterList[0].program.program_type === null ? '' : this.filterList[0].program.program_type);
         this.validateForm.get('theme').setValue(
@@ -335,6 +360,8 @@ export class DetailsSolicitationComponent implements OnInit {
           this.filterList[0].program.progress === null ? '' : this.filterList[0].program.progress);
         this.validateForm.get('introduction').setValue(
           this.filterList[0].program.introduction === null ? '' : this.filterList[0].program.introduction);
+        this.validateForm.disable();
+        this.uploadVideo = true;
       }
     }
   }

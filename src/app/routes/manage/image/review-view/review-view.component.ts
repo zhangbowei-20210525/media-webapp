@@ -112,15 +112,16 @@ export class ReviewViewComponent implements OnInit {
             this.intentionList = result.list;
             this.pagination = result.pagination;
             // this.paginationName = result.pagination.name;
-            // console.log(result);
+            console.log(result);
           });
       } else {
         this.service.getReviewList(this.pagination, step_number).subscribe(res => {
-          // console.log(res);
+          console.log(res);
           this.reviewList = res.list;
           this.reviewList.forEach(item => {
             this.reviewId = item.id;
           });
+          console.log(this.secondListOfDisplayData);
         });
       }
     }
@@ -154,7 +155,7 @@ export class ReviewViewComponent implements OnInit {
     this.isFirstIndeterminate =
       this.firstListOfDisplayData.some(item => this.firstListOfDisplayData[item.id]) && !this.isFirstAllDisplayDataChecked;
     // console.log(this.firstMapOfCheckedId);
-
+    console.log(this.firstListOfDisplayData);
   }
   firstPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     // console.log($event);
@@ -217,31 +218,37 @@ export class ReviewViewComponent implements OnInit {
         }
       });
     });
-    this.modalService.create({
-      nzTitle: `您将提交：`,
-      nzContent: LaunchFilmsComponent,
-      nzComponentParams: { intentonName: this.intentonName },
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: 440,
-      nzCancelText: '取消',
-      nzNoAnimation: true,
-      nzOkText: '确定',
-      nzOnOk: () => new Promise((resolve) => {
-        resolve();
-        this.creatReview();
-        // 重置数据
-        for (const key in this.mapOfCheckedId) {
-          if (this.mapOfCheckedId[key]) {
-            this.mapOfCheckedId[key] = false;
+    this.service.sendView().subscribe(res => {
+      console.log(res);
+      this.modalService.create({
+        nzTitle: `您将提交：`,
+        nzContent: LaunchFilmsComponent,
+        nzComponentParams: { intentonName: this.intentonName },
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzWidth: 440,
+        nzCancelText: '取消',
+        nzNoAnimation: true,
+        nzOkText: '确定',
+        nzOnOk: () => new Promise((resolve) => {
+          resolve();
+          this.creatReview();
+          // 重置数据
+          for (const key in this.mapOfCheckedId) {
+            if (this.mapOfCheckedId[key]) {
+              this.mapOfCheckedId[key] = false;
+            }
           }
-        }
-        this.isAllDisplayDataChecked = false;
-        this.selectedTabIndex = 1;
-        this.selectedIndex = 1;
-        this.fetchPublicities(this.selectedIndex);
-      })
+          this.isAllDisplayDataChecked = false;
+          this.selectedTabIndex = 1;
+          this.selectedIndex = 1;
+          this.fetchPublicities(this.selectedIndex);
+        })
+      });
+    }, error => {
+      this.message.error('请配置审片设置');
     });
+
   }
   creatReview() {
     this.service.creatReview(this.checkedIntentionIds).subscribe(res => {
@@ -275,7 +282,7 @@ export class ReviewViewComponent implements OnInit {
       }
     }
     this.service.submitFirstInstance(review_ids).subscribe(res => {
-        this.message.success('提交审片成功');
+      this.message.success('提交审片成功');
     });
     this.selectedTabIndex = 2;
     this.selectedIndex = 2;
