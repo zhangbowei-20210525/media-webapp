@@ -60,6 +60,7 @@ export class PublicitiesComponent implements OnInit {
       this.searchText = params.get('search');
       this.fetchPublicities();
     });
+    console.log(this.ability.program.publicity.view);
   }
 
   fetchPublicities() {
