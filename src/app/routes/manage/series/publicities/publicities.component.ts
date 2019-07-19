@@ -62,6 +62,7 @@ export class PublicitiesComponent implements OnInit {
       console.log(this.searchText);
       this.fetchPublicities();
     });
+    console.log(this.ability.program.publicity.view);
   }
 
   fetchPublicities() {

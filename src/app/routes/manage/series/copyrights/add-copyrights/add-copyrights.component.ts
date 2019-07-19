@@ -506,6 +506,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
     this.modal.create({
       nzTitle: `配置信息`,
       nzContent: RightConfigComponent,
+      // nzComponentParams: { programThemes: result.theme, programTypes: result.program_type },
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: 800,
