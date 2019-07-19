@@ -46,6 +46,7 @@ export class ContractsService {
   }
 
   uploadFile(file: File) {
+    console.log('999');
     return this.http.post<{ file_name: string }>('/api/v1/upload/common', formData({ file }));
   }
 

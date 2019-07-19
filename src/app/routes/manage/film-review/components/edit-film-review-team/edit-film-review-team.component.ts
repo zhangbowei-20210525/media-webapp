@@ -35,7 +35,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
       filmReviewTeam: [null, [Validators.required]],
       filmReviewPeople: [null, [Validators.required]],
     });
-    this.service.getFilmReviewTeam(this.filmReview.step_number).subscribe(res => {
+    this.service.getFilmReviewTeam(this.filmReview.id).subscribe(res => {
       this.teamInfo = res;
       this.tid = this.teamInfo.filter(x => x.status === true)[0].id;
       this.validateForm.get('filmReviewTeam').setValue(this.tid);
