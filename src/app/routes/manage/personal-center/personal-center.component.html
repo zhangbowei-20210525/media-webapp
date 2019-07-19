@@ -59,8 +59,11 @@
 
 <div class="block-container" style="align-items: flex-start">
   <div class="sidebar-block block" style="margin-right: 30px">
-    <div class="profile-userpic">
-      <img [src]="info?.avatar" class="img-responsive" />
+    <div class="profile-userpic" style="text-align: center;">
+      <img *ngIf="info?.avatar === null" [src]="info?.avatar" class="img-responsive" />
+      <div *ngIf="info?.avatar !== null" style="width: 32px;height: 32px;line-height: 32px;background-color: #cccccc;text-align: center;margin-left: 104px;border-radius: 5px">
+        <i nz-icon class="anticon anticon-user ng-star-inserted" style="font-size: 18px; color: #fff"></i>
+      </div>
     </div>
     <div class="profile-usertitle">
       <p class="profile-usertitle-name text-blod">{{ info?.nickname || info?.username }}</p>
@@ -91,7 +94,7 @@
       <ul nz-menu nzMode="inline" style="width: 240px;">
 
         <div class='s-nav-history' [ngClass]="{ 'actived first-selected': firstSelected === 1}" (click)="goHistory(1)">
-          <li nz-menu-item routerLink="history" class='s-nav-item' >
+          <li nz-menu-item routerLink="history" class='s-nav-item'>
             <div class='history-img-first' style="width:15px;height: 15px;margin-left: 36px">
             </div>
             <p style="margin-left: 8px; height:40px; line-height: 53px;">历史记录</p>
