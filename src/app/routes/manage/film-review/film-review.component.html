@@ -6,7 +6,7 @@
           <div style="margin-bottom: 10px">
             审片团：<span
               style="margin-left: 5px;">{{ filmReview1?.department?.name }}</span>
-              <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
+              <a style="margin-left: 10px;" (click)="reviewPeopleConfig(filmReview1?.id)"><i nz-icon nzType="setting"></i></a>
           </div>
           <div>审片人：
             <nz-tag *ngFor="let data of filmReview1?.employees">

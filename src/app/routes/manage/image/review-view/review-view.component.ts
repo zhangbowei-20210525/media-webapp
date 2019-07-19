@@ -16,9 +16,12 @@ import { CallUpComponent } from '../components/call-up/call-up.component';
 })
 export class ReviewViewComponent implements OnInit {
   @ViewChild('publicityOk') publicityOk: any;
+
   readonly fileFilters = ['mp4', 'wmv', 'rmvb', 'mkv', 'mov', 'avi', 'mpg'];
   readonly imageFilters = ['.jpg', '.jpeg', '.png'];
   readonly pdfFilters = ['.pdf'];
+  plainFooter = 'plain extra footer';
+  selectedValue = null;
   allChecked = false;
   indeterminate = false;
   disabledButton: boolean;
@@ -187,7 +190,7 @@ export class ReviewViewComponent implements OnInit {
     this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.id]);
     this.isThreeIndeterminate =
       this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.id]) && !this.isThreeAllDisplayDataChecked;
-    // console.log(this.threeMapOfCheckedId);
+    console.log(this.threeMapOfCheckedId);
 
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -260,7 +263,7 @@ export class ReviewViewComponent implements OnInit {
   }
   // 进入一审详情页
   firstCheck(sid, id, rid) {
-    this.router.navigate([`/manage/image/films-details/${id}`, { sid: sid, rid: rid}]);
+    this.router.navigate([`/manage/image/films-details/${id}`, { sid: sid, rid: rid }]);
   }
   // 节目名跳转详情
   AdministratorViewDetails(sid: number, id: number, rid: number) {
@@ -312,19 +315,23 @@ export class ReviewViewComponent implements OnInit {
     this.fetchPublicities(this.selectedIndex);
   }
   // 三审提交(入库跳转)
-  // goSave() {
-  //   // this.router.navigate([`/manage/series/add-copyrights`]);
-  //   const review_ids = [];
-  //   // const step_number = 3;
-  //   for (const key in this.threeMapOfCheckedId) {
-  //     if (this.threeMapOfCheckedId[key]) {
-  //       review_ids.push(Number(key));
-  //     }
-  //   }
-  //   this.service.submitFirstInstance(review_ids).subscribe(res => {
-  //     console.log(res);
-  //   });
-  // }
+  goSave() {
+    const review_ids = [];
+    // const step_number = 3;
+    for (const key in this.threeMapOfCheckedId) {
+      if (this.threeMapOfCheckedId[key]) {
+        review_ids.push(Number(key));
+      }
+    }
+    this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, isVerify: 1 }]);
+    // this.service.submitFirstInstance(review_ids).subscribe(res => {
+    //   console.log(res);
+    // });
+  }
+  getTimeChange(data) {
+    console.log('wwww');
+    console.log(data);
+  }
   // 删除审片
 }
 

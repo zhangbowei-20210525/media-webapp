@@ -65,6 +65,7 @@ export class PublicitiesComponent implements OnInit {
   }
 
   fetchPublicities() {
+    this.isPublicities = true;
     const mode = this.mode;
     const q = _.isString(this.searchText) ? this.searchText : '';
     this.isLoading = true;
@@ -75,10 +76,11 @@ export class PublicitiesComponent implements OnInit {
       .pipe(finalize(() => {
         this.isLoading = false;
         this.isLoaded = true;
-        this.isPublicities = true;
+        console.log('table loaded');
       }))
       .subscribe(result => {
         if (mode === 'table') {
+          console.log('table result');
           this.dataset = result.list;
         } else {
           this.list = result.list;

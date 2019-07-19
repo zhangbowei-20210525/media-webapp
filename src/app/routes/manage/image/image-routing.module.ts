@@ -62,6 +62,10 @@ const routes: Routes = [
     path: 'admin-films-details/:id', component: AdminFilmsDetailsComponent,
     // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
   },
+  {
+    path: 'admin-films-details/:id', component: AdminFilmsDetailsComponent,
+    // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.image.view] } }
+  },
 ];
 
 @NgModule({

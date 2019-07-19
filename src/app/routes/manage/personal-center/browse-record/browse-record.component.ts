@@ -44,5 +44,4 @@ export class BrowseRecordComponent implements OnInit {
       this.pagination = res.pagination;
     });
   }
-
 }

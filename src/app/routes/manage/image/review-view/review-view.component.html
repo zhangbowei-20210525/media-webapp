@@ -11,7 +11,7 @@
       <button *ngIf='selectedIndex === 1' nz-button (click)="submitNext()">提交下轮</button>
       <button *ngIf='selectedIndex === 2' nz-button (click)="secondSubmit()">提交下轮</button>
       <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">提交</button> -->
-      <!-- <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">入库</button> -->
+      <button *ngIf='selectedIndex === 3' nz-button (click)="goSave()">入库</button>
     </div>
     <a style="float: right;margin-right: 20px;font-size: 17px;margin-top: 3px;" routerLink="/manage/film-review"><i
         nz-icon nzType="setting"></i></a>
@@ -57,22 +57,14 @@
                 </div>
               </nz-checkbox-wrapper> -->
                   <button *ngIf="thumbnail.step_number === 1 && thumbnail?.reviewer_status.status === 0" nz-button
-<<<<<<< HEAD
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">一审</button>
-                  <button *ngIf="thumbnail.step_number === 2 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">二审</button>
-                  <button *ngIf="thumbnail.step_number === 3 && thumbnail?.reviewer_status.status === 0" nz-button
-                    nzType="primary" (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">三审</button>
-=======
                     nzType="primary"
-                    (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">一审</button>
+                    (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">一审</button>
                   <button *ngIf="thumbnail.step_number === 2 && thumbnail?.reviewer_status.status === 0" nz-button
                     nzType="primary"
-                    (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">二审</button>
+                    (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">二审</button>
                   <button *ngIf="thumbnail.step_number === 3 && thumbnail?.reviewer_status.status === 0" nz-button
                     nzType="primary"
-                    (click)="firstCheck(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">三审</button>
->>>>>>> yu
+                    (click)="firstCheck(thumbnail?.publicity?.program?.id, thumbnail?.publicity.id, thumbnail?.id)">三审</button>
                   <button
                     *ngIf="(thumbnail?.reviewer_status.status === 1 || thumbnail?.reviewer_status.status === 2) && thumbnail?.step_number === 1 "
                     nz-button nzType="danger">已一审</button>
@@ -127,17 +119,37 @@
                   <td>{{data.protagonist}}</td>
                   <td>{{data.director}}</td>
                   <td>{{data.company.full_name}}</td>
-                 <!--<td style="text-align: center">
+                  <!--<td style="text-align: center">
                     <a (click)="deleteView(data.id)" acl [acl-ability]="ability.program.del">
                       <i nz-icon type="delete" theme="outline"></i>
                     </a>
                   </td>
-                  --> 
+                  -->
                 </tr>
               </tbody>
             </nz-table>
           </nz-tab>
           <nz-tab nzTitle="一审">
+            <!-- <div>
+              发审时间：<nz-range-picker (ngModelChange)="getTimeChange($event)" [nzRenderExtraFooter]="footerRender" style="margin-bottom: 13px; margin-right: 5px">
+              </nz-range-picker>
+              <nz-select style="width: 200px; margin-top: 1px" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的内容"
+                [(ngModel)]="selectedValue">
+                <nz-option nzLabel="发行公司" nzValue="jack"></nz-option>
+                <nz-option nzLabel="接受人" nzValue="lucy"></nz-option>
+              </nz-select>
+              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default"
+                style="width: 20rem; margin-left: 5px; margin-top: 1px">
+                <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+                  (keyup)="$event.which === 13 && search()" />
+              </nz-input-group>
+              <ng-template #suffixIconButton>
+                <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+                  <i nz-icon type="search"></i>
+                </button>
+              </ng-template>
+            </div> -->
+
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="firstPageDataChange($event)">
               <thead>
                 <tr>
@@ -151,6 +163,7 @@
                   <th>导演</th>
                   <th>公司</th>
                   <th>一审</th>
+                  <th>发审时间</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,7 +171,7 @@
                   <td nzShowCheckbox [(nzChecked)]="firstMapOfCheckedId[data.id]"
                     (nzCheckedChange)="firstRefreshStatus()"></td>
                   <td>
-  
+
                     <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                     </a>
 
@@ -173,11 +186,31 @@
                     {{data.review_steps[0].review_records_statistic.reviewed_count}} /
                     {{data.review_steps[0].review_records_statistic.count}}
                   </td>
+                  <td>{{data.publicity.created_at}}</td>
                 </tr>
               </tbody>
             </nz-table>
           </nz-tab>
           <nz-tab nzTitle="二审">
+            <!-- <div>
+              发审时间：<nz-range-picker [nzRenderExtraFooter]="footerRender" style="margin-bottom: 13px; margin-right: 5px">
+              </nz-range-picker>
+              <nz-select style="width: 200px; margin-top: 1px" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的内容"
+                [(ngModel)]="selectedValue">
+                <nz-option nzLabel="发行公司" nzValue="jack"></nz-option>
+                <nz-option nzLabel="接受人" nzValue="lucy"></nz-option>
+              </nz-select>
+              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default"
+                style="width: 20rem; margin-left: 5px; margin-top: 1px">
+                <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+                  (keyup)="$event.which === 13 && search()" />
+              </nz-input-group>
+              <ng-template #suffixIconButton>
+                <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+                  <i nz-icon type="search"></i>
+                </button>
+              </ng-template>
+            </div> -->
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="secondPageDataChange($event)">
               <thead>
                 <tr>
@@ -192,6 +225,7 @@
                   <th>公司</th>
                   <th>一审</th>
                   <th>二审</th>
+                  <th>发审时间</th>
                 </tr>
               </thead>
               <tbody>
@@ -216,11 +250,31 @@
                     {{data.review_steps[1].review_records_statistic.reviewed_count}} /
                     {{data.review_steps[1].review_records_statistic.count}}
                   </td>
+                  <td>{{data.publicity.created_at}}</td>
                 </tr>
               </tbody>
             </nz-table>
           </nz-tab>
           <nz-tab nzTitle="三审">
+            <!-- <div>
+              发审时间：<nz-range-picker [nzRenderExtraFooter]="footerRender" style="margin-bottom: 13px; margin-right: 5px">
+              </nz-range-picker>
+              <nz-select style="width: 200px; margin-top: 1px" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的内容"
+                [(ngModel)]="selectedValue">
+                <nz-option nzLabel="发行公司" nzValue="jack"></nz-option>
+                <nz-option nzLabel="接受人" nzValue="lucy"></nz-option>
+              </nz-select>
+              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default"
+                style="width: 20rem; margin-left: 5px; margin-top: 1px">
+                <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+                  (keyup)="$event.which === 13 && search()" />
+              </nz-input-group>
+              <ng-template #suffixIconButton>
+                <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+                  <i nz-icon type="search"></i>
+                </button>
+              </ng-template>
+            </div> -->
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="threePageDataChange($event)">
               <thead>
                 <tr>
@@ -236,11 +290,12 @@
                   <th>一审</th>
                   <th>二审</th>
                   <th>三审</th>
+                  <th>发审时间</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let data of threeListOfDisplayData">
-                  <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data.id]"
+                  <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data.publicity.program.id]"
                     (nzCheckedChange)="threeRefreshStatus()"></td>
                   <td>
                     <a (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
@@ -264,6 +319,7 @@
                     {{data.review_steps[2]?.review_records_statistic.reviewed_count}} /
                     {{data.review_steps[2]?.review_records_statistic.count}}
                   </td>
+                  <td>{{data.publicity.created_at}}</td>
                 </tr>
               </tbody>
             </nz-table>

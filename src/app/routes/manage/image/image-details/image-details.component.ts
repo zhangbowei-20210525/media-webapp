@@ -110,9 +110,6 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.posterIndex = +params.get('posterIndex');
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
-        console.log(this.id);
-        console.log(this.sid);
-        console.log(this.tabIndex);
         return this.seriesService.pubDetail(this.id);
       })).subscribe(res => {
         // console.log(res);
@@ -173,7 +170,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
         this.seriesService.getDetailsInfo(this.sid).subscribe(cpd => {
-           console.log(cpd);
+          //  console.log(cpd);
           this.seriesInfo = cpd;
         });
         this.publicityName = res.name;
@@ -527,7 +524,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   tabSelectChange(event) {
-    console.log(event.index);
+    // console.log(event.index);
   }
 
   shareEmail() {

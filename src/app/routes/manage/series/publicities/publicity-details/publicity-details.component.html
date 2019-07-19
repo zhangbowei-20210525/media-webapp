@@ -532,19 +532,25 @@
         <nz-tab nzTitle="基本信息">
           <div style="line-height: 26px;margin-left: 18px;">
             <div>节目名称：{{ seriesInfo?.name }}</div>
-            <div>集数：{{ seriesInfo?.episode }}</div>
-            <div>题材：{{ seriesInfo?.theme }}</div>
-            <div>语言：{{ seriesInfo?.language }}</div>
             <div>节目别名：{{ seriesInfo?.nickname }}</div>
-            <div>发行时间：{{ seriesInfo?.release_date }}</div>
-            <div>监制：{{ seriesInfo?.supervisor }}</div>
-            <div>总制片人：{{ seriesInfo?.general_producer }}</div>
             <div>节目类型：{{ seriesInfo?.program_type | seriesType }}</div>
+            <div>题材：{{ seriesInfo?.theme }}</div>
+            <div>集数：{{ seriesInfo?.episode }}</div>
+            <div>语言：{{ seriesInfo?.language }}</div>
+            <div>主演：{{ seriesInfo?.protagonist }}</div>
             <div>导演：{{ seriesInfo?.director }}</div>
             <div>编剧：{{ seriesInfo?.screen_writer }}</div>
+            <div>总制片人：{{ seriesInfo?.general_producer }}</div>
             <div>出品人：{{ seriesInfo?.producer }}</div>
-            <div>主演：{{ seriesInfo?.protagonist }}</div>
             <div>出品方：{{ seriesInfo?.product_company }}</div>
+            <div>监制：{{ seriesInfo?.supervisor }}</div>
+            <div *ngIf = "seriesInfo?.progress === null">阶段：</div>
+            <div *ngIf = "seriesInfo?.progress === 'scenario'">阶段：剧本阶段</div>
+            <div *ngIf = "seriesInfo?.progress === 'preparation'">阶段：筹备中</div>
+            <div *ngIf = "seriesInfo?.progress === 'filming'">阶段：拍摄中</div>
+            <div *ngIf = "seriesInfo?.progress === 'production'">阶段：后制中</div>
+            <div *ngIf = "seriesInfo?.progress === 'completed'">阶段：已完成</div>
+            <div *ngIf = "seriesInfo?.progress === 'second'">阶段：二审</div>
             <div>简介：{{ seriesInfo?.introduction }}</div>
           </div>
         </nz-tab>
