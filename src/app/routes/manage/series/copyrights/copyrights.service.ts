@@ -134,6 +134,10 @@ export class CopyrightsService {
   addCopyrights(copyrightData: AddCopyrightsDto) {
     return this.http.post('/api/v1/rights', copyrightData);
   }
+  // 审片入口进入版权
+  addFilmCopyrights(copyrightData: AddCopyrightsDto) {
+    return this.http.post('/api/v1/rights', copyrightData);
+  }
 
   getCustomerOptions() {
     return this.http.get<any>('/api/v1/custom');

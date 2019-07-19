@@ -8,8 +8,8 @@
     </nz-breadcrumb-item>
   </nz-breadcrumb>
 </div> -->
-<div [hidden]="loading" class="fade-in-up">
-  <!-- <section class="block clearfix">
+<!-- <div [hidden]="loading" class="fade-in-up"> -->
+<!-- <section class="block clearfix">
     <div class="block-content" style="height: 8rem;">
       <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="true">
         <div class="user-info-pane">
@@ -46,7 +46,7 @@
     </div>
   </section> -->
 
-  <!-- <div class="block clearfix">
+<!-- <div class="block clearfix">
 
     <div class="block-header">
       <div class="block-title">{{ 'app.account.my-favorite' | translate }}</div>
@@ -57,57 +57,67 @@
   </div> -->
 
 
-  <div class="block-container">
-    <div class="main-block block">
-      <div class="block-header" style="padding-left: 0;">
-        <div class="s-nav-wapper">
-          <nav class="s-nav">
-            <ul class="list s-nav-list">
-              <li class="nav-item">
-                <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'history'">历史记录</a>
-              </li>
-              <!-- <li class="nav-item">
-                    <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'favorites'">收藏</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'notifies'">消息</a>
-                  </li> -->
-            </ul>
-          </nav>
-        </div>
-      </div>
-      <div class="block-content">
-        <router-outlet></router-outlet>
-      </div>
+<div class="block-container" style="align-items: flex-start">
+  <div class="sidebar-block block" style="margin-right: 30px">
+    <div class="profile-userpic">
+      <img [src]="info?.avatar" class="img-responsive" />
     </div>
-    <div class="sidebar-block block">
-      <div class="profile-userpic">
-        <img [src]="info?.avatar" class="img-responsive" />
-      </div>
-      <div class="profile-usertitle">
-        <p class="profile-usertitle-name text-blod">{{ info?.nickname || info?.username }}</p>
-        <p class="profile-usertitle-company">[{{ info?.company_name }}]</p>
-        <p>
-          <span class="bind bind-mobile" [ngClass]="{ 'active': info?.phone }">
-            <i nz-icon type="mobile" theme="outline"></i>
-            <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
-            <ng-template #unboundPhone>
-              <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
-            </ng-template>
-          </span>
-        </p>
-        <p>
-          <span class="bind bind-wechat" [ngClass]="{ 'active': info?.wechat }">
-            <i nz-icon type="wechat" theme="outline"></i>
-            <span *ngIf="info?.wechat?.length > 0; else unboundWechat">{{ info.wechat }}</span>
-            <ng-template #unboundWechat>
-              <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
-            </ng-template>
-          </span>
-        </p>
-      </div>
-      <div class="profile-usermenu"></div>
-    </div>
-  </div>
+    <div class="profile-usertitle">
+      <p class="profile-usertitle-name text-blod">{{ info?.nickname || info?.username }}</p>
+      <p class="profile-usertitle-company">[{{ info?.company_name }}]</p>
+      <p>
+        <span class="bind bind-mobile" [ngClass]="{ 'active': info?.phone }">
+          <i nz-icon type="mobile" theme="outline"></i>
+          <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
+          <ng-template #unboundPhone>
+            <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
+          </ng-template>
+        </span>
+      </p>
+      <p>
+        <span class="bind bind-wechat" style="margin-right: 26px" [ngClass]="{ 'active': info?.wechat }">
+          <i nz-icon type="wechat" theme="outline"></i>
+          <span *ngIf="info?.wechat?.length > 0; else unboundWechat">{{ info.wechat }}</span>
+          <ng-template #unboundWechat>
+            <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+          </ng-template>
+        </span>
+      </p>
+      <!-- <div class="block-header" style="padding-left: 0;"> -->
+      <div class="s-nav-wapper">
 
+      </div>
+
+      <ul nz-menu nzMode="inline" style="width: 240px;">
+
+        <div class='s-nav-history' [ngClass]="{ 'actived first-selected': firstSelected === 1}" (click)="goHistory(1)">
+          <li nz-menu-item routerLink="history" class='s-nav-item' >
+            <div class='history-img-first' style="width:15px;height: 15px;margin-left: 36px">
+            </div>
+            <p style="margin-left: 8px; height:40px; line-height: 53px;">历史记录</p>
+          </li>
+        </div>
+        <div class="s-nav-history " [ngClass]="{ 'actived second-selected': firstSelected === 2}" (click)="goShare(2)">
+          <li nz-menu-item routerLink="my-sharing" class='s-nav-item'>
+            <div class='history-img-second' style="width:15px;height: 15px;margin-left: 36px">
+            </div>
+            <p style="margin-left: 8px; height:40px; line-height: 53px;">我的分享</p>
+          </li>
+        </div>
+        <div class="s-nav-history " [ngClass]="{ 'actived third-selected': firstSelected === 3}"
+          (click)="goSolicitation(3)">
+          <li nz-menu-item routerLink="my-callup" class='s-nav-item'>
+            <div class='history-img-third' style="width:15px;height: 15px;margin-left: 36px">
+            </div>
+            <p style="margin-left: 8px; height:40px; line-height: 53px;">我的征集令</p>
+          </li>
+        </div>
+      </ul>
+    </div>
+    <div class="profile-usermenu"></div>
+  </div>
+  <div class="main-block">
+    <router-outlet></router-outlet>
+  </div>
 </div>
+<!-- </div> -->

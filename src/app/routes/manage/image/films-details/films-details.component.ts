@@ -235,6 +235,12 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     this.seriesService.getReviewDetails(this.rid).subscribe(res => {
       this.reviewSteps = res.review_steps;
+      if (res.step_number === 1) {
+        res.review_steps[0].scoring_items.forEach((item) => {
+          this.starId.push({id: item.id, score: 0});
+        });
+      }
+      console.log(res);
       this.reviewFirstSteps = res.review_steps[0];
       // 一审喜欢人数及通过率
       this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
@@ -244,6 +250,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.firstOppose = (res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
       res.review_steps[0].review_records_statistic.reviewed_count) * 100;
       // 二审喜欢人数及通过率
+      this.reviewSecondSteps = res.review_steps[1];
       this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
       this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
       this.secondLike = (res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
@@ -251,11 +258,20 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.secondOppose = (res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
       res.review_steps[1].review_records_statistic.reviewed_count) * 100;
       // 总分
-      this.reviewSecondSteps = res.review_steps[1];
+      // this.reviewSecondSteps = res.review_steps[1];
       this.reviewThirdSteps = res.review_steps[2];
-      res.review_steps[2].scoring_items.forEach((item) => {
-        this.starId.push({id: item.id, score: 0});
-      });
+      if (res.step_number === 2) {
+        res.review_steps[1].scoring_items.forEach((item) => {
+          this.starId.push({id: item.id, score: 0});
+        });
+      }
+      this.reviewThirdSteps = res.review_steps[2];
+      if (res.step_number === 3) {
+        res.review_steps[2].scoring_items.forEach((item) => {
+          this.starId.push({id: item.id, score: 0});
+        });
+      }
+      console.log(this.starId, 'i am star');
       this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
       this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
       this.stepsNumber = res.step_number;
@@ -483,42 +499,42 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   sampleNavigateToDetail(i: number, id: number) {
     this.sampleIndex = i - 1;
     this.publicityType = 'sample';
-    this.router.navigate([`/manage/image/image-details/${this.id}`,
+    this.router.navigate([`/manage/image/films-details/${this.id}`,
     { sampleIndex: this.sampleIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   featureNavigateToDetail(i: number, id: number) {
     this.featureIndex = i - 1;
     this.publicityType = 'feature';
-    this.router.navigate([`/manage/image/image-details/${this.id}`,
+    this.router.navigate([`/manage/image/films-details/${this.id}`,
     { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   trailerNavigateToDetail(i: number, id: number) {
     this.trailerIndex = i - 1;
     this.publicityType = 'trailer';
-    this.router.navigate([`/manage/image/image-details/${this.id}`,
+    this.router.navigate([`/manage/image/films-details/${this.id}`,
     { trailerIndex: this.trailerIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   posterNavigateToDetail(i: number) {
     this.posterIndex = i;
     this.publicityType = 'poster';
-    this.router.navigate([`/manage/image/image-details/${this.id}`,
+    this.router.navigate([`/manage/image/films-details/${this.id}`,
     { posterIndex: this.posterIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   stillNavigateToDetail(i: number) {
     this.stillIndex = i;
     this.publicityType = 'still';
-    this.router.navigate([`/manage/image/image-details/${this.id}`,
+    this.router.navigate([`/manage/image/films-details/${this.id}`,
     { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
   pdfNavigateToDetail(i: number) {
     this.pdfIndex = i;
     this.publicityType = 'pdf';
-    this.router.navigate([`/manage/image/image-details/${this.id}`,
+    this.router.navigate([`/manage/image/films-details/${this.id}`,
     { pdfIndex: this.pdfIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
   sample() {
@@ -744,6 +760,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   submitThird() {
     // console.log(this.verify, '11111');
     if (this.verify === undefined) {
+      console.log(1);
       this.message.error('请填写完整信息');
       return;
     }
@@ -751,6 +768,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       return item.score === 0;
     });
     if (starList.length > 0) {
+      console.log(2);
       this.message.error('请填写完整信息');
       return;
     }
@@ -780,6 +798,8 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   // 小星星十分制
   firstChange(score, item, index: number) {
+    console.log(this.starId);
+    console.log(score, item, index, 'i am wrong');
     this.starId[index].id = item.id;
     this.starId[index].score = score * 2;
   }

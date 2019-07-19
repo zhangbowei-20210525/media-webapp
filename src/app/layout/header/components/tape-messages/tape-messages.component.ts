@@ -37,6 +37,7 @@ export class TapeMessagesComponent implements OnInit {
 
     if (this.type === 'SOU005') {
       this.service.getAuthorizationInfo(this.id).subscribe(res => {
+        console.log(res);
         this.authInfo = res;
         this.typeCompany = res.auth_custom_name;
         this.companyId = res.auth_company_id;

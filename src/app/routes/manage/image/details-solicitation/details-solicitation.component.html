@@ -16,7 +16,7 @@
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>节目名称</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <input (input)="getNewList()" (blur)='onBlur()' placeholder="请输入节目名称" nz-input id="name" formControlName="name"
-                (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramName">
+                (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramName" >
               <nz-autocomplete nzBackfill #autoProgramName>
                 <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">
                   {{ program.name }}
@@ -30,8 +30,6 @@
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname">节目别名</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <input placeholder="请输入节目别名" nz-input id="nickname" formControlName="nickname" (ngModelChange)="onInput($event)">
-              <nz-form-explain *ngIf="validateForm.get('nickname').dirty && validateForm.get('nickname').errors">请输入节目别名
-              </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
@@ -134,7 +132,8 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="progress">当前进度</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="progress" nzRequired>当前进度</nz-form-label>
+
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <nz-select id="progress" formControlName="progress" nzPlaceHolder="请选择当前进度" >
                   <nz-option nzLabel="剧本阶段" nzValue="scenario"></nz-option>
@@ -144,6 +143,9 @@
                   <nz-option nzLabel="已完成" nzValue="completed"></nz-option>
                   <nz-option nzLabel="二轮" nzValue="second"></nz-option>
               </nz-select>
+              <nz-form-explain
+              *ngIf="validateForm.get('progress').dirty && validateForm.get('progress').errors">请输入节目类型
+            </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
@@ -190,8 +192,15 @@
         <p>上传样片视频</p>
       </div>
       <div class="details-box-right-btm">
-        <nz-upload nzType="drag" [nzLimit]="2" [nzFileType]="text" [nzAction]="docType"
-          [nzBeforeUpload]='beforeUpload' (nzChange)="handleChange($event)" [nzDisabled]="uploadVideo ? 'true' : 'false'">
+        <nz-upload nzType="drag" 
+          [nzLimit]="2" 
+          [nzFileType]="text" 
+          [nzAction]="docType"
+          [nzBeforeUpload]='beforeUpload' 
+          (nzChange)="handleChange($event)" 
+          [nzDisabled]="uploadVideo ? 'true' : 'false'" 
+          [nzMultiple]="true" 
+          [nzShowUploadList]="false">
           <p class="ant-upload-drag-icon">
             <i nz-icon nzType="upload" nzTheme="outline" style="color: skyblue"></i>
           </p>

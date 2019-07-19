@@ -264,13 +264,13 @@
                 <div>出品人：{{ seriesInfo?.producer }}</div>
                 <div>出品方：{{ seriesInfo?.product_company }}</div>
                 <div>监制：{{ seriesInfo?.supervisor }}</div>
-                <div *ngIf = "seriesInfo?.progress === null">进度：</div>
-                <div *ngIf = "seriesInfo?.progress === 'scenario'">进度：剧本阶段</div>
-                <div *ngIf = "seriesInfo?.progress === 'preparation'">进度：筹备中</div>
-                <div *ngIf = "seriesInfo?.progress === 'filming'">进度：拍摄中</div>
-                <div *ngIf = "seriesInfo?.progress === 'production'">进度：后制中</div>
-                <div *ngIf = "seriesInfo?.progress === 'completed'">进度：已完成</div>
-                <div *ngIf = "seriesInfo?.progress === 'second'">进度：二审</div>
+                <div *ngIf = "seriesInfo?.progress === null">阶段：</div>
+                <div *ngIf = "seriesInfo?.progress === 'scenario'">阶段：剧本阶段</div>
+                <div *ngIf = "seriesInfo?.progress === 'preparation'">阶段：筹备中</div>
+                <div *ngIf = "seriesInfo?.progress === 'filming'">阶段：拍摄中</div>
+                <div *ngIf = "seriesInfo?.progress === 'production'">阶段：后制中</div>
+                <div *ngIf = "seriesInfo?.progress === 'completed'">阶段：已完成</div>
+                <div *ngIf = "seriesInfo?.progress === 'second'">阶段：二审</div>
                 <div>简介：{{ seriesInfo?.introduction }}</div>
               </div>
             </nz-tab>
@@ -420,7 +420,10 @@
               <tbody>
                 <tr *ngFor="let b of reviewFirstSteps.review_records">
                   <td style="text-align: center">{{b.employee.name}}</td>
-                  <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td>
+                  <!-- <td style="text-align: center">{{b.conclusion === 1 ? '√' : 'X' }}</td> -->
+                  <td *ngIf="b.conclusion === 0">未审片</td>
+                  <td *ngIf="b.conclusion === 1">√</td>
+                  <td *ngIf="b.conclusion === 2">X</td>
                   <td style="text-align: center">{{b.comment === null ? '-': b.comment}}</td>
                 </tr>
               </tbody>
@@ -450,7 +453,10 @@
               <tbody>
                 <tr *ngFor="let b of reviewSecondSteps.review_records">
                   <td style="text-align: center">{{b.employee.name}}</td>
-                  <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td>
+                  <!-- <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td> -->
+                  <td *ngIf="b.conclusion === 0">未审片</td>
+                  <td *ngIf="b.conclusion === 1">√</td>
+                  <td *ngIf="b.conclusion === 2">X</td>
                   <td style="text-align: center">{{b.comment === null ? '-': b.comment}}</td>
                 </tr>
               </tbody>
@@ -479,7 +485,10 @@
             <tbody>
               <tr *ngFor="let b of reviewThirdSteps.review_records">
                 <td style="text-align: center">{{b.employee.name}}</td>
-                <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td>
+                <!-- <td style="text-align: center">{{b.status === 1 ? '√' : 'X' }}</td> -->
+                <td *ngIf="b.conclusion === 0">未审片</td>
+                <td *ngIf="b.conclusion === 1">√</td>
+                <td *ngIf="b.conclusion === 2">X</td>
                 <td style="text-align: center">{{b.comment === null ? '-': b.comment}}</td>
               </tr>
             </tbody>

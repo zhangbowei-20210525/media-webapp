@@ -38,6 +38,8 @@ export class SystemMessagesComponent implements OnInit {
       this.service.getSharingInfo(this.id).subscribe(res => {
         console.log(res);
         this.id = res.id;
+        this.shareId = res.created_employee.company_id;
+        console.log(this.shareId);
         this.publicity = res.publicity;
         this.created_employee = res.created_employee;
         this.company = res.liaison.custom.name;
@@ -45,6 +47,7 @@ export class SystemMessagesComponent implements OnInit {
         this.validateForm.get('phone').setValue(res.liaison.phone);
         this.validateForm.get('phone').disable();
         this.service.getCompanyList().subscribe(cl => {
+          console.log(cl);
           this.companyList = cl;
           this.acceptCompany = res.company_full_name;
         });
@@ -66,6 +69,7 @@ export class SystemMessagesComponent implements OnInit {
   }
 
   onDisperChange(data) {
+    console.log(this.shareId);
     this.shareId = data;
     if (!!data) {
       this.isDisparShow = true;

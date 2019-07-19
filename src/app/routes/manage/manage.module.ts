@@ -20,6 +20,10 @@ import { AddScoreComponent } from './film-review/components/add-score/add-score.
 import { DeleteScoreComponent } from './film-review/components/delete-score/delete-score.component';
 import { IdeaConfigComponent } from './film-review/components/idea-config/idea-config.component';
 import { DeclareAuthorizationReceiveComponent } from './declare-authorization-receive/declare-authorization-receive.component';
+import { MySharingComponent } from './personal-center/my-sharing/my-sharing.component';
+import { MyCallupComponent } from './personal-center/my-callup/my-callup.component';
+import { SmplesDetailsComponent } from './personal-center/my-callup/smples-details/smples-details.component';
+import { MySmplesComponent } from './personal-center/my-callup/my-smples/my-smples.component';
 // import { ImageComponent } from './image/image/image.component';
 // import { ImageDetailsComponent } from './image/image/image-details/image-details.component';
 
@@ -42,6 +46,10 @@ import { DeclareAuthorizationReceiveComponent } from './declare-authorization-re
     DeleteScoreComponent,
     IdeaConfigComponent,
     DeclareAuthorizationReceiveComponent,
+    MySharingComponent,
+    MyCallupComponent,
+    SmplesDetailsComponent,
+    MySmplesComponent,
     // ImageComponent,
     // ImageDetailsComponent,
    ],
@@ -62,6 +70,10 @@ import { DeclareAuthorizationReceiveComponent } from './declare-authorization-re
     AddScoreComponent,
     DeleteScoreComponent,
     IdeaConfigComponent,
+    MySharingComponent,
+    MySmplesComponent,
+    MyCallupComponent,
+    SmplesDetailsComponent,
   ]
 })
 export class ManageModule { }

@@ -73,30 +73,24 @@ export class DetailsSolicitationComponent implements OnInit {
       general_producer: [null],
       producer: [null],
       product_company: [null],
-      progress: [null],
+      progress: [null, [Validators.required]],
       introduction: [null]
     });
     this.seriesService.getSamplePublicitys().subscribe(res => {
       this.programList = res.list;
-      res.list.forEach(item => {
-        this.vid = item.id;
-      });
-      console.log(res);
     });
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
-      console.log(this.id);
     });
     this.seriesService.programType().subscribe(res => {
-      console.log(res);
+      // console.log(res);
       this.programTypeList = res.program_type_choices;
       this.themeList = res.theme_choices;
-      console.log(this.themeList);
     });
-    console.log(1111);
   }
   fileType(value) {
     this.docType = this.getUploadUrl(value);
+    // console.log(value);
   }
   beforeUpload = (file: File, fileList: any) => {
     const list = [] as File[];
@@ -159,7 +153,7 @@ export class DetailsSolicitationComponent implements OnInit {
         this.statusType = '';
       }
       item.percent = String(item.percent).split('.')[0];
-      console.log(fileList);
+      // console.log(fileList);
     });
 
     if (this.validateForm.value.type === 'feature'
@@ -227,10 +221,10 @@ export class DetailsSolicitationComponent implements OnInit {
       }
     }
   }
-  submitConent () {
-      console.log('eeee');
-      const params = this.validateForm.value;
-      const materials = [];
+  submitConent() {
+    const params = this.validateForm.value;
+    const materials = [];
+    this.files.forEach(item => {
       const obj = {
         material_type: '',
         name: '',
@@ -238,69 +232,64 @@ export class DetailsSolicitationComponent implements OnInit {
         extension: '',
         size: '',
       };
-      this.files.forEach(item => {
-        console.log(item);
-       // obj.material_id = this.id;
-        obj.name = this.name;
-        obj.filename = this.filename;
-        obj.extension = this.extension;
-        obj.size = this.size;
-        obj.material_type = this.validateForm.value.type;
-        materials.push(obj);
-      });
-      const postParams = Object.assign(params);
-      console.log(postParams);
-      delete postParams.type;
-      this.objParams = {
-        program: postParams,
-        materials: materials,
-        publicity_id: this.publicityId,
-      };
-      if (this.objParams.materials.length === 0 && this.videoList.length === 0) {
-        this.message.error('请填写完整信息');
-        return;
-      } else {
-        this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
+      // obj.material_id = this.id;
+      obj.name = item.response.data.name;
+      obj.filename = item.response.data.filename;
+      obj.extension = item.response.data.extension;
+      obj.size = item.response.data.size;
+      obj.material_type = this.validateForm.value.type;
+      materials.push(obj);
+    });
+    const postParams = Object.assign(params);
+    delete postParams.type;
+    this.objParams = {
+      program: postParams,
+      materials: materials,
+      publicity_id: this.publicityId,
+    };
+    if (this.objParams.materials.length === 0 && this.videoList.length === 0) {
+      this.message.error('请填写完整信息');
+      return;
+    } else {
+      this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
 
-          this.modalService.create({
-            nzTitle: ``,
-            nzContent: CollectionUpComponent,
-            nzMaskClosable: false,
-            nzClosable: false,
-            nzWidth: 800,
-            // nzComponentParams: { programThemes: result.theme, programTypes: result.program_type },
-            nzOkText: '前往宣发库',
-            nzCancelText: '上传新节目',
-            nzOnCancel: () => new Promise((resolve) => {
-              resolve();
-              console.log(new Date().getTime());
-              this.router.navigate([`/manage/image/details-solicitation/${this.id}`]);
-              this.validateForm.reset();
-              this.validateForm.enable();
-              this.uploadVideo = false;
-              this.validateForm = this.validateForm;
-              this.videoList = [];
-              this.files = [];
-            }),
-            nzOnOk: () => new Promise((resolve) => {
-              resolve();
-              this.router.navigate([`/manage/series/publicity`]);
-              this.filterList = [];
-            }),
-            nzNoAnimation: true,
-          });
-
-        }, error => {
-          this.message.warning(error.message);
+        this.modalService.create({
+          nzTitle: ``,
+          nzContent: CollectionUpComponent,
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzWidth: 800,
+          // nzComponentParams: { programThemes: result.theme, programTypes: result.program_type },
+          nzOkText: '前往宣发库',
+          nzCancelText: '上传新节目',
+          nzOnCancel: () => new Promise((resolve) => {
+            resolve();
+            this.router.navigate([`/manage/image/details-solicitation/${this.id}`]);
+            this.validateForm.reset();
+            this.validateForm.enable();
+            this.uploadVideo = false;
+            this.validateForm = this.validateForm;
+            this.videoList = [];
+            this.files = [];
+          }),
+          nzOnOk: () => new Promise((resolve) => {
+            resolve();
+            this.router.navigate([`/manage/series/publicity`]);
+            this.filterList = [];
+          }),
+          nzNoAnimation: true,
         });
-      }
+
+      }, error => {
+        this.message.warning(error.message);
+      });
+    }
   }
   onInput(data) {
     this.blurData = data;
-    console.log(this.blurData);
+    // console.log(this.blurData);
   }
   getNewList() {
-    console.log('rrrrrr');
     this.getDisplayDate();
   }
   onBlur() {
@@ -321,13 +310,12 @@ export class DetailsSolicitationComponent implements OnInit {
       return;
     } else {
       this.publicityId = this.filterList[0].id || null;
-      console.log(this.publicityId);
-      console.log(this.filterList);
-      this.seriesService.getPublicityVideo(this.vid).subscribe(res => {
+      this.seriesService.getPublicityVideo(Number(this.publicityId)).subscribe(res => {
         this.videoList = res;
-        console.log(res);
-        this.validateForm.get('type').setValue(
-          this.videoList[0].material_type === null ? '' : this.videoList[0].material_type);
+        if (!!res.length) {
+          this.validateForm.get('type').setValue(
+            this.videoList[0].material_type === null ? '' : this.videoList[0].material_type);
+        }
       });
       // this.validateForm.get('nickname').setValue(this.filterList[0].program.nickname);
       // if (this.filterList[0].program.nickname === null ) {

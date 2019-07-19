@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalCenterService } from './personal-center.service';
 import { PersonalCenterDto } from './personal-center.dto';
 import { fadeIn } from '@shared/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-personal-center',
@@ -15,10 +17,13 @@ export class PersonalCenterComponent implements OnInit {
   loading: boolean;
   info: PersonalCenterDto;
   employees: [];
+  firstSelected = 1;
 
   constructor(
     private pcs: PersonalCenterService,
-    private account: AccountService
+    private account: AccountService,
+    private router: Router,
+
   ) { }
 
   ngOnInit() {
@@ -33,6 +38,7 @@ export class PersonalCenterComponent implements OnInit {
       .subscribe(result => {
         this.employees = result;
       });
+      this.router.navigate([`/manage/account-center/history`]);
   }
 
   bindPhone() {
@@ -41,6 +47,18 @@ export class PersonalCenterComponent implements OnInit {
 
   bindWechat() {
     this.account.openBindWechatModal();
+  }
+  goHistory(data) {
+    this.firstSelected = data;
+    console.log(data);
+  }
+  goShare(data) {
+    this.firstSelected = data;
+    console.log(data);
+  }
+  goSolicitation(data) {
+    this.firstSelected = data;
+    console.log(data);
   }
 
 }

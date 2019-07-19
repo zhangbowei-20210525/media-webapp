@@ -1,0 +1,44 @@
+<div class="videos-info-big-box">
+    <ul>
+      <li class="video-info" *ngFor="let thumbnail of list index as i">
+        <div class="video">
+          <img class="video-img" [src]="thumbnail?.publicity.src" />
+          <div class="price" (click)="publicityPlay(thumbnail?.publicity.id, thumbnail?.publicity.program.id)">
+            <span class="price">{{ thumbnail?.publicity.created_at }}&nbsp;发布</span>
+          </div>
+        </div>
+        <div class="info">
+          <div class="info-container-big-box">
+            <div class="info-container-name"><a>{{ thumbnail?.publicity.program.name }}</a>
+            </div>
+            <div class="info-container-type">{{ thumbnail?.publicity.program.program_type | seriesType }}</div>
+          </div>
+          <div class="info-small-box-director">
+            <div class="info-small-box-director-left">导演: </div>
+            <div class="info-small-box-director-right">{{ thumbnail?.publicity.program.director }}</div>
+          </div>
+          <div class="info-small-box-tostar"> 主演:
+            <span class="info-small-box-tostar-right">{{ thumbnail?.publicity.program.protagonist }}</span>
+          </div>
+        </div>
+        <div class="info-small-box-bottom">
+          <!-- <div class="info-wk-eight"> -->
+          <div class="info-small-box-bottom-left">
+            <img class="info-hp" [src]="thumbnail?.publicity.created_employee.user.avatar">
+            <span
+              class="info-small-box-bottom-right">{{ thumbnail?.publicity.created_employee.full_name === '' ? '-' : thumbnail?.publicity.created_employee.company.full_name }}</span>
+          </div>
+          <!-- </div> -->
+        </div>
+      </li>
+    </ul>
+    <div style="text-align: right;">
+    <nz-pagination *ngIf='list.length>0' [nzPageIndex]="pagination?.page" (nzPageIndexChange)='getPageChange($event)'
+        [nzPageSize]='pagination?.page_size' [nzTotal]="pagination?.count">
+      </nz-pagination>
+    </div>
+  </div>
+  <!-- <div *ngIf='list.length===0' style="height:472px; background-color: #fff"> -->
+  <div *ngIf='list.length === 0'>
+    <nz-empty style="margin-bottom: 45px"></nz-empty>
+  </div>

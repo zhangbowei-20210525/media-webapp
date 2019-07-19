@@ -302,6 +302,10 @@ export class SeriesService {
   getSampleCollection(program_type: any, program_theme: any, description) {
     return this.http.post<any>(`/api/v1/publicity/collections`, { program_type: program_type, program_theme: program_theme, description });
   }
+  // 我的征集令
+  getBrowseRecord(pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/publicity/collections?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
   // 节目类型
   programType() {
     return this.http.get<any>(`/api/v1/programs/template`);
