@@ -50,7 +50,7 @@
         <td>{{ data.pdf }}</td>
         <td>
           <button nz-button nzType="primary" nzSize="small" (click)="publicityPlay(data?.id, data?.program_id)" acl
-            [acl-ability]="ability.program.publicity.review">
+            [acl-ability]="ability.program.publicity.view">
             <i nz-icon nzType="play-circle" style="font-size: 14px" nzTheme="outline"></i>
           </button>
         </td>
