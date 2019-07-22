@@ -70,8 +70,8 @@
       <p class="profile-usertitle-company">[{{ info?.company_name }}]</p>
       <p>
         <span class="bind bind-mobile" [ngClass]="{ 'active': info?.phone }">
-          <i nz-icon type="mobile" theme="outline"></i>
-          <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
+            <img src="../../../../assets/images/ic_iphone.png" style="width: 15px;height:16px;margin-bottom: 6px;margin-right: 6px">
+            <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
           <ng-template #unboundPhone>
             <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
           </ng-template>
@@ -79,10 +79,10 @@
       </p>
       <p>
         <span class="bind bind-wechat" style="margin-right: 59px" [ngClass]="{ 'active': info?.wechat }">
-          <img src="../../../../assets/images/ic_my page_WeChat_normal.png" style="width: 20px;height:16px;">
+          <img src="../../../../assets/images/ic_wechat.png" style="width: 20px;height:16px;">
           <span *ngIf="info?.wechat?.length > 0; else unboundWechat">{{ info.wechat }}</span>
           <ng-template #unboundWechat>
-            <span style="margin-left: 2px" class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+            <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
           </ng-template>
         </span>
       </p>
