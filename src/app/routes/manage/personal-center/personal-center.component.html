@@ -60,8 +60,8 @@
 <div class="block-container" style="align-items: flex-start">
   <div class="sidebar-block block" style="margin-right: 30px">
     <div class="profile-userpic" style="text-align: center;">
-      <img *ngIf="info?.avatar === null" [src]="info?.avatar" class="img-responsive" />
-      <div *ngIf="info?.avatar !== null" style="width: 32px;height: 32px;line-height: 32px;background-color: #cccccc;text-align: center;margin-left: 104px;border-radius: 5px">
+      <img *ngIf="info?.avatar" [src]="info?.avatar" class="img-responsive" />
+      <div *ngIf="!info?.avatar" style="width: 32px;height: 32px;line-height: 32px;background-color: #cccccc;text-align: center;margin-left: 104px;border-radius: 5px">
         <i nz-icon class="anticon anticon-user ng-star-inserted" style="font-size: 18px; color: #fff"></i>
       </div>
     </div>
@@ -78,11 +78,11 @@
         </span>
       </p>
       <p>
-        <span class="bind bind-wechat" style="margin-right: 26px" [ngClass]="{ 'active': info?.wechat }">
-          <i nz-icon type="wechat" theme="outline"></i>
+        <span class="bind bind-wechat" style="margin-right: 59px" [ngClass]="{ 'active': info?.wechat }">
+          <img src="../../../../assets/images/ic_my page_WeChat_normal.png" style="width: 20px;height:16px;">
           <span *ngIf="info?.wechat?.length > 0; else unboundWechat">{{ info.wechat }}</span>
           <ng-template #unboundWechat>
-            <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
+            <span style="margin-left: 2px" class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
           </ng-template>
         </span>
       </p>

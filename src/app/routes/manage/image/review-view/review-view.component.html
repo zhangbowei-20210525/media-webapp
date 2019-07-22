@@ -130,26 +130,27 @@
             </nz-table>
           </nz-tab>
           <nz-tab nzTitle="一审">
-            <!-- <div>
-              发审时间：<nz-range-picker (ngModelChange)="getTimeChange($event)" [nzRenderExtraFooter]="footerRender" style="margin-bottom: 13px; margin-right: 5px">
+            <div>
+              发审时间：
+              <nz-range-picker [nzRenderExtraFooter]="footerRender" [ngModel]="viewTime"
+                (ngModelChange)="getViewTime($event)" style="margin-bottom: 13px; margin-right: 16px; width: 260px">
               </nz-range-picker>
-              <nz-select style="width: 200px; margin-top: 1px" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的内容"
-                [(ngModel)]="selectedValue">
-                <nz-option nzLabel="发行公司" nzValue="jack"></nz-option>
-                <nz-option nzLabel="接受人" nzValue="lucy"></nz-option>
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的公司"
+                [(ngModel)]="companyName" (ngModelChange)="getCompanyName($event)">
+                <nz-option *ngFor="let screenData of screen.company_choices" [nzLabel]="screenData.full_name"
+                  [nzValue]="screenData.full_name"></nz-option>
               </nz-select>
-              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default"
-                style="width: 20rem; margin-left: 5px; margin-top: 1px">
-                <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
-                  (keyup)="$event.which === 13 && search()" />
-              </nz-input-group>
-              <ng-template #suffixIconButton>
-                <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
-                  <i nz-icon type="search"></i>
-                </button>
-              </ng-template>
-            </div> -->
-
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的接受人"
+                [(ngModel)]="employeeName" (ngModelChange)="getEmployeeName($event)">
+                <nz-option *ngFor="let screenData of screen.employee_choices" [nzLabel]="screenData.name"
+                  [nzValue]="screenData.name"></nz-option>
+              </nz-select>
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="通过率"
+                [(ngModel)]="selectedSortValue" (ngModelChange)="getSort($event)">
+                <nz-option nzLabel="升序" nzValue="step_pass_rate"></nz-option>
+                <nz-option nzLabel="降序" nzValue="-step_pass_rate"></nz-option>
+              </nz-select>
+            </div>
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="firstPageDataChange($event)">
               <thead>
                 <tr>
@@ -192,25 +193,27 @@
             </nz-table>
           </nz-tab>
           <nz-tab nzTitle="二审">
-            <!-- <div>
-              发审时间：<nz-range-picker [nzRenderExtraFooter]="footerRender" style="margin-bottom: 13px; margin-right: 5px">
+            <div>
+              发审时间：
+              <nz-range-picker [nzRenderExtraFooter]="footerRender" [ngModel]="viewTime"
+                (ngModelChange)="getViewTime($event)" style="margin-bottom: 13px; margin-right: 16px; width: 260px">
               </nz-range-picker>
-              <nz-select style="width: 200px; margin-top: 1px" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的内容"
-                [(ngModel)]="selectedValue">
-                <nz-option nzLabel="发行公司" nzValue="jack"></nz-option>
-                <nz-option nzLabel="接受人" nzValue="lucy"></nz-option>
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的公司"
+                [(ngModel)]="companyName" (ngModelChange)="getCompanyName($event)">
+                <nz-option *ngFor="let screenData of screen.company_choices" [nzLabel]="screenData.full_name"
+                  [nzValue]="screenData.full_name"></nz-option>
               </nz-select>
-              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default"
-                style="width: 20rem; margin-left: 5px; margin-top: 1px">
-                <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
-                  (keyup)="$event.which === 13 && search()" />
-              </nz-input-group>
-              <ng-template #suffixIconButton>
-                <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
-                  <i nz-icon type="search"></i>
-                </button>
-              </ng-template>
-            </div> -->
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的接受人"
+                [(ngModel)]="employeeName" (ngModelChange)="getEmployeeName($event)">
+                <nz-option *ngFor="let screenData of screen.employee_choices" [nzLabel]="screenData.name"
+                  [nzValue]="screenData.name"></nz-option>
+              </nz-select>
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="通过率"
+                [(ngModel)]="selectedSortValue" (ngModelChange)="getSort($event)">
+                <nz-option nzLabel="升序" nzValue="step_pass_rate"></nz-option>
+                <nz-option nzLabel="降序" nzValue="-step_pass_rate"></nz-option>
+              </nz-select>
+            </div>
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="secondPageDataChange($event)">
               <thead>
                 <tr>
@@ -256,25 +259,27 @@
             </nz-table>
           </nz-tab>
           <nz-tab nzTitle="三审">
-            <!-- <div>
-              发审时间：<nz-range-picker [nzRenderExtraFooter]="footerRender" style="margin-bottom: 13px; margin-right: 5px">
+            <div>
+              发审时间：
+              <nz-range-picker [nzRenderExtraFooter]="footerRender" [ngModel]="viewTime"
+                (ngModelChange)="getViewTime($event)" style="margin-bottom: 13px; margin-right: 16px; width: 260px">
               </nz-range-picker>
-              <nz-select style="width: 200px; margin-top: 1px" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的内容"
-                [(ngModel)]="selectedValue">
-                <nz-option nzLabel="发行公司" nzValue="jack"></nz-option>
-                <nz-option nzLabel="接受人" nzValue="lucy"></nz-option>
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的公司"
+                [(ngModel)]="companyName" (ngModelChange)="getCompanyName($event)">
+                <nz-option *ngFor="let screenData of screen.company_choices" [nzLabel]="screenData.full_name"
+                  [nzValue]="screenData.full_name"></nz-option>
               </nz-select>
-              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default"
-                style="width: 20rem; margin-left: 5px; margin-top: 1px">
-                <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
-                  (keyup)="$event.which === 13 && search()" />
-              </nz-input-group>
-              <ng-template #suffixIconButton>
-                <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
-                  <i nz-icon type="search"></i>
-                </button>
-              </ng-template>
-            </div> -->
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="请选择要搜索的接受人"
+                [(ngModel)]="employeeName" (ngModelChange)="getEmployeeName($event)">
+                <nz-option *ngFor="let screenData of screen.employee_choices" [nzLabel]="screenData.name"
+                  [nzValue]="screenData.name"></nz-option>
+              </nz-select>
+              <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear nzPlaceHolder="通过率"
+                [(ngModel)]="selectedSortValue" (ngModelChange)="getSort($event)">
+                <nz-option nzLabel="升序" nzValue="step_pass_rate"></nz-option>
+                <nz-option nzLabel="降序" nzValue="-step_pass_rate"></nz-option>
+              </nz-select>
+            </div>
             <nz-table #rowSelectionTable [nzData]="reviewList" (nzCurrentPageDataChange)="threePageDataChange($event)">
               <thead>
                 <tr>

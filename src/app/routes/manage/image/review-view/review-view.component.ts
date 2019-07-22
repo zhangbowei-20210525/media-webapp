@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
-import { PaginationDto } from '@shared';
+import { PaginationDto, Util } from '@shared';
 import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { finalize, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -71,6 +71,15 @@ export class ReviewViewComponent implements OnInit {
   reviewId: any;
   selectedTabIndex = 0;
   isReviewView: boolean;
+  screen: any;
+  employeeName: any;
+  companyName: any;
+  selectedSortValue = '';
+  receiverId = '';
+  companyId = '';
+  sortValue = '';
+  starTime = '';
+  endTime = '';
   constructor(
     public ability: ACLAbility,
     private router: Router,
@@ -82,9 +91,8 @@ export class ReviewViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.searchText = params.get('search');
-      this.fetchPublicities(this.selectedIndex);
+    this.service.getScreenList().subscribe(res => {
+      this.screen = res;
     });
   }
   fetchPublicities(step_number) {
@@ -118,16 +126,20 @@ export class ReviewViewComponent implements OnInit {
             console.log(result);
           });
       } else {
-        this.service.getReviewList(this.pagination, step_number).subscribe(res => {
-          console.log(res);
-          this.reviewList = res.list;
-          this.reviewList.forEach(item => {
-            this.reviewId = item.id;
-          });
-          console.log(this.secondListOfDisplayData);
-        });
+        this.getAllReviewList();
       }
     }
+  }
+  getAllReviewList() {
+    this.service.getReviewList(this.pagination, this.selectedIndex, this.companyId,
+      this.receiverId, this.sortValue, this.starTime, this.endTime).subscribe(res => {
+        console.log(res);
+        this.reviewList = res.list;
+        this.reviewList.forEach(item => {
+          this.reviewId = item.id;
+        });
+        console.log(this.secondListOfDisplayData);
+      });
   }
   modeChange() {
     this.pagination.page = 1;
@@ -279,6 +291,7 @@ export class ReviewViewComponent implements OnInit {
     this.isThreeAllDisplayDataChecked = false;
     this.selectedIndex = event.index;
     this.fetchPublicities(this.selectedIndex);
+    console.log(this.selectedIndex);
   }
   // 一审提交
   submitNext() {
@@ -331,6 +344,46 @@ export class ReviewViewComponent implements OnInit {
   getTimeChange(data) {
     console.log('wwww');
     console.log(data);
+  }
+  getEmployeeName(data) {
+    this.employeeName = data;
+    this.screen.company_choices.forEach(item => {
+      this.companyId = item.id;
+    });
+    this.service.getReviewList(this.pagination, this.selectedIndex, this.companyId,
+      this.receiverId, this.sortValue, this.starTime, this.endTime).subscribe(res => {
+        console.log(res);
+        this.reviewList = res.list;
+        this.reviewList.forEach(item => {
+          this.reviewId = item.id;
+        });
+        console.log(this.secondListOfDisplayData);
+      });
+    console.log(this.employeeName);
+  }
+  getCompanyName(data) {
+    this.companyName = data;
+    this.screen.employee_choices.forEach(item => {
+      this.receiverId = item.id;
+    });
+    this.getAllReviewList();
+
+    console.log(this.companyName);
+  }
+  getSort(data) {
+    console.log(data);
+    this.sortValue = data;
+    this.getAllReviewList();
+
+  }
+  getViewTime(data) {
+    console.log(1);
+    console.log(data);
+    console.log(Util.dateFullToString(data[0]));
+    this.starTime = Util.dateFullToString(data[0]);
+    this.endTime = Util.dateFullToString(data[1]);
+    this.getAllReviewList();
+
   }
   // 删除审片
 }
