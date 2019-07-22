@@ -49,8 +49,6 @@ export class ConfigMergeComponent implements OnInit {
     console.log('11111');
     const drag = event.source.element.nativeElement;
     const tags = this.tagsParent.nativeElement.querySelectorAll<HTMLElement>('.merge-tag');
-    console.log(drag);
-    console.log(tags);
     const drop = this.getDropped(drag, tags);
     const dragTag = this.tags.find(item => item.raw === drag.dataset['raw']);
     dragTag.over = true; // hidden
