@@ -22,6 +22,10 @@ import { BindingComponent } from './passport/binding/binding.component';
 import { PhoneBindingComponent } from './passport/binding/phone-binding/phone-binding.component';
 import { CompanyBindingComponent } from './passport/binding/company-binding/company-binding.component';
 import { FilmReviewComponent } from './manage/film-review/film-review.component';
+import { MySharingComponent } from './manage/personal-center/my-sharing/my-sharing.component';
+import { MyCallupComponent } from './manage/personal-center/my-callup/my-callup.component';
+import { MySmplesComponent } from './manage/personal-center/my-callup/my-smples/my-smples.component';
+import { SmplesDetailsComponent } from './manage/personal-center/my-callup/smples-details/smples-details.component';
 // import { ImageComponent } from './manage/image/image/image.component';
 
 const routes: Routes = [
@@ -85,7 +89,17 @@ const routes: Routes = [
             path: 'account-center', component: PersonalCenterComponent, data: { breadcrumb: 'Account' },
             children: [
               { path: 'history', component: BrowseRecordComponent, },
+              { path: 'my-sharing', component: MySharingComponent, },
+              {
+                path: 'my-callup', component: MyCallupComponent,
+                children: [
+                  { path: '', redirectTo: 'my-samples', pathMatch: 'full' },
+                  { path: 'my-samples', component: MySmplesComponent},
+                  { path: 'samples-deails/:id', component: SmplesDetailsComponent, },
+                ]
+              },
             ]
+
           },
           { path: 'teams', loadChildren: './manage/teams/teams.module#TeamsModule' }
         ]

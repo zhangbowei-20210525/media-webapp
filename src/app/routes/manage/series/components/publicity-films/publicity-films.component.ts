@@ -66,6 +66,7 @@ export class PublicityFilmsComponent implements OnInit {
         // console.log(result);
         this.dataset = result.list;
         this.tagdataset = result.meta;
+        console.log(this.tagdataset);
         // console.log('334');
         // console.log(this.tagdataset);
         // console.log(result.meta.tag_choices);

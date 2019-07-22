@@ -53,7 +53,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   filteredProgramTypes: string[];
   programThemeOptions: string[];
   filteredProgramThemes: string[];
-
+  isVerify: number;
   constructor(
     private fb: FormBuilder,
     private service: CopyrightsService,
@@ -81,8 +81,10 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
+      this.isVerify = param.get('isVerify') as any;
       const pids = param.get('pids') as any;
       this.fetchProgramOfOptions(pids);
+      console.log(this.isVerify);
     });
     this.service.getCustomerOptions().subscribe(result => {
       this.customerOptions = result.list;
@@ -191,6 +193,8 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
       this.programOfOptions = result.list;
       if (ids) {
         this.rightForm.get('projects').setValue(this.programOfOptions.map(p => p.name));
+        this.rightForm.get('programType').setValue(this.programOfOptions.map(p => p.program_type));
+        console.log(this.programOfOptions);
       }
     });
   }
@@ -414,19 +418,36 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
     });
 
     if (programs.length > 0) {
-      this.service.addCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
-        .pipe(finalize(() => this.isSaving = false))
-        .subscribe(result => {
-          this.isSaved = true;
-          this.dataSet = [];
-          if (this.paymentForm) {
-            this.paymentForm.reset();
-          }
-          this.contractForm.reset();
-          this.payments = null;
-          this.fetchProgramOfOptions();
-          this.message.success(this.translate.instant('global.save-successfully'));
-        });
+      if (this.isVerify = 1) {
+        this.service.addFilmCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
+          .pipe(finalize(() => this.isSaving = false))
+          .subscribe(result => {
+            this.isSaved = true;
+            this.dataSet = [];
+            if (this.paymentForm) {
+              this.paymentForm.reset();
+            }
+            this.contractForm.reset();
+            this.payments = null;
+            this.fetchProgramOfOptions();
+            this.message.success(this.translate.instant('global.save-successfully'));
+          });
+      } else {
+        this.service.addCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
+          .pipe(finalize(() => this.isSaving = false))
+          .subscribe(result => {
+            this.isSaved = true;
+            this.dataSet = [];
+            if (this.paymentForm) {
+              this.paymentForm.reset();
+            }
+            this.contractForm.reset();
+            this.payments = null;
+            this.fetchProgramOfOptions();
+            this.message.success(this.translate.instant('global.save-successfully'));
+          });
+      }
+
     } else {
       this.isSaving = false;
     }
