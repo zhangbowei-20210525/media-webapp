@@ -34,8 +34,6 @@ export class ConfigMergeComponent implements OnInit {
 
   ngOnInit() {
     this.oldTags = _.cloneDeep(this.tags);
-    console.log('2222');
-    console.log(this.oldTags);
   }
 
   onDragStarted(event: CdkDragStart<any>) {
@@ -48,21 +46,21 @@ export class ConfigMergeComponent implements OnInit {
   }
 
   onTagDragEnded(event: CdkDragEnd<any>) {
-    console.log(event);
+    console.log('11111');
     const drag = event.source.element.nativeElement;
     const tags = this.tagsParent.nativeElement.querySelectorAll<HTMLElement>('.merge-tag');
+    console.log(drag);
+    console.log(tags);
     const drop = this.getDropped(drag, tags);
-    if (drop) {
-      const dragTag = this.tags.find(item => item.raw === drag.dataset['raw']);
-      dragTag.over = true; // hidden
-      const dropTag = this.tags.find(item => item.raw === drop.dataset['raw']);
-      this.setReal(dropTag.raw, dragTag, this.tags);
-      let count = 1;
-      if (dragTag.count > 0) {
-        count += dragTag.count;
-      }
-      dropTag.count += count;
+    const dragTag = this.tags.find(item => item.raw === drag.dataset['raw']);
+    dragTag.over = true; // hidden
+    const dropTag = this.tags.find(item => item.raw === drop.dataset['raw']);
+    this.setReal(dropTag.raw, dragTag, this.tags);
+    let count = 1;
+    if (dragTag.count > 0) {
+      count += dragTag.count;
     }
+    dropTag.count += count;
     drag.style.zIndex = this._draggingZIndex;
     event.source.reset();
   }
@@ -91,6 +89,7 @@ export class ConfigMergeComponent implements OnInit {
     const point = this._draggingMovePosition; // { x: rect.x + (rect.width / 2), y: rect.y + (rect.height / 2) };
     for (let i = 0; i < elements.length; i++) {
       const el = elements.item(i);
+      console.log(el);
       if (el.hidden) {
         continue;
       }
@@ -98,6 +97,9 @@ export class ConfigMergeComponent implements OnInit {
         continue;
       }
       const elRect = el.getBoundingClientRect() as DOMRect;
+      console.log('3434');
+      console.log(point);
+      console.log(elRect);
       if (this.inRect(point, elRect)) {
         return el;
       }

@@ -31,11 +31,9 @@ export class TagMergeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.tags);
   }
 
   onDragStarted(event: CdkDragStart<any>) {
-    console.log(event);
     this._draggingZIndex = event.source.element.nativeElement.style.zIndex;
     event.source.element.nativeElement.style.zIndex = '9';
   }
@@ -45,8 +43,6 @@ export class TagMergeComponent implements OnInit {
   }
 
   onTagDragEnded(event: CdkDragEnd<any>) {
-    console.log('2233');
-    console.log(event);
     const drag = event.source.element.nativeElement;
     const tags = this.tagsParent.nativeElement.querySelectorAll<HTMLElement>('.merge-tag');
     const drop = this.getDropped(drag, tags);
@@ -90,7 +86,10 @@ export class TagMergeComponent implements OnInit {
       if (el.dataset['raw'] === drag.dataset['raw']) {
         continue;
       }
+      console.log('0000');
       const elRect = el.getBoundingClientRect() as DOMRect;
+      console.log(point);
+      console.log(elRect);
       if (this.inRect(point, elRect)) {
         return el;
       }
