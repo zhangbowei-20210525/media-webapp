@@ -39,7 +39,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
       this.teamInfo = res;
       this.tid = this.teamInfo.filter(x => x.status === true)[0].id;
       this.validateForm.get('filmReviewTeam').setValue(this.tid);
-         this.service.getFilmReviewPeople(this.filmReview.step_number,
+         this.service.getFilmReviewPeople(this.filmReview.id,
           this.tid).subscribe(ress => {
            console.log(ress);
           this.peopleInfo = ress.map(item => ({
@@ -80,7 +80,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
   }
 
   teamRefresh() {
-    this.service.getFilmReviewTeam(this.filmReview.step_number).subscribe(res => {
+    this.service.getFilmReviewTeam(this.filmReview.id).subscribe(res => {
       this.teamInfo = res;
       this.tid = this.filmReview.department.id;
       this.peopleRefresh(this.tid);
@@ -88,7 +88,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
   }
 
   peopleRefresh(id: number) {
-    this.service.getFilmReviewPeople(this.filmReview.step_number, id).subscribe(res => {
+    this.service.getFilmReviewPeople(this.filmReview.id, id).subscribe(res => {
       res.forEach(f => {
         this.peopleInfo.push({
           value: f.id,
