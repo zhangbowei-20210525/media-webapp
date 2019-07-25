@@ -40,6 +40,7 @@ import { InsertBroadcastInfoComponent } from './choreography/components/insert-b
 import { AddBroadcastingInfoComponent } from './choreography/components/add-broadcasting-info/add-broadcasting-info.component';
 import { RightConfigComponent } from './copyrights/components/right-config/right-config.component';
 import { PublicityFilmsComponent } from './components/publicity-films/publicity-films.component';
+import { ConfigMergeComponent } from './copyrights/components/config-merge/config-merge.component';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { PublicityFilmsComponent } from './components/publicity-films/publicity-
     AddBroadcastingInfoComponent,
     RightConfigComponent,
     PublicityFilmsComponent,
+    ConfigMergeComponent,
   ],
   imports: [
     CommonModule,

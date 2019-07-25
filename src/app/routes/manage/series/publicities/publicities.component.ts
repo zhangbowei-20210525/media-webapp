@@ -62,6 +62,7 @@ export class PublicitiesComponent implements OnInit {
       console.log(this.searchText);
       this.fetchPublicities();
     });
+    console.log(this.ability.program.publicity.view);
   }
 
   fetchPublicities() {
@@ -217,7 +218,7 @@ export class PublicitiesComponent implements OnInit {
     }
   }
 
-  publicityPlay(id, sid: number) {
+  publicityPlay(id: number, sid: number) {
     console.log(id);
     // localStorage.setItem('shareId', id);
     this.router.navigate([`/manage/series/publicity-details/${id}`, { sid: sid }]);

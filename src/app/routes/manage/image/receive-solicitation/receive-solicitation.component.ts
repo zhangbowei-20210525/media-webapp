@@ -18,6 +18,7 @@ export class ReceiveSolicitationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // 取url参数
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
       this.refresh();

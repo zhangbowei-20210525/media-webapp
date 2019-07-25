@@ -289,8 +289,13 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/reviews/tasks?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
   // 获取审片列表接口
-  getIntentionTypeList(pagination: PaginationDto) {
-    return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`,
+  getIntentionTypeList(pagination: PaginationDto, companyId: any, receiverId: any) {
+    return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`, {
+      params: {
+        publish_company_id: companyId,
+        receive_employee_id: receiverId
+      }
+    }
     );
   }
   // 宣发分享授权
@@ -329,7 +334,7 @@ export class SeriesService {
         receive_employee_id: receiverId,
         order_by: sortValue,
         created_at__gte: starTime,
-        created_at__gle: endTime,
+        created_at__lte: endTime,
       }
     });
   }

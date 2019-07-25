@@ -13,9 +13,9 @@
         style='display: flex; color: #999999; margin-bottom: 12px; height: 32px; line-height: 32px;'>
         <input disabled id="url" nz-input placeholder="Basic usage" style="width: 365px" [(ngModel)]="data.share_url"
           (ngModelChange)="linkChange($event)" />
-        <div style='color: #4797F7;margin-left: 20px' (click)='copy(data.share_url)'>
+        <div style='color: #4797F7;margin-left: 20px' >
           <!-- <button nz-button nzType="primary" nzGhost>复制链接</button> -->
-          <a href="javascript:void(0)">复制链接</a>
+          <a (click)='copy(data.share_url)' href="javascript:void(0)">复制链接</a>
         </div>
       </div>
       <div class='left-sample' style='display: flex'>

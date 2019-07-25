@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragStart, CdkDragMove, CdkDragEnd } from '@angular/cdk/drag-drop';
+import * as _ from 'lodash';
 
 declare interface Position { x: number; y: number; }
 declare interface TagMergeSturt {
@@ -10,18 +11,19 @@ declare interface TagMergeSturt {
 }
 
 @Component({
-  selector: 'app-tag-merge',
-  templateUrl: './tag-merge.component.html',
+  selector: 'app-config-merge',
+  templateUrl: './config-merge.component.html',
   styles: [`
     .merge-tag {
       position: relative;
-      margin: 4px;
+      margin: 5px;
     }
   `]
 })
-export class TagMergeComponent implements OnInit {
+export class ConfigMergeComponent implements OnInit {
 
   @Input() tags: TagMergeSturt[];
+  oldTags: TagMergeSturt[];
 
   private _draggingZIndex: string;
   private _draggingMovePosition: Position;
@@ -31,11 +33,12 @@ export class TagMergeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.tags);
+    this.oldTags = _.cloneDeep(this.tags);
+    console.log('2222');
+    console.log(this.oldTags);
   }
 
   onDragStarted(event: CdkDragStart<any>) {
-    console.log(event);
     this._draggingZIndex = event.source.element.nativeElement.style.zIndex;
     event.source.element.nativeElement.style.zIndex = '9';
   }
@@ -45,7 +48,6 @@ export class TagMergeComponent implements OnInit {
   }
 
   onTagDragEnded(event: CdkDragEnd<any>) {
-    console.log('2233');
     console.log(event);
     const drag = event.source.element.nativeElement;
     const tags = this.tagsParent.nativeElement.querySelectorAll<HTMLElement>('.merge-tag');
@@ -66,6 +68,11 @@ export class TagMergeComponent implements OnInit {
   }
 
   setReal(raw: string, target: { raw: string, real: string }, list: { raw: string, real: string }[]) {
+    list.forEach(x => {
+      if (x.raw === raw) {
+        x.raw = x.raw + '、' + target.raw;
+      }
+    });
     target.real = raw;
     list.filter(item => item.real === target.raw).forEach(item => this.setReal(raw, item, list));
   }
@@ -104,6 +111,10 @@ export class TagMergeComponent implements OnInit {
       item.over = false;
       item.count = 0;
     });
+  }
+
+  reduction() {
+    this.tags = _.cloneDeep(this.oldTags);
   }
 
 }

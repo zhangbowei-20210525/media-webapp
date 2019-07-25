@@ -6,12 +6,14 @@ import { NzModalRef } from 'ng-zorro-antd';
 import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { ACLAbility } from '@core/acl';
+import { fadeIn } from '@shared/animations';
 
 
 @Component({
   selector: 'app-smple-view',
   templateUrl: './sample-view.component.html',
-  styleUrls: ['./sample-view.component.less']
+  styleUrls: ['./sample-view.component.less'],
+  animations: [fadeIn],
 })
 export class SampleViewComponent implements OnInit {
   @ViewChild('publicityOk') publicityOk: any;
@@ -21,8 +23,9 @@ export class SampleViewComponent implements OnInit {
   pagination = { page: 1, page_size: 12 } as PaginationDto;
   isLoading: boolean;
   list = [];
-  isMyDeatilsLoaded: boolean;
   id: any;
+  intention: number;
+  isMyTapesLoaded = false;
   constructor(
     public ability: ACLAbility,
     private router: Router,
@@ -35,20 +38,27 @@ export class SampleViewComponent implements OnInit {
     //   this.searchText = params.get('search');
     //   this.fetchPublicities();
     // });
-      this.fetchPublicities();
+    this.fetchPublicities();
   }
   fetchPublicities() {
     this.isLoading = true;
-    this.service.getIntentionTypeList(this.pagination)
+    this.isMyTapesLoaded = true;
+    const companyId = '';
+    const receiverId = '';
+    this.service.getIntentionTypeList(this.pagination, companyId, receiverId)
       .pipe(finalize(() => {
         this.isLoading = false;
-        this.isMyDeatilsLoaded = true;
+        this.isMyTapesLoaded = true;
+
       }))
       .subscribe(result => {
         this.list = result.list;
         this.pagination = result.pagination;
-        console.log(this.list);
+        this.isMyTapesLoaded = true;
+
       });
+    console.log(this.intention);
+    console.log(this.list);
   }
 
   modeChange() {
@@ -60,10 +70,10 @@ export class SampleViewComponent implements OnInit {
     this.fetchPublicities();
   }
 
-  publicityPlay(id: number, sid: number) {
+  publicityPlay(id: number, sid: number, vid: number) {
     // console.log(id);
     // this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
-    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
+    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, vid: vid }]);
   }
 
 }

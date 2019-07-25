@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="form">
+<!-- <form nz-form [formGroup]="form">
     <nz-form-item>
       <nz-form-label [nzSm]="3" [nzXs]="24">投资类型</nz-form-label>
       <nz-form-control [nzSm]="21" [nzXs]="24">
@@ -23,9 +23,6 @@
           (blur)="onHandleInputConfirm('IT')"
           (keydown.enter)="onHandleInputConfirm('IT')"
         />
-
-        <!-- <nz-form-explain *ngIf="form.get('series').dirty && form.get('series').errors">请选择节目
-        </nz-form-explain> -->
       </nz-form-control>
     </nz-form-item>
   
@@ -54,9 +51,6 @@
             (blur)="onHandleInputConfirm('ST')"
             (keydown.enter)="onHandleInputConfirm('ST')"
           />
-  
-          <!-- <nz-form-explain *ngIf="form.get('series').dirty && form.get('series').errors">请选择节目
-          </nz-form-explain> -->
         </nz-form-control>
       </nz-form-item>
 
@@ -86,8 +80,44 @@
               (keydown.enter)="onHandleInputConfirm('TH')"
             />
     
-            <!-- <nz-form-explain *ngIf="form.get('series').dirty && form.get('series').errors">请选择节目
-            </nz-form-explain> -->
           </nz-form-control>
         </nz-form-item>
-  </form>
+  </form> -->
+
+<!-- <div class="block">
+      <div class="options-bar" style="margin: 0">
+          <div class="options-wrapper">
+              <h4 style="margin: 0">类型</h4>
+          </div>
+          <div class="options-wrapper">
+              <button nz-button nzSize="small" (click)="typeMerge.reset()">重置</button>
+          </div>
+      </div>
+      <nz-divider style="margin: 1rem 0"></nz-divider>
+      <app-tag-merge [tags]="programTypes" #typeMerge></app-tag-merge>
+  </div> -->
+<!-- 
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">投资类型</div>
+    <div class="block-options">
+        <button nz-button nzType="default" nzSize="small">重置</button>
+    </div>
+  </div>
+  <div class="block-content">
+      <app-config-merge [tags]="programTypes" #typeMerge></app-config-merge>
+  </div>
+</div> -->
+
+<div class="block">
+    <div class="options-bar" style="margin: 0">
+        <div class="options-wrapper">
+            <h4 style="margin: 0">类型</h4>
+        </div>
+        <div class="options-wrapper">
+            <button nz-button nzSize="small" (click)="typeMerge.reduction()">重置</button>
+        </div>
+    </div>
+    <nz-divider style="margin: 1rem 0"></nz-divider>
+    <app-config-merge [tags]="programTypes" #typeMerge></app-config-merge>
+</div>
