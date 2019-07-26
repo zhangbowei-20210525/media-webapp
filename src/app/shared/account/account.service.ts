@@ -147,3 +147,4 @@ export class AccountService {
     return this.http.post<LoginResultDto>('/api/v1/activate/email', { email_token: token }, { params: { _allow_anonymous: '' } });
   }
 }
+
