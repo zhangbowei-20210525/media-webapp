@@ -38,9 +38,12 @@ import { RightFilterComponent } from './components/right-filter/right-filter.com
 import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/edit-broadcast-plan.component';
 import { InsertBroadcastInfoComponent } from './choreography/components/insert-broadcast-info/insert-broadcast-info.component';
 import { AddBroadcastingInfoComponent } from './choreography/components/add-broadcasting-info/add-broadcasting-info.component';
-import { RightConfigComponent } from './copyrights/components/right-config/right-config.component';
 import { PublicityFilmsComponent } from './components/publicity-films/publicity-films.component';
-import { ConfigMergeComponent } from './copyrights/components/config-merge/config-merge.component';
+import { SeriesConfigComponent } from './series-config/series-config.component';
+import { ConfigMergeComponent } from './series-config/components/config-merge/config-merge.component';
+import { StMergeComponent } from './series-config/components/st-merge/st-merge.component';
+import { ItMergeComponent } from './series-config/components/it-merge/it-merge.component';
+import { TtMergeComponent } from './series-config/components/tt-merge/tt-merge.component';
 
 
 @NgModule({
@@ -79,9 +82,12 @@ import { ConfigMergeComponent } from './copyrights/components/config-merge/confi
     EditBroadcastPlanComponent,
     InsertBroadcastInfoComponent,
     AddBroadcastingInfoComponent,
-    RightConfigComponent,
     PublicityFilmsComponent,
     ConfigMergeComponent,
+    SeriesConfigComponent,
+    StMergeComponent,
+    ItMergeComponent,
+    TtMergeComponent,
   ],
   imports: [
     CommonModule,
@@ -104,7 +110,6 @@ import { ConfigMergeComponent } from './copyrights/components/config-merge/confi
     RightFilterComponent,
     InsertBroadcastInfoComponent,
     AddBroadcastingInfoComponent,
-    RightConfigComponent,
     PublicityFilmsComponent,
   ]
 })

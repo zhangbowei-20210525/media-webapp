@@ -1,13 +1,17 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragStart, CdkDragMove, CdkDragEnd } from '@angular/cdk/drag-drop';
 import * as _ from 'lodash';
+import { SeriesService } from '../../../series.service';
 
 declare interface Position { x: number; y: number; }
 declare interface TagMergeSturt {
+  id: number;
+  count: number;
+  over: boolean;
   raw: string;
   real: string;
-  count: number;
-  over?: boolean;
+  deletable: boolean;
+  is_default: boolean;
 }
 
 @Component({
@@ -18,22 +22,65 @@ declare interface TagMergeSturt {
       position: relative;
       margin: 5px;
     }
+    .editable-tag {
+      background: rgb(255, 255, 255);
+      border-style: dashed;
+    }
   `]
 })
 export class ConfigMergeComponent implements OnInit {
 
   @Input() tags: TagMergeSturt[];
+  @Input() type: String;
   oldTags: TagMergeSturt[];
+
+  @ViewChild('inputElement') inputElement: ElementRef;
 
   private _draggingZIndex: string;
   private _draggingMovePosition: Position;
+  inputVisible = false;
+  inputValue = '';
 
   @ViewChild('tagsParent') tagsParent: ElementRef<HTMLElement>;
 
-  constructor() { }
+  constructor(
+    private service: SeriesService,
+  ) { }
 
   ngOnInit() {
     this.oldTags = _.cloneDeep(this.tags);
+    console.log(this.type);
+  }
+
+  handleClose(removedTag: {}): void {
+    this.tags = this.tags.filter(tag => tag !== removedTag);
+  }
+
+  showInput(): void {
+    this.inputVisible = true;
+    setTimeout(() => {
+      this.inputElement.nativeElement.focus();
+    }, 10);
+    this.inputValue = '';
+  }
+
+  handleInputConfirm(): void {
+    if (this.tags.every(f => f.raw !== this.inputValue)) {
+      if (this.type === 'st') {
+        this.service.addType('program_types', this.inputValue).subscribe(result => {
+          this.tags.push({
+            id: result.id,
+            count: 0,
+            over: false,
+            raw: this.inputValue,
+            real: this.inputValue,
+            deletable: false,
+            is_default: false,
+          });
+        });
+      }
+    }
+    this.inputVisible = false;
   }
 
   onDragStarted(event: CdkDragStart<any>) {
@@ -42,27 +89,32 @@ export class ConfigMergeComponent implements OnInit {
   }
 
   onDragMoved(event: CdkDragMove<any>) {
+    console.log(event);
     this._draggingMovePosition = event.pointerPosition;
+    // console.log(event.event().clientX);
   }
 
   onTagDragEnded(event: CdkDragEnd<any>) {
-    console.log('11111');
     const drag = event.source.element.nativeElement;
     const tags = this.tagsParent.nativeElement.querySelectorAll<HTMLElement>('.merge-tag');
     const drop = this.getDropped(drag, tags);
-    const dragTag = this.tags.find(item => item.raw === drag.dataset['raw']);
-    dragTag.over = true; // hidden
-    const dropTag = this.tags.find(item => item.raw === drop.dataset['raw']);
-    this.setReal(dropTag.raw, dragTag, this.tags);
-    let count = 1;
-    if (dragTag.count > 0) {
-      count += dragTag.count;
+    console.log('111');
+    console.log(drop);
+    if (drop) {
+      const dragTag = this.tags.find(item => item.raw === drag.dataset['raw']);
+      dragTag.over = true; // hidden
+      const dropTag = this.tags.find(item => item.raw === drop.dataset['raw']);
+      console.log();
+      this.setReal(dropTag.raw, dragTag, this.tags);
+      let count = 1;
+      if (dragTag.count > 0) {
+        count += dragTag.count;
+      }
+      dropTag.count += count;
     }
-    dropTag.count += count;
     drag.style.zIndex = this._draggingZIndex;
     event.source.reset();
   }
-
   setReal(raw: string, target: { raw: string, real: string }, list: { raw: string, real: string }[]) {
     list.forEach(x => {
       if (x.raw === raw) {
@@ -87,7 +139,6 @@ export class ConfigMergeComponent implements OnInit {
     const point = this._draggingMovePosition; // { x: rect.x + (rect.width / 2), y: rect.y + (rect.height / 2) };
     for (let i = 0; i < elements.length; i++) {
       const el = elements.item(i);
-      console.log(el);
       if (el.hidden) {
         continue;
       }

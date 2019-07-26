@@ -383,6 +383,24 @@ export class SeriesService {
   }
   // 发起审片限制
   sendView() {
-    return this.http.get<any>(`api/v1/reviews/configs/status`);
+    return this.http.get<any>(`/api/v1/reviews/configs/status`);
+  }
+
+  getTypes(type: string) {
+    return this.http.get<any>(`/api/v1/programs/configs/fields/${type}`);
+  }
+
+  addType(type: string, field_value: string) {
+    return this.http.post<any>(`/api/v1/programs/configs/fields/${type}`, {
+      field_value,
+    });
+  }
+
+  typeMerge(type: string, id: number, field_value: string) {
+    return this.http.put<any>(`/api/v1/programs/configs/fields/${type}/${id}`, { field_value });
+  }
+
+  deleteType(type: string, id: number) {
+    return this.http.delete<any>(`/api/v1/programs/configs/fields/${type}/${id}`);
   }
 }

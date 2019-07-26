@@ -1,8 +1,0 @@
-<div #tagsParent>
-    <nz-tag class="merge-tag" cdkDrag *ngFor="let item of tags" (cdkDragStarted)="onDragStarted($event)"
-      (cdkDragEnded)="onTagDragEnded($event)" (cdkDragMoved)="onDragMoved($event)" [attr.data-raw]="item.raw"
-      [hidden]="item.over">
-      <nz-badge [nzCount]="item.count">
-        <span>{{ item.raw }}</span>
-      </nz-badge>
-    </nz-tag>

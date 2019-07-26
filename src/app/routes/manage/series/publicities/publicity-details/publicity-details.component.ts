@@ -29,6 +29,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   samplePoster: string;
   sampleNum = [];
   sampleIndex: number;
+  isId: number;
+  playButtonIsSelect: boolean;
 
 
   featureName: string;
@@ -236,6 +238,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
     })).subscribe(s => {
       this.sampleList = s.list;
+      this.isId = this.sampleList[0].id;
       this.samplePagination = s.pagination;
       if (this.sampleList.length > 0) {
         this.sampleName = this.sampleList[this.sampleIndex].name;
@@ -257,6 +260,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
     })).subscribe(s => {
       this.featureList = s.list;
+      this.isId = this.featureList[0].id;
       this.featurePagination = s.pagination;
       if (this.featureList.length > 0) {
         this.featureName = this.featureList[this.featureIndex].name;
@@ -277,6 +281,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
     })).subscribe(s => {
       this.trailerList = s.list;
+      this.isId = this.trailerList[0].id;
       this.trailerPagination = s.pagination;
       if (this.trailerList.length > 0) {
         this.trailerName = this.trailerList[this.trailerIndex].name;
@@ -297,7 +302,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
     })).subscribe(s => {
       this.posterList = s.list;
-      this.trailerPagination = s.pagination;
+      this.posterPagination = s.pagination;
       if (this.posterList.length > 0) {
         this.posterName = this.posterList[this.posterIndex].name;
         this.posterSrc = this.posterList[this.posterIndex].src;
@@ -335,6 +340,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.pdfList = s.list;
       this.pdfPagination = s.pagination;
       if (this.pdfList.length > 0) {
+        this.isId = this.pdfList[0].id;
         this.pdfName = this.pdfList[this.pdfIndex].name;
         this.pdfSrc = this.pdfList[this.pdfIndex].src;
         // this.pdfSrc = 'http://192.168.1.109:8000/media_files/720fa654-3d79-11e9-91a9-685b35a5b556.pdf';
@@ -421,31 +427,99 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
 
   sampleNavigateToDetail(i: number, id: number) {
+    this.isId = id;
     this.sampleIndex = i - 1;
     this.publicityType = 'sample';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { sampleIndex: this.sampleIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { sampleIndex: this.sampleIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+     // tslint:disable-next-line:max-line-length
+     this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.sampleList = s.list;
+      this.samplePagination = s.pagination;
+      if (this.sampleList.length > 0) {
+        this.sampleName = this.sampleList[this.sampleIndex].name;
+        this.sampleSrc = this.sampleList[this.sampleIndex].src;
+        this.samplePoster = this.sampleList[this.sampleIndex].poster;
+        this.samplePageChange({ page: 1, pageSize: 20 });
+        this.playerSource(this.sampleSrc, this.samplePoster);
+      }
+    });
   }
 
   featureNavigateToDetail(i: number, id: number) {
+    this.isId = id;
     this.featureIndex = i - 1;
     this.publicityType = 'feature';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.featureList = s.list;
+      this.featurePagination = s.pagination;
+      if (this.featureList.length > 0) {
+        this.featureName = this.featureList[this.featureIndex].name;
+        this.featureSrc = this.featureList[this.featureIndex].src;
+        this.featurePoster = this.featureList[this.featureIndex].poster;
+        this.featurePageChange({ page: 1, pageSize: 20 });
+        this.playerSource(this.featureSrc, this.featurePoster);
+      }
+    });
   }
 
   trailerNavigateToDetail(i: number, id: number) {
+    this.isId = id;
     this.trailerIndex = i - 1;
     this.publicityType = 'trailer';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { trailerIndex: this.trailerIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { trailerIndex: this.trailerIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+     // tslint:disable-next-line:max-line-length
+     this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.trailerList = s.list;
+      this.trailerPagination = s.pagination;
+      if (this.trailerList.length > 0) {
+        this.trailerName = this.trailerList[this.trailerIndex].name;
+        this.trailerSrc = this.trailerList[this.trailerIndex].src;
+        this.trailerPoster = this.trailerList[this.trailerIndex].poster;
+        this.trailerPageChange({ page: 1, pageSize: 20 });
+        this.playerSource(this.trailerSrc, this.trailerPoster);
+      }
+    });
   }
 
-  posterNavigateToDetail(i: number) {
+  posterNavigateToDetail(i: number, id: number) {
     this.posterIndex = i;
+    this.isId = id;
     this.publicityType = 'poster';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { posterIndex: this.posterIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { posterIndex: this.posterIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.posterList = s.list;
+      this.trailerPagination = s.pagination;
+      if (this.posterList.length > 0) {
+        this.posterName = this.posterList[this.posterIndex].name;
+        this.posterSrc = this.posterList[this.posterIndex].src;
+        this.posterPageChange({ page: 1, pageSize: 20 });
+      }
+    });
   }
 
   stillNavigateToDetail(i: number) {
@@ -455,11 +529,28 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
 
-  pdfNavigateToDetail(i: number) {
+  pdfNavigateToDetail(i: number, id: number) {
     this.pdfIndex = i;
     this.publicityType = 'pdf';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { pdfIndex: this.pdfIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.isId = id;
+     // tslint:disable-next-line:max-line-length
+     this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.pdfList = s.list;
+      this.pdfPagination = s.pagination;
+      if (this.pdfList.length > 0) {
+        this.pdfName = this.pdfList[this.pdfIndex].name;
+        this.pdfSrc = this.pdfList[this.pdfIndex].src;
+        this.pdfPage = 1;
+        this.pdfPageChange({ page: 1, pageSize: 20 });
+      }
+    });
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { pdfIndex: this.pdfIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
   }
   sample() {
     this.ishidden = false;

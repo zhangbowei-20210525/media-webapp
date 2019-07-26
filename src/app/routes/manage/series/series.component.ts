@@ -45,4 +45,8 @@ export class SeriesComponent implements OnInit {
     //   console.log(this.searchText);
     // });
   }
+
+  config() {
+    this.router.navigate([`/manage/series/series-config`]);
+  }
 }

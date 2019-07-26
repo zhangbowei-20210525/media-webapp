@@ -24,6 +24,7 @@ import { ChoreographyComponent } from './choreography/choreography.component';
 import { TheatreComponent } from './choreography/theatre/theatre.component';
 import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/edit-broadcast-plan.component';
 import { InfoComponent } from './choreography/info/info.component';
+import { SeriesConfigComponent } from './series-config/series-config.component';
 
 
 const routes: Routes = [
@@ -102,6 +103,10 @@ const routes: Routes = [
         ]
       },
     ]
+  },
+  {
+    path: 'series-config',
+    component: SeriesConfigComponent
   },
   {
     path: 'choreography', component: ChoreographyComponent,

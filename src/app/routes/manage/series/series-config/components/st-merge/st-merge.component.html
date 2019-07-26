@@ -1,0 +1,14 @@
+<div #tagsParent>
+  <nz-tag [nzColor]="'geekblue'" class="merge-tag" cdkDrag *ngFor="let item of tags; let i = index" (cdkDragStarted)="onDragStarted($event)"
+    (cdkDragEnded)="onTagDragEnded($event)" (cdkDragMoved)="onDragMoved($event)" [attr.data-raw]="item.raw"
+    [nzMode]="'closeable'" 
+    (nzOnClose)="handleClose($event,item)">
+      <span>{{ item.raw }}</span>
+  </nz-tag>
+
+  <nz-tag *ngIf="!inputVisible" [nzColor]="'green'" class="editable-tag" style="margin-left: 20px" nzNoAnimation (click)="showInput()">
+   新增
+  </nz-tag>
+  <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+    style="width: 100px;margin-left: 20px" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+</div>

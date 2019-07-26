@@ -79,7 +79,7 @@ export class AllSeriesComponent implements OnInit {
   }
 
   seriesDetails(id: number) {
-    this.router.navigate([`/manage/series/d/${id}`, { sif: 'show' }, 'right']);
+    this.router.navigate([`/manage/series/d/${id}`, { sif: 'show' }]);
   }
 
   refreshStatus(): void {

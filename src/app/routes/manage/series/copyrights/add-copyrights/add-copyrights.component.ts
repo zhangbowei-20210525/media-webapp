@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 import { FieldCalcGroup, FieldMultiplyCalcGroup, FieldAdditionCalcGroup } from '../field-calc';
 import { SeriesService } from '../../series.service';
 import { NzModalService } from 'ng-zorro-antd';
-import { RightConfigComponent } from '../components/right-config/right-config.component';
 
 @Component({
   selector: 'app-add-copyrights',
@@ -500,34 +499,4 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  config() {
-    console.log('2233');
-    this.modal.create({
-      nzTitle: `配置信息`,
-      nzContent: RightConfigComponent,
-      // nzComponentParams: { programThemes: result.theme, programTypes: result.program_type },
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: 800,
-      nzOnOk: this.configAgreed,
-      nzNoAnimation: true
-    });
-  }
-
-  configAgreed = (component: RightConfigComponent) => new Promise((resolve, reject) => {
-    // if (component.validation()) {
-    //   component.submit()
-    //     .subscribe(result => {
-    //       this.message.success(this.translate.instant('global.add-success'));
-    //       this.fetchPublicities();
-    //       resolve();
-    //     }, error => {
-    //       reject(false);
-    //     });
-    // } else {
-    //   reject(false);
-    // }
-  })
-
 }

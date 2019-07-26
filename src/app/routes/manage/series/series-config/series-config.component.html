@@ -1,0 +1,14 @@
+<div>
+  <button nz-button nzType="default" nzSize="small" (click)="goBack()" style="margin-bottom: 20px">返回</button>
+</div>
+<nz-collapse [nzAccordion]="false">
+  <nz-collapse-panel nzHeader="节目类型" [nzActive]="active1" [nzShowArrow]="false">
+    <app-st-merge [tags]="seriesTypes"></app-st-merge>
+  </nz-collapse-panel>
+  <nz-collapse-panel nzHeader="投资类型" [nzActive]="active2" [nzShowArrow]="false">
+    <app-it-merge [tags]="investmentTypes"></app-it-merge>
+  </nz-collapse-panel>
+  <nz-collapse-panel nzHeader="题材" [nzActive]="active3" [nzShowArrow]="false">
+    <app-tt-merge [tags]="themes"></app-tt-merge>
+  </nz-collapse-panel>
+</nz-collapse>
