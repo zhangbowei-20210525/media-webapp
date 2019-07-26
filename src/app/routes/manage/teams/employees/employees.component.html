@@ -1,7 +1,8 @@
-<div class="table-operations">
+<!-- <div class="table-operations">
   <button nz-button (click)="addEmployee()" acl="admin" [acl-ability]="ability.company.employee.profile">添加成员</button>
   <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin"
     [acl-ability]="ability.company.employee.profile">删除</button>
+  <button nz-button acl="admin" [acl-ability]="ability.company.employee.profile">邀请</button>
 </div>
 
 <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>
@@ -28,9 +29,8 @@
         <td>{{ data.phone }}</td>
         <td>
           <div *ngIf="!data.is_joined">
-            <button nz-button nzSize="small" nz-popover nzTitle="邀请员工"
-              (nzVisibleChange)="onInvitationChange($event, data.id)" nzTrigger="click"
-              [nzContent]="invitationTemplate">邀请</button>
+            <button nz-button nzSize="small" nz-popover (nzVisibleChange)="onInvitationChange($event, data.id)"
+              nzTrigger="click" [nzContent]="invitationTemplate">邀请</button>
           </div>
         </td>
       </tr>
@@ -44,17 +44,85 @@
 <ng-template #invitationTemplate>
   <div class="invitation-panel">
     <ng-container *ngIf="invitationData else invitationLoading">
-      <p>在小程序中转发</p>
-      <div class="invitation-qrcode">
-        <img [src]="invitationData.qrcode">
+      <div class="invitaion-logo">
+        <img style="margin-top: 10px" src="../../../../../assets/images/pic_EmployeeInvitation.png">
       </div>
-      <p>复制链接</p>
+      <p style="text-align: center;">即将发送短信至173****0062通知用户激活账户!</p>
       <div class="invitation-link">
+        <input type="text" style="position: fixed; left: 2000px" id="url" nz-input [(ngModel)]="invitationData.link" />
         <span>{{ invitationData.link }}</span>
+        <a href="javascript:void(0)" (click)="copy(invitationData.link)">复制链接邀请员工</a>
+      </div>
+      <div style="text-align: center; margin-top: 20px">
+        <button style="margin-right: 30px; width: 100px; margin-bottom: 10px;" nz-button nzType="default" (click)="sendEmployeeInvitation()">取消</button>
+        <button style="width: 100px; margin-bottom: 10px" nz-button nzType="primary" (click)="sendEmployeeInvitation()">确定</button>
       </div>
     </ng-container>
     <ng-template #invitationLoading>
       <app-loading></app-loading>
     </ng-template>
   </div>
-</ng-template>
+</ng-template> -->
+
+
+
+<div class="table-operations">
+    <button nz-button (click)="addEmployee()" acl="admin" [acl-ability]="ability.company.employee.profile">添加成员</button>
+    <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin"
+      [acl-ability]="ability.company.employee.profile">删除</button>
+  </div>
+  
+  <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>
+    <nz-table #employeesTable [nzData]="dataset" [nzSize]="'middle'" [nzNoResult]="noResult">
+      <thead>
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+            [nzDisabled]="dataset.length < 1" (nzCheckedChange)="checkAll($event)"></th>
+          <th>姓名</th>
+          <th>部门</th>
+          <th>角色</th>
+          <th>手机</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of employeesTable.data">
+          <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"
+            [nzDisabled]="data.disabled"></td>
+          <td><a [routerLink]="'/manage/teams/employee-details/' + data.id">{{ data.name }}</a></td>
+          <td>{{ data.department }}</td>
+          <td nz-tooltip [nzTitle]="data.roles | arrayMap:'name' | arrayFormat">
+            {{ data.roles | arrayMap:'name' | arrayFormat | truncate:16 }}</td>
+          <td>{{ data.phone }}</td>
+          <td>
+            <div *ngIf="!data.is_joined">
+              <button nz-button nzSize="small" nz-popover nzTitle="邀请员工"
+                (nzVisibleChange)="onInvitationChange($event, data.id)" nzTrigger="click"
+                [nzContent]="invitationTemplate">邀请</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <ng-template #noResult>
+      <app-empty></app-empty>
+    </ng-template>
+  </nz-spin>
+  
+  <ng-template #invitationTemplate>
+    <div class="invitation-panel">
+      <ng-container *ngIf="invitationData else invitationLoading">
+        <p>在小程序中转发</p>
+        <div class="invitation-qrcode">
+          <img [src]="invitationData.qrcode">
+        </div>
+        <p>复制链接</p>
+        <div class="invitation-link">
+          <span>{{ invitationData.link }}</span>
+        </div>
+      </ng-container>
+      <ng-template #invitationLoading>
+        <app-loading></app-loading>
+      </ng-template>
+    </div>
+  </ng-template>
