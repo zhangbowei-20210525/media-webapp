@@ -18,7 +18,7 @@ export class MySmplesComponent implements OnInit {
   pagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   list = [];
   id: number;
-
+  qrCode = [];
   constructor(
     private pcs: PersonalCenterService,
     private message: MessageService,
@@ -53,28 +53,31 @@ export class MySmplesComponent implements OnInit {
       this.list = res.list;
       this.pagination = res.pagination;
       this.id = res.id;
+      this.list.forEach(item => {
+        item.wechat_qrcode = `data:image/png;base64,${item.wechat_qrcode}`;
+      });
     });
   }
   // copy
-    // 复制
-    copy(data) {
-      const input = document.getElementById('url') as HTMLInputElement;
-      console.log(input);
-      // 选中文本
-      input.select();
-      // input.onselect()
-      // 执行浏览器复制命令
-      document.execCommand('copy');
-      this.message.success('复制成功');
-    }
-    linkChange(data) {
-      console.log(data);
-    }
-    goSolicitation(data) {
-      console.log(data);
-    }
-    goSampleDetails(id: number) {
-      this.router.navigate([`/manage/account-center/my-callup/samples-deails/${id}`]);
-    }
+  // 复制
+  copy(data) {
+    const input = document.getElementById('url') as HTMLInputElement;
+    console.log(input);
+    // 选中文本
+    input.select();
+    // input.onselect()
+    // 执行浏览器复制命令
+    document.execCommand('copy');
+    this.message.success('复制成功');
+  }
+  linkChange(data) {
+    console.log(data);
+  }
+  goSolicitation(data) {
+    console.log(data);
+  }
+  goSampleDetails(id: number) {
+    this.router.navigate([`/manage/account-center/my-callup/samples-deails/${id}`]);
+  }
 }
 

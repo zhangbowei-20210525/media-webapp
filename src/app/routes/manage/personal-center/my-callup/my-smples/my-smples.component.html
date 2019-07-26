@@ -1,42 +1,44 @@
 <div class='collection-container' *ngIf='list?.length>0'>
-    <div class='collection-wrapper' *ngFor='let data of list'
-      style='padding: 0 46px 0 36px; box-sizing: border-box; 
+  <div class='collection-wrapper' *ngFor='let data of list'
+    style='padding: 0 46px 0 36px; box-sizing: border-box; 
       margin-bottom: 20px; display:flex; justify-content: space-between;align-items: center; height: 160px; background-color: #fff'>
-      <div class='wrapper-left'>
-        <div class='left-name'>发起人: {{data.created_employee.name}}</div>
-        <div class='left-content' style='display: flex; color: #999999; margin-bottom: 13px'>
-          <div style='margin-right: 40px'>节目类型: {{data.program_theme}}</div>
-          <div style='margin-right: 40px'>题材: {{data.program_type}}</div>
-          <div>发起时间: {{data.created_at}}</div>
+    <div class='wrapper-left'>
+      <div class='left-name'>发起人: {{data.created_employee.name}}</div>
+      <div class='left-content' style='display: flex; color: #999999; margin-bottom: 13px'>
+        <div style='margin-right: 40px'>节目类型: {{data.program_theme}}</div>
+        <div style='margin-right: 40px'>题材: {{data.program_type}}</div>
+        <div>发起时间: {{data.created_at}}</div>
+      </div>
+      <div class='left-link'
+        style='display: flex; color: #999999; margin-bottom: 12px; height: 32px; line-height: 32px;'>
+        <input disabled id="url" nz-input placeholder="Basic usage" style="width: 365px" [(ngModel)]="data.share_url"
+          (ngModelChange)="linkChange($event)" />
+        <div style='color: #4797F7;margin-left: 20px' >
+          <!-- <button nz-button nzType="primary" nzGhost>复制链接</button> -->
+          <a (click)='copy(data.share_url)' href="javascript:void(0)">复制链接</a>
         </div>
-        <div class='left-link'
-          style='display: flex; color: #999999; margin-bottom: 12px; height: 32px; line-height: 32px;'>
-          <input id="url" nz-input placeholder="Basic usage" style="width: 365px" [(ngModel)]="data.share_url"
-            (ngModelChange)="linkChange($event)" />
-          <div style='color: #4797F7; margin-left: 29px;' (click)='copy(data.share_url)'>
-            <!-- <button nz-button nzType="primary" nzGhost>复制链接</button> -->
-            <p>复制链接</p>
-          </div>
-        </div>
-        <div class='left-sample' style='display: flex'>
-          <div style='color: #4797F7; display: flex;'>共收到{{data.received_count}}个样片
-            <div (click)='goSampleDetails(data.id)'>
+      </div>
+      <div class='left-sample' style='display: flex'>
+        <a href="javascript:void(0)">
+          <div style='color: #4797F7; display: flex;' (click)='goSampleDetails(data.id)'>共收到{{data.received_count}}个样片 
+            <div>
               <img src="../../../../../assets/images/ic_my solicitation_normal.png" alt=""
-                style="width: 12px; height:13px;margin-bottom:2px; margin-left: 6px">
+                style="width: 12px; height:13px;margin-bottom:2px; margin-left: 6px;">
             </div>
           </div>
-        </div>
-      </div>
-      <div class='wrapper-right'>
-        <img style='width:148px;height:124px' [src]="data.wechat_qrcode">
+        </a>
       </div>
     </div>
-    <div style="text-align: right;">
-      <nz-pagination *ngIf='list.length>0' [nzPageIndex]="pagination?.page" (nzPageIndexChange)='getPageChange($event)'
-        [nzPageSize]='pagination?.page_size' [nzTotal]="pagination?.count">
-      </nz-pagination>
+    <div class='wrapper-right'>
+      <img style='width:110px;height:114px' [src]="data.wechat_qrcode">
     </div>
   </div>
-  <div *ngIf='list.length==0'>
-    <nz-empty></nz-empty>
+  <div style="text-align: right;">
+    <nz-pagination *ngIf='list.length>0' [nzPageIndex]="pagination?.page" (nzPageIndexChange)='getPageChange($event)'
+      [nzPageSize]='pagination?.page_size' [nzTotal]="pagination?.count">
+    </nz-pagination>
   </div>
+</div>
+<div *ngIf='list.length==0'>
+  <nz-empty></nz-empty>
+</div>

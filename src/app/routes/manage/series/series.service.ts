@@ -289,8 +289,14 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/reviews/tasks?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
   // 获取审片列表接口
-  getIntentionTypeList(pagination: PaginationDto) {
-    return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`);
+  getIntentionTypeList(pagination: PaginationDto, companyId: any, receiverId: any) {
+    return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`, {
+      params: {
+        publish_company_id: companyId,
+        receive_employee_id: receiverId
+      }
+    }
+    );
   }
   // 宣发分享授权
   getSharingAuthorization(liaison_ids: any, publicityId: any) {
@@ -319,10 +325,16 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/publicitys`);
   }
   // 获取审片列表
-  getReviewList(pagination: PaginationDto, step_number: any) {
+  getReviewList(pagination: PaginationDto, selectedIndex: any,
+    companyId: any, receiverId: any, sortValue: any, starTime: any, endTime: any) {
     return this.http.get<any>(`/api/v1/reviews?page=${pagination.page}&page_size=${pagination.page_size}`, {
       params: {
-        step_number: step_number,
+        step_number: selectedIndex,
+        publish_company_id: companyId,
+        receive_employee_id: receiverId,
+        order_by: sortValue,
+        created_at__gte: starTime,
+        created_at__lte: endTime,
       }
     });
   }
@@ -402,5 +414,9 @@ export class SeriesService {
 
   deleteType(type: string, id: number) {
     return this.http.delete<any>(`/api/v1/programs/configs/fields/${type}/${id}`);
+  }
+
+  getScreenList() {
+    return this.http.get<any>(`/api/v1/reviews/intentions/template/filter`);
   }
 }

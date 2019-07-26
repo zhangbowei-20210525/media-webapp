@@ -1,18 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
-import { PaginationDto } from '@shared';
+import { PaginationDto, Util } from '@shared';
 import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { finalize, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { ACLAbility } from '@core/acl';
 import { LaunchFilmsComponent } from '../components/launch-films/launch-films.component';
 import { CallUpComponent } from '../components/call-up/call-up.component';
+import { fadeIn } from '@shared/animations';
 
 @Component({
   selector: 'app-review-view',
   templateUrl: './review-view.component.html',
-  styleUrls: ['./review-view.component.less']
+  styleUrls: ['./review-view.component.less'],
+  animations: [fadeIn],
 })
 export class ReviewViewComponent implements OnInit {
   @ViewChild('publicityOk') publicityOk: any;
@@ -37,7 +39,7 @@ export class ReviewViewComponent implements OnInit {
   checkedIntentionIds = []; // 选择审片的id
   checkedArrayIds = []; // 选择审片的id
   mode: 'figure' | 'table' = 'figure';
-  selectedIndex = 0;
+  selectedTabIndex = 0;
   oneInstanceList = [];
   intentionList = [];
   reviewList = [];
@@ -69,8 +71,21 @@ export class ReviewViewComponent implements OnInit {
   oneReview: any;
   reviewIdList = [];
   reviewId: any;
-  selectedTabIndex = 0;
+  // selectedTabIndex = 0;
   isReviewView: boolean;
+  screen: any;
+  employeeName: any;
+  companyName: any;
+  selectedSortValue: any;
+  receiverId = '';
+  companyId = '';
+  sortValue = '';
+  starTime = '';
+  endTime = '';
+  isForm: number;
+  isMyTapesLoaded = false;
+  isShowTab = false;
+  isShowView = false;
   constructor(
     public ability: ACLAbility,
     private router: Router,
@@ -82,74 +97,118 @@ export class ReviewViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.searchText = params.get('search');
-      this.fetchPublicities(this.selectedIndex);
+    this.route.paramMap.subscribe(params => {
+      this.isForm = +params.get('isForm');
+      console.log(this.isForm);
+      if (this.isForm === 1) {
+        for (const key in this.mapOfCheckedId) {
+          if (this.mapOfCheckedId[key]) {
+            this.mapOfCheckedId[key] = false;
+          }
+        }
+        this.mode = 'table';
+        this.isAllDisplayDataChecked = false;
+        this.selectedTabIndex = 1;
+        // this.selectedTabIndex = 1;
+        this.fetchPublicities(this.selectedTabIndex);
+        this.isMyTapesLoaded = true;
+      }
     });
+    this.service.getScreenList().subscribe(res => {
+      this.screen = res;
+      // console.log(res);
+    });
+    this.service.getReviewView(this.pagination)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        this.isMyTapesLoaded = true;
+      }))
+      .subscribe(result => {
+        this.list = result.list;
+        this.pagination = result.pagination;
+        this.isMyTapesLoaded = true;
+
+        console.log(this.list);
+      });
+    console.log(this.intentionList.length);
   }
   fetchPublicities(step_number) {
     this.isLoading = true;
-    this.isLoaded = true;
     if (this.mode === 'figure') {
       this.service.getReviewView(this.pagination)
         .pipe(finalize(() => {
           this.isLoading = false;
-          this.isMyDeatilsLoaded = true;
-          this.isLoaded = false;
-
-          this.isReviewView = true;
+          this.isMyTapesLoaded = true;
         }))
         .subscribe(result => {
           this.list = result.list;
           this.pagination = result.pagination;
+          this.isMyTapesLoaded = true;
           // console.log(this.list);
         });
     } else if (this.mode === 'table') {
       if (step_number === 0) {
-        this.service.getIntentionTypeList(this.pagination)
-          .pipe(finalize(() => {
-            this.isLoading = false;
-            this.isMyDeatilsLoaded = true;
-          }))
-          .subscribe(result => {
-            this.intentionList = result.list;
-            this.pagination = result.pagination;
-            // this.paginationName = result.pagination.name;
-            console.log(result);
-          });
+        this.getAllIntentionList();
       } else {
-        this.service.getReviewList(this.pagination, step_number).subscribe(res => {
-          console.log(res);
-          this.reviewList = res.list;
-          this.reviewList.forEach(item => {
-            this.reviewId = item.id;
-          });
-          console.log(this.secondListOfDisplayData);
-        });
+        this.getAllReviewList();
       }
     }
   }
+  getAllIntentionList() {
+    this.service.getIntentionTypeList(this.pagination, this.companyId, this.receiverId)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        this.isMyTapesLoaded = true;
+        this.isShowTab = true;
+        this.isShowView = true;
+      }))
+      .subscribe(result => {
+        this.intentionList = result.list;
+        this.pagination = result.pagination;
+        this.isMyTapesLoaded = true;
+        this.isShowTab = true;
+        this.isShowView = true;
+
+        // this.paginationName = result.pagination.name;
+      });
+  }
+  getAllReviewList() {
+    this.service.getReviewList(this.pagination, this.selectedTabIndex, this.companyId,
+      this.receiverId, this.sortValue, this.starTime, this.endTime).subscribe(res => {
+        // console.log(res);
+        this.reviewList = res.list;
+        this.isShowTab = true;
+        this.isShowView = true;
+
+        console.log(this.reviewList);
+        this.reviewList.forEach(item => {
+          this.reviewId = item.id;
+        });
+      });
+  }
   modeChange() {
     this.pagination.page = 1;
-    this.fetchPublicities(this.selectedIndex);
+    this.fetchPublicities(this.selectedTabIndex);
   }
 
   pageChange(page: number) {
     this.pagination.page = page;
-    this.fetchPublicities(this.selectedIndex);
+    this.fetchPublicities(this.selectedTabIndex);
   }
   // 意向选择
   refreshStatus(): void {
-    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.intention_id]);
+    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
     this.isIndeterminate =
-      this.listOfDisplayData.some(item => this.mapOfCheckedId[item.intention_id]) && !this.isAllDisplayDataChecked;
+      this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
+    // console.log(this.mapOfCheckedId);
+    // console.log(this.isAllDisplayDataChecked);
   }
   currentPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.listOfDisplayData = $event;
     this.refreshStatus();
   }
   checkAll(value: boolean): void {
-    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.intention_id] = value));
+    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
     this.refreshStatus();
   }
   // 一审
@@ -158,7 +217,7 @@ export class ReviewViewComponent implements OnInit {
     this.isFirstIndeterminate =
       this.firstListOfDisplayData.some(item => this.firstListOfDisplayData[item.id]) && !this.isFirstAllDisplayDataChecked;
     // console.log(this.firstMapOfCheckedId);
-    console.log(this.firstListOfDisplayData);
+    // console.log(this.firstListOfDisplayData);
   }
   firstPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     // console.log($event);
@@ -190,7 +249,7 @@ export class ReviewViewComponent implements OnInit {
     this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.id]);
     this.isThreeIndeterminate =
       this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.id]) && !this.isThreeAllDisplayDataChecked;
-    console.log(this.threeMapOfCheckedId);
+    // console.log(this.threeMapOfCheckedId);
 
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -202,10 +261,9 @@ export class ReviewViewComponent implements OnInit {
     this.threeRefreshStatus();
   }
   publicityPlay(sid: number, id: number) {
-    console.log(sid);
-    console.log(id);
+    // console.log(sid);
     // console.log(id);
-    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
+    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, isShowBtn: 1 }]);
   }
   // 发起审片弹框
   launchFilms() {
@@ -218,46 +276,49 @@ export class ReviewViewComponent implements OnInit {
     }
     this.intentionList.forEach(item => {
       this.checkedIntentionIds.forEach(ele => {
-        if (item.intention_id === ele) {
-          this.intentonName.push(item.name);
+        if (item.id === ele) {
+          this.intentonName.push(item.publicity.program.name);
         }
       });
     });
-    this.service.sendView().subscribe(res => {
-      console.log(res);
-      this.modalService.create({
-        nzTitle: `您将提交：`,
-        nzContent: LaunchFilmsComponent,
-        nzComponentParams: { intentonName: this.intentonName },
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzWidth: 440,
-        nzCancelText: '取消',
-        nzNoAnimation: true,
-        nzOkText: '确定',
-        nzOnOk: () => new Promise((resolve) => {
-          resolve();
-          this.creatReview();
-          // 重置数据
-          for (const key in this.mapOfCheckedId) {
-            if (this.mapOfCheckedId[key]) {
-              this.mapOfCheckedId[key] = false;
+    if (this.checkedIntentionIds.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.service.sendView().subscribe(res => {
+        // console.log(res);
+        this.modalService.create({
+          nzTitle: `您将提交：`,
+          nzContent: LaunchFilmsComponent,
+          nzComponentParams: { intentonName: this.intentonName },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzWidth: 440,
+          nzCancelText: '取消',
+          nzNoAnimation: true,
+          nzOkText: '确定',
+          nzOnOk: () => new Promise((resolve) => {
+            resolve();
+            this.creatReview();
+            // 重置数据
+            for (const key in this.mapOfCheckedId) {
+              if (this.mapOfCheckedId[key]) {
+                this.mapOfCheckedId[key] = false;
+              }
             }
-          }
-          this.isAllDisplayDataChecked = false;
-          this.selectedTabIndex = 1;
-          this.selectedIndex = 1;
-          this.fetchPublicities(this.selectedIndex);
-        })
+            this.isAllDisplayDataChecked = false;
+            this.selectedTabIndex = 1;
+            // this.selectedTabIndex = 1;
+            this.fetchPublicities(this.selectedTabIndex);
+          })
+        });
+      }, error => {
+        this.message.error('请配置审片设置');
       });
-    }, error => {
-      this.message.error('请配置审片设置');
-    });
-
+    }
   }
   creatReview() {
     this.service.creatReview(this.checkedIntentionIds).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       // console.log(this.checkedIntentionIds);
     });
   }
@@ -267,9 +328,9 @@ export class ReviewViewComponent implements OnInit {
   }
   // 节目名跳转详情
   AdministratorViewDetails(sid: number, id: number, rid: number) {
-    console.log(rid);
-    console.log(sid);
-    console.log(id);
+    // console.log(rid);
+    // console.log(sid);
+    // console.log(id);
     this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid, rid: rid }]);
   }
   // 设置面板改变
@@ -277,8 +338,20 @@ export class ReviewViewComponent implements OnInit {
     this.isFirstAllDisplayDataChecked = false;
     this.isSecondAllDisplayDataChecked = false;
     this.isThreeAllDisplayDataChecked = false;
-    this.selectedIndex = event.index;
-    this.fetchPublicities(this.selectedIndex);
+    this.selectedTabIndex = event.index;
+    this.companyName = null;
+    this.employeeName = null;
+    this.selectedSortValue = null;
+    this.companyId = '';
+    this.sortValue = '';
+    this.receiverId = '';
+    this.starTime = '';
+    this.endTime = '';
+    this.reviewList = [];
+    this.isShowTab = false;
+    this.isMyTapesLoaded = true;
+    this.fetchPublicities(this.selectedTabIndex);
+    console.log(this.selectedTabIndex);
   }
   // 一审提交
   submitNext() {
@@ -293,8 +366,8 @@ export class ReviewViewComponent implements OnInit {
       this.message.success('提交审片成功');
     });
     this.selectedTabIndex = 2;
-    this.selectedIndex = 2;
-    this.fetchPublicities(this.selectedIndex);
+    // this.selectedTabIndex = 2;
+    this.fetchPublicities(this.selectedTabIndex);
   }
   // 二审提交
   secondSubmit() {
@@ -311,8 +384,8 @@ export class ReviewViewComponent implements OnInit {
       // console.log(res);
     });
     this.selectedTabIndex = 3;
-    this.selectedIndex = 3;
-    this.fetchPublicities(this.selectedIndex);
+    // this.selectedTabIndex = 3;
+    this.fetchPublicities(this.selectedTabIndex);
   }
   // 三审提交(入库跳转)
   goSave() {
@@ -328,9 +401,76 @@ export class ReviewViewComponent implements OnInit {
     //   console.log(res);
     // });
   }
-  getTimeChange(data) {
-    console.log('wwww');
-    console.log(data);
+  // 审片筛选功能
+  getCompanyName(data) {
+    this.companyName = data;
+    if (this.companyName === null) {
+      this.companyId = '';
+    } else {
+      this.screen.company_choices.forEach(item => {
+        if (this.companyName === item.full_name) {
+          this.companyId = item.id;
+        }
+      });
+    }
+    this.getAllReviewList();
+  }
+  getEmployeeName(data) {
+    this.employeeName = data;
+    if (this.employeeName === null) {
+      this.receiverId = '';
+    } else {
+      this.screen.employee_choices.forEach(item => {
+        if (this.employeeName === item.name) {
+          this.receiverId = item.id;
+        }
+      });
+    }
+    this.getAllReviewList();
+  }
+  getSort(data) {
+    this.sortValue = data;
+    if (this.sortValue === null) {
+      this.sortValue = '';
+    }
+    this.getAllReviewList();
+  }
+  getViewTime(data) {
+    this.starTime = Util.dateToString(data[0]);
+    this.endTime = Util.dateToString(data[1]);
+    if (this.starTime === null || this.endTime === null) {
+      this.starTime = '';
+      this.endTime = '';
+    }
+    this.getAllReviewList();
+
+  }
+  // 意向筛选功能
+  getIntentionCompanyName(data) {
+    this.companyName = data;
+    if (this.companyName === null) {
+      this.companyId = '';
+    } else {
+      this.screen.company_choices.forEach(item => {
+        if (this.companyName === item.full_name) {
+          this.companyId = item.id;
+        }
+      });
+    }
+    this.getAllIntentionList();
+  }
+  getIntentionEmployeeName(data) {
+    this.employeeName = data;
+    if (this.employeeName === null) {
+      this.receiverId = '';
+    } else {
+      this.screen.employee_choices.forEach(item => {
+        if (this.employeeName === item.name) {
+          this.receiverId = item.id;
+        }
+      });
+    }
+    this.getAllIntentionList();
   }
   // 删除审片
 }

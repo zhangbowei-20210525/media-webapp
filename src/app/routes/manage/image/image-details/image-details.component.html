@@ -14,7 +14,7 @@
           <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
         </div>
         <div class="fixationInfo-info">
-            <button nz-button nzType="default" nzGhost routerLink="/manage/image/review-view">发起审片</button>
+            <button *ngIf="!isShowBtn" nz-button nzType="default" nzGhost (click)="sendView()">发起审片</button>
           <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
           <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
         </div>

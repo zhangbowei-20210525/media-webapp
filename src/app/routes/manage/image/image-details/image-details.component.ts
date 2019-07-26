@@ -5,6 +5,8 @@ import { SeriesService } from '../../series/series.service';
 import { switchMap, tap, map } from 'rxjs/operators';
 import { PaginationDto } from '@shared';
 import { I18nService } from '@core';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
+
 // import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
 declare function videojs(selector: string);
@@ -83,12 +85,17 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   emailAddress: string;
   tabIndex: number;
   fixationInfo: any; // 可能是用户信息
+  intention: number;
+  isShowBtn: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private seriesService: SeriesService,
     private i18n: I18nService,
+    private modalService: NzModalService,
+    private message: NzMessageService,
+
   ) { }
 
   ngOnInit() {
@@ -110,6 +117,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.posterIndex = +params.get('posterIndex');
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
+        this.intention = +params.get('vid');
+        this.isShowBtn = +params.get('isShowBtn');
         return this.seriesService.pubDetail(this.id);
       })).subscribe(res => {
         // console.log(res);
@@ -532,5 +541,22 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     // tslint:disable-next-line:max-line-length
     this.seriesService.shareEmail(this.emailAddress, `http://test1.bctop.net/d/${this.id}`, this.publicityName, this.sid).subscribe();
   }
-
+  sendView() {
+    this.modalService.confirm({
+      nzTitle: '是否确定发起审片',
+      nzOnOk: () => new Promise((resolve) => {
+        resolve();
+        const intentionLIst = [];
+        intentionLIst.push(this.intention);
+        this.seriesService.creatReview(intentionLIst).subscribe(res => {
+          console.log(res);
+          this.message.success('发起审片成功');
+          this.router.navigate([`/manage/image/review-view`, {isForm : 1}]);
+          // console.log(this.checkedIntentionIds);
+        }, error => {
+          this.message.error('发起审片失败');
+        });
+      }),
+    });
+  }
 }
