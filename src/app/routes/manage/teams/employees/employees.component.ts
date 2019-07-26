@@ -68,7 +68,7 @@ export class EmployeesComponent implements OnInit {
       this.modal.create({
         nzTitle: '新增员工',
         nzContent: EditEmployeeComponent,
-        nzComponentParams: { needRole: true, roleOfOptions:  roles },
+        nzComponentParams: { needRole: true, roleOfOptions: roles },
         nzOnOk: (component: EditEmployeeComponent) => new Promise((resolve, reject) => {
           if (component.validation()) {
             const value = component.getValue();
@@ -115,5 +115,17 @@ export class EmployeesComponent implements OnInit {
       this.invitationData = null;
     }
   }
-
+  sendEmployeeInvitation() {
+    console.log(1);
+  }
+  copy(data) {
+    const input = document.getElementById('url') as HTMLInputElement;
+    console.log(input);
+    // 选中文本
+    input.select();
+    // input.onselect()
+    // 执行浏览器复制命令
+    document.execCommand('copy');
+    this.message.success('复制成功');
+  }
 }
