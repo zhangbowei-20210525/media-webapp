@@ -498,22 +498,22 @@
       </nz-tab>
       <nz-tab [nzTitle]="'海报' + '(' +userinfo?.material?.poster + ')'" (nzClick)="poster()"
         [nzDisabled]="posterDisabled">
-        <!-- <div class="program-panel">
+        <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i, poster.id)">
               <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == poster.id}">{{i + 1}}</div>
             </li>
           </ul>
-        </div> -->
+        </div>
       </nz-tab>
       <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="still()" [nzDisabled]="stillDisabled">
-        <!-- <div class="program-panel">
+        <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i)">
-              <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+            <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i, still.id)">
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == still.id}">{{i + 1}}</div>
             </li>
           </ul>
-        </div> -->
+        </div>
 
       </nz-tab>
       <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'" (nzClick)="pdf()" [nzDisabled]="pdfDisabled">

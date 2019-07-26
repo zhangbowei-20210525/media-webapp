@@ -241,9 +241,9 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.isId = this.sampleList[0].id;
       this.samplePagination = s.pagination;
       if (this.sampleList.length > 0) {
-        this.sampleName = this.sampleList[this.sampleIndex].name;
-        this.sampleSrc = this.sampleList[this.sampleIndex].src;
-        this.samplePoster = this.sampleList[this.sampleIndex].poster;
+        this.sampleName = this.sampleList[0].name;
+        this.sampleSrc = this.sampleList[0].src;
+        this.samplePoster = this.sampleList[0].poster;
         this.samplePageChange({ page: 1, pageSize: 20 });
         this.playerSource(this.sampleSrc, this.samplePoster);
         // this.playerSource('http://test.static.bctop.net/马术-24/马术-hls/playlist.m3u8', this.samplePoster);
@@ -263,9 +263,9 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.isId = this.featureList[0].id;
       this.featurePagination = s.pagination;
       if (this.featureList.length > 0) {
-        this.featureName = this.featureList[this.featureIndex].name;
-        this.featureSrc = this.featureList[this.featureIndex].src;
-        this.featurePoster = this.featureList[this.featureIndex].poster;
+        this.featureName = this.featureList[0].name;
+        this.featureSrc = this.featureList[0].src;
+        this.featurePoster = this.featureList[0].poster;
         this.featurePageChange({ page: 1, pageSize: 20 });
         this.playerSource(this.featureSrc, this.featurePoster);
       }
@@ -284,9 +284,9 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.isId = this.trailerList[0].id;
       this.trailerPagination = s.pagination;
       if (this.trailerList.length > 0) {
-        this.trailerName = this.trailerList[this.trailerIndex].name;
-        this.trailerSrc = this.trailerList[this.trailerIndex].src;
-        this.trailerPoster = this.trailerList[this.trailerIndex].poster;
+        this.trailerName = this.trailerList[0].name;
+        this.trailerSrc = this.trailerList[0].src;
+        this.trailerPoster = this.trailerList[0].poster;
         this.trailerPageChange({ page: 1, pageSize: 20 });
         this.playerSource(this.trailerSrc, this.trailerPoster);
       }
@@ -302,10 +302,11 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
     })).subscribe(s => {
       this.posterList = s.list;
+      this.isId = this.posterList[0].id;
       this.posterPagination = s.pagination;
       if (this.posterList.length > 0) {
-        this.posterName = this.posterList[this.posterIndex].name;
-        this.posterSrc = this.posterList[this.posterIndex].src;
+        this.posterName = this.posterList[0].name;
+        this.posterSrc = this.posterList[0].src;
         this.posterPageChange({ page: 1, pageSize: 20 });
       }
     });
@@ -320,10 +321,11 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
     })).subscribe(s => {
       this.stillList = s.list;
+      this.isId = this.stillList[0].id;
       this.stillPagination = s.pagination;
       if (this.stillList.length > 0) {
-        this.stillName = this.stillList[this.stillIndex].name;
-        this.stillSrc = this.stillList[this.stillIndex].src;
+        this.stillName = this.stillList[0].name;
+        this.stillSrc = this.stillList[0].src;
         this.stillPageChange({ page: 1, pageSize: 20 });
       }
     });
@@ -341,8 +343,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.pdfPagination = s.pagination;
       if (this.pdfList.length > 0) {
         this.isId = this.pdfList[0].id;
-        this.pdfName = this.pdfList[this.pdfIndex].name;
-        this.pdfSrc = this.pdfList[this.pdfIndex].src;
+        this.pdfName = this.pdfList[0].name;
+        this.pdfSrc = this.pdfList[0].src;
         // this.pdfSrc = 'http://192.168.1.109:8000/media_files/720fa654-3d79-11e9-91a9-685b35a5b556.pdf';
         this.pdfPage = 1;
         this.pdfPageChange({ page: 1, pageSize: 20 });
@@ -385,32 +387,97 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   lastPoster() {
     if (this.posterIndex > 0) {
       this.posterIndex = this.posterIndex - 1;
-      this.posterName = this.posterList[this.posterIndex].name;
-      this.posterSrc = this.posterList[this.posterIndex].src;
+      // this.posterName = this.posterList[this.posterIndex].name;
+      // this.posterSrc = this.posterList[this.posterIndex].src;
+
+       // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.posterList = s.list;
+      this.isId = this.posterList[this.posterIndex].id;
+      this.posterPagination = s.pagination;
+      if (this.posterList.length > 0) {
+        this.posterName = this.posterList[this.posterIndex].name;
+        this.posterSrc = this.posterList[this.posterIndex].src;
+        this.posterPageChange({ page: 1, pageSize: 20 });
+      }
+    });
     } else { }
   }
 
   nextPoster() {
     if (this.posterIndex + 1 < this.posterList.length) {
       this.posterIndex = this.posterIndex + 1;
-      this.posterSrc = this.posterList[this.posterIndex].src;
-      this.posterName = this.posterList[this.posterIndex].name;
+      // this.posterSrc = this.posterList[this.posterIndex].src;
+      // this.posterName = this.posterList[this.posterIndex].name;
+         // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.posterList = s.list;
+      this.isId = this.posterList[this.posterIndex].id;
+      this.posterPagination = s.pagination;
+      if (this.posterList.length > 0) {
+        this.posterName = this.posterList[this.posterIndex].name;
+        this.posterSrc = this.posterList[this.posterIndex].src;
+        this.posterPageChange({ page: 1, pageSize: 20 });
+      }
+    });
     } else { }
   }
 
   lastStill() {
     if (this.stillIndex > 0) {
       this.stillIndex = this.stillIndex - 1;
-      this.stillName = this.stillList[this.stillIndex].name;
-      this.stillSrc = this.stillList[this.stillIndex].src;
+      // this.stillName = this.stillList[this.stillIndex].name;
+      // this.stillSrc = this.stillList[this.stillIndex].src;
+       // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.stillList = s.list;
+      this.isId = this.stillList[this.stillIndex].id;
+      this.stillPagination = s.pagination;
+      if (this.stillList.length > 0) {
+        this.stillName = this.stillList[this.stillIndex].name;
+        this.stillSrc = this.stillList[this.stillIndex].src;
+        this.stillPageChange({ page: 1, pageSize: 20 });
+      }
+    });
     } else { }
   }
 
   nextStill() {
     if (this.stillIndex + 1 < this.stillList.length) {
       this.stillIndex = this.stillIndex + 1;
-      this.stillSrc = this.stillList[this.stillIndex].src;
-      this.stillName = this.stillList[this.stillIndex].name;
+      // this.stillSrc = this.stillList[this.stillIndex].src;
+      // this.stillName = this.stillList[this.stillIndex].name;
+         // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.stillList = s.list;
+      this.isId = this.stillList[this.stillIndex].id;
+      this.stillPagination = s.pagination;
+      if (this.stillList.length > 0) {
+        this.stillName = this.stillList[this.stillIndex].name;
+        this.stillSrc = this.stillList[this.stillIndex].src;
+        this.stillPageChange({ page: 1, pageSize: 20 });
+      }
+    });
     } else { }
   }
 
@@ -522,11 +589,27 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     });
   }
 
-  stillNavigateToDetail(i: number) {
+  stillNavigateToDetail(i: number, id: number) {
     this.stillIndex = i;
+    this.isId = id;
     this.publicityType = 'still';
-    this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
+    // { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+   // tslint:disable-next-line:max-line-length
+   this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+    let index = 1;
+    x.list.forEach(f => {
+      f.displayText = index++;
+    });
+  })).subscribe(s => {
+    this.stillList = s.list;
+    this.stillPagination = s.pagination;
+    if (this.stillList.length > 0) {
+      this.stillName = this.stillList[this.stillIndex].name;
+      this.stillSrc = this.stillList[this.stillIndex].src;
+      this.stillPageChange({ page: 1, pageSize: 20 });
+    }
+  });
   }
 
   pdfNavigateToDetail(i: number, id: number) {
