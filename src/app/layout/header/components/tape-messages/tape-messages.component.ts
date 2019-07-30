@@ -45,7 +45,7 @@ export class TapeMessagesComponent implements OnInit {
           this.acceptCompany = res.company_full_name;
           this.companyList = cl;
         });
-        this.validateForm.get('companyFullName').setValue(res.auth_custom_name);
+        // this.validateForm.get('companyFullName').setValue(res.auth_custom_name);
         this.validateForm.get('phone').setValue(res.auth_phone);
         this.validateForm.get('phone').disable();
       });

@@ -59,18 +59,25 @@
         </div>
       </div>
     </div>
-    <nz-radio-group [(ngModel)]="choseCompany" (ngModelChange)="onChoseCompany($event)">
-      <label nz-radio *ngFor="let option of companyList"
-        [nzValue]="option.company_id">{{option.company_full_name}}</label>
-    </nz-radio-group>
-    <div style="margin-top: 50px">
     <form nz-form [formGroup]="validateForm">
-      <nz-form-item *ngIf='isChoseShow === false'>
+      <!-- <nz-form-item *ngIf='isChoseShow === false'>
         <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
         <nz-form-control [nzSm]="17" [nzXs]="24">
           <input nz-input id="companyFullName" formControlName="companyFullName" placeholder="请填写接受公司" />
           <nz-form-explain
             *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请填写接受公司
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item> -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>接受公司</nz-form-label>
+        <nz-form-control [nzSm]="17" [nzXs]="24">
+          <nz-radio-group formControlName="companyFullName" (ngModelChange)="onChoseCompany($event)">
+            <label nz-radio *ngFor="let option of companyList" style="display: block;margin-top: 9px"
+              [nzValue]="option.company_id">{{option.company_full_name}}</label>
+          </nz-radio-group>
+          <nz-form-explain
+            *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请选择接受公司
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
@@ -86,5 +93,4 @@
         </nz-form-control>
       </nz-form-item>
     </form>
-    </div>
   </div>
