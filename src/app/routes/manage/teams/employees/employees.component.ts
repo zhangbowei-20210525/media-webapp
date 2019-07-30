@@ -19,6 +19,9 @@ export class EmployeesComponent implements OnInit {
   disabledButton = true;
   isDatasetLoading = false;
   dataset = [];
+  id: number;
+  visible = false;
+  phone: string;
   invitationData: { qrcode: string, link: string };
 
   constructor(
@@ -103,9 +106,14 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  onInvitationChange(state: boolean, id: number) {
+  onInvitationChange(state: boolean, id: number, phone: string) {
+    this.id = id;
     if (state) {
+      this.phone = phone;
+      const reg =  /^(\d{3})\d{4}(\d{4})$/;
+      this.phone = this.phone.replace(reg, '$1****$2');
       this.service.getEmployeeInvitationData(id).subscribe(result => {
+        console.log(result);
         this.invitationData = {
           qrcode: `data:image/jpeg;base64,${result}`,
           link: `${location.origin}/outside/accept-employee-invitations/${id}`
@@ -115,9 +123,18 @@ export class EmployeesComponent implements OnInit {
       this.invitationData = null;
     }
   }
+
   sendEmployeeInvitation() {
-    console.log(1);
+    this.service.sendEmployeesInvitation(this.id).subscribe(result => {
+      this.visible = false;
+      this.message.success('邀请已发送成功');
+    });
   }
+
+  close() {
+    this.visible = false;
+  }
+
   copy(data) {
     const input = document.getElementById('url') as HTMLInputElement;
     console.log(input);

@@ -31,4 +31,8 @@ export class EmployeesService {
   getEmployeeInvitationData(employee_id: any) {
     return this.http.get<any>('/api/v1/share_code/wechat/employee_invitation', { params: { employee_id } });
   }
+
+  sendEmployeesInvitation(id: number) {
+    return this.http.post<any>(`/api/v1/companies/employees/${id}/invitation/sms`, {});
+  }
 }

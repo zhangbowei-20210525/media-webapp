@@ -239,7 +239,11 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     this.seriesService.getReviewDetails(this.rid).subscribe(res => {
       console.log(res);
       this.reviewList = res;
-      this.reviewFirstSteps = res.review_steps[0];
+      if (res.review_steps[0].lenght > 3) {
+        this.reviewFirstSteps = res.review_steps[0].splice(0, 3);
+      } else {
+        this.reviewFirstSteps = res.review_steps[0];
+      }
       // 一审喜欢人数及通过率
       this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
       this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
@@ -790,5 +794,11 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         resolve();
       }),
     });
+  }
+
+  // 查看更多
+  getMore() {
+    console.log('getmore');
+    this.reviewFirstSteps = this.reviewList.review_steps[0];
   }
 }

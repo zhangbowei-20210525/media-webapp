@@ -1,4 +1,4 @@
-<!-- <div class="table-operations">
+<div class="table-operations">
   <button nz-button (click)="addEmployee()" acl="admin" [acl-ability]="ability.company.employee.profile">添加成员</button>
   <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin"
     [acl-ability]="ability.company.employee.profile">删除</button>
@@ -29,8 +29,8 @@
         <td>{{ data.phone }}</td>
         <td>
           <div *ngIf="!data.is_joined">
-            <button nz-button nzSize="small" nz-popover (nzVisibleChange)="onInvitationChange($event, data.id)"
-              nzTrigger="click" [nzContent]="invitationTemplate">邀请</button>
+            <button nz-button nzSize="small" nz-popover (nzVisibleChange)="onInvitationChange($event, data.id, data.phone)"
+              nzTrigger="click" [(nzVisible)]="visible" [nzContent]="invitationTemplate">邀请</button>
           </div>
         </td>
       </tr>
@@ -47,14 +47,14 @@
       <div class="invitaion-logo">
         <img style="margin-top: 10px" src="../../../../../assets/images/pic_EmployeeInvitation.png">
       </div>
-      <p style="text-align: center;">即将发送短信至173****0062通知用户激活账户!</p>
+      <p style="text-align: center;">即将发送短信至{{ phone }}通知用户激活账户!</p>
       <div class="invitation-link">
         <input type="text" style="position: fixed; left: 2000px" id="url" nz-input [(ngModel)]="invitationData.link" />
         <span>{{ invitationData.link }}</span>
         <a href="javascript:void(0)" (click)="copy(invitationData.link)">复制链接邀请员工</a>
       </div>
       <div style="text-align: center; margin-top: 20px">
-        <button style="margin-right: 30px; width: 100px; margin-bottom: 10px;" nz-button nzType="default" (click)="sendEmployeeInvitation()">取消</button>
+        <button style="margin-right: 30px; width: 100px; margin-bottom: 10px;" nz-button nzType="default" (click)="close()">取消</button>
         <button style="width: 100px; margin-bottom: 10px" nz-button nzType="primary" (click)="sendEmployeeInvitation()">确定</button>
       </div>
     </ng-container>
@@ -62,11 +62,11 @@
       <app-loading></app-loading>
     </ng-template>
   </div>
-</ng-template> -->
+</ng-template>
 
 
 
-<div class="table-operations">
+<!-- <div class="table-operations">
     <button nz-button (click)="addEmployee()" acl="admin" [acl-ability]="ability.company.employee.profile">添加成员</button>
     <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin"
       [acl-ability]="ability.company.employee.profile">删除</button>
@@ -125,4 +125,4 @@
         <app-loading></app-loading>
       </ng-template>
     </div>
-  </ng-template>
+  </ng-template> -->

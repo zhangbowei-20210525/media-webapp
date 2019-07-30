@@ -8,6 +8,7 @@ import { NotifiesPolling } from '@core/notifies';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { SystemMessagesComponent } from '../system-messages/system-messages.component';
 import { TapeMessagesComponent } from '../tape-messages/tape-messages.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notify',
@@ -71,7 +72,8 @@ export class NotifyComponent implements OnInit {
     private translate: TranslateService,
     private fb: FormBuilder,
     private np: NotifiesPolling,
-    private model: NzModalService
+    private model: NzModalService,
+    private router: Router
   ) {
     const subscription = this.np.notifies().subscribe(result => {
       this.sysUnread = result.base.notify.unread_system_num;
@@ -312,6 +314,7 @@ export class NotifyComponent implements OnInit {
     if (component.validation()) {
       component.submit()
         .subscribe(result => {
+            this.router.navigate([`/manage/transmit/type`]);
           this.message.success(this.translate.instant('global.accept-authorization-successfully'));
           resolve();
         }, error => {

@@ -332,40 +332,40 @@ export class EditBroadcastPlanComponent implements OnInit {
       case 'l2d1':
         if (this.theatres.length >= 2 && this.l2d1.length >= 0) {
           if (this.l2d1.length === 0) {
-            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+            this.isAddBroadcastingInfo(event, this.theatres[1].id);
           }
           if (this.l2d1.length === 1) {
-            this.isInsert(event, this.l2d1[0].id, this.theatres[0].id);
+            this.isInsert(event, this.l2d1[0].id, this.theatres[1].id);
           }
         }
         break;
       case 'l3d1':
         if (this.theatres.length >= 3 && this.l3d1.length >= 0) {
           if (this.l3d1.length === 0) {
-            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+            this.isAddBroadcastingInfo(event, this.theatres[2].id);
           }
           if (this.l3d1.length === 1) {
-            this.isInsert(event, this.l3d1[0].id, this.theatres[0].id);
+            this.isInsert(event, this.l3d1[0].id, this.theatres[2].id);
           }
         }
         break;
       case 'l4d1':
         if (this.theatres.length >= 4 && this.l4d1.length >= 0) {
           if (this.l4d1.length === 0) {
-            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+            this.isAddBroadcastingInfo(event, this.theatres[3].id);
           }
           if (this.l4d1.length === 1) {
-            this.isInsert(event, this.l4d1[0].id, this.theatres[0].id);
+            this.isInsert(event, this.l4d1[0].id, this.theatres[3].id);
           }
         }
         break;
       case 'l5d1':
         if (this.theatres.length >= 5 && this.l5d1.length >= 0) {
           if (this.l5d1.length === 0) {
-            this.isAddBroadcastingInfo(event, this.theatres[0].id);
+            this.isAddBroadcastingInfo(event, this.theatres[4].id);
           }
           if (this.l5d1.length === 1) {
-            this.isInsert(event, this.l5d1[0].id, this.theatres[0].id);
+            this.isInsert(event, this.l5d1[0].id, this.theatres[4].id);
           }
         }
         break;
