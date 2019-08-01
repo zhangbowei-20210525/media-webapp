@@ -2,7 +2,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { switchMap, tap, map, finalize } from 'rxjs/operators';
 import { PaginationDto, MessageService } from '@shared';
 import { I18nService } from '@core';
 import { TendencyInfoComponent } from '../components/tendency-info/tendency-info.component';
@@ -130,6 +130,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   scoreSecondList = [];
   scoreThirdList = [];
   nameThirdList = [];
+  isLoading: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -244,9 +245,17 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         }
       });
     this.getVerifyData(this.step_number);
-    this.seriesService.getReviewDetails(this.rid).subscribe(res => {
+    this.getReviewDetailsView();
+  }
+  getReviewDetailsView () {
+    this.seriesService.getReviewDetails(this.rid)
+    .pipe(finalize(() => {
+      this.isLoading = false;
+    }))
+    .subscribe(res => {
       console.log(res);
       this.reviewList = res;
+      this.isLoading = true;
       // this.isShowFirstScore = res.review_steps[0].review_records_statistic
       // 一审评分项
       this.scoreFirstList = res.review_steps[0].review_records_statistic.score_statistic.item_statistic;
@@ -642,6 +651,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   }
   verifySelectChange(event) {
     this.selectedIndex = event.index;
+    console.log(this.selectedIndex);
   }
 
   shareEmail() {

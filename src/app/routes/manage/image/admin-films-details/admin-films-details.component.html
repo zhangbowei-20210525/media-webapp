@@ -281,7 +281,6 @@
         
                 </nz-tab> -->
         </nz-tabset>
-
       </div>
     </div>
   </div>
@@ -289,298 +288,322 @@
     <div class="block-content">
       <nz-tabset [nzType]="'card'" (nzSelectChange)="verifySelectChange($event)">
         <nz-tab nzTitle="一审">
-          <div class='verify-result'>
-            <div class='result-title'>审片结果</div>
-            <div class='result-wrapper' style='padding-left:50px'>
-              <div class='wrapper-left'
-                style='display:flex;flex-direction:column;justify-content: center;position:relative'>
-                <div style='font-size:30px;color:#999999;text-align: center;'
-                  *ngIf="reviewFirstSteps?.review_records_statistic.score_statistic.avg === 0 "> 0.0
+            <div class='verify-result'>
+              <div class='result-title'>审片结果</div>
+              <div class='result-wrapper' style='padding-left:50px'>
+                <div class='wrapper-left'
+                  style='display:flex;flex-direction:column;justify-content: center;position:relative'>
+                  <div style='font-size:30px;color:#999999;text-align: center;'
+                    *ngIf="reviewFirstSteps?.review_records_statistic.score_statistic.avg === null || reviewFirstSteps?.review_records_statistic.score_statistic.avg === 0 ">
+                    0.0
+                  </div>
+                  <div style='font-size:30px;color:#ffba61;text-align: center;'
+                    *ngIf="!!reviewFirstSteps?.review_records_statistic.score_statistic.avg">
+                    {{reviewFirstSteps?.review_records_statistic.score_statistic.avg}}
+                  </div>
+                  <div style='font-size: 12px; color: #333'>
+                    {{ reviewFirstSteps?.review_records_statistic.score_statistic.has_scoring_status === true ? '满分十分' : '暂无评分' }}
+                  </div>
                 </div>
-                <div style='font-size:30px;color:#ffba61;text-align: center;'
-                  *ngIf="!!reviewFirstSteps?.review_records_statistic.score_statistic.avg">
-                  {{reviewFirstSteps?.review_records_statistic.score_statistic.avg}}
-                </div>
-                <div style='font-size: 12px; color: #333'>{{ reviewFirstSteps?.review_records_statistic.score_statistic.has_scoring_status === true ? '满分十分' : '暂无评分' }}</div>
-              </div>
-              <div class='wrapper-right'>
-                <div class='right-pass' style='line-height: 2'>
-                  <img style='width: 15px;height: 18px;' src="../../../../../assets/images/ic_like.png" alt="">
-                  <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.agree_name}}</div>
-                  <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstLike"
-                    [nzShowInfo]="false">
-                  </nz-progress>
-                  <div style='margin-left: 10px'>
-                    {{reviewFirstSteps?.conclusion_item.agree_name}}{{likePeople}}人/{{firstLike === NaN ? 0 : firstLike}}%</div>
-                </div>
-                <div class='right-unPass'>
-                  <img style='width: 15px;height: 18px;' src="../../../../../assets/images/ic_dislike.png" alt="">
-                  <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.oppose_name}}</div>
-                  <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstOppose"
-                    [nzShowInfo]="false">
-                  </nz-progress>
-                  <div style='margin-left:10px'>
-                    {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose === NaN ? 0 : firstOppose}}%</div>
+                <div class='wrapper-right'>
+                  <div class='right-pass' style='line-height: 2'>
+                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.agree_name}}
+                    </div>
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstLike"
+                      [nzShowInfo]="false">
+                    </nz-progress>
+                    <div style='margin-left: 10px'>
+                      {{reviewFirstSteps?.conclusion_item.agree_name}}{{likePeople}}人/{{firstLike === NaN ? 0 : firstLike}}%
+                    </div>
+                  </div>
+                  <div class='right-unPass'>
+                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.oppose_name}}
+                    </div>
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstOppose"
+                      [nzShowInfo]="false">
+                    </nz-progress>
+                    <div style='margin-left:10px'>
+                      {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose === NaN ? 0 : firstOppose}}%
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class='score-result' *ngIf="nameFirstList.length > 0">
-            <div class='result-title'>评分项</div>
-            <div class='result-wrapper'>
-              <div class='score-item' *ngFor="let score of nameFirstList">
-                <div class='item-left'>{{score.name}}</div>
-                <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
-              </div>
-            </div>
-          </div>
-          <div class='comment-result' *ngIf="reviewFirstSteps?.comment_status === true">
-            <div *ngFor="let b of reviewFirstSteps?.review_records">
-              <div class='result-title'>审片评论</div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 2">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 14px;height: 16px;' src="../../../../../assets/images/ic_dislike.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 1">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 14px;height: 16px;' src="../../../../../assets/images/ic_like.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 0">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Notaudited.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
+            <div class='score-result' *ngIf="nameFirstList.length > 0">
+              <div class='result-title'>评分项</div>
+              <div class='result-wrapper'>
+                <div class='score-item' *ngFor="let score of nameFirstList">
+                  <div class='item-left'>{{score.name}}</div>
+                  <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
                 </div>
               </div>
             </div>
-          </div>
+            <div class='comment-result' *ngIf="reviewFirstSteps?.comment_status === true">
+              <div *ngFor="let b of reviewFirstSteps?.review_records">
+                <div class='result-title'>审片评论</div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 2">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 1">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_passage.png" alt="">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 0">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Notaudited.png">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           <!-- <div class='load-more' (click)='getMore()'>查看更多</div> -->
         </nz-tab>
         <nz-tab nzTitle="二审" *ngIf='reviewList?.step_number === 2 || reviewList?.step_number === 3'>
-          <div class='verify-result'>
-            <div class='result-title'>审片结果</div>
-            <div class='result-wrapper' style='padding-left:50px'>
-              <div class='wrapper-left'
-                style='display:flex;flex-direction:column;justify-content: center;position:relative'>
-                <div style='font-size:30px;color:#999999;text-align: center;'
-                  *ngIf="reviewSecondSteps?.review_records_statistic.score_statistic.avg === 0 "> 0.0
-                </div>
-                <div style='font-size:30px;color:#ffba61;text-align: center;'
-                  *ngIf="!!reviewSecondSteps?.review_records_statistic.score_statistic.avg">
-                  {{reviewSecondSteps?.review_records_statistic.score_statistic.avg}}
-                </div>
-                <div style='font-size: 12px; color: #333'>{{ reviewSecondSteps?.review_records_statistic.score_statistic.has_scoring_status === true ? '满分十分' : '暂无评分' }}</div>
-              </div>
-              <div class='wrapper-right'>
-                <div class='right-pass' style='line-height: 2'>
-                  <img style='width: 15px;height: 18px;' src="../../../../../assets/images/ic_like.png" alt="">
-                  <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.agree_name}}</div>
-                  <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondLike"
-                    [nzShowInfo]="false">
-                  </nz-progress>
-                  <div style='margin-left: 10px'>
-                    {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike === NaN ? 0 : secondLike}}%</div>
-                </div>
-                <div class='right-unPass'>
-                  <img style='width: 15px;height: 18px;' src="../../../../../assets/images/ic_dislike.png" alt="">
-                  <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.oppose_name}}
+            <div class='verify-result'>
+              <div class='result-title'>审片结果</div>
+              <div class='result-wrapper' style='padding-left:50px'>
+                <div class='wrapper-left'
+                  style='display:flex;flex-direction:column;justify-content: center;position:relative'>
+                  <div style='font-size:30px;color:#999999;text-align: center;'
+                    *ngIf="reviewSecondSteps?.review_records_statistic.score_statistic.avg === null ||  reviewSecondSteps?.review_records_statistic.score_statistic.avg === 0">
+                    0.0
                   </div>
-                  <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondOppose"
-                    [nzShowInfo]="false">
-                  </nz-progress>
-                  <div style='margin-left:10px'>
-                    {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose === NaN ? 0 : secondOppose}}%</div>
+                  <div style='font-size:30px;color:#ffba61;text-align: center;'
+                    *ngIf="!!reviewSecondSteps?.review_records_statistic.score_statistic.avg">
+                    {{reviewSecondSteps?.review_records_statistic.score_statistic.avg}}
+                  </div>
+                  <div style='font-size: 12px; color: #333'>
+                    {{ reviewSecondSteps?.review_records_statistic.score_statistic.has_scoring_status === true ? '满分十分' : '暂无评分' }}
+                  </div>
+                </div>
+                <div class='wrapper-right'>
+                  <div class='right-pass' style='line-height: 2'>
+                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.agree_name}}
+                    </div>
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondLike"
+                      [nzShowInfo]="false">
+                    </nz-progress>
+                    <div style='margin-left: 10px'>
+                      {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike === NaN ? 0 : secondLike}}%
+                    </div>
+                  </div>
+                  <div class='right-unPass'>
+                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.oppose_name}}
+                    </div>
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondOppose"
+                      [nzShowInfo]="false">
+                    </nz-progress>
+                    <div style='margin-left:10px'>
+                      {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose === NaN ? 0 : secondOppose}}%
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class='score-result' *ngIf="nameThirdList.length > 0">
-            <div class='result-title'>评分项</div>
-            <div class='result-wrapper'>
-              <div class='score-item' *ngFor="let score of nameSecondList">
-                <div class='item-left'>{{score.name}}</div>
-                <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
-              </div>
-            </div>
-          </div>
-          <div class='comment-result' *ngIf="reviewSecondSteps.comment_status === true">
-            <div *ngFor="let b of reviewSecondSteps?.review_records">
-              <div class='result-title'>审片评论</div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 2">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 14px;height: 16px;' src="../../../../../assets/images/ic_dislike.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 1">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 14px;height: 16px;' src="../../../../../assets/images/ic_like.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 0">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Notaudited.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
+            <div class='score-result' *ngIf="nameThirdList.length > 0">
+              <div class='result-title'>评分项</div>
+              <div class='result-wrapper'>
+                <div class='score-item' *ngFor="let score of nameSecondList">
+                  <div class='item-left'>{{score.name}}</div>
+                  <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
                 </div>
               </div>
             </div>
-          </div>
+            <div class='comment-result' *ngIf="reviewSecondSteps.comment_status === true">
+              <div *ngFor="let b of reviewSecondSteps?.review_records">
+                <div class='result-title'>审片评论</div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 2">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 1">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '喜欢'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_likeComponent.png" alt="">
+                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '不喜欢'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_dislikeComponent.png" alt="">
+                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '通过'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_passage.png" alt="">
+                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '不通过'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 0">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Notaudited.png"
+                        alt="">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </nz-tab>
         <nz-tab nzTitle="三审" *ngIf='reviewList?.step_number === 3'>
             <div class='verify-result'>
-                <div class='result-title'>审片结果</div>
-                <div class='result-wrapper' style='padding-left:50px'>
-                  <div class='wrapper-left'
-                    style='display:flex;flex-direction:column;justify-content: center;position:relative'>
-                    <div style='font-size:30px;color:#999999;text-align: center;'
-                      *ngIf="reviewThirdSteps?.review_records_statistic.score_statistic.avg === 0 "> 0.0
-                    </div>
-                    <div style='font-size:30px;color:#ffba61;text-align: center;'
-                      *ngIf="!!reviewThirdSteps?.review_records_statistic.score_statistic.avg">
-                      {{reviewThirdSteps?.review_records_statistic.score_statistic.avg}}
-                    </div>
-                    <div style='font-size: 12px; color: #333'>{{ reviewThirdSteps?.review_records_statistic.score_statistic.has_scoring_status === true ? '满分十分' : '暂无评分' }}</div>
+              <div class='result-title'>审片结果</div>
+              <div class='result-wrapper' style='padding-left:50px'>
+                <div class='wrapper-left'
+                  style='display:flex;flex-direction:column;justify-content: center;position:relative'>
+                  <div style='font-size:30px;color:#999999;text-align: center;'
+                    *ngIf="reviewThirdSteps?.review_records_statistic.score_statistic.avg === null || reviewThirdSteps?.review_records_statistic.score_statistic.avg === 0">
+                    0.0
                   </div>
+                  <div style='font-size:30px;color:#ffba61;text-align: center;'
+                    *ngIf="!!reviewThirdSteps?.review_records_statistic.score_statistic.avg">
+                    {{reviewThirdSteps?.review_records_statistic.score_statistic.avg}}
+                  </div>
+                  <div style='font-size: 12px; color: #333'>
+                    {{ reviewThirdSteps?.review_records_statistic.score_statistic.has_scoring_status === true ? '满分十分' : '暂无评分' }}
+                  </div>
+                </div>
+                <div class='wrapper-right'>
+                  <div class='right-pass' style='line-height: 2'>
+                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.agree_name}}
+                    </div>
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="thirdLike"
+                      [nzShowInfo]="false">
+                    </nz-progress>
+                    <div style='margin-left: 10px'>
+                      {{reviewThirdSteps?.conclusion_item.agree_name}}{{thirdLikePeople}}人/{{thirdLike === NaN ? 0 : thirdLike}}%
+                    </div>
+                  </div>
+                  <div class='right-unPass'>
+                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.oppose_name}}
+                    </div>
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="thirdOppose"
+                      [nzShowInfo]="false">
+                    </nz-progress>
+                    <div style='margin-left:10px'>
+                      {{reviewThirdSteps?.conclusion_item.oppose_name}}{{thirdDisLikePeople}}人/{{thirdOppose === NaN ? 0 : thirdOppose}}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='score-result' *ngIf="nameThirdList.length > 0">
+              <div class='result-title'>评分项</div>
+              <div class='result-wrapper'>
+                <div class='score-item' *ngFor="let score of nameThirdList">
+                  <div class='item-left'>{{score.name}}</div>
+                  <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
+                </div>
+              </div>
+            </div>
+            <div class='comment-result' *ngIf="reviewThirdSteps.comment_status === true">
+              <div *ngFor="let b of reviewThirdSteps?.review_records">
+                <div class='result-title'>审片评论</div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 2">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
                   <div class='wrapper-right'>
-                    <div class='right-pass' style='line-height: 2'>
-                      <img style='width: 15px;height: 18px;' src="../../../../../assets/images/ic_like.png" alt="">
-                      <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.agree_name}}</div>
-                      <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="thirdLike"
-                        [nzShowInfo]="false">
-                      </nz-progress>
-                      <div style='margin-left: 10px'>
-                        {{reviewThirdSteps?.conclusion_item.agree_name}}{{thirdLikePeople}}人/{{thirdLike === NaN ? 0 : thirdLike}}%</div>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
                     </div>
-                    <div class='right-unPass'>
-                      <img style='width: 15px;height: 18px;' src="../../../../../assets/images/ic_dislike.png" alt="">
-                      <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.oppose_name}}
-                      </div>
-                      <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="thirdOppose"
-                        [nzShowInfo]="false">
-                      </nz-progress>
-                      <div style='margin-left:10px'>
-                        {{reviewThirdSteps?.conclusion_item.oppose_name}}{{thirdDisLikePeople}}人/{{thirdOppose === NaN ? 0 : thirdOppose}}%</div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
                     </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 1">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 20px; height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
+                  </div>
+                </div>
+                <div class='result-wrapper' *ngIf="b.conclusion === 0">
+                  <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
+                    alt="">
+                  <div class='wrapper-right'>
+                    <div class='right-title'>
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Notaudited.png"
+                        alt="">
+                    </div>
+                    <div class='right-rate'>
+                      <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                      <div style="margin-top: 4px;">{{b.review_at}}</div>
+                    </div>
+                    <div class='right-content'>{{b.comment}}</div>
                   </div>
                 </div>
               </div>
-              <div class='score-result' *ngIf="nameThirdList.length > 0">
-                <div class='result-title'>评分项</div>
-                <div class='result-wrapper'>
-                  <div class='score-item' *ngFor="let score of nameThirdList">
-                    <div class='item-left'>{{score.name}}</div>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
-                  </div>
-                </div>
-              </div>
-              <div class='comment-result' *ngIf="reviewThirdSteps.comment_status === true">
-                <div *ngFor="let b of reviewThirdSteps?.review_records">
-                  <div class='result-title'>审片评论</div>
-                  <div class='result-wrapper' *ngIf="b.conclusion === 2">
-                    <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                      alt="">
-                    <div class='wrapper-right'>
-                      <div class='right-title'>
-                        <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                        <img style='width: 14px;height: 16px;' src="../../../../../assets/images/ic_dislike.png" alt="">
-                      </div>
-                      <div class='right-rate'>
-                        <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                        <div style="margin-top: 4px;">{{b.review_at}}</div>
-                      </div>
-                      <div class='right-content'>{{b.comment}}</div>
-                    </div>
-                  </div>
-                  <div class='result-wrapper' *ngIf="b.conclusion === 1">
-                    <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                      alt="">
-                    <div class='wrapper-right'>
-                      <div class='right-title'>
-                        <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                        <img style='width: 14px;height: 16px;' src="../../../../../assets/images/ic_like.png" alt="">
-                      </div>
-                      <div class='right-rate'>
-                        <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                        <div style="margin-top: 4px;">{{b.review_at}}</div>
-                      </div>
-                      <div class='right-content'>{{b.comment}}</div>
-                    </div>
-                  </div>
-                  <div class='result-wrapper' *ngIf="b.conclusion === 0">
-                    <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                      alt="">
-                    <div class='wrapper-right'>
-                      <div class='right-title'>
-                        <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                        <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Notaudited.png" alt="">
-                      </div>
-                      <div class='right-rate'>
-                        <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                        <div style="margin-top: 4px;">{{b.review_at}}</div>
-                      </div>
-                      <div class='right-content'>{{b.comment}}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            </div>
         </nz-tab>
       </nz-tabset>
     </div>

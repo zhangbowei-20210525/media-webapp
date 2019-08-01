@@ -99,7 +99,7 @@ export class ReviewViewComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.isForm = +params.get('isForm');
-      console.log(this.isForm);
+      // console.log(this.isForm);
       if (this.isForm === 1) {
         for (const key in this.mapOfCheckedId) {
           if (this.mapOfCheckedId[key]) {
@@ -128,9 +128,9 @@ export class ReviewViewComponent implements OnInit {
         this.pagination = result.pagination;
         this.isMyTapesLoaded = true;
 
-        console.log(this.list);
+        // console.log(this.list);
       });
-    console.log(this.intentionList.length);
+    // console.log(this.intentionList.length);
   }
   fetchPublicities(step_number) {
     this.isLoading = true;
@@ -179,8 +179,7 @@ export class ReviewViewComponent implements OnInit {
         this.reviewList = res.list;
         this.isShowTab = true;
         this.isShowView = true;
-
-        console.log(this.reviewList);
+        // console.log(this.reviewList);
         this.reviewList.forEach(item => {
           this.reviewId = item.id;
         });
@@ -328,9 +327,6 @@ export class ReviewViewComponent implements OnInit {
   }
   // 节目名跳转详情
   AdministratorViewDetails(sid: number, id: number, rid: number) {
-    // console.log(rid);
-    // console.log(sid);
-    // console.log(id);
     this.router.navigate([`/manage/image/admin-films-details/${id}`, { sid: sid, rid: rid }]);
   }
   // 设置面板改变
@@ -351,7 +347,7 @@ export class ReviewViewComponent implements OnInit {
     this.isShowTab = false;
     this.isMyTapesLoaded = true;
     this.fetchPublicities(this.selectedTabIndex);
-    console.log(this.selectedTabIndex);
+    // console.log(this.selectedTabIndex);
   }
   // 一审提交
   submitNext() {
@@ -394,6 +390,7 @@ export class ReviewViewComponent implements OnInit {
     for (const key in this.threeMapOfCheckedId) {
       if (this.threeMapOfCheckedId[key]) {
         review_ids.push(Number(key));
+        console.log(review_ids);
       }
     }
     this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, isVerify: 1 }]);

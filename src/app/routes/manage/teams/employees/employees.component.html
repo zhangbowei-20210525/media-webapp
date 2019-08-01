@@ -2,7 +2,7 @@
   <button nz-button (click)="addEmployee()" acl="admin" [acl-ability]="ability.company.employee.profile">添加成员</button>
   <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()" acl="admin"
     [acl-ability]="ability.company.employee.profile">删除</button>
-  <button nz-button acl="admin" [acl-ability]="ability.company.employee.profile">邀请</button>
+  <!-- <button nz-button acl="admin" [acl-ability]="ability.company.employee.profile">邀请</button> -->
 </div>
 
 <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>
