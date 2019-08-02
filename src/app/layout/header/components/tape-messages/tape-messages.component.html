@@ -80,6 +80,10 @@
             </div>
       </div>
     </div>
+    <div class="theme-title" *ngIf="isShow == false">授权公司</div>
+    <div style="font-size: 16px;
+    text-align: center;
+    font-weight: bold;" *ngIf="isShow == false">{{ authInfo?.auth_company_full_name }}</div>
     <div class="theme-title" *ngIf="isShow == true">请选择授权公司</div>
     <!-- <div class="d-flex" style ="align-items:center;">
       <div style="font-size:16px;color: #333333;margin-left: 10px">请选择授权公司</div>
