@@ -2,8 +2,8 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
-import { switchMap, tap, map } from 'rxjs/operators';
-import { PaginationDto, MessageService } from '@shared';
+import { switchMap, tap, map, finalize } from 'rxjs/operators';
+import { PaginationDto, MessageService, Util } from '@shared';
 import { I18nService } from '@core';
 import { TendencyInfoComponent } from '../components/tendency-info/tendency-info.component';
 import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
@@ -18,6 +18,16 @@ declare function videojs(selector: string);
   styleUrls: ['./admin-films-details.component.less']
 })
 export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+  mouth: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private seriesService: SeriesService,
+    private modalService: NzModalService,
+    private i18n: I18nService,
+    private message: MessageService,
+  ) { }
 
   id: number;
   player: any;
@@ -103,8 +113,8 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   reviewRecodesStatistic: any;
   reviewRecords: any;
   reviewFirstSteps: any;
-  reviewSecondSteps = {};
-  reviewThirdSteps = {};
+  reviewSecondSteps: any;
+  reviewThirdSteps: any;
   firstLike = 0;
   firstOppose = 0;
   // reviewSteps = [];
@@ -122,16 +132,24 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   thirdOppose: number;
   reviewList: any;
   rid: number;
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private seriesService: SeriesService,
-    private modalService: NzModalService,
-    private i18n: I18nService,
-    private message: MessageService,
-  ) { }
-
+  firstInformation: any;
+  thirdLikePeople: any;
+  scoreFirstList = [];
+  nameFirstList = [];
+  nameSecondList = [];
+  scoreSecondList = [];
+  scoreThirdList = [];
+  nameThirdList = [];
+  isLoading: boolean;
+  isShowSelect = false;
+  // 获取当前时间
+  myDate = new Date();
   ngOnInit() {
+    console.log(this.myDate.getFullYear());
+    console.log(this.myDate.getMonth() + 1);
+    console.log(this.myDate.getDate());
+    console.log(Util.dateFullToString(this.myDate));
+
     this.ishidden = false;
     this.samplePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
     this.featurePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
@@ -236,45 +254,145 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         }
       });
     this.getVerifyData(this.step_number);
-    this.seriesService.getReviewDetails(this.rid).subscribe(res => {
-      console.log(res);
-      this.reviewList = res;
-      if (res.review_steps[0].lenght > 3) {
-        this.reviewFirstSteps = res.review_steps[0].splice(0, 3);
-      } else {
+    this.getReviewDetailsView();
+  }
+  getReviewDetailsView() {
+    this.seriesService.getReviewDetails(this.rid)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+      }))
+      .subscribe(res => {
+        console.log(res);
+        this.reviewList = res;
+        this.isLoading = true;
+        // this.isShowFirstScore = res.review_steps[0].review_records_statistic
+        // 一审评分项
+        this.scoreFirstList = res.review_steps[0].review_records_statistic.score_statistic.item_statistic;
+        this.nameFirstList = res.review_steps[0].scoring_items;
+        this.nameFirstList.forEach((item, index) => {
+          item.avg = (this.scoreFirstList[index].avg) / 2;
+        });
+        // 二审评分想
+        this.scoreSecondList = res.review_steps[1].review_records_statistic.score_statistic.item_statistic;
+        this.nameSecondList = res.review_steps[1].scoring_items;
+        this.nameSecondList.forEach((item, index) => {
+          item.avg = (this.scoreSecondList[index].avg) / 2;
+        });
+        // 三审评分想
+        this.scoreThirdList = res.review_steps[2].review_records_statistic.score_statistic.item_statistic;
+        this.nameThirdList = res.review_steps[2].scoring_items;
+        this.nameThirdList.forEach((item, index) => {
+          item.avg = (this.scoreThirdList[index].avg) / 2;
+        });
+        // 查看更多功能注释
+        // if (res.review_steps[0].lenght > 3) {
+        // this.reviewFirstSteps = res.review_steps[0].splice(0, 3);
+        // } else {
         this.reviewFirstSteps = res.review_steps[0];
-      }
-      // 一审喜欢人数及通过率
-      this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
-      this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
-      this.firstLike = (res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[0].review_records_statistic.reviewed_count) * 100;
-      this.firstOppose = (res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[0].review_records_statistic.reviewed_count) * 100;
-      // 二审喜欢人数及通过率
+        this.reviewSecondSteps = res.review_steps[1];
+        this.reviewThirdSteps = res.review_steps[2];
+        const currentYear = this.myDate.getFullYear();
+        const currentMouth = this.myDate.getMonth() + 1;
+        const currentDate = this.myDate.getDate();
+        this.reviewFirstSteps.review_records.forEach(item => {
+          const year = new Date(item.review_at).getFullYear();
+          const mouth = new Date(item.review_at).getMonth() + 1;
+          const date = new Date(item.review_at).getDate();
+          if (year === currentYear) {
+            if (mouth === currentMouth) {
+              if (date === currentDate) {
+                if (!!item.review_at) {
+                  item.review_at = item.review_at.split(' ')[1];
+                }
+              }
+            } else {
+              item.review_at = item.review_at;
+            }
+          } else {
+            if (!!item.review_at) {
+              item.review_at = item.review_at.split(' ')[0];
+            }
+          }
+        });
+        this.reviewSecondSteps.review_records.forEach(item => {
+          const year = new Date(item.review_at).getFullYear();
+          const mouth = new Date(item.review_at).getMonth() + 1;
+          const date = new Date(item.review_at).getDate();
+          if (year === currentYear) {
+            if (mouth === currentMouth) {
+              if (date === currentDate) {
+                if (!!item.review_at) {
+                  item.review_at = item.review_at.split(' ')[1];
+                }
+              }
+            } else {
+              console.log(item.review_at);
+              item.review_at = item.review_at;
+              console.log(item.review_at);
 
-      this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
-      this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
-      this.secondLike = (res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[1].review_records_statistic.reviewed_count) * 100;
-      this.secondOppose = (res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[1].review_records_statistic.reviewed_count) * 100;
-      // 三审喜欢人数及通过率
-      this.disLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.agree;
-      this.thirdDisLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
-      this.thirdLike = (res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[2].review_records_statistic.reviewed_count) * 100;
-      this.thirdOppose = (res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[2].review_records_statistic.reviewed_count) * 100;
-      // 总分
-      this.reviewSecondSteps = res.review_steps[1];
-      this.reviewThirdSteps = res.review_steps[2];
-      console.log(res);
-      this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
-      this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
-      this.stepsNumber = res.step_number;
-      // this.stepsNumber = 3;
-    });
+            }
+          } else {
+            if (!!item.review_at) {
+              item.review_at = item.review_at.split(' ')[0];
+            }
+            console.log(item.review_at);
+          }
+        });
+        this.reviewThirdSteps.review_records.forEach(item => {
+          const year = new Date(item.review_at).getFullYear();
+          const mouth = new Date(item.review_at).getMonth() + 1;
+          const date = new Date(item.review_at).getDate();
+          if (year === currentYear) {
+            if (mouth === currentMouth) {
+              if (date === currentDate) {
+                if (!!item.review_at) {
+                  item.review_at = item.review_at.split(' ')[1];
+                }
+                console.log(item.review_at);
+              }
+            } else {
+              item.review_at = item.review_at;
+              console.log(item.review_at);
+
+            }
+          } else {
+            if (!!item.review_at) {
+              item.review_at = item.review_at.split(' ')[0];
+            }
+            console.log(item.review_at);
+          }
+        });
+        // }
+        // 一审喜欢人数及通过率
+        this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
+        this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
+        this.firstLike = ((res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
+          res.review_steps[0].review_records_statistic.reviewed_count) * 100) || 0;
+        this.firstOppose = ((res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
+          res.review_steps[0].review_records_statistic.reviewed_count) * 100) || 0;
+        // 二审喜欢人数及通过率
+        this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
+        this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
+        this.secondLike = ((res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
+          res.review_steps[1].review_records_statistic.reviewed_count) * 100) || 0;
+        this.secondOppose = ((res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
+          res.review_steps[1].review_records_statistic.reviewed_count) * 100) || 0;
+        console.log(this.secondOppose);
+
+        // 三审喜欢人数及通过率
+        this.thirdLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.agree;
+        this.thirdDisLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
+        this.thirdLike = ((res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
+          res.review_steps[2].review_records_statistic.reviewed_count) * 100) || 0;
+        this.thirdOppose = ((res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
+          res.review_steps[2].review_records_statistic.reviewed_count) * 100) || 0;
+        console.log(this.thirdOppose);
+        // 总分
+        console.log(res);
+        this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
+        this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
+        this.stepsNumber = res.step_number;
+      });
   }
   getVerifyData(step_number) {
     //   this.seriesService.getFirstVerifyData().subscribe(res=>{
@@ -613,6 +731,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   }
   verifySelectChange(event) {
     this.selectedIndex = event.index;
+    console.log(this.selectedIndex);
   }
 
   shareEmail() {
@@ -620,185 +739,17 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     // tslint:disable-next-line:max-line-length
     this.seriesService.shareEmail(this.emailAddress, `http://test1.bctop.net/d/${this.id}`, this.publicityName, this.sid).subscribe();
   }
-
-  // 选择偏向弹框
-  choseTendency() {
-    this.modalService.create({
-      nzTitle: `发起审片`,
-      nzContent: TendencyInfoComponent,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: 440,
-      nzOkText: '提交',
-      nzCancelText: '取消',
-      nzOnOk: () => new Promise((resolve) => {
-        resolve();
-        this.router.navigate([`/manage/image/verify-films`]);
-      }),
-      nzNoAnimation: true,
-    });
+  ShowSelect() {
+    this.isShowSelect = true;
   }
-
-  // 选择是否喜欢
-  choseIsLike(data) {
-    if (data === 'like') {
-      this.firstVerify = true;
-    } else {
-      this.firstVerify = false;
-    }
-    console.log(data);
+  NoShowSelect() {
+    this.isShowSelect = false;
   }
-  // 文本框
-  textareaValue(data) {
-    this.firstComment = data;
-  }
-  // 提交一审详情
-  // submit() {
-  //   this.modalService.create({
-  //     nzTitle: `提交信息`,
-  //     nzContent: FirstInstanceDetailsComponent,
-  //     // nzComponentParams: { id: this.publicityId },
-  //     nzMaskClosable: false,
-  //     nzClosable: false,
-  //     nzWidth: 400,
-  //     nzOkText: '确定',
-  //     nzCancelText: '取消',
-  //     nzNoAnimation: true,
-  //     nzOnOk: () => new Promise((resolve) => {
-  //       resolve();
-  //       // const obj = {
-  //       //   conclusion: this.firstVerify,
-  //       //   comment: this.firstComment,
-  //       // };
-  //       const conclusion = this.firstVerify;
-  //       const comment = this.firstComment;
-  //       const scoring = [];
-  //       if (JSON.stringify(this.firstObj) !== '{}') {
-  //         scoring.push(this.firstObj);
-  //       }
-  //       if (JSON.stringify(this.secondObj) !== '{}') {
-  //         scoring.push(this.secondObj);
-  //       }
-  //       if (JSON.stringify(this.threeObj) !== '{}') {
-  //         scoring.push(this.threeObj);
-  //       }
-  //       if (JSON.stringify(this.fourObj) !== '{}') {
-  //         scoring.push(this.fourObj);
-  //       }
-  //       if (JSON.stringify(this.fiveObj) !== '{}') {
-  //         scoring.push(this.fiveObj);
-  //       }
-  //       if (conclusion === undefined || comment === '') {
-  //         this.message.error('请填写完整信息');
-  //       } else {
-  //         this.seriesService.submitFirstInstanceDetails(conclusion, scoring, comment, this.id).subscribe(res => {
-  //           console.log(res);
-  //         });
-  //         this.message.success('审片成功');
-  //         this.router.navigate([`manage/image`]);
-  //       }
-  //     }),
-  //     // nzOnOk: (component: FirstInstanceDetailsComponent) => this.shareBusinessmen(component),
-  //   });
-  // }
-
-  choseIsPass(data) {
-    if (data === 'pass') {
-      this.secondVerify = true;
-    } else {
-      this.secondVerify = false;
-    }
-    console.log(this.secondVerify);
-    console.log(data);
-  }
-  // 文本框
-  textareaValueSecond(data) {
-    this.secondComment = data;
-    console.log(data);
-  }
-  // 提交二审详情
-  // submitSecond() {
-  //   this.modalService.create({
-  //     nzTitle: `提交信息`,
-  //     nzContent: FirstInstanceDetailsComponent,
-  //     // nzComponentParams: { id: this.publicityId },
-  //     nzMaskClosable: false,
-  //     nzClosable: false,
-  //     nzWidth: 400,
-  //     nzOkText: '确定',
-  //     nzCancelText: '取消',
-  //     nzNoAnimation: true,
-  //     nzOnOk: () => new Promise((resolve) => {
-  //       resolve();
-  //       const conclusion = this.secondVerify;
-  //       const comment = this.secondComment;
-  //       const scoring = [];
-  //       if (JSON.stringify(this.firstObj) !== '{}') {
-  //         scoring.push(this.firstObj);
-  //       }
-  //       if (JSON.stringify(this.secondObj) !== '{}') {
-  //         scoring.push(this.secondObj);
-  //       }
-  //       if (JSON.stringify(this.threeObj) !== '{}') {
-  //         scoring.push(this.threeObj);
-  //       }
-  //       if (JSON.stringify(this.fourObj) !== '{}') {
-  //         scoring.push(this.fourObj);
-  //       }
-  //       if (JSON.stringify(this.fiveObj) !== '{}') {
-  //         scoring.push(this.fiveObj);
-  //       }
-  //       console.log(conclusion);
-  //       console.log(comment);
-  //       console.log(scoring);
-  //       if (conclusion === undefined || comment === '') {
-  //         this.message.error('请填写完整信息');
-  //       } else {
-  //         this.seriesService.submitSecondInstanceDetails(conclusion, scoring, comment, this.id).subscribe(res => {
-  //           console.log(res);
-  //         });
-  //         this.router.navigate([`manage/image`]);
-  //         this.message.success('审片成功');
-  //       }
-  //     }),
-  //     // nzOnOk: (component: FirstInstanceDetailsComponent) => this.shareBusinessmen(component),
-  //   });
-  // }
-  // 三审
-
-  // choseIsPassThird(data) {
-  //   if (data === 'threePass') {
-  //     this.threeVerify = true;
-  //   } else {
-  //     this.threeVerify = false;
-  //   }
-  //   console.log(data);
-  // }
-  textareaValueThird(data) {
-    this.threeComment = data;
-    console.log(data);
-  }
-  // 提交三审详情
-  submitThird() {
-    this.modalService.create({
-      nzTitle: `提交信息`,
-      nzContent: FirstInstanceDetailsComponent,
-      // nzComponentParams: { id: this.publicityId },
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: 400,
-      nzOkText: '确定',
-      nzCancelText: '取消',
-      nzNoAnimation: true,
-      nzOnOk: () => new Promise((resolve) => {
-        resolve();
-      }),
-    });
-  }
-
   // 查看更多
-  getMore() {
-    console.log('getmore');
-    this.reviewFirstSteps = this.reviewList.review_steps[0];
-  }
+  // getMore() {
+  //   console.log('getmore');
+  //   this.reviewFirstSteps = this.reviewList.review_steps[0];
+  // }
+
 }
+
