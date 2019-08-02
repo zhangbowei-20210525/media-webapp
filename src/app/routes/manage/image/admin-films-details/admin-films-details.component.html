@@ -314,7 +314,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left: 10px'>
-                    {{reviewFirstSteps?.conclusion_item.agree_name}}{{likePeople}}人/{{firstLike === NaN ? 0 : firstLike}}%
+                    {{reviewFirstSteps?.conclusion_item.agree_name}}{{likePeople}}人/{{firstLike}}%
                   </div>
                 </div>
                 <div class='right-unPass'>
@@ -325,7 +325,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left:10px'>
-                    {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose === NaN ? 0 : firstOppose}}%
+                    {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose}}%
                   </div>
                 </div>
               </div>
@@ -386,7 +386,7 @@
                     <div style="margin-top: 4px;">{{b.review_at}}</div>
                   </div>
                   <div class='right-content'>{{b.comment}}</div>
-                  <div *ngIf="isShowSelect === true"
+                  <!-- <div *ngIf="isShowSelect === true"
                     style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
                     <div>
                       <div class='result-title-btm'>评分项</div>
@@ -397,7 +397,7 @@
                         </div>
                       </div>
                     </div>
-                    <!-- <div class='result-title-btm'>审片日志</div>
+                    <div class='result-title-btm'>审片日志</div>
                     <nz-timeline [nzMode]="'left'">
                       <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
                       <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
@@ -411,8 +411,8 @@
                       <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
                       <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
                       <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    </nz-timeline> -->
-                  </div>
+                    </nz-timeline>
+                  </div> -->
                 </div>
               </div>
               <div class='result-wrapper' *ngIf="b.conclusion === 0">
@@ -461,7 +461,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left: 10px'>
-                    {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike === NaN ? 0 : secondLike}}%
+                    {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike}}%
                   </div>
                 </div>
                 <div class='right-unPass'>
@@ -472,7 +472,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left:10px'>
-                    {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose === NaN ? 0 : secondOppose}}%
+                    {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose}}%
                   </div>
                 </div>
               </div>
@@ -493,16 +493,57 @@
               <div class='result-wrapper' *ngIf="b.conclusion === 2">
                 <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
                   alt="">
-                <div class='wrapper-right'>
+                <div class='wrapper-right' style="flex: 1">
                   <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                    <div style="display: flex; align-items:center;">
+                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                    </div>
+                    <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                      style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                      <a href="javascript:void(0)">查看审片明细
+                        <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down" nzTheme="outline"></i>
+                      </a>
+                    </div>
+                    <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                      style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                      <a href="javascript:void(0)">收起审片明细
+                        <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+                      </a>
+                    </div> -->
                   </div>
                   <div class='right-rate'>
                     <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
                     <div style="margin-top: 4px;">{{b.review_at}}</div>
                   </div>
                   <div class='right-content'>{{b.comment}}</div>
+                  <!-- <div *ngIf="isShowSelect === true"
+                  style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
+                  <div>
+                    <div class='result-title-btm'>评分项</div>
+                    <div class='result-wrapper-btm'>
+                      <div class='score-item-btm' *ngFor="let score of nameFirstList">
+                        <div class='item-left'>{{score.name}}</div>
+                        <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='result-title-btm'>审片日志</div>
+                  <nz-timeline [nzMode]="'left'">
+                    <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                  </nz-timeline>
+                </div> -->
                 </div>
               </div>
               <div class='result-wrapper' *ngIf="b.conclusion === 1">
@@ -511,8 +552,7 @@
                 <div class='wrapper-right'>
                   <div class='right-title'>
                     <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 32px;height: 14px;'
-                      src="../../../../../assets/images/ic_passage.png" alt="">
+                    <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_passage.png" alt="">
                   </div>
                   <div class='right-rate'>
                     <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
@@ -566,7 +606,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left: 10px'>
-                    {{reviewThirdSteps?.conclusion_item.agree_name}}{{thirdLikePeople}}人/{{thirdLike === NaN ? 0 : thirdLike}}%
+                    {{reviewThirdSteps?.conclusion_item.agree_name}}{{thirdLikePeople}}人/{{thirdLike}}%
                   </div>
                 </div>
                 <div class='right-unPass'>
@@ -577,7 +617,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left:10px'>
-                    {{reviewThirdSteps?.conclusion_item.oppose_name}}{{thirdDisLikePeople}}人/{{thirdOppose === NaN ? 0 : thirdOppose}}%
+                    {{reviewThirdSteps?.conclusion_item.oppose_name}}{{thirdDisLikePeople}}人/{{thirdOppose}}%
                   </div>
                 </div>
               </div>

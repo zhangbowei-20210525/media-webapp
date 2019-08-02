@@ -367,16 +367,16 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
         this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
         this.firstLike = ((res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
-          res.review_steps[0].review_records_statistic.reviewed_count) * 100) || 0;
+          res.review_steps[0].review_records_statistic.count) * 100) || 0;
         this.firstOppose = ((res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
-          res.review_steps[0].review_records_statistic.reviewed_count) * 100) || 0;
+          res.review_steps[0].review_records_statistic.count) * 100) || 0;
         // 二审喜欢人数及通过率
         this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
         this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
         this.secondLike = ((res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
-          res.review_steps[1].review_records_statistic.reviewed_count) * 100) || 0;
+          res.review_steps[1].review_records_statistic.count) * 100) || 0;
         this.secondOppose = ((res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
-          res.review_steps[1].review_records_statistic.reviewed_count) * 100) || 0;
+          res.review_steps[1].review_records_statistic.count) * 100) || 0;
         console.log(this.secondOppose);
 
         // 三审喜欢人数及通过率
