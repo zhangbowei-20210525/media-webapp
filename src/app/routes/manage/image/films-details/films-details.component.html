@@ -430,7 +430,7 @@
                 </div>
                 <div class='wrapper-right'>
                   <div class='right-pass' style='line-height: 2'>
-                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    <img style='width: 24px;height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.agree_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstLike"
@@ -441,7 +441,7 @@
                     </div>
                   </div>
                   <div class='right-unPass'>
-                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    <img style='width: 24px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.oppose_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstOppose"
@@ -575,7 +575,7 @@
                 </div>
                 <div class='wrapper-right'>
                   <div class='right-pass' style='line-height: 2'>
-                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    <img style='width: 24px;height: 20px;' src="../../../../../assets/images/ic_like.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.agree_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondLike"
@@ -586,7 +586,7 @@
                     </div>
                   </div>
                   <div class='right-unPass'>
-                    <img style='width: 20px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    <img style='width: 24px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.oppose_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondOppose"
@@ -617,10 +617,7 @@
                   <div class='wrapper-right'>
                     <div class='right-title'>
                       <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '喜欢'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_likeComponent.png" alt="">
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '不喜欢'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_dislikeComponent.png" alt="">
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '通过'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_passage.png" alt="">
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '不通过'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
                     </div>
                     <div class='right-rate'>
                       <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
@@ -635,10 +632,7 @@
                   <div class='wrapper-right'>
                     <div class='right-title'>
                       <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '喜欢'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_likeComponent.png" alt="">
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '不喜欢'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_dislikeComponent.png" alt="">
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '通过'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_passage.png" alt="">
-                      <img *ngIf="reviewFirstSteps?.conclusion_item.agree_name === '不通过'" style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                      <img style='width: 32px;height: 14px;' src="../../../../../assets/images/ic_passage.png" alt="">
                     </div>
                     <div class='right-rate'>
                       <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
