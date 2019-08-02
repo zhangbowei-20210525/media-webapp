@@ -1,0 +1,46 @@
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">
+      <button nz-button [nzType]="buttonType1" style="font-size: 16px;border-radius:16px;border: none"
+        (click)="importantMessages()">重要消息</button>
+      <button nz-button [nzType]="buttonType2" style="margin-left: 20px;font-size: 16px;border-radius:16px;border: none"
+        (click)="systemMessages()">系统</button>
+      <button nz-button [nzType]="buttonType3" style="margin-left: 20px;font-size: 16px;border-radius:16px;border: none"
+        (click)="tapeMessages()">母带</button>
+      <button nz-button [nzType]="buttonType4" style="margin-left: 20px;font-size: 16px;border-radius:16px;border: none"
+        (click)="externalMessages()">外部</button>
+    </div>
+    <div class="block-options">
+      <button nz-button [nzType]="'primary'" style="font-size: 16px" (click)="isReadLogo()">标记已读</button>
+    </div>
+  </div>
+  <div class="block-content">
+    <nz-list [nzBordered]="false" [nzDataSource]="data" nzSize="large" [nzHeader]="Header" [nzRenderItem]="smallItem">
+      <ng-template #smallItem let-item>
+        <nz-list-item [nzContent]="content"></nz-list-item>
+        <ng-template #content>
+          <div class="d-flex">
+          <div style="line-height: 45px"><label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" style = "padding-bottom: 10px"></label></div>
+          <div style="margin-left: 14px" class="flex-fill">
+            <div><span class="iconfont icon-dian" style="color: #EC4C4C"></span><span style="font-size:14px;color: #333333">员工邀请</span></div>
+            <div style="font-size:14px;color: #999999">
+                {{ item }}
+            </div>
+          </div>
+          <div style="line-height: 45px;">提交时间</div>
+          </div>
+        </ng-template>
+      </ng-template>
+      <ng-template #Header>
+        <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()"
+          [nzIndeterminate]="indeterminate">
+          <span style="font-size:14px;font-family:PingFangSC-Regular;font-weight:400;color:#999999;">
+            标题/内容</span>
+        </label>
+        <span
+          style="font-size:14px;font-family:PingFangSC-Regular;font-weight:400;color:#999999;float: right;">提交时间</span>
+      </ng-template>
+    </nz-list>
+
+  </div>
+</div>

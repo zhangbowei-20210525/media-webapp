@@ -59,38 +59,71 @@
         </div>
       </div>
     </div>
-    <form nz-form [formGroup]="validateForm">
-      <!-- <nz-form-item *ngIf='isChoseShow === false'>
-        <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
-        <nz-form-control [nzSm]="17" [nzXs]="24">
-          <input nz-input id="companyFullName" formControlName="companyFullName" placeholder="请填写接受公司" />
-          <nz-form-explain
-            *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请填写接受公司
-          </nz-form-explain>
-        </nz-form-control>
-      </nz-form-item> -->
-      <nz-form-item>
-        <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>接受公司</nz-form-label>
-        <nz-form-control [nzSm]="17" [nzXs]="24">
-          <nz-radio-group formControlName="companyFullName" (ngModelChange)="onChoseCompany($event)">
-            <label nz-radio *ngFor="let option of companyList" style="display: block;margin-top: 9px"
-              [nzValue]="option.company_id">{{option.company_full_name}}</label>
-          </nz-radio-group>
-          <nz-form-explain
-            *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请选择接受公司
-          </nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>手机号码</nz-form-label>
-        <nz-form-control [nzSm]="17" [nzXs]="24">
-          <input placeholder="请填写手机号码" nz-input id="phone" formControlName="phone" />
-          <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.required">请选填手机号码
-          </nz-form-explain>
-          <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.pattern">
-            请输入正确的手机号码
-          </nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
-    </form>
+    <div class="theme-title">请选择授权公司</div>
+    <!-- <div class="d-flex" style ="align-items:center;">
+      <div style="font-size:16px;color: #333333;margin-left: 10px">请选择授权公司</div>
+    </div> -->
+
+      <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'" [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabChange($event)">
+          <nz-tab [nzTitle]="'已有公司'" (nzClick)="tab0()">
+              <form nz-form [formGroup]="validateForm">
+                  <!-- <nz-form-item *ngIf='isChoseShow === false'>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
+                    <nz-form-control [nzSm]="17" [nzXs]="24">
+                      <input nz-input id="companyFullName" formControlName="companyFullName" placeholder="请填写接受公司" />
+                      <nz-form-explain
+                        *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请填写接受公司
+                      </nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item> -->
+                  <nz-form-item>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>接受公司</nz-form-label>
+                    <nz-form-control [nzSm]="17" [nzXs]="24">
+                      <nz-radio-group formControlName="companyFullName" (ngModelChange)="onChoseCompany($event)">
+                        <label nz-radio *ngFor="let option of companyList" style="display: block;margin-top: 9px"
+                          [nzValue]="option.company_id">{{option.company_full_name}}</label>
+                      </nz-radio-group>
+                      <nz-form-explain
+                        *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请选择接受公司
+                      </nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item>
+                  <!-- <nz-form-item>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>手机号码</nz-form-label>
+                    <nz-form-control [nzSm]="17" [nzXs]="24">
+                      <input placeholder="请填写手机号码" nz-input id="phone" formControlName="phone" />
+                      <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.required">请选填手机号码
+                      </nz-form-explain>
+                      <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.pattern">
+                        请输入正确的手机号码
+                      </nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item> -->
+                </form>
+          </nz-tab>
+          <nz-tab [nzTitle]="'新建公司'" (nzClick)="tab1()">
+              <form nz-form [formGroup]="addForm">
+                  <nz-form-item>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
+                    <nz-form-control [nzSm]="17" [nzXs]="24">
+                      <input nz-input id="addCompanyFullName" formControlName="addCompanyFullName" placeholder="请填写接受公司全称" />
+                      <nz-form-explain
+                        *ngIf="addForm.get('addCompanyFullName').dirty && addForm.get('addCompanyFullName').errors">请填写接受公司
+                      </nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item>
+                  <!-- <nz-form-item>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>手机号码</nz-form-label>
+                    <nz-form-control [nzSm]="17" [nzXs]="24">
+                      <input placeholder="请填写手机号码" nz-input id="addPhone" formControlName="addPhone" />
+                      <nz-form-explain *ngIf="addForm.get('addPhone').dirty && addForm.get('addPhone').errors?.required">请选填手机号码
+                      </nz-form-explain>
+                      <nz-form-explain *ngIf="addForm.get('addPhone').dirty && addForm.get('addPhone').errors?.pattern">
+                        请输入正确的手机号码
+                      </nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item> -->
+                </form>
+          </nz-tab>
+        </nz-tabset>
   </div>

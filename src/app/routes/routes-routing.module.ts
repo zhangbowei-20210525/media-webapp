@@ -49,6 +49,10 @@ const routes: Routes = [
         children: [
           { path: '', redirectTo: 'series', pathMatch: 'full' },
           {
+            path: 'messages',
+            loadChildren: './manage/messages/messages.module#MessagesModule',
+          },
+          {
             path: 'dashboard',
             component: DashboardComponent
           },
@@ -94,7 +98,7 @@ const routes: Routes = [
                 path: 'my-callup', component: MyCallupComponent,
                 children: [
                   { path: '', redirectTo: 'my-samples', pathMatch: 'full' },
-                  { path: 'my-samples', component: MySmplesComponent},
+                  { path: 'my-samples', component: MySmplesComponent },
                   { path: 'samples-deails/:id', component: SmplesDetailsComponent, },
                 ]
               },

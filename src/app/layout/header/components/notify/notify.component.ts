@@ -311,17 +311,33 @@ export class NotifyComponent implements OnInit {
   }
 
   showTapeMessagesAgreed = (component: TapeMessagesComponent) => new Promise((resolve, reject) => {
-    if (component.validation()) {
-      component.submit()
-        .subscribe(result => {
-            this.router.navigate([`/manage/transmit/type`]);
-          this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-          resolve();
-        }, error => {
-          reject(false);
-        });
-    } else {
-      reject(false);
+    if (component.tab() === 0) {
+      if (component.validation1()) {
+        component.submit()
+          .subscribe(result => {
+              this.router.navigate([`/manage/transmit/type`]);
+            this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+            resolve();
+          }, error => {
+            reject(false);
+          });
+      } else {
+        reject(false);
+      }
+    }
+    if (component.tab() === 1) {
+      if (component.validation2()) {
+        component.submit()
+          .subscribe(result => {
+              this.router.navigate([`/manage/transmit/type`]);
+            this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+            resolve();
+          }, error => {
+            reject(false);
+          });
+      } else {
+        reject(false);
+      }
     }
   })
 
@@ -343,7 +359,7 @@ export class NotifyComponent implements OnInit {
   refused() {
     const status = false;
     if (this.type === 'SOU005') {
-      this.service.pubAuth(status, this.typeId, this.typeCompany, this.related_id).subscribe(res => {
+      this.service.refusedPubAuth(status, this.related_id).subscribe(res => {
         this.message.warning(this.translate.instant('global.refused-authorization-information'));
         // this.visible = false;
       });

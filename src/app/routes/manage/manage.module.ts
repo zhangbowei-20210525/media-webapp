@@ -24,6 +24,7 @@ import { MySharingComponent } from './personal-center/my-sharing/my-sharing.comp
 import { MyCallupComponent } from './personal-center/my-callup/my-callup.component';
 import { SmplesDetailsComponent } from './personal-center/my-callup/smples-details/smples-details.component';
 import { MySmplesComponent } from './personal-center/my-callup/my-smples/my-smples.component';
+import { MessagesComponent } from './messages/messages.component';
 // import { ImageComponent } from './image/image/image.component';
 // import { ImageDetailsComponent } from './image/image/image-details/image-details.component';
 

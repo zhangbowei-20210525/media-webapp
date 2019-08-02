@@ -71,18 +71,18 @@
           </ng-template>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
-          <!-- <a class="nav-item-link" nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="notifyTemplate"
+          <a class="nav-item-link" nz-popover [nzOverlayClassName]="'notify-popover'" [nzContent]="notifyTemplate"
             nzTrigger="click" nzPlacement="bottom">
             <nz-badge [nzCount]="notifies"><i nz-icon type="bell" theme="outline" style="font-size: 1.75rem"></i>
             </nz-badge>
           </a>
           <ng-template #notifyTemplate>
             <app-notify></app-notify>
-          </ng-template> -->
-          <a class="nav-item-link" routerLink = "/manage/">
+          </ng-template>
+          <!-- <a class="nav-item-link" [routerLink]="'/manage/messages'">
             <nz-badge [nzCount]="notifies"><i nz-icon type="bell" theme="outline" style="font-size: 1.75rem"></i>
             </nz-badge>
-          </a>
+          </a> -->
         </li>
         <!-- <li class="nav-item">
           <nz-dropdown [nzTrigger]="'click'" nzPlacement="bottomRight">

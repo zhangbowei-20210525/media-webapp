@@ -60,11 +60,23 @@ export class NotifyService {
       company_full_name
     });
   }
-  pubAuth(status, company_id, company_full_name, id: number) {
+  refusedPubAuth(status, id: number) {
+    return this.http.patch<any>(`/api/v1/sources/auth/receipt/${id}`, {
+      status,
+    });
+  }
+
+  pubAuth(status, company_id, id: number) {
+    return this.http.patch<any>(`/api/v1/sources/auth/receipt/${id}`, {
+      status,
+      company_id
+    });
+  }
+
+  newPubAuth(status, company_full_name, id: number) {
     return this.http.patch<any>(`/api/v1/sources/auth/receipt/${id}`, {
       status,
       company_full_name,
-      company_id
     });
   }
 
