@@ -345,17 +345,17 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
       this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
       this.firstLike = (res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[0].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[0].review_records_statistic.count) * 100;
       this.firstOppose = (res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[0].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[0].review_records_statistic.count) * 100;
       // 二审喜欢人数及通过率
       this.reviewSecondSteps = res.review_steps[1];
       this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
       this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
       this.secondLike = (res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[1].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[1].review_records_statistic.count) * 100;
       this.secondOppose = (res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[1].review_records_statistic.reviewed_count) * 100;
+        res.review_steps[1].review_records_statistic.count) * 100;
       // 总分
       // this.reviewSecondSteps = res.review_steps[1];
       this.reviewThirdSteps = res.review_steps[2];
