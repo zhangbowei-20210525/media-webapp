@@ -26,6 +26,8 @@ export class TapeMessagesComponent implements OnInit {
   companyList = [];
   isChoseShow = false;
   tabIndex = 0;
+  isShow = true;
+  showId: any;
 
   constructor(
     private service: NotifyService,
@@ -45,6 +47,10 @@ export class TapeMessagesComponent implements OnInit {
 
     if (this.type === 'SOU005') {
       this.service.getAuthorizationInfo(this.id).subscribe(res => {
+        this.showId = res.auth_company_id;
+        if (this.showId > 0) {
+          this.isShow = false;
+        }
         this.authInfo = res;
         this.typeCompany = res.auth_custom_name;
         this.companyId = res.auth_company_id;
@@ -58,6 +64,10 @@ export class TapeMessagesComponent implements OnInit {
         // this.validateForm.get('phone').disable();
       });
     }
+  }
+
+  show() {
+    return this.isShow;
   }
 
   validation1() {
@@ -110,21 +120,27 @@ export class TapeMessagesComponent implements OnInit {
   }
 
   submit() {
-    if (this.tabIndex === 0) {
+
+    if (this.isShow === false) {
       const status = true;
-      if (this.companyId === undefined) {
-        console.log(this.companyId);
-        this.companyId = '';
+      return this.service.pubAuth(status, this.showId, this.id);
+    } else {
+      if (this.tabIndex === 0) {
+        const status = true;
+        if (this.companyId === undefined) {
+          console.log(this.companyId);
+          this.companyId = '';
+        }
+        return this.service.pubAuth(status, this.companyId, this.id);
       }
-      return this.service.pubAuth(status, this.companyId, this.id);
-    }
-    if (this.tabIndex === 1) {
-      console.log(this.addForm.value['addCompanyFullName']);
-      const status = true;
-      if (this.companyList.find(f => this.addForm.value['addCompanyFullName'] === f.company_full_name)) {
-        this.message.warning('该公司已存在,请重新填写');
-      } else {
-        return this.service.newPubAuth(status, this.addForm.value['addCompanyFullName'], this.id);
+      if (this.tabIndex === 1) {
+        console.log(this.addForm.value['addCompanyFullName']);
+        const status = true;
+        if (this.companyList.find(f => this.addForm.value['addCompanyFullName'] === f.company_full_name)) {
+          this.message.warning('该公司已存在,请重新填写');
+        } else {
+          return this.service.newPubAuth(status, this.addForm.value['addCompanyFullName'], this.id);
+        }
       }
     }
   }

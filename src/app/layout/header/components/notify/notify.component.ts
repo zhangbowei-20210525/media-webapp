@@ -241,7 +241,7 @@ export class NotifyComponent implements OnInit {
         nzNoAnimation: true
       });
     } else {
-     this.ref =  this.model.create({
+      this.ref = this.model.create({
         nzTitle: `系统消息：${title}`,
         nzContent: SystemMessagesComponent,
         nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
@@ -295,7 +295,7 @@ export class NotifyComponent implements OnInit {
         nzNoAnimation: true
       });
     } else {
-     this.ref =  this.model.create({
+      this.ref = this.model.create({
         nzTitle: `${title}`,
         nzContent: TapeMessagesComponent,
         nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
@@ -311,32 +311,44 @@ export class NotifyComponent implements OnInit {
   }
 
   showTapeMessagesAgreed = (component: TapeMessagesComponent) => new Promise((resolve, reject) => {
-    if (component.tab() === 0) {
-      if (component.validation1()) {
-        component.submit()
-          .subscribe(result => {
+
+    if (component.show() === false) {
+      component.submit()
+        .subscribe(result => {
+          this.router.navigate([`/manage/transmit/type`]);
+          this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+          resolve();
+        }, error => {
+          reject(false);
+        });
+    } else {
+      if (component.tab() === 0) {
+        if (component.validation1()) {
+          component.submit()
+            .subscribe(result => {
               this.router.navigate([`/manage/transmit/type`]);
-            this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-            resolve();
-          }, error => {
-            reject(false);
-          });
-      } else {
-        reject(false);
+              this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+              resolve();
+            }, error => {
+              reject(false);
+            });
+        } else {
+          reject(false);
+        }
       }
-    }
-    if (component.tab() === 1) {
-      if (component.validation2()) {
-        component.submit()
-          .subscribe(result => {
+      if (component.tab() === 1) {
+        if (component.validation2()) {
+          component.submit()
+            .subscribe(result => {
               this.router.navigate([`/manage/transmit/type`]);
-            this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-            resolve();
-          }, error => {
-            reject(false);
-          });
-      } else {
-        reject(false);
+              this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+              resolve();
+            }, error => {
+              reject(false);
+            });
+        } else {
+          reject(false);
+        }
       }
     }
   })

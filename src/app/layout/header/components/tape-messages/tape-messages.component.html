@@ -1,7 +1,7 @@
-<div style="font-size: 12px;font-weight: bold;margin-top: 10px">{{ created_at }}</div>
-  <div style="font-size: 12px;margin-top: 5px;margin-bottom: 25px">{{ content }}</div>
+<!-- <div style="font-size: 12px;font-weight: bold;margin-top: 10px">{{ created_at }}</div>
+  <div style="font-size: 12px;margin-top: 5px;margin-bottom: 25px">{{ content }}</div> -->
   <div *ngIf="type === 'SOU005'">
-    <nz-divider nzText="授权信息"></nz-divider>
+      <div class="theme-title">授权信息</div>
     <div class="block clearfix">
       <div class="block-content">
         <div nz-row class="series-info-row">
@@ -57,14 +57,35 @@
             <span>{{ authInfo?.source?.bit_rate }}</span>
           </div>
         </div>
+        <div nz-row class="series-info-row">
+            <!-- <span style="font-size: 14px;color: #D0021B">*</span> -->
+            <div nz-col nzSpan="12">
+              <span class="info-filed required">被授权公司</span>
+              <span>{{ authInfo?.auth_custom_name }}</span>
+            </div>
+            <div nz-col nzSpan="12">
+              <span class="info-filed required">被授权人</span>
+              <span>{{ authInfo?.auth_liaison_name }}</span>
+            </div>
+          </div>
+          <div nz-row class="series-info-row">
+              <div nz-col nzSpan="12">
+                <span class="info-filed required">联系方式</span>
+                <span>{{ authInfo?.auth_phone }}</span>
+              </div>
+              <div nz-col nzSpan="12">
+                <!-- <span class="info-filed"></span>
+                <span></span> -->
+              </div>
+            </div>
       </div>
     </div>
-    <div class="theme-title">请选择授权公司</div>
+    <div class="theme-title" *ngIf="isShow == true">请选择授权公司</div>
     <!-- <div class="d-flex" style ="align-items:center;">
       <div style="font-size:16px;color: #333333;margin-left: 10px">请选择授权公司</div>
     </div> -->
 
-      <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'" [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabChange($event)">
+      <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'" [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabChange($event)" *ngIf="isShow == true">
           <nz-tab [nzTitle]="'已有公司'" (nzClick)="tab0()">
               <form nz-form [formGroup]="validateForm">
                   <!-- <nz-form-item *ngIf='isChoseShow === false'>
