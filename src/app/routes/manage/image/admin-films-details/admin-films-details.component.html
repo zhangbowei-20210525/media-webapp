@@ -314,7 +314,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left: 10px'>
-                    {{reviewFirstSteps?.conclusion_item.agree_name}}{{likePeople}}人/{{firstLike}}%
+                    {{reviewFirstSteps?.conclusion_item.agree_name}}{{likePeople}}人/{{firstLike | floor}}%
                   </div>
                 </div>
                 <div class='right-unPass'>
@@ -325,7 +325,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left:10px'>
-                    {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose}}%
+                    {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose | floor}}%
                   </div>
                 </div>
               </div>
@@ -461,7 +461,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left: 10px'>
-                    {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike}}%
+                    {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike | floor}}%
                   </div>
                 </div>
                 <div class='right-unPass'>
@@ -472,7 +472,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left:10px'>
-                    {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose}}%
+                    {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose | floor}}%
                   </div>
                 </div>
               </div>
@@ -607,7 +607,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left: 10px'>
-                    {{reviewThirdSteps?.conclusion_item.agree_name}}{{thirdLikePeople}}人/{{thirdLike}}%
+                    {{reviewThirdSteps?.conclusion_item.agree_name}}{{thirdLikePeople}}人/{{thirdLike | floor}}%
                   </div>
                 </div>
                 <div class='right-unPass'>
@@ -618,7 +618,7 @@
                     [nzShowInfo]="false">
                   </nz-progress>
                   <div style='margin-left:10px'>
-                    {{reviewThirdSteps?.conclusion_item.oppose_name}}{{thirdDisLikePeople}}人/{{thirdOppose}}%
+                    {{reviewThirdSteps?.conclusion_item.oppose_name}}{{thirdDisLikePeople}}人/{{thirdOppose | floor}}%
                   </div>
                 </div>
               </div>

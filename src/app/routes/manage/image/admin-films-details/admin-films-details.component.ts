@@ -9,6 +9,7 @@ import { TendencyInfoComponent } from '../components/tendency-info/tendency-info
 import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { FirstInstanceDetailsComponent } from '../components/first-instance-details/first-instance-details.component';
 // import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { Pipe, PipeTransform } from '@angular/core';
 
 declare function videojs(selector: string);
 
