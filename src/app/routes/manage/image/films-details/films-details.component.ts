@@ -98,9 +98,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedIndex = 0;
   reviewRecodesStatistic: any;
   reviewRecords: any;
-  reviewFirstSteps = {};
-  reviewSecondSteps = {};
-  reviewThirdSteps = {};
+  reviewFirstSteps: any;
+  reviewSecondSteps: any;
+  reviewThirdSteps: any;
   firstLike = 0;
   firstOppose = 0;
   reviewSteps = [];
@@ -126,6 +126,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   nameSecondList = [];
   nameThirdList = [];
   scoreThirdList = [];
+  myDate = new Date();
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -246,6 +247,80 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.starId.push({ id: item.id, score: 0 });
         });
       }
+      this.reviewFirstSteps = res.review_steps[0];
+      this.reviewSecondSteps = res.review_steps[1];
+      this.reviewThirdSteps = res.review_steps[2];
+      const currentYear = this.myDate.getFullYear();
+      const currentMouth = this.myDate.getMonth() + 1;
+      const currentDate = this.myDate.getDate();
+      this.reviewFirstSteps.review_records.forEach(item => {
+        const year = new Date(item.review_at).getFullYear();
+        const mouth = new Date(item.review_at).getMonth() + 1;
+        const date = new Date(item.review_at).getDate();
+        if (year === currentYear) {
+          if (mouth === currentMouth) {
+            if (date === currentDate) {
+              if (!!item.review_at) {
+                item.review_at = item.review_at.split(' ')[1];
+              }
+            }
+          } else {
+            item.review_at = item.review_at;
+          }
+        } else {
+          if (!!item.review_at) {
+            item.review_at = item.review_at.split(' ')[0];
+          }
+        }
+      });
+      this.reviewSecondSteps.review_records.forEach(item => {
+        const year = new Date(item.review_at).getFullYear();
+        const mouth = new Date(item.review_at).getMonth() + 1;
+        const date = new Date(item.review_at).getDate();
+        if (year === currentYear) {
+          if (mouth === currentMouth) {
+            if (date === currentDate) {
+              if (!!item.review_at) {
+                item.review_at = item.review_at.split(' ')[1];
+              }
+            }
+          } else {
+            console.log(item.review_at);
+            item.review_at = item.review_at;
+            console.log(item.review_at);
+
+          }
+        } else {
+          if (!!item.review_at) {
+            item.review_at = item.review_at.split(' ')[0];
+          }
+          console.log(item.review_at);
+        }
+      });
+      this.reviewThirdSteps.review_records.forEach(item => {
+        const year = new Date(item.review_at).getFullYear();
+        const mouth = new Date(item.review_at).getMonth() + 1;
+        const date = new Date(item.review_at).getDate();
+        if (year === currentYear) {
+          if (mouth === currentMouth) {
+            if (date === currentDate) {
+              if (!!item.review_at) {
+                item.review_at = item.review_at.split(' ')[1];
+              }
+              console.log(item.review_at);
+            }
+          } else {
+            item.review_at = item.review_at;
+            console.log(item.review_at);
+
+          }
+        } else {
+          if (!!item.review_at) {
+            item.review_at = item.review_at.split(' ')[0];
+          }
+          console.log(item.review_at);
+        }
+      });
       console.log(res);
       // 一审评分项
       this.scoreFirstList = res.review_steps[0].review_records_statistic.score_statistic.item_statistic;

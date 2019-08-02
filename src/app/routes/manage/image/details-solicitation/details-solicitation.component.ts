@@ -38,7 +38,7 @@ export class DetailsSolicitationComponent implements OnInit {
   docType: any;
   statusType: any;
   programList = [];
-  filterList: any;
+  filterList = [];
   blurData: any;
   forList: any;
   id: any;
@@ -73,7 +73,7 @@ export class DetailsSolicitationComponent implements OnInit {
       general_producer: [null],
       producer: [null],
       product_company: [null],
-      progress: [null, [Validators.required]],
+      progress: [null],
       introduction: [null]
     });
     this.seriesService.getSamplePublicitys().subscribe(res => {
@@ -213,6 +213,7 @@ export class DetailsSolicitationComponent implements OnInit {
     return form.valid;
   }
   submit() {
+    console.log(this.filterList);
     if (this.filterList.length > 0) {
       this.submitConent();
     } else {

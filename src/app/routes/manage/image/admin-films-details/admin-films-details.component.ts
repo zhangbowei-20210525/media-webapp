@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy, Inject } from '@angular/co
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
 import { switchMap, tap, map, finalize } from 'rxjs/operators';
-import { PaginationDto, MessageService } from '@shared';
+import { PaginationDto, MessageService, Util } from '@shared';
 import { I18nService } from '@core';
 import { TendencyInfoComponent } from '../components/tendency-info/tendency-info.component';
 import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
@@ -18,6 +18,16 @@ declare function videojs(selector: string);
   styleUrls: ['./admin-films-details.component.less']
 })
 export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+  mouth: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private seriesService: SeriesService,
+    private modalService: NzModalService,
+    private i18n: I18nService,
+    private message: MessageService,
+  ) { }
 
   id: number;
   player: any;
@@ -103,8 +113,8 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   reviewRecodesStatistic: any;
   reviewRecords: any;
   reviewFirstSteps: any;
-  reviewSecondSteps = {};
-  reviewThirdSteps = {};
+  reviewSecondSteps: any;
+  reviewThirdSteps: any;
   firstLike = 0;
   firstOppose = 0;
   // reviewSteps = [];
@@ -131,16 +141,15 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   scoreThirdList = [];
   nameThirdList = [];
   isLoading: boolean;
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private seriesService: SeriesService,
-    private modalService: NzModalService,
-    private i18n: I18nService,
-    private message: MessageService,
-  ) { }
-
+  isShowSelect = false;
+  // 获取当前时间
+  myDate = new Date();
   ngOnInit() {
+    console.log(this.myDate.getFullYear());
+    console.log(this.myDate.getMonth() + 1);
+    console.log(this.myDate.getDate());
+    console.log(Util.dateFullToString(this.myDate));
+
     this.ishidden = false;
     this.samplePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
     this.featurePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
@@ -247,72 +256,143 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     this.getVerifyData(this.step_number);
     this.getReviewDetailsView();
   }
-  getReviewDetailsView () {
+  getReviewDetailsView() {
     this.seriesService.getReviewDetails(this.rid)
-    .pipe(finalize(() => {
-      this.isLoading = false;
-    }))
-    .subscribe(res => {
-      console.log(res);
-      this.reviewList = res;
-      this.isLoading = true;
-      // this.isShowFirstScore = res.review_steps[0].review_records_statistic
-      // 一审评分项
-      this.scoreFirstList = res.review_steps[0].review_records_statistic.score_statistic.item_statistic;
-      this.nameFirstList = res.review_steps[0].scoring_items;
-      this.nameFirstList.forEach((item, index) => {
-        item.avg = (this.scoreFirstList[index].avg) / 2;
-      });
-      // 二审评分想
-      this.scoreSecondList = res.review_steps[1].review_records_statistic.score_statistic.item_statistic;
-      this.nameSecondList = res.review_steps[1].scoring_items;
-      this.nameSecondList.forEach((item, index) => {
-        item.avg = (this.scoreSecondList[index].avg) / 2;
-      });
-      // 三审评分想
-      this.scoreThirdList = res.review_steps[2].review_records_statistic.score_statistic.item_statistic;
-      this.nameThirdList = res.review_steps[2].scoring_items;
-      this.nameThirdList.forEach((item, index) => {
-        item.avg = (this.scoreThirdList[index].avg) / 2;
-      });
-      // 查看更多功能注释
-      // if (res.review_steps[0].lenght > 3) {
-      // this.reviewFirstSteps = res.review_steps[0].splice(0, 3);
-      // } else {
-      this.reviewFirstSteps = res.review_steps[0];
-      // }
-      // 一审喜欢人数及通过率
-      this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
-      this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
-      this.firstLike = ((res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[0].review_records_statistic.reviewed_count) * 100 ) || 0;
-      this.firstOppose = ((res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[0].review_records_statistic.reviewed_count) * 100 ) || 0;
-      // 二审喜欢人数及通过率
-      this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
-      this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
-      this.secondLike = ((res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[1].review_records_statistic.reviewed_count) * 100 ) || 0;
-      this.secondOppose = ((res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[1].review_records_statistic.reviewed_count) * 100 ) || 0;
+      .pipe(finalize(() => {
+        this.isLoading = false;
+      }))
+      .subscribe(res => {
+        console.log(res);
+        this.reviewList = res;
+        this.isLoading = true;
+        // this.isShowFirstScore = res.review_steps[0].review_records_statistic
+        // 一审评分项
+        this.scoreFirstList = res.review_steps[0].review_records_statistic.score_statistic.item_statistic;
+        this.nameFirstList = res.review_steps[0].scoring_items;
+        this.nameFirstList.forEach((item, index) => {
+          item.avg = (this.scoreFirstList[index].avg) / 2;
+        });
+        // 二审评分想
+        this.scoreSecondList = res.review_steps[1].review_records_statistic.score_statistic.item_statistic;
+        this.nameSecondList = res.review_steps[1].scoring_items;
+        this.nameSecondList.forEach((item, index) => {
+          item.avg = (this.scoreSecondList[index].avg) / 2;
+        });
+        // 三审评分想
+        this.scoreThirdList = res.review_steps[2].review_records_statistic.score_statistic.item_statistic;
+        this.nameThirdList = res.review_steps[2].scoring_items;
+        this.nameThirdList.forEach((item, index) => {
+          item.avg = (this.scoreThirdList[index].avg) / 2;
+        });
+        // 查看更多功能注释
+        // if (res.review_steps[0].lenght > 3) {
+        // this.reviewFirstSteps = res.review_steps[0].splice(0, 3);
+        // } else {
+        this.reviewFirstSteps = res.review_steps[0];
+        this.reviewSecondSteps = res.review_steps[1];
+        this.reviewThirdSteps = res.review_steps[2];
+        const currentYear = this.myDate.getFullYear();
+        const currentMouth = this.myDate.getMonth() + 1;
+        const currentDate = this.myDate.getDate();
+        this.reviewFirstSteps.review_records.forEach(item => {
+          const year = new Date(item.review_at).getFullYear();
+          const mouth = new Date(item.review_at).getMonth() + 1;
+          const date = new Date(item.review_at).getDate();
+          if (year === currentYear) {
+            if (mouth === currentMouth) {
+              if (date === currentDate) {
+                if (!!item.review_at) {
+                  item.review_at = item.review_at.split(' ')[1];
+                }
+              }
+            } else {
+              item.review_at = item.review_at;
+            }
+          } else {
+            if (!!item.review_at) {
+              item.review_at = item.review_at.split(' ')[0];
+            }
+          }
+        });
+        this.reviewSecondSteps.review_records.forEach(item => {
+          const year = new Date(item.review_at).getFullYear();
+          const mouth = new Date(item.review_at).getMonth() + 1;
+          const date = new Date(item.review_at).getDate();
+          if (year === currentYear) {
+            if (mouth === currentMouth) {
+              if (date === currentDate) {
+                if (!!item.review_at) {
+                  item.review_at = item.review_at.split(' ')[1];
+                }
+              }
+            } else {
+              console.log(item.review_at);
+              item.review_at = item.review_at;
+              console.log(item.review_at);
+
+            }
+          } else {
+            if (!!item.review_at) {
+              item.review_at = item.review_at.split(' ')[0];
+            }
+            console.log(item.review_at);
+          }
+        });
+        this.reviewThirdSteps.review_records.forEach(item => {
+          const year = new Date(item.review_at).getFullYear();
+          const mouth = new Date(item.review_at).getMonth() + 1;
+          const date = new Date(item.review_at).getDate();
+          if (year === currentYear) {
+            if (mouth === currentMouth) {
+              if (date === currentDate) {
+                if (!!item.review_at) {
+                  item.review_at = item.review_at.split(' ')[1];
+                }
+                console.log(item.review_at);
+              }
+            } else {
+              item.review_at = item.review_at;
+              console.log(item.review_at);
+
+            }
+          } else {
+            if (!!item.review_at) {
+              item.review_at = item.review_at.split(' ')[0];
+            }
+            console.log(item.review_at);
+          }
+        });
+        // }
+        // 一审喜欢人数及通过率
+        this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
+        this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
+        this.firstLike = ((res.review_steps[0].review_records_statistic.conclusion_statistic.agree /
+          res.review_steps[0].review_records_statistic.reviewed_count) * 100) || 0;
+        this.firstOppose = ((res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
+          res.review_steps[0].review_records_statistic.reviewed_count) * 100) || 0;
+        // 二审喜欢人数及通过率
+        this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
+        this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
+        this.secondLike = ((res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
+          res.review_steps[1].review_records_statistic.reviewed_count) * 100) || 0;
+        this.secondOppose = ((res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
+          res.review_steps[1].review_records_statistic.reviewed_count) * 100) || 0;
         console.log(this.secondOppose);
 
-      // 三审喜欢人数及通过率
-      this.thirdLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.agree;
-      this.thirdDisLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
-      this.thirdLike = ((res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
-        res.review_steps[2].review_records_statistic.reviewed_count) * 100 ) || 0 ;
-      this.thirdOppose = ((res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
-        res.review_steps[2].review_records_statistic.reviewed_count) * 100 ) || 0;
+        // 三审喜欢人数及通过率
+        this.thirdLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.agree;
+        this.thirdDisLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
+        this.thirdLike = ((res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
+          res.review_steps[2].review_records_statistic.reviewed_count) * 100) || 0;
+        this.thirdOppose = ((res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
+          res.review_steps[2].review_records_statistic.reviewed_count) * 100) || 0;
         console.log(this.thirdOppose);
-      // 总分
-      this.reviewSecondSteps = res.review_steps[1];
-      this.reviewThirdSteps = res.review_steps[2];
-      console.log(res);
-      this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
-      this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
-      this.stepsNumber = res.step_number;
-    });
+        // 总分
+        console.log(res);
+        this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
+        this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
+        this.stepsNumber = res.step_number;
+      });
   }
   getVerifyData(step_number) {
     //   this.seriesService.getFirstVerifyData().subscribe(res=>{
@@ -659,9 +739,17 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     // tslint:disable-next-line:max-line-length
     this.seriesService.shareEmail(this.emailAddress, `http://test1.bctop.net/d/${this.id}`, this.publicityName, this.sid).subscribe();
   }
+  ShowSelect() {
+    this.isShowSelect = true;
+  }
+  NoShowSelect() {
+    this.isShowSelect = false;
+  }
   // 查看更多
   // getMore() {
   //   console.log('getmore');
   //   this.reviewFirstSteps = this.reviewList.review_steps[0];
   // }
+
 }
+
