@@ -40,6 +40,19 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
+      <nz-form-label [nzSm]="3" nzRequired nzFor="type">有效时间</nz-form-label>
+      <nz-form-control [nzSm]="21">
+        <nz-select id="type" formControlName="type" nzPlaceHolder="请选择有效时间">
+          <nz-option nzLabel="七天" nzValue="7"></nz-option>
+          <nz-option nzLabel="十五天" nzValue="15"></nz-option>
+          <nz-option nzLabel="三十天" nzValue="30"></nz-option>
+          <nz-option nzLabel="永久" nzValue="0"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="SolicitationForm.get('type').dirty && SolicitationForm.get('type').errors">请选择节目类型
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  <nz-form-item>
     <nz-form-label [nzSm]="3" nzFor="intro" >说明</nz-form-label>
     <nz-form-control [nzSm]="21">
       <textarea rows="4" nz-input formControlName="intro" placeholder="备注"></textarea>
@@ -58,6 +71,7 @@
   </div>
 </div>
 <div class='copy' *ngIf="isCollection == true">
-  <input nz-input id="url" placeholder="" [(ngModel)]="getCollectionData.url" (ngModelChange)="linkChange($event)" />
+  <input style="position: fixed;  left: 2000px" nz-input id="url" placeholder="" [(ngModel)]="getCollectionData.url" (ngModelChange)="linkChange($event)" />
+  <input disabled nz-input placeholder="" [(ngModel)]="getCollectionData.url" (ngModelChange)="linkChange($event)" />  
   <button (click)='copy(getCollectionData.url)'>复制</button>
 </div>

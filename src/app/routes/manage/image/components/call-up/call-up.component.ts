@@ -20,6 +20,7 @@ export class CallUpComponent implements OnInit {
   getCollectionData: any;
   programTypeList = [];
   themeList = [];
+  validity_period: number;
 
   constructor(
     private seriesService: SeriesService,
@@ -36,6 +37,7 @@ export class CallUpComponent implements OnInit {
       userName: [this.settings.user.username],
       filmType: [null, [Validators.required]],
       meterial: [null, [Validators.required]],
+      type: [null, [Validators.required]],
       intro: [null],
     });
     this.SolicitationForm.get('companyName').disable();
@@ -55,13 +57,15 @@ export class CallUpComponent implements OnInit {
     this.description = custom.intro;
     this.program_theme = custom.meterial;
     this.program_type = custom.filmType;
-
+    this.validity_period = this.SolicitationForm.value.type;
+    console.log(this.validity_period);
     if (!this.program_theme || this.program_type === null ) {
       console.log(1);
       this.message.error('请填写相关信息');
     } else {
       console.log(2);
-      this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description).subscribe(res => {
+      this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description, this.validity_period)
+      .subscribe(res => {
         this.isCollection = true;
         res.QRCode = `data:image/jpeg;base64,${res.QRCode}`;
         this.getCollectionData = res;
@@ -69,6 +73,7 @@ export class CallUpComponent implements OnInit {
         this.SolicitationForm.get('filmType').disable();
         this.SolicitationForm.get('meterial').disable();
         this.SolicitationForm.get('intro').disable();
+        this.SolicitationForm.get('type').disable();
       });
     }
   }

@@ -20,7 +20,7 @@ export class CollectionReceiveComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('234000000000000000');
+    // console.log('234000000000000000');
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
       console.log(this.id);
@@ -39,8 +39,14 @@ export class CollectionReceiveComponent implements OnInit {
     if (this.auth.isLoggedIn) {
       this.router.navigate([`/manage/image/details-solicitation/${this.id}`]);
     } else {
-      this.router.navigate([`/passport/login/phone`, { returnUrl:  encodeURIComponent(`/manage/image/details-solicitation/${this.id}`)}]);
+      this.router.navigate([`/passport/login/phone`, { returnUrl: encodeURIComponent(`/manage/image/details-solicitation/${this.id}`) }]);
     }
   }
-
+  toHomePage() {
+    if (this.auth.isLoggedIn) {
+      this.router.navigate([`manage/dashboard`]);
+    } else {
+      this.router.navigate([`/passport/login/phone`, { returnUrl: encodeURIComponent(`manage/dashboard`) }]);
+    }
+  }
 }

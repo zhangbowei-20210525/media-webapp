@@ -1,8 +1,9 @@
 
-import { Component, OnInit, AfterViewInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Inject, ElementRef, ViewChild, HostListener} from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
-import { switchMap, tap, map, finalize } from 'rxjs/operators';
+import { switchMap, tap, map, finalize, } from 'rxjs/operators';
+import {  fromEvent } from 'rxjs';
 import { PaginationDto, MessageService, Util } from '@shared';
 import { I18nService } from '@core';
 import { TendencyInfoComponent } from '../components/tendency-info/tendency-info.component';
@@ -10,9 +11,12 @@ import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } f
 import { FirstInstanceDetailsComponent } from '../components/first-instance-details/first-instance-details.component';
 // import { ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 import { Pipe, PipeTransform } from '@angular/core';
+import { element } from '@angular/core/src/render3';
 
 declare function videojs(selector: string);
-
+// @HostListener('window:scroll', ['$event']) public onscroll = $event => {
+//   console.log(document.documentElement.scrollTop, 'lalalalalal');
+// };
 @Component({
   selector: 'app-admin-films-details',
   templateUrl: './admin-films-details.component.html',
@@ -20,6 +24,13 @@ declare function videojs(selector: string);
 })
 export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   mouth: any;
+  @ViewChild('scrollWrapper') elementView: ElementRef;
+  @ViewChild('mainWrapper') mainElement: ElementRef;
+
+  viewHeight: any;
+  windowHeight: number;
+  scrollHeight: any;
+  isFixed = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -150,6 +161,11 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     console.log(this.myDate.getMonth() + 1);
     console.log(this.myDate.getDate());
     console.log(Util.dateFullToString(this.myDate));
+    this.viewHeight = fromEvent(window, 'scroll')
+      // debounceTime(500) // 防抖
+      .subscribe((event) => {
+      this.onWindowScroll();
+      });
 
     this.ishidden = false;
     this.samplePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
@@ -256,6 +272,24 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
       });
     this.getVerifyData(this.step_number);
     this.getReviewDetailsView();
+  }
+  onWindowScroll () {
+    this.windowHeight = document.documentElement.scrollTop;
+    const mainHeight = this.mainElement.nativeElement.offsetHeight;
+    if (this.elementView) {
+      this.scrollHeight = this.elementView.nativeElement.offsetTop + mainHeight;
+    }
+    console.log(mainHeight, 'main');
+    console.log(this.scrollHeight, 'scroll');
+    if (this.windowHeight > this.scrollHeight + 49) {
+      console.log(this.windowHeight, 111);
+      console.log(this.scrollHeight, 222);
+      this.isFixed = true;
+    } else {
+      console.log(this.windowHeight, 333);
+      console.log(this.scrollHeight, 444);
+      this.isFixed = false;
+    }
   }
   getReviewDetailsView() {
     this.seriesService.getReviewDetails(this.rid)

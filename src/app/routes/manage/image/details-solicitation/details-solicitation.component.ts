@@ -305,6 +305,7 @@ export class DetailsSolicitationComponent implements OnInit {
   }
   getDisplayDate() {
     this.filterList = this.programList.filter(item => {
+      console.log(this.filterList);
       return item.name === this.blurData;
     });
     if (this.filterList.length === 0) {

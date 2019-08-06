@@ -114,7 +114,7 @@ export class ReviewViewComponent implements OnInit {
         this.isMyTapesLoaded = true;
       }
     });
-    this.service.getScreenList().subscribe(res => {
+    this.service.getScreenList(this.selectedTabIndex).subscribe(res => {
       this.screen = res;
       // console.log(res);
     });
@@ -168,7 +168,6 @@ export class ReviewViewComponent implements OnInit {
         this.isMyTapesLoaded = true;
         this.isShowTab = true;
         this.isShowView = true;
-
         // this.paginationName = result.pagination.name;
       });
   }
@@ -347,6 +346,10 @@ export class ReviewViewComponent implements OnInit {
     this.isShowTab = false;
     this.isMyTapesLoaded = true;
     this.fetchPublicities(this.selectedTabIndex);
+    this.service.getScreenList(this.selectedTabIndex).subscribe(res => {
+      this.screen = res;
+      // console.log(res);
+    });
     // console.log(this.selectedTabIndex);
   }
   // 一审提交

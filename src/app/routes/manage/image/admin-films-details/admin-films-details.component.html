@@ -1,5 +1,5 @@
 <div class="content-container ">
-  <div class='container-top'>
+  <div class='container-top' #mainWrapper>
     <div class="publicity-details-left">
       <div [hidden]="ishidden">
         <div class="video-box">
@@ -343,50 +343,119 @@
           <div class='comment-result' *ngIf="reviewFirstSteps?.comment_status === true">
             <div class='result-title'>审片评论</div>
             <div *ngFor="let b of reviewFirstSteps?.review_records">
-              <div class='result-wrapper' *ngIf="b.conclusion === 2">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
-                    <!-- <div style="text-align: right;">查看审片明细</div> -->
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 1">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right' style="flex: 1">
-                  <div class='right-title'>
-                    <div style="display: flex; align-items: center;">
-                      <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                      <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_passage.png" alt="">
+              <!-- <div class='result-wrapper' *ngIf="b.conclusion === 2" >
+                  <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper >
+                    <div class='wrapper-right' style="flex: 1;background: #fff;" [ngClass]="{'isFixed': isFixed}">
+                      <div style='display:flex;justify-content: space-between;align-items: center'> 
+                        <div style='display: flex;align-items: center'>
+                          <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
+                            [src]="b.employee.avatar" alt="">
+                          <div>
+                            <div class='right-title'>
+                              <div style="display: flex; align-items: center;">
+                                <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                                <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Nopassage.png"
+                                  alt="">
+                              </div>
+                            </div>
+                            <div class='right-rate'>
+                              <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                              <div style="margin-top: 4px;">{{b.review_at}}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                            <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                              style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                              <a href="javascript:void(0)">查看审片明细
+                                <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
+                                  nzTheme="outline"></i>
+                              </a>
+                            </div>
+                            <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                              style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                              <a href="javascript:void(0)">收起审片明细
+                                <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up"
+                                  nzTheme="outline"></i>
+                              </a>
+                            </div>
+                        </div>
+                      </div>
+                      <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
                     </div>
-                    <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
-                      style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                      <a href="javascript:void(0)">查看审片明细
-                        <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down" nzTheme="outline"></i>
-                      </a>
+                    <div *ngIf="isShowSelect === true"
+                      style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
+                      <div>
+                        <div class='result-title-btm'>评分项</div>
+                        <div class='result-wrapper-btm'>
+                          <div class='score-item-btm' *ngFor="let score of nameFirstList">
+                            <div class='item-left'>{{score.name}}</div>
+                            <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
+                          </div>
+                        </div>
+                      </div>
+                      <div class='result-title-btm'>审片日志</div>
+                      <nz-timeline [nzMode]="'left'">
+                        <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      </nz-timeline>
                     </div>
-                    <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
-                      style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                      <a href="javascript:void(0)">收起审片明细
-                        <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
-                      </a>
-                    </div> -->
                   </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
+                </div> -->
+              <div class='result-wrapper'>
+                <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper>
+                  <div class='wrapper-right' style="flex: 1;background: #fff;" [ngClass]="{'isFixed': isFixed}">
+                    <div style='display:flex;justify-content: space-between;align-items: center'>
+                      <div style='display: flex;align-items: center'>
+                        <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
+                          [src]="b.employee.avatar" alt="">
+                        <div>
+                          <div class='right-title'>
+                            <div style="display: flex; align-items: center;">
+                              <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                              <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                              <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_passage.png" alt="">
+                              <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                            </div>
+                          </div>
+                          <div class='right-rate'>
+                            <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                            <div style="margin-top: 4px;">{{b.review_at}}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                          style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                          <a href="javascript:void(0)">查看审片明细
+                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
+                              nzTheme="outline"></i>
+                          </a>
+                        </div>
+                        <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                          style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                          <a href="javascript:void(0)">收起审片明细
+                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+                          </a>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
                   </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                  <!-- <div *ngIf="isShowSelect === true"
+                  <div *ngIf="isShowSelect === true"
                     style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
                     <div>
                       <div class='result-title-btm'>评分项</div>
@@ -412,22 +481,7 @@
                       <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
                       <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
                     </nz-timeline>
-                  </div> -->
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 0">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Notaudited.png">
                   </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
                 </div>
               </div>
             </div>
@@ -489,9 +543,80 @@
           </div>
           <div class='comment-result' *ngIf="reviewSecondSteps.comment_status === true">
             <div class='result-title'>审片评论</div>
-
             <div *ngFor="let b of reviewSecondSteps?.review_records">
-              <div class='result-wrapper' *ngIf="b.conclusion === 2">
+              <div class='result-wrapper'>
+                <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper>
+                  <div class='wrapper-right' style="flex: 1;background: #fff;">
+                    <div style='display:flex;justify-content: space-between;align-items: center'>
+                      <div style='display: flex;align-items: center'>
+                        <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
+                          [src]="b.employee.avatar" alt="">
+                        <div>
+                          <div class='right-title'>
+                            <div style="display: flex; align-items: center;">
+                              <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                              <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                              <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_passage.png" alt="">
+                              <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                            </div>
+                          </div>
+                          <div class='right-rate'>
+                            <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                            <div style="margin-top: 4px;">{{b.review_at}}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                          style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                          <a href="javascript:void(0)">查看审片明细
+                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
+                              nzTheme="outline"></i>
+                          </a>
+                        </div>
+                        <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                          style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                          <a href="javascript:void(0)">收起审片明细
+                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+                          </a>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
+                  </div>
+                  <div *ngIf="isShowSelect === true"
+                    style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
+                    <div>
+                      <div class='result-title-btm'>评分项</div>
+                      <div class='result-wrapper-btm'>
+                        <div class='score-item-btm' *ngFor="let score of nameFirstList">
+                          <div class='item-left'>{{score.name}}</div>
+                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
+                        </div>
+                      </div>
+                    </div>
+                    <div class='result-title-btm'>审片日志</div>
+                    <nz-timeline [nzMode]="'left'">
+                      <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    </nz-timeline>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class='result-wrapper' *ngIf="b.conclusion === 2">
                 <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
                   alt="">
                 <div class='wrapper-right' style="flex: 1">
@@ -500,7 +625,7 @@
                       <div style='margin-right: 10px;'>{{b.employee.name}}</div>
                       <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
                     </div>
-                    <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                    <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
                       style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
                       <a href="javascript:void(0)">查看审片明细
                         <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down" nzTheme="outline"></i>
@@ -511,40 +636,40 @@
                       <a href="javascript:void(0)">收起审片明细
                         <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
                       </a>
-                    </div> -->
+                    </div>
                   </div>
                   <div class='right-rate'>
                     <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
                     <div style="margin-top: 4px;">{{b.review_at}}</div>
                   </div>
                   <div class='right-content'>{{b.comment}}</div>
-                  <!-- <div *ngIf="isShowSelect === true"
-                  style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
-                  <div>
-                    <div class='result-title-btm'>评分项</div>
-                    <div class='result-wrapper-btm'>
-                      <div class='score-item-btm' *ngFor="let score of nameFirstList">
-                        <div class='item-left'>{{score.name}}</div>
-                        <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
+                  <div *ngIf="isShowSelect === true"
+                    style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
+                    <div>
+                      <div class='result-title-btm'>评分项</div>
+                      <div class='result-wrapper-btm'>
+                        <div class='score-item-btm' *ngFor="let score of nameFirstList">
+                          <div class='item-left'>{{score.name}}</div>
+                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
+                        </div>
                       </div>
                     </div>
+                    <div class='result-title-btm'>审片日志</div>
+                    <nz-timeline [nzMode]="'left'">
+                      <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    </nz-timeline>
                   </div>
-                  <div class='result-title-btm'>审片日志</div>
-                  <nz-timeline [nzMode]="'left'">
-                    <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                  </nz-timeline>
-                </div> -->
                 </div>
               </div>
               <div class='result-wrapper' *ngIf="b.conclusion === 1">
@@ -576,7 +701,7 @@
                   </div>
                   <div class='right-content'>{{b.comment}}</div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </nz-tab>
@@ -636,49 +761,76 @@
           <div class='comment-result' *ngIf="reviewThirdSteps.comment_status === true">
             <div class='result-title'>审片评论</div>
             <div *ngFor="let b of reviewThirdSteps?.review_records">
-              <div class='result-wrapper' *ngIf="b.conclusion === 2">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
+              <div class='result-wrapper'>
+                <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper>
+                  <div class='wrapper-right' style="flex: 1;background: #fff;">
+                    <div style='display:flex;justify-content: space-between;align-items: center'>
+                      <div style='display: flex;align-items: center'>
+                        <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
+                          [src]="b.employee.avatar" alt="">
+                        <div>
+                          <div class='right-title'>
+                            <div style="display: flex; align-items: center;">
+                              <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                              <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                              <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_passage.png" alt="">
+                              <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                            </div>
+                          </div>
+                          <div class='right-rate'>
+                            <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
+                            <div style="margin-top: 4px;">{{b.review_at}}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                          style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                          <a href="javascript:void(0)">查看审片明细
+                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
+                              nzTheme="outline"></i>
+                          </a>
+                        </div>
+                        <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                          style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
+                          <a href="javascript:void(0)">收起审片明细
+                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+                          </a>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
                   </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
+                  <div *ngIf="isShowSelect === true"
+                    style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
+                    <div>
+                      <div class='result-title-btm'>评分项</div>
+                      <div class='result-wrapper-btm'>
+                        <div class='score-item-btm' *ngFor="let score of nameFirstList">
+                          <div class='item-left'>{{score.name}}</div>
+                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
+                        </div>
+                      </div>
+                    </div>
+                    <div class='result-title-btm'>审片日志</div>
+                    <nz-timeline [nzMode]="'left'">
+                      <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
+                    </nz-timeline>
                   </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 1">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_passage.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
-                </div>
-              </div>
-              <div class='result-wrapper' *ngIf="b.conclusion === 0">
-                <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;" [src]="b.employee.avatar"
-                  alt="">
-                <div class='wrapper-right'>
-                  <div class='right-title'>
-                    <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                    <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Notaudited.png" alt="">
-                  </div>
-                  <div class='right-rate'>
-                    <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                    <div style="margin-top: 4px;">{{b.review_at}}</div>
-                  </div>
-                  <div class='right-content'>{{b.comment}}</div>
                 </div>
               </div>
             </div>
