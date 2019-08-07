@@ -452,17 +452,18 @@
                       {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose | floor}}%
                     </div>
                   </div>
-                  <!-- <div class='right-unPass'>
-                    <img style='width: 22px;height: 20px;' src="../../../../../assets/images/ic_dislike.png" alt="">
-                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.oppose_name}}
+                  <div *ngIf="reviewFirstSteps?.conclusion_item.neutral_name" class='right-sumbit' style='line-height: 2'>
+                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png"
+                      alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.neutral_name}}
                     </div>
-                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstOppose"
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewFirstLikeAdopt"
                       [nzShowInfo]="false">
                     </nz-progress>
                     <div style='margin-left:10px'>
-                      {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose | floor}}%
+                      {{reviewFirstSteps?.conclusion_item.neutral_name}}{{reviewFirstAdopt}}人/{{reviewFirstLikeAdopt | floor}}%
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -484,9 +485,14 @@
                   <div class='wrapper-right'>
                     <div class='right-title'>
                       <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                      <img  *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
-                      <img  *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_passage.png" alt="">
-                      <img  *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                      <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_Submission.png" alt="">
+                      <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                      <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_passage.png" alt="">
+                      <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_Notaudited.png" alt="">
                     </div>
                     <div class='right-rate'>
                       <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
@@ -508,9 +514,11 @@
               <nz-radio-group style='margin-right: 30px' [(ngModel)]="choseCompany"
                 (ngModelChange)="choseIsLike($event)">
                 <label nz-radio [ngStyle]="style" nzValue="1"
-                  style='width:80px'>{{reviewThirdSteps.conclusion_item.agree_name}}</label>
+                  style='width:80px'>{{reviewFirstSteps.conclusion_item.agree_name}}</label>
                 <label nz-radio [ngStyle]="style" nzValue="2"
-                  style="width: 80px">{{reviewThirdSteps.conclusion_item.oppose_name}}</label>
+                  style="width: 80px">{{reviewFirstSteps.conclusion_item.oppose_name}}</label>
+                <label *ngIf="reviewFirstSteps.conclusion_item.neutral_name" nz-radio [ngStyle]="style" nzValue="3"
+                  style="width: 80px">{{reviewFirstSteps.conclusion_item.neutral_name}}</label>
               </nz-radio-group>
             </div>
             <!-- 评分项 -->
@@ -570,7 +578,7 @@
                       {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike | floor}}%
                     </div>
                   </div>
-                  <div class='right-unPass'>
+                  <div class='right-unPass' style='line-height: 2'>
                     <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.oppose_name}}
                     </div>
@@ -579,6 +587,18 @@
                     </nz-progress>
                     <div style='margin-left:10px'>
                       {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose | floor}}%
+                    </div>
+                  </div>
+                  <div *ngIf="reviewSecondSteps?.conclusion_item.neutral_name" class='right-sumbit' style='line-height: 2'>
+                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png"
+                      alt="">
+                    <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.neutral_name}}
+                    </div>
+                    <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewSecondLikeAdopt"
+                      [nzShowInfo]="false">
+                    </nz-progress>
+                    <div style='margin-left:10px'>
+                      {{reviewSecondSteps?.conclusion_item.neutral_name}}{{reviewSecondAdopt}}人/{{reviewSecondLikeAdopt | floor}}%
                     </div>
                   </div>
                 </div>
@@ -602,9 +622,14 @@
                   <div class='wrapper-right'>
                     <div class='right-title'>
                       <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                      <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Nopassage.png" alt="">
-                      <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_passage.png" alt="">
-                      <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                      <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_Submission.png" alt="">
+                      <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                      <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_passage.png" alt="">
+                      <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
+                        src="../../../../../assets/images/ic_Notaudited.png" alt="">
                     </div>
                     <div class='right-rate'>
                       <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
@@ -648,9 +673,11 @@
               <nz-radio-group style='margin-right: 30px' [(ngModel)]="choseCompany"
                 (ngModelChange)="choseIsLike($event)">
                 <label nz-radio [ngStyle]="style" nzValue="1"
-                  style='width:80px'>{{reviewThirdSteps.conclusion_item.agree_name}}</label>
+                  style='width:80px'>{{reviewSecondSteps.conclusion_item.agree_name}}</label>
                 <label nz-radio [ngStyle]="style" nzValue="2"
-                  style="width: 80px">{{reviewThirdSteps.conclusion_item.oppose_name}}</label>
+                  style="width: 80px">{{reviewSecondSteps.conclusion_item.oppose_name}}</label>
+                <label *ngIf="reviewSecondSteps.conclusion_item.neutral_name" nz-radio [ngStyle]="style" nzValue="3"
+                  style="width: 80px">{{reviewSecondSteps.conclusion_item.neutral_name}}</label>
               </nz-radio-group>
             </div>
             <!-- 评分项 -->
@@ -712,6 +739,8 @@
                   style='width:80px'>{{reviewThirdSteps.conclusion_item.agree_name}}</label>
                 <label nz-radio [ngStyle]="style" nzValue="2"
                   style="width: 80px">{{reviewThirdSteps.conclusion_item.oppose_name}}</label>
+                <label *ngIf="reviewThirdSteps.conclusion_item.neutral_name" nz-radio [ngStyle]="style" nzValue="3"
+                  style="width: 80px">{{reviewThirdSteps.conclusion_item.neutral_name}}</label>
               </nz-radio-group>
             </div>
             <!-- 评分项 -->

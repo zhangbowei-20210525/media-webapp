@@ -284,6 +284,7 @@
       </div>
     </div>
   </div>
+  <!-- 审片部分 -->
   <div class='block clearfix' style="margin-top: 1.3rem">
     <div class="block-content">
       <nz-tabset [nzType]="'card'" (nzSelectChange)="verifySelectChange($event)">
@@ -317,7 +318,7 @@
                     {{reviewFirstSteps?.conclusion_item.agree_name}}{{likePeople}}人/{{firstLike | floor}}%
                   </div>
                 </div>
-                <div class='right-unPass'>
+                <div class='right-unPass' style='line-height: 2'>
                   <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.oppose_name}}
                   </div>
@@ -326,6 +327,17 @@
                   </nz-progress>
                   <div style='margin-left:10px'>
                     {{reviewFirstSteps?.conclusion_item.oppose_name}}{{disLikePeople}}人/{{firstOppose | floor}}%
+                  </div>
+                </div>
+                <div *ngIf="reviewFirstSteps?.conclusion_item.neutral_name" class='right-submit' style='line-height: 2'>
+                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png" alt="">
+                  <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.neutral_name}}
+                  </div>
+                  <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewFirstLikeAdopt"
+                    [nzShowInfo]="false">
+                  </nz-progress>
+                  <div style='margin-left:10px'>
+                    {{reviewFirstSteps?.conclusion_item.neutral_name}}{{reviewFirstAdopt}}人/{{reviewFirstLikeAdopt | floor}}%
                   </div>
                 </div>
               </div>
@@ -423,6 +435,8 @@
                           <div class='right-title'>
                             <div style="display: flex; align-items: center;">
                               <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                              <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Submission.png" alt="">
                               <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
                                 src="../../../../../assets/images/ic_Nopassage.png" alt="">
                               <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
@@ -518,7 +532,7 @@
                     {{reviewSecondSteps?.conclusion_item.agree_name}}{{secondLikePeople}}人/{{secondLike | floor}}%
                   </div>
                 </div>
-                <div class='right-unPass'>
+                <div class='right-unPass' style='line-height: 2'>
                   <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.oppose_name}}
                   </div>
@@ -527,6 +541,17 @@
                   </nz-progress>
                   <div style='margin-left:10px'>
                     {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose | floor}}%
+                  </div>
+                </div>
+                <div *ngIf="reviewSecondSteps?.conclusion_item.neutral_name" class='right-submit' style='line-height: 2'>
+                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png" alt="">
+                  <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.neutral_name}}
+                  </div>
+                  <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewSecondLikeAdopt"
+                    [nzShowInfo]="false">
+                  </nz-progress>
+                  <div style='margin-left:10px'>
+                    {{reviewSecondSteps?.conclusion_item.neutral_name}}{{reviewSecondAdopt}}人/{{reviewSecondLikeAdopt | floor}}%
                   </div>
                 </div>
               </div>
@@ -555,6 +580,8 @@
                           <div class='right-title'>
                             <div style="display: flex; align-items: center;">
                               <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                              <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Submission.png" alt="">
                               <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
                                 src="../../../../../assets/images/ic_Nopassage.png" alt="">
                               <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
@@ -735,7 +762,7 @@
                     {{reviewThirdSteps?.conclusion_item.agree_name}}{{thirdLikePeople}}人/{{thirdLike | floor}}%
                   </div>
                 </div>
-                <div class='right-unPass'>
+                <div class='right-unPass' style='line-height: 2'>
                   <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.oppose_name}}
                   </div>
@@ -744,6 +771,17 @@
                   </nz-progress>
                   <div style='margin-left:10px'>
                     {{reviewThirdSteps?.conclusion_item.oppose_name}}{{thirdDisLikePeople}}人/{{thirdOppose | floor}}%
+                  </div>
+                </div>
+                <div *ngIf="reviewThirdSteps?.conclusion_item.neutral_name" class='right-submit' style='line-height: 2'>
+                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png" alt="">
+                  <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.neutral_name}}
+                  </div>
+                  <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewThirdLikeAdopt"
+                    [nzShowInfo]="false">
+                  </nz-progress>
+                  <div style='margin-left:10px'>
+                    {{reviewThirdSteps?.conclusion_item.neutral_name}}{{reviewThirdAdopt}}人/{{reviewThirdLikeAdopt | floor}}%
                   </div>
                 </div>
               </div>
@@ -772,6 +810,8 @@
                           <div class='right-title'>
                             <div style="display: flex; align-items: center;">
                               <div style='margin-right: 10px;'>{{b.employee.name}}</div>
+                              <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
+                                src="../../../../../assets/images/ic_Submission.png" alt="">
                               <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
                                 src="../../../../../assets/images/ic_Nopassage.png" alt="">
                               <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'

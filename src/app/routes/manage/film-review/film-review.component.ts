@@ -41,6 +41,7 @@ export class FilmReviewComponent implements OnInit {
     this.switchTab = 0;
     this.service.getFilmReviewList().subscribe(res => {
       this.refresh(res, 0);
+      console.log(res, '11');
     });
   }
 
@@ -71,6 +72,8 @@ export class FilmReviewComponent implements OnInit {
     if (step_number === 0) {
       this.service.getFilmReviewDetails(data[0].id).subscribe(res => {
         this.filmReview1 = res;
+        console.log(res);
+        console.log(res.conclusion_item.neutral_name);
       });
     }
     if (step_number === 1) {

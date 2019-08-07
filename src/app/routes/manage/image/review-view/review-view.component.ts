@@ -214,7 +214,7 @@ export class ReviewViewComponent implements OnInit {
     this.isFirstAllDisplayDataChecked = this.firstListOfDisplayData.every(item => this.firstMapOfCheckedId[item.id]);
     this.isFirstIndeterminate =
       this.firstListOfDisplayData.some(item => this.firstListOfDisplayData[item.id]) && !this.isFirstAllDisplayDataChecked;
-    // console.log(this.firstMapOfCheckedId);
+    console.log(this.firstMapOfCheckedId);
     // console.log(this.firstListOfDisplayData);
   }
   firstPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -361,12 +361,17 @@ export class ReviewViewComponent implements OnInit {
         review_ids.push(Number(key));
       }
     }
-    this.service.submitFirstInstance(review_ids).subscribe(res => {
-      this.message.success('提交审片成功');
-    });
-    this.selectedTabIndex = 2;
-    // this.selectedTabIndex = 2;
-    this.fetchPublicities(this.selectedTabIndex);
+    console.log(review_ids);
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.service.submitFirstInstance(review_ids).subscribe(res => {
+        this.message.success('提交审片成功');
+      });
+      this.selectedTabIndex = 2;
+      // this.selectedTabIndex = 2;
+      this.fetchPublicities(this.selectedTabIndex);
+    }
   }
   // 二审提交
   secondSubmit() {
@@ -379,12 +384,16 @@ export class ReviewViewComponent implements OnInit {
     }
     // this.review_ids = this.checkedFirstIds;
     // console.log(this.checkedFirstIds);
-    this.service.submitFirstInstance(review_ids).subscribe(res => {
-      // console.log(res);
-    });
-    this.selectedTabIndex = 3;
-    // this.selectedTabIndex = 3;
-    this.fetchPublicities(this.selectedTabIndex);
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.service.submitFirstInstance(review_ids).subscribe(res => {
+        // console.log(res);
+      });
+      this.selectedTabIndex = 3;
+      // this.selectedTabIndex = 3;
+      this.fetchPublicities(this.selectedTabIndex);
+    }
   }
   // 三审提交(入库跳转)
   goSave() {
@@ -396,10 +405,15 @@ export class ReviewViewComponent implements OnInit {
         console.log(review_ids);
       }
     }
-    this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, isVerify: 1 }]);
-    // this.service.submitFirstInstance(review_ids).subscribe(res => {
-    //   console.log(res);
-    // });
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, isVerify: 1 }]);
+      // this.service.submitFirstInstance(review_ids).subscribe(res => {
+      //   console.log(res);
+      // });
+    }
+
   }
   // 审片筛选功能
   getCompanyName(data) {
