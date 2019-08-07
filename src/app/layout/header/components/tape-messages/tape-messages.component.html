@@ -1,8 +1,12 @@
 <!-- <div style="font-size: 12px;font-weight: bold;margin-top: 10px">{{ created_at }}</div>
   <div style="font-size: 12px;margin-top: 5px;margin-bottom: 25px">{{ content }}</div> -->
-  <div *ngIf="type === 'SOU005'">
-      <div class="theme-title">授权信息</div>
-    <div class="block clearfix">
+<div *ngIf="type === 'SOU005'" style="margin-left: 56px;">
+  <div style="width:640px;
+  height: auto;
+  border-radius:4px;
+  border:1px solid rgba(238,238,238,1);">
+    <div class="theme-title">授权信息</div>
+    <div class="clearfix" style="background-color: #fff;border-radius: 2px;margin-bottom: 1.3rem;margin-left: 26px">
       <div class="block-content">
         <div nz-row class="series-info-row">
           <div nz-col nzSpan="12" class="text-ellipsis">
@@ -58,41 +62,54 @@
           </div>
         </div>
         <div nz-row class="series-info-row">
-            <!-- <span style="font-size: 14px;color: #D0021B">*</span> -->
-            <div nz-col nzSpan="12">
-              <span class="info-filed required">被授权公司</span>
-              <span>{{ authInfo?.auth_custom_name }}</span>
-            </div>
-            <div nz-col nzSpan="12">
-              <span class="info-filed required">被授权人</span>
-              <span>{{ authInfo?.auth_liaison_name }}</span>
-            </div>
+          <!-- <span style="font-size: 14px;color: #D0021B">*</span> -->
+          <div nz-col nzSpan="12">
+            <span class="info-filed required">被授权公司</span>
+            <span>{{ authInfo?.auth_custom_name }}</span>
           </div>
-          <div nz-row class="series-info-row">
-              <div nz-col nzSpan="12">
-                <span class="info-filed required">联系方式</span>
-                <span>{{ authInfo?.auth_phone }}</span>
-              </div>
-              <div nz-col nzSpan="12">
-                <!-- <span class="info-filed"></span>
+          <div nz-col nzSpan="12">
+            <span class="info-filed required">被授权人</span>
+            <span>{{ authInfo?.auth_liaison_name }}</span>
+          </div>
+        </div>
+        <div nz-row class="series-info-row">
+          <div nz-col nzSpan="12">
+            <span class="info-filed required">联系方式</span>
+            <span>{{ authInfo?.auth_phone }}</span>
+          </div>
+          <div nz-col nzSpan="12">
+            <!-- <span class="info-filed"></span>
                 <span></span> -->
-              </div>
-            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="theme-title" *ngIf="isShow == false">授权公司</div>
-    <div style="font-size: 16px;
-    text-align: center;
-    font-weight: bold;" *ngIf="isShow == false">{{ authInfo?.auth_company_full_name }}</div>
-    <div class="theme-title" *ngIf="isShow == true">请选择授权公司</div>
-    <!-- <div class="d-flex" style ="align-items:center;">
-      <div style="font-size:16px;color: #333333;margin-left: 10px">请选择授权公司</div>
-    </div> -->
-
-      <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'" [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabChange($event)" *ngIf="isShow == true">
-          <nz-tab [nzTitle]="'已有公司'" (nzClick)="tab0()">
-              <form nz-form [formGroup]="validateForm">
-                  <!-- <nz-form-item *ngIf='isChoseShow === false'>
+  </div>
+  <div class="theme-title" *ngIf="isShow == false && is_process == false">确认被授权公司</div>
+  <div nz-row class="series-info-row" *ngIf="isShow == false && is_process == false">
+    <div nz-col nzSpan="12" style="margin-left: 26px">
+      <span class="info-filed required">公司</span>
+      <span>{{ authInfo?.auth_company_full_name }}</span>
+    </div>
+  </div>
+  <div class="theme-title" *ngIf="is_process == true && authInfo?.receipt_status == 1">授权结果</div>
+  <div style="margin-left: 26px" *ngIf="is_process == true && authInfo?.receipt_status == 1">
+    <span><i nz-icon nzType="check-circle" nzTheme="fill" style="font-size: 22px;color:#4797F7"></i></span>
+    <span
+      style="margin-left: 10px;font-size:16px;color:#333333">{{ year }}年{{ mouth }}月{{ day }}日,{{ authInfo?.auth_company_full_name }}已接受授权！</span>
+  </div>
+  <div class="theme-title" *ngIf="is_process == true && authInfo?.receipt_status == 2">授权结果</div>
+  <div style="margin-left: 26px" *ngIf="is_process == true && authInfo?.receipt_status == 2">
+    <span><i nz-icon nzType="close-circle" nzTheme="fill" style="font-size: 22px;color:#4797F7"></i></span>
+    <span
+      style="margin-left: 10px;font-size:16px;color:#333333">{{ year }}年{{ mouth }}月{{ day }}日,该授权已被拒绝！</span>
+  </div>
+  <div class="theme-title" *ngIf="isShow == true && is_process == false">选择授权公司</div>
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'" [nzSelectedIndex]="tabIndex"
+    (nzSelectChange)="tabChange($event)" *ngIf="isShow == true && is_process == false">
+    <nz-tab [nzTitle]="'已有公司'" (nzClick)="tab0()">
+      <form nz-form [formGroup]="validateForm">
+        <!-- <nz-form-item *ngIf='isChoseShow === false'>
                     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
                     <nz-form-control [nzSm]="17" [nzXs]="24">
                       <input nz-input id="companyFullName" formControlName="companyFullName" placeholder="请填写接受公司" />
@@ -101,19 +118,19 @@
                       </nz-form-explain>
                     </nz-form-control>
                   </nz-form-item> -->
-                  <nz-form-item>
-                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>接受公司</nz-form-label>
-                    <nz-form-control [nzSm]="17" [nzXs]="24">
-                      <nz-radio-group formControlName="companyFullName" (ngModelChange)="onChoseCompany($event)">
-                        <label nz-radio *ngFor="let option of companyList" style="display: block;margin-top: 9px"
-                          [nzValue]="option.company_id">{{option.company_full_name}}</label>
-                      </nz-radio-group>
-                      <nz-form-explain
-                        *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请选择接受公司
-                      </nz-form-explain>
-                    </nz-form-control>
-                  </nz-form-item>
-                  <!-- <nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>接受公司</nz-form-label>
+          <nz-form-control [nzSm]="17" [nzXs]="24">
+            <nz-radio-group formControlName="companyFullName" (ngModelChange)="onChoseCompany($event)">
+              <label nz-radio *ngFor="let option of companyList" style="display: block;margin-top: 9px"
+                [nzValue]="option.company_id">{{option.company_full_name}}</label>
+            </nz-radio-group>
+            <nz-form-explain
+              *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请选择接受公司
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
                     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>手机号码</nz-form-label>
                     <nz-form-control [nzSm]="17" [nzXs]="24">
                       <input placeholder="请填写手机号码" nz-input id="phone" formControlName="phone" />
@@ -124,20 +141,20 @@
                       </nz-form-explain>
                     </nz-form-control>
                   </nz-form-item> -->
-                </form>
-          </nz-tab>
-          <nz-tab [nzTitle]="'新建公司'" (nzClick)="tab1()">
-              <form nz-form [formGroup]="addForm">
-                  <nz-form-item>
-                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
-                    <nz-form-control [nzSm]="17" [nzXs]="24">
-                      <input nz-input id="addCompanyFullName" formControlName="addCompanyFullName" placeholder="请填写接受公司全称" />
-                      <nz-form-explain
-                        *ngIf="addForm.get('addCompanyFullName').dirty && addForm.get('addCompanyFullName').errors">请填写接受公司
-                      </nz-form-explain>
-                    </nz-form-control>
-                  </nz-form-item>
-                  <!-- <nz-form-item>
+      </form>
+    </nz-tab>
+    <nz-tab [nzTitle]="'新建公司'" (nzClick)="tab1()">
+      <form nz-form [formGroup]="addForm">
+        <nz-form-item>
+          <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>公司</nz-form-label>
+          <nz-form-control [nzSm]="17" [nzXs]="24">
+            <input nz-input id="addCompanyFullName" formControlName="addCompanyFullName" placeholder="请填写接受公司全称" />
+            <nz-form-explain
+              *ngIf="addForm.get('addCompanyFullName').dirty && addForm.get('addCompanyFullName').errors">请填写接受公司
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
                     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>手机号码</nz-form-label>
                     <nz-form-control [nzSm]="17" [nzXs]="24">
                       <input placeholder="请填写手机号码" nz-input id="addPhone" formControlName="addPhone" />
@@ -148,7 +165,7 @@
                       </nz-form-explain>
                     </nz-form-control>
                   </nz-form-item> -->
-                </form>
-          </nz-tab>
-        </nz-tabset>
-  </div>
+      </form>
+    </nz-tab>
+  </nz-tabset>
+</div>

@@ -14,20 +14,23 @@ export class TapeMessagesComponent implements OnInit {
   @Input() content: string;
   @Input() id: number;
   @Input() type: string;
+  @Input() is_process: boolean;
 
   validateForm: FormGroup;
   addForm: FormGroup;
   isDisparShow = false;
   authInfo: any;
   typeCompany: any;
-  companyId: any;
   acceptCompany: any;
   typeId: any;
   companyList = [];
   isChoseShow = false;
   tabIndex = 0;
   isShow = true;
-  showId: any;
+  auth_cid: number;
+  year: string;
+  mouth: string;
+  day: string;
 
   constructor(
     private service: NotifyService,
@@ -47,14 +50,21 @@ export class TapeMessagesComponent implements OnInit {
 
     if (this.type === 'SOU005') {
       this.service.getAuthorizationInfo(this.id).subscribe(res => {
-        this.showId = res.auth_company_id;
-        if (this.showId > 0) {
+        console.log(res);
+        this.auth_cid = res.auth_company_id;
+        if (this.auth_cid > 0) {
           this.isShow = false;
         }
         this.authInfo = res;
+        if (this.authInfo.receipt_at !== null) {
+          this.year = this.authInfo.receipt_at.substring(0, 4);
+          this.mouth = this.authInfo.receipt_at.substring(5, 2);
+          this.day = this.authInfo.receipt_at.substring(8, 2);
+        }
         this.typeCompany = res.auth_custom_name;
-        this.companyId = res.auth_company_id;
+        // this.companyId = res.auth_company_id;
         this.service.getCompanyList().subscribe(cl => {
+          console.log('44444');
           this.acceptCompany = res.company_full_name;
           this.companyList = cl;
           console.log(this.companyList);
@@ -95,7 +105,7 @@ export class TapeMessagesComponent implements OnInit {
   }
 
   onChoseCompany(data) {
-    this.companyId = data;
+    this.auth_cid = data;
     if (!!data) {
       this.isChoseShow = true;
     } else {
@@ -119,22 +129,21 @@ export class TapeMessagesComponent implements OnInit {
     console.log(event);
   }
 
+  cid() {
+    return this.auth_cid;
+  }
+
   submit() {
 
     if (this.isShow === false) {
       const status = true;
-      return this.service.pubAuth(status, this.showId, this.id);
+      return this.service.pubAuth(status, this.auth_cid, this.id);
     } else {
       if (this.tabIndex === 0) {
         const status = true;
-        if (this.companyId === undefined) {
-          console.log(this.companyId);
-          this.companyId = '';
-        }
-        return this.service.pubAuth(status, this.companyId, this.id);
+        return this.service.pubAuth(status, this.auth_cid, this.id);
       }
       if (this.tabIndex === 1) {
-        console.log(this.addForm.value['addCompanyFullName']);
         const status = true;
         if (this.companyList.find(f => this.addForm.value['addCompanyFullName'] === f.company_full_name)) {
           this.message.warning('该公司已存在,请重新填写');

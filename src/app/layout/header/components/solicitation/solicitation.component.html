@@ -1,0 +1,35 @@
+<div class="theme-title">{{ si?.created_employee?.company?.full_name }}</div>
+<div nz-row class="series-info-row">
+  <div nz-col nzSpan="12">
+    <span class="info-filed">联系人：</span>
+    <span>{{ si?.created_employee?.name }}</span>
+  </div>
+  <div nz-col nzSpan="12">
+    <span class="info-filed">联系方式：</span>
+    <span>{{ si?.created_employee?.phone }}</span>
+  </div>
+</div>
+<div class="theme-title">征集需求：</div>
+<div nz-row class="series-info-row">
+  <div nz-col nzSpan="12">
+    <span class="info-filed">节目类型：</span>
+    <span>{{ si?.program_type }}</span>
+  </div>
+  <div nz-col nzSpan="12">
+    <span class="info-filed">节目题材：</span>
+    <span>{{ si?.program_theme }}</span>
+  </div>
+</div>
+<div nz-row class="series-info-row">
+  <div nz-col nzSpan="24">
+    <span class="info-filed">要求描述：</span>
+    <span>{{ si?.description }}</span>
+  </div>
+</div>
+<div nz-row class="series-info-row">
+  <div nz-col nzSpan="12" class="info-filed required">
+    <span *ngIf="si?.expire_days == null" style="font-size: 12px;color: #D0021B">征集令永久有效！</span>
+    <span *ngIf="si?.expire_days < 0 && si?.expire_days !== null" style="font-size: 12px;color: #D0021B">征集令已经失效！</span>
+    <span *ngIf="si?.expire_days >= 0 && si?.expire_days !== null" style="font-size: 12px;color: #D0021B">征集令{{ si?.expire_days }}天后到期！</span>
+  </div>
+</div>

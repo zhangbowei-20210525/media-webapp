@@ -33,12 +33,13 @@ export class TapeComponent implements OnInit, OnDestroy {
   address: string;
   source_type: string;
   showTape: boolean;
-  tapeFilePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
+  tapeFilePagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
   pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   isActive: any;
+  pageing = 1;
   // getHash: any;
   // getIp: any;
-  TapePage: any;
+  // TapePage: any;
   constructor(
     public ability: ACLAbility,
     private modalService: NzModalService,
@@ -90,8 +91,10 @@ export class TapeComponent implements OnInit, OnDestroy {
     this.ntf.nextNotifies();
   }
   getTapeFileList() {
-    this.seriesService.tapeFileList(this.tapesList[0].id, this.tapeFilePagination).pipe(tap(x => {
-      this.TapePage = x.pagination;
+    this.tapeFilePagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
+    this.tapeFilePagination.page = this.pageing;
+    this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).pipe(tap(x => {
+      // this.TapePage = x.pagination;
       x.list.forEach(f => {
         // this.getHash = f.hash;
         // this.getIp = f.ip;
@@ -101,7 +104,6 @@ export class TapeComponent implements OnInit, OnDestroy {
         }
       });
       this.isActive = x.list.every(item => {
-        console.log(item);
         return item.local_file_status === '';
       });
     })).subscribe(x => {
@@ -131,7 +133,7 @@ export class TapeComponent implements OnInit, OnDestroy {
       // this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }]);
       this.isId = id;
       this.seriesService.tapeFileList(id, this.tapeFilePagination).pipe(tap(x => {
-        this.TapePage = x.pagination;
+        // this.TapePage = x.pagination;
         x.list.forEach(f => {
           // this.getHash = f.hash;
           // this.getIp = f.ip;
@@ -154,7 +156,7 @@ export class TapeComponent implements OnInit, OnDestroy {
       // this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }]);
       this.isId = id;
       this.seriesService.tapeFileList(id, this.tapeFilePagination).pipe(tap(x => {
-        this.TapePage = x.pagination;
+        // this.TapePage = x.pagination;
         x.list.forEach(f => {
           // this.getHash = f.hash;
           // this.getIp = f.ip;
@@ -280,7 +282,6 @@ export class TapeComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           this.message.success(this.translate.instant('global.add-success'));
           this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
-            console.log(p);
             this.pubTapeList = p.list;
             this.pubTapePagination = p.pagination;
           });
@@ -294,11 +295,13 @@ export class TapeComponent implements OnInit, OnDestroy {
   })
 
   tapeFilePageChange(page: number) {
+    console.log(page);
     this.tapeFilePagination.page = page;
     this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).subscribe(res => {
       // console.log(res);
       this.tapeFileList = res.list;
       this.tapeFilePagination = res.pagination;
+      console.log(this.tapeFilePagination);
     });
   }
 
@@ -363,11 +366,11 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
   deleteTapeAgreed(id: number, index: number) {
     this.seriesService.deleteTapeSave(id).subscribe(res => {
-      this.tapeFileList.splice(index, 1);
-      if ((this.TapePage.count - 1) % this.TapePage.page_size === 0) {
-        this.tapeFilePagination.page = this.TapePage.page - 1;
-        this.getTapeFileList();
-      }
+      // this.tapeFileList.splice(index, 1);
+      // if ((this.TapePage.count - 1) % this.TapePage.page_size === 0) {
+      //   this.tapeFilePagination.page = this.TapePage.page - 1;
+      //   this.getTapeFileList();
+      // }
       this.message.success('删除成功');
       this.getTapeFileList();
     });

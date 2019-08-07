@@ -11,6 +11,7 @@ import { PassportComponent } from './passport/passport.component';
 import { SystemMessagesComponent } from './header/components/system-messages/system-messages.component';
 import { TapeMessagesComponent } from './header/components/tape-messages/tape-messages.component';
 import { ExternalMessagesComponent } from './header/components/external-messages/external-messages.component';
+import { SolicitationComponent } from './header/components/solicitation/solicitation.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ExternalMessagesComponent } from './header/components/external-messages
     PassportComponent,
     SystemMessagesComponent,
     TapeMessagesComponent,
-    ExternalMessagesComponent
+    ExternalMessagesComponent,
+    SolicitationComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { ExternalMessagesComponent } from './header/components/external-messages
   entryComponents: [
     SystemMessagesComponent,
     TapeMessagesComponent,
-    ExternalMessagesComponent
+    ExternalMessagesComponent,
+    SolicitationComponent
   ]
 })
 export class LayoutModule { }
