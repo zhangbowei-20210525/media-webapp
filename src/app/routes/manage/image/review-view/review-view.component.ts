@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
 import { PaginationDto, Util } from '@shared';
-import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
-import { finalize, switchMap } from 'rxjs/operators';
+import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
+import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { ACLAbility } from '@core/acl';
 import { LaunchFilmsComponent } from '../components/launch-films/launch-films.component';
-import { CallUpComponent } from '../components/call-up/call-up.component';
+// import { CallUpComponent } from '../components/call-up/call-up.component';
 import { fadeIn } from '@shared/animations';
 
 @Component({
@@ -86,10 +86,7 @@ export class ReviewViewComponent implements OnInit {
   isMyTapesLoaded = false;
   isShowTab = false;
   isShowView = false;
-  isThreeAllDisplayDataPubChecked: boolean;
-  threeMapOfId: any;
-  isThreeIndeterminateId: boolean;
-  threeListOfDisplay = [];
+
   constructor(
     public ability: ACLAbility,
     private router: Router,
@@ -97,7 +94,6 @@ export class ReviewViewComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NzModalService,
     private message: NzMessageService,
-
   ) { }
 
   ngOnInit() {
@@ -258,23 +254,6 @@ export class ReviewViewComponent implements OnInit {
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.threeListOfDisplayData = $event;
-    // this.threeListOfDisplay = $event;
-    // console.log(this.threeListOfDisplay, 'aaaa1');
-    // console.log(this.threeListOfDisplay.length, 'aaaa2');
-    // this.threeListOfDisplay.forEach((item => {
-    //   this.threeListOfDisplayData.forEach(ele => {
-    //     if (item.publicity.id !== ele.publicity.id) {
-    //       this.threeListOfDisplayData.push(item);
-    //     }
-    //   });
-    // }));
-    // console.log(this.threeListOfDisplayData, 'bbbb1');
-    // console.log(this.threeListOfDisplayData, 'bbbb');
-    // this.threeListOfDisplay = this.threeListOfDisplay.reduce((item , next) => {
-    //   // tslint:disable-next-line:no-unused-expression
-    //   this.threeListDisplayData[next.publicity.id] ? ' ' : this.threeListDisplayData[next.publicity.id] = true && item.push(next);
-    //   return item;
-    // });
     this.threeRefreshStatus();
   }
   threeCheckAll(value: boolean): void {
@@ -440,7 +419,7 @@ export class ReviewViewComponent implements OnInit {
     } else {
       this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId , isVerify: 1 }]);
       this.service.submitFirstInstance(review_ids).subscribe(res => {
-        console.log(res);
+        // console.log(res);
       });
     }
 

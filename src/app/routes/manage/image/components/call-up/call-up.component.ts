@@ -43,27 +43,24 @@ export class CallUpComponent implements OnInit {
     this.SolicitationForm.get('companyName').disable();
     this.SolicitationForm.get('userName').disable();
     this.seriesService.programType().subscribe(res => {
-      console.log(res);
+      // console.log(res);
       this.programTypeList = res.program_type_choices;
       this.themeList = res.theme_choices;
-      console.log(this.themeList);
+      // console.log(this.themeList);
     });
   }
 
   // 样片征集令生成
   collection() {
     const custom = this.SolicitationForm.value;
-    console.log(custom);
     this.description = custom.intro;
     this.program_theme = custom.meterial;
     this.program_type = custom.filmType;
     this.validity_period = this.SolicitationForm.value.type;
-    console.log(this.validity_period);
+    // console.log(this.validity_period);
     if (!this.program_theme || this.program_type === null ) {
-      console.log(1);
       this.message.error('请填写相关信息');
     } else {
-      console.log(2);
       this.seriesService.getSampleCollection(this.program_type, this.program_theme, this.description, this.validity_period)
       .subscribe(res => {
         this.isCollection = true;
@@ -95,7 +92,6 @@ export class CallUpComponent implements OnInit {
   // 复制
   copy(data) {
     const input = document.getElementById('url') as HTMLInputElement;
-    console.log(input);
     // 选中文本
     input.select();
     // input.onselect()

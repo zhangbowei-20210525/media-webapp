@@ -85,12 +85,13 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.isVerify = param.get('isVerify') as any;
+      // 节目id
       this.pids = param.get('pids') as any;
+      // 审片id
       this.proIds = param.get('ids') as any;
       if (this.pids) {
         this.fetchProgramOfOptions(this.pids);
       }
-      console.log(this.isVerify);
     });
     this.service.getCustomerOptions().subscribe(result => {
       this.customerOptions = result.list;
@@ -193,16 +194,13 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   onProgramThemeInput(value: string) {
     this.filteredProgramThemes = this.programThemeOptions.filter(item => item.indexOf(value) >= 0);
   }
-
+  // 获取节目信息
   fetchProgramOfOptions(ids?: number[]) {
-    console.log(123, '什么时候执行的');
     this.service.getSeriesNames(ids).subscribe(result => {
       this.programOfOptions = result.list;
-      console.log(this.programOfOptions);
       if (ids) {
         this.rightForm.get('projects').setValue(this.programOfOptions.map(p => p.name));
         this.rightForm.get('programType').setValue(this.programOfOptions.map(p => p.program_type));
-        console.log(this.programOfOptions);
       }
       if (Number(this.isVerify) === 1) {
         this.rightForm.get('programType').disable();
@@ -430,6 +428,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
     });
 
     if (programs.length > 0) {
+      // 新增版权三审入口
       if (Number(this.isVerify) === 1) {
         this.review_ids = this.proIds.split(',');
         this.review_ids = this.review_ids.map(Number);
@@ -447,6 +446,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
             this.message.success(this.translate.instant('global.save-successfully'));
           });
       } else {
+        // 新增版权入口
         this.service.addCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
           .pipe(finalize(() => this.isSaving = false))
           .subscribe(result => {
@@ -462,7 +462,6 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
           });
       }
     } else {
-      console.log(4, 'fanchele');
       this.isSaving = false;
     }
   }
