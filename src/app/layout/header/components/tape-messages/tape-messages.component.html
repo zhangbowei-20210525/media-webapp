@@ -96,13 +96,13 @@
   <div style="margin-left: 26px" *ngIf="is_process == true && authInfo?.receipt_status == 1">
     <span><i nz-icon nzType="check-circle" nzTheme="fill" style="font-size: 22px;color:#4797F7"></i></span>
     <span
-      style="margin-left: 10px;font-size:16px;color:#333333">{{ year }}年{{ mouth }}月{{ day }}日,{{ authInfo?.auth_company_full_name }}已接受授权！</span>
+      style="margin-left: 10px;font-size:16px;color:#333333">{{ year }}年{{ mouth }}月{{ day }}日，{{ authInfo?.auth_company_full_name }}已接受授权！</span>
   </div>
   <div class="theme-title" *ngIf="is_process == true && authInfo?.receipt_status == 2">授权结果</div>
   <div style="margin-left: 26px" *ngIf="is_process == true && authInfo?.receipt_status == 2">
     <span><i nz-icon nzType="close-circle" nzTheme="fill" style="font-size: 22px;color:#4797F7"></i></span>
     <span
-      style="margin-left: 10px;font-size:16px;color:#333333">{{ year }}年{{ mouth }}月{{ day }}日,该授权已被拒绝！</span>
+      style="margin-left: 10px;font-size:16px;color:#333333">{{ year }}年{{ mouth }}月{{ day }}日，该授权已被拒绝！</span>
   </div>
   <div class="theme-title" *ngIf="isShow == true && is_process == false">选择授权公司</div>
   <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSize]="'small'" [nzSelectedIndex]="tabIndex"

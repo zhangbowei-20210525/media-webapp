@@ -253,7 +253,6 @@ export class DetailsSolicitationComponent implements OnInit {
       return;
     } else {
       this.seriesService.submitCollection(this.objParams, this.id).subscribe(res => {
-
         this.modalService.create({
           nzTitle: ``,
           nzContent: CollectionUpComponent,
