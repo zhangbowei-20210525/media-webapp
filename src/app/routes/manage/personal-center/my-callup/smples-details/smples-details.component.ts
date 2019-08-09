@@ -76,9 +76,9 @@ export class SmplesDetailsComponent implements OnInit {
     this.pagination.page = page;
     this.fetchPublicities();
   }
-  publicityPlay(id: number, sid: number) {
+  publicityPlay(id: number, sid: number, vid: number) {
     // console.log(id);
-    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid }]);
+    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid , vid: vid}]);
   }
   returnBack() {
     this.router.navigate([`/manage/account-center/my-callup/my-samples`]);

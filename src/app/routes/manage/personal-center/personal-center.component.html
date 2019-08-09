@@ -93,23 +93,22 @@
 
       <ul nz-menu nzMode="inline" style="width: 240px;">
 
-        <div class='s-nav-history' [ngClass]="{ 'actived first-selected': firstSelected === 1}" (click)="goHistory(1)">
-          <li nz-menu-item routerLink="history" class='s-nav-item'>
+        <div class='s-nav-history' >
+          <li nz-menu-item routerLink="history" class='s-nav-item' [ngClass]="{ 'actived first-selected': firstSelected === 1}" (click)="goHistory(1)">
             <div class='history-img-first' style="width:15px;height: 15px;margin-left: 36px">
             </div>
             <p style="margin-left: 8px; height:40px; line-height: 53px;">历史记录</p>
           </li>
         </div>
-        <div class="s-nav-history " [ngClass]="{ 'actived second-selected': firstSelected === 2}" (click)="goShare(2)">
-          <li nz-menu-item routerLink="my-sharing" class='s-nav-item'>
+        <div class="s-nav-history " >
+          <li nz-menu-item routerLink="my-sharing" class='s-nav-item' [ngClass]="{ 'actived second-selected': firstSelected === 2}" (click)="goShare(2)">
             <div class='history-img-second' style="width:15px;height: 15px;margin-left: 36px">
             </div>
             <p style="margin-left: 8px; height:40px; line-height: 53px;">我的分享</p>
           </li>
         </div>
-        <div class="s-nav-history " [ngClass]="{ 'actived third-selected': firstSelected === 3}"
-          (click)="goSolicitation(3)">
-          <li nz-menu-item routerLink="my-callup" class='s-nav-item'>
+        <div class="s-nav-history " >
+          <li nz-menu-item routerLink="my-callup" class='s-nav-item' [ngClass]="{ 'actived third-selected': firstSelected === 3}" (click)="goSolicitation(3)">
             <div class='history-img-third' style="width:15px;height: 15px;margin-left: 36px">
             </div>
             <p style="margin-left: 8px; height:40px; line-height: 53px;">我的征集令</p>

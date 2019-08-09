@@ -135,8 +135,13 @@ export class CopyrightsService {
     return this.http.post('/api/v1/rights', copyrightData);
   }
   // 审片入口进入版权
-  addFilmCopyrights(copyrightData: AddCopyrightsDto) {
-    return this.http.post('/api/v1/rights', copyrightData);
+  addFilmCopyrights(contract_data: ContractDto, order_data: OrderPayDto[], program_data: ProgramDto[], review_ids: any) {
+    return this.http.post('/api/v1/reviews/storage', {
+      contract_data,
+      order_data,
+      program_data,
+      review_ids
+    });
   }
 
   getCustomerOptions() {
@@ -148,7 +153,7 @@ export class CopyrightsService {
   }
 
   getSeriesNames(program_ids?: number[]) {
-    return this.http.get<{ list: any[], meta: any }>(`/api/v1/programs/brief?program_ids=${program_ids}`);
+    return this.http.get<{ list: any[], meta: any }>(`/api/v1/pub/programs/inquire/right_creation?program_ids=${program_ids}`);
   }
 
   getPrograms() {
@@ -323,6 +328,14 @@ export class CopyrightsService {
       order_data,
       program_data
     } as AddCopyrightsDto;
+  }
+  toVerifyAddCopyrightsData(contract_data: ContractDto, order_data: OrderPayDto[], program_data: ProgramDto[], review_ids: any) {
+    return {
+      contract_data,
+      order_data,
+      program_data,
+      review_ids
+    };
   }
 
   toPublishRightsData(contract_data: ContractDto, order_data: OrderPayDto[], program_data: ProgramDto[]) {

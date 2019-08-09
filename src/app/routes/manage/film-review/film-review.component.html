@@ -20,7 +20,10 @@
             <span>{{ filmReview1?.conclusion_item?.agree_name }}</span>
             <span style="margin-left: 10px">or</span>
             <span style="margin-left: 10px">{{ filmReview1?.conclusion_item?.oppose_name }}</span>
+            <span style="margin-left: 10px" *ngIf="filmReview1?.conclusion_item?.neutral_name">or</span>
+            <span style="margin-left: 10px" *ngIf="filmReview1?.conclusion_item?.neutral_name">{{ filmReview1?.conclusion_item?.neutral_name }}</span>
             <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
+
           </div>
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
@@ -63,6 +66,8 @@
             <span>{{ filmReview2?.conclusion_item?.agree_name }}</span>
             <span style="margin-left: 10px">or</span>
             <span style="margin-left: 10px">{{ filmReview2?.conclusion_item?.oppose_name }}</span>
+            <span style="margin-left: 10px" *ngIf="filmReview2?.conclusion_item?.neutral_name">or</span>
+            <span style="margin-left: 10px" *ngIf="filmReview2?.conclusion_item?.neutral_name">{{ filmReview2?.conclusion_item?.neutral_name }}</span>
             <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
           </div>
         </nz-collapse-panel>
@@ -106,6 +111,8 @@
             <span>{{ filmReview3?.conclusion_item?.agree_name }}</span>
             <span style="margin-left: 10px">or</span>
             <span style="margin-left: 10px">{{ filmReview3?.conclusion_item?.oppose_name }}</span>
+            <span style="margin-left: 10px" *ngIf="filmReview3?.conclusion_item?.neutral_name">or</span>
+            <span style="margin-left: 10px" *ngIf="filmReview3?.conclusion_item?.neutral_name">{{ filmReview3?.conclusion_item?.neutral_name }}</span>
             <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
           </div>
         </nz-collapse-panel>

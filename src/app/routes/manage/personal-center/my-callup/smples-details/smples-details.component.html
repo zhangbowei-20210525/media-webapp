@@ -1,46 +1,46 @@
 <div class="videos-info-big-box">
-  <div style="text-align: right; height: 39px;line-height: 39px;" >
+  <div style="text-align: right; height: 39px;line-height: 39px;">
     <a style="margin-right: 17px; color: #666666;" (click)="returnBack()">
       <img src="../../../../../../assets/images/ic_mypage_return_normal.png" alt="">
       返回
     </a>
   </div>
   <li class="video-info" *ngFor="let thumbnail of list index as i">
-      <div class="video">
-        <img class="video-img" [src]="thumbnail?.src" />
-        <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program.id)">
-          <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
-        </div>
+    <div class="video">
+      <img class="video-img" [src]="thumbnail?.src" />
+      <div class="price" (click)="publicityPlay(thumbnail?.id, thumbnail?.program.id, thumbnail?.intention_id)">
+        <span class="price">{{ thumbnail?.created_at }}&nbsp;发布</span>
       </div>
-      <div class="info">
-        <div class="info-container-big-box">
-          <div class="info-container-name"><a>{{ thumbnail?.program.name }}</a>
-          </div>
-          <div class="info-container-type">{{ thumbnail?.program.program_type | seriesType }}</div>
+    </div>
+    <div class="info">
+      <div class="info-container-big-box">
+        <div class="info-container-name"><a>{{ thumbnail?.program.name }}</a>
         </div>
-        <div class="info-small-box-director">
-          <div class="info-small-box-director-left">导演: </div>
-          <div class="info-small-box-director-right">{{ thumbnail?.program.director }}</div>
-        </div>
-        <div class="info-small-box-tostar"> 主演:
-          <span class="info-small-box-tostar-right">{{ thumbnail?.program.protagonist }}</span>
-        </div>
+        <div class="info-container-type">{{ thumbnail?.program.program_type | seriesType }}</div>
       </div>
-      <div class="info-small-box-bottom">
-        <!-- <div class="info-wk-eight"> -->
-        <div class="info-small-box-bottom-left">
-          <img class="info-hp" [src]="thumbnail?.created_employee.avatar">
-          <span
-            class="info-small-box-bottom-right">{{ thumbnail?.created_employee.company.full_name === '' ? '-' : thumbnail?.created_employee.company.full_name }}</span>
-        </div>
-        <!-- </div> -->
+      <div class="info-small-box-director">
+        <div class="info-small-box-director-left">导演: </div>
+        <div class="info-small-box-director-right">{{ thumbnail?.program.director }}</div>
       </div>
-    </li>
-    <div style="text-align: right;">
-        <nz-pagination *ngIf='list.length>0' [nzPageIndex]="pagination?.page" (nzPageIndexChange)='getPageChange($event)'
-            [nzPageSize]='pagination?.page_size' [nzTotal]="pagination?.count">
-          </nz-pagination>
-        </div>
+      <div class="info-small-box-tostar"> 主演:
+        <span class="info-small-box-tostar-right">{{ thumbnail?.program.protagonist }}</span>
+      </div>
+    </div>
+    <div class="info-small-box-bottom">
+      <!-- <div class="info-wk-eight"> -->
+      <div class="info-small-box-bottom-left">
+        <img class="info-hp" [src]="thumbnail?.created_employee.avatar">
+        <span
+          class="info-small-box-bottom-right">{{ thumbnail?.created_employee.company.full_name === '' ? '-' : thumbnail?.created_employee.company.full_name }}</span>
+      </div>
+      <!-- </div> -->
+    </div>
+  </li>
+  <div style="text-align: right;">
+    <nz-pagination *ngIf='list.length>0' [nzPageIndex]="pagination?.page" (nzPageIndexChange)='getPageChange($event)'
+      [nzPageSize]='pagination?.page_size' [nzTotal]="pagination?.count">
+    </nz-pagination>
+  </div>
 </div>
 <!-- <div *ngIf='list.length===0' style="height:472px; background-color: #fff"> -->
 <div *ngIf='list.length === 0'>

@@ -58,15 +58,14 @@ export class MySmplesComponent implements OnInit {
       });
     });
   }
+
   // copy
-  // 复制
   copy(data) {
+    console.log(data);
     const input = document.getElementById('url') as HTMLInputElement;
     console.log(input);
-    // 选中文本
+    input.value = data;
     input.select();
-    // input.onselect()
-    // 执行浏览器复制命令
     document.execCommand('copy');
     this.message.success('复制成功');
   }

@@ -17,7 +17,7 @@ export class PersonalCenterComponent implements OnInit {
   loading: boolean;
   info: PersonalCenterDto;
   employees: [];
-  firstSelected = 1;
+  firstSelected: number;
 
   constructor(
     private pcs: PersonalCenterService,

@@ -293,7 +293,7 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/reviews/intentions?page=${pagination.page}&page_size=${pagination.page_size}`, {
       params: {
         publish_company_id: companyId,
-        receive_employee_id: receiverId
+        receive_employee_id: receiverId,
       }
     }
     );
@@ -305,8 +305,13 @@ export class SeriesService {
     );
   }
   // 生成样片征集令
-  getSampleCollection(program_type: any, program_theme: any, description) {
-    return this.http.post<any>(`/api/v1/publicity/collections`, { program_type: program_type, program_theme: program_theme, description });
+  getSampleCollection(program_type: any, program_theme: any, description, validity_period: any) {
+    return this.http.post<any>(`/api/v1/publicity/collections`, {
+       program_type: program_type,
+       program_theme: program_theme,
+       description,
+       validity_period: validity_period
+      });
   }
   // 我的征集令
   getBrowseRecord(pagination: PaginationDto) {
@@ -416,7 +421,11 @@ export class SeriesService {
     return this.http.delete<any>(`/api/v1/programs/configs/fields/${type}/${id}`);
   }
 
-  getScreenList() {
-    return this.http.get<any>(`/api/v1/reviews/intentions/template/filter`);
+  getScreenList(selectedIndex: any) {
+    return this.http.get<any>(`/api/v1/reviews/intentions/template/filter`, {
+      params: {
+        step_number: selectedIndex,
+      }
+    });
   }
 }

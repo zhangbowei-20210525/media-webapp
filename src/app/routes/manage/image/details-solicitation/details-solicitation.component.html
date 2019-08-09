@@ -15,8 +15,8 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>节目名称</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input (input)="getNewList()" (blur)='onBlur()' placeholder="请输入节目名称" nz-input id="name" formControlName="name"
-                (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramName" >
+              <input (input)="getNewList()" (blur)='onBlur()' placeholder="请输入节目名称" nz-input id="name"
+                formControlName="name" (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramName">
               <nz-autocomplete nzBackfill #autoProgramName>
                 <nz-auto-option *ngFor="let program of programList" [nzValue]="program.name">
                   {{ program.name }}
@@ -29,7 +29,8 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname">节目别名</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input placeholder="请输入节目别名" nz-input id="nickname" formControlName="nickname" (ngModelChange)="onInput($event)">
+              <input placeholder="请输入节目别名" nz-input id="nickname" formControlName="nickname"
+                (ngModelChange)="onInput($event)">
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
@@ -52,11 +53,11 @@
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <input placeholder="请输入节目类型" nz-input id="program_type" formControlName="program_type"
                 (ngModelChange)="onInput($event)" [nzAutocomplete]="autoProgramTypeList">
-                <nz-autocomplete nzBackfill #autoProgramTypeList>
-                  <nz-auto-option *ngFor="let item of programTypeList" [nzValue]="item">
-                    {{ item }}
-                  </nz-auto-option>
-                </nz-autocomplete>
+              <nz-autocomplete nzBackfill #autoProgramTypeList>
+                <nz-auto-option *ngFor="let item of programTypeList" [nzValue]="item">
+                  {{ item }}
+                </nz-auto-option>
+              </nz-autocomplete>
               <nz-form-explain
                 *ngIf="validateForm.get('program_type').dirty && validateForm.get('program_type').errors">请输入节目类型
               </nz-form-explain>
@@ -66,7 +67,7 @@
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="theme">题材</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
               <input placeholder="请输入题材" nz-input id="theme" formControlName="theme" (ngModelChange)="onInput($event)"
-              [nzAutocomplete]="autoThemeList">
+                [nzAutocomplete]="autoThemeList">
               <nz-autocomplete nzBackfill #autoThemeList>
                 <nz-auto-option *ngFor="let item of themeList" [nzValue]="item">
                   {{ item }}
@@ -79,7 +80,8 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="episode">集数</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input placeholder="请输入集数" nz-input id="episode" formControlName="episode" (ngModelChange)="onInput($event)">
+              <input placeholder="请输入集数" nz-input id="episode" formControlName="episode"
+                (ngModelChange)="onInput($event)">
               <nz-form-explain *ngIf="validateForm.get('episode').dirty && validateForm.get('episode').errors">请输入节目名称
               </nz-form-explain>
             </nz-form-control>
@@ -94,7 +96,8 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="director">导演</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input placeholder="请输入导演" nz-input id="director" formControlName="director" (ngModelChange)="onInput($event)">
+              <input placeholder="请输入导演" nz-input id="director" formControlName="director"
+                (ngModelChange)="onInput($event)">
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
@@ -121,7 +124,8 @@
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="producer">出品人</nz-form-label>
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <input placeholder="请输入出品人" nz-input id="producer" formControlName="producer" (ngModelChange)="onInput($event)">
+              <input placeholder="请输入出品人" nz-input id="producer" formControlName="producer"
+                (ngModelChange)="onInput($event)">
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
@@ -133,25 +137,24 @@
           </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="progress">当前进度</nz-form-label>
-
             <nz-form-control [nzSm]="17" [nzXs]="17">
-              <nz-select id="progress" formControlName="progress" nzPlaceHolder="请选择当前进度" >
-                  <nz-option nzLabel="剧本阶段" nzValue="scenario"></nz-option>
-                  <nz-option nzLabel="筹备中" nzValue="preparation"></nz-option>
-                  <nz-option nzLabel="拍摄中" nzValue="filming"></nz-option>
-                  <nz-option nzLabel="后制中" nzValue="production"></nz-option>
-                  <nz-option nzLabel="已完成" nzValue="completed"></nz-option>
-                  <nz-option nzLabel="二轮" nzValue="second"></nz-option>
+              <nz-select id="progress" formControlName="progress" nzPlaceHolder="请选择当前进度">
+                <nz-option nzLabel="剧本阶段" nzValue="scenario"></nz-option>
+                <nz-option nzLabel="筹备中" nzValue="preparation"></nz-option>
+                <nz-option nzLabel="拍摄中" nzValue="filming"></nz-option>
+                <nz-option nzLabel="后制中" nzValue="production"></nz-option>
+                <nz-option nzLabel="已完成" nzValue="completed"></nz-option>
+                <nz-option nzLabel="二轮" nzValue="second"></nz-option>
               </nz-select>
-              <nz-form-explain
-              *ngIf="validateForm.get('progress').dirty && validateForm.get('progress').errors">请输入节目类型
-            </nz-form-explain>
+              <nz-form-explain *ngIf="validateForm.get('progress').dirty && validateForm.get('progress').errors">请输入节目类型
+              </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction">说明</nz-form-label>
-            <nz-form-control [nzSm]="17" [nzXs]="6" >
-              <textarea rows="3" nz-input formControlName="introduction" placeholder="请输入说明" [nzAutosize]="{ minRows: 2, maxRows: 6 }" ></textarea>
+            <nz-form-control [nzSm]="17" [nzXs]="6">
+              <textarea rows="3" nz-input formControlName="introduction" placeholder="请输入说明"
+                [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
             </nz-form-control>
           </nz-form-item>
         </form>
@@ -192,14 +195,8 @@
         <p>上传样片视频</p>
       </div>
       <div class="details-box-right-btm">
-        <nz-upload nzType="drag" 
-          [nzLimit]="2" 
-          [nzFileType]="text" 
-          [nzAction]="docType"
-          [nzBeforeUpload]='beforeUpload' 
-          (nzChange)="handleChange($event)" 
-          [nzDisabled]="uploadVideo ? 'true' : 'false'" 
-          [nzMultiple]="true" 
+        <nz-upload nzType="drag" [nzLimit]="2" [nzFileType]="text" [nzAction]="docType" [nzBeforeUpload]='beforeUpload'
+          (nzChange)="handleChange($event)" [nzDisabled]="uploadVideo ? 'true' : 'false'" [nzMultiple]="true"
           [nzShowUploadList]="false">
           <p class="ant-upload-drag-icon">
             <i nz-icon nzType="upload" nzTheme="outline" style="color: skyblue"></i>

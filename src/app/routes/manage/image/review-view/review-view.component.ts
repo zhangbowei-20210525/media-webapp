@@ -86,6 +86,10 @@ export class ReviewViewComponent implements OnInit {
   isMyTapesLoaded = false;
   isShowTab = false;
   isShowView = false;
+  isThreeAllDisplayDataPubChecked: boolean;
+  threeMapOfId: any;
+  isThreeIndeterminateId: boolean;
+  threeListOfDisplay = [];
   constructor(
     public ability: ACLAbility,
     private router: Router,
@@ -114,7 +118,7 @@ export class ReviewViewComponent implements OnInit {
         this.isMyTapesLoaded = true;
       }
     });
-    this.service.getScreenList().subscribe(res => {
+    this.service.getScreenList(this.selectedTabIndex).subscribe(res => {
       this.screen = res;
       // console.log(res);
     });
@@ -168,7 +172,6 @@ export class ReviewViewComponent implements OnInit {
         this.isMyTapesLoaded = true;
         this.isShowTab = true;
         this.isShowView = true;
-
         // this.paginationName = result.pagination.name;
       });
   }
@@ -215,7 +218,7 @@ export class ReviewViewComponent implements OnInit {
     this.isFirstAllDisplayDataChecked = this.firstListOfDisplayData.every(item => this.firstMapOfCheckedId[item.id]);
     this.isFirstIndeterminate =
       this.firstListOfDisplayData.some(item => this.firstListOfDisplayData[item.id]) && !this.isFirstAllDisplayDataChecked;
-    // console.log(this.firstMapOfCheckedId);
+    console.log(this.firstMapOfCheckedId);
     // console.log(this.firstListOfDisplayData);
   }
   firstPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -245,18 +248,37 @@ export class ReviewViewComponent implements OnInit {
   }
   // 三审
   threeRefreshStatus(): void {
-    this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.id]);
+    this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.publicity.id]);
+    this.threeListOfDisplayData.every(item => this.isThreeAllDisplayDataChecked[item.publicity.id]);
     this.isThreeIndeterminate =
-      this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.id]) && !this.isThreeAllDisplayDataChecked;
-    // console.log(this.threeMapOfCheckedId);
-
+    this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.publicity.id]) && !this.isThreeAllDisplayDataChecked;
+    // console.log(this.threeMapOfCheckedId, 'zzzz');
+    // // console.log(this.isThreeAllDisplayDataChecked);
+    // console.log(this.threeListOfDisplayData, 'yyyyy');
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.threeListOfDisplayData = $event;
+    // this.threeListOfDisplay = $event;
+    // console.log(this.threeListOfDisplay, 'aaaa1');
+    // console.log(this.threeListOfDisplay.length, 'aaaa2');
+    // this.threeListOfDisplay.forEach((item => {
+    //   this.threeListOfDisplayData.forEach(ele => {
+    //     if (item.publicity.id !== ele.publicity.id) {
+    //       this.threeListOfDisplayData.push(item);
+    //     }
+    //   });
+    // }));
+    // console.log(this.threeListOfDisplayData, 'bbbb1');
+    // console.log(this.threeListOfDisplayData, 'bbbb');
+    // this.threeListOfDisplay = this.threeListOfDisplay.reduce((item , next) => {
+    //   // tslint:disable-next-line:no-unused-expression
+    //   this.threeListDisplayData[next.publicity.id] ? ' ' : this.threeListDisplayData[next.publicity.id] = true && item.push(next);
+    //   return item;
+    // });
     this.threeRefreshStatus();
   }
   threeCheckAll(value: boolean): void {
-    this.threeListOfDisplayData.forEach(item => (this.threeMapOfCheckedId[item.id] = value));
+    this.threeListOfDisplayData.forEach(item => (this.threeMapOfCheckedId[item.publicity.id] = value));
     this.threeRefreshStatus();
   }
   publicityPlay(sid: number, id: number) {
@@ -347,6 +369,10 @@ export class ReviewViewComponent implements OnInit {
     this.isShowTab = false;
     this.isMyTapesLoaded = true;
     this.fetchPublicities(this.selectedTabIndex);
+    this.service.getScreenList(this.selectedTabIndex).subscribe(res => {
+      this.screen = res;
+      // console.log(res);
+    });
     // console.log(this.selectedTabIndex);
   }
   // 一审提交
@@ -358,12 +384,17 @@ export class ReviewViewComponent implements OnInit {
         review_ids.push(Number(key));
       }
     }
-    this.service.submitFirstInstance(review_ids).subscribe(res => {
-      this.message.success('提交审片成功');
-    });
-    this.selectedTabIndex = 2;
-    // this.selectedTabIndex = 2;
-    this.fetchPublicities(this.selectedTabIndex);
+    console.log(review_ids);
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.service.submitFirstInstance(review_ids).subscribe(res => {
+        this.message.success('提交审片成功');
+      });
+      this.selectedTabIndex = 2;
+      // this.selectedTabIndex = 2;
+      this.fetchPublicities(this.selectedTabIndex);
+    }
   }
   // 二审提交
   secondSubmit() {
@@ -376,27 +407,43 @@ export class ReviewViewComponent implements OnInit {
     }
     // this.review_ids = this.checkedFirstIds;
     // console.log(this.checkedFirstIds);
-    this.service.submitFirstInstance(review_ids).subscribe(res => {
-      // console.log(res);
-    });
-    this.selectedTabIndex = 3;
-    // this.selectedTabIndex = 3;
-    this.fetchPublicities(this.selectedTabIndex);
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.service.submitFirstInstance(review_ids).subscribe(res => {
+        // console.log(res);
+      });
+      this.selectedTabIndex = 3;
+      // this.selectedTabIndex = 3;
+      this.fetchPublicities(this.selectedTabIndex);
+    }
   }
   // 三审提交(入库跳转)
   goSave() {
     const review_ids = [];
     // const step_number = 3;
+    console.log(this.threeMapOfCheckedId, 'qqqqqq');
     for (const key in this.threeMapOfCheckedId) {
       if (this.threeMapOfCheckedId[key]) {
         review_ids.push(Number(key));
         console.log(review_ids);
       }
     }
-    this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, isVerify: 1 }]);
-    // this.service.submitFirstInstance(review_ids).subscribe(res => {
-    //   console.log(res);
-    // });
+    const reviewId = [];
+    this.threeListOfDisplayData.forEach(item => {
+      if (review_ids.indexOf(item.publicity.id) > -1) {
+        reviewId.push(item.id);
+      }
+    });
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId , isVerify: 1 }]);
+      this.service.submitFirstInstance(review_ids).subscribe(res => {
+        console.log(res);
+      });
+    }
+
   }
   // 审片筛选功能
   getCompanyName(data) {

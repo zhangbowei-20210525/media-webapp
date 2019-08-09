@@ -8,11 +8,16 @@
         <div style='margin-right: 40px'>节目类型: {{data.program_theme}}</div>
         <div style='margin-right: 40px'>题材: {{data.program_type}}</div>
         <div>发起时间: {{data.created_at}}</div>
+        <nz-tag [nzColor]="'geekblue'" style="margin-left: 15px" *ngIf = "data.expire_days >= 7">生效中</nz-tag>
+        <nz-tag [nzColor]="'magenta'" style="margin-left: 15px" *ngIf = "data.expire_days < 7 && data.expire_days > 0">{{data.expire_days}}天后失效</nz-tag>
+        <nz-tag [nzColor]="'red'" style="margin-left: 15px" *ngIf = "data.expire_days < 0">已过期</nz-tag>
+        <nz-tag [nzColor]="'geekblue'" style="margin-left: 15px" *ngIf = "data.expire_days === null ">永久生效</nz-tag>
       </div>
       <div class='left-link'
         style='display: flex; color: #999999; margin-bottom: 12px; height: 32px; line-height: 32px;'>
-        <input disabled id="url" nz-input placeholder="Basic usage" style="width: 365px" [(ngModel)]="data.share_url"
-          (ngModelChange)="linkChange($event)" />
+        <input id="url" nz-input placeholder="Basic usage" style="width: 365px;position: fixed; left: 2000px;" [(ngModel)]="data.share_url"
+          (ngModelChange)="linkChange($event)"  />
+          <div>{{data.share_url}}</div>
         <div style='color: #4797F7;margin-left: 20px' >
           <!-- <button nz-button nzType="primary" nzGhost>复制链接</button> -->
           <a (click)='copy(data.share_url)' href="javascript:void(0)">复制链接</a>
