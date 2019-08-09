@@ -95,7 +95,7 @@
             <nz-tabset [nzType]="'card'" [nzSelectedIndex]="selectedTabIndex" (nzSelectChange)='onSelectChange($event)'
               *ngIf="intentionList.length || reviewList.length > 0 else empty ">
               <nz-tab nzTitle="意向">
-                <div>
+                <div style="margin-bottom: 14px;">
                   <nz-select style="width: 200px; margin-right: 20px;" nzShowSearch nzAllowClear
                     nzPlaceHolder="请选择要搜索的公司" [(ngModel)]="companyName"
                     (ngModelChange)="getIntentionCompanyName($event)">
