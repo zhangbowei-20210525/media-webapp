@@ -36,7 +36,6 @@ export class TapeComponent implements OnInit, OnDestroy {
   tapeFilePagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
   pubTapePagination = { page: 1, count: 10, page_size: 5 } as PaginationDto;
   isActive: any;
-  pageing = 1;
   // getHash: any;
   // getIp: any;
   // TapePage: any;
@@ -65,6 +64,7 @@ export class TapeComponent implements OnInit, OnDestroy {
           this.source_type = tapeParams.get('source_type');
           if (this.isId === 0) {
             if (this.tapesList.length > 0) {
+              this.isId = this.tapesList[0].id;
               this.seriesService.getOnlineInfo(this.tapesList[0].id).subscribe(t =>
                 this.tapeDetailsInfo = t
               );
@@ -91,8 +91,6 @@ export class TapeComponent implements OnInit, OnDestroy {
     this.ntf.nextNotifies();
   }
   getTapeFileList() {
-    this.tapeFilePagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
-    this.tapeFilePagination.page = this.pageing;
     this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).pipe(tap(x => {
       // this.TapePage = x.pagination;
       x.list.forEach(f => {
@@ -127,7 +125,6 @@ export class TapeComponent implements OnInit, OnDestroy {
 
   pitchOn(id: number, source_type: string) {
     if (source_type === 'online') {
-      console.log(id);
       this.tab = 0;
       this.source_type = 'online';
       // this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'online' }]);
@@ -143,7 +140,6 @@ export class TapeComponent implements OnInit, OnDestroy {
           }
         });
         this.isActive = x.list.every(item => {
-          console.log(item);
           return item.local_file_status === '';
         });
       })).subscribe(x => {
@@ -239,19 +235,26 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
 
 
-  deletePubTape(id: number) {
+  deletePubTape(id: number, i: number) {
     this.modalService.confirm({
       nzTitle: '是否删除本条节目信息?',
       nzOkText: '删除',
       nzCancelText: '取消',
       nzOkType: 'danger',
-      nzOnOk: () => this.deletePubTapeAgreed(id)
+      nzOnOk: () => this.deletePubTapeAgreed(id, i)
     });
   }
 
-  deletePubTapeAgreed = (id: number) => new Promise((resolve) => {
+  deletePubTapeAgreed = (id: number, i: number) => new Promise((resolve) => {
     this.seriesService.deletePubTape(this.isId, id).subscribe(res => {
       this.message.success(this.translate.instant('global.delete-success'));
+      if (this.pubTapePagination.pages === this.pubTapePagination.page) {
+        if (this.pubTapePagination.page === 1) { } else {
+          if ( i === 0 ) {
+            this.pubTapePagination.page = this.pubTapePagination.page - 1;
+          }
+        }
+      }
       this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
         this.pubTapeList = p.list;
         this.pubTapePagination = p.pagination;
@@ -295,13 +298,10 @@ export class TapeComponent implements OnInit, OnDestroy {
   })
 
   tapeFilePageChange(page: number) {
-    console.log(page);
     this.tapeFilePagination.page = page;
     this.seriesService.tapeFileList(this.isId, this.tapeFilePagination).subscribe(res => {
-      // console.log(res);
       this.tapeFileList = res.list;
       this.tapeFilePagination = res.pagination;
-      console.log(this.tapeFilePagination);
     });
   }
 
@@ -354,23 +354,24 @@ export class TapeComponent implements OnInit, OnDestroy {
       });
   })
   // 删除 本地和在线存储(单条数据)
-  deleteTape(id: number , index: number) {
+  deleteTape(id: number , i: number) {
     this.modalService.confirm({
       nzTitle: '是否删除本条母带信息?',
       nzOkText: '删除',
       nzCancelText: '取消',
       nzOkType: 'danger',
-      // nzNoAnimation: true,
-      nzOnOk: () => this.deleteTapeAgreed(id, index)
+      nzOnOk: () => this.deleteTapeAgreed(id, i)
     });
   }
-  deleteTapeAgreed(id: number, index: number) {
+  deleteTapeAgreed(id: number, i: number) {
     this.seriesService.deleteTapeSave(id).subscribe(res => {
-      // this.tapeFileList.splice(index, 1);
-      // if ((this.TapePage.count - 1) % this.TapePage.page_size === 0) {
-      //   this.tapeFilePagination.page = this.TapePage.page - 1;
-      //   this.getTapeFileList();
-      // }
+      if (this.tapeFilePagination.pages === this.tapeFilePagination.page) {
+        if (this.tapeFilePagination.page === 1) { } else {
+          if ( i === 0 ) {
+            this.tapeFilePagination.page = this.tapeFilePagination.page - 1;
+          }
+        }
+      }
       this.message.success('删除成功');
       this.getTapeFileList();
     });
@@ -411,15 +412,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   // 删除加速存储函数
   deleteOnlineSave(id) {
     this.seriesService.deleteOnlineStorage(id).subscribe(res => {
-      // console.log(res);
-      // this.arrList = localStorage.getItem('firstRequset');
-      // console.log(!this.arrList);
-      // if (!this.arrList) {
       this.message.success('正在删除中');
-      // } else {
-      // this.message.error('警告！请勿重复操作');
-      // }
-      // this.arrList = localStorage.setItem('firstRequset', '1');
       this.getTapeFileList();
     }, err => {
       this.message.error('删除失败');

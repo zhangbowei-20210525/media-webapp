@@ -28,7 +28,7 @@
                 <!-- <span *ngIf="!data.uploadStatus">上传成功</span> -->
               </td>
               <td style="text-align: center">
-                <a (click)="deletePublicity(data.id)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
+                <a (click)="deletePublicity(data.id, i)" acl [acl-ability]="ability.program.publicity.file.del"><i nz-icon type="delete" theme="outline"
                     style="font-size: 14px;"></i></a>
               </td>
             </tr>

@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of dataTable.data">
+      <tr *ngFor="let data of dataTable.data;let i = index">
         <td>{{ data.displayIndex }}</td>
         <td><a (click)="contractDetails(data.id)">{{ data.contract_number | emptyDefaultChar}}</a></td>
         <!-- <td>{{ data }}</td> -->
@@ -30,7 +30,7 @@
         <td>{{ data.payment_form | paymentFormat | emptyDefaultChar }}</td>
         <td>
           <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
-          <a nz-popconfirm nzTitle="是否删除此合同？" (nzOnConfirm)="delete(data.id)">
+          <a nz-popconfirm nzTitle="是否删除此合同？" (nzOnConfirm)="delete(data.id, i)">
             <i class="text-info" nz-icon type="delete" theme="outline"></i>
           </a>
         </td>

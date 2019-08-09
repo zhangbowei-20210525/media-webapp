@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of dataTable.data">
+      <tr *ngFor="let data of dataTable.data;let i = index">
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex }}</td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
           <a [routerLink]="['/manage/series/d', data.pid, 'right']">{{ data.project }}</a>
@@ -42,7 +42,7 @@
         </td>
         <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
           <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
-          <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.id)"><i class="text-info"
+          <a nz-popconfirm nzTitle="是否删除此节目所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.id, i)"><i class="text-info"
               nz-icon type="delete" theme="outline"></i></a>
         </td>
       </tr>

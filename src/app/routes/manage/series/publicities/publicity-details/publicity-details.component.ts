@@ -152,60 +152,47 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
           if (this.userinfo.material.pdf === 0) {
             this.pdfDisabled = true;
           }
-          console.log(this.tabIndex);
           if (this.tabIndex === 0) {
             this.publicityType = 'sample';
-            console.log('0000');
             this.sample();
           }
           if (this.tabIndex === 1) {
-            console.log('1111');
             this.publicityType = 'feature';
             this.feature();
           }
           if (this.tabIndex === 2) {
-            console.log('2222');
             this.publicityType = 'trailer';
             this.trailer();
           }
           if (this.tabIndex === 3) {
-            console.log('3333');
             this.publicityType = 'poster';
             this.poster();
           }
           if (this.tabIndex === 4) {
-            console.log('4444');
             this.publicityType = 'still';
             this.still();
           }
           if (this.tabIndex === 5) {
-            console.log('5555');
             this.publicityType = 'pdf';
             this.pdf();
           }
           if (this.publicityType === '' || this.publicityType === 'sample') {
             this.publicityType = 'sample';
-            console.log('11111aaa');
             this.getSampleInfo();
           }
           if (this.publicityType === 'feature') {
-            console.log('2222aaa');
             this.getFeatureInfo();
           }
           if (this.publicityType === 'trailer') {
-            console.log('333aaa');
             this.getTrailerInfo();
           }
           if (this.publicityType === 'poster') {
-            console.log('4444aaa');
             this.getPosterInfo();
           }
           if (this.publicityType === 'still') {
-            console.log('5555aaa');
             this.getStillInfo();
           }
           if (this.publicityType === 'pdf') {
-            console.log('6666aaa');
             this.getPdfInfo();
           }
         });

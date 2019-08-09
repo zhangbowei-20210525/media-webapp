@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of basicTable.data">
+          <tr *ngFor="let data of basicTable.data;let i = index">
             <td><a routerLink="/manage/customers/d/{{data.id}}">{{ data.name }}</a></td>
             <td>{{ data.related_company_id ? '通过' : '' }}</td>
             <td>{{ data.liaison_name }}</td>
@@ -35,7 +35,7 @@
             <td>{{ data.remark }}</td>
             <td>
               <!-- <a><i class="text-info" nz-icon type="edit" theme="outline"></i></a> -->
-              <a acl [acl-ability]="ability.custom.del"><i class="text-info" nz-icon type="delete" theme="outline" (click)="deleteCustomer(data)"></i></a>
+              <a acl [acl-ability]="ability.custom.del"><i class="text-info" nz-icon type="delete" theme="outline" (click)="deleteCustomer(data, i)"></i></a>
             </td>
           </tr>
         </tbody>

@@ -172,19 +172,26 @@ export class PublicityComponent implements OnInit {
     // this[listString] = [...this[listString], ...uploads];
   }
 
-  deletePublicity(id: number) {
+  deletePublicity(id: number, i: number) {
     this.modal.confirm({
       nzTitle: '是否删除本条节目信息?',
       nzOkText: '删除',
       nzCancelText: '取消',
       nzOkType: 'danger',
-      nzOnOk: () => this.deletePublicityAgreed(id)
+      nzOnOk: () => this.deletePublicityAgreed(id, i)
     });
   }
 
-  deletePublicityAgreed = (id: number) => new Promise((resolve) => {
+  deletePublicityAgreed = (id: number, i: number) => new Promise((resolve) => {
     this.seriesService.deletePublicity(this.publicityId, this.materielTypes[this.selectedIndex], id).subscribe(res => {
       this.message.success(this.translate.instant('global.delete-success'));
+      // if (this.pagination.pages === this.pagination.page) {
+      //   if (this.pagination.page === 1) { } else {
+      //     if ( i === 0 ) {
+      //       this.pagination.page = this.pagination.page - 1;
+      //     }
+      //   }
+      // }
       this.fetchMateriels(this.materielTypes[this.selectedIndex]);
       resolve();
     }, error => {
