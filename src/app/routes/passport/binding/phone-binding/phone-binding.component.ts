@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { StateStoreService } from '../../state-store.service';
 import { TreeService } from '@shared';
+import { LoginResultDto } from '@shared/dtos';
 
 @Component({
   selector: 'app-phone-binding',
@@ -88,20 +89,25 @@ export class PhoneBindingComponent implements OnInit {
       this.service.bindingPhone(this.stateStore.getState().token, this.phone.value, this.captcha.value).pipe(finalize(() => {
         this.isSubmitting = false;
       })).subscribe(result => {
-        if (result.auth.company_full_name) {  // 登录成功
+        if (result.auth.company_full_name) {
+          // 登录成功
           this.message.success('登录成功');
-          this.stateStore.clearState();
-          this.auth.onLogin({
-            userInfo: result.auth,
-            token: result.token,
-            permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
-          });
-          this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
+          this.login(result);
         } else {
           this.router.navigateByUrl('/passport/binding/company');
         }
       });
     }
+  }
+
+  login (data: LoginResultDto) {
+    this.stateStore.clearState();
+    this.auth.onLogin({
+      userInfo: data.auth,
+      token: data.token,
+      permissions: this.ts.recursionNodesMapArray(data.permissions, p => p.code, p => p.status)
+    });
+    this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
   }
 
 }

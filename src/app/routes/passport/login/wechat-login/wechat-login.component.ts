@@ -24,7 +24,10 @@ export class WechatLoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.auth.isLoggedIn) {
-      this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
+      const url = this.stateStore.getDirectionUrl();
+      this.stateStore.clearState();
+      console.log(url);
+      this.router.navigateByUrl(url || '/');
     } else {
       const state = this.stateStore.getState();
       if (state.userInfo && state.token) {
@@ -53,7 +56,7 @@ export class WechatLoginComponent implements OnInit {
           id: 'wx_login_container',
           appid: 'wxfbe18062a4d62486',
           scope: 'snsapi_login',
-          redirect_uri: 'https://www.bctop.net/oauth2/callback/wechat',
+          redirect_uri: `https://www.bctop.net/oauth2/callback/wechat`,
           state: 'STATE_LOGIN',
           style: '',
           // href: 'http://localhost/assets/css/wx_login.css' // 覆盖微信默认样式
