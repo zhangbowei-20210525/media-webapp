@@ -329,7 +329,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let data of threeListOfDisplayData">
-                        <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data.id]"
+                        <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data?.publicity.id]"
                           (nzCheckedChange)="threeRefreshStatus()"></td>
                         <td>
                           <a

@@ -425,7 +425,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         this.thirdLike = ((res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
           res.review_steps[2].review_records_statistic.reviewed_count) * 100) || 0;
         this.thirdOppose = ((res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
-          res.review_steps[2].review_records_statistic.reviewed_count) * 100) || 0;
+          res.review_steps[2].review_records_statistic.count) * 100) || 0;
         // 一审提交通过率
         this.reviewFirstAdopt = res.review_steps[0].review_records_statistic.conclusion_statistic.neutral;
         this.reviewFirstLikeAdopt = (res.review_steps[0].review_records_statistic.conclusion_statistic.neutral /

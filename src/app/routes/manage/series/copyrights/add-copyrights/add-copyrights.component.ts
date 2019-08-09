@@ -53,6 +53,10 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   programThemeOptions: string[];
   filteredProgramThemes: string[];
   isVerify: number;
+  review_ids = [];
+  pids: any;
+  ids: any;
+  proIds = '';
   constructor(
     private fb: FormBuilder,
     private service: CopyrightsService,
@@ -81,8 +85,11 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.isVerify = param.get('isVerify') as any;
-      const pids = param.get('pids') as any;
-      this.fetchProgramOfOptions(pids);
+      this.pids = param.get('pids') as any;
+      this.proIds = param.get('ids') as any;
+      if (this.pids) {
+        this.fetchProgramOfOptions(this.pids);
+      }
       console.log(this.isVerify);
     });
     this.service.getCustomerOptions().subscribe(result => {
@@ -188,12 +195,18 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   }
 
   fetchProgramOfOptions(ids?: number[]) {
+    console.log(123, '什么时候执行的');
     this.service.getSeriesNames(ids).subscribe(result => {
       this.programOfOptions = result.list;
+      console.log(this.programOfOptions);
       if (ids) {
         this.rightForm.get('projects').setValue(this.programOfOptions.map(p => p.name));
         this.rightForm.get('programType').setValue(this.programOfOptions.map(p => p.program_type));
         console.log(this.programOfOptions);
+      }
+      if (Number(this.isVerify) === 1) {
+        this.rightForm.get('programType').disable();
+        this.rightForm.get('projects').disable();
       }
     });
   }
@@ -417,8 +430,10 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
     });
 
     if (programs.length > 0) {
-      if (this.isVerify = 1) {
-        this.service.addFilmCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
+      if (Number(this.isVerify) === 1) {
+        this.review_ids = this.proIds.split(',');
+        this.review_ids = this.review_ids.map(Number);
+        this.service.addFilmCopyrights(contract, orders, programs, this.review_ids)
           .pipe(finalize(() => this.isSaving = false))
           .subscribe(result => {
             this.isSaved = true;
@@ -428,7 +443,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
             }
             this.contractForm.reset();
             this.payments = null;
-            this.fetchProgramOfOptions();
+            // this.fetchProgramOfOptions();
             this.message.success(this.translate.instant('global.save-successfully'));
           });
       } else {
@@ -442,12 +457,12 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
             }
             this.contractForm.reset();
             this.payments = null;
-            this.fetchProgramOfOptions();
+            // this.fetchProgramOfOptions();
             this.message.success(this.translate.instant('global.save-successfully'));
           });
       }
-
     } else {
+      console.log(4, 'fanchele');
       this.isSaving = false;
     }
   }

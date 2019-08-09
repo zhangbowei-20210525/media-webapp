@@ -86,6 +86,10 @@ export class ReviewViewComponent implements OnInit {
   isMyTapesLoaded = false;
   isShowTab = false;
   isShowView = false;
+  isThreeAllDisplayDataPubChecked: boolean;
+  threeMapOfId: any;
+  isThreeIndeterminateId: boolean;
+  threeListOfDisplay = [];
   constructor(
     public ability: ACLAbility,
     private router: Router,
@@ -244,18 +248,37 @@ export class ReviewViewComponent implements OnInit {
   }
   // 三审
   threeRefreshStatus(): void {
-    this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.id]);
+    this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.publicity.id]);
+    this.threeListOfDisplayData.every(item => this.isThreeAllDisplayDataChecked[item.publicity.id]);
     this.isThreeIndeterminate =
-      this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.id]) && !this.isThreeAllDisplayDataChecked;
-    // console.log(this.threeMapOfCheckedId);
-
+    this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.publicity.id]) && !this.isThreeAllDisplayDataChecked;
+    // console.log(this.threeMapOfCheckedId, 'zzzz');
+    // // console.log(this.isThreeAllDisplayDataChecked);
+    // console.log(this.threeListOfDisplayData, 'yyyyy');
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.threeListOfDisplayData = $event;
+    // this.threeListOfDisplay = $event;
+    // console.log(this.threeListOfDisplay, 'aaaa1');
+    // console.log(this.threeListOfDisplay.length, 'aaaa2');
+    // this.threeListOfDisplay.forEach((item => {
+    //   this.threeListOfDisplayData.forEach(ele => {
+    //     if (item.publicity.id !== ele.publicity.id) {
+    //       this.threeListOfDisplayData.push(item);
+    //     }
+    //   });
+    // }));
+    // console.log(this.threeListOfDisplayData, 'bbbb1');
+    // console.log(this.threeListOfDisplayData, 'bbbb');
+    // this.threeListOfDisplay = this.threeListOfDisplay.reduce((item , next) => {
+    //   // tslint:disable-next-line:no-unused-expression
+    //   this.threeListDisplayData[next.publicity.id] ? ' ' : this.threeListDisplayData[next.publicity.id] = true && item.push(next);
+    //   return item;
+    // });
     this.threeRefreshStatus();
   }
   threeCheckAll(value: boolean): void {
-    this.threeListOfDisplayData.forEach(item => (this.threeMapOfCheckedId[item.id] = value));
+    this.threeListOfDisplayData.forEach(item => (this.threeMapOfCheckedId[item.publicity.id] = value));
     this.threeRefreshStatus();
   }
   publicityPlay(sid: number, id: number) {
@@ -399,19 +422,26 @@ export class ReviewViewComponent implements OnInit {
   goSave() {
     const review_ids = [];
     // const step_number = 3;
+    console.log(this.threeMapOfCheckedId, 'qqqqqq');
     for (const key in this.threeMapOfCheckedId) {
       if (this.threeMapOfCheckedId[key]) {
         review_ids.push(Number(key));
         console.log(review_ids);
       }
     }
+    const reviewId = [];
+    this.threeListOfDisplayData.forEach(item => {
+      if (review_ids.indexOf(item.publicity.id) > -1) {
+        reviewId.push(item.id);
+      }
+    });
     if (review_ids.length === 0) {
       this.message.error('请选择样片');
     } else {
-      this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, isVerify: 1 }]);
-      // this.service.submitFirstInstance(review_ids).subscribe(res => {
-      //   console.log(res);
-      // });
+      this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId , isVerify: 1 }]);
+      this.service.submitFirstInstance(review_ids).subscribe(res => {
+        console.log(res);
+      });
     }
 
   }
