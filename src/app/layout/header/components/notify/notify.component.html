@@ -60,7 +60,7 @@
                     style="font-size: 12px;margin-top: 5px">
                     <a *ngIf="item.is_detail == false">{{ item.content }}</a>
                     <a *ngIf="item.is_detail == true"
-                      (click)="messageDetails(item.title, item.created_at, item.content, item.related_id, item.type, item.is_process)">{{ item.content }}</a>
+                      (click)="messageDetails(item.title, item.created_at, item.content, item.related_id, item.id, item.type, item.is_process)">{{ item.content }}</a>
                   </div>
                 </div>
                 <nz-skeleton *ngIf="srcPagination.pages > srcPagination.page" [nzTitle]="false"

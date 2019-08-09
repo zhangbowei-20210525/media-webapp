@@ -28,9 +28,9 @@ export class TapeMessagesComponent implements OnInit {
   tabIndex = 0;
   isShow = true;
   auth_cid: number;
-  year: string;
-  mouth: string;
-  day: string;
+  year: number;
+  mouth: number;
+  day: number;
 
   constructor(
     private service: NotifyService,
@@ -50,24 +50,23 @@ export class TapeMessagesComponent implements OnInit {
 
     if (this.type === 'SOU005') {
       this.service.getAuthorizationInfo(this.id).subscribe(res => {
-        console.log(res);
         this.auth_cid = res.auth_company_id;
         if (this.auth_cid > 0) {
           this.isShow = false;
         }
+        console.log(this.isShow);
+        console.log(this.is_process);
         this.authInfo = res;
         if (this.authInfo.receipt_at !== null) {
-          this.year = this.authInfo.receipt_at.substring(0, 4);
-          this.mouth = this.authInfo.receipt_at.substring(5, 2);
-          this.day = this.authInfo.receipt_at.substring(8, 2);
+          this.year = new Date(this.authInfo.receipt_at).getFullYear();
+          this.mouth = new Date(this.authInfo.receipt_at).getMonth() + 1;
+          this.day = new Date(this.authInfo.receipt_at).getUTCDate();
         }
         this.typeCompany = res.auth_custom_name;
         // this.companyId = res.auth_company_id;
         this.service.getCompanyList().subscribe(cl => {
-          console.log('44444');
           this.acceptCompany = res.company_full_name;
           this.companyList = cl;
-          console.log(this.companyList);
         });
         // this.validateForm.get('companyFullName').setValue(res.auth_custom_name);
         // this.validateForm.get('phone').setValue(res.auth_phone);
