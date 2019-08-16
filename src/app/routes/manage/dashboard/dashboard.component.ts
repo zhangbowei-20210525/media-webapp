@@ -384,7 +384,7 @@ export class DashboardComponent implements OnInit {
     this.reviewStatisticalYear = d;
     this.reviewStatisticalMonth = mm;
     this.dashboardService.getReviewList(yy, mm).subscribe(result => {
-      this.reviewList = result.list;
+      this.reviewList = result.list.reviews;
     });
   }
 
