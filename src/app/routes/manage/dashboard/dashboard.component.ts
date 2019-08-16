@@ -77,6 +77,7 @@ export class DashboardComponent implements OnInit {
   t6: any;
 
   reviewList = [];
+  reviews = [];
 
   reviewListIsOpen1 = false;
   reviewListIsOpen2 = false;
@@ -384,7 +385,8 @@ export class DashboardComponent implements OnInit {
     this.reviewStatisticalYear = d;
     this.reviewStatisticalMonth = mm;
     this.dashboardService.getReviewList(yy, mm).subscribe(result => {
-      this.reviewList = result.list.reviews;
+      this.reviews = result.list.reviews;
+      this.reviewList = result.list;
     });
   }
 
