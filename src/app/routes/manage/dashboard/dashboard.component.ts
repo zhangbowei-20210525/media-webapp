@@ -76,6 +76,12 @@ export class DashboardComponent implements OnInit {
   t5: any;
   t6: any;
 
+  reviewList = [];
+
+  reviewListIsOpen1 = false;
+  reviewListIsOpen2 = false;
+  reviewListIsOpen3 = false;
+
   data2 = [{
     date: '2018/8/1',
     type: 'download',
@@ -307,6 +313,23 @@ export class DashboardComponent implements OnInit {
     '日本(未付款)': 250,
   }
   ];
+  reviewStatisticalYear: any;
+  reviewStatisticalMonth: number;
+  reviewStatisticalMonthOfOption = [
+    { label: '01月', value: 1 },
+    { label: '02月', value: 2 },
+    { label: '03月', value: 3 },
+    { label: '04月', value: 4 },
+    { label: '05月', value: 5 },
+    { label: '06月', value: 6 },
+    { label: '07月', value: 7 },
+    { label: '08月', value: 8 },
+    { label: '09月', value: 9 },
+    { label: '10月', value: 10 },
+    { label: '11月', value: 11 },
+    { label: '12月', value: 12 },
+  ];
+
   @ViewChild('allStatisticsTree') allStatisticsTree: NzTreeSelectComponent;
 
   constructor(
@@ -330,7 +353,7 @@ export class DashboardComponent implements OnInit {
       return m;
     })).pipe(finalize(() => {
       this.isLoading = false;
-    this.isLoaded = true;
+      this.isLoaded = true;
     })).subscribe(res => {
       this.right = res.right;
       this.publish_right = res.publish_right;
@@ -352,8 +375,45 @@ export class DashboardComponent implements OnInit {
       this.isLoadingRight = false;
       this.isLoadedRight = true;
     }))
-    .subscribe(res => {
-      this.activeProjectRight = res;
+      .subscribe(res => {
+        this.activeProjectRight = res;
+      });
+    const d = new Date();
+    const yy = d.getFullYear();
+    const mm = d.getMonth() + 1;
+    this.reviewStatisticalYear = d;
+    this.reviewStatisticalMonth = mm;
+    this.dashboardService.getReviewList(yy, mm).subscribe(result => {
+      this.reviewList = result.list;
+    });
+  }
+
+  reviewListIsOpenChange1(event) {
+    this.reviewListIsOpen1 = event;
+  }
+
+  reviewListIsOpenChange2(event) {
+    this.reviewListIsOpen2 = event;
+  }
+
+  reviewListIsOpenChange3(event) {
+    this.reviewListIsOpen3 = event;
+  }
+
+  rsyOnChange(event) {
+    console.log(event);
+    this.reviewStatisticalYear =  event;
+    this.dashboardService.getReviewList(this.reviewStatisticalYear.getFullYear(), this.reviewStatisticalMonth).subscribe(result => {
+      this.reviewList = result.list;
+    });
+
+  }
+
+  rsmOnChange(event) {
+    console.log(event);
+    this.reviewStatisticalMonth =  event;
+    this.dashboardService.getReviewList(this.reviewStatisticalYear.getFullYear(), this.reviewStatisticalMonth).subscribe(result => {
+      this.reviewList = result.list;
     });
   }
 
@@ -999,9 +1059,9 @@ export class DashboardComponent implements OnInit {
         this.isLoadingRight = false;
         this.isLoadedRight = true;
       }))
-      .subscribe(res => {
-        this.activeProjectRight = res;
-      });
+        .subscribe(res => {
+          this.activeProjectRight = res;
+        });
     }
     if (this.activeProject === 'publish_right') {
       this.isLoadingPubRight = true;
@@ -1011,9 +1071,9 @@ export class DashboardComponent implements OnInit {
         this.isLoadingPubRight = false;
         this.isLoadedPubRight = true;
       }))
-      .subscribe(res => {
-        this.activeProjectPubRight = res;
-      });
+        .subscribe(res => {
+          this.activeProjectPubRight = res;
+        });
     }
     if (this.activeProject === 'publicity') {
       this.isLoadingPublicity = true;
@@ -1023,10 +1083,10 @@ export class DashboardComponent implements OnInit {
         this.isLoadingPublicity = false;
         this.isLoadedPublicity = true;
       }))
-      .subscribe(res => {
-        console.log(res);
-        this.activeProjectPublicity = res;
-      });
+        .subscribe(res => {
+          console.log(res);
+          this.activeProjectPublicity = res;
+        });
     }
     if (this.activeProject === 'source') {
       this.isLoadingSource = true;
@@ -1036,9 +1096,9 @@ export class DashboardComponent implements OnInit {
         this.isLoadingSource = false;
         this.isLoadedSource = true;
       }))
-      .subscribe(res => {
-        this.activeProjectSource = res;
-      });
+        .subscribe(res => {
+          this.activeProjectSource = res;
+        });
     }
   }
 

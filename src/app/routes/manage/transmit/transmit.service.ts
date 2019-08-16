@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ResponseDto, PaginationDto, PaginationResponseDto } from '@shared';
 
@@ -7,9 +7,13 @@ import { ResponseDto, PaginationDto, PaginationResponseDto } from '@shared';
 })
 export class TransmitService {
 
+  public eventEmit: any;
+
   constructor(
     protected http: HttpClient,
-  ) { }
+  ) {
+    this.eventEmit = new EventEmitter();
+  }
 
   tapeFileList(id: number) {
     return this.http.get<any>(`/api/v1/sources/bought/${id}/files/brief`);

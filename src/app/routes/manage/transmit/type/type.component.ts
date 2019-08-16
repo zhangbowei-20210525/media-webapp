@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PaginationDto, MessageService} from '@shared';
+import { PaginationDto, MessageService } from '@shared';
 import { finalize, timeout, switchMap } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SeriesService } from '../../series/series.service';
@@ -8,6 +8,7 @@ import { LocalRequestService } from '@shared/locals';
 import { fadeIn } from '@shared/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { TapeDownloadComponent } from '../components/tape-download/tape-download.component';
+import { TransmitService } from '../transmit.service';
 
 @Component({
   selector: 'app-type',
@@ -29,6 +30,7 @@ export class TypeComponent implements OnInit {
     private route: ActivatedRoute,
     private seriesService: SeriesService,
     private router: Router,
+    private service: TransmitService,
     private modalService: NzModalService,
     private localRequestService: LocalRequestService,
     private message: MessageService,
@@ -37,6 +39,13 @@ export class TypeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.service.eventEmit.subscribe((value: any) => {
+      if (value === 'noticeMessage') {
+        this.purchaseTapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
+        this.purchaseTapes();
+      }
+    });
+
     this.isMyTapesLoaded = true;
     this.isMyTapesLoading = true;
     this.tapesPagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
@@ -44,17 +53,17 @@ export class TypeComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.tabIndex = +params.get('tabIndex');
-        return  this.seriesService.getAllTapes(this.tapesPagination);
+        return this.seriesService.getAllTapes(this.tapesPagination);
       })).pipe(finalize(() => {
-      this.isMyTapesLoading = false;
-      this.isMyTapesLoaded = true;
-    })).subscribe(res => {
-      this.tapesPagination = res.pagination;
-    });
+        this.isMyTapesLoading = false;
+        this.isMyTapesLoaded = true;
+      })).subscribe(res => {
+        this.tapesPagination = res.pagination;
+      });
     this.purchaseTapes();
   }
 
-    tapesPageChange(page: number) {
+  tapesPageChange(page: number) {
     this.isMyTapesLoading = true;
     this.tapesPagination.page = page;
     this.seriesService.getAllTapes(this.tapesPagination).pipe(finalize(() => {
@@ -66,10 +75,10 @@ export class TypeComponent implements OnInit {
 
   tapeDetails(program_id: number, id: number, source_type: string) {
     if (source_type === 'online') {
-      this.router.navigate([`/manage/series/d/${program_id}/tape`, {tapeId: id, source_type: 'online'}]);
+      this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: id, source_type: 'online' }]);
     }
     if (source_type === 'entity') {
-      this.router.navigate([`/manage/series/d/${program_id}/tape`, {tapeId: id, source_type: 'entity'}]);
+      this.router.navigate([`/manage/series/d/${program_id}/tape`, { tapeId: id, source_type: 'entity' }]);
     }
   }
 
@@ -86,7 +95,6 @@ export class TypeComponent implements OnInit {
     this.seriesService.purchaseTapes(this.purchaseTapesPagination).pipe(finalize(() => {
       this.isPurchaseTapesLoading = false;
       this.isPurchaseTapesLoaded = true;
-      console.log('i am must run');
     })).subscribe(res => {
       this.purchaseTapesList = res.list;
       this.purchaseTapesPagination = res.pagination;
@@ -105,15 +113,15 @@ export class TypeComponent implements OnInit {
   }
   judge(id: number) {
     this.localRequestService.status('127.0.0.1:8756').pipe(timeout(5000)).subscribe(z => {
-       this.downloadTape(id);
+      this.downloadTape(id);
     }, err => {
       this.message.success(this.translate.instant('global.start-client'));
     });
-}
+  }
 
-purTapeDetails (id: number) {
-  this.router.navigate([`/manage/transmit/pur-d/${id}`]);
-}
+  purTapeDetails(id: number) {
+    this.router.navigate([`/manage/transmit/pur-d/${id}`]);
+  }
 
   downloadTape(id: number) {
     this.modalService.create({

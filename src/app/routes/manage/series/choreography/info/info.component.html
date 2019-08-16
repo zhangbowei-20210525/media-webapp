@@ -5,8 +5,7 @@
             <thead>
                 <tr>
                     <th nzWidth="150px" [nzAlign]="'center'">日期</th>
-                    <th [attr.colspan]="data.count" [hidden]="data.index !== 0" *ngFor="let data of table.data"
-                        [nzAlign]="'center'">
+                    <th  *ngFor="let data of table.data" [nzAlign]="'center'">
                         <div>{{ data.theatreName }}</div>
                     </th>
                     <!-- <th [attr.colspan]="data.count" [nzAlign]="'center'" *ngFor="let data of table.data"
