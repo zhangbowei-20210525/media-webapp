@@ -65,35 +65,41 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   posterPagination: PaginationDto;
   stillPagination: PaginationDto;
   pdfPagination: PaginationDto;
+
   sampleList = [];
   featureList = [];
   trailerList = [];
   posterList = [];
   stillList = [];
   pdfList = [];
+
   ishidden: boolean;
   publicityType: string;
   userinfo: any;
   sid: number;
   seriesInfo: any;
+
   sampleDisabled: boolean;
   featureDisabled: boolean;
   trailerDisabled: boolean;
   posterDisabled: boolean;
   stillDisabled: boolean;
   pdfDisabled: boolean;
+
   languageVersion: string;
   emailAddress: string;
   tabIndex: number;
   fixationInfo: any;
   verify: number;
   comment = '';
+
   starArray = [];
   // firstObj = {};
   secondObj = {};
   threeObj = {};
   fourObj = {};
   fiveObj = {};
+
   step_number = 0;
   selectedIndex = 0;
   reviewRecodesStatistic: any;
@@ -101,9 +107,11 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   reviewFirstSteps: any;
   reviewSecondSteps: any;
   reviewThirdSteps: any;
+
   firstLike = 0;
   firstOppose = 0;
   reviewSteps = [];
+
   secondAvg: any;
   thirdAvg: any;
   stepsNumber: any;
@@ -113,13 +121,16 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   secondDisLikePeople: any;
   secondLike: number;
   secondOppose: number;
+
   thirdLikePeople: any;
   thirdDisLikePeople: any;
   thirdLike: number;
   thirdOppose: number;
+
   starId = [];
   reviewId: any;
   rid: number;
+
   scoreFirstList = [];
   nameFirstList = [];
   scoreSecondList = [];
@@ -127,12 +138,20 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   nameThirdList = [];
   scoreThirdList = [];
   myDate = new Date();
+
   reviewFirstAdopt: any;
   reviewFirstLikeAdopt: number;
   reviewSecondAdopt: any;
   reviewSecondLikeAdopt: number;
   reviewThirdAdopt: any;
   reviewThirdLikeAdopt: number;
+  destroyTimers: NodeJS.Timer;
+
+  realTimePlayback: number;
+  status: string;
+  isId: any;
+  publicityId: any;
+  isClear: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -156,7 +175,12 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sid = +params.get('sid');
         this.rid = +params.get('rid');
         this.tabIndex = +params.get('tabIndex');
+        console.log(this.tabIndex);
         this.sampleIndex = +params.get('sampleIndex');
+        console.log(this.sampleIndex);
+        console.log(this.featureIndex);
+        console.log(this.trailerIndex);
+        console.log(this.stillIndex);
         this.featureIndex = +params.get('featureIndex');
         this.trailerIndex = +params.get('trailerIndex');
         this.posterIndex = +params.get('posterIndex');
@@ -164,6 +188,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pdfIndex = +params.get('pdfIndex');
         return this.seriesService.pubDetail(this.id);
       })).subscribe(res => {
+        console.log(res);
         // console.log(res);
         this.seriesService.getUserinfo(this.id).subscribe(cpd => {
           this.userinfo = cpd;
@@ -196,6 +221,8 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.userinfo.material.pdf === 0) {
             this.pdfDisabled = true;
           }
+          console.log(this.tabIndex);
+          console.log(this.tabIndex);
           if (this.tabIndex === 0) {
             this.publicityType = 'sample';
             this.sample();
@@ -222,11 +249,11 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
         this.seriesService.getDetailsInfo(this.sid).subscribe(cpd => {
-          // console.log(cpd);
           this.seriesInfo = cpd;
         });
         this.publicityName = res.name;
-        if (!this.publicityType || this.publicityType === 'sample') {
+        this.publicityId = res.id;
+        if (this.publicityType === '' || this.publicityType === 'sample') {
           this.publicityType = 'sample';
           this.getSampleInfo();
         }
@@ -391,6 +418,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.stepsNumber = res.step_number;
       this.reviewId = res.reviewer_status.review_step_number;
     });
+    // 进入页面对视频进行监听
+    // this.giveVideoStatus();
+    this.listenVideoTime();
   }
   ngAfterViewInit() {
     this.player = videojs('#video_player');
@@ -405,6 +435,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.player.dispose();
+    clearInterval(this.destroyTimers);
   }
 
   playerSource(src: string, poster?: string) {
@@ -425,12 +456,18 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         f.displayText = index++;
       });
     })).subscribe(s => {
+      console.log(s);
       this.sampleList = s.list;
+      console.log(s.list);
+      this.isId = this.sampleList[0].id;
+      this.realTimePlayback = 0;
+      this.status = 'play';
+      this.giveVideoStatus(this.tabIndex);
       this.samplePagination = s.pagination;
       if (this.sampleList.length > 0) {
-        this.sampleName = this.sampleList[this.sampleIndex].name;
-        this.sampleSrc = this.sampleList[this.sampleIndex].src;
-        this.samplePoster = this.sampleList[this.sampleIndex].poster;
+        this.sampleName = this.sampleList[0].name;
+        this.sampleSrc = this.sampleList[0].src;
+        this.samplePoster = this.sampleList[0].poster;
         this.samplePageChange({ page: 1, pageSize: 20 });
         this.playerSource(this.sampleSrc, this.samplePoster);
         // this.playerSource('http://test.static.bctop.net/马术-24/马术-hls/playlist.m3u8', this.samplePoster);
@@ -447,11 +484,16 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     })).subscribe(s => {
       this.featureList = s.list;
+      console.log(s.list);
+      this.isId = this.featureList[0].id;
+      this.realTimePlayback = 0;
+      this.status = 'play';
+      this.giveVideoStatus(this.tabIndex);
       this.featurePagination = s.pagination;
       if (this.featureList.length > 0) {
-        this.featureName = this.featureList[this.featureIndex].name;
-        this.featureSrc = this.featureList[this.featureIndex].src;
-        this.featurePoster = this.featureList[this.featureIndex].poster;
+        this.featureName = this.featureList[0].name;
+        this.featureSrc = this.featureList[0].src;
+        this.featurePoster = this.featureList[0].poster;
         this.featurePageChange({ page: 1, pageSize: 20 });
         this.playerSource(this.featureSrc, this.featurePoster);
       }
@@ -466,12 +508,17 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         f.displayText = index++;
       });
     })).subscribe(s => {
+      console.log(s);
       this.trailerList = s.list;
+      this.isId = this.trailerList[0].id;
+      this.realTimePlayback = 0;
+      this.status = 'play';
+      this.giveVideoStatus(this.tabIndex);
       this.trailerPagination = s.pagination;
       if (this.trailerList.length > 0) {
-        this.trailerName = this.trailerList[this.trailerIndex].name;
-        this.trailerSrc = this.trailerList[this.trailerIndex].src;
-        this.trailerPoster = this.trailerList[this.trailerIndex].poster;
+        this.trailerName = this.trailerList[0].name;
+        this.trailerSrc = this.trailerList[0].src;
+        this.trailerPoster = this.trailerList[0].poster;
         this.trailerPageChange({ page: 1, pageSize: 20 });
         this.playerSource(this.trailerSrc, this.trailerPoster);
       }
@@ -487,12 +534,18 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     })).subscribe(s => {
       this.posterList = s.list;
-      this.trailerPagination = s.pagination;
+      this.isId = this.posterList[0].id;
+      this.realTimePlayback = 0;
+      this.status = 'play';
+      this.giveVideoStatus(this.tabIndex);
+      this.isClear = true;
+      this.posterPagination = s.pagination;
       if (this.posterList.length > 0) {
-        this.posterName = this.posterList[this.posterIndex].name;
-        this.posterSrc = this.posterList[this.posterIndex].src;
+        this.posterName = this.posterList[0].name;
+        this.posterSrc = this.posterList[0].src;
         this.posterPageChange({ page: 1, pageSize: 20 });
       }
+      // }
     });
   }
 
@@ -505,10 +558,15 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     })).subscribe(s => {
       this.stillList = s.list;
+      this.isId = this.stillList[0].id;
+      this.realTimePlayback = 0;
+      this.status = 'play';
+      this.giveVideoStatus(this.tabIndex);
+      this.isClear = true;
       this.stillPagination = s.pagination;
       if (this.stillList.length > 0) {
-        this.stillName = this.stillList[this.stillIndex].name;
-        this.stillSrc = this.stillList[this.stillIndex].src;
+        this.stillName = this.stillList[0].name;
+        this.stillSrc = this.stillList[0].src;
         this.stillPageChange({ page: 1, pageSize: 20 });
       }
     });
@@ -525,9 +583,13 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pdfList = s.list;
       this.pdfPagination = s.pagination;
       if (this.pdfList.length > 0) {
-        this.pdfName = this.pdfList[this.pdfIndex].name;
-        this.pdfSrc = this.pdfList[this.pdfIndex].src;
-        // this.pdfSrc = 'http://192.168.1.109:8000/media_files/720fa654-3d79-11e9-91a9-685b35a5b556.pdf';
+        this.isId = this.pdfList[0].id;
+        this.realTimePlayback = 0;
+        this.status = 'play';
+        this.giveVideoStatus(this.tabIndex);
+        this.isClear = true;
+        this.pdfName = this.pdfList[0].name;
+        this.pdfSrc = this.pdfList[0].src;
         this.pdfPage = 1;
         this.pdfPageChange({ page: 1, pageSize: 20 });
       }
@@ -566,35 +628,101 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
+
   lastPoster() {
     if (this.posterIndex > 0) {
       this.posterIndex = this.posterIndex - 1;
-      this.posterName = this.posterList[this.posterIndex].name;
-      this.posterSrc = this.posterList[this.posterIndex].src;
+      // this.posterName = this.posterList[this.posterIndex].name;
+      // this.posterSrc = this.posterList[this.posterIndex].src;
+
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.posterList = s.list;
+        this.isId = this.posterList[this.posterIndex].id;
+        this.posterPagination = s.pagination;
+        if (this.posterList.length > 0) {
+          this.posterName = this.posterList[this.posterIndex].name;
+          this.posterSrc = this.posterList[this.posterIndex].src;
+          this.posterPageChange({ page: 1, pageSize: 20 });
+        }
+      });
     } else { }
   }
 
   nextPoster() {
     if (this.posterIndex + 1 < this.posterList.length) {
       this.posterIndex = this.posterIndex + 1;
-      this.posterSrc = this.posterList[this.posterIndex].src;
-      this.posterName = this.posterList[this.posterIndex].name;
+      // this.posterSrc = this.posterList[this.posterIndex].src;
+      // this.posterName = this.posterList[this.posterIndex].name;
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.posterList = s.list;
+        this.isId = this.posterList[this.posterIndex].id;
+        this.posterPagination = s.pagination;
+        if (this.posterList.length > 0) {
+          this.posterName = this.posterList[this.posterIndex].name;
+          this.posterSrc = this.posterList[this.posterIndex].src;
+          this.posterPageChange({ page: 1, pageSize: 20 });
+        }
+      });
     } else { }
   }
 
   lastStill() {
     if (this.stillIndex > 0) {
       this.stillIndex = this.stillIndex - 1;
-      this.stillName = this.stillList[this.stillIndex].name;
-      this.stillSrc = this.stillList[this.stillIndex].src;
+      // this.stillName = this.stillList[this.stillIndex].name;
+      // this.stillSrc = this.stillList[this.stillIndex].src;
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.stillList = s.list;
+        this.isId = this.stillList[this.stillIndex].id;
+        this.stillPagination = s.pagination;
+        if (this.stillList.length > 0) {
+          this.stillName = this.stillList[this.stillIndex].name;
+          this.stillSrc = this.stillList[this.stillIndex].src;
+          this.stillPageChange({ page: 1, pageSize: 20 });
+        }
+      });
     } else { }
   }
 
   nextStill() {
     if (this.stillIndex + 1 < this.stillList.length) {
       this.stillIndex = this.stillIndex + 1;
-      this.stillSrc = this.stillList[this.stillIndex].src;
-      this.stillName = this.stillList[this.stillIndex].name;
+      // this.stillSrc = this.stillList[this.stillIndex].src;
+      // this.stillName = this.stillList[this.stillIndex].name;
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.stillList = s.list;
+        this.isId = this.stillList[this.stillIndex].id;
+        this.stillPagination = s.pagination;
+        if (this.stillList.length > 0) {
+          this.stillName = this.stillList[this.stillIndex].name;
+          this.stillSrc = this.stillList[this.stillIndex].src;
+          this.stillPageChange({ page: 1, pageSize: 20 });
+        }
+      });
     } else { }
   }
 
@@ -611,46 +739,152 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   sampleNavigateToDetail(i: number, id: number) {
-    this.sampleIndex = i - 1;
+    this.isId = id;
+    console.log(this.isId);
     this.publicityType = 'sample';
-    this.router.navigate([`/manage/image/films-details/${this.id}`,
-    { sampleIndex: this.sampleIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.sampleList = s.list;
+      this.samplePagination = s.pagination;
+      if (this.sampleList.length > 0) {
+        this.sampleName = this.sampleList[this.sampleIndex].name;
+        this.sampleSrc = this.sampleList[this.sampleIndex].src;
+        this.samplePoster = this.sampleList[this.sampleIndex].poster;
+        this.samplePageChange({ page: 1, pageSize: 20 });
+        this.playerSource(this.sampleSrc, this.samplePoster);
+      }
+    });
+    this.realTimePlayback = 0;
+    this.isClear = false;
+    this.giveVideoStatus(this.tabIndex);
   }
 
   featureNavigateToDetail(i: number, id: number) {
+    this.isId = id;
     this.featureIndex = i - 1;
     this.publicityType = 'feature';
-    this.router.navigate([`/manage/image/films-details/${this.id}`,
-    { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.seriesService.getPublicitiesTypeList(this.featurePagination, this.id, 'feature').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.featureList = s.list;
+      this.featurePagination = s.pagination;
+      if (this.featureList.length > 0) {
+        this.featureName = this.featureList[this.featureIndex].name;
+        this.featureSrc = this.featureList[this.featureIndex].src;
+        this.featurePoster = this.featureList[this.featureIndex].poster;
+        this.featurePageChange({ page: 1, pageSize: 20 });
+        this.playerSource(this.featureSrc, this.featurePoster);
+      }
+    });
+    this.realTimePlayback = 0;
+    this.isClear = false;
+    this.giveVideoStatus(this.tabIndex);
   }
 
   trailerNavigateToDetail(i: number, id: number) {
+    this.isId = id;
     this.trailerIndex = i - 1;
     this.publicityType = 'trailer';
-    this.router.navigate([`/manage/image/films-details/${this.id}`,
-    { trailerIndex: this.trailerIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.trailerList = s.list;
+      this.trailerPagination = s.pagination;
+      if (this.trailerList.length > 0) {
+        this.trailerName = this.trailerList[this.trailerIndex].name;
+        this.trailerSrc = this.trailerList[this.trailerIndex].src;
+        this.trailerPoster = this.trailerList[this.trailerIndex].poster;
+        this.trailerPageChange({ page: 1, pageSize: 20 });
+        this.playerSource(this.trailerSrc, this.trailerPoster);
+      }
+    });
+    this.realTimePlayback = 0;
+    this.isClear = false;
+    this.giveVideoStatus(this.tabIndex);
   }
 
-  posterNavigateToDetail(i: number) {
+  posterNavigateToDetail(i: number, id: number) {
     this.posterIndex = i;
+    this.isId = id;
     this.publicityType = 'poster';
-    this.router.navigate([`/manage/image/films-details/${this.id}`,
-    { posterIndex: this.posterIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.posterList = s.list;
+      this.trailerPagination = s.pagination;
+      if (this.posterList.length > 0) {
+        this.posterName = this.posterList[this.posterIndex].name;
+        this.posterSrc = this.posterList[this.posterIndex].src;
+        this.posterPageChange({ page: 1, pageSize: 20 });
+      }
+    });
+    this.realTimePlayback = 0;
+    this.isClear = false;
+    this.giveVideoStatus(this.tabIndex);
   }
 
-  stillNavigateToDetail(i: number) {
+  stillNavigateToDetail(i: number, id: number) {
     this.stillIndex = i;
+    this.isId = id;
     this.publicityType = 'still';
-    this.router.navigate([`/manage/image/films-details/${this.id}`,
-    { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.stillList = s.list;
+      this.stillPagination = s.pagination;
+      if (this.stillList.length > 0) {
+        this.stillName = this.stillList[this.stillIndex].name;
+        this.stillSrc = this.stillList[this.stillIndex].src;
+        this.stillPageChange({ page: 1, pageSize: 20 });
+      }
+    });
+    this.realTimePlayback = 0;
+    this.isClear = false;
+    this.giveVideoStatus(this.tabIndex);
   }
 
-  pdfNavigateToDetail(i: number) {
+  pdfNavigateToDetail(i: number, id: number) {
     this.pdfIndex = i;
     this.publicityType = 'pdf';
-    this.router.navigate([`/manage/image/films-details/${this.id}`,
-    { pdfIndex: this.pdfIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
+    this.isId = id;
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.pdfList = s.list;
+      this.pdfPagination = s.pagination;
+      if (this.pdfList.length > 0) {
+        this.pdfName = this.pdfList[this.pdfIndex].name;
+        this.pdfSrc = this.pdfList[this.pdfIndex].src;
+        this.pdfPage = 1;
+        this.pdfPageChange({ page: 1, pageSize: 20 });
+      }
+    });
+    this.realTimePlayback = 0;
+    this.isClear = false;
+    this.giveVideoStatus(this.tabIndex);
   }
+
   sample() {
     this.ishidden = false;
     this.player.pause();
@@ -665,8 +899,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.player.pause();
     this.publicityType = 'feature';
     this.getFeatureInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { featureIndex: this.featureIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
 
   trailer() {
@@ -674,8 +907,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.player.pause();
     this.publicityType = 'trailer';
     this.getTrailerInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { trailerIndex: this.trailerIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
 
   poster() {
@@ -683,16 +915,14 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.player.pause();
     this.publicityType = 'poster';
     this.getPosterInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { posterIndex: this.posterIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
   still() {
     this.ishidden = true;
     this.player.pause();
     this.publicityType = 'still';
     this.getStillInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { stillIndex: this.stillIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
 
   pdf() {
@@ -700,8 +930,6 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.player.pause();
     this.publicityType = 'pdf';
     this.getPdfInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { pdfIndex: this.pdfIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   getTwoDimensionalCode() {
@@ -916,5 +1144,97 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(score, item, index, 'i am wrong');
     this.starId[index].id = item.id;
     this.starId[index].score = score * 2;
+  }
+  // 视屏播放的状态和时间
+  getVideoStatus() {
+    this.player.on('timeupdate', () => {
+      // tslint:disable-next-line:radix
+      this.isClear = false;
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+      this.status = 'play';
+    });
+    this.player.on('play', () => {
+      this.isClear = false;
+      this.status = 'play';
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+    this.player.on('ended', () => {
+      this.isClear = true;
+      this.status = 'stop';
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+    this.player.on('pause', () => {
+      this.isClear = true;
+      this.status = 'stop';
+      this.giveVideoStatus(this.tabIndex);
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+  }
+
+  // 定时监听视屏状态和播放时间(进入页面进行监听)
+  listenVideoTime() {
+    this.destroyTimers = setInterval(() => {
+      if (this.isClear || this.status === 'stop') {
+        console.log('俺不调用接口');
+      } else {
+        console.log('俺调用接口');
+        this.giveVideoStatus(this.tabIndex);
+      }
+    }, 10000);
+  }
+
+  // 上传给后台
+  giveVideoStatus(n: number) {
+    // if (!this.isId) {
+      // 一进入页面的初始值,这里设置的是片花第一集的参数
+      // this.publicityType = 'feature';
+      // this.isId = 45;
+    //   this.tabIndex = n;
+    //   this.realTimePlayback = 0;
+    //   this.status = 'play';
+      // this.getIsId();
+    //   console.log(this.isId);
+    // }
+    this.seriesService.addReviewtrajectory(this.rid, this.publicityType, this.isId, this.realTimePlayback, this.status).subscribe(res => {
+    });
+  }
+  getIsId() {
+    if (this.tabIndex === 0) {
+      this.publicityType = 'sample';
+      this.sample();
+    }
+    if (this.tabIndex === 1) {
+      this.publicityType = 'feature';
+      this.feature();
+    }
+    if (this.tabIndex === 2) {
+      this.publicityType = 'trailer';
+      this.trailer();
+    }
+    if (this.tabIndex === 3) {
+      this.publicityType = 'poster';
+      this.poster();
+    }
+    if (this.tabIndex === 4) {
+      this.publicityType = 'still';
+      this.still();
+    }
+    if (this.tabIndex === 5) {
+      this.publicityType = 'pdf';
+      this.pdf();
+    }
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, this.publicityType).pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.isId = s.list[0].id;
+      console.log(this.isId);
+    });
   }
 }
