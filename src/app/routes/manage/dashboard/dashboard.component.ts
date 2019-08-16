@@ -314,6 +314,7 @@ export class DashboardComponent implements OnInit {
     '日本(未付款)': 250,
   }
   ];
+  listOfData: any[] = [];
   reviewStatisticalYear: any;
   reviewStatisticalMonth: number;
   reviewStatisticalMonthOfOption = [
@@ -341,6 +342,14 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    for (let i = 0; i < 100; i++) {
+      this.listOfData.push({
+        name: `Edward King ${i}`,
+        age: 32,
+        address: `London`
+      });
+    }
     this.time = 'day';
     this.pubType = 'custom';
     this.tapeType = 'publish';
@@ -403,18 +412,18 @@ export class DashboardComponent implements OnInit {
   }
 
   rsyOnChange(event) {
-    console.log(event);
     this.reviewStatisticalYear =  event;
     this.dashboardService.getReviewList(this.reviewStatisticalYear.getFullYear(), this.reviewStatisticalMonth).subscribe(result => {
+      this.reviews = result.list.reviews;
       this.reviewList = result.list;
     });
 
   }
 
   rsmOnChange(event) {
-    console.log(event);
     this.reviewStatisticalMonth =  event;
     this.dashboardService.getReviewList(this.reviewStatisticalYear.getFullYear(), this.reviewStatisticalMonth).subscribe(result => {
+      this.reviews = result.list.reviews;
       this.reviewList = result.list;
     });
   }
@@ -1086,7 +1095,6 @@ export class DashboardComponent implements OnInit {
         this.isLoadedPublicity = true;
       }))
         .subscribe(res => {
-          console.log(res);
           this.activeProjectPublicity = res;
         });
     }
