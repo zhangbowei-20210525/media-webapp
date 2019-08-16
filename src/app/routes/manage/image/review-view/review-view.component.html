@@ -193,11 +193,9 @@
                         <td nzShowCheckbox [(nzChecked)]="firstMapOfCheckedId[data.id]"
                           (nzCheckedChange)="firstRefreshStatus()"></td>
                         <td>
-
                           <a
                             (click)="AdministratorViewDetails(data?.publicity?.program?.id, data?.publicity.id, data?.id)">{{data.publicity.program.name}}
                           </a>
-
                         </td>
                         <td>{{data.publicity.program.program_type}}</td>
                         <td>{{data.publicity.program.episode}}</td>

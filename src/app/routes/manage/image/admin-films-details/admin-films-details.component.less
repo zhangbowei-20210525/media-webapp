@@ -122,7 +122,10 @@
     color: #000;
   }
 }
-
+.selected {
+  background-color: #4a90e2 // border: 1px solid blue;
+      //   color:blue;
+}
 .program-list > li.selected {
   color: #fff;
   background-color: #303030;
@@ -311,6 +314,10 @@
 .video_player video::-webkit-media-controls-panel {
   width: calc(100% + 30px);
 }
+.play-button {
+  height: 100%;
+  width: 100%;
+}
 .tapes-wrap {
   width: 1100px;
   height: auto;
@@ -443,6 +450,20 @@
       .right-content {
         margin-top: 10px;
       }
+      .isPadding {
+        margin-top: 65px;
+      }
+    }
+    .wrapper-bottom {
+      background-color:#F8F8F8;
+      border-radius: 6px;
+      margin-top:20px; 
+      margin-left: 62px;
+      width: 980px;
+      padding: 20px 20px;
+    }
+    .isPadding {
+      margin-top: 62px;
     }
   }
 }
@@ -488,5 +509,5 @@
   top: 0;
   // left: 140px;
   z-index: 9999;
-  width: 69%;
+  width: 1092px;
 }

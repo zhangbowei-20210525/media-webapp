@@ -107,7 +107,7 @@ export class DetailsSolicitationComponent implements OnInit {
         }
       }
     }
-    if (this.docType === '/api/v1/upload/image') {
+    if (this.docType === 'https://cs.bctop.net:7000/upload/image') {
       for (const key in fileList) {
         if (fileList.hasOwnProperty(key)) {
           const element = fileList[key];
@@ -120,7 +120,7 @@ export class DetailsSolicitationComponent implements OnInit {
         }
       }
     }
-    if (this.docType === '/api/v1/upload/docment') {
+    if (this.docType === 'https://cs.bctop.net:7000/upload/document') {
       for (const key in fileList) {
         if (fileList.hasOwnProperty(key)) {
           const element = fileList[key];
@@ -195,9 +195,9 @@ export class DetailsSolicitationComponent implements OnInit {
         return 'https://cs.bctop.net:7000/upload/video';
       case 'poster':
       case 'still':
-        return '/api/v1/upload/image';
+        return 'https://cs.bctop.net:7000/upload/image';
       case 'pdf':
-        return '/api/v1/upload/docment';
+        return 'https://cs.bctop.net:7000/upload/document';
     }
   }
 

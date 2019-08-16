@@ -86,7 +86,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   tabIndex: number;
   fixationInfo: any; // 可能是用户信息
   intention: number;
-  isShowBtn: number;
+  isShowBtn: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -118,7 +118,10 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.stillIndex = +params.get('stillIndex');
         this.pdfIndex = +params.get('pdfIndex');
         this.intention = +params.get('vid');
-        this.isShowBtn = +params.get('isShowBtn');
+        this.isShowBtn = +params.get('isHidden');
+        console.log(this.isShowBtn);
+        console.log(!this.isShowBtn);
+        console.log(typeof this.isShowBtn);
         return this.seriesService.pubDetail(this.id);
       })).subscribe(res => {
         // console.log(res);
@@ -553,8 +556,6 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.message.success('发起审片成功');
           this.router.navigate([`/manage/image/review-view`, {isForm : 1}]);
           // console.log(this.checkedIntentionIds);
-        }, error => {
-          this.message.error('发起审片失败');
         });
       }),
     });
