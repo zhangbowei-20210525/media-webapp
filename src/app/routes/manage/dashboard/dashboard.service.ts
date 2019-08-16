@@ -60,4 +60,8 @@ export class DashboardService {
   getPubCustomer(start_date: any, end_date: any) {
     return this.http.get<any>(`/api/v1/analysis/rights/contracts/publish/custom?start_date=${start_date}&end_date=${end_date}`);
   }
+
+  getReviewList(year: number, month: number) {
+    return this.http.get<any>(`/api/v1/reviews/report?year=${year}&month=${month}`);
+  }
 }
