@@ -224,12 +224,12 @@
         </div>
       </ng-template>
       <nz-table #basicTable [nzShowPagination]="false" nzBordered [nzData]="reviews"
-        [nzScroll]="{ x: '1200px' }" style="padding-bottom: 20px" [nzTitle]="Header">
+        [nzScroll]="{ x: '200%' }" style="padding-bottom: 20px" [nzTitle]="Header">
         <thead>
           <tr>
             <th [nzAlign]="'center'" nzWidth="100px" nzLeft="0px"
               style="font-size: 12px;color: #333333;font-weight:500;">剧目</th>
-            <th *ngFor="let data of basicTable.data" [nzAlign]="'center'"
+            <th  nzWidth="100px" *ngFor="let data of reviews" [nzAlign]="'center'"
               style="font-size: 12px;color: #333333;font-weight:500;">
               {{ data.publicity.name }}
             </th>
@@ -238,9 +238,9 @@
         </thead>
         <tbody>
           <tr>
-            <td [attr.rowspan]="2" [nzAlign]="'center'" nzWidth="100px" nzLeft="0px"
+            <td [attr.rowspan]="2" [nzAlign]="'center'" nzLeft="0px"
               style="font-size: 12px;color: #333333;font-weight:500;">一审</td>
-            <td [nzAlign]="'center'" *ngFor="let data of basicTable.data">
+            <td [nzAlign]="'center'" *ngFor="let data of reviews">
               {{ data.review_steps[0].review_records_statistic.conclusion_statistic.agree /  data.review_steps[0].review_records_statistic.count * 100 | floor }}%
             </td>
             <td nzWidth="50" nzRight="0px" [attr.rowspan]="2" [nzIndentSize]="'20px'" [nzAlign]="'center'"
@@ -248,13 +248,13 @@
             </td>
           </tr>
           <tr>
-            <td [nzAlign]="'center'" *ngFor="let data of basicTable.data">
+            <td [nzAlign]="'center'" *ngFor="let data of reviews">
               {{ data.review_steps[0].review_records_statistic.conclusion_statistic.agree }}/{{ data.review_steps[0].review_records_statistic.count }}
             </td>
           </tr>
           <ng-container *ngIf="reviewListIsOpen1 == true">
             <tr *ngFor="let data of reviewList.employee_reports[0]">
-              <td [nzAlign]="'center'" nzWidth="100px" nzLeft="0px"
+              <td [nzAlign]="'center'" nzLeft="0px"
                 style="font-size: 12px;color: #4797F7;font-weight:400;">{{  data.employee_name }}</td>
               <td [nzAlign]="'center'" *ngFor="let data1 of data.publicitys"
                 [ngClass]="{'slash':data1.conclusion == null}">
@@ -275,9 +275,9 @@
             </tr>
           </ng-container>
           <tr>
-            <td [attr.rowspan]="2" [nzAlign]="'center'" nzWidth="100px" nzLeft="0px"
+            <td [attr.rowspan]="2" [nzAlign]="'center'" nzLeft="0px"
               style="font-size: 12px;color: #333333;font-weight:500;">二审</td>
-            <td [nzAlign]="'center'" *ngFor="let data of basicTable.data">
+            <td [nzAlign]="'center'" *ngFor="let data of reviews">
               {{ data.review_steps[1].review_records_statistic.conclusion_statistic.agree /  data.review_steps[1].review_records_statistic.count * 100 | floor }}%
             </td>
             <td [attr.rowspan]="2" [nzIndentSize]="'20px'" [nzAlign]="'center'" [nzShowExpand]="true"
@@ -285,14 +285,14 @@
               nzRight="0px"></td>
           </tr>
           <tr>
-            <td [nzAlign]="'center'" *ngFor="let data of basicTable.data">
+            <td [nzAlign]="'center'" *ngFor="let data of reviews">
               {{ data.review_steps[1].review_records_statistic.conclusion_statistic.agree }}/{{ data.review_steps[1].review_records_statistic.count }}
             </td>
           </tr>
 
           <ng-container *ngIf="reviewListIsOpen2 == true">
             <tr *ngFor="let data of reviewList.employee_reports[1]">
-              <td [nzAlign]="'center'" nzWidth="100px" nzLeft="0px"
+              <td [nzAlign]="'center'" nzLeft="0px"
                 style="font-size: 12px;color: #4797F7;font-weight:400;">{{  data.employee_name }}</td>
               <td [nzAlign]="'center'" *ngFor="let data1 of data.publicitys"
                 [ngClass]="{'slash':data1.conclusion == null}">
@@ -313,9 +313,9 @@
             </tr>
           </ng-container>
           <tr>
-            <td [attr.rowspan]="2" [nzAlign]="'center'" nzWidth="100px" nzLeft="0px"
+            <td [attr.rowspan]="2" [nzAlign]="'center'" nzLeft="0px"
               style="font-size: 12px;color: #333333;font-weight:500;">三审</td>
-            <td [nzAlign]="'center'" *ngFor="let data of basicTable.data">
+            <td [nzAlign]="'center'" *ngFor="let data of reviews">
               {{ data.review_steps[2].review_records_statistic.conclusion_statistic.agree /  data.review_steps[2].review_records_statistic.count * 100 | floor }}%
             </td>
             <td [attr.rowspan]="2" [nzIndentSize]="'20px'" [nzAlign]="'center'" [nzShowExpand]="true"
@@ -323,13 +323,13 @@
               nzRight="0px"></td>
           </tr>
           <tr>
-            <td [nzAlign]="'center'" *ngFor="let data of basicTable.data">
+            <td [nzAlign]="'center'" *ngFor="let data of reviews">
               {{ data.review_steps[2].review_records_statistic.conclusion_statistic.agree }}/{{ data.review_steps[2].review_records_statistic.count }}
             </td>
           </tr>
           <ng-container *ngIf="reviewListIsOpen3 == true">
             <tr *ngFor="let data of reviewList.employee_reports[2]">
-              <td [nzAlign]="'center'" nzWidth="100px" nzLeft="0px"
+              <td [nzAlign]="'center'" nzLeft="0px"
                 style="font-size: 12px;color: #4797F7;font-weight:400;">{{  data.employee_name }}</td>
               <td [nzAlign]="'center'" *ngFor="let data1 of data.publicitys"
                 [ngClass]="{'slash':data1.conclusion == null}">
@@ -353,7 +353,6 @@
       </nz-table>
     </div>
   </div>
-
 
   <div class="block">
     <div class="block-header">
