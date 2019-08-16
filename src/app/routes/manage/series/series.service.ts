@@ -428,4 +428,18 @@ export class SeriesService {
       }
     });
   }
+
+  getSeriesType() {
+    return this.http.get<any>(`/api/v1/programs/template`);
+  }
+
+  getSeriesInfoList(type: string) {
+    return this.http.get<any>(`/api/v1/programs/brief`, { params: { program_type: type } });
+  }
+
+  seriesMerge(from_program_id: number, to_program_id: number) {
+    console.log(from_program_id);
+    console.log(to_program_id);
+    return this.http.post<any>(`/api/v1/programs/merge`, { from_program_id: from_program_id, to_program_id: to_program_id });
+  }
 }

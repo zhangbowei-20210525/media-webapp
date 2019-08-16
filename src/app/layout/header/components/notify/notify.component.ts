@@ -11,6 +11,7 @@ import { TapeMessagesComponent } from '../tape-messages/tape-messages.component'
 import { Router } from '@angular/router';
 import { AuthService } from '@core';
 import { SolicitationComponent } from '../solicitation/solicitation.component';
+import { TransmitService } from 'app/routes/manage/transmit/transmit.service';
 
 @Component({
   selector: 'app-notify',
@@ -80,6 +81,7 @@ export class NotifyComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private ts: TreeService,
+    private emitService: TransmitService
   ) {
     const subscription = this.np.notifies().subscribe(result => {
       this.sysUnread = result.base.notify.unread_system_num;
@@ -378,16 +380,13 @@ export class NotifyComponent implements OnInit {
   }
 
   showTapeMessagesAgreed = (component: TapeMessagesComponent, id: number) => new Promise((resolve, reject) => {
-    console.log(id);
     const setNotifyProcess = () => {
-    //  this.srcNotifys.forEach(x => {
-    //     if (x.id === id) {
-    //       x.is_process = true;
-    //     }
-    //   });
+      //  this.srcNotifys.forEach(x => {
+      //     if (x.id === id) {
+      //       x.is_process = true;
+      //     }
+      //   });
       this.srcNotifys.find(item => item.id === id).is_process = true;
-      console.log('33344444');
-      console.log(this.srcNotifys);
       // if (notify) {
       //   notify.is_process = true;
       // }
@@ -410,6 +409,7 @@ export class NotifyComponent implements OnInit {
                 });
               });
               this.router.navigate([`/manage/transmit/type`]);
+              this.emitService.eventEmit.emit('noticeMessage');
             }
           });
         }, error => {
