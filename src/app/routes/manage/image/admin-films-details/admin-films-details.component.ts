@@ -333,10 +333,10 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   // 获取盒子的高度
   getWrapperHeight(reviewData) {
-    if (this.selectedIndex === 0) {
+    if (this.selectedIndex === 0 && !!this.verifyFirstView.nativeElement && !!this.scoreFirstView.nativeElement) {
       this.verifyHeight = this.verifyFirstView.nativeElement.offsetHeight;
       this.scoreHeight = this.scoreFirstView.nativeElement.offsetHeight;
-    } else if (this.selectedIndex === 1) {
+    } else if (this.selectedIndex === 1 && !!this.verifySecondView.nativeElement && !!this.scoreSecondView.nativeElement) {
       this.verifyHeight = this.verifySecondView.nativeElement.offsetHeight;
       this.scoreHeight = this.scoreSecondView.nativeElement.offsetHeight;
     } else {
@@ -433,7 +433,11 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         // 添加展开下拉字段
         this.reviewFirstSteps.review_records.forEach(item => {
           item.isUp = false;
+          // item.scores.forEach(ele => {
+          //   ele.score  = ele.score / 2;
+          // });
         });
+        console.log(this.reviewFirstSteps.review_records, 'score');
         this.reviewSecondSteps = res.review_steps[1];
         // console.log(this.reviewSecondSteps, '22222');
 

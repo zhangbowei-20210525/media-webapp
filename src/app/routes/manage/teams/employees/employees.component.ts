@@ -23,6 +23,7 @@ export class EmployeesComponent implements OnInit {
   visible = false;
   phone: string;
   invitationData: { qrcode: string, link: string };
+  currentIndex: number;
 
   constructor(
     public ability: ACLAbility,
@@ -106,7 +107,8 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  onInvitationChange(state: boolean, id: number, phone: string) {
+  onInvitationChange(state: boolean, id: number, phone: string, index: number) {
+    console.log('11111');
     this.id = id;
     if (state) {
       this.phone = phone;
@@ -122,6 +124,8 @@ export class EmployeesComponent implements OnInit {
     } else {
       this.invitationData = null;
     }
+    this.currentIndex = index;
+    console.log(this.currentIndex, 'llllll');
   }
 
   sendEmployeeInvitation() {

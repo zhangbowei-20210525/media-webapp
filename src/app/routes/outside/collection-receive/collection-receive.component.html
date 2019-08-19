@@ -3,7 +3,7 @@
     <div style="margin-top: 10px">{{ solicitationInfo?.created_employee?.name }}</div>
     <div style="margin-top: 10px">征集类型：<span>{{ solicitationInfo?.program_type }}</span></div>
     <div style="margin-top: 10px">征集题材：<span>{{ solicitationInfo?.program_theme }}</span></div>
-    <div *ngIf ="solicitationInfo?.expire_days > 0 || solicitationInfo?.expire_days === null" style="margin-top: 10px">有效时间：<span>{{ solicitationInfo?.expire_days === null ? '永久' : solicitationInfo?.expire_days }}</span></div>
+    <div *ngIf ="solicitationInfo?.expire_days > 0 || solicitationInfo?.expire_days === null" style="margin-top: 10px">有效时间：<span>{{ solicitationInfo?.expire_days === null ? '永久' : solicitationInfo?.expire_days }}</span>天</div>
     <div *ngIf ="solicitationInfo?.expire_days < 0" style="margin-top: 10px">有效时间：<span>已失效</span></div>    
     <div style="margin-top: 10px">{{ solicitationInfo?.description }}</div>
     <div style="margin-top: 30px">
