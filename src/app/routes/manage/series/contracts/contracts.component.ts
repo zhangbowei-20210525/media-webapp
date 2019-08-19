@@ -71,7 +71,6 @@ export class ContractsComponent implements OnInit, OnDestroy {
   }
 
   fileChange(event: Event) {
-    console.log('343');
     const contractType = this.lastUrlType;
     const input = event.target as HTMLInputElement;
     const file = input.files.item(0);

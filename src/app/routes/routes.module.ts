@@ -14,6 +14,14 @@ import { WechatLoginComponent } from './passport/login/wechat-login/wechat-login
 import { BindingComponent } from './passport/binding/binding.component';
 import { PhoneBindingComponent } from './passport/binding/phone-binding/phone-binding.component';
 import { CompanyBindingComponent } from './passport/binding/company-binding/company-binding.component';
+import { ChoreographyComponent } from './manage/choreography/choreography.component';
+import { TheatreComponent } from './manage/choreography/theatre/theatre.component';
+import { InfoComponent } from './manage/choreography/info/info.component';
+import { EditBroadcastPlanComponent } from './manage/choreography/edit-broadcast-plan/edit-broadcast-plan.component';
+import { AddTheatreComponent } from './manage/choreography/components/add-theatre/add-theatre.component';
+import { AddBroadcastingInfoComponent } from './manage/choreography/components/add-broadcasting-info/add-broadcasting-info.component';
+import { InsertBroadcastInfoComponent } from './manage/choreography/components/insert-broadcast-info/insert-broadcast-info.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -25,6 +33,13 @@ import { CompanyBindingComponent } from './passport/binding/company-binding/comp
     BindingComponent,
     PhoneBindingComponent,
     CompanyBindingComponent,
+    ChoreographyComponent,
+    TheatreComponent,
+    InfoComponent,
+    AddTheatreComponent,
+    EditBroadcastPlanComponent,
+    InsertBroadcastInfoComponent,
+    AddBroadcastingInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +48,12 @@ import { CompanyBindingComponent } from './passport/binding/company-binding/comp
     SharedModule,
     ManageModule,
     PdfViewerModule,
+    DragDropModule
+  ],
+  entryComponents: [
+    AddTheatreComponent,
+    InsertBroadcastInfoComponent,
+    AddBroadcastingInfoComponent,
   ]
 })
 export class RoutesModule { }
