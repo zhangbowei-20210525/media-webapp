@@ -26,6 +26,10 @@ import { MySharingComponent } from './manage/personal-center/my-sharing/my-shari
 import { MyCallupComponent } from './manage/personal-center/my-callup/my-callup.component';
 import { MySmplesComponent } from './manage/personal-center/my-callup/my-smples/my-smples.component';
 import { SmplesDetailsComponent } from './manage/personal-center/my-callup/smples-details/smples-details.component';
+import { ChoreographyComponent } from './manage/choreography/choreography.component';
+import { InfoComponent } from './manage/choreography/info/info.component';
+import { EditBroadcastPlanComponent } from './manage/choreography/edit-broadcast-plan/edit-broadcast-plan.component';
+import { TheatreComponent } from './manage/choreography/theatre/theatre.component';
 // import { ImageComponent } from './manage/image/image/image.component';
 
 const routes: Routes = [
@@ -76,6 +80,24 @@ const routes: Routes = [
           {
             path: 'series', loadChildren: './manage/series/series.module#SeriesModule',
             canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.view] } }
+          },
+          {
+            path: 'choreography', component: ChoreographyComponent,
+            children: [
+              { path: '', redirectTo: 'info', pathMatch: 'full' },
+              {
+                path: 'info',
+                component: InfoComponent
+              },
+              {
+                path: 'edit-broadcast-plan',
+                component: EditBroadcastPlanComponent
+              },
+              {
+                path: 'theatre',
+                component: TheatreComponent
+              },
+            ]
           },
           {
             path: 'transmit', loadChildren: './manage/transmit/transmit.module#TransmitModule',

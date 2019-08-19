@@ -35,9 +35,11 @@ export class InfoComponent implements OnInit {
   ngOnInit() {
     this.service.getTheatreList().subscribe(res => {
       this.tabs = res;
-      this.service.getSpecifiedChannelInfo(this.tabs[0].id).subscribe(s => {
-        this.listOfData = this.dataConversion(s.columns);
-      });
+      if (this.tabs.length > 0) {
+        this.service.getSpecifiedChannelInfo(this.tabs[0].id).subscribe(s => {
+          this.listOfData = this.dataConversion(s.columns);
+        });
+      }
     });
     // this.service.getChannelInfo().subscribe(res => {
     //   this.listOfData = this.dataConversion(res);
