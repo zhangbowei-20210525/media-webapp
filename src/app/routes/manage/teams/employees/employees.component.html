@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of employeesTable.data">
+      <tr *ngFor="let data of employeesTable.data, let i = index">
         <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"
           [nzDisabled]="data.disabled"></td>
         <td><a [routerLink]="'/manage/teams/employee-details/' + data.id">{{ data.name }}</a></td>
@@ -29,7 +29,7 @@
         <td>{{ data.phone }}</td>
         <td>
           <div *ngIf="!data.is_joined">
-            <button nz-button nzSize="small" nz-popover (nzVisibleChange)="onInvitationChange($event, data.id, data.phone)"
+            <button nz-button nzSize="small" nz-popover (nzVisibleChange)="onInvitationChange($event, data.id, data.phone, i)"
               nzTrigger="click" [(nzVisible)]="visible" [nzContent]="invitationTemplate">邀请</button>
           </div>
         </td>

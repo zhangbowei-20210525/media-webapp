@@ -418,9 +418,6 @@ export class ReviewViewComponent implements OnInit {
       this.message.error('请选择样片');
     } else {
       this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId , isVerify: 1 }]);
-      this.service.submitFirstInstance(review_ids).subscribe(res => {
-        // console.log(res);
-      });
     }
 
   }
