@@ -30,7 +30,7 @@
         <td>
           <div *ngIf="!data.is_joined">
             <button nz-button nzSize="small" nz-popover (nzVisibleChange)="onInvitationChange($event, data.id, data.phone, i)"
-              nzTrigger="click" [(nzVisible)]="visible" [nzContent]="invitationTemplate">邀请</button>
+              nzTrigger="click" [nzContent]="invitationTemplate">邀请</button>
           </div>
         </td>
       </tr>
@@ -45,7 +45,7 @@
   <div class="invitation-panel">
     <ng-container *ngIf="invitationData else invitationLoading">
       <div class="invitaion-logo">
-        <img style="margin-top: 10px" src="../../../../../assets/images/pic_EmployeeInvitation.png">
+        <img style="margin-top: 10px" src="./assets/images/pic_EmployeeInvitation.png">
       </div>
       <p style="text-align: center;">即将发送短信至{{ phone }}通知用户激活账户!</p>
       <div class="invitation-link">
@@ -55,7 +55,7 @@
       </div>
       <div style="text-align: center; margin-top: 20px">
         <button style="margin-right: 30px; width: 100px; margin-bottom: 10px;" nz-button nzType="default" (click)="close()">取消</button>
-        <button style="width: 100px; margin-bottom: 10px" nz-button nzType="primary" (click)="sendEmployeeInvitation()">确定</button>
+        <button style="width: 100px; margin-bottom: 10px" nz-button nzType="primary" (click)="sendEmployeeInvitation()">发送</button>
       </div>
     </ng-container>
     <ng-template #invitationLoading>

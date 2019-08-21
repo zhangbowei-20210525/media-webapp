@@ -79,11 +79,11 @@ export class WechatComponent implements OnInit {
     this.service.bindingWechatByCode(code)
       .subscribe(result => {
         this.stateStore.clearState();
-        this.auth.onLogin({
-          userInfo: result.auth,
-          token: result.token,
-          permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
-        });
+        // this.auth.onLogin({
+        //   userInfo: result.auth,
+        //   token: result.token,
+        //   permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
+        // });
         this.validateStatus = 'successful';
         this.reloadParentWindow();
       }, error => {

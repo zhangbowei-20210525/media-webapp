@@ -61,7 +61,8 @@
   <div class="sidebar-block block" style="margin-right: 30px">
     <div class="profile-userpic" style="text-align: center;">
       <img *ngIf="info?.avatar" [src]="info?.avatar" class="img-responsive" />
-      <div *ngIf="!info?.avatar" style="width: 32px;height: 32px;line-height: 32px;background-color: #cccccc;text-align: center;margin-left: 104px;border-radius: 5px">
+      <div *ngIf="!info?.avatar"
+        style="width: 32px;height: 32px;line-height: 32px;background-color: #cccccc;text-align: center;margin-left: 104px;border-radius: 5px">
         <i nz-icon class="anticon anticon-user ng-star-inserted" style="font-size: 18px; color: #fff"></i>
       </div>
     </div>
@@ -69,17 +70,17 @@
       <p class="profile-usertitle-name text-blod">{{ info?.nickname || info?.username }}</p>
       <p class="profile-usertitle-company">[{{ info?.company_name }}]</p>
       <p>
-        <span class="bind bind-mobile" [ngClass]="{ 'active': info?.phone }">
-            <img src="../../../../assets/images/ic_iphone.png" style="width: 15px;height:16px;margin-bottom: 6px;margin-right: 6px">
-            <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
+        <span class="bind bind-mobile d-flex align-items-center justify-content-center" [ngClass]="{ 'active': info?.phone }">
+          <img src="./assets/images/ic_iphone.png" class="bind-icon">
+          <span *ngIf="info?.phone?.length > 0; else unboundPhone">{{ info.phone }}</span>
           <ng-template #unboundPhone>
             <span class="empty" (click)="bindPhone()">{{ 'app.account.unbound' | translate }}</span>
           </ng-template>
         </span>
       </p>
       <p>
-        <span class="bind bind-wechat" style="margin-right: 59px" [ngClass]="{ 'active': info?.wechat }">
-          <img src="../../../../assets/images/ic_wechat.png" style="width: 20px;height:16px;">
+        <span class="bind bind-wechat d-flex align-items-center justify-content-center" [ngClass]="{ 'active': info?.wechat }">
+          <img src="./assets/images/ic_wechat.png" class="bind-icon">
           <span *ngIf="info?.wechat?.length > 0; else unboundWechat">{{ info.wechat }}</span>
           <ng-template #unboundWechat>
             <span class="empty" (click)="bindWechat()">{{ 'app.account.unbound' | translate }}</span>
@@ -93,22 +94,25 @@
 
       <ul nz-menu nzMode="inline" style="width: 240px;">
 
-        <div class='s-nav-history' >
-          <li nz-menu-item routerLink="history" class='s-nav-item' [ngClass]="{ 'actived first-selected': firstSelected === 1}" (click)="goHistory(1)">
+        <div class='s-nav-history'>
+          <li nz-menu-item routerLink="history" class='s-nav-item'
+            [ngClass]="{ 'actived first-selected': firstSelected === 1}" (click)="goHistory(1)">
             <div class='history-img-first' style="width:15px;height: 15px;margin-left: 36px">
             </div>
             <p style="margin-left: 8px; height:40px; line-height: 53px;">历史记录</p>
           </li>
         </div>
-        <div class="s-nav-history " >
-          <li nz-menu-item routerLink="my-sharing" class='s-nav-item' [ngClass]="{ 'actived second-selected': firstSelected === 2}" (click)="goShare(2)">
+        <div class="s-nav-history ">
+          <li nz-menu-item routerLink="my-sharing" class='s-nav-item'
+            [ngClass]="{ 'actived second-selected': firstSelected === 2}" (click)="goShare(2)">
             <div class='history-img-second' style="width:15px;height: 15px;margin-left: 36px">
             </div>
             <p style="margin-left: 8px; height:40px; line-height: 53px;">我的分享</p>
           </li>
         </div>
-        <div class="s-nav-history " >
-          <li nz-menu-item routerLink="my-callup" class='s-nav-item' [ngClass]="{ 'actived third-selected': firstSelected === 3}" (click)="goSolicitation(3)">
+        <div class="s-nav-history ">
+          <li nz-menu-item routerLink="my-callup" class='s-nav-item'
+            [ngClass]="{ 'actived third-selected': firstSelected === 3}" (click)="goSolicitation(3)">
             <div class='history-img-third' style="width:15px;height: 15px;margin-left: 36px">
             </div>
             <p style="margin-left: 8px; height:40px; line-height: 53px;">我的征集令</p>
