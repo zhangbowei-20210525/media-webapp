@@ -201,7 +201,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
       if (ids) {
         this.rightForm.get('projects').setValue(this.programOfOptions.map(p => p.name));
         this.rightForm.get('programType').setValue(this.programOfOptions.map(p => p.program_type));
-        this.rightForm.get('programTheme').setValue(this.programOfOptions.map(p => p.theme));
+        this.rightForm.get('programTheme').setValue(this.programOfOptions.map(p => p.theme === null ? '无' : p.theme));
       }
       if (ids && Number(this.isVerify) === 1) {
         this.rightForm.get('programType').disable();

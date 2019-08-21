@@ -409,7 +409,7 @@
     <!-- 三审 -->
     <div class="block clearfix" style="margin-top: 1.3rem">
       <div class="block-content">
-        <nz-tabset [nzType]="'card'" (nzSelectChange)="verifySelectChange($event)">
+        <nz-tabset [nzType]="'card'" (nzSelectChange)="verifySelectChange($event)" [nzSelectedIndex]="isTabIndex">
           <nz-tab nzTitle="一审" *ngIf='stepsNumber === 2 || stepsNumber === 3'>
             <div class='verify-result'>
               <div class='result-title'>审片结果</div>
@@ -430,7 +430,7 @@
                 </div>
                 <div class='wrapper-right'>
                   <div class='right-pass' style='line-height: 2'>
-                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    <img style='width: 22px;height: 22px;' src="/assets/images/ic_like.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.agree_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstLike"
@@ -441,7 +441,7 @@
                     </div>
                   </div>
                   <div class='right-unPass' style='line-height: 2'>
-                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    <img style='width: 22px;height: 22px;' src="/assets/images/ic_dislike.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.oppose_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstOppose"
@@ -452,7 +452,7 @@
                     </div>
                   </div>
                   <div *ngIf="reviewFirstSteps?.conclusion_item.neutral_name" class='right-sumbit' style='line-height: 2'>
-                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png"
+                    <img style='width: 22px;height: 22px;' src="/assets/images/ic_Submission01.png"
                       alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.neutral_name}}
                     </div>
@@ -486,13 +486,13 @@
                     <div class='right-title'>
                       <div style='margin-right: 10px;'>{{b.employee.name}}</div>
                       <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_Submission.png" alt="">
+                        src="/assets/images/ic_Submission.png" alt="">
                       <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                        src="/assets/images/ic_Nopassage.png" alt="">
                       <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_passage.png" alt="">
+                        src="/assets/images/ic_passage.png" alt="">
                       <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                        src="/assets/images/ic_Notaudited.png" alt="">
                     </div>
                     <div class='right-rate'>
                       <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
@@ -568,7 +568,7 @@
                 </div>
                 <div class='wrapper-right'>
                   <div class='right-pass' style='line-height: 2'>
-                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_like.png" alt="">
+                    <img style='width: 22px;height: 22px;' src="/assets/images/ic_like.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.agree_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondLike"
@@ -579,7 +579,7 @@
                     </div>
                   </div>
                   <div class='right-unPass' style='line-height: 2'>
-                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                    <img style='width: 22px;height: 22px;' src="/assets/images/ic_dislike.png" alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.oppose_name}}
                     </div>
                     <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondOppose"
@@ -590,7 +590,7 @@
                     </div>
                   </div>
                   <div *ngIf="reviewSecondSteps?.conclusion_item.neutral_name" class='right-sumbit' style='line-height: 2'>
-                    <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png"
+                    <img style='width: 22px;height: 22px;' src="/assets/images/ic_Submission01.png"
                       alt="">
                     <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.neutral_name}}
                     </div>
@@ -624,13 +624,13 @@
                     <div class='right-title'>
                       <div style='margin-right: 10px;'>{{b.employee.name}}</div>
                       <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_Submission.png" alt="">
+                        src="/assets/images/ic_Submission.png" alt="">
                       <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                        src="/assets/images/ic_Nopassage.png" alt="">
                       <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_passage.png" alt="">
+                        src="/assets/images/ic_passage.png" alt="">
                       <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
-                        src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                        src="/assets/images/ic_Notaudited.png" alt="">
                     </div>
                     <div class='right-rate'>
                       <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
@@ -704,8 +704,8 @@
             </textarea>
             </div>
             <div style='text-align: right; margin-top: 20px;'>
+              <!-- *ngIf='selectedIndex === 0 && stepsNumber === 1 || selectedIndex === 1 && stepsNumber === 2 || selectedIndex === 2  || selectedIndex === 5' -->
               <button
-                *ngIf='selectedIndex === 0 && stepsNumber === 1 || selectedIndex === 1 && stepsNumber === 2 || selectedIndex === 2  || selectedIndex === 5'
                 nz-button (click)="submitThird()" nzType="primary" style="width: 88px;">提交</button>
             </div>
           </nz-tab>
@@ -767,8 +767,8 @@
               </textarea>
             </div>
             <div style='text-align: right; margin-top: 20px;'>
+              <!-- *ngIf='selectedIndex === 0 && stepsNumber === 1 || selectedIndex === 1 && stepsNumber === 2 || selectedIndex === 2  || selectedIndex === 5' -->
               <button
-                *ngIf='selectedIndex === 0 && stepsNumber === 1 || selectedIndex === 1 && stepsNumber === 2 || selectedIndex === 2  || selectedIndex === 5'
                 nz-button (click)="submitThird()" nzType="primary" style="width: 88px;">提交</button>
             </div>
           </nz-tab>

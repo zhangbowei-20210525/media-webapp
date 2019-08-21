@@ -66,6 +66,7 @@ import { PaymentFormatPipe } from './pipes/payment-format.pipe';
 import { ArrayMapPipe } from './pipes/array-map.pipe';
 import { SourceFileStatusPipe } from './pipes/source-file-status.pipe';
 import { MaxNumberPipe } from './pipes/max-number.pipe';
+import { CeilPipe } from './pipes/ceil.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -83,7 +84,8 @@ const PIPES = [
   ArrayMapPipe,
   SourceFileStatusPipe,
   WeekDayPipe,
-  MaxNumberPipe
+  MaxNumberPipe,
+  CeilPipe
 ];
 // #endregion
 

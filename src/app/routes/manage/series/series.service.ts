@@ -298,6 +298,11 @@ export class SeriesService {
     }
     );
   }
+  getIntentionList(sid: any) {
+    return this.http.post<any>(`/api/v1/reviews/intentions`, {
+      publicity_id: sid,
+    });
+  }
   // 宣发分享授权
   getSharingAuthorization(liaison_ids: any, publicityId: any) {
     return this.http.post<ResponseDto<number>>(`/api/v1/publicity/share`,
@@ -307,11 +312,11 @@ export class SeriesService {
   // 生成样片征集令
   getSampleCollection(program_type: any, program_theme: any, description, validity_period: any) {
     return this.http.post<any>(`/api/v1/publicity/collections`, {
-       program_type: program_type,
-       program_theme: program_theme,
-       description,
-       validity_period: validity_period
-      });
+      program_type: program_type,
+      program_theme: program_theme,
+      description,
+      validity_period: validity_period
+    });
   }
   // 我的征集令
   getBrowseRecord(pagination: PaginationDto) {

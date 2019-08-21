@@ -59,13 +59,13 @@
         <div class="fixationInfo-info">
           <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
           <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
-          <button style="background-color: aliceblue">1111</button>
+          <!-- <button style="background-color: aliceblue">1111</button> -->
         </div>
       </div>
       <ng-template #titleTemplate>
         <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
         <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
-          {{ 'app.series.publicity-share-email' | translate }}</div>da
+          {{ 'app.series.publicity-share-email' | translate }}</div>
       </ng-template>
       <ng-template #contentTemplate>
         <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
@@ -176,8 +176,9 @@
         [nzDisabled]="sampleDisabled">
         <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let sample of sampleNum" (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
-              <div style="height: 100%; width: 100%;"><a>{{sample.displayText}}</a></div>
+            <li *ngFor="let sample of sampleNum; let i = index"
+              (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
+              <div class="play-button" [ngClass]="{'selected': isId == sample.id}">{{sample.displayText}}</div>
             </li>
           </ul>
         </div>
@@ -187,7 +188,8 @@
         <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
-              <div style="height: 100%; width: 100%;"><a>{{feature.displayText}}</a></div>
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == feature.id}">
+                {{feature.displayText}}</div>
             </li>
           </ul>
         </div>
@@ -197,7 +199,8 @@
         <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
-              <div style="height: 100%; width: 100%;"><a>{{trailer.displayText}}</a></div>
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == trailer.id}">
+                {{trailer.displayText}}</div>
             </li>
           </ul>
         </div>
@@ -206,17 +209,18 @@
         [nzDisabled]="posterDisabled">
         <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i)">
-              <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+            <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i, poster.id)">
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == poster.id}">{{i + 1}}</div>
             </li>
           </ul>
         </div>
       </nz-tab>
-      <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="still()" [nzDisabled]="stillDisabled">
+      <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="still()"
+        [nzDisabled]="stillDisabled">
         <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i)">
-              <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+            <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i, still.id)">
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == still.id}">{{i + 1}}</div>
             </li>
           </ul>
         </div>
@@ -225,8 +229,8 @@
       <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'" (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
         <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i)">
-              <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
+            <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i, pdf.id)">
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == pdf.id}">{{i + 1}}</div>
             </li>
           </ul>
         </div>
