@@ -130,21 +130,61 @@ export class AddTheatreComponent implements OnInit {
     return form.valid;
   }
 
+  conversion(nums: any[]) {
+    const arr = [];
+    for (let i = nums[0]; i <= nums[1]; i++) {
+      arr.push(i);
+    }
+    return arr;
+  }
+
   addBroadcastMethod() {
     if (this.validateForm.get('episodes').value !== null) {
-      for (let i = this.validateForm.get('broadcastDate').value[0];
-        i < this.validateForm.get('broadcastDate').value[1] + 1;
-        i++) {
-        if (this.oldWeeks.indexOf(this.validateForm.get('broadcastDate').value[0]) > -1 ||
-          this.oldWeeks.indexOf(this.validateForm.get('broadcastDate').value[1]) > -1) {
-          this.isRepeat = true;
-        } else {
-          this.weeks.push(i);
+      console.log('0000');
+      console.log(this.oldWeeks);
+      if (this.oldWeeks.length === 0) {
+        this.conversion(this.validateForm.get('broadcastDate').value).forEach(f => {
+          this.oldWeeks.push(f);
+        });
+        this.weeks.push(this.oldWeeks[0], this.oldWeeks[this.oldWeeks.length - 1]);
+        this.isRepeat = false;
+      } else {
+        const a = this.conversion(this.validateForm.get('broadcastDate').value);
+        const b = [];
+        console.log('1111');
+        console.log(this.oldWeeks);
+        this.oldWeeks.forEach(f => {
+          b.push(a.indexOf(f));
+        });
+        console.log('2222');
+        console.log(b);
+        console.log(b.indexOf(-1));
+        if (b.every(s => s === -1) === true) {
+          this.conversion(this.validateForm.get('broadcastDate').value).forEach(f => {
+            this.oldWeeks.push(f);
+          });
+          console.log('33333');
+          console.log(this.oldWeeks);
+          this.weeks.push(this.validateForm.get('broadcastDate').value[0], this.validateForm.get('broadcastDate').value[1]);
           this.isRepeat = false;
         }
+        if (b.every(s => s === -1) === false) {
+          this.isRepeat = true;
+        }
       }
+      // for (let i = this.validateForm.get('broadcastDate').value[0];
+      //   i < this.validateForm.get('broadcastDate').value[1] + 1;
+      //   i++) {
+      //   if (this.oldWeeks.indexOf(this.validateForm.get('broadcastDate').value[0]) > -1 ||
+      //     this.oldWeeks.indexOf(this.validateForm.get('broadcastDate').value[1]) > -1) {
+      //     this.isRepeat = true;
+      //   } else {
+      //     this.weeks.push(i);
+      //     this.isRepeat = false;
+      //   }
+      // }
       if (this.isRepeat === false) {
-        this.oldWeeks.push(this.weeks[0], this.weeks[this.weeks.length - 1]);
+        // this.oldWeeks.push(this.weeks[0], this.weeks[this.weeks.length - 1]);
         if (this.listOfData.length === 0) {
           this.listOfData = [
             {
@@ -213,20 +253,20 @@ export class AddTheatreComponent implements OnInit {
     // ) {
     //    this.message.warning(this.translate.instant('global.please-select-correct-range-of-episodes'));
     // } else {
-      const data = {
-        channel_name: form.value['channel'] || null,
-        name: form.value['theatre'] || null,
-        air_date: Util.dateToString(form.get('premiereTime').value) || null,
-        broadcast_time: Util.dateFullToString(form.get('startBroadcastTime').value).substring(11, 19) || null,
-        weekday_schedules: this.weekday_schedules || null,
-        // program_id: form.value['series'] || null,
-        // broadcast_date: Util.dateToString(form.get('currentBroadcastDate').value) || null,
-        // start_episode: form.value['start_episode'] || null,
-        // end_episode: form.value['end_episode'] || null,
-        // episode: form.value['num'] || null,
-      };
-      console.log(data);
-      return this.service.addTheatre(data);
+    const data = {
+      channel_name: form.value['channel'] || null,
+      name: form.value['theatre'] || null,
+      air_date: Util.dateToString(form.get('premiereTime').value) || null,
+      broadcast_time: Util.dateFullToString(form.get('startBroadcastTime').value).substring(11, 19) || null,
+      weekday_schedules: this.weekday_schedules || null,
+      // program_id: form.value['series'] || null,
+      // broadcast_date: Util.dateToString(form.get('currentBroadcastDate').value) || null,
+      // start_episode: form.value['start_episode'] || null,
+      // end_episode: form.value['end_episode'] || null,
+      // episode: form.value['num'] || null,
+    };
+    console.log(data);
+    return this.service.addTheatre(data);
     // }
   }
 }
