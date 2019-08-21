@@ -1,4 +1,7 @@
 @import '~styles/theme';
+
+@imagesPath : '/assets/images';
+
 .profile-userpic img {
     float: none;
     margin: 0 auto;
@@ -99,15 +102,15 @@
     //     color: #666;
     // }
     .history-img-first {
-        background: url('./assets/images/ic_HistoricalRecords_unselected.png') center center no-repeat;
+        background: url('@{imagesPath}/ic_HistoricalRecords_unselected.png') center center no-repeat;
         background-size: 15px 15px; 
     }
     .history-img-second {
-        background: url('./assets/images/ic_mySolicitation_unselected.png') center center no-repeat;
+        background: url('@{imagesPath}/ic_mySolicitation_unselected.png') center center no-repeat;
         background-size: 15px 15px; 
     }
     .history-img-third {
-        background: url('./assets/images/ic_mySharing_unselected.png') center center no-repeat;
+        background: url('@{imagesPath}/ic_mySharing_unselected.png') center center no-repeat;
         background-size: 15px 15px; 
     }
 }
@@ -120,19 +123,19 @@
 // }
 .first-selected {
     .history-img-first{
-       background: url('./assets/images/ic_HistoricalRecords_selected.png') center center no-repeat;
+       background: url('@{imagesPath}/ic_HistoricalRecords_selected.png') center center no-repeat;
         background-size: 15px 15px; 
     }
 }
 .second-selected {
     .history-img-second{
-       background: url('./assets/images/ic_mySolicitation_selected.png') center center no-repeat;
+       background: url('@{imagesPath}/ic_mySolicitation_selected.png') center center no-repeat;
         background-size: 15px 15px; 
     }
 }
 .third-selected {
     .history-img-third{
-       background: url('./assets/images/ic_mysharing_selected.png') center center no-repeat;
+       background: url('@{imagesPath}/ic_mysharing_selected.png') center center no-repeat;
         background-size: 15px 15px; 
     }
 }
