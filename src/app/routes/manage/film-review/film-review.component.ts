@@ -15,11 +15,6 @@ import { Router } from '@angular/router';
 })
 export class FilmReviewComponent implements OnInit {
 
-  active1 = true;
-  active2 = true;
-  active3 = true;
-  active4 = true;
-  disabled1 = false;
   filmReviewTeam: string;
   ref: NzModalRef;
   filmReview1: any;
