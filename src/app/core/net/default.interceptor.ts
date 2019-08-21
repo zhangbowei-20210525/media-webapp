@@ -124,19 +124,21 @@ export class DefaultInterceptor implements HttpInterceptor {
     | HttpResponse<any>
     | HttpUserEvent<any>
   > {
-    if (!req.url.startsWith('/api')) {
+    // 所有以 /api 开头的请求，包括是否包含基路径（域名）的情况
+    if (req.url.startsWith('/api') || req.url.replace(/^(http|https):\/\/[^/]+/, '').startsWith('/api')) {
+      return next.handle(req).pipe(
+        catchError((err: HttpErrorResponse) => this.handleData(err)), // 如需将错误往下传递则在handle函数中throw一个新的错误
+        mergeMap((event: any) => {
+          // 允许统一对请求错误处理，这是因为一个请求若是业务上错误的情况下其HTTP请求的状态是200的情况下需要
+          if (event instanceof HttpResponse && event.status === 200) {
+            return this.handleData(event);
+          }
+          // 若一切都正常，则后续操作
+          return of(event);
+        }),
+      );
+    } else {
       return next.handle(req);
     }
-    return next.handle(req).pipe(
-      catchError((err: HttpErrorResponse) => this.handleData(err)), // 如需将错误往下传递则在handle函数中throw一个新的错误
-      mergeMap((event: any) => {
-        // 允许统一对请求错误处理，这是因为一个请求若是业务上错误的情况下其HTTP请求的状态是200的情况下需要
-        if (event instanceof HttpResponse && event.status === 200) {
-          return this.handleData(event);
-        }
-        // 若一切都正常，则后续操作
-        return of(event);
-      }),
-    );
   }
 }
