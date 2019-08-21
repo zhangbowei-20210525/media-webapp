@@ -16,6 +16,6 @@ export class CallbackService {
   }
 
   bindingWechatByCode(code: string) {
-    return this.http.post<LoginResultDto>('/api/v1/users/info/login/wechat', { code }, { params: { _allow_anonymous: '' } });
+    return this.http.post<LoginResultDto>('/api/v1/users/info/login/wechat', { code });
   }
 }
