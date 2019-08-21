@@ -13,6 +13,7 @@ import { AuthService } from '@core';
 import { SolicitationComponent } from '../solicitation/solicitation.component';
 import { TransmitService } from 'app/routes/manage/transmit/transmit.service';
 import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components/transmit-schedule/transmit-schedule.component';
+import { ProcessComponent } from '../process/process.component';
 
 @Component({
   selector: 'app-notify',
@@ -273,19 +274,6 @@ export class NotifyComponent implements OnInit {
       });
     }
 
-    if (type === 'SOU001' || type === 'SOU003') {
-      this.modalService.create({
-        nzTitle: `进度信息`,
-        nzContent: TransmitScheduleComponent,
-        nzComponentParams: { id: id },
-        nzMaskClosable: true,
-        nzClosable: true,
-        nzCancelText: null,
-        nzOkText: null,
-        nzWidth: 800,
-      });
-    }
-
     if (type !== 'PUB001' && type !== 'PUB002') {
       this.ref = this.model.create({
         nzTitle: `${title}`,
@@ -378,6 +366,17 @@ export class NotifyComponent implements OnInit {
           nzNoAnimation: true
         });
       }
+    } else if (type === 'SOU001' || type === 'SOU003') {
+      this.modalService.create({
+        nzTitle: `进度信息`,
+        nzContent: ProcessComponent,
+        nzComponentParams: { id: id },
+        nzMaskClosable: true,
+        nzClosable: true,
+        nzCancelText: null,
+        nzOkText: null,
+        nzWidth: 800,
+      });
     } else {
       this.ref = this.model.create({
         nzTitle: `${title}`,
