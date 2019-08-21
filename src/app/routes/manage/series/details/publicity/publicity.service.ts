@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class PublicityService {
-  [x: string]: any;
+  // [x: string]: any;
 
   readonly videoFilters = ['mp4', 'wmv',  'rmvb', 'mkv', 'mov', 'avi', 'mpg'];
   readonly imageFilters = ['.jpg', '.jpeg', '.png'];
@@ -27,20 +27,6 @@ export class PublicityService {
         return this.docmentFilters;
       default:
         return [];
-    }
-  }
-
-  getUploadUrl(type: string) {
-    switch (type) {
-      case 'sample':
-      case 'feature':
-      case 'trailer':
-        return 'https://cs.bctop.net:7000/upload/video';
-      case 'poster':
-      case 'still':
-        return 'https://cs.bctop.net:7000/upload/image';
-      case 'pdf':
-        return 'https://cs.bctop.net:7000/upload/document';
     }
   }
 

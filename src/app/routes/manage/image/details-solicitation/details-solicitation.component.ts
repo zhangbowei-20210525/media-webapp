@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzNotificationService, NzModalService } from 'ng-zorro-antd';
-import { PaginationDto, MessageService } from '@shared';
+import { PaginationDto, MessageService, Util } from '@shared';
 import { SeriesService } from '../../series/series.service';
 import { PublicityService } from '../../series/details/publicity/publicity.service';
 import { QueueUploader } from '@shared/upload';
 import { filter } from 'rxjs/operators';
 import { CollectionUpComponent } from '../components/collection-up/collection-up.component';
 import { switchMap, tap, map, finalize, } from 'rxjs/operators';
+import { environment } from '@env/environment';
 
 
 @Component({
@@ -38,7 +39,8 @@ export class DetailsSolicitationComponent implements OnInit {
   size: any;
   status: any;
   type: any;
-  docType: any;
+  mediaType: string;
+  uploadUrl: string;
   statusType: any;
   programList = [];
   filterList = [];
@@ -94,48 +96,19 @@ export class DetailsSolicitationComponent implements OnInit {
       this.themeList = res.theme_choices;
     });
   }
-  fileType(value) {
-    this.docType = this.getUploadUrl(value);
-    // console.log(value);
+  fileType(value: string) {
+    this.mediaType = Util.getMediaType(value as any);
+    this.uploadUrl = Util.getUploadUrl(this.mediaType as any);
   }
-  beforeUpload = (file: File, fileList: any) => {
+
+  beforeUpload = (file: File, fileList: FileList) => {
     const list = [] as File[];
-    if (this.docType === 'https://cs.bctop.net:7000/upload/video') {
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.fileFilters.forEach(f => {
-            if (element.name.toLowerCase().endsWith(f)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-    }
-    if (this.docType === 'https://cs.bctop.net:7000/upload/image') {
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.imageFilters.forEach(f => {
-            if (element.name.toLowerCase().endsWith(f)) {
-              list.push(element);
-              return;
-            }
-          });
-        }
-      }
-    }
-    if (this.docType === 'https://cs.bctop.net:7000/upload/document') {
-      for (const key in fileList) {
-        if (fileList.hasOwnProperty(key)) {
-          const element = fileList[key];
-          this.pdfFilters.forEach(f => {
-            if (element.name.toLowerCase().endsWith(f)) {
-              list.push(element);
-              return;
-            }
-          });
+    const filters = { 'video': this.fileFilters, 'image': this.imageFilters, 'doc': this.pdfFilters }[this.mediaType] as string[];
+    for (const key in fileList) {
+      if (fileList.hasOwnProperty(key)) {
+        const element = fileList[key];
+        if (filters.some(f => element.name.toLowerCase().endsWith(f))) {
+          list.push(element);
         }
       }
     }
@@ -206,19 +179,6 @@ export class DetailsSolicitationComponent implements OnInit {
         this.size = b.response.data.size;
       }
     });
-  }
-  getUploadUrl(type: string) {
-    switch (type) {
-      case 'sample':
-      case 'feature':
-      case 'trailer':
-        return 'https://cs.bctop.net:7000/upload/video';
-      case 'poster':
-      case 'still':
-        return 'https://cs.bctop.net:7000/upload/image';
-      case 'pdf':
-        return 'https://cs.bctop.net:7000/upload/document';
-    }
   }
 
   validation() {

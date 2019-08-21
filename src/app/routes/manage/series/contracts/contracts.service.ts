@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { PaginationDto, PaginationResponseDto, formData } from '@shared';
+import { PaginationDto, PaginationResponseDto, formData, Util } from '@shared';
 import { HttpClient } from '@angular/common/http';
 import { Subject, BehaviorSubject, of } from 'rxjs';
 import { delay, share, shareReplay, map, tap } from 'rxjs/operators';
 import { ContractDto } from './dtos';
-import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +47,7 @@ export class ContractsService {
 
   uploadFile(file: File) {
     // return this.http.post<{ file_name: string }>('/api/v1/upload/common', formData({ file }));
-    return this.http.post<{ name: string, extension: string }>(`${environment.fileServer}/upload/common`, formData({ file }));
+    return this.http.post<{ name: string, extension: string }>(Util.getUploadUrl('common'), formData({ file }));
   }
 
   getChoiceFields(name: string, extension: string, contract_type: string) {
