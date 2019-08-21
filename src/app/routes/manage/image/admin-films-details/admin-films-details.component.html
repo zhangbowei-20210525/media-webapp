@@ -29,7 +29,7 @@
           <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
         </ng-template>
       </div>
-      <div *ngIf="publicityType == 'poster'">
+      <!-- <div *ngIf="publicityType == 'poster'">
         <div class="video-box" style="position: relative;text-align: center;">
           <img [src]="posterSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
           <a>
@@ -50,16 +50,9 @@
           </div>
           <div class="fixationInfo-info">
             <a (click)="getTwoDimensionalCode()">
-              <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" -->
-              <!-- [nzContent]="contentTemplate" nzTrigger="click"></i> -->
             </a>
           </div>
         </div>
-        <!-- <ng-template #titleTemplate>
-                <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
-                <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
-                  {{ 'app.series.publicity-share-email' | translate }}</div>
-              </ng-template> -->
         <ng-template #contentTemplate>
           <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
           <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
@@ -100,11 +93,6 @@
             </a>
           </div>
         </div>
-        <!-- <ng-template #titleTemplate>
-                <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
-                <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
-                  {{ 'app.series.publicity-share-email' | translate }}</div>
-              </ng-template> -->
         <ng-template #contentTemplate>
           <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
           <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
@@ -147,11 +135,50 @@
             </a>
           </div>
         </div>
-        <!-- <ng-template #titleTemplate>
-                <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
-                <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
-                  {{ 'app.series.publicity-share-email' | translate }}</div>
-              </ng-template> -->
+        <ng-template #contentTemplate>
+          <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+          <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
+              src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+          <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
+            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small"
+              style="margin-top: 1.5rem">
+            <button nz-button nzType="primary" nzSize="small" style="margin-top: 1.5rem"
+              (click)="shareEmail()">Share</button>
+          </div>
+          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
+        </ng-template>
+      </div> -->
+      <div *ngIf="publicityType == 'poster'">
+        <div class="video-box" style="position: relative;text-align: center;">
+          <img [src]="posterSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
+          <a>
+            <i class="anticon anticon-left-circle-o"
+              style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+              (click)="lastPoster()"></i>
+          </a>
+          <a>
+            <i class="anticon anticon-right-circle-o"
+              style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+              (click)="nextPoster()"></i>
+          </a>
+        </div>
+        <div class="video-title">
+          <div class="widthBisection">
+            <span>{{publicityName}}：</span>
+            <span>{{posterName}}</span>
+          </div>
+          <div class="fixationInfo-info">
+            <a (click)="getTwoDimensionalCode()">
+              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                [nzContent]="contentTemplate" nzTrigger="click"></i>
+            </a>
+          </div>
+        </div>
+        <ng-template #titleTemplate>
+          <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+          <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+            {{ 'app.series.publicity-share-email' | translate }}</div>
+        </ng-template>
         <ng-template #contentTemplate>
           <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
           <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
@@ -166,7 +193,115 @@
         </ng-template>
       </div>
 
-      <nz-tabset [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabSelectChange($event)">
+      <div *ngIf="publicityType == 'still'">
+        <div class="video-box" style="position: relative;text-align: center;">
+          <img [src]="stillSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
+          <a>
+            <i class="anticon anticon-left-circle-o"
+              style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+              (click)="lastStill()"></i>
+          </a>
+          <a>
+            <i class="anticon anticon-right-circle-o"
+              style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+              (click)="nextStill()"></i>
+          </a>
+        </div>
+        <div class="video-title">
+          <div class="widthBisection">
+            <span>{{publicityName}}：</span>
+            <span>{{stillName}}</span>
+          </div>
+          <div class="fixationInfo-info">
+            <a (click)="getTwoDimensionalCode()">
+              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                [nzContent]="contentTemplate" nzTrigger="click"></i>
+            </a>
+          </div>
+        </div>
+        <ng-template #titleTemplate>
+          <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+          <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+            {{ 'app.series.publicity-share-email' | translate }}</div>
+        </ng-template>
+        <ng-template #contentTemplate>
+          <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+          <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
+              src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+          <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
+            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small"
+              style="margin-top: 1.5rem">
+            <button nz-button nzType="primary" nzSize="small" style="margin-top: 1.5rem"
+              (click)="shareEmail()">Share</button>
+          </div>
+          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
+        </ng-template>
+      </div>
+
+      <div *ngIf="publicityType == 'pdf'">
+        <div class="video-box" style="position: relative;text-align: center;">
+          <pdf-viewer [src]="pdfSrc" [page]="pdfPage" [zoom]="0.5" [show-all]="false" [original-size]="true">
+          </pdf-viewer>
+          <a>
+            <i class="anticon anticon-left-circle-o"
+              style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+              (click)="lastPdf()"></i>
+          </a>
+          <a>
+            <i class="anticon anticon-right-circle-o"
+              style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+              (click)="nextPdf()"></i>
+          </a>
+        </div>
+
+        <!-- <div class="video-box" style="position: relative;text-align: center;">
+            <img [src]="posterSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
+            <a>
+              <i class="anticon anticon-left-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="lastPoster()"></i>
+            </a>
+            <a>
+              <i class="anticon anticon-right-circle-o"
+                style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
+                (click)="nextPoster()"></i>
+            </a>
+          </div> -->
+
+
+
+
+        <div class="video-title">
+          <div class="widthBisection">
+            <span *ngIf="fixationInfo">{{publicityName}}：</span>
+            <span *ngIf="detail">{{pdfName}}</span>
+          </div>
+          <div class="fixationInfo-info">
+            <a (click)="getTwoDimensionalCode()">
+              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                [nzContent]="contentTemplate" nzTrigger="click"></i>
+            </a>
+          </div>
+        </div>
+        <ng-template #titleTemplate>
+          <div *ngIf="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
+          <div *ngIf="languageVersion == 'en-US'" style="text-align: center;">
+            {{ 'app.series.publicity-share-email' | translate }}</div>
+        </ng-template>
+        <ng-template #contentTemplate>
+          <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
+          <div style="text-align: center;margin-top: 1.5rem" *ngIf="languageVersion == 'zh-CN'"><img
+              src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
+          <div style="text-align: center;" *ngIf="languageVersion == 'en-US'">
+            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small"
+              style="margin-top: 1.5rem">
+            <button nz-button nzType="primary" nzSize="small" style="margin-top: 1.5rem"
+              (click)="shareEmail()">Share</button>
+          </div>
+          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
+        </ng-template>
+      </div>
+      <!-- <nz-tabset [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabSelectChange($event)">
         <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="sample()"
           [nzDisabled]="sampleDisabled">
           <div class="program-panel">
@@ -227,8 +362,72 @@
             </ul>
           </div>
         </nz-tab>
-      </nz-tabset>
+      </nz-tabset> -->
+      <nz-tabset [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabSelectChange($event)">
+        <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="sample()"
+          [nzDisabled]="sampleDisabled">
+          <div class="program-panel">
+            <ul class="program-list">
+              <li *ngFor="let sample of sampleNum; let i = index"
+                (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
+                <div class="play-button" [ngClass]="{'selected': isId == sample.id}">{{sample.displayText}}</div>
+              </li>
+            </ul>
+          </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="'片花' + '(' +userinfo?.material?.feature + ')'" (nzClick)="feature()"
+          [nzDisabled]="featureDisabled">
+          <div class="program-panel">
+            <ul class="program-list">
+              <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
+                <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == feature.id}">
+                  {{feature.displayText}}</div>
+              </li>
+            </ul>
+          </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="'先导片' + '(' +userinfo?.material?.trailer + ')'" (nzClick)="trailer()"
+          [nzDisabled]="trailerDisabled">
+          <div class="program-panel">
+            <ul class="program-list">
+              <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
+                <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == trailer.id}">
+                  {{trailer.displayText}}</div>
+              </li>
+            </ul>
+          </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="'海报' + '(' +userinfo?.material?.poster + ')'" (nzClick)="poster()"
+          [nzDisabled]="posterDisabled">
+          <div class="program-panel">
+            <ul class="program-list">
+              <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i, poster.id)">
+                <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == poster.id}">{{i + 1}}</div>
+              </li>
+            </ul>
+          </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="still()"
+          [nzDisabled]="stillDisabled">
+          <div class="program-panel">
+            <ul class="program-list">
+              <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i, still.id)">
+                <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == still.id}">{{i + 1}}</div>
+              </li>
+            </ul>
+          </div>
 
+        </nz-tab>
+        <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'" (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
+          <div class="program-panel">
+            <ul class="program-list">
+              <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i, pdf.id)">
+                <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == pdf.id}">{{i + 1}}</div>
+              </li>
+            </ul>
+          </div>
+        </nz-tab>
+      </nz-tabset>
     </div>
     <div class="publicity-details-right">
       <div class="details-title">
@@ -289,7 +488,7 @@
     <div class="block-content">
       <nz-tabset [nzType]="'card'" (nzSelectChange)="verifySelectChange($event)">
         <nz-tab nzTitle="一审">
-          <div class='verify-result'>
+          <div class='verify-result' #verifyFirstWrapper>
             <div class='result-title'>审片结果</div>
             <div class='result-wrapper' style='padding-left:50px'>
               <div class='wrapper-left'
@@ -343,7 +542,7 @@
               </div>
             </div>
           </div>
-          <div class='score-result' *ngIf="nameFirstList.length > 0">
+          <div class='score-result' #scoreFirstWrapper *ngIf="nameFirstList.length > 0">
             <div class='result-title'>评分项</div>
             <div class='result-wrapper'>
               <div class='score-item' *ngFor="let score of nameFirstList">
@@ -353,82 +552,15 @@
             </div>
           </div>
           <!-- <div class='comment-result' *ngIf="reviewFirstSteps?.comment_status === true"> -->
-          <div class='comment-result'>
+          <div class='comment-result' #scrollFirstWrapper>
             <div class='result-title'>审片评论</div>
-            <div *ngFor="let b of reviewFirstSteps?.review_records">
-              <!-- <div class='result-wrapper' *ngIf="b.conclusion === 2" >
-                  <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper >
-                    <div class='wrapper-right' style="flex: 1;background: #fff;" [ngClass]="{'isFixed': isFixed}">
-                      <div style='display:flex;justify-content: space-between;align-items: center'> 
-                        <div style='display: flex;align-items: center'>
-                          <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
-                            [src]="b.employee.avatar" alt="">
-                          <div>
-                            <div class='right-title'>
-                              <div style="display: flex; align-items: center;">
-                                <div style='margin-right: 10px;'>{{b.employee.name}}</div>
-                                <img style='width: 36px;height: 17px;' src="../../../../../assets/images/ic_Nopassage.png"
-                                  alt="">
-                              </div>
-                            </div>
-                            <div class='right-rate'>
-                              <nz-rate [nzDisabled]='true' [(ngModel)]="b.total_score" nzAllowHalf></nz-rate>
-                              <div style="margin-top: 4px;">{{b.review_at}}</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                            <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
-                              style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                              <a href="javascript:void(0)">查看审片明细
-                                <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
-                                  nzTheme="outline"></i>
-                              </a>
-                            </div>
-                            <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
-                              style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                              <a href="javascript:void(0)">收起审片明细
-                                <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up"
-                                  nzTheme="outline"></i>
-                              </a>
-                            </div>
-                        </div>
-                      </div>
-                      <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
-                    </div>
-                    <div *ngIf="isShowSelect === true"
-                      style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
-                      <div>
-                        <div class='result-title-btm'>评分项</div>
-                        <div class='result-wrapper-btm'>
-                          <div class='score-item-btm' *ngFor="let score of nameFirstList">
-                            <div class='item-left'>{{score.name}}</div>
-                            <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
-                          </div>
-                        </div>
-                      </div>
-                      <div class='result-title-btm'>审片日志</div>
-                      <nz-timeline [nzMode]="'left'">
-                        <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                        <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      </nz-timeline>
-                    </div>
-                  </div>
-                </div> -->
+            <div *ngFor="let b of reviewFirstSteps?.review_records, let i = index">
               <div class='result-wrapper'>
-                <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper>
-                  <div class='wrapper-right' style="flex: 1;background: #fff;" [ngClass]="{'isFixed': isFixed}">
-                    <div style='display:flex;justify-content: space-between;align-items: center'>
+                <div class='view-scroll-wrapper' style='width:100%;'>
+                  <div class='wrapper-right'>
+                    <div
+                      style='display:flex;justify-content: space-between;align-items: center;flex: 1;background: #fff;'
+                      [ngClass]="{'isFixed': !!b.isUp && !!b.isFixed}">
                       <div style='display: flex;align-items: center'>
                         <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
                           [src]="b.employee.avatar" alt="">
@@ -453,49 +585,46 @@
                         </div>
                       </div>
                       <div>
-                        <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                        <div *ngIf="b.isUp" (click)="NoShowSelect(i)"
                           style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                          <a href="javascript:void(0)">查看审片明细
-                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
+                          <a href="javascript:void(0)" *ngIf="b.review_logs.length !== 0 || b.scores.length !== 0">收起审片明细
+                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="up"
                               nzTheme="outline"></i>
                           </a>
                         </div>
-                        <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                        <div *ngIf="!b.isUp" (click)="ShowSelect(i)"
                           style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                          <a href="javascript:void(0)">收起审片明细
-                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+                          <a href="javascript:void(0)" *ngIf="b.review_logs.length !== 0 || b.scores.length !== 0">查看审片明细
+                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="down"
+                              nzTheme="outline"></i>
                           </a>
-                        </div> -->
-                      </div>
-                    </div>
-                    <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
-                  </div>
-                  <div *ngIf="isShowSelect === true"
-                    style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
-                    <div>
-                      <div class='result-title-btm'>评分项</div>
-                      <div class='result-wrapper-btm'>
-                        <div class='score-item-btm' *ngFor="let score of nameFirstList">
-                          <div class='item-left'>{{score.name}}</div>
-                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
                         </div>
                       </div>
                     </div>
-                    <div class='result-title-btm'>审片日志</div>
-                    <nz-timeline [nzMode]="'left'">
-                      <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    </nz-timeline>
+                    <div class='right-content' [ngClass]="{'isPadding': !!b.isUp && !!b.isFixed && b.comment}"
+                      style='padding-left:55px'>{{b.comment}}</div>
+                  </div>
+                  <!-- <div *ngIf='currentIndex === i && !!isShowSelect' class='wrapper-bottom' -->
+                  <div *ngIf='!!b.isUp' class='wrapper-bottom'
+                    [ngClass]="{'isPadding': !!b.isUp && !!b.isFixed && !b.comment}">
+                    <div *ngIf="b.scores.length !== 0">
+                      <div class='result-title-btm'>评分项</div>
+                      <div class='result-wrapper-btm'>
+                        <div class='score-item-btm' *ngFor="let score of b.scores">
+                          <div class='item-left'>{{score.name}}</div>
+                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.score" nzAllowHalf></nz-rate>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div *ngFor="let data of b.review_logs"> -->
+                      <div *ngIf="b.review_logs.length !== 0" class='result-title-btm'>审片日志</div>
+                      <nz-timeline [nzMode]="'left'">
+                        <nz-timeline-item  *ngFor="let data of b.review_logs">{{data.material.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
+                          /观看时长{{data.play_time / 60 | floor}}分钟</nz-timeline-item>
+                        <!-- <nz-timeline-item>2019.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片
+                          /观看时长1分钟</nz-timeline-item> -->
+                      </nz-timeline>
+                    <!-- </div> -->
                   </div>
                 </div>
               </div>
@@ -504,7 +633,7 @@
           <!-- <div class='load-more' (click)='getMore()'>查看更多</div> -->
         </nz-tab>
         <nz-tab nzTitle="二审" *ngIf='reviewList?.step_number === 2 || reviewList?.step_number === 3'>
-          <div class='verify-result'>
+          <div class='verify-result' #verifySecondWrapper>
             <div class='result-title'>审片结果</div>
             <div class='result-wrapper' style='padding-left:50px'>
               <div class='wrapper-left'
@@ -544,7 +673,8 @@
                     {{reviewSecondSteps?.conclusion_item.oppose_name}}{{secondDisLikePeople}}人/{{secondOppose | floor}}%
                   </div>
                 </div>
-                <div *ngIf="reviewSecondSteps?.conclusion_item.neutral_name" class='right-submit' style='line-height: 2'>
+                <div *ngIf="reviewSecondSteps?.conclusion_item.neutral_name" class='right-submit'
+                  style='line-height: 2'>
                   <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.neutral_name}}
                   </div>
@@ -558,7 +688,7 @@
               </div>
             </div>
           </div>
-          <div class='score-result' *ngIf="nameThirdList.length > 0">
+          <div class='score-result' #scoreSecondWrapper *ngIf="nameThirdList.length > 0">
             <div class='result-title'>评分项</div>
             <div class='result-wrapper'>
               <div class='score-item' *ngFor="let score of nameSecondList">
@@ -568,13 +698,15 @@
             </div>
           </div>
           <!-- <div class='comment-result' *ngIf="reviewSecondSteps.comment_status === true"> -->
-          <div class='comment-result'>
+          <div class='comment-result' #scrollSecondWrapper>
             <div class='result-title'>审片评论</div>
-            <div *ngFor="let b of reviewSecondSteps?.review_records">
+            <div *ngFor="let b of reviewSecondSteps?.review_records, let i = index">
               <div class='result-wrapper'>
-                <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper>
-                  <div class='wrapper-right' style="flex: 1;background: #fff;">
-                    <div style='display:flex;justify-content: space-between;align-items: center'>
+                <div class='view-scroll-wrapper' style='width:100%;'>
+                  <div class='wrapper-right'>
+                    <div
+                      style='display:flex;justify-content: space-between;align-items: center;flex: 1;background: #fff;'
+                      [ngClass]="{'isFixed': !!b.isUp && !!b.isFixed}">
                       <div style='display: flex;align-items: center'>
                         <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
                           [src]="b.employee.avatar" alt="">
@@ -599,49 +731,43 @@
                         </div>
                       </div>
                       <div>
-                        <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                        <div *ngIf="b.isUp" (click)="NoShowSelect(i)"
                           style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                          <a href="javascript:void(0)">查看审片明细
-                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
+                          <a href="javascript:void(0)" *ngIf="b.review_logs.length !== 0 || b.scores.length !== 0">收起审片明细
+                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="up"
                               nzTheme="outline"></i>
                           </a>
                         </div>
-                        <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                        <div *ngIf="!b.isUp" (click)="ShowSelect(i)"
                           style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                          <a href="javascript:void(0)">收起审片明细
-                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+                          <a href="javascript:void(0)" *ngIf="b.review_logs.length !== 0 || b.scores.length !== 0">查看审片明细
+                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="down"
+                              nzTheme="outline"></i>
                           </a>
-                        </div> -->
-                      </div>
-                    </div>
-                    <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
-                  </div>
-                  <div *ngIf="isShowSelect === true"
-                    style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
-                    <div>
-                      <div class='result-title-btm'>评分项</div>
-                      <div class='result-wrapper-btm'>
-                        <div class='score-item-btm' *ngFor="let score of nameFirstList">
-                          <div class='item-left'>{{score.name}}</div>
-                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
                         </div>
                       </div>
                     </div>
-                    <div class='result-title-btm'>审片日志</div>
-                    <nz-timeline [nzMode]="'left'">
-                      <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    </nz-timeline>
+                    <div class='right-content' [ngClass]="{'isPadding': !!b.isUp && !!b.isFixed && b.comment}"
+                      style='padding-left:55px'>{{b.comment}}</div>
+                  </div>
+                  <div *ngIf='!!b.isUp' class='wrapper-bottom'
+                    [ngClass]="{'isPadding': !!b.isUp && !!b.isFixed && !b.comment}">
+                    <div *ngIf="b.scores.length !== 0">
+                      <div class='result-title-btm'>评分项</div>
+                      <div class='result-wrapper-btm'>
+                        <div class='score-item-btm' *ngFor="let score of b.scores">
+                          <div class='item-left'>{{score.name}}</div>
+                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.score" nzAllowHalf></nz-rate>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="b.review_logs.length !== 0" class='result-title-btm'>审片日志</div>
+                    <nz-timeline [nzMode]="'left'" >
+                        <nz-timeline-item *ngFor="let data of b.review_logs">{{data.material.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
+                          /观看时长{{data.play_time / 60 | floor}}分钟</nz-timeline-item>
+                        <!-- <nz-timeline-item>2019.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片
+                          /观看时长1分钟</nz-timeline-item> -->
+                      </nz-timeline>
                   </div>
                 </div>
               </div>
@@ -735,7 +861,7 @@
           </div>
         </nz-tab>
         <nz-tab nzTitle="三审" *ngIf='reviewList?.step_number === 3'>
-          <div class='verify-result'>
+          <div class='verify-result' #verifyThirdWrapper>
             <div class='result-title'>审片结果</div>
             <div class='result-wrapper' style='padding-left:50px'>
               <div class='wrapper-left'
@@ -789,7 +915,7 @@
               </div>
             </div>
           </div>
-          <div class='score-result' *ngIf="nameThirdList.length > 0">
+          <div class='score-result' #scoreThirdWrapper *ngIf="nameThirdList.length > 0">
             <div class='result-title'>评分项</div>
             <div class='result-wrapper'>
               <div class='score-item' *ngFor="let score of nameThirdList">
@@ -799,13 +925,15 @@
             </div>
           </div>
           <!-- <div class='comment-result' *ngIf="reviewThirdSteps.comment_status === true"> -->
-          <div class='comment-result'>
+          <div class='comment-result' #scrollThirdWrapper>
             <div class='result-title'>审片评论</div>
-            <div *ngFor="let b of reviewThirdSteps?.review_records">
+            <div *ngFor="let b of reviewThirdSteps?.review_records, let i = index">
               <div class='result-wrapper'>
-                <div class='view-scroll-wrapper' style='width:100%;' #scrollWrapper>
-                  <div class='wrapper-right' style="flex: 1;background: #fff;">
-                    <div style='display:flex;justify-content: space-between;align-items: center'>
+                <div class='view-scroll-wrapper' style='width:100%;'>
+                  <div class='wrapper-right'>
+                    <div
+                      style='display:flex;justify-content: space-between;align-items: center;flex: 1;background: #fff;'
+                      [ngClass]="{'isFixed': !!b.isUp && !!b.isFixed}">
                       <div style='display: flex;align-items: center'>
                         <img style="margin-right: 13px;width: 42px;height:42px;border-radius:50%;"
                           [src]="b.employee.avatar" alt="">
@@ -830,49 +958,43 @@
                         </div>
                       </div>
                       <div>
-                        <!-- <div *ngIf="isShowSelect === false" (click)="ShowSelect()"
+                        <div *ngIf="b.isUp" (click)="NoShowSelect(i)"
                           style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                          <a href="javascript:void(0)">查看审片明细
-                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="down"
+                          <a href="javascript:void(0)" *ngIf="b.review_logs.length !== 0 || b.scores.length !== 0">收起审片明细
+                            <i style="width: 11px; height:6px; color:#4797F7;" nz-icon nzType="up"
                               nzTheme="outline"></i>
                           </a>
                         </div>
-                        <div *ngIf="isShowSelect === true" (click)="NoShowSelect()"
+                        <div *ngIf="!b.isUp" (click)="ShowSelect(i)"
                           style="height: 17px; text-align: right;font-size: 12px;color: #4797F7;">
-                          <a href="javascript:void(0)">收起审片明细
-                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+                          <a href="javascript:void(0)" *ngIf="b.review_logs.length !== 0 || b.scores.length !== 0">查看审片明细
+                            <i style="width: 11px;height:6px; color:#4797F7;" nz-icon nzType="down"
+                              nzTheme="outline"></i>
                           </a>
-                        </div> -->
-                      </div>
-                    </div>
-                    <div class='right-content' style='padding-left:55px'>{{b.comment}}</div>
-                  </div>
-                  <div *ngIf="isShowSelect === true"
-                    style="background-color:#F8F8F8;border-radius: 6px;margin-top:20px; padding: 20px 20px;">
-                    <div>
-                      <div class='result-title-btm'>评分项</div>
-                      <div class='result-wrapper-btm'>
-                        <div class='score-item-btm' *ngFor="let score of nameFirstList">
-                          <div class='item-left'>{{score.name}}</div>
-                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.avg" nzAllowHalf></nz-rate>
                         </div>
                       </div>
                     </div>
-                    <div class='result-title-btm'>审片日志</div>
-                    <nz-timeline [nzMode]="'left'">
-                      <nz-timeline-item>2015-09-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                      <nz-timeline-item>2015-09-04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片1/观看时长5分钟</nz-timeline-item>
-                    </nz-timeline>
+                    <div class='right-content' [ngClass]="{'isPadding': !!b.isUp && !!b.isFixed && b.comment}"
+                      style='padding-left:55px'>{{b.comment}}</div>
+                  </div>
+                  <div *ngIf='!!b.isUp' class='wrapper-bottom'
+                    [ngClass]="{'isPadding': !!b.isUp && !!b.isFixed && !b.comment}">
+                    <div *ngIf="b.scores.length !== 0">
+                      <div class='result-title-btm'>评分项</div>
+                      <div class='result-wrapper-btm'>
+                        <div class='score-item-btm' *ngFor="let score of b.scores">
+                          <div class='item-left'>{{score.name}}</div>
+                          <nz-rate [nzDisabled]='true' [(ngModel)]="score.score" nzAllowHalf></nz-rate>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="b.review_logs.length !== 0" class='result-title-btm'>审片日志</div>
+                    <nz-timeline [nzMode]="'left'" >
+                        <nz-timeline-item *ngFor="let data of b.review_logs">{{data.material.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
+                          /观看时长{{data.play_time / 60 | floor}}分钟</nz-timeline-item>
+                        <!-- <nz-timeline-item>2019.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片
+                          /观看时长1分钟</nz-timeline-item> -->
+                      </nz-timeline>
                   </div>
                 </div>
               </div>

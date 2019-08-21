@@ -200,6 +200,7 @@ export class ReviewViewComponent implements OnInit {
       this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
     // console.log(this.mapOfCheckedId);
     // console.log(this.isAllDisplayDataChecked);
+    console.log(this.listOfDisplayData);
   }
   currentPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.listOfDisplayData = $event;
@@ -263,7 +264,7 @@ export class ReviewViewComponent implements OnInit {
   publicityPlay(sid: number, id: number) {
     // console.log(sid);
     // console.log(id);
-    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, isShowBtn: 1 }]);
+    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, isHidden: 1 }]);
   }
   // 发起审片弹框
   launchFilms() {
@@ -401,7 +402,6 @@ export class ReviewViewComponent implements OnInit {
   goSave() {
     const review_ids = [];
     // const step_number = 3;
-    console.log(this.threeMapOfCheckedId, 'qqqqqq');
     for (const key in this.threeMapOfCheckedId) {
       if (this.threeMapOfCheckedId[key]) {
         review_ids.push(Number(key));
@@ -418,9 +418,6 @@ export class ReviewViewComponent implements OnInit {
       this.message.error('请选择样片');
     } else {
       this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId , isVerify: 1 }]);
-      this.service.submitFirstInstance(review_ids).subscribe(res => {
-        // console.log(res);
-      });
     }
 
   }

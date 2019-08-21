@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { PaginationDto, MessageService } from '@shared';
@@ -8,6 +8,7 @@ import { PublicityService } from '../../series/details/publicity/publicity.servi
 import { QueueUploader } from '@shared/upload';
 import { filter } from 'rxjs/operators';
 import { CollectionUpComponent } from '../components/collection-up/collection-up.component';
+import { switchMap, tap, map, finalize, } from 'rxjs/operators';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class DetailsSolicitationComponent implements OnInit {
   photoSize: any;
   vid: any;
   videoList = [];
+  isFrom: number;
   [x: string]: any;
 
   readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
@@ -59,6 +61,9 @@ export class DetailsSolicitationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.files = [];
+    this.videoList = [];
+    console.log('11111');
     this.validateForm = this.fb.group({
       name: [null, [Validators.required]],
       nickname: [null],
@@ -107,7 +112,7 @@ export class DetailsSolicitationComponent implements OnInit {
         }
       }
     }
-    if (this.docType === '/api/v1/upload/image') {
+    if (this.docType === 'https://cs.bctop.net:7000/upload/image') {
       for (const key in fileList) {
         if (fileList.hasOwnProperty(key)) {
           const element = fileList[key];
@@ -120,7 +125,7 @@ export class DetailsSolicitationComponent implements OnInit {
         }
       }
     }
-    if (this.docType === '/api/v1/upload/docment') {
+    if (this.docType === 'https://cs.bctop.net:7000/upload/document') {
       for (const key in fileList) {
         if (fileList.hasOwnProperty(key)) {
           const element = fileList[key];
@@ -186,6 +191,7 @@ export class DetailsSolicitationComponent implements OnInit {
         this.size = b.response.data.size;
       }
     });
+    console.log(this.videoList, 'videoList111');
   }
   getUploadUrl(type: string) {
     switch (type) {
@@ -195,9 +201,9 @@ export class DetailsSolicitationComponent implements OnInit {
         return 'https://cs.bctop.net:7000/upload/video';
       case 'poster':
       case 'still':
-        return '/api/v1/upload/image';
+        return 'https://cs.bctop.net:7000/upload/image';
       case 'pdf':
-        return '/api/v1/upload/docment';
+        return 'https://cs.bctop.net:7000/upload/document';
     }
   }
 
@@ -265,11 +271,13 @@ export class DetailsSolicitationComponent implements OnInit {
           nzOnCancel: () => new Promise((resolve) => {
             resolve();
             this.router.navigate([`/manage/image/details-solicitation/${this.id}`]);
+            window.location.reload();
             this.validateForm.reset();
             this.validateForm.enable();
             this.uploadVideo = false;
             this.validateForm = this.validateForm;
             this.videoList = [];
+            console.log(this.videoList, 'video');
             this.files = [];
           }),
           nzOnOk: () => new Promise((resolve) => {

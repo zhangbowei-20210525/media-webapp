@@ -28,6 +28,7 @@ import { TreeService } from '@shared';
 export class WechatComponent implements OnInit {
 
   validateStatus: 'loading' | 'successful' | 'failure' | 'error' = 'loading';
+  // returnUrl: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +40,9 @@ export class WechatComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.queryParamMap;
+    // if (params.has('returnUrl')) {
+    //   this.returnUrl = params.get('returnUrl');
+    // }
     if (params.get('state') === 'STATE_LOGIN') { // 验证 STATE 来自登录
       this.wxloginRequest(params.get('code'));
     } else if (params.get('state') === 'STATE_BINDING') { // 验证 STATE 来自绑定
@@ -52,7 +56,7 @@ export class WechatComponent implements OnInit {
     this.service.loginByWechatCode(code)
       .subscribe(result => {
         if (result.auth.phone && result.auth.company_full_name) {
-          this.stateStore.clearState();
+          // this.stateStore.clearState(); // 此处不clear，后续wechat-login中操作
           this.auth.onLogin({
             userInfo: result.auth,
             token: result.token,

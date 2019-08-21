@@ -74,7 +74,7 @@ const routes: Routes = [
           },
           {
             path: 'image', loadChildren: './manage/image/image.module#ImageModule',
-            canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.view] } }
+            canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.review.view] } }
             // component: ImageComponent
           },
           {

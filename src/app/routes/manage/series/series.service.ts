@@ -442,4 +442,15 @@ export class SeriesService {
     console.log(to_program_id);
     return this.http.post<any>(`/api/v1/programs/merge`, { from_program_id: from_program_id, to_program_id: to_program_id });
   }
+
+  // 新增审片轨迹接口
+  addReviewtrajectory(rid: number, publicityType: any, isId: number, realTimePlayback: number, status: any) {
+    return this.http.post<any>(`/api/v1/viewlog/reviews`, {
+      review_id: rid,
+      material_type: publicityType,
+      material_id: isId,
+      progress: realTimePlayback,
+      status: status
+    });
+  }
 }
