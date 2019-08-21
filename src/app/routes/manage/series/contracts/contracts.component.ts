@@ -12,6 +12,10 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ACLAbility } from '@core/acl';
 
+interface FileInfo {
+  name: string; extension: string; contractType: string;
+}
+
 @Component({
   selector: 'app-contracts',
   templateUrl: './contracts.component.html',
@@ -71,7 +75,6 @@ export class ContractsComponent implements OnInit, OnDestroy {
   }
 
   fileChange(event: Event) {
-    console.log('343');
     const contractType = this.lastUrlType;
     const input = event.target as HTMLInputElement;
     const file = input.files.item(0);
@@ -82,16 +85,16 @@ export class ContractsComponent implements OnInit, OnDestroy {
         this.isUploading = false;
       }))
       .subscribe(result => {
-        this.fileName = result.file_name;
-        this.choiceFields(result.file_name, contractType);
+        this.fileName = result.name;
+        this.choiceFields({ name: result.name, extension: result.extension, contractType });
       }, error => {
         this.message.remove(this.loadingRef.messageId);
       });
     input.value = null;
   }
 
-  choiceFields(name: string, contractType: string) {
-    this.service.getChoiceFields(name, contractType)
+  choiceFields(fileInfo: FileInfo) {
+    this.service.getChoiceFields(fileInfo.name, fileInfo.extension, fileInfo.contractType)
       .pipe(finalize(() => {
         this.message.remove(this.loadingRef.messageId);
       }))
@@ -105,14 +108,15 @@ export class ContractsComponent implements OnInit, OnDestroy {
           nzContent: RelationImportFieldComponent,
           nzComponentParams: { programThemes: result.theme, programTypes: result.program_type },
           nzMaskClosable: false,
-          nzOnOk: (component: RelationImportFieldComponent) => this.relationImportFieldAgreed(component, contractType)
+          nzOnOk: (component: RelationImportFieldComponent) => this.relationImportFieldAgreed(component, fileInfo)
         });
       });
   }
 
-  relationImportFieldAgreed = (component: RelationImportFieldComponent, contractType: string) => new Promise((resolve, reject) => {
+  relationImportFieldAgreed = (component: RelationImportFieldComponent, fileInfo: FileInfo) => new Promise((resolve, reject) => {
     const loadingRef = this.message.loading('正在导入权利');
-    this.service.importContracts(this.fileName, contractType, component.programTypes, component.programThemes)
+    this.service.importContracts(
+      fileInfo.name, fileInfo.extension, fileInfo.contractType, component.programTypes, component.programThemes)
       .pipe(finalize(() => {
         this.message.remove(loadingRef.messageId);
       }))

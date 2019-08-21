@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SeriesService } from '../series.service';
-import { PaginationDto } from '@shared';
+import { PaginationDto, Util } from '@shared';
 import { NzModalRef, NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { AddPublicityComponent } from '../components/add-publicity/add-publicity.component';
@@ -149,7 +149,7 @@ export class PublicitiesComponent implements OnInit {
             const dotIndex = item.name.lastIndexOf('.');
             return this.uploader.enqueue({
               target: this.publicityId,
-              url: this.ps.getUploadUrl(materielType),
+              url: Util.getUploadUrlByMaterielType(materielType),
               file: item,
               name: item.name.substring(0, dotIndex),
               extension: item.name.substring(dotIndex + 1, item.name.length),
@@ -157,15 +157,11 @@ export class PublicitiesComponent implements OnInit {
               progress: 0,
               createAt: new Date,
               success: (obj, data) => {
-                if (data.code === '0') {
-                  this.pservice.bindingMateriel(obj.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
-                    materielType, this.company_ids).subscribe(() => {
-                      this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
-                    });
-                  return true;
-                } else {
-                  this.notification.error('上传文件失败', `${data.detail}`);
-                }
+                this.pservice.bindingMateriel(obj.target, data.extension, data.filename, data.name, data.size,
+                  materielType, this.company_ids).subscribe(() => {
+                    this.notification.success('上传文件完成', `上传物料 ${obj.name} 成功`);
+                  });
+                return true;
               }
             });
         } else {

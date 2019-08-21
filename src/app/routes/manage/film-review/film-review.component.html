@@ -1,141 +1,147 @@
-<nz-tabset  [nzTabBarExtraContent]="extraTemplate">
-  <nz-tab nzTitle="一审设置" (nzClick)="onClick(0)">
-    <div class="block" style="border:solid 1px">
-      <nz-collapse [nzAccordion]="false">
-        <nz-collapse-panel nzHeader="审片人" [nzActive]="active1" [nzShowArrow]="false">
-          <div style="margin-bottom: 10px">
-            审片团：<span
-              style="margin-left: 5px;">{{ filmReview1?.department?.name }}</span>
-              <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
+<div class="block">
+  <div class="block-content">
+    <nz-tabset [nzTabBarExtraContent]="extraTemplate">
+      <nz-tab nzTitle="一审设置" (nzClick)="onClick(0)">
+        <div style="padding-bottom: 20px">
+          <div class="theme-title">审片人</div>
+          <div style="margin-bottom: 10px;margin-left: 20px;">
+            审片团：<span style="margin-left: 5px;">{{ filmReview1?.department?.name }}</span>
+            <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="form"
+                nzTheme="outline"></i><span style="margin-left: 5px">编辑</span></a>
           </div>
-          <div>审片人：
+          <div style="margin-left: 20px;">审片人：
             <nz-tag *ngFor="let data of filmReview1?.employees">
               <span>{{ data.name }}</span>
               <span style="margin-left: 10px">{{ data.phone }}</span>
             </nz-tag>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="结论" [nzActive]="active2" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">结论</div>
+          <div style="margin-left: 20px;">
             <span>{{ filmReview1?.conclusion_item?.agree_name }}</span>
             <span style="margin-left: 10px">or</span>
             <span style="margin-left: 10px">{{ filmReview1?.conclusion_item?.oppose_name }}</span>
             <span style="margin-left: 10px" *ngIf="filmReview1?.conclusion_item?.neutral_name">or</span>
-            <span style="margin-left: 10px" *ngIf="filmReview1?.conclusion_item?.neutral_name">{{ filmReview1?.conclusion_item?.neutral_name }}</span>
-            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
-
+            <span style="margin-left: 10px"
+              *ngIf="filmReview1?.conclusion_item?.neutral_name">{{ filmReview1?.conclusion_item?.neutral_name }}</span>
+            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="form"
+                nzTheme="outline"></i><span style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">评分项</div>
+          <div style="margin-left: 20px;">
             <nz-tag *ngFor="let data of filmReview1?.scoring_items">
               <span>{{ data.name }}</span>
               <span style="margin-left: 10px">{{ data.proportion * 100 }}%</span>
             </nz-tag>
-            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="setting"></i></a>
+            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
+                style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="意见或评论" [nzActive]="active4" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">意见或评论</div>
+          <div style="margin-left: 20px;">
             <span *ngIf="filmReview1?.comment_status == true">有</span>
             <span *ngIf="filmReview1?.comment_status == false">无</span>
-            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="setting"></i></a>
+            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
+                style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </div>
-  </nz-tab>
-  <nz-tab nzTitle="二审设置" (nzClick)="onClick(1)">
-    <div class="block" style="border:solid 1px">
-      <nz-collapse [nzAccordion]="false">
-        <nz-collapse-panel nzHeader="审片人" [nzActive]="active1" [nzShowArrow]="false">
-          <div style="margin-bottom: 10px">
-            审片团：<span
-              style="margin-left: 5px;">{{ filmReview2?.department?.name }}</span>
-              <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="二审设置" (nzClick)="onClick(1)">
+        <div style="padding-bottom: 20px">
+          <div class="theme-title">审片人</div>
+          <div style="margin-bottom: 10px;margin-left: 20px;">
+            审片团：<span style="margin-left: 5px;">{{ filmReview2?.department?.name }}</span>
+            <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="form"
+                nzTheme="outline"></i><span style="margin-left: 5px">编辑</span></a>
           </div>
-          <div>审片人：
+          <div style="margin-left: 20px;">审片人：
             <nz-tag *ngFor="let data of filmReview2?.employees">
               <span>{{ data.name }}</span>
               <span style="margin-left: 10px">{{ data.phone }}</span>
             </nz-tag>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="结论" [nzActive]="active2" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">结论</div>
+          <div style="margin-left: 20px;">
             <span>{{ filmReview2?.conclusion_item?.agree_name }}</span>
             <span style="margin-left: 10px">or</span>
             <span style="margin-left: 10px">{{ filmReview2?.conclusion_item?.oppose_name }}</span>
             <span style="margin-left: 10px" *ngIf="filmReview2?.conclusion_item?.neutral_name">or</span>
-            <span style="margin-left: 10px" *ngIf="filmReview2?.conclusion_item?.neutral_name">{{ filmReview2?.conclusion_item?.neutral_name }}</span>
-            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
+            <span style="margin-left: 10px"
+              *ngIf="filmReview2?.conclusion_item?.neutral_name">{{ filmReview2?.conclusion_item?.neutral_name }}</span>
+            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="form"
+                nzTheme="outline"></i><span style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">评分项</div>
+          <div style="margin-left: 20px;">
             <nz-tag *ngFor="let data of filmReview2?.scoring_items">
               <span>{{ data.name }}</span>
               <span style="margin-left: 10px">{{ data.proportion * 100 }}%</span>
             </nz-tag>
-            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="setting"></i></a>
+            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
+                style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="意见或评论" [nzActive]="active4" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">意见或评论</div>
+          <div style="margin-left: 20px;">
             <span *ngIf="filmReview2?.comment_status == true">有</span>
             <span *ngIf="filmReview2?.comment_status == false">无</span>
-            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="setting"></i></a>
+            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
+                style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </div>
-  </nz-tab>
-  <nz-tab nzTitle="三审设置" (nzClick)="onClick(2)">
-    <div class="block" style="border:solid 1px">
-      <nz-collapse [nzAccordion]="false">
-        <nz-collapse-panel nzHeader="审片人" [nzActive]="active1" [nzShowArrow]="false">
-          <div style="margin-bottom: 10px">
-            审片团：<span
-              style="margin-left: 5px;">{{ filmReview3?.department?.name }}</span>
-              <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="setting"></i></a>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="三审设置" (nzClick)="onClick(2)">
+        <div style="padding-bottom: 20px">
+          <div class="theme-title">审片人</div>
+          <div style="margin-bottom: 10px;margin-left: 20px;">
+            审片团：<span style="margin-left: 5px;">{{ filmReview3?.department?.name }}</span>
+            <a style="margin-left: 10px;" (click)="reviewPeopleConfig()"><i nz-icon nzType="form"
+                nzTheme="outline"></i><span style="margin-left: 5px">编辑</span></a>
           </div>
-          <div>审片人：
+          <div style="margin-left: 20px;">审片人：
             <nz-tag *ngFor="let data of filmReview3?.employees">
               <span>{{ data.name }}</span>
               <span style="margin-left: 10px">{{ data.phone }}</span>
             </nz-tag>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="结论" [nzActive]="active2" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">结论</div>
+          <div style="margin-left: 20px;">
             <span>{{ filmReview3?.conclusion_item?.agree_name }}</span>
             <span style="margin-left: 10px">or</span>
             <span style="margin-left: 10px">{{ filmReview3?.conclusion_item?.oppose_name }}</span>
             <span style="margin-left: 10px" *ngIf="filmReview3?.conclusion_item?.neutral_name">or</span>
-            <span style="margin-left: 10px" *ngIf="filmReview3?.conclusion_item?.neutral_name">{{ filmReview3?.conclusion_item?.neutral_name }}</span>
-            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="setting"></i></a>
+            <span style="margin-left: 10px"
+              *ngIf="filmReview3?.conclusion_item?.neutral_name">{{ filmReview3?.conclusion_item?.neutral_name }}</span>
+            <a style="margin-left: 10px;" (click)="conclusionConfig()"><i nz-icon nzType="form"
+                nzTheme="outline"></i><span style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="评分项" [nzActive]="active3" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">评分项</div>
+          <div style="margin-left: 20px;">
             <nz-tag *ngFor="let data of filmReview3?.scoring_items">
               <span>{{ data.name }}</span>
               <span style="margin-left: 10px">{{ data.proportion * 100 }}%</span>
             </nz-tag>
-            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="setting"></i></a>
+            <a style="margin-left: 10px;" (click)="scoreConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
+                style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="意见或评论" [nzActive]="active4" [nzShowArrow]="false">
-          <div>
+          <nz-divider></nz-divider>
+          <div class="theme-title">意见或评论</div>
+          <div style="margin-left: 20px;">
             <span *ngIf="filmReview3?.comment_status == true">有</span>
             <span *ngIf="filmReview3?.comment_status == false">无</span>
-            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="setting"></i></a>
+            <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
+                style="margin-left: 5px">编辑</span></a>
           </div>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </div>
-  </nz-tab>
-</nz-tabset>
-<ng-template #extraTemplate>
-    <button nz-button nzType="default" nzSize="small" (click)="goBack()">前往审片</button>
-  </ng-template>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+    <ng-template #extraTemplate>
+      <button nz-button nzType="primary" nzSize="small" (click)="goBack()">前往审片</button>
+    </ng-template>
+  </div>
+</div>

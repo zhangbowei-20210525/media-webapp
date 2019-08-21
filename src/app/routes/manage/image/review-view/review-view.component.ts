@@ -245,10 +245,10 @@ export class ReviewViewComponent implements OnInit {
   }
   // 三审
   threeRefreshStatus(): void {
-    this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.publicity.id]);
-    this.threeListOfDisplayData.every(item => this.isThreeAllDisplayDataChecked[item.publicity.id]);
+    this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.publicity.program.id]);
+    this.threeListOfDisplayData.every(item => this.isThreeAllDisplayDataChecked[item.publicity.program.id]);
     this.isThreeIndeterminate =
-      this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.publicity.id]) && !this.isThreeAllDisplayDataChecked;
+      this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.publicity.program.id]) && !this.isThreeAllDisplayDataChecked;
     // console.log(this.threeMapOfCheckedId, 'zzzz');
     // // console.log(this.isThreeAllDisplayDataChecked);
     // console.log(this.threeListOfDisplayData, 'yyyyy');

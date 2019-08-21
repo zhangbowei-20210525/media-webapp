@@ -12,6 +12,8 @@ import { SystemMessagesComponent } from './header/components/system-messages/sys
 import { TapeMessagesComponent } from './header/components/tape-messages/tape-messages.component';
 import { ExternalMessagesComponent } from './header/components/external-messages/external-messages.component';
 import { SolicitationComponent } from './header/components/solicitation/solicitation.component';
+import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components/transmit-schedule/transmit-schedule.component';
+import { ProcessComponent } from './header/components/process/process.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { SolicitationComponent } from './header/components/solicitation/solicita
     SystemMessagesComponent,
     TapeMessagesComponent,
     ExternalMessagesComponent,
-    SolicitationComponent
+    SolicitationComponent,
+    ProcessComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,8 @@ import { SolicitationComponent } from './header/components/solicitation/solicita
     SystemMessagesComponent,
     TapeMessagesComponent,
     ExternalMessagesComponent,
-    SolicitationComponent
+    SolicitationComponent,
+    ProcessComponent
   ]
 })
 export class LayoutModule { }

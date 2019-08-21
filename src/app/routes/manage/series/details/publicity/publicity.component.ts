@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, PaginationDto } from '@shared';
+import { MessageService, PaginationDto, Util } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { SeriesService } from '../../series.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -143,7 +143,7 @@ export class PublicityComponent implements OnInit {
       ) {
         return this.uploader.enqueue({
           target: this.publicityId,
-          url: this.service.getUploadUrl(materielType),
+          url: Util.getUploadUrlByMaterielType(materielType),
           file: item,
           name: item.name.substring(0, dotIndex),
           extension: item.name.substring(dotIndex + 1, item.name.length),
@@ -151,17 +151,24 @@ export class PublicityComponent implements OnInit {
           progress: 0,
           createAt: new Date,
           success: (upload, data) => {
-            if (data.code === '0') {
-              this.service.bindingMateriel(upload.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
-                materielType, '').subscribe(result => {
-                  this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
-                  this.fetchMateriels(materielType);
-                  this.fetchPublicity();
-                });
-              return true;
-            } else {
-              this.notification.error('上传文件失败', `${data.detail}`);
-            }
+            // if (data.code === '0') {
+            //   this.service.bindingMateriel(upload.target, data.data.extension, data.data.filename, data.data.name, data.data.size,
+            //     materielType, '').subscribe(result => {
+            //       this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+            //       this.fetchMateriels(materielType);
+            //       this.fetchPublicity();
+            //     });
+            //   return true;
+            // } else {
+            //   this.notification.error('上传文件失败', `${data.detail}`);
+            // }
+            this.service.bindingMateriel(upload.target, data.extension, data.filename, data.name, data.size,
+              materielType, '').subscribe(result => {
+                this.notification.success('上传文件完成', `上传物料 ${upload.name} 成功`);
+                this.fetchMateriels(materielType);
+                this.fetchPublicity();
+              });
+            return true;
           }
         });
       } else {

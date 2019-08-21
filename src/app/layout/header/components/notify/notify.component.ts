@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core';
 import { SolicitationComponent } from '../solicitation/solicitation.component';
 import { TransmitService } from 'app/routes/manage/transmit/transmit.service';
+import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components/transmit-schedule/transmit-schedule.component';
+import { ProcessComponent } from '../process/process.component';
 
 @Component({
   selector: 'app-notify',
@@ -81,7 +83,8 @@ export class NotifyComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private ts: TreeService,
-    private emitService: TransmitService
+    private emitService: TransmitService,
+    private modalService: NzModalService,
   ) {
     const subscription = this.np.notifies().subscribe(result => {
       this.sysUnread = result.base.notify.unread_system_num;
@@ -235,11 +238,11 @@ export class NotifyComponent implements OnInit {
     this.type = type;
     this.related_id = id;
     console.log(type);
-    this.service.getSolicitationInfo(id).subscribe(result => {
-      if (result.expire_days < 0) {
-        this.isdisableButton = true;
-      }
-      if (type === 'PUB002') {
+    if (type === 'PUB002') {
+      this.service.getSolicitationInfo(id).subscribe(result => {
+        if (result.expire_days < 0) {
+          this.isdisableButton = true;
+        }
         this.model.create({
           nzTitle: `宣发征集令`,
           nzContent: SolicitationComponent,
@@ -253,8 +256,8 @@ export class NotifyComponent implements OnInit {
           nzOnOk: this.solicitationAgreed,
           nzNoAnimation: true
         });
-      }
-    });
+      });
+    }
     if (type === 'PUB001') {
       this.model.create({
         nzTitle: `${title}`,
@@ -363,6 +366,17 @@ export class NotifyComponent implements OnInit {
           nzNoAnimation: true
         });
       }
+    } else if (type === 'SOU001' || type === 'SOU003') {
+      this.modalService.create({
+        nzTitle: `进度信息`,
+        nzContent: ProcessComponent,
+        nzComponentParams: { id: id },
+        nzMaskClosable: true,
+        nzClosable: true,
+        nzCancelText: null,
+        nzOkText: null,
+        nzWidth: 800,
+      });
     } else {
       this.ref = this.model.create({
         nzTitle: `${title}`,
@@ -407,9 +421,9 @@ export class NotifyComponent implements OnInit {
                   userInfo: res.auth,
                   permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
                 });
+                this.router.navigate([`/manage/transmit/type`]);
+                this.emitService.eventEmit.emit('noticeMessage');
               });
-              this.router.navigate([`/manage/transmit/type`]);
-              this.emitService.eventEmit.emit('noticeMessage');
             }
           });
         }, error => {
@@ -433,8 +447,8 @@ export class NotifyComponent implements OnInit {
                       userInfo: res.auth,
                       permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
                     });
+                    this.router.navigate([`/manage/transmit/type`]);
                   });
-                  this.router.navigate([`/manage/transmit/type`]);
                 }
               });
             }, error => {
@@ -461,8 +475,8 @@ export class NotifyComponent implements OnInit {
                       userInfo: res.auth,
                       permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
                     });
+                    this.router.navigate([`/manage/transmit/type`]);
                   });
-                  this.router.navigate([`/manage/transmit/type`]);
                 }
               });
             }, error => {

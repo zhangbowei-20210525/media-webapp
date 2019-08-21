@@ -30,14 +30,7 @@ import { PublishedComponent as PublishedListComponent } from './copyrights/publi
 import { AllRightsComponent } from './copyrights/all-rights/all-rights.component';
 import { RelationImportFieldComponent } from './components/relation-import-field/relation-import-field.component';
 import { ContractDetailsComponent } from './contracts/contract-details/contract-details.component';
-import { ChoreographyComponent } from './choreography/choreography.component';
-import { TheatreComponent } from './choreography/theatre/theatre.component';
-import { InfoComponent } from './choreography/info/info.component';
-import { AddTheatreComponent } from './choreography/components/add-theatre/add-theatre.component';
 import { RightFilterComponent } from './components/right-filter/right-filter.component';
-import { EditBroadcastPlanComponent } from './choreography/edit-broadcast-plan/edit-broadcast-plan.component';
-import { InsertBroadcastInfoComponent } from './choreography/components/insert-broadcast-info/insert-broadcast-info.component';
-import { AddBroadcastingInfoComponent } from './choreography/components/add-broadcasting-info/add-broadcasting-info.component';
 import { PublicityFilmsComponent } from './components/publicity-films/publicity-films.component';
 import { SeriesConfigComponent } from './series-config/series-config.component';
 import { ConfigMergeComponent } from './series-config/components/config-merge/config-merge.component';
@@ -74,14 +67,7 @@ import { TtMergeComponent } from './series-config/components/tt-merge/tt-merge.c
     AllRightsComponent,
     RelationImportFieldComponent,
     ContractDetailsComponent,
-    ChoreographyComponent,
-    TheatreComponent,
-    InfoComponent,
-    AddTheatreComponent,
     RightFilterComponent,
-    EditBroadcastPlanComponent,
-    InsertBroadcastInfoComponent,
-    AddBroadcastingInfoComponent,
     PublicityFilmsComponent,
     ConfigMergeComponent,
     SeriesConfigComponent,
@@ -106,10 +92,7 @@ import { TtMergeComponent } from './series-config/components/tt-merge/tt-merge.c
     EditSeriesInfoComponent,
     SeriesSelectorComponent,
     RelationImportFieldComponent,
-    AddTheatreComponent,
     RightFilterComponent,
-    InsertBroadcastInfoComponent,
-    AddBroadcastingInfoComponent,
     PublicityFilmsComponent,
   ]
 })

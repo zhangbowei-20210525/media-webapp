@@ -39,12 +39,11 @@ export class EditFilmReviewTeamComponent implements OnInit {
       this.teamInfo = res;
       this.tid = this.teamInfo.filter(x => x.status === true)[0].id;
       this.validateForm.get('filmReviewTeam').setValue(this.tid);
-         this.service.getFilmReviewPeople(this.filmReview.id,
-          this.tid).subscribe(ress => {
-           console.log(ress);
+      this.service.getFilmReviewPeople(this.filmReview.id,
+        this.tid).subscribe(ress => {
           this.peopleInfo = ress.map(item => ({
             value: item.id,
-            label: item.name,
+            label: item.name + '：' + item.phone,
             phone: item.phone,
             checked: item.status
           }));
@@ -92,7 +91,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
       res.forEach(f => {
         this.peopleInfo.push({
           value: f.id,
-          label: f.name,
+          label: f.name + '：' + f.phone,
           phone: f.phone,
           checked: f.status
         });
@@ -104,38 +103,47 @@ export class EditFilmReviewTeamComponent implements OnInit {
 
 
   teamConfig() {
-    this.ref = this.modal.create({
-      nzTitle: '配置信息',
-      nzContent: '请选择操作',
-      nzFooter: [
-        {
-          label: '返回',
-          shape: 'default',
-          onClick: () => this.ref.destroy()
-        },
-        {
-          label: '删除',
-          type: 'danger',
-          loading: false,
-          onClick() {
-          }
-        },
-        {
-          label: '新增',
-          type: 'primary',
-          onClick: () =>
-            this.modal.create({
-              nzTitle: `新增审片团`,
-              nzContent: AddFilmReviewTeamComponent,
-              nzMaskClosable: false,
-              nzClosable: false,
-              nzWidth: 800,
-              nzOnOk: this.addFilmReviewTeamAgreed,
-              nzNoAnimation: true
-            })
-        },
-      ]
+    this.modal.create({
+      nzTitle: `新增审片团`,
+      nzContent: AddFilmReviewTeamComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.addFilmReviewTeamAgreed,
+      nzNoAnimation: true
     });
+    // this.ref = this.modal.create({
+    //   nzTitle: '配置信息',
+    //   nzContent: '请选择操作',
+    //   nzFooter: [
+    //     {
+    //       label: '返回',
+    //       shape: 'default',
+    //       onClick: () => this.ref.destroy()
+    //     },
+    //     {
+    //       label: '删除',
+    //       type: 'danger',
+    //       loading: false,
+    //       onClick() {
+    //       }
+    //     },
+    //     {
+    //       label: '新增',
+    //       type: 'primary',
+    //       onClick: () =>
+    //         this.modal.create({
+    //           nzTitle: `新增审片团`,
+    //           nzContent: AddFilmReviewTeamComponent,
+    //           nzMaskClosable: false,
+    //           nzClosable: false,
+    //           nzWidth: 800,
+    //           nzOnOk: this.addFilmReviewTeamAgreed,
+    //           nzNoAnimation: true
+    //         })
+    //     },
+    //   ]
+    // });
   }
 
   addFilmReviewTeamAgreed = (component: AddFilmReviewTeamComponent) => new Promise((resolve, reject) => {
@@ -147,7 +155,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
         component.submit()
           .subscribe(result => {
             this.message.success(this.translate.instant('global.add-success'));
-            this.ref.destroy();
+            // this.ref.destroy();
             this.teamRefresh();
             resolve();
           }, error => {
@@ -170,7 +178,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
     // this.validateForm.get('filmReviewPeople').value.filter(x => x.checked === true).forEach(f => {
     //   this.pid.push(f.value);
     // });
-     this.validateForm.get('filmReviewPeople').value.filter(x => x.checked === true).forEach(f => {
+    this.validateForm.get('filmReviewPeople').value.filter(x => x.checked === true).forEach(f => {
       this.pid.push(f.value);
     });
   }
@@ -188,39 +196,49 @@ export class EditFilmReviewTeamComponent implements OnInit {
   }
 
   peopleConfig() {
-    this.ref = this.modal.create({
-      nzTitle: '配置信息',
-      nzContent: '请选择操作',
-      nzFooter: [
-        {
-          label: '返回',
-          shape: 'default',
-          onClick: () => this.ref.destroy()
-        },
-        {
-          label: '删除',
-          type: 'danger',
-          loading: false,
-          onClick() {
-          }
-        },
-        {
-          label: '新增',
-          type: 'primary',
-          onClick: () =>
-            this.modal.create({
-              nzTitle: `新增审片人`,
-              nzContent: AddFilmReviewPeopleComponent,
-              nzComponentParams: { tid: this.tid },
-              nzMaskClosable: false,
-              nzClosable: false,
-              nzWidth: 800,
-              nzOnOk: this.addFilmReviewPeopleAgreed,
-              nzNoAnimation: true
-            })
-        },
-      ]
+    this.modal.create({
+      nzTitle: `新增审片人`,
+      nzContent: AddFilmReviewPeopleComponent,
+      nzComponentParams: { tid: this.tid },
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.addFilmReviewPeopleAgreed,
+      nzNoAnimation: true
     });
+    // this.ref = this.modal.create({
+    //   nzTitle: '配置信息',
+    //   nzContent: '请选择操作',
+    //   nzFooter: [
+    //     {
+    //       label: '返回',
+    //       shape: 'default',
+    //       onClick: () => this.ref.destroy()
+    //     },
+    //     {
+    //       label: '删除',
+    //       type: 'danger',
+    //       loading: false,
+    //       onClick() {
+    //       }
+    //     },
+    //     {
+    //       label: '新增',
+    //       type: 'primary',
+    //       onClick: () =>
+    //         this.modal.create({
+    //           nzTitle: `新增审片人`,
+    //           nzContent: AddFilmReviewPeopleComponent,
+    //           nzComponentParams: { tid: this.tid },
+    //           nzMaskClosable: false,
+    //           nzClosable: false,
+    //           nzWidth: 800,
+    //           nzOnOk: this.addFilmReviewPeopleAgreed,
+    //           nzNoAnimation: true
+    //         })
+    //     },
+    //   ]
+    // });
   }
 
   addFilmReviewPeopleAgreed = (component: AddFilmReviewPeopleComponent) => new Promise((resolve, reject) => {
@@ -230,7 +248,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
           this.message.success(this.translate.instant('global.add-success'));
           this.peopleInfo = [];
           this.peopleRefresh(this.tid);
-          this.ref.destroy();
+          // this.ref.destroy();
           resolve();
         }, error => {
           reject(false);

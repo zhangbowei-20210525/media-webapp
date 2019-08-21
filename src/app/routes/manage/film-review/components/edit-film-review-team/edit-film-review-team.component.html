@@ -4,7 +4,7 @@
     <nz-form-control [nzSm]="21" [nzXs]="24">
       <nz-radio-group formControlName="filmReviewTeam" nzSize="small" [nzButtonStyle]="'solid'" (ngModelChange)="onTeamChange()">
         <label nz-radio-button *ngFor="let data of teamInfo" [nzValue]="data.id">{{ data.name }}</label>
-        <a style="margin-left: 10px;" (click)="teamConfig()"><i nz-icon nzType="setting"></i></a>
+        <a style="margin-left: 10px;" (click)="teamConfig()"><i nz-icon nzType="plus-circle" nzTheme="outline"></i></a>
       </nz-radio-group>
       <nz-form-explain *ngIf="validateForm.get('filmReviewTeam').dirty && validateForm.get('filmReviewTeam').errors">
         请选择审片团队
@@ -15,7 +15,7 @@
       <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>审片人员</nz-form-label>
       <nz-form-control [nzSm]="21" [nzXs]="24">
           <nz-checkbox-group formControlName="filmReviewPeople" (ngModelChange)="onPeopleChange()"></nz-checkbox-group>
-          <a style="margin-left: 10px;" (click)="peopleConfig()"><i nz-icon nzType="setting"></i></a>
+          <a style="margin-left: 10px;" (click)="peopleConfig()"><i nz-icon nzType="plus-circle" nzTheme="outline"></i></a>
         <nz-form-explain *ngIf="validateForm.get('filmReviewPeople').dirty && validateForm.get('filmReviewPeople').errors">
           请选择审片人员
         </nz-form-explain>

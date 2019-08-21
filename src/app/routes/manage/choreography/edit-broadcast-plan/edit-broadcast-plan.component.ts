@@ -67,7 +67,9 @@ export class EditBroadcastPlanComponent implements OnInit {
       });
     })).subscribe(res => {
       this.data = res;
-      this.theatres = res[0].columns;
+      if (res.length > 0) {
+        this.theatres = res[0].columns;
+      }
       res.forEach(f => {
         this.tabs.push({
           name: f.name,

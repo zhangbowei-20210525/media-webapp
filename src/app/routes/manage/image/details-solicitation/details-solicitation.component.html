@@ -195,7 +195,7 @@
         <p>上传样片视频</p>
       </div>
       <div class="details-box-right-btm">
-        <nz-upload nzType="drag" [nzLimit]="0" [nzFileType]="text" [nzAction]="docType" [nzBeforeUpload]='beforeUpload'
+        <nz-upload nzType="drag" [nzLimit]="0" [nzFileType]="text" [nzAction]="uploadUrl" [nzBeforeUpload]='beforeUpload'
           (nzChange)="handleChange($event)" [nzDisabled]="uploadVideo ? 'true' : 'false'" [nzMultiple]="true"
           [nzShowUploadList]="false">
           <p class="ant-upload-drag-icon">
