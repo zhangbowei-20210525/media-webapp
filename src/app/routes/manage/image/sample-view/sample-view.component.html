@@ -1,9 +1,9 @@
 <!-- <div *ngIf="isMyDeatilsLoaded" > -->
 <div *ngIf="isMyTapesLoaded">
-  <div class="videos-info-big-box">
-    <ul>
-      <li class="video-info" *ngFor="let thumbnail of list index as i">
-        <div *ngIf="list.length > 0 else empty">
+  <div *ngIf="list.length > 0 else empty">
+    <div class="videos-info-big-box">
+      <ul>
+        <li class="video-info" *ngFor="let thumbnail of list index as i">
           <div class="video">
             <img class="video-img" [src]="thumbnail?.publicity.src" />
             <div class="price"
@@ -34,15 +34,13 @@
             </div>
             <!-- </div> -->
           </div>
-        </div>
-
-      </li>
-
-    </ul>
-  </div>
-  <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0">
-    <nz-pagination style="margin: 15px 15px" [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count"
-      [nzPageSize]="pagination.page_size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+        </li>
+      </ul>
+    </div>
+    <div style="text-align: right;margin-top: 5rem" [hidden]="list.length == 0">
+      <nz-pagination style="margin: 15px 15px" [(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count"
+        [nzPageSize]="pagination.page_size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+    </div>
   </div>
 </div>
 <ng-template #empty>

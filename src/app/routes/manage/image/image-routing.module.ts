@@ -18,7 +18,7 @@ const routes: Routes = [
     canActivateChild: [ACLGuard],
     data: {
       guard: <ACLType>{
-        ability: [aclAbility.program.view]
+        ability: [aclAbility.review.view]
       }
     },
     children: [

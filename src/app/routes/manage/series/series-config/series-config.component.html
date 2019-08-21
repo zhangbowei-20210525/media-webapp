@@ -1,14 +1,47 @@
-<div>
-  <button nz-button nzType="default" nzSize="small" (click)="goBack()" style="margin-bottom: 20px">返回</button>
+<div class="block">
+    <div class="block-content">
+        <nz-tabset [nzTabBarExtraContent]="extraTemplate" style="padding-bottom: 20px"
+            (nzSelectedIndexChange)="tabIndexChange($event)">
+            <nz-tab [nzTitle]="'字段整理'">
+                <nz-collapse [nzAccordion]="false">
+                    <nz-collapse-panel nzHeader="节目类型" [nzActive]="active1" [nzShowArrow]="false">
+                        <app-st-merge [tags]="seriesTypes"></app-st-merge>
+                    </nz-collapse-panel>
+                    <nz-collapse-panel nzHeader="投资类型" [nzActive]="active2" [nzShowArrow]="false">
+                        <app-it-merge [tags]="investmentTypes"></app-it-merge>
+                    </nz-collapse-panel>
+                    <nz-collapse-panel nzHeader="题材" [nzActive]="active3" [nzShowArrow]="false">
+                        <app-tt-merge [tags]="themes"></app-tt-merge>
+                    </nz-collapse-panel>
+                </nz-collapse>
+            </nz-tab>
+            <nz-tab [nzTitle]="'节目整理'">
+                <div style="margin-left: 15px;">
+                    <div style="display: flex">
+                        <div style="font-size:14px;font-weight:400;color: #666666;width: 45px;">类型：</div>
+                        <div>
+                            <nz-radio-group [(ngModel)]="type" [nzSize]="'small'" [nzButtonStyle]="'solid'" (ngModelChange)="typeOnChange()">
+                                <label nz-radio-button [nzValue]="option"
+                                    *ngFor="let option of options">{{ option }}</label>
+                            </nz-radio-group>
+                        </div>
+                    </div>
+                    <div div style="display: flex;margin-top: 20px">
+                        <div style="font-size:14px;font-weight:400;color: #666666;width: 45px;">节目：</div>
+                        <div #tagsParent>
+                            <nz-tag [nzColor]="'geekblue'" class="merge-tag" cdkDrag
+                                *ngFor="let item of tags; let i = index" (cdkDragStarted)="onDragStarted($event)"
+                                (cdkDragEnded)="onTagDragEnded($event)" (cdkDragMoved)="onDragMoved($event)"
+                                [attr.data-raw]="item.raw">
+                                <span>{{ item.raw }}</span>
+                            </nz-tag>
+                        </div>
+                    </div>
+                </div>
+            </nz-tab>
+        </nz-tabset>
+        <ng-template #extraTemplate>
+            <button nz-button nzType="default" nzSize="small" (click)="goBack()">返回</button>
+        </ng-template>
+    </div>
 </div>
-<nz-collapse [nzAccordion]="false">
-  <nz-collapse-panel nzHeader="节目类型" [nzActive]="active1" [nzShowArrow]="false">
-    <app-st-merge [tags]="seriesTypes"></app-st-merge>
-  </nz-collapse-panel>
-  <nz-collapse-panel nzHeader="投资类型" [nzActive]="active2" [nzShowArrow]="false">
-    <app-it-merge [tags]="investmentTypes"></app-it-merge>
-  </nz-collapse-panel>
-  <nz-collapse-panel nzHeader="题材" [nzActive]="active3" [nzShowArrow]="false">
-    <app-tt-merge [tags]="themes"></app-tt-merge>
-  </nz-collapse-panel>
-</nz-collapse>

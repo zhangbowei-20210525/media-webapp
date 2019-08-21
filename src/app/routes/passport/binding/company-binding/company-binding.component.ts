@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { StateStoreService } from '../../state-store.service';
 import { TreeService } from '@shared';
+import { LoginResultDto } from '@shared/dtos';
 
 @Component({
   selector: 'app-company-binding',
@@ -77,15 +78,20 @@ export class CompanyBindingComponent implements OnInit {
           this.isSubmitting = false;
         })).subscribe(result => {
           this.message.success('绑定完成');
-          this.stateStore.clearState();
-          this.auth.onLogin({
-            userInfo: result.auth,
-            token: result.token,
-            permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
-          });
-          this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
+          this.login(result);
         });
     }
+  }
+
+  login(data: LoginResultDto) {
+    const returnUrl = this.stateStore.getDirectionUrl();
+    this.stateStore.clearState();
+    this.auth.onLogin({
+      userInfo: data.auth,
+      token: data.token,
+      permissions: this.ts.recursionNodesMapArray(data.permissions, p => p.code, p => p.status)
+    });
+    this.router.navigate([returnUrl || '/']);
   }
 
 }

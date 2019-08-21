@@ -152,6 +152,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   isId: any;
   publicityId: any;
   isClear: boolean;
+
+  isTabIndex = 0;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -162,6 +165,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.isTabIndex = 3;
     this.ishidden = false;
     this.samplePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
     this.featurePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
@@ -175,12 +179,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sid = +params.get('sid');
         this.rid = +params.get('rid');
         this.tabIndex = +params.get('tabIndex');
-        console.log(this.tabIndex);
         this.sampleIndex = +params.get('sampleIndex');
-        console.log(this.sampleIndex);
-        console.log(this.featureIndex);
-        console.log(this.trailerIndex);
-        console.log(this.stillIndex);
         this.featureIndex = +params.get('featureIndex');
         this.trailerIndex = +params.get('trailerIndex');
         this.posterIndex = +params.get('posterIndex');
@@ -188,7 +187,6 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pdfIndex = +params.get('pdfIndex');
         return this.seriesService.pubDetail(this.id);
       })).subscribe(res => {
-        console.log(res);
         // console.log(res);
         this.seriesService.getUserinfo(this.id).subscribe(cpd => {
           this.userinfo = cpd;
@@ -221,8 +219,6 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.userinfo.material.pdf === 0) {
             this.pdfDisabled = true;
           }
-          console.log(this.tabIndex);
-          console.log(this.tabIndex);
           if (this.tabIndex === 0) {
             this.publicityType = 'sample';
             this.sample();
@@ -327,7 +323,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (!!item.review_at) {
             item.review_at = item.review_at.split(' ')[0];
           }
-          console.log(item.review_at);
+          // console.log(item.review_at);
         }
       });
       this.reviewThirdSteps.review_records.forEach(item => {
@@ -374,6 +370,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         item.avg = (this.scoreThirdList[index].avg) / 2;
       });
       this.reviewFirstSteps = res.review_steps[0];
+      this.reviewFirstSteps.review_records.forEach(b => {
+       b.total_score = b.total_score / 2;
+      });
       // 一审喜欢人数及通过率
       this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
       this.disLikePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.oppose;
@@ -383,6 +382,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         res.review_steps[0].review_records_statistic.count) * 100;
       // 二审喜欢人数及通过率
       this.reviewSecondSteps = res.review_steps[1];
+      this.reviewSecondSteps.review_records.forEach(b => {
+        b.total_score = b.total_score / 2;
+      });
       this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
       this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
       this.secondLike = (res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
@@ -401,6 +403,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       // 总分
       // this.reviewSecondSteps = res.review_steps[1];
       this.reviewThirdSteps = res.review_steps[2];
+      this.reviewThirdSteps.review_records.forEach(b => {
+        b.total_score = b.total_score / 2;
+      });
       if (res.step_number === 2) {
         res.review_steps[1].scoring_items.forEach((item) => {
           this.starId.push({ id: item.id, score: 0 });
@@ -948,14 +953,14 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   tabSelectChange(event) {
-    // console.log(event.index);
+    console.log(event.index);
     this.step_number = event.index;
   }
   verifySelectChange(event) {
+    // this.selectedIndex = 1;
     this.selectedIndex = event.index;
-    // console.log(this.selectedIndex);
+    console.log(this.selectedIndex);
   }
-
   shareEmail() {
     // console.log(this.tabIndex);
     // tslint:disable-next-line:max-line-length
@@ -1190,13 +1195,13 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   // 上传给后台
   giveVideoStatus(n: number) {
     // if (!this.isId) {
-      // 一进入页面的初始值,这里设置的是片花第一集的参数
-      // this.publicityType = 'feature';
-      // this.isId = 45;
+    // 一进入页面的初始值,这里设置的是片花第一集的参数
+    // this.publicityType = 'feature';
+    // this.isId = 45;
     //   this.tabIndex = n;
     //   this.realTimePlayback = 0;
     //   this.status = 'play';
-      // this.getIsId();
+    // this.getIsId();
     //   console.log(this.isId);
     // }
     this.seriesService.addReviewtrajectory(this.rid, this.publicityType, this.isId, this.realTimePlayback, this.status).subscribe(res => {

@@ -200,7 +200,7 @@ export class ReviewViewComponent implements OnInit {
       this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
     // console.log(this.mapOfCheckedId);
     // console.log(this.isAllDisplayDataChecked);
-    console.log(this.listOfDisplayData);
+    // console.log(this.listOfDisplayData);
   }
   currentPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.listOfDisplayData = $event;
@@ -215,7 +215,7 @@ export class ReviewViewComponent implements OnInit {
     this.isFirstAllDisplayDataChecked = this.firstListOfDisplayData.every(item => this.firstMapOfCheckedId[item.id]);
     this.isFirstIndeterminate =
       this.firstListOfDisplayData.some(item => this.firstListOfDisplayData[item.id]) && !this.isFirstAllDisplayDataChecked;
-    console.log(this.firstMapOfCheckedId);
+    // console.log(this.firstMapOfCheckedId);
     // console.log(this.firstListOfDisplayData);
   }
   firstPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -248,7 +248,7 @@ export class ReviewViewComponent implements OnInit {
     this.isThreeAllDisplayDataChecked = this.threeListOfDisplayData.every(item => this.threeMapOfCheckedId[item.publicity.id]);
     this.threeListOfDisplayData.every(item => this.isThreeAllDisplayDataChecked[item.publicity.id]);
     this.isThreeIndeterminate =
-    this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.publicity.id]) && !this.isThreeAllDisplayDataChecked;
+      this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.publicity.id]) && !this.isThreeAllDisplayDataChecked;
     // console.log(this.threeMapOfCheckedId, 'zzzz');
     // // console.log(this.isThreeAllDisplayDataChecked);
     // console.log(this.threeListOfDisplayData, 'yyyyy');
@@ -262,9 +262,9 @@ export class ReviewViewComponent implements OnInit {
     this.threeRefreshStatus();
   }
   publicityPlay(sid: number, id: number) {
-    // console.log(sid);
+    // console.log(sid);g
     // console.log(id);
-    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, isHidden: 1 }]);
+    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, isHidden: 1, isSharing: 1}]);
   }
   // 发起审片弹框
   launchFilms() {
@@ -417,7 +417,7 @@ export class ReviewViewComponent implements OnInit {
     if (review_ids.length === 0) {
       this.message.error('请选择样片');
     } else {
-      this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId , isVerify: 1 }]);
+      this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId, isVerify: 1 }]);
     }
 
   }

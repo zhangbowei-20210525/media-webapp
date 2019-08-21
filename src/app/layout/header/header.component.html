@@ -3,9 +3,9 @@
     <div class="n-logo">
       <!-- <img src="../assets/images/logo-color.svg"> -->
       <span style="font-size: 22px;font-weight: bold;font-family: sans-serif;"
-        *ngIf="settings.user.company_name !== '个人用户'">{{ settings.user.company_name }}</span>
+        *ngIf="settings.user.company_name !== null">{{ settings.user.company_name }}</span>
       <span style="font-size: 22px;font-weight: bold;font-family: sans-serif;"
-        *ngIf="settings.user.company_name == '个人用户'">BCTOP影业助手</span>
+        *ngIf="settings.user.company_name == null">{{ settings.user.company_full_name }}</span>
       <!-- <img src="../assets/images/logo.png"> -->
       <!-- <span class="push-l-15" style="font-size: 18px;">BCTOP 影业助手</span> -->
     </div>
@@ -20,7 +20,7 @@
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/dashboard'"><span nzTitle="各项统计，提醒与图表"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.dashboard' | translate }}</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" acl [acl-ability]="ability.review.view">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/image'"><span nzTitle="别人分享给您的内容"
                   nzPlacement="bottom" nz-tooltip>发现</span></a>
             </li>

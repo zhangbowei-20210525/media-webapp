@@ -2,7 +2,7 @@
   <div class="block-header">
     <div class="block-title">上传样片</div>
     <div class="block-options">
-      <button nz-button nzType="default" (click)="submit()">提交</button>
+      <button [disabled]="isShowBtn" nz-button nzType="default" (click)="submit()">提交</button>
     </div> 
   </div>
   <div class="block-content">
@@ -195,7 +195,7 @@
         <p>上传样片视频</p>
       </div>
       <div class="details-box-right-btm">
-        <nz-upload nzType="drag" [nzLimit]="2" [nzFileType]="text" [nzAction]="docType" [nzBeforeUpload]='beforeUpload'
+        <nz-upload nzType="drag" [nzLimit]="0" [nzFileType]="text" [nzAction]="docType" [nzBeforeUpload]='beforeUpload'
           (nzChange)="handleChange($event)" [nzDisabled]="uploadVideo ? 'true' : 'false'" [nzMultiple]="true"
           [nzShowUploadList]="false">
           <p class="ant-upload-drag-icon">

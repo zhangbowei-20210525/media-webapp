@@ -41,8 +41,8 @@ export class SampleViewComponent implements OnInit {
     this.fetchPublicities();
   }
   fetchPublicities() {
-    this.isLoading = true;
-    this.isMyTapesLoaded = true;
+    this.isLoading = false;
+    this.isMyTapesLoaded = false;
     const companyId = '';
     const receiverId = '';
     this.service.getIntentionTypeList(this.pagination, companyId, receiverId)
@@ -57,8 +57,8 @@ export class SampleViewComponent implements OnInit {
         this.isMyTapesLoaded = true;
 
       });
-    console.log(this.intention);
-    console.log(this.list);
+    // console.log(this.intention);
+    // console.log(this.list);
   }
 
   modeChange() {

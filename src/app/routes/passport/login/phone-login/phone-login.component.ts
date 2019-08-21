@@ -117,14 +117,14 @@ export class PhoneLoginComponent implements OnInit {
   }
 
   login(data: LoginResultDto) {
+    const returnUrl = this.stateStore.getDirectionUrl();
     this.stateStore.clearState();
     this.auth.onLogin({
       userInfo: data.auth,
       token: data.token,
       permissions: this.ts.recursionNodesMapArray(data.permissions, p => p.code, p => p.status)
     });
-    // this.router.navigateByUrl(this.stateStore.getDirectionUrl() || '/');
-    this.router.navigate([this.stateStore.getDirectionUrl() || '/']);
+    this.router.navigate([returnUrl || '/']);
     // setTimeout(() => {
     //   this.modal.create({
     //     nzTitle: '重要待处理消息',

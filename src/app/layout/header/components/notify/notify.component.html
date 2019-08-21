@@ -25,7 +25,7 @@
                   <div class="n-contont text-ellipsis" style="font-size: 12px;margin-top: 5px" nz-tooltip
                     [nzTitle]="item.content" [nzMouseEnterDelay]="1">
                     <a
-                      (click)="messageShareDetails(item.title, item.created_at, item.content, item.related_id, item.type)">{{ item.content }}</a>
+                      (click)="messageShareDetails(item.title, item.created_at, item.content, item.related_id, item.type, item)">{{ item.content }}</a>
                   </div>
                 </div>
                 <nz-skeleton *ngIf="sysPagination.pages > sysPagination.page" [nzTitle]="false"
@@ -58,8 +58,9 @@
                   </div>
                   <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1"
                     style="font-size: 12px;margin-top: 5px">
-                    <a
-                      (click)="messageDetails(item.title, item.created_at, item.content, item.related_id, item.type)">{{ item.content }}</a>
+                    <a *ngIf="item.is_detail == false">{{ item.content }}</a>
+                    <a *ngIf="item.is_detail == true"
+                      (click)="messageDetails(item.title, item.created_at, item.content, item.related_id, item.id, item.type, item.is_process)">{{ item.content }}</a>
                   </div>
                 </div>
                 <nz-skeleton *ngIf="srcPagination.pages > srcPagination.page" [nzTitle]="false"

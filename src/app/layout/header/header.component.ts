@@ -71,7 +71,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.isLoggedIn) {
       this.ntf.startNotifiesPolling();
     }
-    console.log('343434');
     // console.log(this.settings);
     // console.log(this.settings.user.company_name);
   }

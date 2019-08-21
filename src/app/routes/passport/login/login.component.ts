@@ -25,7 +25,9 @@ export class LoginComponent implements OnInit {
       } else if (lastUrl.startsWith('wechat')) {
         this.method = 'wechat';
       }
-      this.isOnlyPhoneMethod = this.route.firstChild.snapshot.paramMap.has('emp_invitation');
+      if (this.route.firstChild.snapshot) {
+        this.isOnlyPhoneMethod = this.route.firstChild.snapshot.paramMap.has('emp_invitation');
+      }
     });
   }
 

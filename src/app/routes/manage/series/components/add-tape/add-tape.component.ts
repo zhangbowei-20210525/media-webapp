@@ -122,7 +122,10 @@ export class AddTapeComponent implements OnInit {
     const value = form.value['program_name'];
     const programType = form.get('program_type');
     const find = this.programList.find(item => item.name === value);
+    console.log('566677');
+    console.log(find);
     if (find) {
+      this.id = find.id;
       programType.setValue(find.program_type);
       programType.disable();
     } else {
@@ -142,8 +145,11 @@ export class AddTapeComponent implements OnInit {
 
   onlineSubmit(): Observable<any> {
     if (this.source_type === 'online') {
+      console.log('1111');
+      console.log(this.id);
       this.tapeVersion = 'online';
       if (this.id === undefined) {
+        console.log('22222');
         console.log(this.id);
         const data = {
           program_name: this.onlineTapeForm.value['program_name'] || null,
@@ -158,6 +164,8 @@ export class AddTapeComponent implements OnInit {
         };
         return this.service.addTape1(data);
       } else {
+        console.log('3333');
+        console.log(this.id);
         const data = {
           program_id: this.id,
           name: this.onlineTapeForm.value['name'] || null,
@@ -280,36 +288,36 @@ export class AddTapeComponent implements OnInit {
             }
           });
         }, err => {
-            this.message.success(this.translate.instant('global.start-client'));
-            this.isloading = true;
-          });
+          this.message.success(this.translate.instant('global.start-client'));
+          this.isloading = true;
         });
+      });
     } else {
       this.isloading = true;
     }
   }
 
 
-    //   this.onlineSubmit().subscribe(result => {
-    //     this.service.getIpAddress().subscribe(res => {
-    //       const address = res.ip;
-    //       this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
-    //         if (address.charAt(0) === '1' && address.charAt(1) === '2' && address.charAt(2) === '7') {
-    //           this.localRequestService.uploadTape(result.id).subscribe(x => {
-    //             this.isloading = true;
-    //             this.component.close();
-    //             // this.message.success(this.translate.instant('global.add-success'));
-    //             this.router.navigate([`/manage/transmit/historic-record/${result.id}`]);
-    //           });
-    //         } else {
-    //         }
-    //       }, err => {
-    //         this.message.success(this.translate.instant('global.start-client'));
-    //         this.isloading = true;
-    //       });
-    //     });
-    //   });
-    // } else {
-    //   this.isloading = true;
-    // }
+  //   this.onlineSubmit().subscribe(result => {
+  //     this.service.getIpAddress().subscribe(res => {
+  //       const address = res.ip;
+  //       this.localRequestService.status(address).pipe(timeout(5000)).subscribe(z => {
+  //         if (address.charAt(0) === '1' && address.charAt(1) === '2' && address.charAt(2) === '7') {
+  //           this.localRequestService.uploadTape(result.id).subscribe(x => {
+  //             this.isloading = true;
+  //             this.component.close();
+  //             // this.message.success(this.translate.instant('global.add-success'));
+  //             this.router.navigate([`/manage/transmit/historic-record/${result.id}`]);
+  //           });
+  //         } else {
+  //         }
+  //       }, err => {
+  //         this.message.success(this.translate.instant('global.start-client'));
+  //         this.isloading = true;
+  //       });
+  //     });
+  //   });
+  // } else {
+  //   this.isloading = true;
+  // }
 }

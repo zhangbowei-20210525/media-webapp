@@ -169,8 +169,8 @@
           </div>
           <div class="fixationInfo-info">
             <a (click)="getTwoDimensionalCode()">
-              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
-                [nzContent]="contentTemplate" nzTrigger="click"></i>
+              <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                [nzContent]="contentTemplate" nzTrigger="click"></i> -->
             </a>
           </div>
         </div>
@@ -214,8 +214,8 @@
           </div>
           <div class="fixationInfo-info">
             <a (click)="getTwoDimensionalCode()">
-              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
-                [nzContent]="contentTemplate" nzTrigger="click"></i>
+              <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                [nzContent]="contentTemplate" nzTrigger="click"></i> -->
             </a>
           </div>
         </div>
@@ -278,8 +278,8 @@
           </div>
           <div class="fixationInfo-info">
             <a (click)="getTwoDimensionalCode()">
-              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
-                [nzContent]="contentTemplate" nzTrigger="click"></i>
+              <!-- <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate"
+                [nzContent]="contentTemplate" nzTrigger="click"></i> -->
             </a>
           </div>
         </div>
@@ -507,7 +507,7 @@
               </div>
               <div class='wrapper-right'>
                 <div class='right-pass' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_like.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_like.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.agree_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstLike"
@@ -518,7 +518,7 @@
                   </div>
                 </div>
                 <div class='right-unPass' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_dislike.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.oppose_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="firstOppose"
@@ -529,7 +529,7 @@
                   </div>
                 </div>
                 <div *ngIf="reviewFirstSteps?.conclusion_item.neutral_name" class='right-submit' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_Submission01.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewFirstSteps?.conclusion_item.neutral_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewFirstLikeAdopt"
@@ -569,13 +569,13 @@
                             <div style="display: flex; align-items: center;">
                               <div style='margin-right: 10px;'>{{b.employee.name}}</div>
                               <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Submission.png" alt="">
+                                src="/assets/images/ic_Submission.png" alt="">
                               <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                                src="/assets/images/ic_Nopassage.png" alt="">
                               <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_passage.png" alt="">
+                                src="/assets/images/ic_passage.png" alt="">
                               <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                                src="/assets/images/ic_Notaudited.png" alt="">
                             </div>
                           </div>
                           <div class='right-rate'>
@@ -619,8 +619,8 @@
                     <!-- <div *ngFor="let data of b.review_logs"> -->
                       <div *ngIf="b.review_logs.length !== 0" class='result-title-btm'>审片日志</div>
                       <nz-timeline [nzMode]="'left'">
-                        <nz-timeline-item  *ngFor="let data of b.review_logs">{{data.material.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
-                          /观看时长{{data.play_time / 60 | floor}}分钟</nz-timeline-item>
+                        <nz-timeline-item  *ngFor="let data of b.review_logs">{{data.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
+                          /观看时长{{data.play_time / 60 | ceil}}分钟</nz-timeline-item>
                         <!-- <nz-timeline-item>2019.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片
                           /观看时长1分钟</nz-timeline-item> -->
                       </nz-timeline>
@@ -652,7 +652,7 @@
               </div>
               <div class='wrapper-right'>
                 <div class='right-pass' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_like.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_like.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.agree_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondLike"
@@ -663,7 +663,7 @@
                   </div>
                 </div>
                 <div class='right-unPass' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_dislike.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.oppose_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="secondOppose"
@@ -675,7 +675,7 @@
                 </div>
                 <div *ngIf="reviewSecondSteps?.conclusion_item.neutral_name" class='right-submit'
                   style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_Submission01.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewSecondSteps?.conclusion_item.neutral_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewSecondLikeAdopt"
@@ -715,13 +715,13 @@
                             <div style="display: flex; align-items: center;">
                               <div style='margin-right: 10px;'>{{b.employee.name}}</div>
                               <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Submission.png" alt="">
+                                src="/assets/images/ic_Submission.png" alt="">
                               <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                                src="/assets/images/ic_Nopassage.png" alt="">
                               <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_passage.png" alt="">
+                                src="/assets/images/ic_passage.png" alt="">
                               <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                                src="/assets/images/ic_Notaudited.png" alt="">
                             </div>
                           </div>
                           <div class='right-rate'>
@@ -763,8 +763,8 @@
                     </div>
                     <div *ngIf="b.review_logs.length !== 0" class='result-title-btm'>审片日志</div>
                     <nz-timeline [nzMode]="'left'" >
-                        <nz-timeline-item *ngFor="let data of b.review_logs">{{data.material.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
-                          /观看时长{{data.play_time / 60 | floor}}分钟</nz-timeline-item>
+                        <nz-timeline-item *ngFor="let data of b.review_logs">{{data.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
+                          /观看时长{{data.play_time / 60 | ceil}}分钟</nz-timeline-item>
                         <!-- <nz-timeline-item>2019.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片
                           /观看时长1分钟</nz-timeline-item> -->
                       </nz-timeline>
@@ -880,7 +880,7 @@
               </div>
               <div class='wrapper-right'>
                 <div class='right-pass' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_like.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_like.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.agree_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="thirdLike"
@@ -891,7 +891,7 @@
                   </div>
                 </div>
                 <div class='right-unPass' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_dislike.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_dislike.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.oppose_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="thirdOppose"
@@ -902,7 +902,7 @@
                   </div>
                 </div>
                 <div *ngIf="reviewThirdSteps?.conclusion_item.neutral_name" class='right-submit' style='line-height: 2'>
-                  <img style='width: 22px;height: 22px;' src="../../../../../assets/images/ic_Submission01.png" alt="">
+                  <img style='width: 22px;height: 22px;' src="/assets/images/ic_Submission01.png" alt="">
                   <div style='margin: 0 32px 0 10px;width: 42px'>{{reviewThirdSteps?.conclusion_item.neutral_name}}
                   </div>
                   <nz-progress [nzStrokeColor]="'#FFBA61'" style='width:200px' [nzPercent]="reviewThirdLikeAdopt"
@@ -942,13 +942,13 @@
                             <div style="display: flex; align-items: center;">
                               <div style='margin-right: 10px;'>{{b.employee.name}}</div>
                               <img *ngIf="b.conclusion === 3" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Submission.png" alt="">
+                                src="/assets/images/ic_Submission.png" alt="">
                               <img *ngIf="b.conclusion === 2" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Nopassage.png" alt="">
+                                src="/assets/images/ic_Nopassage.png" alt="">
                               <img *ngIf="b.conclusion === 1" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_passage.png" alt="">
+                                src="/assets/images/ic_passage.png" alt="">
                               <img *ngIf="b.conclusion === 0" style='width: 36px;height: 17px;'
-                                src="../../../../../assets/images/ic_Notaudited.png" alt="">
+                                src="/assets/images/ic_Notaudited.png" alt="">
                             </div>
                           </div>
                           <div class='right-rate'>
@@ -990,10 +990,8 @@
                     </div>
                     <div *ngIf="b.review_logs.length !== 0" class='result-title-btm'>审片日志</div>
                     <nz-timeline [nzMode]="'left'" >
-                        <nz-timeline-item *ngFor="let data of b.review_logs">{{data.material.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
-                          /观看时长{{data.play_time / 60 | floor}}分钟</nz-timeline-item>
-                        <!-- <nz-timeline-item>2019.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片
-                          /观看时长1分钟</nz-timeline-item> -->
+                        <nz-timeline-item *ngFor="let data of b.review_logs">{{data.created_at}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观看样片{{data.material.name}}
+                          /观看时长{{data.play_time / 60 | ceil}}分钟</nz-timeline-item>
                       </nz-timeline>
                   </div>
                 </div>

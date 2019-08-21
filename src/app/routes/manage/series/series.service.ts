@@ -298,6 +298,11 @@ export class SeriesService {
     }
     );
   }
+  getIntentionList(sid: any) {
+    return this.http.post<any>(`/api/v1/reviews/intentions`, {
+      publicity_id: sid,
+    });
+  }
   // 宣发分享授权
   getSharingAuthorization(liaison_ids: any, publicityId: any) {
     return this.http.post<ResponseDto<number>>(`/api/v1/publicity/share`,
@@ -307,11 +312,11 @@ export class SeriesService {
   // 生成样片征集令
   getSampleCollection(program_type: any, program_theme: any, description, validity_period: any) {
     return this.http.post<any>(`/api/v1/publicity/collections`, {
-       program_type: program_type,
-       program_theme: program_theme,
-       description,
-       validity_period: validity_period
-      });
+      program_type: program_type,
+      program_theme: program_theme,
+      description,
+      validity_period: validity_period
+    });
   }
   // 我的征集令
   getBrowseRecord(pagination: PaginationDto) {
@@ -428,6 +433,21 @@ export class SeriesService {
       }
     });
   }
+
+  getSeriesType() {
+    return this.http.get<any>(`/api/v1/programs/template`);
+  }
+
+  getSeriesInfoList(type: string) {
+    return this.http.get<any>(`/api/v1/programs/brief`, { params: { program_type: type } });
+  }
+
+  seriesMerge(from_program_id: number, to_program_id: number) {
+    console.log(from_program_id);
+    console.log(to_program_id);
+    return this.http.post<any>(`/api/v1/programs/merge`, { from_program_id: from_program_id, to_program_id: to_program_id });
+  }
+
   // 新增审片轨迹接口
   addReviewtrajectory(rid: number, publicityType: any, isId: number, realTimePlayback: number, status: any) {
     return this.http.post<any>(`/api/v1/viewlog/reviews`, {

@@ -49,6 +49,7 @@ export class DetailsSolicitationComponent implements OnInit {
   programTypeList = [];
   themeList = [];
   uploadVideo = false;
+  isShowBtn = false;
   constructor(
     private msg: NzMessageService,
     private fb: FormBuilder,
@@ -64,7 +65,6 @@ export class DetailsSolicitationComponent implements OnInit {
   ngOnInit() {
     this.files = [];
     this.videoList = [];
-    console.log('11111');
     this.validateForm = this.fb.group({
       name: [null, [Validators.required]],
       nickname: [null],
@@ -148,8 +148,9 @@ export class DetailsSolicitationComponent implements OnInit {
   }
 
   handleChange({ file, fileList }: { [key: string]: any }): void {
+    this.isShowBtn = true;
     this.files = fileList;
-    console.log(this.files);
+    // console.log(this.files);
     this.size = file.size / 1000000;
     this.status = file.status;
     this.type = file.type.split('/')[1];
@@ -170,6 +171,7 @@ export class DetailsSolicitationComponent implements OnInit {
         this.notification.error('文件上传失败', `请选择符合要求的视频`);
       } else if (this.status === 'done') {
         this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+        this.isShowBtn = false;
       } else if (this.status === 'error') {
         this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
       }
@@ -179,7 +181,8 @@ export class DetailsSolicitationComponent implements OnInit {
       if (this.size > '2' && this.status === 'done') {
         this.notification.error('文件上传失败', `请选择符合要求的照片`);
       } else if (this.status === 'done') {
-       this.submitError =  this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+        this.submitError = this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+        this.isShowBtn = false;
       } else if (this.status === 'error') {
         this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
       }
@@ -189,6 +192,7 @@ export class DetailsSolicitationComponent implements OnInit {
         this.notification.error('文件上传失败', `请选择符合要求的pdf文件`);
       } else if (this.status === 'done') {
         this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+        this.isShowBtn = false;
       } else if (this.status === 'error') {
         this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
       }
@@ -229,10 +233,6 @@ export class DetailsSolicitationComponent implements OnInit {
     return form.valid;
   }
   submit() {
-    if (!this.submitError) {
-      this.message.error('视频正在努力上传中，请耐心等待!');
-    }
-    console.log(this.filterList);
     if (this.filterList.length > 0) {
       this.submitConent();
     } else {
@@ -267,10 +267,7 @@ export class DetailsSolicitationComponent implements OnInit {
       materials: materials,
       publicity_id: this.publicityId,
     };
-    // if (this.handleChange({ file, fileList })) {
-    //   this.message.error('正在努力上传中请稍等!');
-    // }
-    if (this.objParams.materials.length === 0 && this.videoList.length === 0 ) {
+    if (this.objParams.materials.length === 0 && this.videoList.length === 0) {
       this.message.error('请填写完整信息');
       return;
     } else {
@@ -293,7 +290,7 @@ export class DetailsSolicitationComponent implements OnInit {
             this.uploadVideo = false;
             this.validateForm = this.validateForm;
             this.videoList = [];
-            console.log(this.videoList, 'video');
+            // console.log(this.videoList, 'video');
             this.files = [];
           }),
           nzOnOk: () => new Promise((resolve) => {
@@ -328,7 +325,7 @@ export class DetailsSolicitationComponent implements OnInit {
   }
   getDisplayDate() {
     this.filterList = this.programList.filter(item => {
-      console.log(this.filterList);
+      // console.log(this.filterList);
       return item.name === this.blurData;
     });
     if (this.filterList.length === 0) {

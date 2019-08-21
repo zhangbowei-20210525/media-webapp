@@ -2,13 +2,16 @@ import { finalize, delay } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NotifyService } from './notify.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PaginationDto, MessageService } from '@shared';
+import { PaginationDto, MessageService, TreeService } from '@shared';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifiesPolling } from '@core/notifies';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { SystemMessagesComponent } from '../system-messages/system-messages.component';
 import { TapeMessagesComponent } from '../tape-messages/tape-messages.component';
 import { Router } from '@angular/router';
+import { AuthService } from '@core';
+import { SolicitationComponent } from '../solicitation/solicitation.component';
+import { TransmitService } from 'app/routes/manage/transmit/transmit.service';
 
 @Component({
   selector: 'app-notify',
@@ -57,6 +60,7 @@ export class NotifyComponent implements OnInit {
   created_employee: any;
   disperCompanyName: any;
   shareId: any;
+  is_process: boolean;
   typeId: any;
   id: any;
   company: any;
@@ -65,6 +69,7 @@ export class NotifyComponent implements OnInit {
   isChoseShow = false;
   isDisparShow = false;
   ref: NzModalRef;
+  isdisableButton = false;
 
   constructor(
     private service: NotifyService,
@@ -73,7 +78,10 @@ export class NotifyComponent implements OnInit {
     private fb: FormBuilder,
     private np: NotifiesPolling,
     private model: NzModalService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService,
+    private ts: TreeService,
+    private emitService: TransmitService
   ) {
     const subscription = this.np.notifies().subscribe(result => {
       this.sysUnread = result.base.notify.unread_system_num;
@@ -124,6 +132,7 @@ export class NotifyComponent implements OnInit {
       }))
       .subscribe(result => {
         this.srcNotifys = [...this.srcNotifys, ...result.list];
+        console.log(this.srcNotifys);
         this.srcPagination.count = result.pagination.count;
         this.srcPagination.pages = result.pagination.pages;
       });
@@ -222,13 +231,33 @@ export class NotifyComponent implements OnInit {
   //   }
   // }
 
-  messageShareDetails(title: string, created_at: string, content: string, id: number, type: string) {
+  messageShareDetails(title: string, created_at: string, content: string, id: number, type: string, info: any) {
     this.type = type;
     this.related_id = id;
     console.log(type);
+    this.service.getSolicitationInfo(id).subscribe(result => {
+      if (result.expire_days < 0) {
+        this.isdisableButton = true;
+      }
+      if (type === 'PUB002') {
+        this.model.create({
+          nzTitle: `宣发征集令`,
+          nzContent: SolicitationComponent,
+          nzComponentParams: { info: info },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzOkText: '上传样片',
+          nzOkDisabled: this.isdisableButton,
+          nzCancelText: '取消',
+          nzWidth: 800,
+          nzOnOk: this.solicitationAgreed,
+          nzNoAnimation: true
+        });
+      }
+    });
     if (type === 'PUB001') {
       this.model.create({
-        nzTitle: `系统消息：${title}`,
+        nzTitle: `${title}`,
         nzContent: SystemMessagesComponent,
         nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
         nzMaskClosable: false,
@@ -240,9 +269,11 @@ export class NotifyComponent implements OnInit {
         nzOnOk: this.showSystemMessagesAgreed,
         nzNoAnimation: true
       });
-    } else {
+    }
+
+    if (type !== 'PUB001' && type !== 'PUB002') {
       this.ref = this.model.create({
-        nzTitle: `系统消息：${title}`,
+        nzTitle: `${title}`,
         nzContent: SystemMessagesComponent,
         nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
         nzMaskClosable: false,
@@ -255,6 +286,23 @@ export class NotifyComponent implements OnInit {
       });
     }
   }
+
+  solicitationAgreed = (component: SolicitationComponent) => new Promise((resolve, reject) => {
+    resolve();
+    this.router.navigate([`/manage/image/details-solicitation/${this.related_id}`]);
+    // if (component.validation()) {
+    //   component.submit()
+    //     .subscribe(result => {
+    //       // this.message.success(this.translate.instant('成功分享'));
+    //       this.router.navigate([`/manage/transmit/type`]);
+    //       resolve();
+    //     }, error => {
+    //       reject(false);
+    //     });
+    // } else {
+    //   reject(false);
+    // }
+  })
 
 
   showSystemMessagesAgreed = (component: SystemMessagesComponent) => new Promise((resolve, reject) => {
@@ -273,51 +321,97 @@ export class NotifyComponent implements OnInit {
 
 
   // 获取母带授权信息
-  messageDetails(title: string, created_at: string, content: string, id: number, type: string) {
+  messageDetails(title: string, created_at: string, content: string, id: number, idd: number, type: string, is_process: boolean) {
+    console.log('33355');
+    console.log(is_process);
     // this.visible = true;
     // this.drawerTitle = title;
     // this.drawerCreated_at = created_at;
     // this.drawerContent = content;
     this.related_id = id;
     this.type = type;
+    this.is_process = is_process;
     if (type === 'SOU005') {
-      this.model.create({
-        nzTitle: `${title}`,
-        nzContent: TapeMessagesComponent,
-        nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzOkText: '确认接受',
-        nzCancelText: '拒绝',
-        nzWidth: 800,
-        nzOnCancel: () => this.refused(),
-        nzOnOk: this.showTapeMessagesAgreed,
-        nzNoAnimation: true
-      });
+      if (is_process === true) {
+        this.ref = this.model.create({
+          nzTitle: `${title}`,
+          nzContent: TapeMessagesComponent,
+          nzComponentParams: { created_at: created_at, content: content, id: id, type: type, is_process: is_process },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzOkText: '确认',
+          nzCancelText: null,
+          nzWidth: 800,
+          // nzOnCancel: () => this.refused(),
+          nzOnOk: () => this.ref.close(),
+          nzNoAnimation: true
+        });
+      }
+
+      if (is_process === false) {
+        this.model.create({
+          nzTitle: `${title}`,
+          nzContent: TapeMessagesComponent,
+          nzComponentParams: { created_at: created_at, content: content, id: id, type: type, is_process: is_process },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzOkText: '确认接受',
+          nzCancelText: '拒绝',
+          nzWidth: 800,
+          nzOnCancel: () => this.refused(),
+          nzOnOk: (c) => this.showTapeMessagesAgreed(c, idd),
+          nzNoAnimation: true
+        });
+      }
     } else {
       this.ref = this.model.create({
         nzTitle: `${title}`,
         nzContent: TapeMessagesComponent,
-        nzComponentParams: { created_at: created_at, content: content, id: id, type: type },
+        nzComponentParams: { created_at: created_at, content: content, id: id, type: type, is_process: is_process },
         nzMaskClosable: false,
         nzClosable: false,
         nzOkText: '确认',
-        nzCancelText: '取消',
+        nzCancelText: null,
         nzWidth: 800,
-        nzOnOk: () => this.ref.destroy(),
+        nzOnOk: () => this.ref.close(),
         nzNoAnimation: true
       });
     }
   }
 
-  showTapeMessagesAgreed = (component: TapeMessagesComponent) => new Promise((resolve, reject) => {
-
+  showTapeMessagesAgreed = (component: TapeMessagesComponent, id: number) => new Promise((resolve, reject) => {
+    const setNotifyProcess = () => {
+      //  this.srcNotifys.forEach(x => {
+      //     if (x.id === id) {
+      //       x.is_process = true;
+      //     }
+      //   });
+      this.srcNotifys.find(item => item.id === id).is_process = true;
+      // if (notify) {
+      //   notify.is_process = true;
+      // }
+    };
     if (component.show() === false) {
       component.submit()
         .subscribe(result => {
-          this.router.navigate([`/manage/transmit/type`]);
-          this.message.success(this.translate.instant('global.accept-authorization-successfully'));
           resolve();
+          setNotifyProcess();
+          // this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+          this.model.confirm({
+            nzTitle: '授权已成功，是否切换到授权公司',
+            // nzContent: '<b>Some descriptions</b>',
+            nzOnOk: () => {
+              this.service.switchCompany(component.cid()).subscribe(res => {
+                this.auth.onLogin({
+                  token: res.token,
+                  userInfo: res.auth,
+                  permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
+                });
+              });
+              this.router.navigate([`/manage/transmit/type`]);
+              this.emitService.eventEmit.emit('noticeMessage');
+            }
+          });
         }, error => {
           reject(false);
         });
@@ -326,9 +420,23 @@ export class NotifyComponent implements OnInit {
         if (component.validation1()) {
           component.submit()
             .subscribe(result => {
-              this.router.navigate([`/manage/transmit/type`]);
-              this.message.success(this.translate.instant('global.accept-authorization-successfully'));
               resolve();
+              setNotifyProcess();
+              // this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+              this.model.confirm({
+                nzTitle: '授权已成功，是否切换到授权公司',
+                // nzContent: '<b>Some descriptions</b>',
+                nzOnOk: () => {
+                  this.service.switchCompany(component.cid()).subscribe(res => {
+                    this.auth.onLogin({
+                      token: res.token,
+                      userInfo: res.auth,
+                      permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
+                    });
+                  });
+                  this.router.navigate([`/manage/transmit/type`]);
+                }
+              });
             }, error => {
               reject(false);
             });
@@ -340,9 +448,23 @@ export class NotifyComponent implements OnInit {
         if (component.validation2()) {
           component.submit()
             .subscribe(result => {
-              this.router.navigate([`/manage/transmit/type`]);
-              this.message.success(this.translate.instant('global.accept-authorization-successfully'));
               resolve();
+              setNotifyProcess();
+              // this.message.success(this.translate.instant('global.accept-authorization-successfully'));
+              this.model.confirm({
+                nzTitle: '授权已成功，是否切换到授权公司',
+                // nzContent: '<b>Some descriptions</b>',
+                nzOnOk: () => {
+                  this.service.switchCompany(result.company_id).subscribe(res => {
+                    this.auth.onLogin({
+                      token: res.token,
+                      userInfo: res.auth,
+                      permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
+                    });
+                  });
+                  this.router.navigate([`/manage/transmit/type`]);
+                }
+              });
             }, error => {
               reject(false);
             });

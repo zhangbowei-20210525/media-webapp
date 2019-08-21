@@ -53,7 +53,6 @@ export class InfoComponent implements OnInit {
   dataConversion(list: any[]) {
     const aa = [];
     const info = [];
-    console.log('1133');
     list.forEach(t => {
       let index = 0;
       info.push({
@@ -76,6 +75,7 @@ export class InfoComponent implements OnInit {
       });
     });
     this.w = [];
+    console.log(info);
     info.forEach(a => {
       this.w.push(a.num1);
     });
@@ -88,7 +88,6 @@ export class InfoComponent implements OnInit {
       a.events = Object.keys(a.events).map(k => ({ id: k.substring(k.indexOf('|') + 1, k.length), event: a.events[k] }));
     });
     this.events = this.q;
-    console.log(this.events);
     return info;
   }
 }

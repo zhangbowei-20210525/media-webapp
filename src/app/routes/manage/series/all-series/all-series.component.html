@@ -53,7 +53,7 @@
             *ngIf="data.has_right == false">版权</span>
         </td>
         <td style="text-align: center">
-          <a (click)="deleteSeries(data.id)" acl [acl-ability]="ability.program.del"><i nz-icon type="delete"
+          <a (click)="deleteSeries(data.id, i)" acl [acl-ability]="ability.program.del"><i nz-icon type="delete"
               theme="outline"></i></a>
         </td>
       </tr>

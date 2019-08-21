@@ -201,12 +201,6 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
   destroyTimers: any;
 
   ngOnInit() {
-    this.viewHeight = fromEvent(window, 'scroll')
-      // debounceTime(500) // 防抖
-      .subscribe((event) => {
-        this.onWindowScroll();
-      });
-
     this.ishidden = false;
     this.samplePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
     this.featurePagination = { page: 1, count: 10, page_size: 10000 } as PaginationDto;
@@ -312,11 +306,15 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     this.getVerifyData(this.step_number);
     this.getReviewDetailsView();
     this.mainHeight = this.mainElement.nativeElement.offsetHeight;
-
+    this.viewHeight = fromEvent(window, 'scroll')
+      // debounceTime(500) // 防抖
+      .subscribe((event) => {
+        this.onWindowScroll();
+      });
   }
 
   onWindowScroll() {
-    console.log('window');
+    // console.log('window');
     this.fixedData = [];
     this.windowHeight = document.documentElement.scrollTop;
     // 实时获取循环渲染的盒子高度
@@ -366,7 +364,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     this.fixedData = reviewData.review_records.filter(item => {
       return this.windowHeight > item.totalHeight;
     });
-    console.log(this.fixedData, 'fixData');
+    // console.log(this.fixedData, 'fixData');
     if (this.fixedData.length > 1) {
       if (this.windowHeight > this.fixedData[this.fixedData.length - 1].totalHeight && this.windowHeight <
         this.fixedData[this.fixedData.length - 1].totalHeight + this.fixedData[this.fixedData.length - 1].wrapperHeight - 40) {
@@ -391,9 +389,9 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         this.isLoading = false;
       }))
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.reviewList = res;
-        console.log(res.review_steps[0].review_records);
+        // console.log(res.review_steps[0].review_records);
         this.firstTrajectory = res.review_steps[0].review_records;
         this.isLoading = true;
         // this.isShowFirstScore = res.review_steps[0].review_records_statistic
@@ -416,38 +414,47 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
           item.avg = (this.scoreThirdList[index].avg) / 2;
         });
         // 个人评分项
-        this.scoreOneList = res.review_steps[0].review_records.forEach(a => {
-          // console.log(a);
-          a.scores.forEach( b => {
-            b.score = b.score / 2;
-            this.oneScore = b.scores;
-            // console.log(b.score);
-          });
-        });
+        // this.scoreOneList = res.review_steps[0].review_records.forEach(a => {
+        //   a.scores.forEach( b => {
+        //     b.score = b.score / 2;
+        //     this.oneScore = b.scores;
+        //   });
+        // });
         // 查看更多功能注释
         // if (res.review_steps[0].lenght > 3) {
         // this.reviewFirstSteps = res.review_steps[0].splice(0, 3);
         // } else {
         this.reviewFirstSteps = res.review_steps[0];
-        // console.log(this.reviewFirstSteps, '11111');
+        this.reviewFirstSteps.review_records.forEach(b => {
+          b.total_score = b.total_score / 2;
+         });
         // 添加展开下拉字段
         this.reviewFirstSteps.review_records.forEach(item => {
           item.isUp = false;
-          // item.scores.forEach(ele => {
-          //   ele.score  = ele.score / 2;
-          // });
+          item.scores.forEach(ele => {
+            ele.score  = ele.score / 2;
+          });
         });
-        console.log(this.reviewFirstSteps.review_records, 'score');
-        this.reviewSecondSteps = res.review_steps[1];
-        // console.log(this.reviewSecondSteps, '22222');
 
+        this.reviewSecondSteps = res.review_steps[1];
+        this.reviewSecondSteps.review_records.forEach(b => {
+          b.total_score = b.total_score / 2;
+         });
         this.reviewSecondSteps.review_records.forEach(item => {
           item.isUp = false;
+          item.scores.forEach(ele => {
+            ele.score  = ele.score / 2;
+          });
         });
         this.reviewThirdSteps = res.review_steps[2];
-
+        this.reviewThirdSteps.review_records.forEach(b => {
+          b.total_score = b.total_score / 2;
+         });
         this.reviewThirdSteps.review_records.forEach(item => {
           item.isUp = false;
+          item.scores.forEach(ele => {
+            ele.score  = ele.score / 2;
+          });
         });
         const currentYear = this.myDate.getFullYear();
         const currentMouth = this.myDate.getMonth() + 1;

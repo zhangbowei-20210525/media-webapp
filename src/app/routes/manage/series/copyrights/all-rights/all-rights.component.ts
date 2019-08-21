@@ -298,9 +298,16 @@ export class AllRightsComponent implements OnInit, OnDestroy {
     this.fetchCopyrights(params);
   }
 
-  deleteSeriesCopyright(pid: number) {
+  deleteSeriesCopyright(pid: number, i: number) {
     this.service.deleteCopyrights(pid).subscribe(result => {
       this.message.success(this.translate.instant('global.delete-successfully'));
+      if (this.pagination.pages === this.pagination.page) {
+        if (this.pagination.page === 1) { } else {
+          if ( i === 0 ) {
+            this.pagination.page = this.pagination.page - 1;
+          }
+        }
+      }
       this.filtrate();
     });
   }

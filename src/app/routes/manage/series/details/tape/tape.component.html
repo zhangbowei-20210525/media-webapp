@@ -124,18 +124,20 @@
               <td>{{ data.name }}</td>
               <td>{{ data.size | byteFormat }}</td>
               <td>{{ data.created_at }}</td>
+              <td *ngIf="data.local_file_status === 'upload'" class="upload" >{{ data.local_file_status | sourceFileStatus }}</td>
               <td *ngIf="data.local_file_status === 'active'" class="active" >{{ data.local_file_status | sourceFileStatus }}</td>
               <td *ngIf="data.local_file_status === 'deleting'" class="deleting" >{{ data.local_file_status | sourceFileStatus }}</td>
               <td *ngIf="data.local_file_status === 'deleted'" class="deleted" >{{ data.local_file_status | sourceFileStatus }}</td>
 
-              <td *ngIf="data.local_file_status === ''">{{ data.local_file_status | sourceFileStatus }}</td>             
-              
+              <td *ngIf="data.local_file_status === ''">{{ data.local_file_status | sourceFileStatus }}</td>  
+
+              <td *ngIf="data.hashlink_file_status === 'pending'" class="pending" >{{ data.hashlink_file_status |sourceFileStatus }}</td>              
               <td *ngIf="data.hashlink_file_status === 'backend'" class="backend" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
               <td *ngIf="data.hashlink_file_status === 'active'" class="active" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
               <td *ngIf="data.hashlink_file_status === 'deleting'" class="deleting" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
               <td *ngIf="data.hashlink_file_status === 'deleted'" class="deleted" >{{ data.hashlink_file_status |sourceFileStatus }}</td>
               <td style="text-align: center">
-                <a (click)="deleteTape(data.id, index)"><i nz-icon type="delete" theme="outline"></i></a>
+                <a (click)="deleteTape(data.id, i)"><i nz-icon type="delete" theme="outline"></i></a>
               </td>
             </tr>
           </tbody>
@@ -170,7 +172,7 @@
                 <span *ngIf="data.receipt_status == 3"><nz-tag [nzColor]="'red'">已超时</nz-tag></span>
               </td>
               <td style="text-align: center">
-                <a (click)="deletePubTape(data.id)" acl [acl-ability]="ability.program.source.del"><i nz-icon type="delete" theme="outline"
+                <a (click)="deletePubTape(data.id, i)" acl [acl-ability]="ability.program.source.del"><i nz-icon type="delete" theme="outline"
                     style="font-size: 14px;"></i></a>
               </td>
             </tr>

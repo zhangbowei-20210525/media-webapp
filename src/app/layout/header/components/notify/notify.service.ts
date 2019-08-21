@@ -84,5 +84,13 @@ export class NotifyService {
     return this.http.get<any>(`/api/v1/users/info/employees`);
   }
 
+  switchCompany(company_id: number) {
+    return this.http.post<{ token: string, auth: any, permissions: any[] }>(`/api/v1/login/company`, { company_id });
+  }
+
+  getSolicitationInfo(id: number) {
+    return this.http.get<any>(`/api/v1/publicity/collections/${id}`);
+  }
+
 
 }

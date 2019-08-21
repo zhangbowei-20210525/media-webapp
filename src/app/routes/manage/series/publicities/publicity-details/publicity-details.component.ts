@@ -75,7 +75,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   stillList = [];
   pdfList = [];
   ishidden: boolean;
-  publicityType: string;
+  publicityType = '';
   userinfo: any;
   sid: number;
   seriesInfo: any;
@@ -176,31 +176,31 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
             this.publicityType = 'pdf';
             this.pdf();
           }
+          if (this.publicityType === '' || this.publicityType === 'sample') {
+            this.publicityType = 'sample';
+            this.getSampleInfo();
+          }
+          if (this.publicityType === 'feature') {
+            this.getFeatureInfo();
+          }
+          if (this.publicityType === 'trailer') {
+            this.getTrailerInfo();
+          }
+          if (this.publicityType === 'poster') {
+            this.getPosterInfo();
+          }
+          if (this.publicityType === 'still') {
+            this.getStillInfo();
+          }
+          if (this.publicityType === 'pdf') {
+            this.getPdfInfo();
+          }
         });
         this.seriesService.getSeriesDetailsInfo(this.sid).subscribe(cpd => {
           this.seriesInfo = cpd;
         });
         this.publicityName = res.name;
         this.publicityId = res.id;
-        if (!this.publicityType || this.publicityType === 'sample') {
-          this.publicityType = 'sample';
-          this.getSampleInfo();
-        }
-        if (this.publicityType === 'feature') {
-          this.getFeatureInfo();
-        }
-        if (this.publicityType === 'trailer') {
-          this.getTrailerInfo();
-        }
-        if (this.publicityType === 'poster') {
-          this.getPosterInfo();
-        }
-        if (this.publicityType === 'still') {
-          this.getStillInfo();
-        }
-        if (this.publicityType === 'pdf') {
-          this.getPdfInfo();
-        }
       });
   }
 
@@ -208,7 +208,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player = videojs('#video_player');
     this.player.width(800);
     this.player.height(470);
-    this.player.load();
+    // this.player.load();
+    this.player.pause();
   }
 
   nomenu(event) {

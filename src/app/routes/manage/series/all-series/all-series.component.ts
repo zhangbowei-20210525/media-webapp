@@ -129,18 +129,25 @@ export class AllSeriesComponent implements OnInit {
     }
   })
 
-  deleteSeries(id: number) {
+  deleteSeries(id: number, i: number) {
     this.modal.confirm({
       nzTitle: '是否删除本条节目信息?',
       nzOkText: '删除',
       nzCancelText: '取消',
       nzOkType: 'danger',
-      nzOnOk: () => this.deleteSeriesAgreed(id)
+      nzOnOk: () => this.deleteSeriesAgreed(id, i)
     });
   }
 
-  deleteSeriesAgreed = (id: number) => new Promise((resolve) => {
+  deleteSeriesAgreed = (id: number, i: number) => new Promise((resolve) => {
     this.seriesService.deleteSeries(id).subscribe(res => {
+      if (this.pagination.pages === this.pagination.page) {
+        if (this.pagination.page === 1) { } else {
+          if ( i === 0 ) {
+            this.pagination.page = this.pagination.page - 1;
+          }
+        }
+      }
       this.seriesService.getSeries(this.pagination).pipe(tap(x => {
         x.list.forEach(f => {
           if (f.release_date) {
