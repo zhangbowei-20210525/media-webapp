@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzMessageService, NzNotificationService, NzModalService } from 'ng-zorro-antd';
+import { NzMessageService, NzNotificationService, NzModalService, UploadChangeParam } from 'ng-zorro-antd';
 import { PaginationDto, MessageService, Util } from '@shared';
 import { SeriesService } from '../../series/series.service';
 import { PublicityService } from '../../series/details/publicity/publicity.service';
@@ -26,8 +26,6 @@ export class DetailsSolicitationComponent implements OnInit {
   vid: any;
   videoList = [];
   isFrom: number;
-  submitError: any;
-  [x: string]: any;
 
   readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
   readonly imageFilters = ['.jpg', '.jpeg', '.png'];
@@ -60,8 +58,7 @@ export class DetailsSolicitationComponent implements OnInit {
     private seriesService: SeriesService,
     private router: Router,
     private modalService: NzModalService,
-    private route: ActivatedRoute,
-
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -101,8 +98,8 @@ export class DetailsSolicitationComponent implements OnInit {
     this.uploadUrl = Util.getUploadUrl(this.mediaType as any);
   }
 
-  beforeUpload = (file: File, fileList: FileList) => {
-    const list = [] as File[];
+  beforeUpload = (file: any, fileList: any[]) => {
+    const list = [] as any[];
     const filters = { 'video': this.fileFilters, 'image': this.imageFilters, 'doc': this.pdfFilters }[this.mediaType] as string[];
     for (const key in fileList) {
       if (fileList.hasOwnProperty(key)) {
@@ -120,20 +117,23 @@ export class DetailsSolicitationComponent implements OnInit {
     }
   }
 
-  handleChange({ file, fileList }: { [key: string]: any }): void {
+  handleChange(param: UploadChangeParam): void {
     this.isShowBtn = true;
-    this.files = fileList;
-    // console.log(this.files);
-    this.size = file.size / 1000000;
-    this.status = file.status;
-    this.type = file.type.split('/')[1];
-    fileList.forEach(item => {
+    this.files = param.fileList;
+    console.log(this.files);
+    this.size = param.file.size / 1000000;
+    this.status = param.file.status;
+    this.type = param.file.type.split('/')[1];
+    this.files.forEach((item, index) => {
+      console.log(item);
       if (item.status === 'error') {
+        this.files = this.files.splice(index, 1);
         this.statusType = 'exception';
       } else {
         this.statusType = '';
       }
-      item.percent = String(item.percent).split('.')[0];
+      // (item as any).percent = String(item.percent).split('.')[0];
+      item.percent = Math.floor(item.percent);
       // console.log(fileList);
     });
 
@@ -143,10 +143,10 @@ export class DetailsSolicitationComponent implements OnInit {
       if (this.size > '3072' && this.status === 'done') {
         this.notification.error('文件上传失败', `请选择符合要求的视频`);
       } else if (this.status === 'done') {
-        this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+        this.notification.success('文件上传成功', `文件 ${param.file.name} 上传完成。`);
         this.isShowBtn = false;
       } else if (this.status === 'error') {
-        this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
+        this.notification.error('文件上传失败', `文件 ${param.file.name} 上传失败。`);
       }
 
     }
@@ -154,30 +154,29 @@ export class DetailsSolicitationComponent implements OnInit {
       if (this.size > '2' && this.status === 'done') {
         this.notification.error('文件上传失败', `请选择符合要求的照片`);
       } else if (this.status === 'done') {
-        this.submitError = this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+        this.notification.success('文件上传成功', `文件 ${param.file.name} 上传完成。`);
         this.isShowBtn = false;
       } else if (this.status === 'error') {
-        this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
+        this.notification.error('文件上传失败', `文件 ${param.file.name} 上传失败。`);
       }
     }
     if (this.validateForm.value.type === 'pdf') {
       if (this.size > '2' && this.status === 'done') {
         this.notification.error('文件上传失败', `请选择符合要求的pdf文件`);
       } else if (this.status === 'done') {
-        this.notification.success('文件上传成功', `文件 ${file.name} 上传完成。`);
+        this.notification.success('文件上传成功', `文件 ${param.file.name} 上传完成。`);
         this.isShowBtn = false;
       } else if (this.status === 'error') {
-        this.notification.error('文件上传失败', `文件 ${file.name} 上传失败。`);
+        this.notification.error('文件上传失败', `文件 ${param.file.name} 上传失败。`);
       }
     }
-    fileList.forEach(b => {
-      console.log(b);
+    param.fileList.forEach((b, index) => {
       if (!!b.response) {
         // this.id = b.response.id ;
-        this.extension = b.response.data.extension;
-        this.filename = b.response.data.filename;
-        this.name = b.response.data.name;
-        this.size = b.response.data.size;
+        this.extension = b.response.extension;
+        this.filename = b.response.filename;
+        this.name = b.response.name;
+        this.size = b.response.size;
       }
     });
   }
@@ -214,10 +213,10 @@ export class DetailsSolicitationComponent implements OnInit {
         size: '',
       };
       // obj.material_id = this.id;
-      obj.name = item.response.data.name;
-      obj.filename = item.response.data.filename;
-      obj.extension = item.response.data.extension;
-      obj.size = item.response.data.size;
+      obj.name = item.response.name;
+      obj.filename = item.response.filename;
+      obj.extension = item.response.extension;
+      obj.size = item.response.size;
       obj.material_type = this.validateForm.value.type;
       materials.push(obj);
     });
