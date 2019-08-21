@@ -937,47 +937,6 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     this.pdfPage = this.pdfPage + 1;
   }
 
-  // sampleNavigateToDetail(i: number, id: number) {
-  //   this.sampleIndex = i - 1;
-  //   this.publicityType = 'sample';
-  //   this.router.navigate([`/manage/image/admin-films-details/${this.id}`,
-  //   { sampleIndex: this.sampleIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-  // }
-
-  // featureNavigateToDetail(i: number, id: number) {
-  //   this.featureIndex = i - 1;
-  //   this.publicityType = 'feature';
-  //   this.router.navigate([`/manage/image/admin-films-details/${this.id}`,
-  //   { featureIndex: this.featureIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-  // }
-
-  // trailerNavigateToDetail(i: number, id: number) {
-  //   this.trailerIndex = i - 1;
-  //   this.publicityType = 'trailer';
-  //   this.router.navigate([`/manage/image/admin-films-details/${this.id}`,
-  //   { trailerIndex: this.trailerIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-  // }
-
-  // posterNavigateToDetail(i: number) {
-  //   this.posterIndex = i;
-  //   this.publicityType = 'poster';
-  //   this.router.navigate([`/manage/image/admin-films-details/${this.id}`,
-  //   { posterIndex: this.posterIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-  // }
-
-  // stillNavigateToDetail(i: number) {
-  //   this.stillIndex = i;
-  //   this.publicityType = 'still';
-  //   this.router.navigate([`/manage/image/admin-films-details/${this.id}`,
-  //   { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-  // }
-
-  // pdfNavigateToDetail(i: number) {
-  //   this.pdfIndex = i;
-  //   this.publicityType = 'pdf';
-  //   this.router.navigate([`/manage/image/admin-films-details/${this.id}`,
-  //   { pdfIndex: this.pdfIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-  // }
   sampleNavigateToDetail(i: number, id: number) {
     this.isId = id;
     // console.log(this.isId);
