@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  fileServer: 'https://cs.bctop.net:7000'
 };

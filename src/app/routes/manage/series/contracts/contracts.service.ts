@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject, BehaviorSubject, of } from 'rxjs';
 import { delay, share, shareReplay, map, tap } from 'rxjs/operators';
 import { ContractDto } from './dtos';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -46,18 +47,18 @@ export class ContractsService {
   }
 
   uploadFile(file: File) {
-    console.log('999');
-    return this.http.post<{ file_name: string }>('/api/v1/upload/common', formData({ file }));
+    // return this.http.post<{ file_name: string }>('/api/v1/upload/common', formData({ file }));
+    return this.http.post<{ name: string, extension: string }>(`${environment.fileServer}/upload/common`, formData({ file }));
   }
 
-  getChoiceFields(file_name: string, contract_type: string) {
+  getChoiceFields(name: string, extension: string, contract_type: string) {
     return this.http.get<{ program_type: any[], theme: any[] }>
-      ('/api/v1/rights/contracts/import/choice_fields', { params: { file_name, contract_type } });
+      ('/api/v1/rights/contracts/import/choice_fields', { params: { name, extension, contract_type } });
   }
 
-  importContracts(file_name: string, contract_type: string, program_type: any[], theme: any[]) {
+  importContracts(name: string, extension: string, contract_type: string, program_type: any[], theme: any[]) {
     return this.http.post<{ contract_count: number, program_count: number }>
-      ('/api/v1/rights/contracts/import', { file_name, contract_type, program_type, theme });
+      ('/api/v1/rights/contracts/import', { name, extension, contract_type, program_type, theme });
   }
 
   uploadImportFileMock(file: File) {
