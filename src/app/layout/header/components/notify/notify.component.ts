@@ -322,6 +322,22 @@ export class NotifyComponent implements OnInit {
     }
   })
 
+  externalMessageDetails(name: string, id: number, type: string) {
+    this.modalService.confirm({
+      nzTitle: `是否切换到${name}`,
+      // nzContent: '<b>Some descriptions</b>',
+      nzOnOk: () => {
+        this.service.switchCompany(id).subscribe(res => {
+          this.auth.onLogin({
+            token: res.token,
+            userInfo: res.auth,
+            permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
+          });
+          this.router.navigate([`/manage/dashboard`]);
+        });
+      }
+    });
+  }
 
   // 获取母带授权信息
   messageDetails(title: string, created_at: string, content: string, id: number, idd: number, type: string, is_process: boolean) {

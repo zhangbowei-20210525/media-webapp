@@ -545,7 +545,7 @@
   [cdkDropListConnectedTo]="[l1d1z, l2d1z, l3d1z, l4d1z, l5d1z, l1y1z, l2y1z, l3y1z, l4y1z, l5y1z, l1y2z, l2y2z, l3y2z, l4y2z, l5y2z]"
   class="example-list" (cdkDropListDropped)="drop($event)" [cdkDropListEnterPredicate]="noReturnPredicate">
   <div class="example-box" *ngFor="let item of seriesList" [cdkDragDisabled]="item.episode == null || item.episode == 0"
-    (click)="isEpisode(item.episode)" cdkDrag [nzTitle]="text" nzPlacement="top" nz-tooltip>
+    (click)="isEpisode(item.episode)" cdkDrag nz-popover nzPopoverTitle="Title" [nzPopoverContent]="text" nzPopoverPlacement="top">
     <span>{{ item.name }}</span>/
     <span>{{ item.program_type }}</span>/
     <span>{{ item.episode }}集</span>

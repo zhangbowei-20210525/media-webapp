@@ -94,7 +94,7 @@
                   <div class="n-contont text-ellipsis" nz-tooltip [nzTitle]="item.content" [nzMouseEnterDelay]="1"
                     style="font-size: 12px;margin-top: 5px">
                     <a
-                      (click)="messageDetails(item.title, item.created_at, item.content, item.related_id, item.type)">{{ item.content }}</a>
+                      (click)="externalMessageDetails(item.receive_company_name, item.receive_company_id, item.type)">{{ item.content }}</a>
                   </div>
                 </div>
                 <nz-skeleton *ngIf="outPagination.pages > outPagination.page" [nzTitle]="false"
