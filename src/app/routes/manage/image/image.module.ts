@@ -16,6 +16,7 @@ import { AdminFilmsDetailsComponent } from './admin-films-details/admin-films-de
 import { ReceiveSolicitationComponent } from './receive-solicitation/receive-solicitation.component';
 import { SampleViewComponent } from './sample-view/sample-view.component';
 import { ReviewViewComponent } from './review-view/review-view.component';
+import { SubmitFirstReviewComponent } from './components/submit-first-review/submit-first-review.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ReviewViewComponent } from './review-view/review-view.component';
     ReceiveSolicitationComponent,
     SampleViewComponent,
     ReviewViewComponent,
+    SubmitFirstReviewComponent,
   ],
   imports: [
     CommonModule,

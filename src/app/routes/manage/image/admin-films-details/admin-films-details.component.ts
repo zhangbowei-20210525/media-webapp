@@ -305,12 +305,15 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
       });
     this.getVerifyData(this.step_number);
     this.getReviewDetailsView();
-    this.mainHeight = this.mainElement.nativeElement.offsetHeight;
-    this.viewHeight = fromEvent(window, 'scroll')
+    setTimeout(() => {
+      this.mainHeight = this.mainElement.nativeElement.offsetHeight;
+      this.viewHeight = fromEvent(window, 'scroll')
       // debounceTime(500) // 防抖
       .subscribe((event) => {
         this.onWindowScroll();
       });
+      console.log(1);
+    }, 100);
   }
 
   onWindowScroll() {

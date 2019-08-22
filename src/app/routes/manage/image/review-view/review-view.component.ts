@@ -370,9 +370,12 @@ export class ReviewViewComponent implements OnInit {
     } else {
       this.service.submitFirstInstance(review_ids).subscribe(res => {
         this.message.success('提交审片成功');
+        // this.modalService.create({
+        //   nzTitle: `以下所选节目将进入二审：`
+        //   nzContent:,
+        // })
       });
       this.selectedTabIndex = 2;
-      // this.selectedTabIndex = 2;
       this.fetchPublicities(this.selectedTabIndex);
     }
   }
