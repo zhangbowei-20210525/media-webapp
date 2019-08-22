@@ -9,6 +9,7 @@ import { ACLAbility } from '@core/acl';
 import { LaunchFilmsComponent } from '../components/launch-films/launch-films.component';
 // import { CallUpComponent } from '../components/call-up/call-up.component';
 import { fadeIn } from '@shared/animations';
+import { SubmitFirstReviewComponent } from '../components/submit-first-review/submit-first-review.component';
 
 @Component({
   selector: 'app-review-view',
@@ -180,7 +181,9 @@ export class ReviewViewComponent implements OnInit {
         this.isShowView = true;
         // console.log(this.reviewList);
         this.reviewList.forEach(item => {
+          console.log(item, '111');
           this.reviewId = item.id;
+          console.log(this.reviewId);
         });
       });
   }
@@ -250,7 +253,7 @@ export class ReviewViewComponent implements OnInit {
     this.isThreeIndeterminate =
       this.threeListOfDisplayData.some(item => this.threeMapOfCheckedId[item.publicity.program.id]) && !this.isThreeAllDisplayDataChecked;
     // console.log(this.threeMapOfCheckedId, 'zzzz');
-    // // console.log(this.isThreeAllDisplayDataChecked);
+    // console.log(this.isThreeAllDisplayDataChecked);
     // console.log(this.threeListOfDisplayData, 'yyyyy');
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
@@ -258,7 +261,7 @@ export class ReviewViewComponent implements OnInit {
     this.threeRefreshStatus();
   }
   threeCheckAll(value: boolean): void {
-    this.threeListOfDisplayData.forEach(item => (this.threeMapOfCheckedId[item.publicity.id] = value));
+    this.threeListOfDisplayData.forEach(item => (this.threeMapOfCheckedId[item.publicity.program.id] = value));
     this.threeRefreshStatus();
   }
   publicityPlay(sid: number, id: number) {
@@ -370,10 +373,30 @@ export class ReviewViewComponent implements OnInit {
     } else {
       this.service.submitFirstInstance(review_ids).subscribe(res => {
         this.message.success('提交审片成功');
-        // this.modalService.create({
-        //   nzTitle: `以下所选节目将进入二审：`
-        //   nzContent:,
-        // })
+      //   this.modalService.create({
+      //     nzTitle: `以下所选节目将进入二审：`,
+      //     nzContent: SubmitFirstReviewComponent,
+      //     nzMaskClosable: false,
+      //     nzClosable: false,
+      //     nzWidth: 440,
+      //     nzCancelText: '取消',
+      //     nzNoAnimation: true,
+      //     nzOkText: '确定并通知',
+      //     nzOnOk: () => new Promise((resolve) => {
+      //       resolve();
+      //       this.creatReview();
+      //       // 重置数据
+      //       for (const key in this.mapOfCheckedId) {
+      //         if (this.mapOfCheckedId[key]) {
+      //           this.mapOfCheckedId[key] = false;
+      //         }
+      //       }
+      //       this.isAllDisplayDataChecked = false;
+      //       this.selectedTabIndex = 2;
+      //       // this.selectedTabIndex = 1;
+      //       this.fetchPublicities(this.selectedTabIndex);
+      //     })
+      //   // });
       });
       this.selectedTabIndex = 2;
       this.fetchPublicities(this.selectedTabIndex);
@@ -413,8 +436,10 @@ export class ReviewViewComponent implements OnInit {
     }
     const reviewId = [];
     this.threeListOfDisplayData.forEach(item => {
+      console.log(item);
       if (review_ids.indexOf(item.publicity.id) > -1) {
         reviewId.push(item.id);
+        console.log(reviewId, '2222');
       }
     });
     if (review_ids.length === 0) {

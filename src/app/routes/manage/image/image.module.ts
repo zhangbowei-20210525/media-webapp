@@ -52,6 +52,7 @@ import { SubmitFirstReviewComponent } from './components/submit-first-review/sub
     AdminFilmsDetailsComponent,
     SampleViewComponent,
     ReviewViewComponent,
+    SubmitFirstReviewComponent,
   ]
 })
 export class ImageModule { }
