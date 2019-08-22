@@ -23,7 +23,7 @@
                 [nzTitle]="trailer" nzPlacement="top" nz-tooltip></i></a>
             <div class="text-ellipsis">{{ item?.program_name }}</div>
             <div class="text-ellipsis">
-             {{ item?.program_episode }}集
+              {{ item?.program_episode }}集
             </div>
             <div class="text-ellipsis">
               {{ item.broadcast_start_date }}&nbsp;~&nbsp;{{ item.broadcast_end_date }}
@@ -545,17 +545,39 @@
   [cdkDropListConnectedTo]="[l1d1z, l2d1z, l3d1z, l4d1z, l5d1z, l1y1z, l2y1z, l3y1z, l4y1z, l5y1z, l1y2z, l2y2z, l3y2z, l4y2z, l5y2z]"
   class="example-list" (cdkDropListDropped)="drop($event)" [cdkDropListEnterPredicate]="noReturnPredicate">
   <div class="example-box" *ngFor="let item of seriesList" [cdkDragDisabled]="item.episode == null || item.episode == 0"
-    (click)="isEpisode(item.episode)" cdkDrag nz-popover nzPopoverTitle="Title" [nzPopoverContent]="text" nzPopoverPlacement="top">
-    <span>{{ item.name }}</span>/
-    <span>{{ item.program_type }}</span>/
-    <span>{{ item.episode }}集</span>
-    <ng-template #text>
-      <div>节目：{{ item.name }}</div>
-      <div>类型：{{ item.program_type }}</div>
-      <div>集数：{{ item.episode }}集</div>
-    </ng-template>
-  </div>
+  (click)="isEpisode(item.episode)" cdkDrag [nzTitle]="text" nzPlacement="top" nz-tooltip>
+  <span>{{ item.name }}</span>/
+  <span>{{ item.program_type }}</span>/
+  <span>{{ item.episode }}集</span>
+  <ng-template #text>
+    <div>节目：{{ item.name }}</div>
+    <div>类型：{{ item.program_type }}</div>
+    <div>集数：{{ item.episode }}集</div>
+  </ng-template>
 </div>
+</div>
+    <!-- <ng-template #Title>
+      <div style="font-size: 18px;font-weight:500;">节目信息</div>
+    </ng-template>
+    <ng-template #contentTemplate>
+      <div class="theme-title">授权信息</div>
+      <div>
+      <div nz-row style="font-size: 14px">
+        <div nz-col nzSpan="8">节目名称：{{ item.name }}</div>
+        <div nz-col nzSpan="8">节目类型：{{ item.name }}</div>
+        <div nz-col nzSpan="8">集数：{{ item.name }}</div>
+      </div>
+      <div nz-row style="font-size: 14px">
+        <div nz-col nzSpan="8">权利种类：{{ item.name }}</div>
+        <div nz-col nzSpan="8">授权地域：{{ item.name }}</div>
+        <div nz-col nzSpan="8">权利到期：{{ item.name }}</div>
+      </div>
+    </div>
+      <div class="theme-title">历史播出信息</div>
+      <div>
+        <div><span class="icon-yuanxuankuang1"></span><span style="margin-left: 5px;font-size: 14px">ssssssx</span></div>
+      </div>
+    </ng-template> -->
 <!-- <div class="example-container">
     <div
       cdkDropList
