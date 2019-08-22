@@ -305,15 +305,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
       });
     this.getVerifyData(this.step_number);
     this.getReviewDetailsView();
-    setTimeout(() => {
-      this.mainHeight = this.mainElement.nativeElement.offsetHeight;
-      this.viewHeight = fromEvent(window, 'scroll')
-      // debounceTime(500) // 防抖
-      .subscribe((event) => {
-        this.onWindowScroll();
-      });
-      console.log(1);
-    }, 100);
+
   }
 
   onWindowScroll() {
@@ -430,33 +422,33 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         this.reviewFirstSteps = res.review_steps[0];
         this.reviewFirstSteps.review_records.forEach(b => {
           b.total_score = b.total_score / 2;
-         });
+        });
         // 添加展开下拉字段
         this.reviewFirstSteps.review_records.forEach(item => {
           item.isUp = false;
           item.scores.forEach(ele => {
-            ele.score  = ele.score / 2;
+            ele.score = ele.score / 2;
           });
         });
 
         this.reviewSecondSteps = res.review_steps[1];
         this.reviewSecondSteps.review_records.forEach(b => {
           b.total_score = b.total_score / 2;
-         });
+        });
         this.reviewSecondSteps.review_records.forEach(item => {
           item.isUp = false;
           item.scores.forEach(ele => {
-            ele.score  = ele.score / 2;
+            ele.score = ele.score / 2;
           });
         });
         this.reviewThirdSteps = res.review_steps[2];
         this.reviewThirdSteps.review_records.forEach(b => {
           b.total_score = b.total_score / 2;
-         });
+        });
         this.reviewThirdSteps.review_records.forEach(item => {
           item.isUp = false;
           item.scores.forEach(ele => {
-            ele.score  = ele.score / 2;
+            ele.score = ele.score / 2;
           });
         });
         const currentYear = this.myDate.getFullYear();
@@ -575,6 +567,14 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     this.player.width(800);
     this.player.height(470);
     this.player.load();
+      this.mainHeight = this.mainElement.nativeElement.offsetHeight;
+      console.log(this.mainHeight);
+      this.viewHeight = fromEvent(window, 'scroll')
+        // debounceTime(500) // 防抖
+        .subscribe((event) => {
+          this.onWindowScroll();
+        });
+      console.log(1);
   }
 
   nomenu(event) {
