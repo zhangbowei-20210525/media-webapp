@@ -314,9 +314,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             }
           } else {
-            console.log(item.review_at);
+            // console.log(item.review_at);
             item.review_at = item.review_at;
-            console.log(item.review_at);
+            // console.log(item.review_at);
 
           }
         } else {
@@ -336,34 +336,34 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
               if (!!item.review_at) {
                 item.review_at = item.review_at.split(' ')[1];
               }
-              console.log(item.review_at);
+              // console.log(item.review_at);
             }
           } else {
             item.review_at = item.review_at;
-            console.log(item.review_at);
+            // console.log(item.review_at);
 
           }
         } else {
           if (!!item.review_at) {
             item.review_at = item.review_at.split(' ')[0];
           }
-          console.log(item.review_at);
+          // console.log(item.review_at);
         }
       });
-      console.log(res);
+      // console.log(res);
       // 一审评分项
       this.scoreFirstList = res.review_steps[0].review_records_statistic.score_statistic.item_statistic;
       this.nameFirstList = res.review_steps[0].scoring_items;
       this.nameFirstList.forEach((item, index) => {
         item.avg = (this.scoreFirstList[index].avg) / 2;
       });
-      // 二审评分想
+      // 二审评分项
       this.scoreSecondList = res.review_steps[1].review_records_statistic.score_statistic.item_statistic;
       this.nameSecondList = res.review_steps[1].scoring_items;
       this.nameSecondList.forEach((item, index) => {
         item.avg = (this.scoreSecondList[index].avg) / 2;
       });
-      // 三审评分想
+      // 三审评分项
       this.scoreThirdList = res.review_steps[2].review_records_statistic.score_statistic.item_statistic;
       this.nameThirdList = res.review_steps[2].scoring_items;
       this.nameThirdList.forEach((item, index) => {
@@ -417,7 +417,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.starId.push({ id: item.id, score: 0 });
         });
       }
-      console.log(this.starId, 'i am star');
+      // console.log(this.starId, 'i am star');
       this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
       this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
       this.stepsNumber = res.step_number;
@@ -461,9 +461,9 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         f.displayText = index++;
       });
     })).subscribe(s => {
-      console.log(s);
+      // console.log(s);
       this.sampleList = s.list;
-      console.log(s.list);
+      // console.log(s.list);
       this.isId = this.sampleList[0].id;
       this.realTimePlayback = 0;
       this.status = 'play';
@@ -489,7 +489,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     })).subscribe(s => {
       this.featureList = s.list;
-      console.log(s.list);
+      // console.log(s.list);
       this.isId = this.featureList[0].id;
       this.realTimePlayback = 0;
       this.status = 'play';
@@ -513,7 +513,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         f.displayText = index++;
       });
     })).subscribe(s => {
-      console.log(s);
+      // console.log(s);
       this.trailerList = s.list;
       this.isId = this.trailerList[0].id;
       this.realTimePlayback = 0;
@@ -745,7 +745,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sampleNavigateToDetail(i: number, id: number) {
     this.isId = id;
-    console.log(this.isId);
+    // console.log(this.isId);
     this.publicityType = 'sample';
     this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
       let index = 1;
@@ -953,13 +953,13 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   tabSelectChange(event) {
-    console.log(event.index);
+    // console.log(event.index);
     this.step_number = event.index;
   }
   verifySelectChange(event) {
     // this.selectedIndex = 1;
     this.selectedIndex = event.index;
-    console.log(this.selectedIndex);
+    // console.log(this.selectedIndex);
   }
   shareEmail() {
     // console.log(this.tabIndex);
@@ -1107,7 +1107,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   submitThird() {
     // console.log(this.verify, '11111');
     if (this.verify === undefined) {
-      console.log(1);
+      // console.log(1);
       this.message.error('请填写完整信息');
       return;
     }
@@ -1115,7 +1115,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       return item.score === 0;
     });
     if (starList.length > 0) {
-      console.log(2);
+      // console.log(2);
       this.message.error('请填写完整信息');
       return;
     }
@@ -1135,7 +1135,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         const comment = this.comment;
         const scoring = this.starId;
         this.seriesService.submitThreeInstanceDetails(conclusion, scoring, comment, this.reviewId).subscribe(res => {
-          console.log(res);
+          // console.log(res);
         });
         this.router.navigate([`manage/image/review-view`]);
         this.message.success('您已提交信息,谢谢参与!');
@@ -1145,8 +1145,8 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   // 小星星十分制
   firstChange(score, item, index: number) {
-    console.log(this.starId);
-    console.log(score, item, index, 'i am wrong');
+    // console.log(this.starId);
+    // console.log(score, item, index, 'i am wrong');
     this.starId[index].id = item.id;
     this.starId[index].score = score * 2;
   }
@@ -1184,9 +1184,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   listenVideoTime() {
     this.destroyTimers = setInterval(() => {
       if (this.isClear || this.status === 'stop') {
-        console.log('俺不调用接口');
       } else {
-        console.log('俺调用接口');
         this.giveVideoStatus(this.tabIndex);
       }
     }, 10000);

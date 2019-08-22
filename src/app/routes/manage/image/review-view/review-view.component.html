@@ -327,7 +327,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let data of threeListOfDisplayData">
-                        <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data?.publicity.id]"
+                        <td nzShowCheckbox [(nzChecked)]="threeMapOfCheckedId[data?.publicity.program.id]"
                           (nzCheckedChange)="threeRefreshStatus()"></td>
                         <td>
                           <a
@@ -365,7 +365,6 @@
       </div>
     </div>
   </div>
-</div>
   <ng-template #empty>
     <nz-empty nzNotFoundContent='暂时没有审片视频哦!'></nz-empty>
   </ng-template>

@@ -26,7 +26,6 @@ export class DetailsSolicitationComponent implements OnInit {
   vid: any;
   videoList = [];
   isFrom: number;
-  submitError: any;
 
   readonly fileFilters = ['.mp4', '.avi', '.rmvb', '.wmv', '.mkv', '.mov', '.flv', '.mpeg', '.vob', '.webm', '.mpg', '.mxf'];
   readonly imageFilters = ['.jpg', '.jpeg', '.png'];
@@ -121,12 +120,14 @@ export class DetailsSolicitationComponent implements OnInit {
   handleChange(param: UploadChangeParam): void {
     this.isShowBtn = true;
     this.files = param.fileList;
-    // console.log(this.files);
+    console.log(this.files);
     this.size = param.file.size / 1000000;
     this.status = param.file.status;
     this.type = param.file.type.split('/')[1];
-    param.fileList.forEach(item => {
+    this.files.forEach((item, index) => {
+      console.log(item);
       if (item.status === 'error') {
+        this.files = this.files.splice(index, 1);
         this.statusType = 'exception';
       } else {
         this.statusType = '';
@@ -153,7 +154,7 @@ export class DetailsSolicitationComponent implements OnInit {
       if (this.size > '2' && this.status === 'done') {
         this.notification.error('文件上传失败', `请选择符合要求的照片`);
       } else if (this.status === 'done') {
-        this.submitError = this.notification.success('文件上传成功', `文件 ${param.file.name} 上传完成。`);
+        this.notification.success('文件上传成功', `文件 ${param.file.name} 上传完成。`);
         this.isShowBtn = false;
       } else if (this.status === 'error') {
         this.notification.error('文件上传失败', `文件 ${param.file.name} 上传失败。`);
@@ -169,7 +170,7 @@ export class DetailsSolicitationComponent implements OnInit {
         this.notification.error('文件上传失败', `文件 ${param.file.name} 上传失败。`);
       }
     }
-    param.fileList.forEach(b => {
+    param.fileList.forEach((b, index) => {
       if (!!b.response) {
         // this.id = b.response.id ;
         this.extension = b.response.extension;
