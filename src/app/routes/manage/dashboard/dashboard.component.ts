@@ -68,6 +68,7 @@ export class DashboardComponent implements OnInit {
   isLoadedPublicity: boolean;
   isLoadingSource: boolean;
   isLoadedSource: boolean;
+  reviewListIsOpen: false;
   sid: string;
   t1: any;
   t2: any;
@@ -398,6 +399,20 @@ export class DashboardComponent implements OnInit {
       this.reviewList = result.list;
     });
   }
+
+  // reviewListIsOpenChange(event) {
+  // this.reviewListIsOpen = event;
+  // if(this.reviewListIsOpen === true) {
+  //   this.reviewListIsOpen1 = true;
+  //   this.reviewListIsOpen2 = true;
+  //   this.reviewListIsOpen3 = true;
+  // }
+  // if(this.reviewListIsOpen === false) {
+  //   this.reviewListIsOpen1 = false;
+  //   this.reviewListIsOpen2 = false;
+  //   this.reviewListIsOpen3 = false;
+  // }
+  // }
 
   reviewListIsOpenChange1(event) {
     this.reviewListIsOpen1 = event;
