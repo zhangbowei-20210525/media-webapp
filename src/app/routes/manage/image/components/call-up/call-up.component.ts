@@ -99,7 +99,7 @@ export class CallUpComponent implements OnInit {
     document.execCommand('copy');
     this.message.success('复制成功');
   }
-  linkChange(data) {
-    console.log(data);
-  }
+  // linkChange(data) {
+    // console.log(data);
+  // }
 }
