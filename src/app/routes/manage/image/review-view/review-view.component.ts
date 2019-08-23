@@ -437,7 +437,7 @@ export class ReviewViewComponent implements OnInit {
     const reviewId = [];
     this.threeListOfDisplayData.forEach(item => {
       console.log(item);
-      if (review_ids.indexOf(item.publicity.id) > -1) {
+      if (review_ids.indexOf(item.publicity.program.id) > -1) {
         reviewId.push(item.id);
         console.log(reviewId, '2222');
       }
