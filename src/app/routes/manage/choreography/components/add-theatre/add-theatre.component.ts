@@ -146,7 +146,7 @@ export class AddTheatreComponent implements OnInit {
         this.conversion(this.validateForm.get('broadcastDate').value).forEach(f => {
           this.oldWeeks.push(f);
         });
-        this.weeks.push(this.oldWeeks[0], this.oldWeeks[this.oldWeeks.length - 1]);
+        this.oldWeeks.forEach(f => this.weeks.push(f));
         this.isRepeat = false;
       } else {
         const a = this.conversion(this.validateForm.get('broadcastDate').value);
@@ -165,7 +165,10 @@ export class AddTheatreComponent implements OnInit {
           });
           console.log('33333');
           console.log(this.oldWeeks);
-          this.weeks.push(this.validateForm.get('broadcastDate').value[0], this.validateForm.get('broadcastDate').value[1]);
+          this.conversion(this.validateForm.get('broadcastDate').value).forEach(f => {
+            this.weeks.push(f);
+          });
+          // this.weeks.push(this.validateForm.get('broadcastDate').value[0], this.validateForm.get('broadcastDate').value[1]);
           this.isRepeat = false;
         }
         if (b.every(s => s === -1) === false) {
