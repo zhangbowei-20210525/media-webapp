@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ACLAbility } from '@core/acl';
 import { EditEmployeeComponent } from '../components/edit-employee.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-employees',
@@ -13,17 +14,16 @@ import { EditEmployeeComponent } from '../components/edit-employee.component';
 })
 export class EmployeesComponent implements OnInit {
 
+  eiSubscription: Subscription;
+
   department: number;
   allChecked: boolean;
   indeterminate: boolean;
   disabledButton = true;
   isDatasetLoading = false;
   dataset = [];
-  id: number;
-  visible = false;
   phone: string;
-  invitationData: { qrcode: string, link: string };
-  currentIndex: number;
+  invitationData: { id: number, phone: string, qrcode: string, link: string };
 
   constructor(
     public ability: ACLAbility,
@@ -108,35 +108,34 @@ export class EmployeesComponent implements OnInit {
   }
 
   onInvitationChange(state: boolean, id: number, phone: string, index: number) {
-    console.log('11111');
-    this.id = id;
     if (state) {
-      this.phone = phone;
-      const reg =  /^(\d{3})\d{4}(\d{4})$/;
-      this.phone = this.phone.replace(reg, '$1****$2');
-      this.service.getEmployeeInvitationData(id).subscribe(result => {
-        console.log(result);
+      this.eiSubscription = this.service.getEmployeeInvitationData(id).subscribe(result => {
         this.invitationData = {
+          id: id,
+          phone: phone.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2'),
           qrcode: `data:image/jpeg;base64,${result}`,
           link: `${location.origin}/outside/accept-employee-invitations/${id}`
         };
       });
     } else {
       this.invitationData = null;
+      this.eiSubscription.unsubscribe();
     }
-    this.currentIndex = index;
-    console.log(this.currentIndex, 'llllll');
   }
 
   sendEmployeeInvitation() {
-    this.service.sendEmployeesInvitation(this.id).subscribe(result => {
-      this.visible = false;
+    const data = this.dataset.find(d => d.id === this.invitationData.id);
+    this.service.sendEmployeesInvitation(this.invitationData.id).subscribe(result => {
+      data.invitatioVisible = false;
       this.message.success('邀请已发送成功');
     });
   }
 
   close() {
-    this.visible = false;
+    const data = this.dataset.find(d => d.id === this.invitationData.id);
+    if (data) {
+      data.invitatioVisible = false;
+    }
   }
 
   copy(data) {
