@@ -37,10 +37,9 @@ export class EmployeeDetailsComponent implements OnInit {
   // currentRoles: number[];
   // currentPermissions: PermissionDto[];
 
-  originRoles: number[];
-  originPermissions: PermissionDto[];
+  originRoles: number[]; // 原始角色
+  originPermissions: PermissionDto[]; // 原始权限点
   originCheckedKeys: string[];
-  otherCheckedKeys: string[];
 
   isEditable = false;
   isInfoLoading = false;
@@ -83,27 +82,19 @@ export class EmployeeDetailsComponent implements OnInit {
       });
   }
 
-  // fetchSelectionRoles() {
-  //   this.service.getSelectionRoles().subscribe(roles => {
-  //     this.roles = roles;
-  //   });
-  // }
-
   fetchRoleAndPermissions() {
     zip(this.service.getRoleTemplates(), this.service.getEmployeePermissions(this.employeeId)).subscribe(result => {
       this.roleTemplates = result[0];
       this.originRoles = result[1].role;
       this.originPermissions = result[1].permission_data;
-      // this.originCheckedKeys = this.getKeysByPermissions(this.originPermissions);
-      this.originCheckedKeys = this.filterRolePermissions(this.getKeysByPermissions(this.originPermissions), this.originRoles);
-      // console.log(this.originCheckedKeys);
+      this.originCheckedKeys = this.getKeysByPermissions(this.originPermissions);
       this.setRoleOptions(this.originRoles, this.roleTemplates);
-      // this.setOriginCheckedKeysByPermissions(this.currentPermissions);
-      this.setPermissionNodes(this.originPermissions, this.originRoles, this.originCheckedKeys);
+      this.setPermissionNodes(this.originPermissions, this.originCheckedKeys);
     });
   }
 
-  setPermissionNodes(permissions: PermissionDto[], roles?: number[], checkedKeys?: string[]) {
+  setPermissionNodes(permissions: PermissionDto[], checkedKeys?: string[]) {
+    // 设置权限tree组件
     this.permissionNodes = this.ts.getNzTreeNodes(permissions, item => ({
       title: item.name,
       key: item.code,
@@ -113,29 +104,13 @@ export class EmployeeDetailsComponent implements OnInit {
       disableCheckbox: true,
       checked: false // checkedKeys.some(key => key === item.code),
     }));
-    if (roles && checkedKeys) {
+    if (checkedKeys) {
+      // 此时树还没生成
       setTimeout(() => {
-        // console.log(checkedKeys);
-        // this.setPermissionsTreeCheckedByKeys(checkedKeys);
-        this.setPermissionsTreeChecked(roles, checkedKeys);
+        this.setPermissionsTreeCheckedByKeys(checkedKeys);
       }, 0);
     }
   }
-
-  // setOriginCheckedKeysByPermissions(permissions: PermissionDto[]) {
-  //   this.originCheckedKeys = this.ts.recursionNodesMapArray(permissions, p => p.code, p =>
-  //     p.status && (!p.children || p.children.length < 1));
-  // }
-
-  // setCheckedNodesByKeys(keys: string[]) {
-  //   const nodes = this.permissionTreeCom.getTreeNodes();
-  //   this.ts.recursionNodes(nodes, node => {
-  //     node.isChecked = keys.some(k => k === node.key);
-  //     if (node.parentNode) {
-  //       this.syncChecked(node.parentNode);
-  //     }
-  //   });
-  // }
 
   editEmployee() {
     this.modal.create({
@@ -184,57 +159,28 @@ export class EmployeeDetailsComponent implements OnInit {
     });
   }
 
-  // selectRole(role: RoleDto) {
-  //   this.selectedRole = role;
-  //   this.modal.confirm({
-  //     nzTitle: `使用使用 ${role.name} 覆盖当前权限？`,
-  //     nzOnOk: () => {
-  //       this.setEmployeeRole(role.id, true);
-  //     },
-  //     nzOnCancel: () => {
-  //       this.setEmployeeRole(role.id, false);
-  //     }
-  //   });
-  // }
-
-  // setEmployeeRole(role: number, isCover: boolean) {
-  //   this.service.updateEmployeeRole(this.employeeId, role, isCover).subscribe(permissions => {
-  //     if (isCover) {
-  //       // this.setPermissionNodes(permissions);
-  //       this.setOriginCheckedKeysByPermissions(permissions);
-  //       this.setCheckedNodesByKeys(this.originCheckedKeys);
-  //     }
-  //   });
-  // }
-
   setEditable(state: boolean, syncOriginChecked = true) {
     this.isEditable = state;
     this.ts.setDisableCheckbox(this.permissionTreeCom.nzNodes, !state);
     if (!state && syncOriginChecked) {
-      // const nodes = this.permissionTreeCom.getTreeNodes();
-      // this.ts.recursionNodes(nodes, node => {
-      //   node.isChecked = this.originCheckedKeys.some(k => k === node.key);
-      //   if (node.parentNode) {
-      //     this.syncChecked(node.parentNode);
-      //   }
-      // });
-      this.setPermissionsTreeChecked(this.originRoles, this.originCheckedKeys);
+      this.setPermissionsTreeCheckedByKeys(this.originCheckedKeys);
       this.setRoleOptions(this.originRoles, this.roleTemplates);
     }
   }
 
+  /**
+   * 同步选中，通过目标节点状态修正其上下级的全选和半选状态
+   * @param node 目标节点
+   */
   syncChecked(node: NzTreeNode) {
     const { isChecked, isHalfChecked } = node;
     node.isChecked = node.children.every(n => n.isChecked);
-    if (node.isChecked) {
-      node.isHalfChecked = false;
-    } else {
-      node.isHalfChecked = node.children.some(n => n.isChecked || n.isHalfChecked);
-    }
+    node.isHalfChecked = node.isChecked ? false : node.children.some(n => n.isChecked || n.isHalfChecked);
     if (node.isChecked === isChecked && node.isHalfChecked === isHalfChecked) {
       return;
     }
     if (node.parentNode) {
+      // 从下向上单向传播
       this.syncChecked(node.parentNode);
     }
   }
@@ -245,14 +191,10 @@ export class EmployeeDetailsComponent implements OnInit {
     this.service.updateEmployeePermissions(this.employeeId, permissionKeys, this.roleCheckedkeys).subscribe(permissions => {
       this.message.success('修改成功');
       this.originRoles = this.roleCheckedkeys;
-      // this.originCheckedKeys = permissionKeys;
-      this.originCheckedKeys = this.filterRolePermissions(permissionKeys, this.originRoles);
-      // this.updateRoleCheckedKeys();
+      this.originCheckedKeys = permissionKeys;
       this.setEditable(false, false);
       if (this.employeeId === this.settings.user.employee_id) {
-        // this.settings.permissions = this.getKeysByPermissions(permissions); // permissionKeys;
         this.settings.permissions = this.ts.recursionNodesMapArray(permissions, p => p.code, p => p.status);
-        // console.log(this.settings.permissions);
       }
     });
   }
@@ -267,35 +209,26 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   onRoleCheckChange() {
-    const old = this.roleCheckedkeys;
-    this.updateRoleCheckedKeys();
-    const roleDiff = [..._.difference(old, this.roleCheckedkeys), ..._.difference(this.roleCheckedkeys, old)];
-    const currentkey = roleDiff[0];
-    const nodes = this.permissionTreeCom.getTreeNodes();
-    const currentKeys = this.ts.recursionNodesMapArray(nodes, node => node.key, node => node.isChecked);
-    const currentRoleKeys = [...this.originRoles, currentkey];
-    const rolePermissionKeys = this.getKeysByPermissions(
-      _.flatten(this.roleTemplates.filter(r => currentRoleKeys.includes(r.id)).map(r => r.permissions)));
-    const originKeys = [...this.originCheckedKeys, ...rolePermissionKeys];
-    const diff = _.difference(currentKeys, originKeys);
-    this.setPermissionsTreeChecked(this.roleCheckedkeys, [...this.originCheckedKeys, ...diff]);
-  }
-
-  updateRoleCheckedKeys() {
-    this.roleCheckedkeys = this.roleCheckOptions.filter(r => r.checked).map(r => r.value);
+    const oldRoleCheckedKeys = this.roleCheckedkeys;
+    const newRoleCheckedKeys = this.roleCheckedkeys = this.roleCheckOptions.filter(r => r.checked).map(r => r.value);
+    if (newRoleCheckedKeys.length > oldRoleCheckedKeys.length) {
+      _.difference(newRoleCheckedKeys, oldRoleCheckedKeys) // 也许可能的多个
+        .forEach(checked => {
+          this.roleChekced(this.roleTemplates.find(r => r.id === checked), oldRoleCheckedKeys);
+        });
+    } else if (oldRoleCheckedKeys.length > newRoleCheckedKeys.length) {
+      _.difference(oldRoleCheckedKeys, newRoleCheckedKeys)
+        .forEach(unchecked => {
+          this.roleUnchecked(this.roleTemplates.find(r => r.id === unchecked), oldRoleCheckedKeys);
+        });
+    } else {
+      console.log('It\'s amazing.');
+    }
   }
 
   setRoleOptions(current: number[], roleTemplates: RoleDto[]) {
     this.roleCheckedkeys = current;
     this.roleCheckOptions = roleTemplates.map(t => ({ label: t.name, value: t.id, checked: this.roleCheckedkeys.includes(t.id) }));
-  }
-
-  setPermissionsTreeChecked(roleIds: number[], other: PermissionDto[] | string[]) {
-    const keys = new Set([
-      ...this.getKeysByPermissions(_.flatten(this.roleTemplates.filter(r => roleIds.includes(r.id)).map(r => r.permissions))),
-      ...(_.isString(other[0]) ? other : this.getKeysByPermissions(other as PermissionDto[])) as string[]
-    ]);
-    this.setPermissionsTreeCheckedByKeys(Array.from(keys));
   }
 
   setPermissionsTreeCheckedByKeys(keys: string[]) {
@@ -312,16 +245,32 @@ export class EmployeeDetailsComponent implements OnInit {
     return this.ts.recursionNodesMapArray(permissions, p => p.code, p => p.status && (!p.children || p.children.length < 1));
   }
 
-  filterRolePermissions(keys: string[], roleIds: number[]) {
-    const rolePermissions = _.flatten(this.roleTemplates.filter(r => roleIds.includes(r.id)).map(r => r.permissions));
-    const diff = _.difference(keys, this.getKeysByPermissions(rolePermissions));
-    return diff;
+  getPermissionKeysFromRole(role: RoleDto | RoleDto[]) {
+    const flattened = _.isArray(role) ? _.flatten(role.map(r => r.permissions)) : _.flatten(role.permissions);
+    return this.getKeysByPermissions(flattened);
   }
 
-  // onEmployeeInvitationPopoverChange(state: boolean) {
-  //   if (state) {
+  getCheckedPermissionKeys() {
+    return this.ts.recursionNodesMapArray(this.permissionTreeCom.getTreeNodes(), node => node.key, node => node.isChecked);
+  }
 
-  //   }
-  // }
+  roleChekced(role: RoleDto, prevRoleCheckeds: number[]) {
+    const rolePermissionKeys = this.getPermissionKeysFromRole(role);
+    const otherRolePermissionKeys = this.getPermissionKeysFromRole(this.roleTemplates.filter(r => prevRoleCheckeds.includes(r.id)));
+    const roleDiff = _.difference(rolePermissionKeys, otherRolePermissionKeys);
+    const currentCheckedPermissionKeys = this.getCheckedPermissionKeys();
+    this.setPermissionsTreeCheckedByKeys(_.union(currentCheckedPermissionKeys, roleDiff));
+  }
+
+  roleUnchecked(role: RoleDto, prevRoleCheckeds: number[]) {
+    const otherRoleCheckedKeys = prevRoleCheckeds.filter(r => r !== role.id);
+    const rolePermissionKeys = this.getPermissionKeysFromRole(role);
+    const otherRolePermissionKeys = this.getPermissionKeysFromRole(this.roleTemplates.filter(r => otherRoleCheckedKeys.includes(r.id)));
+    const intersection = _.intersection(otherRolePermissionKeys, rolePermissionKeys); // [1, 2, 3, 4] [3, 4, 5] => [3, 4]
+    const diff = _.difference(rolePermissionKeys, intersection);  // [3, 4, 5] [3, 4] => [5]
+    const currentCheckedPermissionKeys = this.getCheckedPermissionKeys();
+    const currentDiff = _.difference(currentCheckedPermissionKeys, diff); // [1, 2, 3, 4, 5, 8, 9] => [1, 2, 3, 4, 8, 9]
+    this.setPermissionsTreeCheckedByKeys(currentDiff);
+  }
 
 }
