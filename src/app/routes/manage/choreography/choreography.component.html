@@ -4,8 +4,8 @@
     <div class="options-wrapper">
       <nz-radio-group  [(ngModel)]="radioValue" [nzButtonStyle]="'solid'">
         <label nz-radio-button nzValue="broadcastInfo"  [routerLink]="'info'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">播表</label>
-        <label nz-radio-button nzValue="editBroadcastPlan" [routerLink]="'edit-broadcast-plan'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">编排计划</label>
-        <label nz-radio-button nzValue="theatre" [routerLink]="'theatre'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">剧场</label>
+        <label nz-radio-button acl [acl-ability]="ability.editing.edit" nzValue="editBroadcastPlan" [routerLink]="'edit-broadcast-plan'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">编排计划</label>
+        <label nz-radio-button acl [acl-ability]="ability.editing.edit" nzValue="theatre" [routerLink]="'theatre'" [routerLinkActive]="'ant-radio-button-wrapper-checked'">剧场</label>
       </nz-radio-group>
     </div>
     <div class="options-wrapper">

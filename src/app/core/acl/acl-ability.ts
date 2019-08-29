@@ -9,6 +9,8 @@ export class ACLAbility {
     custom: ACLModule;
     company: CompanyACLModule;
     review: ReviewACLModule;
+    editing: ACLModule;
+    analysis: ACLModule;
 }
 
 export const aclAbility = <ACLAbility>{
@@ -101,8 +103,14 @@ export const aclAbility = <ACLAbility>{
         view: null,
         conf: null,
         edit: null,
+    },
+    editing: <ACLModule>{
+      view: null,
+      edit: null
+    },
+    analysis: <ACLModule>{
+      view: null
     }
-
 };
 
 (function (ab) {
@@ -191,6 +199,7 @@ interface EmployeeACLModule extends ACLModule {
     department?: string;
     outside?: string;
 }
+
 interface ReviewACLModule extends ACLModule {
     view?: string;
     conf?: string;

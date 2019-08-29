@@ -4,6 +4,7 @@ import { AddTheatreComponent } from './components/add-theatre/add-theatre.compon
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ChoreographyService } from './choreography.service';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-choreography',
@@ -21,6 +22,7 @@ export class ChoreographyComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private service: ChoreographyService,
+    public ability: ACLAbility
   ) { }
 
   ngOnInit() {

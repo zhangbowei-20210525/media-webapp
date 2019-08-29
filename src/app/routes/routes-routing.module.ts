@@ -58,6 +58,7 @@ const routes: Routes = [
           },
           {
             path: 'dashboard',
+            canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.analysis.view] } },
             component: DashboardComponent
           },
           {
@@ -83,6 +84,7 @@ const routes: Routes = [
           },
           {
             path: 'choreography', component: ChoreographyComponent,
+            canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.editing.view] } },
             children: [
               { path: '', redirectTo: 'info', pathMatch: 'full' },
               {
