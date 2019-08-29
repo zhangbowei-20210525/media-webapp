@@ -118,6 +118,7 @@ export class DetailsSolicitationComponent implements OnInit {
   }
 
   handleChange(param: UploadChangeParam): void {
+    console.log(param, 'param');
     this.isShowBtn = true;
     this.files = param.fileList;
     console.log(this.files);
@@ -269,6 +270,7 @@ export class DetailsSolicitationComponent implements OnInit {
   onInput(data) {
     this.blurData = data;
     // console.log(this.blurData);
+    // this.getDisplayDate();
   }
   getNewList() {
     this.getDisplayDate();
@@ -285,7 +287,6 @@ export class DetailsSolicitationComponent implements OnInit {
   }
   getDisplayDate() {
     this.filterList = this.programList.filter(item => {
-      // console.log(this.filterList);
       return item.name === this.blurData;
     });
     if (this.filterList.length === 0) {
@@ -303,9 +304,8 @@ export class DetailsSolicitationComponent implements OnInit {
       // if (this.filterList[0].program.nickname === null ) {
       //   this.filterList[0].program.nickname = '';
       // }
-
+      console.log(this.filterList[0].program);
       if (this.filterList[0].program) {
-
         this.validateForm.get('program_type').setValue(
           this.filterList[0].program.program_type === null ? '' : this.filterList[0].program.program_type);
         this.validateForm.get('theme').setValue(
@@ -332,6 +332,8 @@ export class DetailsSolicitationComponent implements OnInit {
           this.filterList[0].program.introduction === null ? '' : this.filterList[0].program.introduction);
         this.validateForm.disable();
         this.uploadVideo = true;
+    this.getDisplayDate();
+
       }
     }
   }

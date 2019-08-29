@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-submit-first-review',
-  templateUrl: './submit-first-review.component.html',
-  styleUrls: ['./submit-first-review.component.less']
+  selector: 'app-submit-second-review',
+  templateUrl: './submit-second-review.component.html',
+  styleUrls: ['./submit-second-review.component.less']
 })
-export class SubmitFirstReviewComponent implements OnInit {
+export class SubmitSecondReviewComponent implements OnInit {
   @Input() id: number;
   @Input() intentonName = [];
   @Input() reviewName = [];
@@ -15,4 +15,5 @@ export class SubmitFirstReviewComponent implements OnInit {
     console.log(this.intentonName);
     console.log(this.reviewName);
   }
+
 }

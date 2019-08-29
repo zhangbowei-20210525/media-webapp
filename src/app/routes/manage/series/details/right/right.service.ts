@@ -11,7 +11,8 @@ export class RightService {
   constructor(private http: HttpClient) { }
 
   getOwnRights(pid: number) {
-    return this.http.get<RightDetailsDto>(`/api/v1/rights/programs/${pid}`);
+    // return this.http.get<RightDetailsDto>(`/api/v1/rights/programs/${pid}`);
+    return this.http.get<RightDetailsDto>(`/api/v1/programs/copyrights/${pid}`);
   }
 
   deleteOwnRights(id: number) {

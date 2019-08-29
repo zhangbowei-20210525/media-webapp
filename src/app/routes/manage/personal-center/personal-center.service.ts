@@ -26,8 +26,9 @@ export class PersonalCenterService {
   getShareRecord(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/publicity/collections?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
-  getReviewSample(id: number) {
-    return this.http.get<any>(`/api/v1/publicity/collections/${id}/received_publicitys`);
+  getReviewSample(id: number, pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/publicity/collections/${id}/received_publicitys?page=${pagination.page}
+    &page_size=${pagination.page_size}`);
   }
   getShareList(pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/publicity/share?page=${pagination.page}&page_size=${pagination.page_size}`);

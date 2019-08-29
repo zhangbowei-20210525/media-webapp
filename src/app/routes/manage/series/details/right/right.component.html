@@ -7,45 +7,46 @@
     </div>
   </div>
   <div class="block-content">
-    <div [@fadeIn] *ngIf="isOwnLoaded">
-      <nz-table #ownTable [nzData]="ownDataSet" [nzFrontPagination]="true" [nzHideOnSinglePage]="true">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th nzWidth="12rem">权利</th>
-            <th nzWidth="14rem">授权范围</th>
-            <!-- <th>权利备注</th> -->
-            <th>地域</th>
-            <!-- <th>范围备注</th> -->
-            <th nzWidth="18rem">期限</th>
-            <!-- <th>期限备注</th> -->
-            <th nzWidth="8rem">关联合同</th>
-            <th>备注</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of ownTable.data; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ data.right_type_label }}</td>
-            <td>{{ data.child_rights | arrayMap:'name' | arrayFormat | emptyDefaultChar }}</td>
-            <!-- <td>{{ data.right_remark }}</td> -->
-            <td>{{ data.area_label }}</td>
-            <!-- <td>{{ data.area_remark }}</td> -->
-            <td>{{ (data.permanent_date ? '永久' : (data.start_date && data.end_date) ? ((data.start_date | date:'yyyy/MM/dd') + ' ~ ' +
-              (data.end_date | date:'yyyy/MM/dd')) : data.date_remark) | emptyDefaultChar }}</td>
-            <!-- <td>{{ data.date_remark }}</td> -->
-            <td>{{ data.contract_number | emptyDefaultChar }}</td>
-            <td>
-              <div style="width: 18rem" class="text-ellipsis" nz-tooltip [nzTitle]="data.remark">{{ data.remark }}</div>
-            </td>
-            <td>
-              <a nz-popconfirm nzTitle="是否删除此权利？" (nzOnConfirm)="deleteOwnRight(data.id)" acl
-                [acl-ability]="ability.program.right.del"><i nz-icon type="delete" theme="outline"></i></a>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+    <div class="big-box" *ngFor="let data of ownDataSet?.right_groups">
+      <div class="big-box-top">
+        <div *ngIf="!data.contract" style="color: #333333;font-weight: 500;">暂无合同信息</div>
+        <div *ngIf="data.contract" style="margin-bottom: 12px;">授权单位:&nbsp;&nbsp;&nbsp;&nbsp;<span
+            style="color: #333333;font-weight: 500;">{{data.contract.custom_name}}</span> </div>
+        <div *ngIf="data.contract">关联合同:&nbsp;&nbsp;&nbsp;&nbsp;<span
+            style="color: #4797F7">{{data.contract.contract_name === null ? '无' : data.contract.contract_name}}</span>
+        </div>
+      </div>
+      <div class="big-box-btn" *ngFor="let item of data.rights">
+        <div style="display:flex;">
+          <div style="margin-bottom:12px; width: 40%;">权利种类:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #4797F7;font-weight:500;">{{item.right_type_label}}</span></div>
+        </div>
+        <div style="display:flex;">
+          <div style="width: 40%;margin-bottom:12px;">授权范围:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.child_rights.length === 0 ? '无' : item.child_rights | arrayMap:'name' | arrayFormat | emptyDefaultChar}}</span>
+          </div>
+          <div>权利备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.right_remark === null ? '无' : item.right_remark}}</div>
+        </div>
+        <div style="display:flex;">
+          <div style="width: 40%;margin-bottom:12px;">授权地域:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.area_label}}</span></div>
+          <div>地域备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.area_remark === null ? '无' : item.area_remark}}</div>
+        </div>
+        <div style="display:flex;">
+          <div *ngIf="item.permanent_date === true" style="width: 40%;margin-bottom:12px;">
+            购入期限:&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #333333;font-weight: 500;">永久</span></div>
+          <div *ngIf="item.permanent_date === false" style="width: 40%;margin-bottom:12px;">
+            购入期限:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.start_date | date:'yyyy/MM/dd'}}~{{item.end_date | date:'yyyy/MM/dd'}}</span>
+          </div>
+          <div>期限备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.date_remark === null ? '无' : item.date_remark}}</div>
+        </div>
+        <!-- <div style="display:flex;">
+            <div style="width: 40%;margin-bottom:12px;">播出频道:&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #333333;font-weight: 500;">东方卫视</span></div>
+            <div>播出日期:&nbsp;&nbsp;&nbsp;&nbsp;2019/09/01 08:10</div>
+          </div> -->
+        <div>备注:{{item.remark === null ? '无' : item.remark}}</div>
+      </div>
     </div>
   </div>
 </div>
@@ -59,47 +60,50 @@
     </div>
   </div>
   <div class="block-content">
-    <div [@fadeIn] *ngIf="isPublishLoaded">
-      <nz-table #pubTable [nzData]="pubDataSet" [nzFrontPagination]="false" [nzHideOnSinglePage]="true"
-        [nzPageSize]="pagination.page_size" [nzPageIndex]="pagination.page" [nzTotal]="pagination.count"
-        (nzPageIndexChange)="pageChange($event)">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th nzWidth="12rem">权利</th>
-            <th nzWidth="14rem">授权范围</th>
-            <!-- <th>权利备注</th> -->
-            <th>地域</th>
-            <!-- <th>范围备注</th> -->
-            <th nzWidth="18rem">期限</th>
-            <!-- <th>期限备注</th> -->
-            <th nzWidth="8rem">关联合同</th>
-            <th>备注</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of pubTable.data; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ data.right_type_label }}</td>
-            <td>{{ data.child_rights | arrayMap:'name' | arrayFormat | emptyDefaultChar }}</td>
-            <!-- <td>{{ data.right_remark }}</td> -->
-            <td>{{ data.area_label }}</td>
-            <!-- <td>{{ data.area_remark }}</td> -->
-            <td>{{ (data.permanent_date ? '永久' : (data.start_date && data.end_date) ? ((data.start_date | date:'yyyy/MM/dd') + ' ~ ' +
-                  (data.end_date | date:'yyyy/MM/dd')) : data.date_remark) | emptyDefaultChar }}</td>
-            <!-- <td>{{ data.date_remark }}</td> -->
-            <td>{{ data.contract_number }}</td>
-            <td>
-              <div style="width: 18rem" class="text-ellipsis">{{ data.remark }}</div>
-            </td>
-            <td>
-              <a nz-popconfirm nzTitle="是否删除此发行？" (nzOnConfirm)="deletePublishRight(data.id)" acl
-                [acl-ability]="ability.program.right.del"><i nz-icon type="delete" theme="outline"></i></a>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+    <div class="big-box" *ngFor="let data of ownDataSet?.publish_right_groups">
+      <div class="big-box-top">
+        <div *ngIf="!data.contract" style="color: #333333;font-weight: 500;">暂无合同信息</div>
+        <div *ngIf="data.contract" style="margin-bottom: 12px;">客商信息:&nbsp;&nbsp;&nbsp;&nbsp;<span
+            style="color: #333333;font-weight: 500;">{{data.contract.custom_name}}</span> </div>
+        <div *ngIf="data.contract">关联合同:&nbsp;&nbsp;&nbsp;&nbsp;<span
+            style="color: #4797F7">{{data.contract.contract_name === null ? '无' : data.contract.contract_name}}</span>
+        </div>
+      </div>
+      <div class="big-box-btn" *ngFor="let item of data.rights">
+        <div style="display:flex;">
+          <div style="margin-bottom:12px; width: 40%;">权利种类:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #4797F7;font-weight:500;">{{item.right_type_label}}</span></div>
+          <!-- <div *ngIf="item.child_rights">授权范围:&nbsp;&nbsp;&nbsp;&nbsp;{{item.child_rights }}</div>{{ data.child_rights | arrayMap:'name' | arrayFormat | emptyDefaultChar }} -->
+          <div *ngIf="item.child_rights.length !== 0">
+            授权范围:&nbsp;&nbsp;&nbsp;&nbsp;{{item.child_rights.length === 0 ? '无' : item.child_rights | arrayMap:'name' | arrayFormat | emptyDefaultChar }}
+          </div>
+        </div>
+        <div style="display:flex;">
+          <div style="width: 40%;margin-bottom:12px;">是否独家:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.sole === true ? '是' : '否'}}</span>
+          </div>
+          <div>权利备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.right_remark === null ? '无' : item.right_remark}}</div>
+        </div>
+        <div style="display:flex;">
+          <div style="width: 40%;margin-bottom:12px;">授权地域:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.area_label}}</span></div>
+          <div>地域备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.area_remark === null ? '无' : item.area_remark}}</div>
+        </div>
+        <div style="display:flex;">
+          <div *ngIf="item.permanent_date === true" style="width: 40%;margin-bottom:12px;">
+            发行期限:&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #333333;font-weight: 500;">永久</span></div>
+          <div *ngIf="item.permanent_date === false" style="width: 40%;margin-bottom:12px;">
+            发行期限:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.start_date | date:'yyyy/MM/dd'}}~{{item.end_date | date:'yyyy/MM/dd'}}</span>
+          </div>
+          <div>期限备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.date_remark === null ? '无' : item.date_remark}}</div>
+        </div>
+        <!-- <div style="display:flex;">
+              <div style="width: 40%;margin-bottom:12px;">播出频道:&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #333333;font-weight: 500;">东方卫视</span></div>
+              <div>播出日期:&nbsp;&nbsp;&nbsp;&nbsp;2019/09/01 08:10</div>
+            </div> -->
+        <div>备注:{{item.remark === null ? '无' : item.remark}}</div>
+      </div>
     </div>
   </div>
 </div>

@@ -10,6 +10,7 @@ import { LaunchFilmsComponent } from '../components/launch-films/launch-films.co
 // import { CallUpComponent } from '../components/call-up/call-up.component';
 import { fadeIn } from '@shared/animations';
 import { SubmitFirstReviewComponent } from '../components/submit-first-review/submit-first-review.component';
+import { SubmitSecondReviewComponent } from '../components/submit-second-review/submit-second-review.component';
 
 @Component({
   selector: 'app-review-view',
@@ -87,6 +88,7 @@ export class ReviewViewComponent implements OnInit {
   isMyTapesLoaded = false;
   isShowTab = false;
   isShowView = false;
+  reviewName = [];
 
   constructor(
     public ability: ACLAbility,
@@ -177,13 +179,14 @@ export class ReviewViewComponent implements OnInit {
       this.receiverId, this.sortValue, this.starTime, this.endTime).subscribe(res => {
         // console.log(res);
         this.reviewList = res.list;
+        // console.log(this.reviewList, 'eeee');
         this.isShowTab = true;
         this.isShowView = true;
         // console.log(this.reviewList);
         this.reviewList.forEach(item => {
-          console.log(item, '111');
+          // console.log(item, '111');
           this.reviewId = item.id;
-          console.log(this.reviewId);
+          // console.log(this.reviewId);
         });
       });
   }
@@ -236,7 +239,7 @@ export class ReviewViewComponent implements OnInit {
     this.isSecondIndeterminate =
       this.secondListOfDisplayData.some(item => this.secondMapOfCheckedId[item.id]) && !this.isSecondAllDisplayDataChecked;
     // console.log(this.secondMapOfCheckedId);
-
+    // console.log(this.isSecondAllDisplayDataChecked);
   }
   secondPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.secondListOfDisplayData = $event;
@@ -255,6 +258,7 @@ export class ReviewViewComponent implements OnInit {
     // console.log(this.threeMapOfCheckedId, 'zzzz');
     // console.log(this.isThreeAllDisplayDataChecked);
     // console.log(this.threeListOfDisplayData, 'yyyyy');
+    // console.log(this.threeMapOfCheckedId);
   }
   threePageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
     this.threeListOfDisplayData = $event;
@@ -267,7 +271,7 @@ export class ReviewViewComponent implements OnInit {
   publicityPlay(sid: number, id: number) {
     // console.log(sid);g
     // console.log(id);
-    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, isHidden: 1, isSharing: 1}]);
+    this.router.navigate([`/manage/image/image-details/${id}`, { sid: sid, isHidden: 1, isSharing: 1 }]);
   }
   // 发起审片弹框
   launchFilms() {
@@ -294,7 +298,6 @@ export class ReviewViewComponent implements OnInit {
           nzTitle: `您将提交：`,
           nzContent: LaunchFilmsComponent,
           nzComponentParams: { intentonName: this.intentonName },
-          nzMaskClosable: false,
           nzClosable: false,
           nzWidth: 440,
           nzCancelText: '取消',
@@ -361,50 +364,68 @@ export class ReviewViewComponent implements OnInit {
   // 一审提交
   submitNext() {
     const review_ids = [];
+    this.intentonName = [];
     // const step_number = 1;
     for (const key in this.firstMapOfCheckedId) {
       if (this.firstMapOfCheckedId[key]) {
         review_ids.push(Number(key));
       }
     }
-    console.log(review_ids);
-    if (review_ids.length === 0) {
+    this.reviewList.forEach(item => {
+      // console.log(this.intentionList);
+      review_ids.forEach(ele => {
+        if (item.id === ele) {
+          this.intentonName.push(item.publicity.program.name);
+        }
+      });
+    });
+    if (!review_ids.length) {
       this.message.error('请选择样片');
     } else {
       this.service.submitFirstInstance(review_ids).subscribe(res => {
-        this.message.success('提交审片成功');
-      //   this.modalService.create({
-      //     nzTitle: `以下所选节目将进入二审：`,
-      //     nzContent: SubmitFirstReviewComponent,
-      //     nzMaskClosable: false,
-      //     nzClosable: false,
-      //     nzWidth: 440,
-      //     nzCancelText: '取消',
-      //     nzNoAnimation: true,
-      //     nzOkText: '确定并通知',
-      //     nzOnOk: () => new Promise((resolve) => {
-      //       resolve();
-      //       this.creatReview();
-      //       // 重置数据
-      //       for (const key in this.mapOfCheckedId) {
-      //         if (this.mapOfCheckedId[key]) {
-      //           this.mapOfCheckedId[key] = false;
-      //         }
-      //       }
-      //       this.isAllDisplayDataChecked = false;
-      //       this.selectedTabIndex = 2;
-      //       // this.selectedTabIndex = 1;
-      //       this.fetchPublicities(this.selectedTabIndex);
-      //     })
-      //   // });
+        this.reviewName = res;
+        // console.log(res);
+        this.modalService.create({
+          nzTitle: `以下所选节目将进入二审：`,
+          nzContent: SubmitFirstReviewComponent,
+          nzComponentParams: { intentonName: this.intentonName, reviewName: this.reviewName },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzWidth: 440,
+          nzCancelText: '取消',
+          nzNoAnimation: true,
+          nzOkText: '确定并通知',
+          nzOnOk: () => new Promise((resolve) => {
+            resolve();
+            // 重置数据
+            for (const key in this.firstMapOfCheckedId) {
+              if (this.firstMapOfCheckedId[key]) {
+                this.firstMapOfCheckedId[key] = false;
+              }
+            }
+            this.isAllDisplayDataChecked = false;
+            this.selectedTabIndex = 2;
+            this.fetchPublicities(this.selectedTabIndex);
+            this.message.success('提交审片成功');
+            const employee_ids = [];
+            this.reviewName.forEach(item => {
+              employee_ids.push(item.id);
+              // console.log(employee_ids);
+            });
+            // tslint:disable-next-line:no-shadowed-variable
+            this.service.reviewNotice(employee_ids).subscribe(res => {
+              // console.log(res);
+            });
+          })
+        });
       });
-      this.selectedTabIndex = 2;
-      this.fetchPublicities(this.selectedTabIndex);
+
     }
   }
   // 二审提交
   secondSubmit() {
     const review_ids = [];
+    this.intentonName = [];
     // const step_number = 2;
     for (const key in this.secondMapOfCheckedId) {
       if (this.secondMapOfCheckedId[key]) {
@@ -413,15 +434,52 @@ export class ReviewViewComponent implements OnInit {
     }
     // this.review_ids = this.checkedFirstIds;
     // console.log(this.checkedFirstIds);
-    if (review_ids.length === 0) {
+    this.reviewList.forEach(item => {
+      review_ids.forEach(ele => {
+        if (item.id === ele) {
+          this.intentonName.push(item.publicity.program.name);
+        }
+      });
+    });
+    if (!review_ids.length) {
       this.message.error('请选择样片');
     } else {
       this.service.submitFirstInstance(review_ids).subscribe(res => {
         // console.log(res);
+        this.reviewName = res;
+        this.modalService.create({
+          nzTitle: `以下所选节目将进入三审`,
+          nzContent: SubmitSecondReviewComponent,
+          nzComponentParams: { intentonName: this.intentonName, reviewName: this.reviewName },
+          nzClosable: false,
+          nzNoAnimation: true,
+          nzWidth: 440,
+          nzCancelText: '取消',
+          nzOkText: '确定',
+          nzOnOk: () => new Promise((resolve) => {
+            resolve();
+            // this.creatReview();
+            // 重置数据
+            for (const key in this.threeMapOfCheckedId) {
+              if (this.threeMapOfCheckedId[key]) {
+                this.threeMapOfCheckedId[key] = false;
+              }
+            }
+            this.isAllDisplayDataChecked = false;
+            this.selectedTabIndex = 3;
+            this.fetchPublicities(this.selectedTabIndex);
+            const employee_ids = [];
+            this.reviewName.forEach(item => {
+              employee_ids.push(item.id);
+              // console.log(employee_ids);
+            });
+            // tslint:disable-next-line:no-shadowed-variable
+            this.service.reviewNotice(employee_ids).subscribe(res => {
+              // console.log(res);
+            });
+          })
+        });
       });
-      this.selectedTabIndex = 3;
-      // this.selectedTabIndex = 3;
-      this.fetchPublicities(this.selectedTabIndex);
     }
   }
   // 三审提交(入库跳转)
@@ -431,15 +489,13 @@ export class ReviewViewComponent implements OnInit {
     for (const key in this.threeMapOfCheckedId) {
       if (this.threeMapOfCheckedId[key]) {
         review_ids.push(Number(key));
-        console.log(review_ids);
       }
     }
     const reviewId = [];
     this.threeListOfDisplayData.forEach(item => {
-      console.log(item);
       if (review_ids.indexOf(item.publicity.program.id) > -1) {
         reviewId.push(item.id);
-        console.log(reviewId, '2222');
+        // console.log(reviewId, '2222');
       }
     });
     if (review_ids.length === 0) {
@@ -447,7 +503,46 @@ export class ReviewViewComponent implements OnInit {
     } else {
       this.router.navigate([`/manage/series/add-copyrights`, { pids: review_ids, ids: reviewId, isVerify: 1 }]);
     }
-
+  }
+  firstReviewGoSave() {
+    const review_ids = [];
+    // const step_number = 3;
+    for (const key in this.firstMapOfCheckedId) {
+      if (this.firstMapOfCheckedId[key]) {
+        review_ids.push(Number(key));
+      }
+    }
+    const reviewId = [];
+    this.firstListOfDisplayData.forEach(item => {
+      if (review_ids.indexOf(item.id) > -1) {
+        reviewId.push(item.publicity.program.id);
+      }
+    });
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.router.navigate([`/manage/series/add-copyrights`, { pids: reviewId, ids: review_ids, isVerify: 1 }]);
+    }
+  }
+  secondReviewGoSave () {
+    const review_ids = [];
+    // const step_number = 3;
+    for (const key in this.secondMapOfCheckedId) {
+      if (this.secondMapOfCheckedId[key]) {
+        review_ids.push(Number(key));
+      }
+    }
+    const reviewId = [];
+    this.secondListOfDisplayData.forEach(item => {
+      if (review_ids.indexOf(item.id) > -1) {
+        reviewId.push(item.publicity.program.id);
+      }
+    });
+    if (review_ids.length === 0) {
+      this.message.error('请选择样片');
+    } else {
+      this.router.navigate([`/manage/series/add-copyrights`, { pids: reviewId, ids: review_ids, isVerify: 1 }]);
+    }
   }
   // 审片筛选功能
   getCompanyName(data) {

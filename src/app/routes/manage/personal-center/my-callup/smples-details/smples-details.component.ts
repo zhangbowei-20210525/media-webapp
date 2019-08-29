@@ -41,7 +41,7 @@ export class SmplesDetailsComponent implements OnInit {
   }
   fetchPublicities() {
     this.isLoading = true;
-    this.pcs.getReviewSample(this.id)
+    this.pcs.getReviewSample(this.id, this.pagination)
       .pipe(finalize(() => {
         this.isLoading = false;
         this.isMyDeatilsLoaded = true;
@@ -70,10 +70,11 @@ export class SmplesDetailsComponent implements OnInit {
   }
 
   getPageChange(page) {
-    console.log(11111);
+    console.log(page, 'page');
     // you should print page
     console.log(page);
     this.pagination.page = page;
+    console.log(this.pagination);
     this.fetchPublicities();
   }
   publicityPlay(id: number, sid: number, vid: number) {

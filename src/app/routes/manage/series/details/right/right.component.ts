@@ -19,9 +19,11 @@ export class RightComponent implements OnInit {
   isOwnLoaded = false;
   isPublishLoaded = false;
   isPublishLoading: boolean;
-  ownDataSet = [];
+  ownDataSet: any;
   pubDataSet = [];
   pagination = { page: 1, page_size: 10 } as PaginationDto;
+  allDataSet = [];
+  customName: any;
 
   constructor(
     public ability: ACLAbility,
@@ -43,7 +45,15 @@ export class RightComponent implements OnInit {
     this.service.getOwnRights(this.id)
       .pipe(finalize(() => this.isOwnLoaded = true))
       .subscribe(result => {
-        this.ownDataSet = result.own_rights;
+        // this.ownDataSet = result.own_rights;
+        this.ownDataSet = result;
+        const allDataRight = [];
+        this.ownDataSet.right_groups.forEach(b => {
+          console.log(b);
+          this.allDataSet = b;
+          allDataRight.push(this.allDataSet);
+        });
+        console.log(result);
       });
   }
 
@@ -54,6 +64,7 @@ export class RightComponent implements OnInit {
       this.isPublishLoaded = true;
     })).subscribe(result => {
       this.pubDataSet = result.list;
+      console.log(result);
       this.pagination = result.pagination;
     });
   }
@@ -86,5 +97,4 @@ export class RightComponent implements OnInit {
     this.pagination.page = index;
     this.fetchPublishRights();
   }
-
 }

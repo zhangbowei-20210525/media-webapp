@@ -354,6 +354,12 @@ export class SeriesService {
       review_ids: review_ids,
     });
   }
+  // 审片通知
+  reviewNotice(employee_ids: any) {
+    return this.http.post<any>(`/api/v1/sms/review_task`, {
+      employee_ids: employee_ids,
+    });
+  }
   // 一审详情提交
   // submitFirstInstanceDetails(conclusion: boolean, scoring: any, comment: any, id: number) {
   //   return this.http.post<any>(`/reviews/${id}/records`, {
