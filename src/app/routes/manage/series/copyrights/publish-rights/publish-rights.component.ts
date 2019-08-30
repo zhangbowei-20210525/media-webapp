@@ -280,7 +280,7 @@ export class PublishRightsComponent implements OnInit, OnDestroy {
           displayArea: area.name,
           displayRightChildren: children ? children.map(c => c.name) : null,
           termStartDate: startDate,
-          termEndDate: endDate
+          termEndDate: endDate,
         };
       });
       this.dataSet = [...this.dataSet, ...list];

@@ -17,6 +17,7 @@ import { ReceiveSolicitationComponent } from './receive-solicitation/receive-sol
 import { SampleViewComponent } from './sample-view/sample-view.component';
 import { ReviewViewComponent } from './review-view/review-view.component';
 import { SubmitFirstReviewComponent } from './components/submit-first-review/submit-first-review.component';
+import { SubmitSecondReviewComponent } from './components/submit-second-review/submit-second-review.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SubmitFirstReviewComponent } from './components/submit-first-review/sub
     SampleViewComponent,
     ReviewViewComponent,
     SubmitFirstReviewComponent,
+    SubmitSecondReviewComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +55,7 @@ import { SubmitFirstReviewComponent } from './components/submit-first-review/sub
     SampleViewComponent,
     ReviewViewComponent,
     SubmitFirstReviewComponent,
+    SubmitSecondReviewComponent,
   ]
 })
 export class ImageModule { }

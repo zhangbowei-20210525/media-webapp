@@ -57,6 +57,8 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
   pids: any;
   ids: any;
   proIds = '';
+  isShowMore = false;
+
   constructor(
     private fb: FormBuilder,
     private service: CopyrightsService,
@@ -359,7 +361,11 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
       }
     } else {
       if (this.dataSet.length > 0) {
-        this.saveCopyrights(false);
+        if (this.contractForm.value['customer'] === null) {
+          this.message.error('请填写完整信息');
+        } else {
+          this.saveCopyrights(true);
+        }
       } else {
         this.message.warning('请先"添加"');
       }
@@ -385,6 +391,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
         total_amount: this.contractForm.value['totalAmount'],
         remark: null
       };
+      console.log(this.contractForm.value['customer']);
 
       if (this.payments) {
         orders = this.payments.map(paymentObjArr => {
@@ -395,6 +402,7 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
     }
 
     const groupData = this.service.groupBy(this.dataSet, item => item.id);
+    console.log(this.dataSet);
     const nullId = groupData.find(item => item[0].id === null);
     if (nullId) {
       groupData.splice(groupData.indexOf(nullId), 1);
@@ -514,5 +522,11 @@ export class AddCopyrightsComponent implements OnInit, OnDestroy {
         this.paymentForm.get(percentKey).setValue(_.floor(percent, 2) + '%');
       });
     }
+  }
+  seeMore() {
+    this.isShowMore = true;
+  }
+  retractMore() {
+    this.isShowMore = false;
   }
 }
