@@ -14,6 +14,7 @@ import { SolicitationComponent } from '../solicitation/solicitation.component';
 import { TransmitService } from 'app/routes/manage/transmit/transmit.service';
 import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components/transmit-schedule/transmit-schedule.component';
 import { ProcessComponent } from '../process/process.component';
+import { EmployeesInvitedMessagesComponent } from '../employees-invited-messages/employees-invited-messages.component';
 
 @Component({
   selector: 'app-notify',
@@ -274,7 +275,41 @@ export class NotifyComponent implements OnInit {
       });
     }
 
-    if (type !== 'PUB001' && type !== 'PUB002') {
+    if (type === 'SYS005') {
+      this.service.getEmployeesInvitedInfo(id).subscribe(result => {
+        console.log(result);
+        if (result.is_joined === false && result.is_delete === false) {
+          this.model.create({
+            nzTitle: `员工邀请`,
+            nzContent: EmployeesInvitedMessagesComponent,
+            nzComponentParams: { info: info },
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzOkText: '加入',
+            nzCancelText: '拒绝',
+            nzWidth: 800,
+            nzOnOk: this.eimAgreed,
+            nzOnCancel: this.eimRefused,
+            nzNoAnimation: true
+          });
+        } else {
+          this.model.create({
+            nzTitle: `员工邀请`,
+            nzContent: EmployeesInvitedMessagesComponent,
+            nzComponentParams: { info: info },
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzOkText: '确认',
+            nzCancelText: null,
+            nzOnOk: this.esc,
+            nzWidth: 800,
+            nzNoAnimation: true
+          });
+        }
+      });
+    }
+
+    if (type !== 'PUB001' && type !== 'PUB002' && type !== 'SYS005') {
       this.ref = this.model.create({
         nzTitle: `${title}`,
         nzContent: SystemMessagesComponent,
@@ -289,6 +324,24 @@ export class NotifyComponent implements OnInit {
       });
     }
   }
+
+  esc = (component: EmployeesInvitedMessagesComponent) => new Promise((resolve, reject) => {
+    resolve();
+  })
+
+  eimRefused = (component: EmployeesInvitedMessagesComponent) => new Promise((resolve, reject) => {
+    this.service.eimDetermine(this.related_id, false).subscribe(result => {
+      resolve();
+      this.message.warning(this.translate.instant('已拒绝'));
+    });
+  })
+
+  eimAgreed = (component: EmployeesInvitedMessagesComponent) => new Promise((resolve, reject) => {
+    this.service.eimDetermine(this.related_id, true).subscribe(result => {
+      resolve();
+      this.message.success(this.translate.instant('已加入成功'));
+    });
+  })
 
   solicitationAgreed = (component: SolicitationComponent) => new Promise((resolve, reject) => {
     resolve();

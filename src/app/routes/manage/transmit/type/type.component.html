@@ -10,7 +10,7 @@
             <th style="text-align: center">#</th>
             <th>节目名称</th>
             <th>母带版本</th>
-            <th>类型</th>
+            <th>来源</th>
             <th>集数</th>
             <th>语言</th>
             <th>字幕</th>
@@ -24,8 +24,8 @@
             <td>{{data.program_name}}</td>
             <td><a (click)="purTapeDetails(data.id)">{{data.name}}</a></td>
             <td>
-              <span *ngIf="data.source_type == 'online'">在线</span>
-              <span *ngIf="data.source_type == 'entity'">实体</span>
+              <span *ngIf="data.from == 'inner'">本企业</span>
+              <span *ngIf="data.from == 'bought'">购入</span>
             </td>
             <td>{{data.episode}}</td>
             <td>

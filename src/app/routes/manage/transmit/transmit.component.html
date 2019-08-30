@@ -4,12 +4,11 @@
       <nav class="s-nav">
         <ul class="list s-nav-list">
           <li class="nav-item" acl [acl-ability]="ability.program.source.upload">
-            <a class="s-nav-link" [routerLinkActive]="'active'"
-              [routerLink]="'declared'">{{ 'app.transmit.source' | translate }}</a>
+            <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'declared'">已上载母带</a>
           </li>
           <li class="nav-item" acl [acl-ability]="ability.program.source.download">
             <a class="s-nav-link" [routerLinkActive]="'active'" [routerLink]="'type'" nz-tooltip>
-              {{ 'app.transmit.purchased-source' | translate }}
+              可下载母带
             </a>
           </li>
         </ul>

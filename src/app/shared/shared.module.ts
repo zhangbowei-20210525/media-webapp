@@ -85,7 +85,11 @@ const PIPES = [
   SourceFileStatusPipe,
   WeekDayPipe,
   MaxNumberPipe,
+<<<<<<< HEAD
   CeilPipe
+=======
+  RightExpirePipe
+>>>>>>> bob
 ];
 // #endregion
 
@@ -94,6 +98,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { WeekDayPipe } from './pipes/week-day.pipe';
+import { RightExpirePipe } from './pipes/right-expire.pipe';
 
 
 

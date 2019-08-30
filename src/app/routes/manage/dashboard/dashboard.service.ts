@@ -17,12 +17,18 @@ export class DashboardService {
     return this.http.get<any>('/api/v1/analysis/period');
   }
 
-  getSeriesPieChart(startYear: string, endYear: string) {
-    return this.http.get<any>(`/api/v1/analysis/program/pie?start_year=${startYear}&end_year=${endYear}`);
-  }
+  // getSeriesPieChart(startYear: string, endYear: string) {
+  //   return this.http.get<any>(`/api/v1/analysis/program/pie?start_year=${startYear}&end_year=${endYear}`);
+  // }
 
-  getSeriesLineChart(title: string, startYear: string, endYear: string) {
-    return this.http.get<any>(`/api/v1/analysis/program/line?title=${title}&start_year=${startYear}&end_year=${endYear}`);
+  // getSeriesLineChart(title: string, startYear: string, endYear: string) {
+  //   return this.http.get<any>(`/api/v1/analysis/program/line?title=${title}&start_year=${startYear}&end_year=${endYear}`);
+  // }
+
+  getDataStatistics(start_year: number, start_month: number, end_year: number, end_month: number, is_episode: string, title: string) {
+    console.log(start_year);
+    // tslint:disable-next-line:max-line-length
+    return this.http.get<any>(`/api/v1/analysis/program/pie?start_year=${start_year}&start_month=${start_month}&end_year=${end_year}&end_month=${end_month}&is_episode=${is_episode}&title=${title}`);
   }
 
   getPublicityStatistics(timeStatisticsType: string) {

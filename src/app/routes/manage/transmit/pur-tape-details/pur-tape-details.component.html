@@ -169,8 +169,6 @@
           <th [nzAlign]="'center'">{{ 'app.series.filename' | translate }}</th>
           <th [nzAlign]="'center'">{{ 'app.series.size' | translate }}</th>
           <th [nzAlign]="'center'">成功下载次数</th>
-          <th [nzAlign]="'center'">最近下载日期</th>
-          <th [nzAlign]="'center'">最近下载人</th>
           <th [nzAlign]="'center'">{{ 'app.series.created-time' | translate }}</th>
         </tr>
       </thead>
@@ -180,8 +178,6 @@
           <td [nzAlign]="'center'">{{data.name}}</td>
           <td [nzAlign]="'center'">{{data.size | byteFormat}}</td>
           <td [nzAlign]="'center'">{{data.success_task_num}}</td>
-          <td [nzAlign]="'center'">{{data.recent_task.created_date}}</td>
-          <td [nzAlign]="'center'">{{data.recent_task.created_name}}</td>
           <td [nzAlign]="'center'">{{data.created_at}}</td>
         </tr>
       </tbody>

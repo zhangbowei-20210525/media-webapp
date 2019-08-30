@@ -54,6 +54,7 @@ export class EditBroadcastPlanComponent implements OnInit {
 
   ngOnInit() {
     this.service.getSeriesList().subscribe(res => {
+      console.log(res);
       this.seriesList = res.list;
     });
     this.service.getTheatreList().pipe(tap(x => {
