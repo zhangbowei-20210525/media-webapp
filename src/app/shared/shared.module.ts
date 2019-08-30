@@ -85,11 +85,8 @@ const PIPES = [
   SourceFileStatusPipe,
   WeekDayPipe,
   MaxNumberPipe,
-<<<<<<< HEAD
-  CeilPipe
-=======
+  CeilPipe,
   RightExpirePipe
->>>>>>> bob
 ];
 // #endregion
 
