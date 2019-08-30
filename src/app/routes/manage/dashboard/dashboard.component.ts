@@ -481,12 +481,15 @@ export class DashboardComponent implements OnInit {
       this.dsCylindrical = new G2.Chart({
         container: 'dstCylindrical',
         forceFit: true,
-        width: 700,
+        width: 600,
         height: 450,
       });
       this.dsCylindrical.source(result);
       this.dsCylindrical.scale('value', {
         tickInterval: 20
+      });
+      this.dsCylindrical.scale('value', {
+        alias: '数量'
       });
       this.dsCylindrical.interval().position('label*value');
       this.dsCylindrical.render();
@@ -496,7 +499,7 @@ export class DashboardComponent implements OnInit {
       this.dsRing = new G2.Chart({
         container: 'dstRing',
         forceFit: true,
-        width: 392,
+        width: 492,
         height: 450,
       });
       this.dsRing.source(result, {
@@ -508,8 +511,8 @@ export class DashboardComponent implements OnInit {
         }
       });
       this.dsRing.coord('theta', {
-        radius: 0.75,
-        innerRadius: 0.6
+        radius: 0.5,
+        innerRadius: 0.7
       });
       this.dsRing.tooltip({
         showTitle: false,
@@ -529,7 +532,7 @@ export class DashboardComponent implements OnInit {
           return label.point.label + ': ' + val;
         }
       }).tooltip('label*percent', function(label, percent) {
-        percent = percent * 100 + '%';
+        percent = percent + '%';
         return {
           name: label,
           value: percent
