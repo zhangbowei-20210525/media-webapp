@@ -15,6 +15,7 @@ import { SolicitationComponent } from './header/components/solicitation/solicita
 import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components/transmit-schedule/transmit-schedule.component';
 import { ProcessComponent } from './header/components/process/process.component';
 import { EmployeesInvitedMessagesComponent } from './header/components/employees-invited-messages/employees-invited-messages.component';
+import { ReviewPeopleMessageComponent } from './header/components/review-people-message/review-people-message.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { EmployeesInvitedMessagesComponent } from './header/components/employees
     ExternalMessagesComponent,
     SolicitationComponent,
     ProcessComponent,
-    EmployeesInvitedMessagesComponent
+    EmployeesInvitedMessagesComponent,
+    ReviewPeopleMessageComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { EmployeesInvitedMessagesComponent } from './header/components/employees
     ExternalMessagesComponent,
     SolicitationComponent,
     ProcessComponent,
-    EmployeesInvitedMessagesComponent
+    EmployeesInvitedMessagesComponent,
+    ReviewPeopleMessageComponent
   ]
 })
 export class LayoutModule { }
