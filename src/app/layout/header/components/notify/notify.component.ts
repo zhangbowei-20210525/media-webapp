@@ -15,6 +15,7 @@ import { TransmitService } from 'app/routes/manage/transmit/transmit.service';
 import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components/transmit-schedule/transmit-schedule.component';
 import { ProcessComponent } from '../process/process.component';
 import { EmployeesInvitedMessagesComponent } from '../employees-invited-messages/employees-invited-messages.component';
+import { ReviewPeopleMessageComponent } from '../review-people-message/review-people-message.component';
 
 @Component({
   selector: 'app-notify',
@@ -280,7 +281,7 @@ export class NotifyComponent implements OnInit {
         console.log(result);
         if (result.is_joined === false && result.is_delete === false) {
           this.model.create({
-            nzTitle: `员工邀请`,
+            nzTitle: `员工申请`,
             nzContent: EmployeesInvitedMessagesComponent,
             nzComponentParams: { info: info },
             nzMaskClosable: false,
@@ -294,14 +295,14 @@ export class NotifyComponent implements OnInit {
           });
         } else {
           this.model.create({
-            nzTitle: `员工邀请`,
+            nzTitle: `员工申请`,
             nzContent: EmployeesInvitedMessagesComponent,
             nzComponentParams: { info: info },
             nzMaskClosable: false,
             nzClosable: false,
             nzOkText: '确认',
             nzCancelText: null,
-            nzOnOk: this.esc,
+            nzOnOk: this.escEim,
             nzWidth: 800,
             nzNoAnimation: true
           });
@@ -309,7 +310,41 @@ export class NotifyComponent implements OnInit {
       });
     }
 
-    if (type !== 'PUB001' && type !== 'PUB002' && type !== 'SYS005') {
+    if (type === 'SYS006') {
+      this.service.getEmployeesInvitedInfo(id).subscribe(result => {
+        console.log(result);
+        if (result.is_joined === false && result.is_delete === false) {
+          this.model.create({
+            nzTitle: `外部审片人申请`,
+            nzContent: ReviewPeopleMessageComponent,
+            nzComponentParams: { info: info },
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzOkText: '加入',
+            nzCancelText: '拒绝',
+            nzWidth: 800,
+            nzOnOk: this.rpmAgreed,
+            nzOnCancel: this.rpmRefused,
+            nzNoAnimation: true
+          });
+        } else {
+          this.model.create({
+            nzTitle: `外部审片人申请`,
+            nzContent: ReviewPeopleMessageComponent,
+            nzComponentParams: { info: info },
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzOkText: '确认',
+            nzCancelText: null,
+            nzOnOk: this.escRpm,
+            nzWidth: 800,
+            nzNoAnimation: true
+          });
+        }
+      });
+    }
+
+    if (type !== 'PUB001' && type !== 'PUB002' && type !== 'SYS005' && type !== 'SYS006') {
       this.ref = this.model.create({
         nzTitle: `${title}`,
         nzContent: SystemMessagesComponent,
@@ -325,7 +360,7 @@ export class NotifyComponent implements OnInit {
     }
   }
 
-  esc = (component: EmployeesInvitedMessagesComponent) => new Promise((resolve, reject) => {
+  escEim = (component: EmployeesInvitedMessagesComponent) => new Promise((resolve, reject) => {
     resolve();
   })
 
@@ -337,6 +372,25 @@ export class NotifyComponent implements OnInit {
   })
 
   eimAgreed = (component: EmployeesInvitedMessagesComponent) => new Promise((resolve, reject) => {
+    this.service.eimDetermine(this.related_id, true).subscribe(result => {
+      resolve();
+      this.message.success(this.translate.instant('已加入成功'));
+    });
+  })
+
+
+  escRpm = (component: ReviewPeopleMessageComponent) => new Promise((resolve, reject) => {
+    resolve();
+  })
+
+  rpmRefused = (component: ReviewPeopleMessageComponent) => new Promise((resolve, reject) => {
+    this.service.eimDetermine(this.related_id, false).subscribe(result => {
+      resolve();
+      this.message.warning(this.translate.instant('已拒绝'));
+    });
+  })
+
+  rpmAgreed = (component: ReviewPeopleMessageComponent) => new Promise((resolve, reject) => {
     this.service.eimDetermine(this.related_id, true).subscribe(result => {
       resolve();
       this.message.success(this.translate.instant('已加入成功'));
