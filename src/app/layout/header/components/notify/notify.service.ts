@@ -92,5 +92,13 @@ export class NotifyService {
     return this.http.get<any>(`/api/v1/publicity/collections/${id}`);
   }
 
+  getEmployeesInvitedInfo(id: number) {
+    return this.http.get<any>(`/api/v1/companies/employees/${id}/application`);
+  }
+
+  eimDetermine(id: number, result: boolean) {
+    return this.http.post<any>(`/api/v1/companies/employees/${id}/application/result`, { result });
+  }
+
 
 }

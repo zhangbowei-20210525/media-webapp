@@ -1,0 +1,19 @@
+<div>
+  <span>申请公司：</span>
+  <span>{{  data?.created_employee?.company.full_name  }}</span>
+</div>
+<div>
+  <span>申请人：</span>
+  <span>{{  data?.name  }}</span>
+</div>
+<div>
+  <span>手机号：</span>
+  <span>{{  data?.phone  }}</span>
+</div>
+<div>
+  <span>申请时间：</span>
+  <span>{{  data?.created_at  }}</span>
+</div>
+<nz-divider *ngIf="data?.is_joined == true || data?.is_delete == true"></nz-divider>
+<div *ngIf="data?.is_joined == true" style="font-size: 16px;font-weight: 500">已加入</div>
+<div *ngIf="data?.is_delete == true" style="font-size: 16px;font-weight: 500">已拒绝</div>

@@ -60,7 +60,7 @@ export class ChoreographyService {
   }
 
   getSeriesList() {
-    return this.http.get<PaginationResponseDto<any>>(`/api/v1/programs/brief?q=`);
+    return this.http.get<PaginationResponseDto<any>>(`/api/v1/programs/info/editing`);
   }
 
   addTheatreSeries(method: string, column_id: number, program_id: number) {

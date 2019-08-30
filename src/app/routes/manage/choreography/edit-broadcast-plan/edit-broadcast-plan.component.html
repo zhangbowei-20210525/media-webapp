@@ -545,47 +545,65 @@
   [cdkDropListConnectedTo]="[l1d1z, l2d1z, l3d1z, l4d1z, l5d1z, l1y1z, l2y1z, l3y1z, l4y1z, l5y1z, l1y2z, l2y2z, l3y2z, l4y2z, l5y2z]"
   class="example-list" (cdkDropListDropped)="drop($event)" [cdkDropListEnterPredicate]="noReturnPredicate">
   <div class="example-box" *ngFor="let item of seriesList" [cdkDragDisabled]="item.episode == null || item.episode == 0"
-  (click)="isEpisode(item.episode)" cdkDrag [nzTitle]="text" nzPlacement="top" nz-tooltip>
-  <span>{{ item.name }}</span>/
-  <span>{{ item.program_type }}</span>/
-  <span>{{ item.episode }}集</span>
-  <ng-template #text>
+    (click)="isEpisode(item.episode)" cdkDrag nz-popover [nzTitle]="Title" [nzContent]="contentTemplate"
+    [nzOverlayStyle]="{'width': '650px'}" nzPlacement="top">
+    <span>{{ item.name }}</span>/
+    <span>{{ item.program_type }}</span>/
+    <span>{{ item.episode }}集</span>
+    <!-- [nzTitle]="text" nzPlacement="top" nz-tooltip -->
+    <!-- <ng-template #text>
     <div>节目：{{ item.name }}</div>
     <div>类型：{{ item.program_type }}</div>
     <div>集数：{{ item.episode }}集</div>
   </ng-template>
 </div>
-</div>
-    <!-- <ng-template #Title>
+</div> -->
+    <ng-template #Title>
       <div style="font-size: 18px;font-weight:500;">节目信息</div>
     </ng-template>
     <ng-template #contentTemplate>
       <div class="theme-title">授权信息</div>
-      <div>
-      <div nz-row style="font-size: 14px">
-        <div nz-col nzSpan="8">节目名称：{{ item.name }}</div>
-        <div nz-col nzSpan="8">节目类型：{{ item.name }}</div>
-        <div nz-col nzSpan="8">集数：{{ item.name }}</div>
+      <div style="font-size: 14px;margin-left: 20px">
+        <div nz-row>
+          <div nz-col nzSpan="8" style="display: flex;">
+            <div style="width:90px">节目名称：</div>
+            <div>{{ item.name }}</div>
+          </div>
+          <div nz-col nzSpan="8" style="display: flex;padding-left: 5px">
+            节目类型：{{ item.program_type }}
+          </div>
+          <div nz-col nzSpan="8" style="padding-left: 5px">集数：{{ item.episode }}</div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="8" style="display: flex;">
+              <div style="width:90px">权利种类：</div>
+            <div *ngFor="let right of item.rights">
+              <div>{{ right.right_type_label }}</div>
+            </div>
+          </div>
+          <div nz-col nzSpan="8" style="display: flex;padding-left: 5px">
+            <div>授权地域：</div>
+              <div *ngFor="let right of item.rights">
+                <div>{{ right.area_label }}</div>
+             </div>
+            </div>
+          <div nz-col nzSpan="8" style="padding-left: 5px">权利到期：{{ item.expire_at }}</div>
+        </div>
       </div>
-      <div nz-row style="font-size: 14px">
-        <div nz-col nzSpan="8">权利种类：{{ item.name }}</div>
-        <div nz-col nzSpan="8">授权地域：{{ item.name }}</div>
-        <div nz-col nzSpan="8">权利到期：{{ item.name }}</div>
-      </div>
-    </div>
       <div class="theme-title">历史播出信息</div>
-      <div>
-        <div><span class="icon-yuanxuankuang1"></span><span style="margin-left: 5px;font-size: 14px">ssssssx</span></div>
+      <div style="font-size: 14px;margin-left: 20px" *ngFor="let ps of item.program_schedules;let i = index">
+        <span>{{ i + 1 }}.&nbsp;</span>
+        <span style="margin-left: 5px;font-size: 14px">{{ ps.channel_name }}|{{ ps.column_name }}| {{ ps.broadcast_start_date }} ~ {{ ps.broadcast_end_date }}</span>
       </div>
-    </ng-template> -->
+    </ng-template>
+  </div>
+</div>
+
+
+
 <!-- <div class="example-container">
-    <div
-      cdkDropList
-      #doneList="cdkDropList"
-      [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="[todoList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-    </div>
-  </div>  -->
+      <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
+        class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+      </div>
+    </div> -->

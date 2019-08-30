@@ -10,7 +10,8 @@
               <div nz-row>
                 <div nz-col nzSpan="8" class="text-ellipsis">{{right?.program_name}}</div>
                 <div nz-col nzSpan="8" class="text-ellipsis">{{right?.custom_name}}</div>
-                <div nz-col nzSpan="8" class="text-ellipsis">{{right?.expire_date}}</div>
+                <div nz-col nzSpan="8" class="text-ellipsis" *ngIf="right?.expire_date !== null">
+                  {{right?.expire_date | re }}</div>
               </div>
             </li>
           </ul>
@@ -27,7 +28,8 @@
               <div nz-row>
                 <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.program_name}}</div>
                 <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.custom_name}}</div>
-                <div nz-col nzSpan="8" class="text-ellipsis">{{publish_right?.expire_date}}</div>
+                <div nz-col nzSpan="8" class="text-ellipsis" *ngIf="publish_right?.expire_date !== null">
+                  {{publish_right?.expire_date | re}}</div>
               </div>
             </li>
           </ul>
@@ -43,7 +45,8 @@
             <li class="info-li" *ngFor="let payment of payment?.data">
               <div nz-row>
                 <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.custom_name}}</div>
-                <div nz-col nzSpan="12" class="text-ellipsis">{{payment?.expire_date}}</div>
+                <div nz-col nzSpan="12" class="text-ellipsis" *ngIf="payment?.expire_date !== null">
+                  {{payment?.expire_date | re }}</div>
               </div>
             </li>
           </ul>
@@ -59,7 +62,8 @@
             <li class="info-li" *ngFor="let receipt of receipt?.data">
               <div nz-row>
                 <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.custom_name}}</div>
-                <div nz-col nzSpan="12" class="text-ellipsis">{{receipt?.expire_date}}</div>
+                <div nz-col nzSpan="12" class="text-ellipsis" *ngIf="receipt?.expire_date !== null">
+                  {{receipt?.expire_date | re }}</div>
               </div>
             </li>
           </ul>
@@ -72,38 +76,35 @@
   </ng-template>
   <div class="block">
     <div class="block-header">
-      <div class="block-title"><span style="font-size: 20px">{{ 'app.dashboard.series' | translate }}</span></div>
+      <div class="block-title"><span style="font-size: 20px">数据统计</span></div>
       <div class="block-options">
-        <nz-year-picker [(ngModel)]="startYear" (ngModelChange)="startYearChange()" [nzDisabled]="seriesTime == 'month'"
-          nzAllowClear=false; nzPlaceHolder="请选择起始年份" nzSize="small" style="width:131px" nzAutoFocus="true">
-        </nz-year-picker>
+        <nz-month-picker nzSize="small" [(ngModel)]="startYM" (ngModelChange)="startYMChange($event)"
+          style="width: 110px"></nz-month-picker>
         <span>~</span>
-        <nz-year-picker [(ngModel)]="endYear" nzPlaceHolder="请选择终止年份" nzAllowClear=false;
-          [nzDisabled]="seriesTime == 'month'" (ngModelChange)="endYearChange()" nzSize="small" style="width:131px">
-        </nz-year-picker>
-        <nz-radio-group [(ngModel)]="seriesTime" nzSize="small" (ngModelChange)="seriesTimeChange()">
-          <label nz-radio-button nzValue="month">本年度</label>
-          <label nz-radio-button nzValue="year">近五年</label>
+        <nz-month-picker nzSize="small" [(ngModel)]="endYM" (ngModelChange)="endYMChange($event)" style="width: 110px">
+        </nz-month-picker>
+        <nz-radio-group [(ngModel)]="num" nzSize="small" (ngModelChange)="numChange()">
+          <label nz-radio-button nzValue="0">部数</label>
+          <label nz-radio-button nzValue="1">集数</label>
         </nz-radio-group>
-        <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small" (ngModelChange)="switchoverSeriesCriteria()"
-          [nzDisabled]="conversionGraphics == 'pieChart'">
+        <nz-radio-group [(ngModel)]="seriesCriteria" nzSize="small" (ngModelChange)="switchoverSeriesCriteria()">
           <label nz-radio-button nzValue="program_type">{{ 'app.dashboard.program-type' | translate }}</label>
-          <label nz-radio-button nzValue="investment_type">{{ 'app.dashboard.investment-type' | translate }}</label>
           <label nz-radio-button nzValue="theme">题材</label>
-        </nz-radio-group>
-        <nz-radio-group [(ngModel)]="conversionGraphics" nzSize="small" (ngModelChange)="cgChange()">
-          <label nz-radio-button nzValue="pieChart">饼图</label>
-          <label nz-radio-button nzValue="lineChart">折线图</label>
+          <label nz-radio-button nzValue="investment_type">{{ 'app.dashboard.investment-type' | translate }}</label>
         </nz-radio-group>
       </div>
     </div>
-    <div class="block-content" [hidden]="conversionGraphics == 'pieChart'" style="height: 450px">
-      <nz-empty [hidden]="t4 > 0" style="margin-top: 125px"></nz-empty>
-      <div id="seriesLine" [hidden]="t4 == 0"></div>
-    </div>
-    <div class="block-content flex" [hidden]="conversionGraphics == 'lineChart'"
-      style="text-align: center;height: 450px;">
-      <div style="height: 450px;width: 362px">
+    <div class="block-content flex" style="height: 450px;">
+      <div style="height: 450px;width: 700px;">
+        <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="dstCylindrical" [hidden]="t1 == 0"></div>
+      </div>
+      <div style="height: 450px;width: 392px">
+         <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
+        <div id="dstRing" [hidden]="t1 == 0"></div>
+      </div>
+
+      <!-- <div style="height: 450px;width: 362px">
         <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
         <div id="seriesType" [hidden]="t1 == 0"></div>
         <div [hidden]="t1 == 0">品类</div>
@@ -117,7 +118,7 @@
         <nz-empty [hidden]="t2 > 0" style="margin-top: 125px"></nz-empty>
         <div id="seriesInvestment" [hidden]="t2 == 0"></div>
         <div [hidden]="t2 == 0">投资类型</div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="flex">
@@ -228,8 +229,9 @@
         </div>
       </ng-template>
       <div *ngIf="reviews.length > 0">
-        <nz-table #basicTable [nzShowPagination]="false" nzBordered [nzData]="reviews" [nzScroll]="{ x: reviews.length > 8? reviews.length * 150+ 'px': '1000px'}"
-          style="padding-bottom: 20px" [nzTitle]="Header">
+        <nz-table #basicTable [nzShowPagination]="false" nzBordered [nzData]="reviews"
+          [nzScroll]="{ x: reviews.length > 8? reviews.length * 150+ 'px': '1000px'}" style="padding-bottom: 20px"
+          [nzTitle]="Header">
           <thead>
             <tr>
               <th [nzAlign]="'center'" nzWidth="90px" nzLeft="0px"
@@ -241,11 +243,23 @@
               <th nzWidth="100px" *ngIf="reviews.length == 1"></th>
               <th nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></th>
               <th nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3"></th>
-              <th nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></th>
-              <th nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5"></th>
-              <th nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6"></th>
-              <th nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7"></th>
-              <th nzWidth="50px" nzRight="0px"></th>
+              <th nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></th>
+              <th nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5">
+              </th>
+              <th nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6">
+              </th>
+              <th nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7">
+              </th>
+              <th [nzAlign]="'center'" nzWidth="50px" nzRight="0px">
+                <a (click)="reviewListIsOpenChange(false)" [hidden]="reviewListIsOpen == false"><i nz-icon nzType="down"
+                    nzTheme="outline" style="font-size: 17px"></i></a>
+                <a (click)="reviewListIsOpenChange(true)" [hidden]="reviewListIsOpen == true"><i nz-icon nzType="up"
+                    nzTheme="outline" style="font-size: 17px"></i></a>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -258,10 +272,17 @@
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7">
+              </td>
               <td nzWidth="50" nzRight="0px" [attr.rowspan]="2" [nzIndentSize]="'20px'" [nzAlign]="'center'"
                 [nzShowExpand]="true" [(nzExpand)]="reviewListIsOpen1"
                 (nzExpandChange)="reviewListIsOpenChange1($event)">
@@ -274,10 +295,17 @@
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7">
+              </td>
             </tr>
             <ng-container *ngIf="reviewListIsOpen1 == true">
               <tr *ngFor="let data of reviewList.employee_reports[0]">
@@ -303,11 +331,21 @@
                 </td>
                 <td nzWidth="100px" *ngIf="data.publicitys.length == 1"></td>
                 <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6 || data.publicitys.length == 7"></td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6 || data.publicitys.length == 7">
+                </td>
                 <td [nzAlign]="'center'" nzWidth="50px" nzRight="0px"></td>
               </tr>
             </ng-container>
@@ -320,10 +358,17 @@
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7">
+              </td>
               <td [attr.rowspan]="2" [nzIndentSize]="'20px'" [nzAlign]="'center'" [nzShowExpand]="true"
                 [(nzExpand)]="reviewListIsOpen2" (nzExpandChange)="reviewListIsOpenChange2($event)" nzWidth="50px"
                 nzRight="0px"></td>
@@ -335,10 +380,17 @@
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7">
+              </td>
             </tr>
             <ng-container *ngIf="reviewListIsOpen2 == true">
               <tr *ngFor="let data of reviewList.employee_reports[1]">
@@ -364,11 +416,21 @@
                 </td>
                 <td nzWidth="100px" *ngIf="data.publicitys.length == 1"></td>
                 <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6 || data.publicitys.length == 7"></td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6 || data.publicitys.length == 7">
+                </td>
                 <td [nzAlign]="'center'" nzWidth="50px" nzRight="0px"></td>
               </tr>
             </ng-container>
@@ -381,10 +443,17 @@
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7">
+              </td>
               <td [attr.rowspan]="2" [nzIndentSize]="'20px'" [nzAlign]="'center'" [nzShowExpand]="true"
                 [(nzExpand)]="reviewListIsOpen3" (nzExpandChange)="reviewListIsOpenChange3($event)" nzWidth="50px"
                 nzRight="0px"></td>
@@ -396,10 +465,17 @@
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6"></td>
-              <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4"></td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6">
+              </td>
+              <td nzWidth="100px"
+                *ngIf="reviews.length == 1 || reviews.length == 2 || reviews.length == 3 || reviews.length == 4 || reviews.length == 5 || reviews.length == 6 || reviews.length == 7">
+              </td>
             </tr>
             <ng-container *ngIf="reviewListIsOpen3 == true">
               <tr *ngFor="let data of reviewList.employee_reports[2]">
@@ -425,12 +501,22 @@
                 </td>
                 <td nzWidth="100px" *ngIf="data.publicitys.length == 1"></td>
                 <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6"></td>
-                <td nzWidth="100px" *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6 || data.publicitys.length == 7"></td>
-               <td [nzAlign]="'center'" nzWidth="50px" nzRight="0px"></td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6">
+                </td>
+                <td nzWidth="100px"
+                  *ngIf="data.publicitys.length == 1 || data.publicitys.length == 2 || data.publicitys.length == 3 || data.publicitys.length == 4 || data.publicitys.length == 5 || data.publicitys.length == 6 || data.publicitys.length == 7">
+                </td>
+                <td [nzAlign]="'center'" nzWidth="50px" nzRight="0px"></td>
               </tr>
             </ng-container>
           </tbody>
