@@ -201,6 +201,9 @@ export class DetailsSolicitationComponent implements OnInit {
         this.submitConent();
       }
     }
+    if (this.videoList.length > 0) {
+      this.submitConent();
+    }
   }
   submitConent() {
     const params = this.validateForm.value;
@@ -332,7 +335,7 @@ export class DetailsSolicitationComponent implements OnInit {
           this.filterList[0].program.introduction === null ? '' : this.filterList[0].program.introduction);
         this.validateForm.disable();
         this.uploadVideo = true;
-    this.getDisplayDate();
+        this.getDisplayDate();
 
       }
     }

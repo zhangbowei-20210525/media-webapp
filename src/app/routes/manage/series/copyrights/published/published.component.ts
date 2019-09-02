@@ -51,7 +51,9 @@ export class PublishedComponent implements OnInit {
 
   ngOnInit() {
     this.subscriptions = [this.service.change().subscribe(state => {
-      if (state.type === 'drawer' && state.value === 'filter') {
+      if (state.type === 'navigate' && state.value === 'publish') {
+          this.router.navigate(['/manage/series/publish-rights']);
+      } else if (state.type === 'drawer' && state.value === 'filter') {
         this.drawerVisible = true;
       }
     })];
