@@ -21,6 +21,9 @@ import { NzModalService } from 'ng-zorro-antd';
       margin-bottom: 1rem;
       // background-color: #e6f7ff;
     }
+    .ant-form-item {
+      margin-bottom: 5px;
+    }
   `]
 })
 export class AddCopyrightsComponent implements OnInit, OnDestroy {

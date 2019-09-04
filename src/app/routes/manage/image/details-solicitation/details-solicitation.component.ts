@@ -126,7 +126,7 @@ export class DetailsSolicitationComponent implements OnInit {
     this.status = param.file.status;
     this.type = param.file.type.split('/')[1];
     this.files.forEach((item, index) => {
-      console.log(item);
+      // console.log(item);
       if (item.status === 'error') {
         this.files = this.files.splice(index, 1);
         this.statusType = 'exception';
