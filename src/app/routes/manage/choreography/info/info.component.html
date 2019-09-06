@@ -1,22 +1,14 @@
-<!-- <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="10" [(ngModel)]="selectedIndex"></nz-input-number> -->
 <nz-tabset [(nzSelectedIndex)]="selectedIndex">
-    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name" (nzClick)="onClick(tab.id)">
-        <nz-table #table [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false" style="margin-top: 10px">
+
+  <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name" (nzClick)="onClick(tab.id)">
+    <!-- <nz-table #table [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false" style="margin-top: 10px">
             <thead>
                 <tr>
                     <th nzWidth="150px" [nzAlign]="'center'">日期</th>
                     <th  *ngFor="let data of table.data" [nzAlign]="'center'">
                         <div>{{ data.theatreName }}</div>
                     </th>
-                    <!-- <th [attr.colspan]="data.count" [nzAlign]="'center'" *ngFor="let data of table.data"
-                                [hidden]="data.index !== 0">
-                                {{ data.channelName }}</th> -->
                 </tr>
-                <!-- <tr>
-                            <th *ngFor="let data of table.data" [nzAlign]="'center'">
-                                <div>{{ data.theatreName }}</div>
-                            </th>
-                        </tr> -->
             </thead>
             <tbody>
                 <tr *ngFor="let data of events">
@@ -39,6 +31,225 @@
                     </td>
                 </tr>
             </tbody>
-        </nz-table>
-    </nz-tab>
+        </nz-table> -->
+
+
+    <nz-calendar (nzSelectChange)="selectChange($event)">
+      <ul *nzDateCell="let date" class="events" [(ngModel)]="aaa">
+
+        <!-- <li>
+          <div nz-popover [nzTitle]="title1" [nzContent]="contentTemplate1"
+            *ngIf="queryData1(date) && isBroadcast1(date) == 1" class="event-box"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+            <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+              {{ list1.logo }}
+            </div>
+            <div class="event-content" [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+              {{ list1.name }}
+            </div>
+          </div>
+          <div nz-popover [nzTitle]="title1" [nzContent]="contentTemplate1"
+            *ngIf="queryData1(date) && isBroadcast1(date) == 2" class="event-box1"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')'}">
+          </div>
+          <div *ngIf="isBroadcast1(date) == 0" class="event-box"></div>
+          <ng-template #title1>
+            <span style="font-size:14px;font-weight:500;"
+              [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">{{ popover1.name }}（{{ popover1.time }}）</span>
+          </ng-template>
+          <ng-template #contentTemplate1>
+            <div *ngFor="let data of popover1.events">
+              <div style="margin-top: 14px">
+                <span style="font-size: 6px" [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">●</span>
+                <span style="margin-left: 10px">{{ data.program_name }}（共{{ data.program_episode }}集）</span>
+              </div>
+              <div style="margin-top: 6px;margin-left: 20px">
+                {{  data.broadcast_date | bd  }}起播（每天{{ data.episode_num }} 集）</div>
+            </div>
+          </ng-template>
+
+          <div nz-popover [nzTitle]="title2" [nzContent]="contentTemplate2"
+            *ngIf="queryData2(date) && isBroadcast2(date) == 1" class="event-box"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+            <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+              {{ list2.logo }}
+            </div>
+            <div class="event-content" [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+              {{ list2.name }}
+            </div>
+          </div>
+          <div nz-popover [nzTitle]="title2" [nzContent]="contentTemplate2"
+            *ngIf="queryData2(date) && isBroadcast2(date) == 2" class="event-box1"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')'}">
+          </div>
+          <div *ngIf="isBroadcast2(date) == 0" class="event-box"></div>
+          <ng-template #title2>
+            <span style="font-size:14px;font-weight:500;"
+              [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">{{ popover2.name }}（{{ popover2.time }}）</span>
+          </ng-template>
+          <ng-template #contentTemplate2>
+            <div *ngFor="let data of popover2.events">
+              <div style="margin-top: 14px">
+                <span style="font-size: 6px" [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">●</span>
+                <span style="margin-left: 10px">{{ data.program_name }}（共{{ data.program_episode }}集）</span>
+              </div>
+              <div style="margin-top: 6px;margin-left: 20px">
+                {{  data.broadcast_date | bd  }}起播（每天{{ data.episode_num }} 集）</div>
+            </div>
+          </ng-template>
+
+          <div nz-popover [nzTitle]="title3" [nzContent]="contentTemplate3"
+            *ngIf="queryData3(date) && isBroadcast3(date) == 1" class="event-box"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+            <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+              {{ list3.logo }}
+            </div>
+            <div class="event-content" [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+              {{ list3.name }}
+            </div>
+          </div>
+          <div nz-popover [nzTitle]="title3" [nzContent]="contentTemplate3"
+            *ngIf="queryData3(date) && isBroadcast3(date) == 2" class="event-box1"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')'}">
+          </div>
+          <div *ngIf="isBroadcast3(date) == 0" class="event-box"></div>
+          <ng-template #title3>
+            <span style="font-size:14px;font-weight:500;"
+              [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">{{ popover3.name }}（{{ popover3.time }}）</span>
+          </ng-template>
+          <ng-template #contentTemplate3>
+            <div *ngFor="let data of popover3.events">
+              <div style="margin-top: 14px">
+                <span style="font-size: 6px" [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">●</span>
+                <span style="margin-left: 10px">{{ data.program_name }}（共{{ data.program_episode }}集）</span>
+              </div>
+              <div style="margin-top: 6px;margin-left: 20px">
+                {{  data.broadcast_date | bd  }}起播（每天{{ data.episode_num }} 集）</div>
+            </div>
+          </ng-template>
+
+
+
+          <div nz-popover [nzTitle]="title4" [nzContent]="contentTemplate4"
+            *ngIf="queryData4(date) && isBroadcast4(date) == 1" class="event-box"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+            <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+              {{ list4.logo }}
+            </div>
+            <div class="event-content" [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+              {{ list4.name }}
+            </div>
+          </div>
+          <div nz-popover [nzTitle]="title4" [nzContent]="contentTemplate4"
+            *ngIf="queryData4(date) && isBroadcast4(date) == 2" class="event-box1"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')'}">
+          </div>
+          <div *ngIf="isBroadcast4(date) == 0" class="event-box"></div>
+          <ng-template #title4>
+            <span style="font-size:14px;font-weight:500;"
+              [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">{{ popover4.name }}（{{ popover4.time }}）</span>
+          </ng-template>
+          <ng-template #contentTemplate4>
+            <div *ngFor="let data of popover4.events">
+              <div style="margin-top: 14px">
+                <span style="font-size: 6px" [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">●</span>
+                <span style="margin-left: 10px">{{ data.program_name }}（共{{ data.program_episode }}集）</span>
+              </div>
+              <div style="margin-top: 6px;margin-left: 20px">
+                {{  data.broadcast_date | bd  }}起播（每天{{ data.episode_num }} 集）</div>
+            </div>
+          </ng-template>
+
+          <div nz-popover [nzTitle]="title5" [nzContent]="contentTemplate5"
+            *ngIf="queryData5(date) && isBroadcast5(date) == 1" class="event-box"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+            <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+              {{ list5.logo }}
+            </div>
+            <div class="event-content" [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+              {{ list5.name }}
+            </div>
+          </div>
+          <div nz-popover [nzTitle]="title5" [nzContent]="contentTemplate5"
+            *ngIf="queryData5(date) && isBroadcast5(date) == 2" class="event-box1"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')'}">
+          </div>
+          <div *ngIf="isBroadcast5(date) == 0" class="event-box"></div>
+          <ng-template #title5>
+            <span style="font-size:14px;font-weight:500;"
+              [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">{{ popover5.name }}（{{ popover5.time }}）</span>
+          </ng-template>
+          <ng-template #contentTemplate5>
+            <div *ngFor="let data of popover5.events">
+              <div style="margin-top: 14px">
+                <span style="font-size: 6px" [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">●</span>
+                <span style="margin-left: 10px">{{ data.program_name }}（共{{ data.program_episode }}集）</span>
+              </div>
+              <div style="margin-top: 6px;margin-left: 20px">
+                {{  data.broadcast_date | bd  }}起播（每天{{ data.episode_num }} 集）</div>
+            </div>
+          </ng-template> 
+        </li> -->
+
+
+
+        <!-- <li>
+          <div *ngIf="aa(date)"></div>
+        <ng-container [ngSwitch]="date.getDate()">
+            <ng-container *ngIf="date.getFullYear() == y">
+          <ng-container *ngIf="date.getMonth() + 1 == m">
+            <ng-container *ngSwitchCase="9">
+              <li>
+                <div *ngIf="list1 !== undefined" class="event-box" [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+                  <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+                    {{ list1.logo }}
+                  </div>
+                  <div class="event-content"[ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+                    {{ list1.name }}
+                  </div>
+                </div>
+                 <div  *ngIf="list2 !== undefined"  class="event-box" [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                  <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                    {{ list2.logo }}
+                  </div>
+                  <div class="event-content"[ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                    {{ list2.name }}
+                  </div>
+                </div>
+
+                 <div  *ngIf="list3 !== undefined"  class="event-box" [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                  <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                    {{ list3.logo }}
+                  </div>
+                  <div class="event-content"[ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                    {{ list3.name }}
+                  </div>
+                </div>
+
+                 <div  *ngIf="list4 !== undefined"  class="event-box" [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                  <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                    {{ list4.logo }}
+                  </div>
+                  <div class="event-content"[ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                    {{ list4.name }}
+                  </div>
+                </div>
+
+                 <div  *ngIf="list5 !== undefined"  class="event-box" [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                  <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                    {{ list5.logo }}
+                  </div>
+                  <div class="event-content"[ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                    {{ list5.name }}
+                  </div>
+                </div>
+              </li>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      </li>-->
+      </ul>
+    </nz-calendar>
+  </nz-tab>
 </nz-tabset>

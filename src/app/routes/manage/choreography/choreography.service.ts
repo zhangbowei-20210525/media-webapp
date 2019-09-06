@@ -109,8 +109,8 @@ export class ChoreographyService {
     return this.http.get<any>(`/api/v1/editing/calendar/month`);
   }
 
-  getSpecifiedChannelInfo(id: number) {
-    return this.http.get<any>(`/api/v1/editing/calendar/${id}/month`);
+  getSpecifiedChannelInfo(id: number, year: number, month: number) {
+    return this.http.get<any>(`/api/v1/editing/calendar/${id}/month?year=${year}&month=${month}`);
   }
 
 }

@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ResponseDto, PaginationDto, PaginationResponseDto } from '@shared';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class TransmitService {
     return this.http.get<any>(`/api/v1/sources/bought/${id}`);
   }
 
-  getPurTapeFile(id: number) {
-    return this.http.get<any>(`/api/v1/sources/bought/${id}/files?page=${''}&page_size=${''}`);
+  getPurTapeFile(id: number, pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/sources/bought/${id}/files?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 }

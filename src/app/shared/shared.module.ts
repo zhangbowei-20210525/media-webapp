@@ -86,7 +86,8 @@ const PIPES = [
   WeekDayPipe,
   MaxNumberPipe,
   CeilPipe,
-  RightExpirePipe
+  RightExpirePipe,
+  BroadcastDatePipe
 ];
 // #endregion
 
@@ -96,6 +97,7 @@ import { HttpClientJsonpModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { WeekDayPipe } from './pipes/week-day.pipe';
 import { RightExpirePipe } from './pipes/right-expire.pipe';
+import { BroadcastDatePipe } from './pipes/broadcast-date.pipe';
 
 
 

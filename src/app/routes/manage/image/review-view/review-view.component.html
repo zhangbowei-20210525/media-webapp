@@ -16,7 +16,7 @@
         <!-- <button *ngIf='selectedTabIndex === 3' nz-button (click)="goSave()">提交</button> -->
         <button *ngIf='selectedTabIndex === 3' nz-button (click)="goSave()">入库</button>
       </div>
-      <a style="float: right;margin-right: 20px;font-size: 17px;margin-top: 3px;" routerLink="/manage/film-review"><i
+      <a   acl [acl-ability]="ability.review.conf" style="float: right;margin-right: 20px;font-size: 17px;margin-top: 3px;" routerLink="/manage/film-review"><i
           nz-icon nzType="setting"></i></a>
     </div>
     <div>
