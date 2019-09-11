@@ -19,7 +19,7 @@ export class Util {
   static dateToString(value: Date, format: string = 'yyyy-MM-dd') {
     return this.pipe.transform(value, format);
   }
-  static dateFullToString(value: Date, format: string = 'yyyy-MM-dd hh:mm:ss') {
+  static dateFullToString(value: Date, format: string = 'yyyy-MM-dd HH:mm:ss') {
     return this.pipe.transform(value, format);
   }
 
