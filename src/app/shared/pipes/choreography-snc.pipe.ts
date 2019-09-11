@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Util } from '@shared';
 
 @Pipe({
-    name: 'sn'
+    name: 'snc'
 })
-export class ChoreographySnPipe implements PipeTransform {
+export class ChoreographySncPipe implements PipeTransform {
 
     transform(date: any, info: any): any {
         if (info !== undefined) {
@@ -15,7 +15,19 @@ export class ChoreographySnPipe implements PipeTransform {
             arr.forEach(f => {
                 names.push(f.program_name);
             });
+
+        const b = info.events.indexOf(info.events.find(f => Util.dateToString(date) === f.broadcast_date));
+        const oldArr = [];
+        oldArr.push(info.events[b - 1]);
+        const oldNames = [];
+        oldArr.forEach(f => {
+            oldNames.push(f.program_name);
+        });
+        if (oldNames.indexOf(names[names.length - 1]) === -1) {
             return  names[names.length - 1];
+        } else {
+            return '';
+        }
         }
     }
 }
