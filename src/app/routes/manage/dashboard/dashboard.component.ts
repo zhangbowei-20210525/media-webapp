@@ -9,6 +9,7 @@ import { TreeService, MessageService, Util } from '@shared';
 import { DashboardDto } from './dtos';
 import { TranslateService } from '@ngx-translate/core';
 import { differenceInCalendarDays } from 'date-fns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -86,6 +87,8 @@ export class DashboardComponent implements OnInit {
   reviewListIsOpen1 = false;
   reviewListIsOpen2 = false;
   reviewListIsOpen3 = false;
+
+  disabled = true;
 
   data2 = [{
     date: '2018/8/1',
@@ -390,6 +393,7 @@ export class DashboardComponent implements OnInit {
     private ts: TreeService,
     private message: MessageService,
     private translate: TranslateService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -449,6 +453,11 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getReviewList(yy, mm).subscribe(result => {
       this.reviews = result.list.reviews;
       this.reviewList = result.list;
+      if (this.reviews.length > 0) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
     });
   }
 
@@ -531,7 +540,7 @@ export class DashboardComponent implements OnInit {
         formatter: function formatter(val, label) {
           return label.point.label + ': ' + val;
         }
-      }).tooltip('label*percent', function(label, percent) {
+      }).tooltip('label*percent', function (label, percent) {
         percent = percent + '%';
         return {
           name: label,
@@ -577,6 +586,11 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getReviewList(this.reviewStatisticalYear.getFullYear(), this.reviewStatisticalMonth).subscribe(result => {
       this.reviews = result.list.reviews;
       this.reviewList = result.list;
+      if (this.reviews.length > 0) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
     });
 
   }
@@ -586,6 +600,11 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getReviewList(this.reviewStatisticalYear.getFullYear(), this.reviewStatisticalMonth).subscribe(result => {
       this.reviews = result.list.reviews;
       this.reviewList = result.list;
+      if (this.reviews.length > 0) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
     });
   }
 
@@ -1589,5 +1608,12 @@ export class DashboardComponent implements OnInit {
       // this.publishChart.clear();
       this.getPubCustomer();
     }
+  }
+
+  download() {
+    this.dashboardService.download(this.reviewStatisticalYear.getFullYear(), this.reviewStatisticalMonth).subscribe(result => {
+      // this.router.navigate([`${result.file_url}`]);
+      location.href = result.file_url;
+    });
   }
 }

@@ -70,4 +70,8 @@ export class DashboardService {
   getReviewList(year: number, month: number) {
     return this.http.get<any>(`/api/v1/reviews/report?year=${year}&month=${month}`);
   }
+
+  download(year: number, month: number) {
+    return this.http.get<any>(`/api/v1/reviews/report/download?year=${year}&month=${month}`);
+  }
 }
