@@ -1,10 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Util } from '@shared';
+import { Util } from '@shared/util';
 
 @Pipe({
     name: 'cc'
 })
 export class ChoreographyCalendarPipe implements PipeTransform {
+
+    a = 1;
 
     transform(date: any, info: any): any {
         if (info !== undefined) {

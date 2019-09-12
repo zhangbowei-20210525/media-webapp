@@ -312,6 +312,7 @@ export class InfoComponent implements OnInit {
   }
 
   theatreChange(event, id) {
+    console.log(id);
     if (event === true) {
       this.service.getTheatreDetails(id).subscribe(result => {
         result.program_schedules[0].broadcast_start_date = '正在播出';

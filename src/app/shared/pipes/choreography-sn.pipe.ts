@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Util } from '@shared';
+import { Util } from '@shared/util';
 
 @Pipe({
     name: 'sn'
