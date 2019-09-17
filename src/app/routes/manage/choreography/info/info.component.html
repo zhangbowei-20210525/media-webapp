@@ -35,7 +35,7 @@
       <ul *nzDateCell="let date" class="events">
         <ng-container *ngIf="date.getFullYear() == y">
           <ng-container *ngIf="date.getMonth() + 1 == m">
-            <li style="width: 152px;height: 154px" nz-popover [nzTitle]="title" [nzContent]="contentTemplate"
+            <li style="width: 153px;height: 154px" nz-popover [nzTitle]="title" [nzContent]="contentTemplate"
               [nzTrigger]="'click'">
               <ng-template #title>
                 <div style="color: #333333;font-size:14px;font-weight:500;">{{ date | bdt }}</div>
@@ -117,7 +117,9 @@
                   </div>
                 </div>
               </ng-template>
-              <div nz-popover [nzTitle]="title1" [nzContent]="contentTemplate1" class="event-box"
+
+              
+              <div class="event-box"
                 *ngIf="(date | cc:list1) == 1" (nzVisibleChange)="theatreChange($event, list1.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
@@ -127,14 +129,29 @@
                   <span>{{ date | sn:list1 }}</span>
                 </div>
               </div>
-              <div nz-popover [nzTitle]="title1" [nzContent]="contentTemplate1" *ngIf="(date | cc:list1) == 2"
+
+            <div class="event-box"
+            *ngIf="(date | cc:list1) == 3" (nzVisibleChange)="theatreChange($event, list1.tid)"
+            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+            <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+              {{ list1?.logo }}
+            </div>
+            <div class="event-content" [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+              <span>{{ date | snc:list1 }}</span>
+            </div>
+          </div>
+
+
+
+
+              <div *ngIf="(date | cc:list1) == 2"
                 (nzVisibleChange)="theatreChange($event, list1.tid)" class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')'}">
                 <span class="event-content-c"
-                  [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">{{ date | snc:list1 }}</span>
+                  [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}"></span>
               </div>
               <div *ngIf="(date | cc:list1) == 0" class="event-hidden-box"></div>
-              <ng-template #title1>
+              <!-- <ng-template #title1>
                 <div *ngIf="popover" style="font-size:14px;font-weight:500;"
                   [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
                   {{ popover?.name }}（{{ popover?.time }}）</div>
@@ -184,10 +201,10 @@
                     集
                   </div>
                 </div>
-              </ng-template>
+              </ng-template> -->
 
 
-              <div nz-popover [nzTitle]="title2" [nzContent]="contentTemplate2" class="event-box"
+              <div class="event-box"
                 *ngIf="(date | cc:list2) == 1" (nzVisibleChange)="theatreChange($event, list2.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
@@ -197,14 +214,27 @@
                   <span>{{ date | sn:list2 }}</span>
                 </div>
               </div>
-              <div nz-popover [nzTitle]="title2" [nzContent]="contentTemplate2" *ngIf="(date | cc:list2) == 2"
+
+              <div class="event-box"
+              *ngIf="(date | cc:list2) == 3" (nzVisibleChange)="theatreChange($event, list2.tid)"
+              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                {{ list2?.logo }}
+              </div>
+              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                <span>{{ date | sn:list2 }}</span>
+              </div>
+            </div>
+
+              
+              <div *ngIf="(date | cc:list2) == 2"
                 (nzVisibleChange)="theatreChange($event, list2.tid)" class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">{{ date | snc:list2 }}</span>
               </div>
               <div *ngIf="(date | cc:list2) == 0" class="event-hidden-box"></div>
-              <ng-template #title2>
+              <!-- <ng-template #title2>
                 <div *ngIf="popover" style="font-size:14px;font-weight:500;"
                   [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
                   {{ popover?.name }}（{{ popover?.time }}）</div>
@@ -254,8 +284,8 @@
                     集
                   </div>
                 </div>
-              </ng-template>
-              <div nz-popover [nzTitle]="title3" [nzContent]="contentTemplate3" class="event-box"
+              </ng-template> -->
+              <div class="event-box"
                 *ngIf="(date | cc:list3) == 1" (nzVisibleChange)="theatreChange($event, list3.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
@@ -265,14 +295,27 @@
                   <span>{{ date | sn:list3 }}</span>
                 </div>
               </div>
-              <div nz-popover [nzTitle]="title3" [nzContent]="contentTemplate3" *ngIf="(date | cc:list3) == 2"
+
+              <div class="event-box"
+              *ngIf="(date | cc:list3) == 3" (nzVisibleChange)="theatreChange($event, list3.tid)"
+              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                {{ list3?.logo }}
+              </div>
+              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                <span>{{ date | sn:list3 }}</span>
+              </div>
+            </div>
+
+
+              <div *ngIf="(date | cc:list3) == 2"
                 (nzVisibleChange)="theatreChange($event, list3.tid)" class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">{{ date | snc:list3 }}</span>
               </div>
               <div *ngIf="(date | cc:list3) == 0" class="event-hidden-box"></div>
-              <ng-template #title3>
+              <!-- <ng-template #title3>
                 <div *ngIf="popover" style="font-size:14px;font-weight:500;"
                   [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
                   {{ popover?.name }}（{{ popover?.time }}）</div>
@@ -322,8 +365,8 @@
                     集
                   </div>
                 </div>
-              </ng-template>
-              <div nz-popover [nzTitle]="title4" [nzContent]="contentTemplate4" class="event-box"
+              </ng-template> -->
+              <div class="event-box"
                 *ngIf="(date | cc:list4) == 1" (nzVisibleChange)="theatreChange($event, list4.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
@@ -333,14 +376,29 @@
                   <span>{{ date | sn:list4 }}</span>
                 </div>
               </div>
-              <div nz-popover [nzTitle]="title4" [nzContent]="contentTemplate4" *ngIf="(date | cc:list4) == 2"
+
+
+
+              <div class="event-box"
+              *ngIf="(date | cc:list4) == 3" (nzVisibleChange)="theatreChange($event, list4.tid)"
+              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                {{ list4?.logo }}
+              </div>
+              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                <span>{{ date | sn:list4 }}</span>
+              </div>
+            </div>
+
+
+              <div *ngIf="(date | cc:list4) == 2"
                 (nzVisibleChange)="theatreChange($event, list4.tid)" class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">{{ date | snc:list4 }}</span>
               </div>
               <div *ngIf="(date | cc:list4) == 0" class="event-hidden-box"></div>
-              <ng-template #title4>
+              <!-- <ng-template #title4>
                 <div *ngIf="popover" style="font-size:14px;font-weight:500;"
                   [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
                   {{ popover?.name }}（{{ popover?.time }}）</div>
@@ -390,8 +448,8 @@
                     集
                   </div>
                 </div>
-              </ng-template>
-              <div nz-popover [nzTitle]="title5" [nzContent]="contentTemplate5" class="event-box"
+              </ng-template> -->
+              <div class="event-box"
                 *ngIf="(date | cc:list5) == 1" (nzVisibleChange)="theatreChange($event, list5.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
@@ -401,14 +459,29 @@
                   <span>{{ date | sn:list5 }}</span>
                 </div>
               </div>
-              <div nz-popover [nzTitle]="title5" [nzContent]="contentTemplate5" *ngIf="(date | cc:list5) == 2"
+
+              <div class="event-box"
+              *ngIf="(date | cc:list5) == 3" (nzVisibleChange)="theatreChange($event, list5.tid)"
+              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                {{ list5?.logo }}
+              </div>
+              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                <span>{{ date | sn:list5 }}</span>
+              </div>
+            </div>
+
+
+
+
+              <div *ngIf="(date | cc:list5) == 2"
                 (nzVisibleChange)="theatreChange($event, list5.tid)" class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">{{ date | snc:list5 }}</span>
               </div>
               <div *ngIf="(date | cc:list5) == 0" class="event-hidden-box"></div>
-              <ng-template #title5>
+              <!-- <ng-template #title5>
                 <div *ngIf="popover" style="font-size:14px;font-weight:500;"
                   [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
                   {{ popover?.name }}（{{ popover?.time }}）</div>
@@ -458,7 +531,7 @@
                     集
                   </div>
                 </div>
-              </ng-template>
+              </ng-template> -->
             </li>
           </ng-container>
         </ng-container>

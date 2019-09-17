@@ -202,11 +202,6 @@ export class InfoComponent implements OnInit {
       if (data5 !== undefined) {
         this.dayData5.push(data5);
       }
-      console.log(this.dayData1.length);
-      console.log(this.dayData2.length);
-      console.log(this.dayData3.length);
-      console.log(this.dayData4.length);
-      console.log(this.dayData5.length);
     } else {
       this.y = select.getFullYear();
       this.m = select.getMonth() + 1;
@@ -302,17 +297,11 @@ export class InfoComponent implements OnInit {
             this.dayData5.push(data5);
           }
         }
-        console.log(this.dayData1.length);
-        console.log(this.dayData2.length);
-        console.log(this.dayData3.length);
-        console.log(this.dayData4.length);
-        console.log(this.dayData5.length);
       });
     }
   }
 
   theatreChange(event, id) {
-    console.log(id);
     if (event === true) {
       this.service.getTheatreDetails(id).subscribe(result => {
         result.program_schedules[0].broadcast_start_date = '正在播出';
