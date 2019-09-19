@@ -1,0 +1,21 @@
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">
+      <span style="font-size: 20px">IP信息</span>
+    </div>
+    <div class="block-options">
+        <a (click)="filter()"><i nz-icon nzType="filter" nzTheme="outline" style="margin-right: .5rem"></i>筛选</a>
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
+            <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+              (keyup)="$event.which === 13 && search()" />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+              <i nz-icon type="search"></i>
+            </button>
+          </ng-template>
+          <a nz-button  nzType="default" routerLink="/manage/ip/add-ip">新增IP</a>
+    </div>
+  </div>
+  <div class="block-content"></div>
+</div>
