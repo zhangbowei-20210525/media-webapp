@@ -56,4 +56,23 @@ export class TransmitService {
   getPurTapeFile(id: number, pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/sources/bought/${id}/files?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
+
+  remoteValidation() {
+    return this.http.get<any>(`/api/v1/hashlink/clients`);
+  }
+
+  private getId(id: number | number[]) {
+    let rtn: string;
+    if (Array.isArray(id)) {
+      rtn = id.join(',');
+    } else {
+      rtn = id + '';
+    }
+    return rtn;
+  }
+
+  remoteDownloadTape(task_type: string, token: string, ids: number[]) {
+    const id = this.getId(ids);
+    return this.http.post<any>(`/api/v1/hashlink/clients/tasks`, { task_type: task_type, token: token, ids: id});
+  }
 }

@@ -1,46 +1,45 @@
-<div *ngIf = 'isPurchaseTapesLoaded'> 
-  <nz-table #basicTable [nzData]="purchaseTapesList"
-              [nzPageSize]="tapesPagination?.page_size"
-              [nzFrontPagination]="false"
-              [nzPageIndex]="purchaseTapesPagination?.page"
-              [nzTotal]="purchaseTapesPagination?.count"
-              (nzPageIndexChange)="purchaseTapesPageChange($event)">
-      <thead>
-          <tr>
-            <th style="text-align: center">#</th>
-            <th>节目名称</th>
-            <th>母带版本</th>
-            <th>来源</th>
-            <th>集数</th>
-            <th>语言</th>
-            <th>字幕</th>
-            <th>下载记录</th>
-            <th>操作</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let data of basicTable.data;let i = index">
-              <td>{{ i + 1 + purchaseTapesPagination.page * 10 - 10}}</td>
-            <td>{{data.program_name}}</td>
-            <td><a (click)="purTapeDetails(data.id)">{{data.name}}</a></td>
-            <td>
-              <span *ngIf="data.from == 'inner'">本企业</span>
-              <span *ngIf="data.from == 'bought'">购入</span>
-            </td>
-            <td>{{data.episode}}</td>
-            <td>
-              <span *ngIf="data.language == 'Chinese'">中文</span>
-              <span *ngIf="data.language == 'English'">英语</span>
-            </td>
-            <td>
-              <span *ngIf="data.subtitle == 'Chinese'">中文</span>
-              <span *ngIf="data.subtitle == 'English'">英语</span>
-            </td>
-            <td><a routerLink="/manage/transmit/download-record/{{data.id}}">查看</a></td>
-            <td>
-              <a (click)="judge(data.id)"><i nz-icon type="download" theme="outline" style="font-size: 17px, margin-left = 10px"></i></a>
-            </td>
-          </tr>
-      </tbody>
+<div *ngIf='isPurchaseTapesLoaded'>
+  <nz-table #basicTable [nzData]="purchaseTapesList" [nzPageSize]="tapesPagination?.page_size"
+    [nzFrontPagination]="false" [nzPageIndex]="purchaseTapesPagination?.page" [nzTotal]="purchaseTapesPagination?.count"
+    (nzPageIndexChange)="purchaseTapesPageChange($event)">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">#</th>
+        <th [nzAlign]="'center'">节目名称</th>
+        <th [nzAlign]="'center'">母带版本</th>
+        <th [nzAlign]="'center'">来源</th>
+        <th [nzAlign]="'center'">集数</th>
+        <th [nzAlign]="'center'">语言</th>
+        <th [nzAlign]="'center'">字幕</th>
+        <th [nzAlign]="'center'">下载记录</th>
+        <th [nzAlign]="'center'">下载</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data;let i = index">
+        <td [nzAlign]="'center'">{{ i + 1 + purchaseTapesPagination.page * 10 - 10}}</td>
+        <td [nzAlign]="'center'">{{data.program_name}}</td>
+        <td [nzAlign]="'center'"><a (click)="purTapeDetails(data.id)">{{data.name}}</a></td>
+        <td [nzAlign]="'center'">
+          <span *ngIf="data.from == 'inner'">本企业</span>
+          <span *ngIf="data.from == 'bought'">购入</span>
+        </td>
+        <td [nzAlign]="'center'">{{data.episode}}</td>
+        <td [nzAlign]="'center'">
+          <span *ngIf="data.language == 'Chinese'">中文</span>
+          <span *ngIf="data.language == 'English'">英语</span>
+        </td>
+        <td [nzAlign]="'center'">
+          <span *ngIf="data.subtitle == 'Chinese'">中文</span>
+          <span *ngIf="data.subtitle == 'English'">英语</span>
+        </td>
+        <td [nzAlign]="'center'"><a routerLink="/manage/transmit/download-record/{{data.id}}">查看</a></td>
+        <td [nzAlign]="'center'">
+          <!-- <i nz-icon type="download" theme="outline" style="font-size: 17px, margin-left = 10px"></i> -->
+          <a (click)="judge(data.id)">本地</a>
+          <a style="margin-left:10px" (click)="remote(data.id)">远程</a>
+        </td>
+      </tr>
+    </tbody>
   </nz-table>
 </div>
