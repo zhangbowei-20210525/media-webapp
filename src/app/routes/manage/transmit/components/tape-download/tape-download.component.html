@@ -78,7 +78,7 @@
       <nz-checkbox-group [(ngModel)]="sourceCheckOptions" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
     </div>
   </div>
-  <div style="text-align: right"><a>*请留意下载选择窗口可能在下方，请检查</a></div>
+  <div style="text-align: right" *ngIf="state == 'bd'"><a>*请留意下载选择窗口可能在下方，请检查</a></div>
 
   <div *ngIf="isDownloaded" class="download-hint">
     <span class="rf text-hint push-10">如已进入下载程序，可关闭该页面。&nbsp;点击下载没反应？请先下载安装&nbsp;

@@ -1,30 +1,44 @@
-<p>
+<!-- <p>
     <nz-breadcrumb>
       <nz-breadcrumb-item>主页</nz-breadcrumb-item>
       <nz-breadcrumb-item>
-        <a [routerLink]="'/manage/series/rights'">版权列表</a>
+        <a [routerLink]="'/manage/series/rights'">IP列表</a>
       </nz-breadcrumb-item>
-      <nz-breadcrumb-item>新增版权</nz-breadcrumb-item>
+      <nz-breadcrumb-item>新增IP</nz-breadcrumb-item>
     </nz-breadcrumb>
   </p>
   
   <div class="block clearfix">
     <div class="block-header">
-      <div class="block-title">新增版权</div>
+      <div class="block-title">新增IP</div>
     </div>
     <div class="block-content">
-      <h4 style="font-size: 16px;">权利信息</h4>
+      <h4 style="font-size: 16px;">IP权利信息</h4>
       <form nz-form [formGroup]="rightForm" #rightFormRef>
+
+
+          <nz-form-item>
+              <nz-form-label nzFor="episode" [nzSm]="3">原作者</nz-form-label>
+              <nz-form-control [nzSm]="9">
+                <input nz-input placeholder="请输入集数" id="originalAuthor" formControlName="originalAuthor">
+              </nz-form-control>
+              <nz-form-label nzFor="director" [nzSm]="3">IP类型</nz-form-label>
+              <nz-form-control [nzSm]="9">
+                <input nz-input placeholder="请输入导演" id="director" formControlName="director">
+              </nz-form-control>
+            </nz-form-item>
+
+
   
         <nz-form-item>
           <nz-form-label [nzSm]="2">
             <span>
-              节目类型
-              <i nz-icon nz-tooltip nzTitle="该选项只对新增节目有效" type="question-circle" theme="outline"></i>
+              IP类型
+              <i nz-icon nz-tooltip nzTitle="该选项只对新增IP有效" type="question-circle" theme="outline"></i>
             </span>
           </nz-form-label>
           <nz-form-control [nzSm]="10">
-            <input placeholder="节目类型" nz-input formControlName="programType"
+            <input placeholder="IP类型" nz-input formControlName="programType"
               (input)="onProgramTypeInput($event.target?.value)" [nzAutocomplete]="autoProgramType" />
             <nz-autocomplete nzBackfill #autoProgramType>
               <nz-auto-option *ngFor="let option of filteredProgramTypes" [nzValue]="option">
@@ -59,9 +73,6 @@
               <nz-option *ngFor="let option of programOfOptions" [nzLabel]="option.name" [nzValue]="option.name">
               </nz-option>
             </nz-select>
-            <!-- <nz-form-explain *ngIf="rightForm.get('projects').dirty && rightForm.get('projects').errors">
-              请至少选择或输入一个节目
-            </nz-form-explain> -->
             <nz-form-extra>未入库节目请直接输入并按回车确认，可输入多个</nz-form-extra>
           </nz-form-control>
   
@@ -73,8 +84,6 @@
             <nz-cascader nzChangeOnSelect [nzOptions]="rightTemplates" formControlName="copyright" nzLabelProperty="name"
               nzValueProperty="code" nzPlaceHolder="选择权利" (ngModelChange)="onRightChange()">
             </nz-cascader>
-            <!-- <nz-form-explain *ngIf="rightForm.get('copyright').dirty && rightForm.get('copyright').errors">
-              请选择权利</nz-form-explain> -->
           </nz-form-control>
           <nz-form-label [nzSm]="2" nzFor="copyrightNote">权利备注</nz-form-label>
           <nz-form-control [nzSm]="10">
@@ -83,10 +92,6 @@
         </nz-form-item>
   
         <nz-form-item>
-          <!-- <nz-form-label [nzSm]="2" nzFor="copyrightIsSole">是否独家</nz-form-label>
-          <nz-form-control [nzSm]="10">
-            <label nz-checkbox formControlName="copyrightIsSole">独家</label>
-          </nz-form-control> -->
           <nz-form-label [nzSm]="2" nzFor="copyrightChildren">授权范围</nz-form-label>
           <nz-form-control [nzSm]="22">
             <nz-select nzMode="multiple" nzPlaceHolder="可选择授权范围" formControlName="copyrightChildren">
@@ -103,8 +108,6 @@
             <nz-cascader nzChangeOnSelect [nzOptions]="areaTemplates" formControlName="copyrightArea"
               nzLabelProperty="name" nzValueProperty="code" nzPlaceHolder="选择地域">
             </nz-cascader>
-            <!-- <nz-form-explain *ngIf="rightForm.get('copyrightArea').dirty && rightForm.get('copyrightArea').errors">
-              请选择地域</nz-form-explain> -->
           </nz-form-control>
           <nz-form-label [nzSm]="2" nzFor="copyrightAreaNote">地域备注</nz-form-label>
           <nz-form-control [nzSm]="10">
@@ -117,8 +120,6 @@
           <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm" nzRequired>购入期限</nz-form-label>
           <nz-form-control [nzSm]="7">
             <nz-range-picker nzFormat="yyyy/MM/dd" formControlName="copyrightValidTerm"></nz-range-picker>
-            <!-- <nz-form-explain *ngIf="rightForm.get('copyrightValidTerm').dirty && rightForm.get('copyrightValidTerm').errors">
-              请选择购入期限</nz-form-explain> -->
           </nz-form-control>
   
           <nz-form-control [nzSm]="3">
@@ -131,20 +132,6 @@
           </nz-form-control>
   
         </nz-form-item>
-  
-        <!-- <nz-form-item>
-          <nz-form-label [nzSm]="2" nzFor="broadcastChannel">播出频道</nz-form-label>
-          <nz-form-control [nzSm]="10">
-            <input nz-input formControlName="broadcastChannel" placeholder="播出频道">
-          </nz-form-control>
-  
-          <nz-form-label [nzSm]="2" nzFor="airDate">播出日期</nz-form-label>
-          <nz-form-control [nzSm]="10">
-            <nz-date-picker id="airDate" nzAllowClear="false" formControlName="airDate" nzPlaceHolder="播出日期"
-              style="width: 100%;" [nzStyle]="{ width: '100%' }">
-            </nz-date-picker>
-          </nz-form-control>
-        </nz-form-item> -->
   
         <nz-form-item>
           <nz-form-label [nzSm]="2" nzFor="note">备注</nz-form-label>
@@ -161,7 +148,6 @@
       </div>
   
       <h4 style="font-size: 16px;">权利明细（保存前请仔细确认）</h4>
-      <!-- <nz-divider style="margin-top: 1rem"></nz-divider> -->
   
       <p *ngIf="contractForm.valid">
         <span>{{ contractForm.get('customer').value }}</span>
@@ -207,16 +193,11 @@
         </tbody>
       </nz-table>
       <h4 style="margin: 30px 0 10px 0; font-size:16px;">合同信息</h4>
-      <!-- <nz-divider style="margin-top: 1rem"></nz-divider> -->
       <form nz-form [formGroup]="contractForm" #contractFormRef>
   
         <nz-form-item>
           <nz-form-label [nzSm]="2" nzFor="customer" nzRequired>签约客户</nz-form-label>
           <nz-form-control [nzSm]="10">
-            <!-- <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择客户" formControlName="customer">
-                <nz-option *ngFor="let option of customerOptions" [nzLabel]="option.name" [nzValue]="option.id">
-                </nz-option>
-              </nz-select> -->
             <input placeholder="选择客户" nz-input formControlName="customer" (input)="onCustomerInput($event.target?.value)"
               [nzAutocomplete]="auto" nz-tooltip nzTitle="不存在的客户将一并新增" nzTrigger="focus" nzPlacement="topLeft" />
             <nz-autocomplete nzBackfill #auto>
@@ -370,4 +351,4 @@
         <button nz-button nzType="primary" [nzLoading]="isSaving" (click)="save()">保存</button>
       </div>
     </div>
-  </div>
+  </div> -->

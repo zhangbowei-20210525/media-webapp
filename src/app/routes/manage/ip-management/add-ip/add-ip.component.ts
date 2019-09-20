@@ -55,17 +55,14 @@
 //   filteredProgramTypes: string[];
 //   programThemeOptions: string[];
 //   filteredProgramThemes: string[];
-//   isVerify: number;
 //   review_ids = [];
-//   pids: any;
+
 //   ids: any;
-//   proIds = '';
 //   isShowMore = false;
 
 //   constructor(
 //     private fb: FormBuilder,
 //     private service: IpManagementService,
-//     private ss: SeriesService,
 //     private fcs: FormControlService,
 //     private ts: TreeService,
 //     private translate: TranslateService,
@@ -76,7 +73,6 @@
 //   ) { }
 
 //   get contract() {
-    
 //   }
 
 //   get projects() {
@@ -88,30 +84,9 @@
 //   }
 
 //   ngOnInit() {
-//     this.route.paramMap.subscribe(param => {
-//       this.isVerify = param.get('isVerify') as any;
-//       // 节目id
-//       this.pids = param.get('pids') as any;
-//       // 审片id
-//       this.proIds = param.get('ids') as any;
-//       if (this.pids) {
-//         this.fetchProgramOfOptions(this.pids);
-//       }
-//     });
 //     this.service.getCustomerOptions().subscribe(result => {
 //       this.customerOptions = result.list;
 //       this.filteredCustomerOptions = result.list.map(c => c.name);
-//     });
-
-//     this.service.getCopyrightTemplates().subscribe(result => {
-//       result.forEach(item => {
-//         this.rightChildrenTemplate[item.code] = item.children;
-//         delete item.children;
-//       });
-//       if (result) {
-//         this.service.setLeafNode(result);
-//       }
-//       this.rightTemplates = result;
 //     });
 
 //     this.service.getCopyrightAreaOptions().subscribe(result => {
@@ -204,11 +179,6 @@
 //         this.rightForm.get('programType').setValue(this.programOfOptions.map(p => p.program_type));
 //         this.rightForm.get('programTheme').setValue(this.programOfOptions.map(p => p.theme === null ? '无' : p.theme));
 //       }
-//       if (ids && Number(this.isVerify) === 1) {
-//         this.rightForm.get('programType').disable();
-//         this.rightForm.get('projects').disable();
-//         this.rightForm.get('programTheme').disable();
-//       }
 //     });
 //   }
 
@@ -287,9 +257,6 @@
 //       const term = this.rightForm.get('copyrightValidTerm').value;
 //       let children: RootTemplateDto[];
 //       const rightChildren = this.rightForm.get('copyrightChildren').value as string[];
-//       if (rightChildren) {
-//         children = rightChildren.map(child => this.rightChildrenTemplate[right.code].find((item: RootTemplateDto) => item.code === child));
-//       }
 //       let startDate: any, endDate: any;
 //       if (term) {
 //         startDate = term[0];
@@ -332,7 +299,7 @@
 //   }
 
 //   hasContract() {
-   
+
 //   }
 
 //   save() {
@@ -436,24 +403,6 @@
 //     });
 
 //     if (programs.length > 0) {
-//       // 新增版权三审入口
-//       if (Number(this.isVerify) === 1) {
-//         this.review_ids = this.proIds.split(',');
-//         this.review_ids = this.review_ids.map(Number);
-//         this.service.addFilmCopyrights(contract, orders, programs, this.review_ids)
-//           .pipe(finalize(() => this.isSaving = false))
-//           .subscribe(result => {
-//             this.isSaved = true;
-//             this.dataSet = [];
-//             if (this.paymentForm) {
-//               this.paymentForm.reset();
-//             }
-//             this.contractForm.reset();
-//             this.payments = null;
-//             // this.fetchProgramOfOptions();
-//             this.message.success(this.translate.instant('global.save-successfully'));
-//           });
-//       } else {
 //         // 新增版权入口
 //         this.service.addCopyrights(this.service.toAddCopyrightsData(contract, orders, programs))
 //           .pipe(finalize(() => this.isSaving = false))
@@ -468,7 +417,6 @@
 //             // this.fetchProgramOfOptions();
 //             this.message.success(this.translate.instant('global.save-successfully'));
 //           });
-//       }
 //     } else {
 //       this.isSaving = false;
 //     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { PaginationDto, MessageService } from '@shared';
 import { finalize, timeout, switchMap } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { fadeIn } from '@shared/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { TapeDownloadComponent } from '../components/tape-download/tape-download.component';
 import { TransmitService } from '../transmit.service';
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 
 @Component({
   selector: 'app-type',
@@ -25,6 +26,7 @@ export class TypeComponent implements OnInit {
   isPurchaseTapesLoaded: boolean;
   isPurchaseTapesLoading: boolean;
   purchaseTapesList = [];
+  state: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +37,7 @@ export class TypeComponent implements OnInit {
     private localRequestService: LocalRequestService,
     private message: MessageService,
     private translate: TranslateService,
+    @Inject(DA_SERVICE_TOKEN) private token: ITokenService,
 
   ) { }
 
@@ -113,9 +116,25 @@ export class TypeComponent implements OnInit {
   }
   judge(id: number) {
     this.localRequestService.status('127.0.0.1:8756').pipe(timeout(5000)).subscribe(z => {
+      this.state = 'bd';
       this.downloadTape(id);
     }, err => {
       this.message.success(this.translate.instant('global.start-client'));
+    });
+  }
+
+  remote(id: number) {
+    this.service.remoteValidation().subscribe(result => {
+      if (result === null) {
+        this.message.success(this.translate.instant('远程客户端已离线'));
+      } else {
+        if (result.online_status === true) {
+          this.state = 'yc';
+          this.downloadTape(id);
+        } else {
+          this.message.success(this.translate.instant('远程客户端已离线'));
+        }
+      }
     });
   }
 
@@ -127,7 +146,7 @@ export class TypeComponent implements OnInit {
     this.modalService.create({
       nzTitle: '下载母带文件',
       nzContent: TapeDownloadComponent,
-      nzComponentParams: { purchaseTapeId: id },
+      nzComponentParams: { purchaseTapeId: id, state: this.state },
       nzMaskClosable: false,
       nzClosable: false,
       nzOkText: '下载',
@@ -138,15 +157,21 @@ export class TypeComponent implements OnInit {
   }
 
   downloadArgeed = (component: TapeDownloadComponent) => new Promise((resolve) => {
-    // console.log(component);
     const downloadSources = component.getCheckSourceIdList();
     if (downloadSources.length === 0) {
       this.message.success(this.translate.instant('global.select-download-file'));
       resolve();
     } else {
-      this.localRequestService.downloadTape(downloadSources).subscribe(res => {
-        resolve();
-      });
+      if (this.state === 'bd') {
+        this.localRequestService.downloadTape(downloadSources).subscribe(res => {
+          resolve();
+        });
+      }
+      if (this.state === 'yc') {
+        this.service.remoteDownloadTape('download', this.token.get().token, downloadSources).subscribe(res => {
+          resolve();
+        });
+      }
     }
   })
 
