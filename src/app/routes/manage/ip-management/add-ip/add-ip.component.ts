@@ -1,34 +1,39 @@
-// import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-// import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-// import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
-// import { TranslateService } from '@ngx-translate/core';
-// import { finalize } from 'rxjs/operators';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { ReactiveBase, FormControlService, TreeService, MessageService, Util, ScrollService } from '@shared';
+import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
 
-// import * as _ from 'lodash';
-// import { ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash';
+import { ActivatedRoute } from '@angular/router';
 
-// import { NzModalService } from 'ng-zorro-antd';
-// import { IpManagementService } from '../ip-management.service';
-// import { SeriesService } from '../../series/series.service';
-// import { RootTemplateDto } from '../../series/copyrights/dtos';
-// import { FieldCalcGroup } from '../../series/copyrights/field-calc';
+import { NzModalService } from 'ng-zorro-antd';
+import { IpManagementService } from '../ip-management.service';
+import { SeriesService } from '../../series/series.service';
+import { RootTemplateDto } from '../../series/copyrights/dtos';
+import { FieldCalcGroup } from '../../series/copyrights/field-calc';
 
-// @Component({
-//   selector: 'app-add-ip',
-//   templateUrl: './add-ip.component.html',
-//   styles: [`
-//     .block-operations {
-//       width: 100%;
-//       padding: 0.5rem;
-//       margin-bottom: 1rem;
-//       // background-color: #e6f7ff;
-//     }
-//     .ant-form-item {
-//       margin-bottom: 5px;
-//     }
-//   `]
-// })
-// export class AddIpComponent implements OnInit, OnDestroy {
+@Component({
+  selector: 'app-add-ip',
+  templateUrl: './add-ip.component.html',
+  styles: [`
+    .block-operations {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      // background-color: #e6f7ff;
+    }
+    .ant-form-item {
+      margin-bottom: 5px;
+    }
+  `]
+})
+export class AddIpComponent implements OnInit, OnDestroy {
+
+
+    constructor() {}
+
+    ngOnInit() {}
 
 //   @ViewChild('contractFormRef') contractFormRef: ElementRef<HTMLFormElement>;
 //   @ViewChild('paymentFormRef') paymentFormRef: ElementRef<HTMLFormElement>;
@@ -147,9 +152,9 @@
 //     this.fieldCalcGroups.push(new FieldAdditionCalcGroup(amountFields[0], amountFields[1], amountFields[2]));
 //   }
 
-//   ngOnDestroy(): void {
-//     this.fieldCalcGroups.forEach(item => item.ngOnDestroy());
-//   }
+  ngOnDestroy(): void {
+    // this.fieldCalcGroups.forEach(item => item.ngOnDestroy());
+  }
 
 //   getContractFormFields(...keys: string[]) {
 //     return keys.map(k => this.contractForm.get(k) as FormControl);
@@ -476,4 +481,4 @@
 //     this.isShowMore = false;
 //   }
 
-// }
+}

@@ -4,6 +4,7 @@ import { IpManagementComponent } from './ip-management.component';
 import { AddIpComponent } from './add-ip/add-ip.component';
 
 
+
 const routes: Routes = [
   {
     path: '',
