@@ -28,11 +28,20 @@
   height: 100%;
 }
 
+:host ::ng-deep .ant-fullcalendar-value {
+  text-align: left;
+}
+
+:host ::ng-deep .ant-fullcalendar-column-header {
+  text-align: left;
+}
+
 
 :host ::ng-deep .ant-fullcalendar-date {
   height: 190px;
   margin: -1px;
   padding: 5px 0px;
+  width: 153px;
 }
 
 .event-box {
@@ -80,6 +89,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+:host ::ng-deep .ant-fullcalendar table {
+  width: 1070px;
 }
 
 

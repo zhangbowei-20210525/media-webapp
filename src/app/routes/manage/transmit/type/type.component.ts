@@ -146,7 +146,7 @@ export class TypeComponent implements OnInit {
     this.modalService.create({
       nzTitle: '下载母带文件',
       nzContent: TapeDownloadComponent,
-      nzComponentParams: { purchaseTapeId: id },
+      nzComponentParams: { purchaseTapeId: id, state: this.state },
       nzMaskClosable: false,
       nzClosable: false,
       nzOkText: '下载',

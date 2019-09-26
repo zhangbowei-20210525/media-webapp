@@ -83,6 +83,9 @@ const routes: Routes = [
             canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.program.view] } }
           },
           {
+            path: 'ip', loadChildren: './manage/ip-management/ip-management.module#IpManagementModule',
+          },
+          {
             path: 'choreography', component: ChoreographyComponent,
             canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.editing.view] } },
             children: [

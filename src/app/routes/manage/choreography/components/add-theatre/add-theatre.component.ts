@@ -41,7 +41,7 @@ export class AddTheatreComponent implements OnInit {
   channelOptions = [];
   // seriesOption = [];
   marks: any = {
-    0: '星期一',
+    1: '星期一',
     2: '星期二',
     3: '星期三',
     4: '星期四',
