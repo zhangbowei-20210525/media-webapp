@@ -1,8 +1,8 @@
-<!-- <p>
+<p>
     <nz-breadcrumb>
       <nz-breadcrumb-item>主页</nz-breadcrumb-item>
       <nz-breadcrumb-item>
-        <a [routerLink]="'/manage/series/rights'">IP列表</a>
+        <a [routerLink]="'/manage/ip'">IP列表</a>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>新增IP</nz-breadcrumb-item>
     </nz-breadcrumb>
@@ -15,90 +15,39 @@
     <div class="block-content">
       <h4 style="font-size: 16px;">IP权利信息</h4>
       <form nz-form [formGroup]="rightForm" #rightFormRef>
-
-
           <nz-form-item>
-              <nz-form-label nzFor="episode" [nzSm]="3">原作者</nz-form-label>
-              <nz-form-control [nzSm]="9">
-                <input nz-input placeholder="请输入集数" id="originalAuthor" formControlName="originalAuthor">
+              <nz-form-label nzFor="episode" [nzSm]="2">原作者</nz-form-label>
+              <nz-form-control [nzSm]="10">
+                <input nz-input placeholder="请输入原作者" id="originalAuthor" formControlName="originalAuthor">
               </nz-form-control>
-              <nz-form-label nzFor="director" [nzSm]="3">IP类型</nz-form-label>
-              <nz-form-control [nzSm]="9">
-                <input nz-input placeholder="请输入导演" id="director" formControlName="director">
+              <nz-form-label nzFor="director" [nzSm]="2">IP类型</nz-form-label>
+              <nz-form-control [nzSm]="10">
+                <nz-select id="ipType" formControlName="ipType" nzPlaceHolder="请选择IP类型">
+                  <nz-option *ngFor="let option of ipTypeOption" [nzLabel]="option" [nzValue]="option"></nz-option>
+                </nz-select>
               </nz-form-control>
             </nz-form-item>
 
-
-  
         <nz-form-item>
-          <nz-form-label [nzSm]="2">
-            <span>
-              IP类型
-              <i nz-icon nz-tooltip nzTitle="该选项只对新增IP有效" type="question-circle" theme="outline"></i>
-            </span>
-          </nz-form-label>
-          <nz-form-control [nzSm]="10">
-            <input placeholder="IP类型" nz-input formControlName="programType"
-              (input)="onProgramTypeInput($event.target?.value)" [nzAutocomplete]="autoProgramType" />
-            <nz-autocomplete nzBackfill #autoProgramType>
-              <nz-auto-option *ngFor="let option of filteredProgramTypes" [nzValue]="option">
-                {{ option }}
-              </nz-auto-option>
-            </nz-autocomplete>
-          </nz-form-control>
-        </nz-form-item>
-  
-        <nz-form-item>
-          <nz-form-label [nzSm]="2" nzFor="programTheme">
-            <span>
-              题材
-              <i nz-icon nz-tooltip nzTitle="该选项只对新增节目有效" type="question-circle" theme="outline"></i>
-            </span>
-          </nz-form-label>
-          <nz-form-control [nzSm]="10">
-            <input nz-input formControlName="programTheme" placeholder="题材"
-              (input)="onProgramThemeInput($event.target?.value)" [nzAutocomplete]="autoProgramTheme">
-            <nz-autocomplete nzBackfill #autoProgramTheme>
-              <nz-auto-option *ngFor="let option of filteredProgramThemes" [nzValue]="option">
-                {{ option }}
-              </nz-auto-option>
-            </nz-autocomplete>
-          </nz-form-control>
-        </nz-form-item>
-  
-        <nz-form-item>
-          <nz-form-label [nzSm]="2" nzFor="projects" nzRequired>项目</nz-form-label>
+          <nz-form-label [nzSm]="2" nzFor="projects" nzRequired>项目名称</nz-form-label>
           <nz-form-control [nzSm]="22">
-            <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择相关项目" formControlName="projects">
+            <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择相关项目名称" formControlName="projects">
               <nz-option *ngFor="let option of programOfOptions" [nzLabel]="option.name" [nzValue]="option.name">
               </nz-option>
             </nz-select>
-            <nz-form-extra>未入库节目请直接输入并按回车确认，可输入多个</nz-form-extra>
-          </nz-form-control>
-  
-        </nz-form-item>
-  
-        <nz-form-item>
-          <nz-form-label [nzSm]="2" nzFor="copyright" nzRequired>权利</nz-form-label>
-          <nz-form-control [nzSm]="10">
-            <nz-cascader nzChangeOnSelect [nzOptions]="rightTemplates" formControlName="copyright" nzLabelProperty="name"
-              nzValueProperty="code" nzPlaceHolder="选择权利" (ngModelChange)="onRightChange()">
-            </nz-cascader>
-          </nz-form-control>
-          <nz-form-label [nzSm]="2" nzFor="copyrightNote">权利备注</nz-form-label>
-          <nz-form-control [nzSm]="10">
-            <input nz-input formControlName="copyrightNote" placeholder="权利备注">
           </nz-form-control>
         </nz-form-item>
   
         <nz-form-item>
-          <nz-form-label [nzSm]="2" nzFor="copyrightChildren">授权范围</nz-form-label>
-          <nz-form-control [nzSm]="22">
-            <nz-select nzMode="multiple" nzPlaceHolder="可选择授权范围" formControlName="copyrightChildren">
-              <nz-option *ngFor="let option of rightChildrenTemplate[rightForm.get('copyright').value]"
-                [nzLabel]="option.name" [nzValue]="option.code">
-              </nz-option>
+          <nz-form-label [nzSm]="2" nzFor="copyright" nzRequired>权利种类</nz-form-label>
+          <nz-form-control [nzSm]="10">
+            <nz-select id="copyright" formControlName="copyright" nzPlaceHolder="选择权利">
+              <nz-option *ngFor="let option of rightOption" [nzLabel]="option" [nzValue]="option"></nz-option>
             </nz-select>
+          </nz-form-control>
+          <nz-form-label [nzSm]="2" nzFor="copyrightNote">权利描述</nz-form-label>
+          <nz-form-control [nzSm]="10">
+            <input nz-input formControlName="copyrightNote" placeholder="权利描述">
           </nz-form-control>
         </nz-form-item>
   
@@ -116,21 +65,17 @@
         </nz-form-item>
   
         <nz-form-item>
-  
           <nz-form-label [nzSm]="2" nzFor="copyrightValidTerm" nzRequired>购入期限</nz-form-label>
           <nz-form-control [nzSm]="7">
             <nz-range-picker nzFormat="yyyy/MM/dd" formControlName="copyrightValidTerm"></nz-range-picker>
           </nz-form-control>
-  
           <nz-form-control [nzSm]="3">
             <label nz-checkbox formControlName="copyrightValidTermIsPermanent" style="margin-left: 2rem;">永久</label>
           </nz-form-control>
-  
           <nz-form-label [nzSm]="2" nzFor="copyrightValidTermNote">期限备注</nz-form-label>
           <nz-form-control [nzSm]="10">
             <input nz-input formControlName="copyrightValidTermNote" placeholder="权利期限备注">
           </nz-form-control>
-  
         </nz-form-item>
   
         <nz-form-item>
@@ -139,7 +84,6 @@
             <textarea rows="4" nz-input formControlName="note" placeholder="备注"></textarea>
           </nz-form-control>
         </nz-form-item>
-  
       </form>
   
       <div class="right-options">
@@ -165,26 +109,28 @@
         <thead>
           <tr>
             <th nzWidth="16rem">项目名称</th>
+            <th>品类</th>
             <th>权利</th>
-            <th nzWidth="16rem">授权范围</th>
+            <th nzWidth="16rem">权利描述</th>
             <th>地域</th>
             <th>期限</th>
-            <th>备注</th>
+            <th>原作者</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of rightsTable.data">
             <td>{{ data.name }}</td>
-            <td>{{ data.displayRight }}</td>
-            <td>{{ data.displayRightChildren | arrayFormat }}</td>
+            <td>{{ data.type }}</td>
+            <td>{{ data.copyright }}</td>
+            <td>{{ data.rightNote }}</td>
             <td>{{ data.displayArea }}</td>
             <td>
               {{ data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy-MM-dd') + ' ~ ' +
                   (data.termEndDate | date:'yyyy-MM-dd')) : data.termNote }}
             </td>
             <td>
-              <div style="width: 20rem;">{{ data.note }}</div>
+              <div>{{ data.originalAuthor }}</div>
             </td>
             <td>
               <a (click)="deleteRight(data)"><i nz-icon type="delete" theme="outline"></i></a>
@@ -235,42 +181,6 @@
         </nz-form-item>
         <div *ngIf="isShowMore">
           <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="totalEpisodes">总集数</nz-form-label>
-            <nz-form-control [nzSm]="10">
-              <input nz-input formControlName="totalEpisodes" placeholder="总集数">
-            </nz-form-control>
-  
-            <nz-form-label [nzSm]="2" nzFor="chargePerson">经办人</nz-form-label>
-            <nz-form-control [nzSm]="10">
-              <input nz-input formControlName="chargePerson" placeholder="经办人">
-            </nz-form-control>
-          </nz-form-item>
-  
-          <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="episodePrice">每集单价</nz-form-label>
-            <nz-form-control [nzSm]="10">
-              <input nz-input formControlName="episodePrice" placeholder="每集单价">
-            </nz-form-control>
-  
-            <nz-form-label [nzSm]="2" nzFor="totalEpisodesPrice">节目费合计</nz-form-label>
-            <nz-form-control [nzSm]="10">
-              <input nz-input formControlName="totalEpisodesPrice" placeholder="节目费合计">
-            </nz-form-control>
-          </nz-form-item>
-  
-          <nz-form-item>
-            <nz-form-label [nzSm]="2" nzFor="tapeMailPrice">磁复邮单价</nz-form-label>
-            <nz-form-control [nzSm]="10">
-              <input nz-input formControlName="tapeMailPrice" placeholder="磁复邮单价">
-            </nz-form-control>
-  
-            <nz-form-label [nzSm]="2" nzFor="totalTapeMailPrice">磁复邮合计</nz-form-label>
-            <nz-form-control [nzSm]="10">
-              <input nz-input formControlName="totalTapeMailPrice" placeholder="磁复邮合计">
-            </nz-form-control>
-          </nz-form-item>
-  
-          <nz-form-control>
             <nz-form-label [nzSm]="2" nzFor="totalAmount">合同金额</nz-form-label>
             <nz-form-control [nzSm]="10">
               <input nz-input formControlName="totalAmount" placeholder="合同金额" #amount nz-tooltip
@@ -280,6 +190,13 @@
                 请输入正确的合同金额</nz-form-explain>
             </nz-form-control>
   
+            <nz-form-label [nzSm]="2" nzFor="chargePerson">经办人</nz-form-label>
+            <nz-form-control [nzSm]="10">
+              <input nz-input formControlName="chargePerson" placeholder="经办人">
+            </nz-form-control>
+          </nz-form-item>
+  
+          <nz-form-control>
             <nz-form-label [nzSm]="2" nzFor="paymentMethod">付款形式</nz-form-label>
             <nz-form-control [nzSm]="10">
               <nz-select formControlName="paymentMethod" nzPlaceHolder="付款形式"
@@ -298,7 +215,6 @@
         </div>
       </form>
       <form nz-form [formGroup]="paymentForm" #paymentFormRef *ngIf="paymentForm">
-  
         <nz-form-item *ngFor="let payment of payments; let i = index">
           <ng-container *ngFor="let reactive of payment">
             <nz-form-label [nzSm]="2" [nzFor]="reactive.key" [nzRequired]="reactive.required">{{ reactive.label }}
@@ -351,4 +267,4 @@
         <button nz-button nzType="primary" [nzLoading]="isSaving" (click)="save()">保存</button>
       </div>
     </div>
-  </div> -->
+  </div>
