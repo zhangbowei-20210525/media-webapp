@@ -101,6 +101,11 @@ export class InfoComponent implements OnInit {
     this.isRead5 = false;
     this.service.getSpecifiedChannelInfo(this.tabId, this.y, this.m).subscribe(s => {
       this.data = s;
+      delete this.list1;
+      delete this.list2;
+      delete this.list3;
+      delete this.list4;
+      delete this.list5;
       if (s.columns.length >= 1) {
         this.list1 = {
           events: s.columns[0].broadcast_events,
@@ -176,11 +181,11 @@ export class InfoComponent implements OnInit {
 
   selectChange(select: Date): void {
     if (select.getFullYear() === this.y && select.getMonth() + 1 === this.m) {
-        const data1 = this.list1.events.find(f => Util.dateToString(select) === f.broadcast_date);
-        this.dayData1 = [];
-        this.dayData1.length = 0;
-        if (data1 !== undefined) {
-          this.dayData1.push(data1);
+      const data1 = this.list1.events.find(f => Util.dateToString(select) === f.broadcast_date);
+      this.dayData1 = [];
+      this.dayData1.length = 0;
+      if (data1 !== undefined) {
+        this.dayData1.push(data1);
       }
       const data2 = this.list2.events.find(f => Util.dateToString(select) === f.broadcast_date);
       this.dayData2 = [];

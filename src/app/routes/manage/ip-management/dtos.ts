@@ -24,9 +24,9 @@ export interface CopyrightDto {
 
 
 export interface AddCopyrightsDto {
-    contract_data: ContractDto;
-    order_data: OrderPayDto[];
-    program_data: ProgramDto[];
+    contract: ContractDto;
+    orders: OrderPayDto[];
+    programs: ProgramDto[];
 }
 
 export interface PublishRightsDto {
@@ -36,18 +36,12 @@ export interface PublishRightsDto {
 }
 
 export interface ContractDto {
-    contract_number: string;
-    contract_name: string;
-    remark: string;
+    number: string;
+    name: string;
     custom_name: string;
-    sign_date: string;
     total_amount: number;
-    total_episodes: number;
-    episode_price: number;
-    total_episodes_price: number;
-    tape_mail_price: number;
-    total_tape_mail_price: number;
     charge_person: string;
+    remark: string;
 }
 
 export interface OrderPayDto {
@@ -57,19 +51,14 @@ export interface OrderPayDto {
 }
 
 export interface ProgramDto {
-    program_id: number;
-    program_name: string;
-    program_type: string;
-    theme: string;
-    episodes: number;
-    investment_type: string;
-    right_data: CopyrightDto[];
+    name: string;
+    category: string;
+    author: string;
+    rights: CopyrightDto[];
 }
 
 export interface CopyrightDto {
-    sole: boolean;
     right_type: string;
-    child_rights: string[];
     right_remark: string;
     area_number: string;
     area_remark: string;
@@ -77,8 +66,6 @@ export interface CopyrightDto {
     start_date: string;
     end_date: string;
     date_remark: string;
-    broadcast_channel?: string;
-    air_date?: string;
     remark: string;
 }
 
