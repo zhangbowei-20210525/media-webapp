@@ -125,7 +125,7 @@ export class IpManagementComponent implements OnInit {
           type: item.category,
           right_remark: right.right_remark,
           author: item.author,
-          right: right.right_type_label,
+          right: right.right_type,
           area: right.area_label,
           term: right.start_date && right.end_date,
           termIsPermanent: right.permanent_date,

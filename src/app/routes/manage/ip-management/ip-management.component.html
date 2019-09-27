@@ -1,20 +1,20 @@
-<div class="block">
+ <div class="block">
   <div class="block-header">
     <div class="block-title">
       <span style="font-size: 20px">IP信息</span>
     </div>
     <div class="block-options">
-      <a (click)="filter()"><i nz-icon nzType="filter" nzTheme="outline" style="margin-right: .5rem"></i>筛选</a>
-      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
-        <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
-          (keyup)="$event.which === 13 && search()" />
-      </nz-input-group>
-      <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
-          <i nz-icon type="search"></i>
-        </button>
-      </ng-template>
-      <a nz-button nzType="default" [routerLink]="['/manage/ip/add-ip', { id: -1 }]">新增IP</a>
+        <a (click)="filter()"><i nz-icon nzType="filter" nzTheme="outline" style="margin-right: .5rem"></i>筛选</a>
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
+            <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+              (keyup)="$event.which === 13 && search()" />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+              <i nz-icon type="search"></i>
+            </button>
+          </ng-template>
+          <a nz-button  nzType="default" [routerLink]="['/manage/ip/add-ip', { id: -1 }]">新增IP</a>
     </div>
   </div>
   <div class="block-content">
@@ -23,35 +23,35 @@
         [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
         <thead>
           <tr>
-            <th>#</th>
-            <th nzWidth="18rem">IP名称</th>
-            <th>品类</th>
-            <th>权利种类</th>
-            <th>权利描述</th>
-            <th>地域</th>
-            <th nzWidth="18rem">期限</th>
-            <th>原作者</th>
-            <th>操作</th>
+            <th [nzAlign]="'center'">#</th>
+            <th [nzAlign]="'center'" nzWidth="18rem">IP名称</th>
+            <th [nzAlign]="'center'">品类</th>
+            <th [nzAlign]="'center'">权利种类</th>
+            <th [nzAlign]="'center'">权利描述</th>
+            <th [nzAlign]="'center'">地域</th>
+            <th [nzAlign]="'center'" nzWidth="18rem">期限</th>
+            <th [nzAlign]="'center'">原作者</th>
+            <th [nzAlign]="'center'">操作</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of dataTable.data;let i = index">
-            <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex }}</td>
-            <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex }}</td>
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">
               <a [routerLink]="['/manage/ip/d', data.pid]">{{ data.project }}</a>
             </td>
-            <td [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type }}</td>
-            <td [ngClass]="{'sole': data.sole}">{{ data.right }}</td>
-            <td>{{ data.right_remark }}</td>
-            <td>{{ data.area }}</td>
-            <td>
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type }}</td>
+            <td [nzAlign]="'center'" [ngClass]="{'sole': data.sole}">{{ data.right }}</td>
+            <td [nzAlign]="'center'">{{ data.right_remark }}</td>
+            <td [nzAlign]="'center'">{{ data.area }}</td>
+            <td [nzAlign]="'center'">
               {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
               (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
             </td>
-            <td>{{ data.author }}</td>
-            <td [attr.rowspan]="data.count" *ngIf="data.index == 0">
-              <a nz-popconfirm nzTitle="是否删除此IP所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid, i)"><i
-                  class="text-info" nz-icon type="delete" theme="outline"></i></a>
+            <td [nzAlign]="'center'">{{ data.author }}</td>
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">
+              <a nz-popconfirm nzTitle="是否删除此IP所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid, i)"><i class="text-info"
+                  nz-icon type="delete" theme="outline"></i></a>
             </td>
           </tr>
         </tbody>
@@ -60,8 +60,7 @@
   </div>
 </div>
 
-<nz-drawer [nzWidth]="600" [(nzVisible)]="drawerVisible" nzPlacement="right" nzTitle="筛选权利"
-  (nzOnClose)="drawerVisible = false">
+<nz-drawer [nzWidth]="600" [(nzVisible)]="drawerVisible" nzPlacement="right" nzTitle="筛选权利" (nzOnClose)="drawerVisible = false">
   <form nz-form [formGroup]="filtrateForm" style="width: 100%;">
     <nz-form-item style="margin-bottom: 0;">
       <nz-form-label nzFor="type" [nzSpan]="4">IP类型</nz-form-label>

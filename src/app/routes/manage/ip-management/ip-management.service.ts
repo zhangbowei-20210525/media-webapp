@@ -142,16 +142,18 @@ export class IpManagementService {
   }
 
   getIpRight(pagination: PaginationDto, params: any) {
-    return this.http.get<any>(`/api/v1/ip/programs?page=${pagination.page}&page_size=${pagination.page_size}`,
+    return this.http.get<any>(`/api/v1/ip/programs`,
       {
         params: {
+          page: pagination.page,
+          page_size: pagination.page_size,
           category: params.type,
           area_number: params.area_number,
           right_type: params.right_type,
           start_date: params.start_date,
           end_date: params.end_date,
           q: params.q
-        }
+        } as any
       });
   }
 
@@ -161,5 +163,9 @@ export class IpManagementService {
 
   getIpInfo(id: number) {
     return this.http.get<any>(`/api/v1/ip/programs/${id}`);
+  }
+
+  getContractDetailsInfo(id: number) {
+    return this.http.get<any>(`/api/v1/ip/contracts/${id}`);
   }
 }

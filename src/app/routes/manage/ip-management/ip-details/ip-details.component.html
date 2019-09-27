@@ -1,7 +1,7 @@
 <div class="block clearfix">
   <div class="block-content">
     <div class="d-flex align-items-center">
-      <h2 style="margin: 0;"><a (click)="showInfo()">{{ ipInfo?.name }}</a></h2>
+      <h2 style="margin: 0;"><a>{{ ipInfo?.name }}</a></h2>
       <nz-tag style="margin-left: 1rem;" class="type-tag">{{ ipInfo?.category }}</nz-tag>
     </div>
     <div style="color: #333333;font-size: 12px;font-weight:400;margin-top: 7px">
@@ -25,8 +25,7 @@
         <div *ngIf="!data.contract" style="color: #333333;font-weight: 500;">暂无合同信息</div>
         <div *ngIf="data.contract" style="margin-bottom: 12px;">授权单位:&nbsp;&nbsp;&nbsp;&nbsp;<span
             style="color: #333333;font-weight: 500;">{{data.contract.custom_name}}</span> </div>
-        <div *ngIf="data.contract">关联合同:&nbsp;&nbsp;&nbsp;&nbsp;<span
-            style="color: #4797F7">{{data.contract.name === null ? '无' : data.contract.name}}</span>
+        <div *ngIf="data.contract">关联合同:&nbsp;&nbsp;&nbsp;&nbsp;<a [routerLink]="['/manage/ip/cd', data.contract.id]">{{data.contract.name === null ? '无' : data.contract.name}}</a>
         </div>
       </div>
       <div class="big-box-btn" *ngFor="let item of data.rights">
