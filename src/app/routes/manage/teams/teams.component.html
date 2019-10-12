@@ -12,20 +12,46 @@
             </li>
           </ul>
         </nz-dropdown>
-        <button nz-button (click)="editCompany()" *ngIf="settings.user.is_admin">{{ 'global.edit' | translate }}</button>
+        <button nz-button (click)="editCompany()"
+          *ngIf="settings.user.is_admin">{{ 'global.edit' | translate }}</button>
         <button nz-button (click)="addCompany()">{{ 'global.create' | translate }}</button>
       </div>
     </div>
     <div class="block-content">
       <div class="company-info">
-        <h2 class="company-full-name">{{ currentCompany?.company_full_name }}</h2>
+        <div class="company-full-name" style="display: flex;align-items: center;">
+          <div style="font-size: 24px;font-weight: bold">
+            {{ currentCompany?.company_full_name }}
+          </div>
+          <!-- 认证标识以及入口 -->
+          <div  *ngIf="authInfo?.status == 1" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #4797F7;border-radius:10px;margin-left: 10px">
+              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证成功</span>
+          </div>
+
+          <div *ngIf="authInfo == null" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #D0D0D0;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
+              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">未认证...</span>
+          </div>
+
+          <div  *ngIf="authInfo?.status == 0" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #FAAD14;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
+              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证中...</span>
+          </div>
+
+          <div *ngIf="authInfo?.status == 2" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #EF3F3F;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
+              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证失败</span>
+          </div>
+        </div>
         <p>{{ 'app.teams.company-abbreviation' | translate }}：{{ currentCompany?.company_name }}</p>
         <p>{{ 'app.teams.company-desc' | translate }}：{{ currentCompany?.introduction }}</p>
       </div>
     </div>
   </section>
 
-  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany" acl="admin" [acl-ability]="ability.company.view">
+  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany" acl="admin"
+    [acl-ability]="ability.company.view">
     <div class="block-header">
       <div class="block-title">{{ 'app.teams.department-manage' | translate }}</div>
       <div class="block-options">
@@ -112,5 +138,14 @@
       </div>
     </div>
   </ng-template>
+
+
+<ng-template #target>
+  <span style="font-size: 18px;font-weight:500;color: #333333">企业认证</span>
+    <span style="color: #EF3F3F;font-size:12px;margin-left: 14px;">
+      <i nz-icon nzType="exclamation-circle" style="margin-right: 2px;" nzTheme="outline"></i>
+      注：企业认证失败，请核对信息，重新提交！
+    </span>
+</ng-template>
 
 </div>

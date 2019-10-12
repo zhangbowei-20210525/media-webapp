@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IpManagementService } from '../ip-management.service';
-import { MessageService } from '@shared';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-contract-details',

@@ -1,6 +1,6 @@
-import { finalize } from 'rxjs/operators';
+import { finalize, reduce } from 'rxjs/operators';
 import { DepartmentDto, CompanyDto } from './dtos';
-import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Inject, ViewContainerRef } from '@angular/core';
 import { TeamsService } from './teams.service';
 import { SettingsService, AuthService } from '@core';
 import { NzTreeNodeOptions, NzTreeNode, NzTreeComponent, NzFormatEmitEvent, NzModalService, NzMessageService } from 'ng-zorro-antd';
@@ -12,6 +12,7 @@ import { EditCompanyComponent } from './components/edit-company.component';
 import { TreeService } from '@shared';
 import { ACLAbility } from '@core/acl';
 import { ACLService } from '@delon/acl';
+import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
 
 @Component({
   selector: 'app-teams',
@@ -26,6 +27,10 @@ export class TeamsComponent implements OnInit {
   companys: CompanyDto[];
   nodes: NzTreeNodeOptions[];
   activedNode: NzTreeNode;
+  authInfo: any;
+
+  @ViewChild('target') tt: string;
+
 
   constructor(
     public ability: ACLAbility,
@@ -44,6 +49,7 @@ export class TeamsComponent implements OnInit {
     this.fetchCompany();
     this.fetchCompanys();
     this.fetchDepartment();
+    this.getAuthentication();
     // this.acl.removeAbility([this.ability.company.view]);
     // this.acl.set({ role: ['admin'] });
     // console.log('can', this.ability.company.view, this.acl.can(this.ability.company.view));
@@ -54,6 +60,79 @@ export class TeamsComponent implements OnInit {
     return this.activedNode ? this.activedNode.key : '';
   }
 
+
+/**
+    点击页面入口后，调用次方法，判断是否生成认证弹窗以及提示信息
+   */
+  authentication(info: any) {
+    if (info === null) {
+      this.modal.create({
+        nzTitle: `企业认证`,
+        nzContent: EnterpriseCertificationComponent,
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzComponentParams: { info: info },
+        nzWidth: 800,
+        nzOkText: '提交',
+        nzOnOk: this.addEnterpriseCertificationAgreed,
+        nzNoAnimation: true
+      });
+    } else {
+
+      if (info.status === 0) {
+        this.modal.warning({
+          nzTitle: '已提交成功，请等待管理员审核！',
+          nzContent: '预计1个工作日内审核完毕，审核结果会短信通知到您的注册手机上。'
+        });
+      }
+      if (info.status === 1) {
+        this.modal.success({
+          nzTitle: '恭喜！认证成功！',
+          nzContent: '可以开启华丽的操作之旅啦～'
+        });
+      }
+
+      if (info.status === 2) {
+        this.modal.create({
+          nzTitle: this.tt,
+          nzContent: EnterpriseCertificationComponent,
+          nzComponentParams: { info: info },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzWidth: 800,
+          nzOkText: '提交',
+          nzOnOk: this.addEnterpriseCertificationAgreed,
+          nzNoAnimation: true
+        });
+      }
+    }
+  }
+
+  addEnterpriseCertificationAgreed = (component: EnterpriseCertificationComponent) => new Promise((resolve, reject) => {
+    if (component.validation() && component.validationFileList()) {
+      component.submit()
+        .subscribe(result => {
+          this.message.success('已提交成功');
+          this.getAuthentication();
+          resolve();
+        }, error => {
+          reject(false);
+        });
+    } else {
+      reject(false);
+    }
+  })
+
+  getAuthentication() {
+    this.service.getAuthenticationInfo().subscribe(result => {
+      this.authInfo = result;
+      console.log('23232323');
+      console.log(this.authInfo);
+    });
+  }
+  /**
+   * 跳转到团队页面
+   */
   navigateToTeams() {
     this.router.navigateByUrl(`/manage/teams`); // 必须后端存在默认部门
   }
@@ -129,8 +208,6 @@ export class TeamsComponent implements OnInit {
 
   fetchCompanys() {
     this.service.getCompanys().subscribe(result => {
-      console.log('3355');
-      console.log(result);
       this.companys = result;
     });
   }
@@ -145,6 +222,7 @@ export class TeamsComponent implements OnInit {
       this.getCompanyInfo();
       this.fetchDepartment();
       this.navigateToTeams();
+      this.getAuthentication();
       this.message.success(`已切换到 ${companyName}`);
     });
   }

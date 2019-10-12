@@ -12,6 +12,7 @@ import { EmployeeDepartmentComponent } from './employee-details/components/emplo
 import { EditCompanyComponent } from './components/edit-company.component';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 import { EditEmployeeComponent } from './components/edit-employee.component';
+import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { EditEmployeeComponent } from './components/edit-employee.component';
     RolesComponent,
     EmployeeDepartmentComponent,
     EditCompanyComponent,
-    EditEmployeeComponent
+    EditEmployeeComponent,
+    EnterpriseCertificationComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import { EditEmployeeComponent } from './components/edit-employee.component';
     AddCompanyComponent,
     EmployeeDepartmentComponent,
     EditCompanyComponent,
-    EditEmployeeComponent
+    EditEmployeeComponent,
+    EnterpriseCertificationComponent
   ]
 })
 export class TeamsModule { }
