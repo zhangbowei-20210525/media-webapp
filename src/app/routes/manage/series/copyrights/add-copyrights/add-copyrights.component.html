@@ -55,8 +55,25 @@
         </nz-form-control>
       </nz-form-item>
     </form> -->
-
     <h4 style="font-size: 16px;">权利信息</h4>
+
+    <form nz-form [formGroup]="typeForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="2" nzFor="investmentType" nzRequired>投资类型</nz-form-label>
+        <nz-form-control [nzSm]="22">
+          <nz-radio-group formControlName="investmentType">
+            <label nz-radio-button nzValue="homemade">自制</label>
+            <label nz-radio-button nzValue="purchase">购入</label>
+            <label nz-radio-button nzValue="proxy">代理</label>
+            <label nz-radio-button nzValue="main-vote">主投</label>
+            <label nz-radio-button nzValue="follow">跟投</label>
+            <label nz-radio-button nzValue="co-production">合拍</label>
+            <label nz-radio-button nzValue="contract">承制</label>
+            <label nz-radio-button nzValue="introduction">引进</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
     <!-- <nz-divider style="margin-top: 1rem"></nz-divider> -->
 
     <form nz-form [formGroup]="rightForm" #rightFormRef>
@@ -109,6 +126,21 @@
           </nz-form-explain> -->
           <nz-form-extra>未入库节目请直接输入并按回车确认，可输入多个</nz-form-extra>
         </nz-form-control>
+
+        <!-- <nz-form-label [nzSm]="2" nzFor="investment_type">投资类型</nz-form-label>
+          <nz-form-control [nzSm]="10">
+            <nz-select formControlName="investment_type" nzPlaceHolder="请选择投资类型">
+              <nz-option nzLabel="自制" nzValue="homemade"></nz-option>
+              <nz-option nzLabel="购入" nzValue="purchase"></nz-option>
+              <nz-option nzLabel="代理" nzValue="proxy"></nz-option>
+              <nz-option nzLabel="主投" nzValue="main-vote"></nz-option>
+              <nz-option nzLabel="跟投" nzValue="follow"></nz-option>
+              <nz-option nzLabel="合拍" nzValue="co-production"></nz-option>
+              <nz-option nzLabel="承制" nzValue="contract"></nz-option>
+              <nz-option nzLabel="引进" nzValue="introduction"></nz-option>
+            </nz-select>
+          </nz-form-control> -->
+
       </nz-form-item>
 
       <nz-form-item>
@@ -406,9 +438,9 @@
       <i style="color: #4797F7;" nz-icon nzType="down" nzTheme="outline"></i>
     </div>
     <div *ngIf="isShowMore" style="text-align: center;margin-top: 20px;">
-        <a (click)="retractMore()">收起更多</a>
-        <i style="color: #4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
-      </div>
+      <a (click)="retractMore()">收起更多</a>
+      <i style="color: #4797F7;" nz-icon nzType="up" nzTheme="outline"></i>
+    </div>
     <div class="right-options" style="margin-top: 2rem;">
       <button nz-button (click)="resetList()">重置</button>
       <button nz-button nzType="primary" [nzLoading]="isSaving" (click)="save()">保存</button>

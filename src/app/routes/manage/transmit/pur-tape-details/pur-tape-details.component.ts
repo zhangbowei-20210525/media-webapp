@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransmitService } from '../transmit.service';
 import { ActivatedRoute } from '@angular/router';
+import { PaginationDto } from '@shared';
 
 @Component({
   selector: 'app-pur-tape-details',
@@ -12,6 +13,7 @@ export class PurTapeDetailsComponent implements OnInit {
   dataSet = [];
   id: number;
   info: any;
+  tapeFilePagination = { page: 1, count: 10, page_size: 10 } as PaginationDto;
 
   constructor(
     private service: TransmitService,
@@ -24,7 +26,18 @@ export class PurTapeDetailsComponent implements OnInit {
         this.service.getPurTapeInfo(this.id).subscribe(res => {
            this.info = res;
         });
-        this.service.getPurTapeFile(this.id).subscribe(res => this.dataSet = res.list);
+        this.service.getPurTapeFile(this.id, this.tapeFilePagination).subscribe(res => {
+          this.dataSet = res.list;
+          this.tapeFilePagination = res.pagination;
+        });
+    });
+  }
+
+  tapeFilePageChange(page: number) {
+    this.tapeFilePagination.page = page;
+    this.service.getPurTapeFile(this.id, this.tapeFilePagination).subscribe(res => {
+      this.dataSet = res.list;
+      this.tapeFilePagination = res.pagination;
     });
   }
 

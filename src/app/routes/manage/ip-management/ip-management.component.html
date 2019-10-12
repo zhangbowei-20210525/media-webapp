@@ -1,0 +1,112 @@
+ <div class="block">
+  <div class="block-header">
+    <div class="block-title">
+      <span style="font-size: 20px">IP信息</span>
+    </div>
+    <div class="block-options">
+        <a (click)="filter()"><i nz-icon nzType="filter" nzTheme="outline" style="margin-right: .5rem"></i>筛选</a>
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" nzSize="default" style="width: 20rem;">
+            <input type="text" nz-input placeholder="请输入搜索内容" [(ngModel)]="content"
+              (keyup)="$event.which === 13 && search()" />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch nzSize="default" (click)="search()">
+              <i nz-icon type="search"></i>
+            </button>
+          </ng-template>
+          <a nz-button  nzType="default" [routerLink]="['/manage/ip/add-ip', { id: -1 }]">新增IP</a>
+    </div>
+  </div>
+  <div class="block-content">
+    <div *ngIf="isLoaded" [@fadeIn]>
+      <nz-table #dataTable nzBordered [nzData]="dataSet" [nzPageSize]="pagination.page_size" [nzFrontPagination]="false"
+        [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" (nzPageIndexChange)="copyrightsPageChange($event)">
+        <thead>
+          <tr>
+            <th [nzAlign]="'center'">#</th>
+            <th [nzAlign]="'center'" nzWidth="18rem">IP名称</th>
+            <th [nzAlign]="'center'">品类</th>
+            <th [nzAlign]="'center'">权利种类</th>
+            <th [nzAlign]="'center'">权利描述</th>
+            <th [nzAlign]="'center'">地域</th>
+            <th [nzAlign]="'center'" nzWidth="18rem">期限</th>
+            <th [nzAlign]="'center'">原作者</th>
+            <th [nzAlign]="'center'">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of dataTable.data;let i = index">
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.itemIndex }}</td>
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">
+              <a [routerLink]="['/manage/ip/d', data.pid]">{{ data.project }}</a>
+            </td>
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">{{ data.type }}</td>
+            <td [nzAlign]="'center'" [ngClass]="{'sole': data.sole}">{{ data.right }}</td>
+            <td [nzAlign]="'center'">{{ data.right_remark }}</td>
+            <td [nzAlign]="'center'">{{ data.area }}</td>
+            <td [nzAlign]="'center'">
+              {{ (data.termIsPermanent ? '永久' : data.term ? ((data.termStartDate | date:'yyyy/MM/dd') + ' ~ ' +
+              (data.termEndDate | date:'yyyy/MM/dd')) : data.termNote) | emptyDefaultChar }}
+            </td>
+            <td [nzAlign]="'center'">{{ data.author }}</td>
+            <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">
+              <a nz-popconfirm nzTitle="是否删除此IP所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid, i)"><i class="text-info"
+                  nz-icon type="delete" theme="outline"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<nz-drawer [nzWidth]="600" [(nzVisible)]="drawerVisible" nzPlacement="right" nzTitle="筛选权利" (nzOnClose)="drawerVisible = false">
+  <form nz-form [formGroup]="filtrateForm" style="width: 100%;">
+    <nz-form-item style="margin-bottom: 0;">
+      <nz-form-label nzFor="type" [nzSpan]="4">IP类型</nz-form-label>
+      <nz-form-control [nzSpan]="20">
+        <nz-radio-group formControlName="type" (ngModelChange)="onFormValueChange()" nzSize="default">
+          <label nz-radio-button nzValue="">所有</label>
+          <label nz-radio-button nzValue="小说">小说</label>
+          <label nz-radio-button nzValue="剧本">剧本</label>
+          <label nz-radio-button nzValue="电视剧">电视剧</label>
+          <label nz-radio-button nzValue="电影">电影</label>
+          <label nz-radio-button nzValue="动画">动画</label>
+          <label nz-radio-button nzValue="漫画">漫画</label>
+          <label nz-radio-button nzValue="游戏">游戏</label>
+          <label nz-radio-button nzValue="综艺">综艺</label>
+          <label nz-radio-button nzValue="舞台剧">舞台剧</label>
+          <label nz-radio-button nzValue="纪录片">纪录片</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="margin-bottom: 0;">
+      <nz-form-label nzFor="rightType" [nzSpan]="4">权利种类</nz-form-label>
+      <nz-form-control [nzSpan]="20">
+        <nz-select nzMode="multiple" nzPlaceHolder="请选择权利" formControlName="rightType"
+          (ngModelChange)="onFormValueChange()" nzSize="default">
+          <nz-option *ngFor="let option of rightTypeOption" [nzLabel]="option" [nzValue]="option">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="margin-bottom: 0;">
+      <nz-form-label nzFor="area" [nzSpan]="4">地域</nz-form-label>
+      <nz-form-control [nzSpan]="20">
+        <nz-tree-select [nzNodes]="areaOptions" nzShowSearch nzCheckable nzPlaceHolder="请选择地域" formControlName="area"
+          (ngModelChange)="onFormValueChange()" nzSize="default">
+        </nz-tree-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="margin-bottom: 0;">
+      <nz-form-label nzFor="date" [nzSpan]="4">期限</nz-form-label>
+      <nz-form-control [nzSpan]="20">
+        <nz-range-picker formControlName="date" (ngModelChange)="onFormValueChange()" nzSize="default">
+        </nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-drawer>

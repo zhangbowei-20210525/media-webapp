@@ -88,7 +88,12 @@ const PIPES = [
   WeekDayPipe,
   MaxNumberPipe,
   CeilPipe,
-  RightExpirePipe
+  RightExpirePipe,
+  BroadcastDatePipe,
+  ChoreographyCalendarPipe,
+  ChoreographySnPipe,
+  BroadcastDateTitlePipe,
+  ChoreographySncPipe
 ];
 // #endregion
 
@@ -98,6 +103,11 @@ import { HttpClientJsonpModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { WeekDayPipe } from './pipes/week-day.pipe';
 import { RightExpirePipe } from './pipes/right-expire.pipe';
+import { BroadcastDatePipe } from './pipes/broadcast-date.pipe';
+import { ChoreographyCalendarPipe } from './pipes/choreography-calendar.pipe';
+import { ChoreographySnPipe } from './pipes/choreography-sn.pipe';
+import { BroadcastDateTitlePipe } from './pipes/broadcast-date-title.pipe';
+import { ChoreographySncPipe } from './pipes/choreography-snc.pipe';
 
 
 

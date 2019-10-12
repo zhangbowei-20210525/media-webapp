@@ -162,7 +162,12 @@
     <div class="block-title">购入母带文件</div>
   </div>
   <div class="block-content">
-    <nz-table #basicTable [nzData]="dataSet" nzBordered>
+    <nz-table #basicTable [nzData]="dataSet" nzBordered 
+    [nzPageSize]="tapeFilePagination.page_size"
+    [nzFrontPagination]="false" 
+    [nzPageIndex]="tapeFilePagination.page" 
+    [nzTotal]="tapeFilePagination.count"
+    (nzPageIndexChange)="tapeFilePageChange($event)" >
       <thead>
         <tr>
           <th [nzAlign]="'center'">#</th>

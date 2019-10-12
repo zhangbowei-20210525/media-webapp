@@ -11,6 +11,7 @@ import { PaginationDto } from '@shared';
 export class TapeDownloadComponent implements OnInit {
 
   @Input() purchaseTapeId: number;
+  @Input() state: string;
   sources: { id: number, source_name: string }[];
   sourceCheckOptions: { value: number, checked: boolean }[];
   allChecked: boolean;

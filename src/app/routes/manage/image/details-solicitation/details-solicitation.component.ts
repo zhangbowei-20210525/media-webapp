@@ -126,7 +126,7 @@ export class DetailsSolicitationComponent implements OnInit {
     this.status = param.file.status;
     this.type = param.file.type.split('/')[1];
     this.files.forEach((item, index) => {
-      console.log(item);
+      // console.log(item);
       if (item.status === 'error') {
         this.files = this.files.splice(index, 1);
         this.statusType = 'exception';
@@ -200,6 +200,9 @@ export class DetailsSolicitationComponent implements OnInit {
       if (this.validation()) {
         this.submitConent();
       }
+    }
+    if (this.videoList.length > 0) {
+      this.submitConent();
     }
   }
   submitConent() {
@@ -332,7 +335,7 @@ export class DetailsSolicitationComponent implements OnInit {
           this.filterList[0].program.introduction === null ? '' : this.filterList[0].program.introduction);
         this.validateForm.disable();
         this.uploadVideo = true;
-    this.getDisplayDate();
+        this.getDisplayDate();
 
       }
     }

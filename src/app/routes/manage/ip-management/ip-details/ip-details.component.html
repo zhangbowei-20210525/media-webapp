@@ -1,0 +1,55 @@
+<div class="block clearfix">
+  <div class="block-content">
+    <div class="d-flex align-items-center">
+      <h2 style="margin: 0;"><a>{{ ipInfo?.name }}</a></h2>
+      <nz-tag style="margin-left: 1rem;" class="type-tag">{{ ipInfo?.category }}</nz-tag>
+    </div>
+    <div style="color: #333333;font-size: 12px;font-weight:400;margin-top: 7px">
+      <span>原作者：</span>
+      <span>{{ ipInfo?.author }}</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="block clearfix">
+  <div class="block-header">
+    <div class="block-title">IP信息</div>
+    <div class="block-options">
+      <a nz-button [routerLink]="['/manage/ip/add-ip', { id: ipId }]">新增权利</a>
+    </div>
+  </div>
+  <div class="block-content">
+    <div class="big-box" *ngFor="let data of ipInfo?.purchase_right_groups">
+      <div class="big-box-top">
+        <div *ngIf="!data.contract" style="color: #333333;font-weight: 500;">暂无合同信息</div>
+        <div *ngIf="data.contract" style="margin-bottom: 12px;">授权单位:&nbsp;&nbsp;&nbsp;&nbsp;<span
+            style="color: #333333;font-weight: 500;">{{data.contract.custom_name}}</span> </div>
+        <div *ngIf="data.contract">关联合同:&nbsp;&nbsp;&nbsp;&nbsp;<a [routerLink]="['/manage/ip/cd', data.contract.id]">{{data.contract.name === null ? '无' : data.contract.name}}</a>
+        </div>
+      </div>
+      <div class="big-box-btn" *ngFor="let item of data.rights">
+        <div style="display:flex;">
+          <div style="margin-bottom:12px; width: 40%;">权利种类:&nbsp;&nbsp;&nbsp;&nbsp;<span
+            style="color: #333333;font-weight: 500;">{{item.right_type}}</span></div>
+          <div>权利备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.right_remark === null ? '无' : item.right_remark}}</div>
+        </div>
+        <div style="display:flex;">
+          <div style="width: 40%;margin-bottom:12px;">授权地域:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.area_label}}</span></div>
+          <div>地域备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.area_remark === null ? '无' : item.area_remark}}</div>
+        </div>
+        <div style="display:flex;">
+          <div *ngIf="item.permanent_date === true" style="width: 40%;margin-bottom:12px;">
+            购入期限:&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #333333;font-weight: 500;">永久</span></div>
+          <div *ngIf="item.permanent_date === false" style="width: 40%;margin-bottom:12px;">
+            购入期限:&nbsp;&nbsp;&nbsp;&nbsp;<span
+              style="color: #333333;font-weight: 500;">{{item.start_date | date:'yyyy/MM/dd'}}~{{item.end_date | date:'yyyy/MM/dd'}}</span>
+          </div>
+          <div>期限备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.date_remark === null ? '无' : item.date_remark}}</div>
+        </div>
+        <div>备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.remark === null ? '无' : item.remark}}</div>
+      </div>
+    </div>
+  </div>
+</div>

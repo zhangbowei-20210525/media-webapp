@@ -42,4 +42,20 @@ export class TeamsService {
   deleteDepartment(id: number | string) {
     return this.http.delete<any>(`/api/v1/companies/departments/${id}`);
   }
+
+  getAuthenticationInfo() {
+    return this.http.get<any>('/api/v1/companies/certifications');
+  }
+
+  addAuthentication(data) {
+    console.log('ererer');
+    return this.http.post<any>('/api/v1/companies/certifications', {
+      full_name: data.full_name,
+      name: data.name,
+      business_license_image: data.business_license_image,
+      apply_username: data.apply_username,
+      apply_phone: data.apply_phone,
+      introduction: data.introduction,
+    });
+  }
 }

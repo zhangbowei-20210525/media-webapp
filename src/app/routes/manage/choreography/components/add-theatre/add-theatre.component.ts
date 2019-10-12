@@ -41,7 +41,7 @@ export class AddTheatreComponent implements OnInit {
   channelOptions = [];
   // seriesOption = [];
   marks: any = {
-    0: '星期一',
+    1: '星期一',
     2: '星期二',
     3: '星期三',
     4: '星期四',
@@ -140,8 +140,6 @@ export class AddTheatreComponent implements OnInit {
 
   addBroadcastMethod() {
     if (this.validateForm.get('episodes').value !== null) {
-      console.log('0000');
-      console.log(this.oldWeeks);
       if (this.oldWeeks.length === 0) {
         this.conversion(this.validateForm.get('broadcastDate').value).forEach(f => {
           this.oldWeeks.push(f);
@@ -151,20 +149,13 @@ export class AddTheatreComponent implements OnInit {
       } else {
         const a = this.conversion(this.validateForm.get('broadcastDate').value);
         const b = [];
-        console.log('1111');
-        console.log(this.oldWeeks);
         this.oldWeeks.forEach(f => {
           b.push(a.indexOf(f));
         });
-        console.log('2222');
-        console.log(b);
-        console.log(b.indexOf(-1));
         if (b.every(s => s === -1) === true) {
           this.conversion(this.validateForm.get('broadcastDate').value).forEach(f => {
             this.oldWeeks.push(f);
           });
-          console.log('33333');
-          console.log(this.oldWeeks);
           this.conversion(this.validateForm.get('broadcastDate').value).forEach(f => {
             this.weeks.push(f);
           });

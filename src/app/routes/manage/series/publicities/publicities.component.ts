@@ -56,13 +56,10 @@ export class PublicitiesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('34');
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.searchText = params.get('search');
-      console.log(this.searchText);
       this.fetchPublicities();
     });
-    console.log(this.ability.program.publicity.view);
   }
 
   fetchPublicities() {
@@ -77,11 +74,9 @@ export class PublicitiesComponent implements OnInit {
       .pipe(finalize(() => {
         this.isLoading = false;
         this.isLoaded = true;
-        console.log('table loaded');
       }))
       .subscribe(result => {
         if (mode === 'table') {
-          console.log('table result');
           this.dataset = result.list;
         } else {
           this.list = result.list;

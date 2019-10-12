@@ -29,6 +29,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   uploadStatus: any;
   activeSourceTasks = false;
   subscription: Subscription;
+  companyName: '';
+  token: '';
 
   constructor(
     public ability: ACLAbility,
@@ -51,6 +53,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+   this.companyName = JSON.parse(localStorage.getItem('_user')).company_name;
+   this.token = JSON.parse(localStorage.getItem('_token')).token;
     this.langs = this.i18n.getLangs();
     this.auth.state$.subscribe(state => {
       this.isLoggedIn = state;
@@ -132,6 +136,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   changeLanguage(lang: string) {
     this.settings.lang = lang;
     this.i18n.use(lang);
+  }
+
+  goBigData() {
+    window.open(`http://data.bctop.net?companyName=${this.companyName}&token=${this.token}`);
   }
 
 }
