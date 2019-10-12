@@ -13,7 +13,7 @@
             <!-- <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/market'">{{ 'menu.market' | translate }}</a>
             </li> -->
-            <li class="nav-item" acl [acl-ability]="ability.analysis.view">
+            <li class="nav-item" acl [acl-ability]="ability.analysis.view" app-vip="1">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/dashboard'"><span nzTitle="各项统计，提醒与图表"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.dashboard' | translate }}</span></a>
             </li>
@@ -25,7 +25,7 @@
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/series'"><span nzTitle="节目的版权，样片，高清母带管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.series' | translate }}</span></a>
             </li>
-            <li class="nav-item" [acl]="{ ability: [ability.program.source.upload, ability.program.source.download] }">
+            <li class="nav-item" [acl]="{ ability: [ability.program.source.upload, ability.program.source.download] }" app-vip="1">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/transmit'"><span nzTitle="母带文件的传输分发管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.transmit' | translate }}</span></a>
             </li>
@@ -35,21 +35,21 @@
             <li class="nav-item">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/teams'">{{ 'menu.manage.teams' | translate }}</a>
             </li> -->
-            <li class="nav-item" acl [acl-ability]="ability.custom.view">
+            <li class="nav-item" acl [acl-ability]="ability.custom.view" app-vip="1">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/customers'"><span nzTitle="客户及供应商的信息管理"
                   nzPlacement="bottom" nz-tooltip>{{ 'menu.manage.customers' | translate }}</span></a>
             </li>
-            <li class="nav-item" acl [acl-ability]="ability.editing.view">
+            <li class="nav-item" acl [acl-ability]="ability.editing.view" app-vip="1">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/choreography'"><span
                   nzTitle="编辑频道栏目信息" nzPlacement="bottom"
                   nz-tooltip>{{ 'app.series.choreography' | translate }}</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" app-vip="1">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/ip'"><span
                   nzTitle="编辑IP信息" nzPlacement="bottom"
                   nz-tooltip>IP管理</span></a>
             </li>
-            <li class="nav-item" acl [acl-ability]="ability.review.view">
+            <li class="nav-item" acl [acl-ability]="ability.review.view" app-vip="1">
                 <a href="http://data.bctop.net/#/" target=_blank><span nzTitle="大数据"
                     nzPlacement="bottom" nz-tooltip>大数据</span></a>
               </li>

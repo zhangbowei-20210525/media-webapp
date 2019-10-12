@@ -1,7 +1,7 @@
 <div *ngIf="isMyTapesLoaded">
   <div>
     <div class="clearfix" style='margin-bottom: 20px;'>
-      <nz-radio-group [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
+      <nz-radio-group app-vip="1" [(ngModel)]="mode" [nzButtonStyle]="'solid'" (ngModelChange)="modeChange()">
         <label nz-radio-button nzValue="figure"> <i nz-icon type="appstore" theme="outline"
             style="font-size: 1.5rem"></i></label>
         <label acl [acl-ability]="ability.review.edit" nz-radio-button nzValue="table"><i nz-icon type="table"
@@ -16,7 +16,7 @@
         <!-- <button *ngIf='selectedTabIndex === 3' nz-button (click)="goSave()">提交</button> -->
         <button *ngIf='selectedTabIndex === 3' nz-button (click)="goSave()">入库</button>
       </div>
-      <a   acl [acl-ability]="ability.review.conf" style="float: right;margin-right: 20px;font-size: 17px;margin-top: 3px;" routerLink="/manage/film-review"><i
+      <a acl [acl-ability]="ability.review.conf" app-vip="1" style="float: right;margin-right: 20px;font-size: 17px;margin-top: 3px;" routerLink="/manage/film-review"><i
           nz-icon nzType="setting"></i></a>
     </div>
     <div>

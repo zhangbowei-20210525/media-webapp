@@ -7,10 +7,12 @@ import { Subscription } from 'rxjs';
 const hideClassName = 'vip__hide';
 
 @Directive({
-  selector: '[appVip]'
+  // tslint:disable-next-line:directive-selector
+  selector: '[app-vip]'
 })
 export class VipDirective implements OnDestroy {
 
+  private _vipLeast: number;
   private _user: User;
   private _userSubscription: Subscription;
 
@@ -21,11 +23,12 @@ export class VipDirective implements OnDestroy {
     this._user = settings.user;
     this.settings.notify.pipe(filter(setting => setting.type === 'user')).subscribe(setting => {
       this._user = setting.value as User;
-      this.setElement(this.vipLeast, this._user.vip_level);
+      this.setElement(this._vipLeast, this._user.vip_level);
     });
   }
 
-  @Input('appVip') set vipLeast(vip: number) {
+  @Input('app-vip') set vipLeast(vip: number) {
+    this._vipLeast = vip;
     this.setElement(vip, this._user.vip_level);
   }
 
@@ -39,7 +42,9 @@ export class VipDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._userSubscription.unsubscribe();
+    if (this._userSubscription) {
+      this._userSubscription.unsubscribe();
+    }
   }
 
 }
