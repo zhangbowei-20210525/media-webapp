@@ -69,7 +69,7 @@ export const aclAbility = <ACLAbility>{
             publish: null
         }
     },
-    intention: <IntentionACLModule>{
+    intention: <IntentionACLModule>{ // 后台不存在
         view: null,
         add: null,
         review: <IntentionReviewACLModule>{
