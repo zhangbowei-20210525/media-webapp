@@ -126,8 +126,6 @@ export class TeamsComponent implements OnInit {
   getAuthentication() {
     this.service.getAuthenticationInfo().subscribe(result => {
       this.authInfo = result;
-      console.log('23232323');
-      console.log(this.authInfo);
     });
   }
   /**
