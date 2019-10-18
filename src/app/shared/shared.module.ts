@@ -49,7 +49,9 @@ const COMPONENTS = [
   NotifyAlertComponent
 ];
 
-const DIRECTIVES = [];
+import { VipDirective } from './directives/vip.directive';
+
+const DIRECTIVES = [VipDirective];
 
 import { SeriesTypePipe } from './pipes/series-type.pipe';
 import { PointFormatPipe } from './pipes/point-format.pipe';
