@@ -3,6 +3,10 @@
     <nz-tabset [nzTabBarExtraContent]="extraTemplate">
       <nz-tab nzTitle="一审设置" (nzClick)="onClick(0)" [nzDisabled]="isPeople1">
         <div style="padding-bottom: 20px">
+          <div style="margin-left: 8px;">
+            <nz-switch [(ngModel)]="switch1" nzCheckedChildren="开" nzUnCheckedChildren="关" (ngModelChange)="onChange1($event)"></nz-switch>
+          </div>
+          <div [hidden]="switch1 == false">
           <div class="theme-title">审片人</div>
           <div style="margin-bottom: 10px;margin-left: 20px;">
             审片团：<span style="margin-left: 5px;">{{ filmReview1?.department?.name }}</span>
@@ -45,10 +49,15 @@
             <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
                 style="margin-left: 5px">编辑</span></a>
           </div>
+          </div>
         </div>
       </nz-tab>
       <nz-tab nzTitle="二审设置" (nzClick)="onClick(1)" [nzDisabled]="isPeople2">
         <div style="padding-bottom: 20px">
+          <div style="margin-left: 8px;">
+            <nz-switch [(ngModel)]="switch2" nzCheckedChildren="开" nzUnCheckedChildren="关" (ngModelChange)="onChange2($event)"></nz-switch>
+          </div>
+          <div [hidden]="switch2 == false">
           <div class="theme-title">审片人</div>
           <div style="margin-bottom: 10px;margin-left: 20px;">
             审片团：<span style="margin-left: 5px;">{{ filmReview2?.department?.name }}</span>
@@ -92,9 +101,14 @@
                 style="margin-left: 5px">编辑</span></a>
           </div>
         </div>
+        </div>
       </nz-tab>
       <nz-tab nzTitle="三审设置" (nzClick)="onClick(2)" [nzDisabled]="isPeople3">
         <div style="padding-bottom: 20px">
+          <div style="margin-left: 8px;">
+            <nz-switch [(ngModel)]="switch3" nzCheckedChildren="开" nzUnCheckedChildren="关" (ngModelChange)="onChange3($event)"></nz-switch>
+          </div>
+          <div [hidden]="switch3 == false">
           <div class="theme-title">审片人</div>
           <div style="margin-bottom: 10px;margin-left: 20px;">
             审片团：<span style="margin-left: 5px;">{{ filmReview3?.department?.name }}</span>
@@ -137,6 +151,7 @@
             <a style="margin-left: 10px;" (click)="ideaConfig()"><i nz-icon nzType="form" nzTheme="outline"></i><span
                 style="margin-left: 5px">编辑</span></a>
           </div>
+        </div>
         </div>
       </nz-tab>
     </nz-tabset>

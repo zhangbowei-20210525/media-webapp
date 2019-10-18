@@ -26,6 +26,10 @@ export class FilmReviewComponent implements OnInit {
   isPeople1: boolean;
   isPeople2: boolean;
   isPeople3: boolean;
+  switch1 = false;
+  switch2 = false;
+  switch3 = false;
+  id: number;
 
   constructor(
     private modal: NzModalService,
@@ -40,6 +44,87 @@ export class FilmReviewComponent implements OnInit {
     this.service.getFilmReviewList().subscribe(res => {
       console.log(res);
       this.refresh(res, 0);
+    });
+  }
+
+  onChange1(event) {
+    this.service.isHasFilmReviewSwitch(event, this.id).subscribe(result => {
+      this.service.isHasFilmReview().subscribe(res => {
+        if (res.review_step_count === 0) {
+          this.isPeople1 = false;
+          this.isPeople2 = true;
+          this.isPeople3 = true;
+        }
+        if (res.review_step_count === 1) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = true;
+        }
+        if (res.review_step_count === 2) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = false;
+        }
+        if (res.review_step_count === 3) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = false;
+        }
+      });
+    });
+  }
+
+  onChange2(event) {
+    this.service.isHasFilmReviewSwitch(event, this.id).subscribe(result => {
+      this.service.isHasFilmReview().subscribe(res => {
+        if (res.review_step_count === 0) {
+          this.isPeople1 = false;
+          this.isPeople2 = true;
+          this.isPeople3 = true;
+        }
+        if (res.review_step_count === 1) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = true;
+        }
+        if (res.review_step_count === 2) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = false;
+        }
+        if (res.review_step_count === 3) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = false;
+        }
+      });
+    });
+  }
+
+  onChange3(event) {
+    this.service.isHasFilmReviewSwitch(event, this.id).subscribe(result => {
+      this.service.isHasFilmReview().subscribe(res => {
+        if (res.review_step_count === 0) {
+          this.isPeople1 = false;
+          this.isPeople2 = true;
+          this.isPeople3 = true;
+        }
+        if (res.review_step_count === 1) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = true;
+        }
+        if (res.review_step_count === 2) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = false;
+        }
+        if (res.review_step_count === 3) {
+          this.isPeople1 = false;
+          this.isPeople2 = false;
+          this.isPeople3 = false;
+        }
+      });
     });
   }
 
@@ -96,16 +181,19 @@ export class FilmReviewComponent implements OnInit {
     if (step_number === 0) {
       this.service.getFilmReviewDetails(data[0].id).subscribe(res => {
         this.filmReview1 = res;
+        this.id = res.id;
       });
     }
     if (step_number === 1) {
       this.service.getFilmReviewDetails(data[1].id).subscribe(res => {
         this.filmReview2 = res;
+        this.id = res.id;
       });
     }
     if (step_number === 2) {
       this.service.getFilmReviewDetails(data[2].id).subscribe(res => {
         this.filmReview3 = res;
+        this.id = res.id;
       });
     }
   }

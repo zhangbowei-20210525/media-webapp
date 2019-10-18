@@ -94,4 +94,8 @@ export class FilmReviewService {
   isHasFilmReview() {
     return this.http.get<any>(`/api/v1/reviews/configs/status`);
   }
+
+  isHasFilmReviewSwitch(isOpen: boolean, id: number) {
+    return this.http.post<any>(`/api/v1/reviews/configs/${id}/enable`, { status: isOpen });
+  }
 }
