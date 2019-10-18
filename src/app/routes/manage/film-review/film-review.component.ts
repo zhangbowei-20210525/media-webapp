@@ -23,6 +23,9 @@ export class FilmReviewComponent implements OnInit {
   people: string;
   switchTab: number;
   info: number;
+  isPeople1: boolean;
+  isPeople2: boolean;
+  isPeople3: boolean;
 
   constructor(
     private modal: NzModalService,
@@ -35,8 +38,33 @@ export class FilmReviewComponent implements OnInit {
   ngOnInit() {
     this.switchTab = 0;
     this.service.getFilmReviewList().subscribe(res => {
+      console.log(res);
       this.refresh(res, 0);
-      console.log(res, '11');
+    });
+  }
+
+  isHasFilmReview() {
+    this.service.isHasFilmReview().subscribe(result => {
+      if (result.review_step_count === 0) {
+        this.isPeople1 = false;
+        this.isPeople2 = true;
+        this.isPeople3 = true;
+      }
+      if (result.review_step_count === 1) {
+        this.isPeople1 = false;
+        this.isPeople2 = false;
+        this.isPeople3 = true;
+      }
+      if (result.review_step_count === 2) {
+        this.isPeople1 = false;
+        this.isPeople2 = false;
+        this.isPeople3 = false;
+      }
+      if (result.review_step_count === 3) {
+        this.isPeople1 = false;
+        this.isPeople2 = false;
+        this.isPeople3 = false;
+      }
     });
   }
 
@@ -64,11 +92,10 @@ export class FilmReviewComponent implements OnInit {
   }
 
   refresh(data: any, step_number: number) {
+    this.isHasFilmReview();
     if (step_number === 0) {
       this.service.getFilmReviewDetails(data[0].id).subscribe(res => {
         this.filmReview1 = res;
-        console.log(res);
-        console.log(res.conclusion_item.neutral_name);
       });
     }
     if (step_number === 1) {

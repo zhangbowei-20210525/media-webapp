@@ -15,6 +15,7 @@ export class EnterpriseCertificationComponent implements OnInit {
   show = false;
   confirm = false;
   @Input() info: any;
+  @Input() currentCompany: any;
 
 
   showUploadList = {
@@ -42,7 +43,12 @@ export class EnterpriseCertificationComponent implements OnInit {
       phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
       introduction: [null],
     });
-    if (this.info !== null) {
+    if (this.info === null) {
+      this.validateForm.get('companyFullName').setValue(this.currentCompany.company_full_name);
+      this.validateForm.get('companyAbbreviationName').setValue(this.currentCompany.company_name);
+      this.validateForm.get('phone').setValue(this.currentCompany.phone);
+      this.validateForm.get('introduction').setValue(this.currentCompany.introduction);
+    } else {
       this.validateForm.get('companyFullName').setValue(this.info.full_name);
       this.validateForm.get('companyAbbreviationName').setValue(this.info.name);
       this.validateForm.get('applicant').setValue(this.info.apply_username);

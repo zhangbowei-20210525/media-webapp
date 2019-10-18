@@ -82,6 +82,7 @@ export class EditFilmReviewTeamComponent implements OnInit {
     this.service.getFilmReviewTeam(this.filmReview.id).subscribe(res => {
       this.teamInfo = res;
       this.tid = this.filmReview.department.id;
+      this.peopleInfo =  [];
       this.peopleRefresh(this.tid);
     });
   }

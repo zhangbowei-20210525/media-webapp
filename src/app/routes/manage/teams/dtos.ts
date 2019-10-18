@@ -4,6 +4,7 @@ export interface CompanyDto {
     company_full_name: string;
     introduction: string;
     is_default_company: boolean;
+    phone: string;
 }
 
 export interface DepartmentDto {

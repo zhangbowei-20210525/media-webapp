@@ -68,44 +68,48 @@ export class AddFilmReviewPeopleComponent implements OnInit {
   }
 
   submit(): Observable<any> {
-    if (this.reviewPeopleInfoForm.value.reviewPeople1 === undefined) {
-      const a = [
-        { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
-      ];
-      return this.service.addFilmReviewPeople(this.tid, a);
-    } else if
-      (this.reviewPeopleInfoForm.value.reviewPeople2 === undefined) {
-      const a = [
-        { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
-      ];
-      return this.service.addFilmReviewPeople(this.tid, a);
-    } else if
-      (this.reviewPeopleInfoForm.value.reviewPeople3 === undefined) {
-      const a = [
-        { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople2, phone: this.reviewPeopleInfoForm.value.phone2 },
-      ];
-      return this.service.addFilmReviewPeople(this.tid, a);
-    } else if
-      (this.reviewPeopleInfoForm.value.reviewPeople4 === undefined) {
-      const a = [
-        { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople2, phone: this.reviewPeopleInfoForm.value.phone2 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople3, phone: this.reviewPeopleInfoForm.value.phone3 },
-      ];
-      return this.service.addFilmReviewPeople(this.tid, a);
+    if (this.tid === undefined) {
+      this.message.warning(this.translate.instant('请先选择一个部门'));
     } else {
-      const a = [
-        { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople2, phone: this.reviewPeopleInfoForm.value.phone2 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople3, phone: this.reviewPeopleInfoForm.value.phone3 },
-        { name: this.reviewPeopleInfoForm.value.reviewPeople4, phone: this.reviewPeopleInfoForm.value.phone4 }
-      ];
-      return this.service.addFilmReviewPeople(this.tid, a);
+      if (this.reviewPeopleInfoForm.value.reviewPeople1 === undefined) {
+        const a = [
+          { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
+        ];
+        return this.service.addFilmReviewPeople(this.tid, a);
+      } else if
+        (this.reviewPeopleInfoForm.value.reviewPeople2 === undefined) {
+        const a = [
+          { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
+        ];
+        return this.service.addFilmReviewPeople(this.tid, a);
+      } else if
+        (this.reviewPeopleInfoForm.value.reviewPeople3 === undefined) {
+        const a = [
+          { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople2, phone: this.reviewPeopleInfoForm.value.phone2 },
+        ];
+        return this.service.addFilmReviewPeople(this.tid, a);
+      } else if
+        (this.reviewPeopleInfoForm.value.reviewPeople4 === undefined) {
+        const a = [
+          { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople2, phone: this.reviewPeopleInfoForm.value.phone2 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople3, phone: this.reviewPeopleInfoForm.value.phone3 },
+        ];
+        return this.service.addFilmReviewPeople(this.tid, a);
+      } else {
+        const a = [
+          { name: this.reviewPeopleInfoForm.value.reviewPeople0, phone: this.reviewPeopleInfoForm.value.phone0 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople1, phone: this.reviewPeopleInfoForm.value.phone1 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople2, phone: this.reviewPeopleInfoForm.value.phone2 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople3, phone: this.reviewPeopleInfoForm.value.phone3 },
+          { name: this.reviewPeopleInfoForm.value.reviewPeople4, phone: this.reviewPeopleInfoForm.value.phone4 }
+        ];
+        return this.service.addFilmReviewPeople(this.tid, a);
+      }
     }
   }
 }

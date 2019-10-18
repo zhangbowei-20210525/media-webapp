@@ -28,6 +28,7 @@ export class TeamsComponent implements OnInit {
   nodes: NzTreeNodeOptions[];
   activedNode: NzTreeNode;
   authInfo: any;
+  conInfo: any;
 
   @ViewChild('target') tt: string;
 
@@ -45,11 +46,11 @@ export class TeamsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCompanyInfo();
     this.fetchCompany();
     this.fetchCompanys();
     this.fetchDepartment();
     this.getAuthentication();
+    this.getCompanyInfo();
     // this.acl.removeAbility([this.ability.company.view]);
     // this.acl.set({ role: ['admin'] });
     // console.log('can', this.ability.company.view, this.acl.can(this.ability.company.view));
@@ -71,7 +72,7 @@ export class TeamsComponent implements OnInit {
         nzContent: EnterpriseCertificationComponent,
         nzMaskClosable: false,
         nzClosable: false,
-        nzComponentParams: { info: info },
+        nzComponentParams: { info: info, currentCompany: this.conInfo },
         nzWidth: 800,
         nzOkText: '提交',
         nzOnOk: this.addEnterpriseCertificationAgreed,
@@ -140,8 +141,9 @@ export class TeamsComponent implements OnInit {
   }
 
   getCompanyInfo() {
-    const { company_id, company_name, company_full_name, introduction, is_default_company } = this.settings.user;
-    this.currentCompany = { company_id, company_name, company_full_name, introduction, is_default_company };
+    const { company_id, company_name, company_full_name, introduction, is_default_company, phone } = this.settings.user;
+    this.currentCompany = { company_id, company_name, company_full_name, introduction, is_default_company, phone };
+    this.conInfo = this.settings.user;
   }
 
   fetchCompany() {

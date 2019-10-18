@@ -1,7 +1,7 @@
 <div class="block">
   <div class="block-content">
     <nz-tabset [nzTabBarExtraContent]="extraTemplate">
-      <nz-tab nzTitle="一审设置" (nzClick)="onClick(0)">
+      <nz-tab nzTitle="一审设置" (nzClick)="onClick(0)" [nzDisabled]="isPeople1">
         <div style="padding-bottom: 20px">
           <div class="theme-title">审片人</div>
           <div style="margin-bottom: 10px;margin-left: 20px;">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </nz-tab>
-      <nz-tab nzTitle="二审设置" (nzClick)="onClick(1)">
+      <nz-tab nzTitle="二审设置" (nzClick)="onClick(1)" [nzDisabled]="isPeople2">
         <div style="padding-bottom: 20px">
           <div class="theme-title">审片人</div>
           <div style="margin-bottom: 10px;margin-left: 20px;">
@@ -93,7 +93,7 @@
           </div>
         </div>
       </nz-tab>
-      <nz-tab nzTitle="三审设置" (nzClick)="onClick(2)">
+      <nz-tab nzTitle="三审设置" (nzClick)="onClick(2)" [nzDisabled]="isPeople3">
         <div style="padding-bottom: 20px">
           <div class="theme-title">审片人</div>
           <div style="margin-bottom: 10px;margin-left: 20px;">

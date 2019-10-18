@@ -89,6 +89,9 @@ export class ReviewViewComponent implements OnInit {
   isShowTab = false;
   isShowView = false;
   reviewName = [];
+  isHasFilmReview1 = false;
+  isHasFilmReview2 = false;
+  isHasFilmReview3 = false;
 
   constructor(
     public ability: ACLAbility,
@@ -100,6 +103,7 @@ export class ReviewViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.isHasFilmReview();
     this.route.paramMap.subscribe(params => {
       this.isForm = +params.get('isForm');
       // console.log(this.isForm);
@@ -135,6 +139,33 @@ export class ReviewViewComponent implements OnInit {
       });
     // console.log(this.intentionList.length);
   }
+
+  isHasFilmReview() {
+    this.service.isHasFilmReview().subscribe(result => {
+      if (result.review_step_count === 0) {
+        this.isHasFilmReview1 = false;
+        this.isHasFilmReview2 = false;
+        this.isHasFilmReview3 = false;
+      }
+      if (result.review_step_count === 1) {
+        this.isHasFilmReview1 = true;
+        this.isHasFilmReview2 = false;
+        this.isHasFilmReview3 = false;
+      }
+      if (result.review_step_count === 2) {
+        this.isHasFilmReview1 = true;
+        this.isHasFilmReview2 = true;
+        this.isHasFilmReview3 = false;
+      }
+      if (result.review_step_count === 3) {
+        this.isHasFilmReview1 = true;
+        this.isHasFilmReview2 = true;
+        this.isHasFilmReview3 = true;
+      }
+    });
+  }
+
+
   fetchPublicities(step_number) {
     this.isLoading = true;
     if (this.mode === 'figure') {
@@ -150,6 +181,7 @@ export class ReviewViewComponent implements OnInit {
           // console.log(this.list);
         });
     } else if (this.mode === 'table') {
+      this.isHasFilmReview();
       if (step_number === 0) {
         this.getAllIntentionList();
       } else {
@@ -157,6 +189,7 @@ export class ReviewViewComponent implements OnInit {
       }
     }
   }
+
   getAllIntentionList() {
     this.service.getIntentionTypeList(this.pagination, this.companyId, this.receiverId)
       .pipe(finalize(() => {
@@ -524,7 +557,7 @@ export class ReviewViewComponent implements OnInit {
       this.router.navigate([`/manage/series/add-copyrights`, { pids: reviewId, ids: review_ids, isVerify: 1 }]);
     }
   }
-  secondReviewGoSave () {
+  secondReviewGoSave() {
     const review_ids = [];
     // const step_number = 3;
     for (const key in this.secondMapOfCheckedId) {

@@ -65,6 +65,9 @@ export class SeriesConfigComponent implements OnInit {
   }
 
   wordsMerge() {
+    this.seriesTypes = [];
+    this.investmentTypes = [];
+    this.themes = [];
     this.service.getTypes('program_types').subscribe(result => {
       result.forEach(f => {
         this.seriesTypes.push({

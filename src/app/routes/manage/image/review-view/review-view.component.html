@@ -150,7 +150,7 @@
                   </nz-table>
                 </div>
               </nz-tab>
-              <nz-tab nzTitle="一审">
+              <nz-tab nzTitle="一审" *ngIf="isHasFilmReview1 == true">
                 <div>
                   发审时间：
                   <nz-range-picker [nzRenderExtraFooter]="footerRender" [ngModel]="viewTime"
@@ -215,7 +215,7 @@
                   </nz-table>
                 </div>
               </nz-tab>
-              <nz-tab nzTitle="二审">
+              <nz-tab nzTitle="二审" *ngIf="isHasFilmReview2 == true">
                 <div>
                   发审时间：
                   <nz-range-picker [nzRenderExtraFooter]="footerRender" [ngModel]="viewTime"
@@ -276,8 +276,8 @@
                           {{data.review_steps[0].review_records_statistic.count}}
                         </td>
                         <td>
-                          {{data.review_steps[1].review_records_statistic.reviewed_count}} /
-                          {{data.review_steps[1].review_records_statistic.count}}
+                          {{data?.review_steps[1]?.review_records_statistic?.reviewed_count}} /
+                          {{data?.review_steps[1]?.review_records_statistic?.count}}
                         </td>
                         <td>{{data.publicity.created_at}}</td>
                       </tr>
@@ -285,7 +285,7 @@
                   </nz-table>
                 </div>
               </nz-tab>
-              <nz-tab nzTitle="三审">
+              <nz-tab nzTitle="三审" *ngIf="isHasFilmReview3 == true">
                 <div>
                   发审时间：
                   <nz-range-picker [nzRenderExtraFooter]="footerRender" [ngModel]="viewTime"

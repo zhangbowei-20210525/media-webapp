@@ -274,7 +274,7 @@
       </div>
       <div class="video-title">
         <div class="widthBisection">
-          <span>{{publicityName}}：</span>
+          <span>{{seriesInfo?.name}}：</span>
           <span *ngIf="publicityType == 'sample'">{{sampleName}}</span>
           <span *ngIf="publicityType == 'feature'">{{featureName}}</span>
           <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
@@ -328,7 +328,7 @@
       </div>
       <div class="video-title">
         <div class="widthBisection">
-          <span>{{publicityName}}：</span>
+          <span>{{seriesInfo?.name}}：</span>
           <span>{{posterName}}</span>
         </div>
         <div class="fixationInfo-info">
@@ -373,7 +373,7 @@
       </div>
       <div class="video-title">
         <div class="widthBisection">
-          <span>{{publicityName}}：</span>
+          <span>{{seriesInfo?.name}}：</span>
           <span>{{stillName}}</span>
         </div>
         <div class="fixationInfo-info">
@@ -436,7 +436,7 @@
 
       <div class="video-title">
         <div class="widthBisection">
-          <span *ngIf="fixationInfo">{{publicityName}}：</span>
+          <span *ngIf="fixationInfo">{{seriesInfo?.name}}：</span>
           <span *ngIf="detail">{{pdfName}}</span>
         </div>
         <div class="fixationInfo-info">
@@ -572,14 +572,34 @@
             <div>简介：{{ seriesInfo?.introduction }}</div>
           </div>
         </nz-tab>
-        <!-- <nz-tab nzTitle="关键帧">
-  
-          </nz-tab>
-          <nz-tab nzTitle="图集">
+        <!-- <nz-tab nzTitle="看片轨迹">
+          <nz-collapse nzAccordion [nzBordered]="false">
+            <nz-collapse-panel [nzShowArrow]="false" *ngFor="let panel of panels" [nzHeader]="header" [nzActive]="panel.active">
+              <div style="width: 350px;height: auto;background: #EEEEEE;">asdsdasdasd</div>
+            </nz-collapse-panel>
+            <ng-template #header>
+              <div class="details-title">
+                <div class="title-avater">
+                  <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;">
+                  </nz-avatar>
+                </div>
+                <div class='title-info'>
+                  <div class='info-item'>
+                    <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">{{userinfo?.user?.nickname}}</span>
+                  </div>
+                  <div class='info-item'>
+                    <span>{{userinfo?.company?.full_name}}</span>
+                    <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </nz-collapse>
+          </nz-tab> -->
+          <!-- <nz-tab nzTitle="图集">
   
           </nz-tab> -->
       </nz-tabset>
-
     </div>
   </div>
 </div>

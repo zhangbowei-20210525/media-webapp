@@ -90,6 +90,28 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   tabIndex: number;
   fixationInfo: any; // 可能是用户信息
 
+
+  panels = [
+    {
+      active: true,
+      name: 'This is panel header 1',
+      childPanel: [
+        {
+          active: false,
+          name: 'This is panel header 1-1'
+        }
+      ]
+    },
+    {
+      active: false,
+      name: 'This is panel header 2'
+    },
+    {
+      active: false,
+      name: 'This is panel header 3'
+    }
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,

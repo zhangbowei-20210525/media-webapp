@@ -90,4 +90,8 @@ export class FilmReviewService {
     }
     return reviewPeopleInfos;
   }
+
+  isHasFilmReview() {
+    return this.http.get<any>(`/api/v1/reviews/configs/status`);
+  }
 }

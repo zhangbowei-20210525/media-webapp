@@ -326,6 +326,8 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
 
   // 获取盒子的高度
   getWrapperHeight(reviewData) {
+    console.log('333434');
+    console.log(this.verifyFirstView);
     if (this.selectedIndex === 0 && !!this.verifyFirstView.nativeElement && !!this.scoreFirstView.nativeElement) {
       this.verifyHeight = this.verifyFirstView.nativeElement.offsetHeight;
       this.scoreHeight = this.scoreFirstView.nativeElement.offsetHeight;
@@ -397,17 +399,21 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
           item.avg = (this.scoreFirstList[index].avg) / 2;
         });
         // 二审评分想
-        this.scoreSecondList = res.review_steps[1].review_records_statistic.score_statistic.item_statistic;
-        this.nameSecondList = res.review_steps[1].scoring_items;
-        this.nameSecondList.forEach((item, index) => {
-          item.avg = (this.scoreSecondList[index].avg) / 2;
-        });
+        if (res.review_steps.lenght > 1) {
+          this.scoreSecondList = res.review_steps[1].review_records_statistic.score_statistic.item_statistic;
+          this.nameSecondList = res.review_steps[1].scoring_items;
+          this.nameSecondList.forEach((item, index) => {
+            item.avg = (this.scoreSecondList[index].avg) / 2;
+          });
+        }
         // 三审评分想
-        this.scoreThirdList = res.review_steps[2].review_records_statistic.score_statistic.item_statistic;
-        this.nameThirdList = res.review_steps[2].scoring_items;
-        this.nameThirdList.forEach((item, index) => {
-          item.avg = (this.scoreThirdList[index].avg) / 2;
-        });
+        if (res.review_steps.lenght > 2) {
+          this.scoreThirdList = res.review_steps[2].review_records_statistic.score_statistic.item_statistic;
+          this.nameThirdList = res.review_steps[2].scoring_items;
+          this.nameThirdList.forEach((item, index) => {
+            item.avg = (this.scoreThirdList[index].avg) / 2;
+          });
+        }
         // 个人评分项
         // this.scoreOneList = res.review_steps[0].review_records.forEach(a => {
         //   a.scores.forEach( b => {
@@ -419,6 +425,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         // if (res.review_steps[0].lenght > 3) {
         // this.reviewFirstSteps = res.review_steps[0].splice(0, 3);
         // } else {
+          console.log( this.reviewFirstSteps);
         this.reviewFirstSteps = res.review_steps[0];
         this.reviewFirstSteps.review_records.forEach(b => {
           b.total_score = b.total_score / 2;
@@ -430,27 +437,30 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
             ele.score = ele.score / 2;
           });
         });
-
-        this.reviewSecondSteps = res.review_steps[1];
-        this.reviewSecondSteps.review_records.forEach(b => {
-          b.total_score = b.total_score / 2;
-        });
-        this.reviewSecondSteps.review_records.forEach(item => {
-          item.isUp = false;
-          item.scores.forEach(ele => {
-            ele.score = ele.score / 2;
+        if (res.review_steps.length > 1) {
+          this.reviewSecondSteps = res.review_steps[1];
+          this.reviewSecondSteps.review_records.forEach(b => {
+            b.total_score = b.total_score / 2;
           });
-        });
-        this.reviewThirdSteps = res.review_steps[2];
-        this.reviewThirdSteps.review_records.forEach(b => {
-          b.total_score = b.total_score / 2;
-        });
-        this.reviewThirdSteps.review_records.forEach(item => {
-          item.isUp = false;
-          item.scores.forEach(ele => {
-            ele.score = ele.score / 2;
+          this.reviewSecondSteps.review_records.forEach(item => {
+            item.isUp = false;
+            item.scores.forEach(ele => {
+              ele.score = ele.score / 2;
+            });
           });
-        });
+        }
+        if (res.review_steps.length > 2) {
+          this.reviewThirdSteps = res.review_steps[2];
+          this.reviewThirdSteps.review_records.forEach(b => {
+            b.total_score = b.total_score / 2;
+          });
+          this.reviewThirdSteps.review_records.forEach(item => {
+            item.isUp = false;
+            item.scores.forEach(ele => {
+              ele.score = ele.score / 2;
+            });
+          });
+        }
         const currentYear = this.myDate.getFullYear();
         const currentMouth = this.myDate.getMonth() + 1;
         const currentDate = this.myDate.getDate();
@@ -474,6 +484,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
             }
           }
         });
+        if (res.review_steps.length > 1) {
         this.reviewSecondSteps.review_records.forEach(item => {
           const year = new Date(item.review_at).getFullYear();
           const mouth = new Date(item.review_at).getMonth() + 1;
@@ -494,6 +505,8 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
             }
           }
         });
+      }
+      if (res.review_steps.length > 2) {
         this.reviewThirdSteps.review_records.forEach(item => {
           const year = new Date(item.review_at).getFullYear();
           const mouth = new Date(item.review_at).getMonth() + 1;
@@ -514,6 +527,7 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
             }
           }
         });
+      }
         // }
         // 一审喜欢人数及通过率
         this.likePeople = res.review_steps[0].review_records_statistic.conclusion_statistic.agree;
@@ -523,36 +537,47 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
         this.firstOppose = ((res.review_steps[0].review_records_statistic.conclusion_statistic.oppose /
           res.review_steps[0].review_records_statistic.count) * 100) || 0;
         // 二审喜欢人数及通过率
+        if (res.review_steps.length > 1) {
         this.secondLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.agree;
         this.secondDisLikePeople = res.review_steps[1].review_records_statistic.conclusion_statistic.oppose;
         this.secondLike = ((res.review_steps[1].review_records_statistic.conclusion_statistic.agree /
           res.review_steps[1].review_records_statistic.count) * 100) || 0;
         this.secondOppose = ((res.review_steps[1].review_records_statistic.conclusion_statistic.oppose /
           res.review_steps[1].review_records_statistic.count) * 100) || 0;
-
+        }
         // 三审喜欢人数及通过率
+        if (res.review_steps.length > 2) {
         this.thirdLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.agree;
         this.thirdDisLikePeople = res.review_steps[2].review_records_statistic.conclusion_statistic.oppose;
         this.thirdLike = ((res.review_steps[2].review_records_statistic.conclusion_statistic.agree /
           res.review_steps[2].review_records_statistic.reviewed_count) * 100) || 0;
         this.thirdOppose = ((res.review_steps[2].review_records_statistic.conclusion_statistic.oppose /
           res.review_steps[2].review_records_statistic.count) * 100) || 0;
+        }
         // 一审提交通过率
         this.reviewFirstAdopt = res.review_steps[0].review_records_statistic.conclusion_statistic.neutral;
         this.reviewFirstLikeAdopt = (res.review_steps[0].review_records_statistic.conclusion_statistic.neutral /
           res.review_steps[0].review_records_statistic.count) * 100;
         // 二审提交通过率
+        if (res.review_steps.length > 1) {
         this.reviewSecondAdopt = res.review_steps[1].review_records_statistic.conclusion_statistic.neutral;
         this.reviewSecondLikeAdopt = (res.review_steps[1].review_records_statistic.conclusion_statistic.neutral /
           res.review_steps[1].review_records_statistic.count) * 100;
+        }
         // 三审提交通过率
+        if (res.review_steps.length > 2) {
         this.reviewThirdAdopt = res.review_steps[2].review_records_statistic.conclusion_statistic.neutral;
         this.reviewThirdLikeAdopt = (res.review_steps[2].review_records_statistic.conclusion_statistic.neutral /
           res.review_steps[2].review_records_statistic.count) * 100;
+        }
         // 总分
         // console.log(res);
+        if (res.review_steps.length > 1) {
         this.secondAvg = res.review_steps[1].review_records_statistic.score_statistic.avg;
+        }
+        if (res.review_steps.length > 2) {
         this.thirdAvg = res.review_steps[2].review_records_statistic.score_statistic.avg;
+        }
         this.stepsNumber = res.step_number;
       });
   }
@@ -567,14 +592,14 @@ export class AdminFilmsDetailsComponent implements OnInit, AfterViewInit, OnDest
     this.player.width(800);
     this.player.height(470);
     this.player.load();
-      this.mainHeight = this.mainElement.nativeElement.offsetHeight;
-      console.log(this.mainHeight);
-      this.viewHeight = fromEvent(window, 'scroll')
-        // debounceTime(500) // 防抖
-        .subscribe((event) => {
-          this.onWindowScroll();
-        });
-      console.log(1);
+    this.mainHeight = this.mainElement.nativeElement.offsetHeight;
+    console.log(this.mainHeight);
+    this.viewHeight = fromEvent(window, 'scroll')
+      // debounceTime(500) // 防抖
+      .subscribe((event) => {
+        this.onWindowScroll();
+      });
+    console.log(1);
   }
 
   nomenu(event) {

@@ -1,0 +1,604 @@
+diff --git a/.gitignore b/.gitignore
+index 3a60298..29da85c 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -43,4 +43,4 @@ testem.log
+ # System Files
+ .DS_Store
+ Thumbs.db
+-*.zip
+\ No newline at end of file
++*.zip
+diff --git a/src/app/layout/header/header.component.html b/src/app/layout/header/header.component.html
+index 9f99bcf..4b4c521 100644
+--- a/src/app/layout/header/header.component.html
++++ b/src/app/layout/header/header.component.html
+@@ -50,9 +50,13 @@
+                   nz-tooltip>IP管理</span></a>
+             </li>
+             <!-- <li class="nav-item" acl [acl-ability]="ability.review.view">
+-                <a href="http://localhost:9999/#/" target=_blank><span nzTitle="大数据"
++                <a href="http://data.bctop.net/#/" target=_blank><span nzTitle="大数据"
+                     nzPlacement="bottom" nz-tooltip>大数据</span></a>
+               </li> -->
++              <li class="nav-item" acl [acl-ability]="ability.review.view" (click)="goBigData()">
++                <a ><span nzTitle="大数据相关信息"
++                    nzPlacement="bottom" nz-tooltip >大数据</span></a>
++              </li>
+           </ul>
+         </li>
+         <li class="nav-item search">
+diff --git a/src/app/routes/manage/ip-management/contract-details/contract-details.component.less b/src/app/routes/manage/ip-management/contract-details/contract-details.component.less
+index fac776b..c20b2d0 100644
+--- a/src/app/routes/manage/ip-management/contract-details/contract-details.component.less
++++ b/src/app/routes/manage/ip-management/contract-details/contract-details.component.less
+@@ -2,6 +2,6 @@
+     margin-bottom: 1rem;
+ }
+ 
+-.info-filed::after {
+-    content: '：';
+-}
+\ No newline at end of file
++// .info-filed::after {
++//     content: '：';
++// }
+\ No newline at end of file
+diff --git a/src/app/routes/manage/ip-management/contract-details/contract-details.component.ts b/src/app/routes/manage/ip-management/contract-details/contract-details.component.ts
+index 9dc5a86..d39e566 100644
+--- a/src/app/routes/manage/ip-management/contract-details/contract-details.component.ts
++++ b/src/app/routes/manage/ip-management/contract-details/contract-details.component.ts
+@@ -1,8 +1,6 @@
+ import { Component, OnInit } from '@angular/core';
+ import { ActivatedRoute } from '@angular/router';
+ import { IpManagementService } from '../ip-management.service';
+-import { MessageService } from '@shared';
+-import { TranslateService } from '@ngx-translate/core';
+ 
+ @Component({
+   selector: 'app-contract-details',
+diff --git a/src/app/routes/manage/ip-management/ip-details/ip-details.component.html b/src/app/routes/manage/ip-management/ip-details/ip-details.component.html
+index 74b1ecb..b3cbda1 100644
+--- a/src/app/routes/manage/ip-management/ip-details/ip-details.component.html
++++ b/src/app/routes/manage/ip-management/ip-details/ip-details.component.html
+@@ -31,7 +31,7 @@
+       <div class="big-box-btn" *ngFor="let item of data.rights">
+         <div style="display:flex;">
+           <div style="margin-bottom:12px; width: 40%;">权利种类:&nbsp;&nbsp;&nbsp;&nbsp;<span
+-              style="color: #4797F7;font-weight:500;">{{item.right_type_label}}</span></div>
++            style="color: #333333;font-weight: 500;">{{item.right_type}}</span></div>
+           <div>权利备注:&nbsp;&nbsp;&nbsp;&nbsp;{{item.right_remark === null ? '无' : item.right_remark}}</div>
+         </div>
+         <div style="display:flex;">
+diff --git a/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.html b/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.html
+new file mode 100644
+index 0000000..4360d2a
+--- /dev/null
++++ b/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.html
+@@ -0,0 +1,75 @@
++
++<!-- 认证信息弹窗：点击未认证或认证失败时进入此页面 -->
++<form nz-form [formGroup]="validateForm">
++  <nz-form-item>
++    <nz-form-label nzFor="companyFullName" [nzSm]="3" nzRequired>企业名称</nz-form-label>
++    <nz-form-control [nzSm]="9">
++      <input nz-input placeholder="请输入企业名称" id="companyFullName" formControlName="companyFullName">
++      <nz-form-explain *ngIf="validateForm.get('companyFullName').dirty && validateForm.get('companyFullName').errors">请输入企业名称
++      </nz-form-explain>
++    </nz-form-control>
++    <nz-form-label nzFor="companyAbbreviationName" [nzSm]="3" nzRequired>企业简称</nz-form-label>
++    <nz-form-control [nzSm]="9">
++      <input nz-input placeholder="请输入企业简称" id="companyAbbreviationName" formControlName="companyAbbreviationName">
++      <nz-form-explain *ngIf="validateForm.get('companyAbbreviationName').dirty && validateForm.get('companyAbbreviationName').errors">请输入企业简称
++      </nz-form-explain>
++    </nz-form-control>
++  </nz-form-item>
++
++  <nz-form-item>
++    <nz-form-label nzFor="applicant" [nzSm]="3" nzRequired>申请人</nz-form-label>
++    <nz-form-control [nzSm]="9">
++      <input nz-input placeholder="请输入申请人" id="applicant" formControlName="applicant">
++      <nz-form-explain *ngIf="validateForm.get('applicant').dirty && validateForm.get('applicant').errors">请输入申请人
++      </nz-form-explain>
++    </nz-form-control>
++    <nz-form-label [nzSm]="3" nzRequired>手机号码</nz-form-label>
++    <nz-form-control [nzSm]="9">
++      <input placeholder="请输入手机号" nz-input id="phone" formControlName="phone" />
++      <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.required">请输入手机号
++      </nz-form-explain>
++      <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors?.pattern">
++        请输入正确的手机号码
++      </nz-form-explain>
++    </nz-form-control>
++  </nz-form-item>
++
++  <nz-form-item>
++    <nz-form-label nzFor="introduction" [nzSm]="3">企业简介</nz-form-label>
++    <nz-form-control [nzSm]="21">
++      <textarea rows="3" nz-input placeholder="请输入企业简介" id="introduction" formControlName="introduction"></textarea>
++      <nz-form-explain *ngIf="validateForm.get('introduction').dirty && validateForm.get('introduction').errors">请输入企业简介
++      </nz-form-explain>
++    </nz-form-control>
++  </nz-form-item>
++  <div style="display: flex;margin-left: 14px;">
++  <div class="business-license" style="color: #333333">营业执照：</div>
++      <div class="clearfix">
++        <nz-upload
++          [nzAction]="'https://cs.bctop.net:7000/api/upload/image'"
++          nzListType="picture-card"
++          [(nzFileList)]="fileList"
++          [nzShowButton]="fileList.length < 1"
++          [nzShowUploadList]="showUploadList"
++          [nzPreview]="handlePreview"
++        >
++          <i nz-icon nzType="plus"></i>
++          <div class="ant-upload-text">点击上传图片</div>
++        </nz-upload>
++        <nz-modal
++          [nzVisible]="previewVisible"
++          [nzContent]="modalContent"
++          [nzFooter]="null"
++          (nzOnCancel)="previewVisible = false"
++        >
++          <ng-template #modalContent>
++            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
++          </ng-template>
++        </nz-modal>
++      </div>
++        <div style="position: relative">
++          <div style="position:absolute;bottom: 0;width: 200px;color:#999999;font-size:12px;height: 24px;">支持png/jpg格式，图片不超过10M</div>
++          </div>
++      </div>
++      <div *ngIf="fileList.length == 0 && confirm == true" style="color: red;font-size: 12px;margin-left: 104px;">请上传营业执照</div>
++</form>
+\ No newline at end of file
+diff --git a/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.less b/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.less
+new file mode 100644
+index 0000000..af34de4
+--- /dev/null
++++ b/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.less
+@@ -0,0 +1,19 @@
++i[nz-icon] {
++    font-size: 32px;
++    color: #999;
++}
++
++.ant-upload-text {
++    margin-top: 8px;
++    color: #666;
++}
++
++// 必填输入框样式
++.business-license::before {
++    margin-right: 4px;
++    color: #f5222d;
++    font-size: 14px;
++    font-family: SimSun, sans-serif;
++    line-height: 1;
++    content: '*';
++}
+diff --git a/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.ts b/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.ts
+new file mode 100644
+index 0000000..c1adec0
+--- /dev/null
++++ b/src/app/routes/manage/teams/components/enterprise-certification/enterprise-certification.component.ts
+@@ -0,0 +1,119 @@
++import { Component, OnInit, Input } from '@angular/core';
++import { FormGroup, FormBuilder, Validators } from '@angular/forms';
++import { TeamsService } from '../../teams.service';
++import { Observable } from 'rxjs';
++import { UploadFile } from 'ng-zorro-antd';
++
++@Component({
++  selector: 'app-enterprise-certification',
++  templateUrl: './enterprise-certification.component.html',
++  styleUrls: ['./enterprise-certification.component.less']
++})
++export class EnterpriseCertificationComponent implements OnInit {
++
++  validateForm: FormGroup;
++  show = false;
++  confirm = false;
++  @Input() info: any;
++
++
++  showUploadList = {
++    showPreviewIcon: true,
++    showRemoveIcon: true,
++    hidePreviewIconInNonImage: true
++  };
++  fileList = [];
++  previewImage: string | undefined = '';
++  previewVisible = false;
++
++  constructor(
++    private fb: FormBuilder,
++    private service: TeamsService,
++  ) { }
++
++  /**
++     初始化方法：出发弹框立即调用此方法，内容包括初始表单验证，初始化字段赋值。
++  */
++  ngOnInit() {
++    this.validateForm = this.fb.group({
++      companyFullName: [null, [Validators.required]],
++      companyAbbreviationName: [null, [Validators.required]],
++      applicant: [null, [Validators.required]],
++      phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
++      introduction: [null],
++    });
++    if (this.info !== null) {
++      this.validateForm.get('companyFullName').setValue(this.info.full_name);
++      this.validateForm.get('companyAbbreviationName').setValue(this.info.name);
++      this.validateForm.get('applicant').setValue(this.info.apply_username);
++      this.validateForm.get('phone').setValue(this.info.apply_phone);
++      this.validateForm.get('introduction').setValue(this.info.introduction);
++      this.fileList.push( {
++        uid: -1,
++        name: 'xxx.png',
++        status: 'done',
++        url: this.info.business_license_image
++      });
++      this.show = false;
++      this.confirm = true;
++    }
++  }
++
++  /**
++     上传营业执照之后，点击图片详情操作图标出发此方法，设置营业执照放大后的样式以及图片路径
++  */
++  handlePreview = (file: UploadFile) => {
++    this.previewImage = file.url || file.thumbUrl;
++    this.previewVisible = true;
++  }
++
++  /**
++     在teams调用此方法，此方法为验证表单，返回为true时继续执行下一步操作
++  */
++  validation() {
++    const form = this.validateForm;
++    for (const i in form.controls) {
++      if (form.controls.hasOwnProperty(i)) {
++        const control = form.controls[i];
++        control.markAsDirty();
++        control.updateValueAndValidity();
++      }
++    }
++    this.confirm = true;
++    if (this.fileList.length === 0) {
++      this.show = true;
++    }
++    if (this.fileList.length > 0) {
++      this.show = false;
++    }
++    return form.valid;
++  }
++
++  /**
++     在teams调用此方法，此方法为验证上传营业执照列表，当营业执照至少有一张时返回true，执行下一步操作
++  */
++  validationFileList() {
++    if (this.fileList.length === 0) {
++      return false;
++    }
++    if (this.fileList.length > 0) {
++      return true;
++    }
++  }
++/**
++     在teams调用此方法，此方法为提交认证信息表单，调用后端提交认证接口，调通后信息提交成功，改变当前公司认证状态
++  */
++  submit(): Observable<any> {
++    const form = this.validateForm;
++      const data = {
++        full_name: form.value['companyFullName'] || null,
++        name: form.value['companyAbbreviationName'] || null,
++        apply_username: form.value['applicant'] || null,
++        apply_phone: form.value['phone'] || null,
++        introduction: form.value['introduction'] || null,
++        business_license_image: this.fileList[0].url || this.fileList[0].response.url
++      };
++        return this.service.addAuthentication(data);
++  }
++
++}
+diff --git a/src/app/routes/manage/teams/teams.component.html b/src/app/routes/manage/teams/teams.component.html
+index 90531e3..d96f128 100644
+--- a/src/app/routes/manage/teams/teams.component.html
++++ b/src/app/routes/manage/teams/teams.component.html
+@@ -12,20 +12,46 @@
+             </li>
+           </ul>
+         </nz-dropdown>
+-        <button nz-button (click)="editCompany()" *ngIf="settings.user.is_admin">{{ 'global.edit' | translate }}</button>
++        <button nz-button (click)="editCompany()"
++          *ngIf="settings.user.is_admin">{{ 'global.edit' | translate }}</button>
+         <button nz-button (click)="addCompany()">{{ 'global.create' | translate }}</button>
+       </div>
+     </div>
+     <div class="block-content">
+       <div class="company-info">
+-        <h2 class="company-full-name">{{ currentCompany?.company_full_name }}</h2>
++        <div class="company-full-name" style="display: flex;align-items: center;">
++          <div style="font-size: 24px;font-weight: bold">
++            {{ currentCompany?.company_full_name }}
++          </div>
++          <!-- 认证标识以及入口 -->
++          <div  *ngIf="authInfo?.status == 1" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #4797F7;border-radius:10px;margin-left: 10px">
++              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
++              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证成功</span>
++          </div>
++
++          <div *ngIf="authInfo == null" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #D0D0D0;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
++              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
++              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">未认证...</span>
++          </div>
++
++          <div  *ngIf="authInfo?.status == 0" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #FAAD14;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
++              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
++              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证中...</span>
++          </div>
++
++          <div *ngIf="authInfo?.status == 2" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #EF3F3F;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
++              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
++              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证失败</span>
++          </div>
++        </div>
+         <p>{{ 'app.teams.company-abbreviation' | translate }}：{{ currentCompany?.company_name }}</p>
+         <p>{{ 'app.teams.company-desc' | translate }}：{{ currentCompany?.introduction }}</p>
+       </div>
+     </div>
+   </section>
+ 
+-  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany" acl="admin" [acl-ability]="ability.company.view">
++  <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany" acl="admin"
++    [acl-ability]="ability.company.view">
+     <div class="block-header">
+       <div class="block-title">{{ 'app.teams.department-manage' | translate }}</div>
+       <div class="block-options">
+@@ -113,4 +139,13 @@
+     </div>
+   </ng-template>
+ 
++
++<ng-template #target>
++  <span style="font-size: 18px;font-weight:500;color: #333333">企业认证</span>
++    <span style="color: #EF3F3F;font-size:12px;margin-left: 14px;">
++      <i nz-icon nzType="exclamation-circle" style="margin-right: 2px;" nzTheme="outline"></i>
++      注：企业认证失败，请核对信息，重新提交！
++    </span>
++</ng-template>
++
+ </div>
+\ No newline at end of file
+diff --git a/src/app/routes/manage/teams/teams.component.ts b/src/app/routes/manage/teams/teams.component.ts
+index f778d56..15e72ce 100644
+--- a/src/app/routes/manage/teams/teams.component.ts
++++ b/src/app/routes/manage/teams/teams.component.ts
+@@ -1,6 +1,6 @@
+-import { finalize } from 'rxjs/operators';
++import { finalize, reduce } from 'rxjs/operators';
+ import { DepartmentDto, CompanyDto } from './dtos';
+-import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
++import { Component, OnInit, ViewChild, TemplateRef, Inject, ViewContainerRef } from '@angular/core';
+ import { TeamsService } from './teams.service';
+ import { SettingsService, AuthService } from '@core';
+ import { NzTreeNodeOptions, NzTreeNode, NzTreeComponent, NzFormatEmitEvent, NzModalService, NzMessageService } from 'ng-zorro-antd';
+@@ -12,6 +12,7 @@ import { EditCompanyComponent } from './components/edit-company.component';
+ import { TreeService } from '@shared';
+ import { ACLAbility } from '@core/acl';
+ import { ACLService } from '@delon/acl';
++import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
+ 
+ @Component({
+   selector: 'app-teams',
+@@ -26,6 +27,10 @@ export class TeamsComponent implements OnInit {
+   companys: CompanyDto[];
+   nodes: NzTreeNodeOptions[];
+   activedNode: NzTreeNode;
++  authInfo: any;
++
++  @ViewChild('target') tt: string;
++
+ 
+   constructor(
+     public ability: ACLAbility,
+@@ -44,6 +49,7 @@ export class TeamsComponent implements OnInit {
+     this.fetchCompany();
+     this.fetchCompanys();
+     this.fetchDepartment();
++    this.getAuthentication();
+     // this.acl.removeAbility([this.ability.company.view]);
+     // this.acl.set({ role: ['admin'] });
+     // console.log('can', this.ability.company.view, this.acl.can(this.ability.company.view));
+@@ -54,6 +60,77 @@ export class TeamsComponent implements OnInit {
+     return this.activedNode ? this.activedNode.key : '';
+   }
+ 
++
++/**
++    点击页面入口后，调用次方法，判断是否生成认证弹窗以及提示信息
++   */
++  authentication(info: any) {
++    if (info === null) {
++      this.modal.create({
++        nzTitle: `企业认证`,
++        nzContent: EnterpriseCertificationComponent,
++        nzMaskClosable: false,
++        nzClosable: false,
++        nzComponentParams: { info: info },
++        nzWidth: 800,
++        nzOkText: '提交',
++        nzOnOk: this.addEnterpriseCertificationAgreed,
++        nzNoAnimation: true
++      });
++    } else {
++
++      if (info.status === 0) {
++        this.modal.warning({
++          nzTitle: '已提交成功，请等待管理员审核！',
++          nzContent: '预计1个工作日内审核完毕，审核结果会短信通知到您的注册手机上。'
++        });
++      }
++      if (info.status === 1) {
++        this.modal.success({
++          nzTitle: '恭喜！认证成功！',
++          nzContent: '可以开启华丽的操作之旅啦～'
++        });
++      }
++
++      if (info.status === 2) {
++        this.modal.create({
++          nzTitle: this.tt,
++          nzContent: EnterpriseCertificationComponent,
++          nzComponentParams: { info: info },
++          nzMaskClosable: false,
++          nzClosable: false,
++          nzWidth: 800,
++          nzOkText: '提交',
++          nzOnOk: this.addEnterpriseCertificationAgreed,
++          nzNoAnimation: true
++        });
++      }
++    }
++  }
++
++  addEnterpriseCertificationAgreed = (component: EnterpriseCertificationComponent) => new Promise((resolve, reject) => {
++    if (component.validation() && component.validationFileList()) {
++      component.submit()
++        .subscribe(result => {
++          this.message.success('已提交成功');
++          this.getAuthentication();
++          resolve();
++        }, error => {
++          reject(false);
++        });
++    } else {
++      reject(false);
++    }
++  })
++
++  getAuthentication() {
++    this.service.getAuthenticationInfo().subscribe(result => {
++      this.authInfo = result;
++    });
++  }
++  /**
++   * 跳转到团队页面
++   */
+   navigateToTeams() {
+     this.router.navigateByUrl(`/manage/teams`); // 必须后端存在默认部门
+   }
+@@ -129,8 +206,6 @@ export class TeamsComponent implements OnInit {
+ 
+   fetchCompanys() {
+     this.service.getCompanys().subscribe(result => {
+-      console.log('3355');
+-      console.log(result);
+       this.companys = result;
+     });
+   }
+@@ -145,6 +220,7 @@ export class TeamsComponent implements OnInit {
+       this.getCompanyInfo();
+       this.fetchDepartment();
+       this.navigateToTeams();
++      this.getAuthentication();
+       this.message.success(`已切换到 ${companyName}`);
+     });
+   }
+diff --git a/src/app/routes/manage/teams/teams.module.ts b/src/app/routes/manage/teams/teams.module.ts
+index 4e948ff..59a5037 100644
+--- a/src/app/routes/manage/teams/teams.module.ts
++++ b/src/app/routes/manage/teams/teams.module.ts
+@@ -12,6 +12,7 @@ import { EmployeeDepartmentComponent } from './employee-details/components/emplo
+ import { EditCompanyComponent } from './components/edit-company.component';
+ import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
+ import { EditEmployeeComponent } from './components/edit-employee.component';
++import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
+ 
+ @NgModule({
+   declarations: [
+@@ -24,7 +25,8 @@ import { EditEmployeeComponent } from './components/edit-employee.component';
+     RolesComponent,
+     EmployeeDepartmentComponent,
+     EditCompanyComponent,
+-    EditEmployeeComponent
++    EditEmployeeComponent,
++    EnterpriseCertificationComponent
+   ],
+   imports: [
+     CommonModule,
+@@ -36,7 +38,8 @@ import { EditEmployeeComponent } from './components/edit-employee.component';
+     AddCompanyComponent,
+     EmployeeDepartmentComponent,
+     EditCompanyComponent,
+-    EditEmployeeComponent
++    EditEmployeeComponent,
++    EnterpriseCertificationComponent
+   ]
+ })
+ export class TeamsModule { }
+diff --git a/src/app/routes/manage/teams/teams.service.ts b/src/app/routes/manage/teams/teams.service.ts
+index 87f32c7..06571c9 100644
+--- a/src/app/routes/manage/teams/teams.service.ts
++++ b/src/app/routes/manage/teams/teams.service.ts
+@@ -42,4 +42,20 @@ export class TeamsService {
+   deleteDepartment(id: number | string) {
+     return this.http.delete<any>(`/api/v1/companies/departments/${id}`);
+   }
++
++  getAuthenticationInfo() {
++    return this.http.get<any>('/api/v1/companies/certifications');
++  }
++
++  addAuthentication(data) {
++    console.log('ererer');
++    return this.http.post<any>('/api/v1/companies/certifications', {
++      full_name: data.full_name,
++      name: data.name,
++      business_license_image: data.business_license_image,
++      apply_username: data.apply_username,
++      apply_phone: data.apply_phone,
++      introduction: data.introduction,
++    });
++  }
+ }
+diff --git a/src/assets/css/authentication/iconfont.css b/src/assets/css/authentication/iconfont.css
+new file mode 100644
+index 0000000..61db0e2
+--- /dev/null
++++ b/src/assets/css/authentication/iconfont.css
+@@ -0,0 +1,21 @@
++@font-face {font-family: "iconfont";
++  src: url('iconfont.eot?t=1570520880066'); /* IE9 */
++  src: url('iconfont.eot?t=1570520880066#iefix') format('embedded-opentype'), /* IE6-IE8 */
++  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAALMAAsAAAAABmAAAAKBAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcApodQE2AiQDCAsGAAQgBYRtBzIbnQUR1ZMNZH/FYIyhZnY/IpOQSshFNFE7Z469j3gq72u+A63RGNwFzAJ+BSIAAAAAgOCffr927vN1xbWLNoZEChs6mdKohGKRxHSPNDbUfzS3CXjzeiHNIqYdr5P7id8ODb3AA3E/3486H9pmw4gk2CyKYOitk8v1anGctLhF0BZFUcJlPe9ej9h02kuGK8t0NW5uIiUwSj3ABvgvTdmEG2CgY3difBkHgAGX059AD7I6oNz2pLEmjwkYWBrgXhhFVip5w9gFL/AxBPLGNql8qNa0OPYqAe3C5VirEOE4lk8kNByM6SglUnhQBtxH39ffftCC4SN2082iMrN6PThF8D+pFxBSFIKOe2DBJnBQrTFzTSXGWflMzTyOVS/8+cCNjupA7K+za4sAhlD5TCpP/ai1BoBLJvtgadJPAZOU8gi3tdZVOzLq7ONHDOs9cngz7YmnfFy9nU1tTZ3eJfSx3n3LigRkVzdIMhCe2HeVmVY3BvBxu1Eoe42G+STS7rzCb1ENHHCGxnaZWFM1+oz+pJUG5OVBBgfqfqdaW/dQkKR1J75olMFKFknHbsIrOESQHCFvw9XxgoYJleICrLsDkKpHGGWvsKreScf+wGv7R1ANVOTdBv0LC5aDsLOFCG1GD5wvhG6eCdfDnbj+hP4zsSmvifgbUhXGwdSMcv6IGdISW6qXbzELEJSncADPYZLkUFAeoctawFxMdF00vUlz81TqsCW0GT1wvhC6eSaC8dypfP6E/jOxqaOlLn9DqsLpwdSMAeTRmA1qeZRXqpdvMQsQlKdwAPMwSXIomudF6LIWTEgVE90ZJYYate3N6Q9UsA5sWyhndloTzH4BZr4kAQA=') format('woff2'),
++  url('iconfont.woff?t=1570520880066') format('woff'),
++  url('iconfont.ttf?t=1570520880066') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
++  url('iconfont.svg?t=1570520880066#iconfont') format('svg'); /* iOS 4.1- */
++}
++
++.iconfont {
++  font-family: "iconfont" !important;
++  font-size: 16px;
++  font-style: normal;
++  -webkit-font-smoothing: antialiased;
++  -moz-osx-font-smoothing: grayscale;
++}
++
++.icon-renzheng:before {
++  content: "\e6a6";
++}
++
+diff --git a/src/index.html b/src/index.html
+index a131d0b..3077515 100644
+--- a/src/index.html
++++ b/src/index.html
+@@ -14,6 +14,7 @@
+   <script src="./assets/js/nprogress.js"></script>
+   <link rel="stylesheet" type="text/css" href="./assets/css/nprogress.css">
+   <script src="./assets/js/iconfont.js"></script>
++  <link rel="stylesheet" href="./assets/css/authentication/iconfont.css">
+   <!-- <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script> -->
+ </head>
+ <body>

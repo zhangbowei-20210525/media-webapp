@@ -27,6 +27,7 @@ export class TypeComponent implements OnInit {
   isPurchaseTapesLoading: boolean;
   purchaseTapesList = [];
   state: string;
+  isStart: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,6 +65,17 @@ export class TypeComponent implements OnInit {
         this.tapesPagination = res.pagination;
       });
     this.purchaseTapes();
+    this.service.remoteValidation().subscribe(result => {
+      if (result === null) {
+       this.isStart = false;
+      } else {
+        if (result.online_status === true) {
+          this.isStart = true;
+        } else {
+          this.isStart = false;
+        }
+      }
+    });
   }
 
   tapesPageChange(page: number) {
@@ -124,18 +136,20 @@ export class TypeComponent implements OnInit {
   }
 
   remote(id: number) {
-    this.service.remoteValidation().subscribe(result => {
-      if (result === null) {
-        this.message.success(this.translate.instant('远程客户端已离线'));
-      } else {
-        if (result.online_status === true) {
-          this.state = 'yc';
-          this.downloadTape(id);
-        } else {
-          this.message.success(this.translate.instant('远程客户端已离线'));
-        }
-      }
-    });
+    // this.service.remoteValidation().subscribe(result => {
+    //   if (result === null) {
+    //     this.message.success(this.translate.instant('远程客户端已离线'));
+    //   } else {
+    //     if (result.online_status === true) {
+    //       this.state = 'yc';
+    //       this.downloadTape(id);
+    //     } else {
+    //       this.message.success(this.translate.instant('远程客户端已离线'));
+    //     }
+    //   }
+    // });
+    this.state = 'yc';
+    this.downloadTape(id);
   }
 
   purTapeDetails(id: number) {

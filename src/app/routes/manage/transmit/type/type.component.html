@@ -37,7 +37,8 @@
         <td [nzAlign]="'center'">
           <!-- <i nz-icon type="download" theme="outline" style="font-size: 17px, margin-left = 10px"></i> -->
           <a (click)="judge(data.id)">本地</a>
-          <a style="margin-left:10px" (click)="remote(data.id)">远程</a>
+          <a style="margin-left:10px" (click)="remote(data.id)" *ngIf="isStart == true">远程</a>
+          <span style="margin-left:10px;color: darkgrey" *ngIf="isStart == false">远程</span>
         </td>
       </tr>
     </tbody>
