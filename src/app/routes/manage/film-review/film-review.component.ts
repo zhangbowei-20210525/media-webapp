@@ -182,18 +182,21 @@ export class FilmReviewComponent implements OnInit {
       this.service.getFilmReviewDetails(data[0].id).subscribe(res => {
         this.filmReview1 = res;
         this.id = res.id;
+        this.switch1 = res.enable;
       });
     }
     if (step_number === 1) {
       this.service.getFilmReviewDetails(data[1].id).subscribe(res => {
         this.filmReview2 = res;
         this.id = res.id;
+        this.switch2 = res.enable;
       });
     }
     if (step_number === 2) {
       this.service.getFilmReviewDetails(data[2].id).subscribe(res => {
         this.filmReview3 = res;
         this.id = res.id;
+        this.switch3 = res.enable;
       });
     }
   }
