@@ -468,4 +468,21 @@ export class SeriesService {
   isHasFilmReview() {
     return this.http.get<any>(`/api/v1/reviews/configs/status`);
   }
+
+  addTrajectory(id: number, publicityType: any, isId: number, realTimePlayback: number, status: any) {
+    return this.http.post<any>(`/api/v1/viewlog/publicitys`, {
+      publicity_id: id,
+      material_type: publicityType,
+      material_id: isId,
+      progress: realTimePlayback,
+      status: status
+    });
+  }
+
+  // "publicity_id": 1,     // 审片ID
+  // "material_type": "sample"  // 物料类型 sample=样片；feature=片花；
+  // trailer=先导片；poster=海报；still=剧照；pdf=pdf
+  // "material_id": 1,   // 物料ID
+  // "status": "play",   // play=播放；stop=暂停
+  // "progress": 90    // 观看进度 当前秒数
 }

@@ -470,7 +470,8 @@
         [nzDisabled]="sampleDisabled">
         <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let sample of sampleNum; let i = index" (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
+            <li *ngFor="let sample of sampleNum; let i = index"
+              (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
               <div class="play-button" [ngClass]="{'selected': isId == sample.id}">{{sample.displayText}}</div>
             </li>
           </ul>
@@ -481,7 +482,8 @@
         <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
-              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == feature.id}">{{feature.displayText}}</div>
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == feature.id}">
+                {{feature.displayText}}</div>
             </li>
           </ul>
         </div>
@@ -491,7 +493,8 @@
         <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
-              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == trailer.id}">{{trailer.displayText}}</div>
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == trailer.id}">
+                {{trailer.displayText}}</div>
             </li>
           </ul>
         </div>
@@ -548,7 +551,7 @@
     <div class="detail-tabs">
       <nz-tabset>
         <nz-tab nzTitle="基本信息">
-          <div style="line-height: 26px;margin-left: 18px;">
+          <div style="line-height: 26px;margin-left: 18px;margin-top: 20px;">
             <div>节目名称：{{ seriesInfo?.name }}</div>
             <div>节目别名：{{ seriesInfo?.nickname }}</div>
             <div>节目类型：{{ seriesInfo?.program_type | seriesType }}</div>
@@ -562,41 +565,64 @@
             <div>出品人：{{ seriesInfo?.producer }}</div>
             <div>出品方：{{ seriesInfo?.product_company }}</div>
             <div>监制：{{ seriesInfo?.supervisor }}</div>
-            <div *ngIf = "seriesInfo?.progress === null">阶段：</div>
-            <div *ngIf = "seriesInfo?.progress === 'scenario'">阶段：剧本阶段</div>
-            <div *ngIf = "seriesInfo?.progress === 'preparation'">阶段：筹备中</div>
-            <div *ngIf = "seriesInfo?.progress === 'filming'">阶段：拍摄中</div>
-            <div *ngIf = "seriesInfo?.progress === 'production'">阶段：后制中</div>
-            <div *ngIf = "seriesInfo?.progress === 'completed'">阶段：已完成</div>
-            <div *ngIf = "seriesInfo?.progress === 'second'">阶段：二审</div>
+            <div *ngIf="seriesInfo?.progress === null">阶段：</div>
+            <div *ngIf="seriesInfo?.progress === 'scenario'">阶段：剧本阶段</div>
+            <div *ngIf="seriesInfo?.progress === 'preparation'">阶段：筹备中</div>
+            <div *ngIf="seriesInfo?.progress === 'filming'">阶段：拍摄中</div>
+            <div *ngIf="seriesInfo?.progress === 'production'">阶段：后制中</div>
+            <div *ngIf="seriesInfo?.progress === 'completed'">阶段：已完成</div>
+            <div *ngIf="seriesInfo?.progress === 'second'">阶段：二审</div>
             <div>简介：{{ seriesInfo?.introduction }}</div>
           </div>
         </nz-tab>
-        <!-- <nz-tab nzTitle="看片轨迹">
+        <nz-tab nzTitle="看片轨迹">
           <nz-collapse nzAccordion [nzBordered]="false">
-            <nz-collapse-panel [nzShowArrow]="false" *ngFor="let panel of panels" [nzHeader]="header" [nzActive]="panel.active">
-              <div style="width: 350px;height: auto;background: #EEEEEE;">asdsdasdasd</div>
+            <nz-collapse-panel [nzShowArrow]="false" *ngFor="let panel of panels" [nzHeader]="header"
+              [nzActive]="panel.active">
+              <div style="width: 297px;height: auto;background: #F8F8F8;padding-top: 15px;padding-left: 12px;">
+                <div style="color: #333333;font-size: 12px;margin-bottom: 15px;">
+                  <!-- <img src="../assets/images/gk.png" style="margin-right: 4px;color: #000000;"> -->
+                  <span style="margin-right: 5px;">12月31日分享</span>
+                  <span style="margin-right: 5px;">|</span>
+                  <span style="margin-right: 5px;">共观看三次</span>
+                  <span style="margin-right: 5px;">|</span>
+                  <span>观看时长9999分钟</span>
+                </div>
+                <nz-timeline>
+                  <nz-timeline-item>
+                    <span style="margin-right: 10px;font-size: 12px;color: #333333;">2019/07/20</span>
+                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">观看先导片</span>
+                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">/</span>
+                    <span style="font-size: 12px;color: #333333;">观看时长9999分钟</span>
+                  </nz-timeline-item>
+                  <nz-timeline-item>
+                    <span style="margin-right: 10px;font-size: 12px;color: #333333;">2019/07/20</span>
+                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">观看先导片</span>
+                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">/</span>
+                    <span style="font-size: 12px;color: #333333;">观看时长9999分钟</span>
+                  </nz-timeline-item>
+                </nz-timeline>
+              </div>
             </nz-collapse-panel>
             <ng-template #header>
               <div class="details-title">
                 <div class="title-avater">
-                  <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;">
+                  <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar"
+                    style="width: 38px; height: 38px;">
                   </nz-avatar>
                 </div>
-                <div class='title-info'>
-                  <div class='info-item'>
-                    <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">{{userinfo?.user?.nickname}}</span>
+                <div style="font-size: 12px;width: 100%;">
+                  <div>
+                    <span>{{userinfo?.user?.nickname}}</span>
+                    <span style="float: right;color: #F5A623;font-size:12px;margin-right: 15px;">两分钟前观看</span>
                   </div>
-                  <div class='info-item'>
-                    <span>{{userinfo?.company?.full_name}}</span>
-                    <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
-                  </div>
+                  <div>{{userinfo?.company?.full_name}}</div>
                 </div>
               </div>
             </ng-template>
           </nz-collapse>
-          </nz-tab> -->
-          <!-- <nz-tab nzTitle="图集">
+        </nz-tab>
+        <!-- <nz-tab nzTitle="图集">
   
           </nz-tab> -->
       </nz-tabset>

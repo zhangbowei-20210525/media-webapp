@@ -88,6 +88,11 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   languageVersion: string;
   emailAddress: string;
   tabIndex: number;
+  destroyTimers: NodeJS.Timer;
+  isClear: boolean;
+  status: string;
+  realTimePlayback: number;
+
   fixationInfo: any; // 可能是用户信息
 
 
@@ -226,6 +231,51 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
   }
 
+  listenVideoTime() {
+    console.log('0909');
+    console.log(this.status);
+    this.destroyTimers = setInterval(() => {
+      if (this.isClear || this.status === 'stop') {
+      } else {
+        this.giveVideoStatus();
+      }
+    }, 10000);
+  }
+
+  giveVideoStatus() {
+    this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, this.realTimePlayback, this.status).subscribe(res => {
+    });
+  }
+
+  getVideoStatus() {
+    this.player.on('timeupdate', () => {
+       // tslint:disable-next-line:radix
+      this.isClear = false;
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+      this.status = 'play';
+    });
+    this.player.on('play', () => {
+      this.isClear = false;
+      this.status = 'play';
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+    this.player.on('ended', () => {
+      this.isClear = true;
+      this.status = 'stop';
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+    this.player.on('pause', () => {
+      this.isClear = true;
+      this.status = 'stop';
+      this.giveVideoStatus();
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+  }
+
   ngAfterViewInit() {
     this.player = videojs('#video_player');
     this.player.width(800);
@@ -240,6 +290,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
 
   ngOnDestroy() {
     this.player.dispose();
+    clearInterval(this.destroyTimers);
   }
 
   playerSource(src: string, poster?: string) {
@@ -262,6 +313,10 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     })).subscribe(s => {
       this.sampleList = s.list;
       this.isId = this.sampleList[0].id;
+      this.realTimePlayback = 0;
+      this.status = 'play';
+      this.giveVideoStatus();
+      this.listenVideoTime();
       this.samplePagination = s.pagination;
       if (this.sampleList.length > 0) {
         this.sampleName = this.sampleList[0].name;
@@ -663,8 +718,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.pause();
     this.publicityType = 'sample';
     this.getSampleInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { sampleIndex: this.sampleIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   feature() {
@@ -672,8 +725,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.pause();
     this.publicityType = 'feature';
     this.getFeatureInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { featureIndex: this.featureIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
 
   trailer() {
@@ -681,8 +733,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.pause();
     this.publicityType = 'trailer';
     this.getTrailerInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { trailerIndex: this.trailerIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
 
   poster() {
@@ -690,16 +741,14 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.pause();
     this.publicityType = 'poster';
     this.getPosterInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { posterIndex: this.posterIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
   still() {
     this.ishidden = true;
     this.player.pause();
     this.publicityType = 'still';
     this.getStillInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { stillIndex: this.stillIndex, publicityType: this.publicityType }], { relativeTo: this.route });
+    this.getVideoStatus();
   }
 
   pdf() {

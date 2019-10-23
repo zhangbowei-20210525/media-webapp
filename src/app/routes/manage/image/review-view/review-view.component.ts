@@ -346,7 +346,6 @@ export class ReviewViewComponent implements OnInit {
               }
             }
             this.isAllDisplayDataChecked = false;
-            this.selectedTabIndex = 1;
             // this.selectedTabIndex = 1;
             this.fetchPublicities(this.selectedTabIndex);
           })
@@ -358,6 +357,7 @@ export class ReviewViewComponent implements OnInit {
   }
   creatReview() {
     this.service.creatReview(this.checkedIntentionIds).subscribe(res => {
+      this.selectedTabIndex = 1;
       // console.log(res);
       // console.log(this.checkedIntentionIds);
     });

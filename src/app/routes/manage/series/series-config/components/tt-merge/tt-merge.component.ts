@@ -89,9 +89,11 @@ export class TtMergeComponent implements OnInit {
 
   handleInputConfirm(): void {
     if (this.tags.every(f => f.raw !== this.inputValue)) {
-      this.service.addType('themes', this.inputValue).subscribe(result => {
-        this.refresh();
-      });
+      if (this.inputValue !== '') {
+        this.service.addType('themes', this.inputValue).subscribe(result => {
+          this.refresh();
+        });
+      }
     }
     this.inputVisible = false;
   }
