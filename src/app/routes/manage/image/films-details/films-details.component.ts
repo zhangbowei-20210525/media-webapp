@@ -492,6 +492,7 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isId = this.sampleList[0].id;
       this.realTimePlayback = 0;
       this.status = 'play';
+      this.getVideoStatus();
       this.giveVideoStatus(this.tabIndex);
       this.samplePagination = s.pagination;
       if (this.sampleList.length > 0) {
@@ -662,9 +663,6 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   lastPoster() {
     if (this.posterIndex > 0) {
       this.posterIndex = this.posterIndex - 1;
-      // this.posterName = this.posterList[this.posterIndex].name;
-      // this.posterSrc = this.posterList[this.posterIndex].src;
-
       // tslint:disable-next-line:max-line-length
       this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
         let index = 1;

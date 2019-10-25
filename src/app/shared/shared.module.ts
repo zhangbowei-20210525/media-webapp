@@ -93,7 +93,10 @@ const PIPES = [
   ChoreographyCalendarPipe,
   ChoreographySnPipe,
   BroadcastDateTitlePipe,
-  ChoreographySncPipe
+  ChoreographySncPipe,
+  DateRansformationPipe,
+  DateRansformation1Pipe,
+  PublicitiesTypePipe
 ];
 // #endregion
 
@@ -108,6 +111,9 @@ import { ChoreographyCalendarPipe } from './pipes/choreography-calendar.pipe';
 import { ChoreographySnPipe } from './pipes/choreography-sn.pipe';
 import { BroadcastDateTitlePipe } from './pipes/broadcast-date-title.pipe';
 import { ChoreographySncPipe } from './pipes/choreography-snc.pipe';
+import { DateRansformationPipe } from './pipes/date-ransformation.pipe';
+import { DateRansformation1Pipe } from './pipes/date-ransformation1.pipe';
+import { PublicitiesTypePipe } from './pipes/publicities-type.pipe';
 
 
 

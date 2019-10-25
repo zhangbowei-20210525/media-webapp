@@ -92,30 +92,12 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   isClear: boolean;
   status: string;
   realTimePlayback: number;
-
+  kpgjInfo  = [];
   fixationInfo: any; // 可能是用户信息
-
-
-  panels = [
-    {
-      active: true,
-      name: 'This is panel header 1',
-      childPanel: [
-        {
-          active: false,
-          name: 'This is panel header 1-1'
-        }
-      ]
-    },
-    {
-      active: false,
-      name: 'This is panel header 2'
-    },
-    {
-      active: false,
-      name: 'This is panel header 3'
-    }
-  ];
+  kpTimec: number;
+  kpTimeSFM: string;
+  kpTimeT: string;
+  kpTime: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -231,48 +213,18 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       });
   }
 
-  listenVideoTime() {
-    console.log('0909');
-    console.log(this.status);
-    this.destroyTimers = setInterval(() => {
-      if (this.isClear || this.status === 'stop') {
-      } else {
-        this.giveVideoStatus();
-      }
-    }, 10000);
-  }
-
-  giveVideoStatus() {
-    this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, this.realTimePlayback, this.status).subscribe(res => {
-    });
-  }
-
-  getVideoStatus() {
-    this.player.on('timeupdate', () => {
-       // tslint:disable-next-line:radix
-      this.isClear = false;
-      // tslint:disable-next-line:radix
-      this.realTimePlayback = parseInt(this.player.currentTime());
-      this.status = 'play';
-    });
-    this.player.on('play', () => {
-      this.isClear = false;
-      this.status = 'play';
-      // tslint:disable-next-line:radix
-      this.realTimePlayback = parseInt(this.player.currentTime());
-    });
-    this.player.on('ended', () => {
-      this.isClear = true;
-      this.status = 'stop';
-      // tslint:disable-next-line:radix
-      this.realTimePlayback = parseInt(this.player.currentTime());
-    });
-    this.player.on('pause', () => {
-      this.isClear = true;
-      this.status = 'stop';
-      this.giveVideoStatus();
-      // tslint:disable-next-line:radix
-      this.realTimePlayback = parseInt(this.player.currentTime());
+  kpgj() {
+    this.seriesService.getKpgjInfo(this.id).subscribe(result => {
+      this.kpgjInfo = result.list;
+      console.log(this.kpgjInfo);
+      const date = new Date();
+      const oldDate = new Date(result.list[0].view_logs[0].created_at);
+      // tslint:disable-next-line:max-line-length
+      this.kpTimeSFM = oldDate.getHours() + ':' + oldDate.getMinutes() + ':' + oldDate.getSeconds();
+      // tslint:disable-next-line:max-line-length
+      this.kpTimeT = oldDate.getFullYear() + '年' + (oldDate.getMonth() + 1) + '月' + oldDate.getDate() + '日';
+      this.kpTimec = date.getTime() - oldDate.getTime();
+      this.kpTime = Math.floor(this.kpTimec / 60);
     });
   }
 
@@ -315,8 +267,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.isId = this.sampleList[0].id;
       this.realTimePlayback = 0;
       this.status = 'play';
-      this.giveVideoStatus();
-      this.listenVideoTime();
       this.samplePagination = s.pagination;
       if (this.sampleList.length > 0) {
         this.sampleName = this.sampleList[0].name;
@@ -468,22 +418,22 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       // this.posterName = this.posterList[this.posterIndex].name;
       // this.posterSrc = this.posterList[this.posterIndex].src;
 
-       // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
-      let index = 1;
-      x.list.forEach(f => {
-        f.displayText = index++;
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.posterList = s.list;
+        this.isId = this.posterList[this.posterIndex].id;
+        this.posterPagination = s.pagination;
+        if (this.posterList.length > 0) {
+          this.posterName = this.posterList[this.posterIndex].name;
+          this.posterSrc = this.posterList[this.posterIndex].src;
+          this.posterPageChange({ page: 1, pageSize: 20 });
+        }
       });
-    })).subscribe(s => {
-      this.posterList = s.list;
-      this.isId = this.posterList[this.posterIndex].id;
-      this.posterPagination = s.pagination;
-      if (this.posterList.length > 0) {
-        this.posterName = this.posterList[this.posterIndex].name;
-        this.posterSrc = this.posterList[this.posterIndex].src;
-        this.posterPageChange({ page: 1, pageSize: 20 });
-      }
-    });
     } else { }
   }
 
@@ -492,22 +442,22 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.posterIndex = this.posterIndex + 1;
       // this.posterSrc = this.posterList[this.posterIndex].src;
       // this.posterName = this.posterList[this.posterIndex].name;
-         // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
-      let index = 1;
-      x.list.forEach(f => {
-        f.displayText = index++;
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.posterPagination, this.id, 'poster').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.posterList = s.list;
+        this.isId = this.posterList[this.posterIndex].id;
+        this.posterPagination = s.pagination;
+        if (this.posterList.length > 0) {
+          this.posterName = this.posterList[this.posterIndex].name;
+          this.posterSrc = this.posterList[this.posterIndex].src;
+          this.posterPageChange({ page: 1, pageSize: 20 });
+        }
       });
-    })).subscribe(s => {
-      this.posterList = s.list;
-      this.isId = this.posterList[this.posterIndex].id;
-      this.posterPagination = s.pagination;
-      if (this.posterList.length > 0) {
-        this.posterName = this.posterList[this.posterIndex].name;
-        this.posterSrc = this.posterList[this.posterIndex].src;
-        this.posterPageChange({ page: 1, pageSize: 20 });
-      }
-    });
     } else { }
   }
 
@@ -516,22 +466,22 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.stillIndex = this.stillIndex - 1;
       // this.stillName = this.stillList[this.stillIndex].name;
       // this.stillSrc = this.stillList[this.stillIndex].src;
-       // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
-      let index = 1;
-      x.list.forEach(f => {
-        f.displayText = index++;
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.stillList = s.list;
+        this.isId = this.stillList[this.stillIndex].id;
+        this.stillPagination = s.pagination;
+        if (this.stillList.length > 0) {
+          this.stillName = this.stillList[this.stillIndex].name;
+          this.stillSrc = this.stillList[this.stillIndex].src;
+          this.stillPageChange({ page: 1, pageSize: 20 });
+        }
       });
-    })).subscribe(s => {
-      this.stillList = s.list;
-      this.isId = this.stillList[this.stillIndex].id;
-      this.stillPagination = s.pagination;
-      if (this.stillList.length > 0) {
-        this.stillName = this.stillList[this.stillIndex].name;
-        this.stillSrc = this.stillList[this.stillIndex].src;
-        this.stillPageChange({ page: 1, pageSize: 20 });
-      }
-    });
     } else { }
   }
 
@@ -540,22 +490,22 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
       this.stillIndex = this.stillIndex + 1;
       // this.stillSrc = this.stillList[this.stillIndex].src;
       // this.stillName = this.stillList[this.stillIndex].name;
-         // tslint:disable-next-line:max-line-length
-    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
-      let index = 1;
-      x.list.forEach(f => {
-        f.displayText = index++;
+      // tslint:disable-next-line:max-line-length
+      this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+        let index = 1;
+        x.list.forEach(f => {
+          f.displayText = index++;
+        });
+      })).subscribe(s => {
+        this.stillList = s.list;
+        this.isId = this.stillList[this.stillIndex].id;
+        this.stillPagination = s.pagination;
+        if (this.stillList.length > 0) {
+          this.stillName = this.stillList[this.stillIndex].name;
+          this.stillSrc = this.stillList[this.stillIndex].src;
+          this.stillPageChange({ page: 1, pageSize: 20 });
+        }
       });
-    })).subscribe(s => {
-      this.stillList = s.list;
-      this.isId = this.stillList[this.stillIndex].id;
-      this.stillPagination = s.pagination;
-      if (this.stillList.length > 0) {
-        this.stillName = this.stillList[this.stillIndex].name;
-        this.stillSrc = this.stillList[this.stillIndex].src;
-        this.stillPageChange({ page: 1, pageSize: 20 });
-      }
-    });
     } else { }
   }
 
@@ -577,8 +527,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.publicityType = 'sample';
     // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
     // { sampleIndex: this.sampleIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-     // tslint:disable-next-line:max-line-length
-     this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.samplePagination, this.id, 'sample').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -626,8 +576,8 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.publicityType = 'trailer';
     // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
     // { trailerIndex: this.trailerIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-     // tslint:disable-next-line:max-line-length
-     this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.trailerPagination, this.id, 'trailer').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -673,29 +623,29 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.publicityType = 'still';
     // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
     // { stillIndex: this.stillIndex, publicityType: this.publicityType, sid: this.sid }], { relativeTo: this.route });
-   // tslint:disable-next-line:max-line-length
-   this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
-    let index = 1;
-    x.list.forEach(f => {
-      f.displayText = index++;
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.stillPagination, this.id, 'still').pipe(tap(x => {
+      let index = 1;
+      x.list.forEach(f => {
+        f.displayText = index++;
+      });
+    })).subscribe(s => {
+      this.stillList = s.list;
+      this.stillPagination = s.pagination;
+      if (this.stillList.length > 0) {
+        this.stillName = this.stillList[this.stillIndex].name;
+        this.stillSrc = this.stillList[this.stillIndex].src;
+        this.stillPageChange({ page: 1, pageSize: 20 });
+      }
     });
-  })).subscribe(s => {
-    this.stillList = s.list;
-    this.stillPagination = s.pagination;
-    if (this.stillList.length > 0) {
-      this.stillName = this.stillList[this.stillIndex].name;
-      this.stillSrc = this.stillList[this.stillIndex].src;
-      this.stillPageChange({ page: 1, pageSize: 20 });
-    }
-  });
   }
 
   pdfNavigateToDetail(i: number, id: number) {
     this.pdfIndex = i;
     this.publicityType = 'pdf';
     this.isId = id;
-     // tslint:disable-next-line:max-line-length
-     this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
+    // tslint:disable-next-line:max-line-length
+    this.seriesService.getPublicitiesTypeList(this.pdfPagination, this.id, 'pdf').pipe(tap(x => {
       let index = 1;
       x.list.forEach(f => {
         f.displayText = index++;
@@ -725,7 +675,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.pause();
     this.publicityType = 'feature';
     this.getFeatureInfo();
-    this.getVideoStatus();
   }
 
   trailer() {
@@ -733,7 +682,6 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.pause();
     this.publicityType = 'trailer';
     this.getTrailerInfo();
-    this.getVideoStatus();
   }
 
   poster() {
@@ -741,14 +689,12 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
     this.player.pause();
     this.publicityType = 'poster';
     this.getPosterInfo();
-    this.getVideoStatus();
   }
   still() {
     this.ishidden = true;
     this.player.pause();
     this.publicityType = 'still';
     this.getStillInfo();
-    this.getVideoStatus();
   }
 
   pdf() {

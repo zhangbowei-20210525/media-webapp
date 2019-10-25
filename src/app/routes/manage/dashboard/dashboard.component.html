@@ -100,7 +100,7 @@
         <div id="dstCylindrical" [hidden]="t1 == 0"></div>
       </div>
       <div style="height: 450px;width: 492px">
-         <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
+        <nz-empty [hidden]="t1 > 0" style="margin-top: 125px"></nz-empty>
         <div id="dstRing" [hidden]="t1 == 0"></div>
       </div>
 
@@ -206,8 +206,9 @@
           <nz-option *ngFor="let option of reviewStatisticalMonthOfOption" [nzLabel]="option.label"
             [nzValue]="option.value"></nz-option>
         </nz-select>
-        <button [disabled]="disabled" nz-button nzType="primary" style="margin-left: 20px;" (click)="download()" nzSize="small"><i nz-icon nzType="upload"
-          nzTheme="outline" style="font-size: 15px"></i><span>导出数据</span></button>
+        <button [disabled]="disabled" nz-button nzType="primary" style="margin-left: 20px;" (click)="download()"
+          nzSize="small"><i nz-icon nzType="upload" nzTheme="outline"
+            style="font-size: 15px"></i><span>导出数据</span></button>
       </div>
     </div>
     <div class="block-content">
@@ -353,7 +354,9 @@
               <td [attr.rowspan]="2" [nzAlign]="'center'" nzLeft="0px"
                 style="font-size: 12px;color: #333333;font-weight:500;">二审</td>
               <td [nzAlign]="'center'" *ngFor="let data of reviews">
-                {{ data.review_steps[1].review_records_statistic.conclusion_statistic.agree /  data.review_steps[1].review_records_statistic.count * 100 | floor }}%
+                <span
+                  *ngIf=" data?.review_steps.length > 1">{{ data?.review_steps[1]?.review_records_statistic?.conclusion_statistic?.agree /  data?.review_steps[1]?.review_records_statistic?.count * 100 | floor }}%</span>
+                <span *ngIf=" data?.review_steps.length <= 1"></span>
               </td>
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
@@ -375,7 +378,9 @@
             </tr>
             <tr>
               <td [nzAlign]="'center'" *ngFor="let data of reviews">
-                {{ data.review_steps[1].review_records_statistic.conclusion_statistic.agree }}/{{ data.review_steps[1].review_records_statistic.count }}
+                <span
+                  *ngIf=" data?.review_steps.length > 1">{{ data.review_steps[1]?.review_records_statistic?.conclusion_statistic?.agree }}/{{ data?.review_steps[1]?.review_records_statistic?.count }}</span>
+                <span *ngIf=" data?.review_steps.length <= 1"></span>
               </td>
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
@@ -438,7 +443,11 @@
               <td [attr.rowspan]="2" [nzAlign]="'center'" nzLeft="0px"
                 style="font-size: 12px;color: #333333;font-weight:500;">三审</td>
               <td [nzAlign]="'center'" *ngFor="let data of reviews">
-                {{ data.review_steps[2].review_records_statistic.conclusion_statistic.agree /  data.review_steps[2].review_records_statistic.count * 100 | floor }}%
+                <span *ngIf=" data?.review_steps.length > 2">
+                  {{ data?.review_steps[2]?.review_records_statistic?.conclusion_statistic?.agree / 
+                      data?.review_steps[2]?.review_records_statistic?.count * 100 | floor }}%
+                </span>
+                <span *ngIf=" data?.review_steps.length <= 2"></span>
               </td>
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>
@@ -460,7 +469,9 @@
             </tr>
             <tr>
               <td [nzAlign]="'center'" *ngFor="let data of reviews">
-                {{ data.review_steps[2].review_records_statistic.conclusion_statistic.agree }}/{{ data.review_steps[2].review_records_statistic.count }}
+                <span
+                  *ngIf=" data?.review_steps.length > 2">{{ data?.review_steps[2]?.review_records_statistic?.conclusion_statistic?.agree }}/{{ data?.review_steps[2]?.review_records_statistic?.count }}</span>
+                <span *ngIf=" data?.review_steps.length <= 2"></span>
               </td>
               <td nzWidth="100px" *ngIf="reviews.length == 1"></td>
               <td nzWidth="100px" *ngIf="reviews.length == 1 || reviews.length == 2"></td>

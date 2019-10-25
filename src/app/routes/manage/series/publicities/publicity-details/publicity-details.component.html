@@ -575,56 +575,52 @@
             <div>简介：{{ seriesInfo?.introduction }}</div>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="看片轨迹">
+        <nz-tab nzTitle="看片轨迹" (nzClick)="kpgj()">
           <nz-collapse nzAccordion [nzBordered]="false">
-            <nz-collapse-panel [nzShowArrow]="false" *ngFor="let panel of panels" [nzHeader]="header"
-              [nzActive]="panel.active">
+            <nz-collapse-panel   [nzShowArrow]="false" *ngFor="let info of kpgjInfo" [nzHeader]="header"
+              [nzActive]="false">
               <div style="width: 297px;height: auto;background: #F8F8F8;padding-top: 15px;padding-left: 12px;">
                 <div style="color: #333333;font-size: 12px;margin-bottom: 15px;">
                   <!-- <img src="../assets/images/gk.png" style="margin-right: 4px;color: #000000;"> -->
-                  <span style="margin-right: 5px;">12月31日分享</span>
+                  <span style="margin-right: 5px;">{{  info.view_log_statistic.share_at  | dr }}分享</span>
                   <span style="margin-right: 5px;">|</span>
-                  <span style="margin-right: 5px;">共观看三次</span>
+                  <span style="margin-right: 5px;">共观看{{  info.view_log_statistic.view_times }}次</span>
                   <span style="margin-right: 5px;">|</span>
-                  <span>观看时长9999分钟</span>
+                  <span>时长{{  info.view_log_statistic.total_play_time / 60  | floor }}分钟</span>
                 </div>
                 <nz-timeline>
-                  <nz-timeline-item>
-                    <span style="margin-right: 10px;font-size: 12px;color: #333333;">2019/07/20</span>
-                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">观看先导片</span>
-                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">/</span>
-                    <span style="font-size: 12px;color: #333333;">观看时长9999分钟</span>
-                  </nz-timeline-item>
-                  <nz-timeline-item>
-                    <span style="margin-right: 10px;font-size: 12px;color: #333333;">2019/07/20</span>
-                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">观看先导片</span>
-                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">/</span>
-                    <span style="font-size: 12px;color: #333333;">观看时长9999分钟</span>
+                  <nz-timeline-item  view_logs *ngFor="let data of info.view_logs">
+                    <span style="margin-right: 10px;font-size: 12px;color: #333333;">{{ data.created_at | dr1}}</span>
+                    <span style="margin-right: 5px;font-size: 12px;color: #333333;">观看{{ data.material.material_type | pty }}</span>
+                    <span *ngIf="data.material.material_type == 'sample' || data.material.material_type == 'feature' || data.material.material_type == 'trailer'" style="margin-right: 5px;font-size: 12px;color: #333333;">/</span>
+                    <span  *ngIf="(data.material.material_type == 'sample' || data.material.material_type == 'feature' || data.material.material_type == 'trailer') && data.play_time >= 60" style="font-size: 12px;color: #333333;">观看时长{{ data.play_time / 60  | floor }}分钟</span>
+                    <span  *ngIf="(data.material.material_type == 'sample' || data.material.material_type == 'feature' || data.material.material_type == 'trailer') && data.play_time < 60" style="font-size: 12px;color: #333333;">观看时长{{ data.play_time }}秒</span>
                   </nz-timeline-item>
                 </nz-timeline>
               </div>
-            </nz-collapse-panel>
-            <ng-template #header>
-              <div class="details-title">
-                <div class="title-avater">
-                  <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar"
-                    style="width: 38px; height: 38px;">
-                  </nz-avatar>
-                </div>
-                <div style="font-size: 12px;width: 100%;">
-                  <div>
-                    <span>{{userinfo?.user?.nickname}}</span>
-                    <span style="float: right;color: #F5A623;font-size:12px;margin-right: 15px;">两分钟前观看</span>
+              <ng-template #header>
+                <div class="details-title">
+                  <div class="title-avater">
+                    <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="info?.avatar"
+                      style="width: 38px; height: 38px;">
+                    </nz-avatar>
                   </div>
-                  <div>{{userinfo?.company?.full_name}}</div>
+                  <div style="font-size: 12px;width: 100%;">
+                    <div>
+                      <span>{{ info?.name }}</span>
+                      <span style="float: right;color: #F5A623;font-size:12px;margin-right: 15px;">
+                        <span *ngIf="kpTimec < 3600">{{ kpTime }}分钟前观看</span>
+                        <span *ngIf="kpTimec >= 3600 && kpTimec < 86400">{{ kpTimeSFM }}前观看</span>
+                        <span *ngIf="kpTimec >= 86400">{{ kpTimeT }}前观看</span>
+                      </span>
+                    </div>
+                    <div>{{ info?.company?.full_name }}</div>
+                  </div>
                 </div>
-              </div>
-            </ng-template>
+              </ng-template>
+            </nz-collapse-panel>
           </nz-collapse>
         </nz-tab>
-        <!-- <nz-tab nzTitle="图集">
-  
-          </nz-tab> -->
       </nz-tabset>
     </div>
   </div>

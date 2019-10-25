@@ -89,6 +89,15 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   isShowBtn: any;
   isId: any;
   isSharing: number;
+  destroyTimers: NodeJS.Timer;
+  isClear: boolean;
+  status: string;
+  realTimePlayback: number;
+  kpgjInfo = [];
+  kpTimec: number;
+  kpTimeSFM: string;
+  kpTimeT: string;
+  kpTime: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -215,6 +224,50 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
   }
+
+  listenVideoTime() {
+    this.destroyTimers = setInterval(() => {
+      if (this.isClear || this.status === 'stop') {
+      } else {
+        this.giveVideoStatus();
+      }
+    }, 10000);
+  }
+
+  giveVideoStatus() {
+    this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, this.realTimePlayback, this.status).subscribe(res => {
+    });
+  }
+
+  getVideoStatus() {
+    this.player.on('timeupdate', () => {
+      // tslint:disable-next-line:radix
+      this.isClear = false;
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+      this.status = 'play';
+    });
+    this.player.on('play', () => {
+      this.isClear = false;
+      this.status = 'play';
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+    this.player.on('ended', () => {
+      this.isClear = true;
+      this.status = 'stop';
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+    this.player.on('pause', () => {
+      this.isClear = true;
+      this.status = 'stop';
+      this.giveVideoStatus();
+      // tslint:disable-next-line:radix
+      this.realTimePlayback = parseInt(this.player.currentTime());
+    });
+  }
+
   ngAfterViewInit() {
     this.player = videojs('#video_player');
     this.player.width(800);
@@ -228,6 +281,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.player.dispose();
+    clearInterval(this.destroyTimers);
   }
 
   playerSource(src: string, poster?: string) {
@@ -238,6 +292,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.player.src('http://media.html5media.info/video.mp4');
     this.player.src(src);
     this.player.load();
+    this.listenVideoTime();
   }
 
   getSampleInfo() {
@@ -250,6 +305,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.sampleList = s.list;
       this.isId = this.sampleList[0].id;
+      this.getVideoStatus();
+      this.giveVideoStatus();
       this.samplePagination = s.pagination;
       if (this.sampleList.length > 0) {
         this.sampleName = this.sampleList[0].name;
@@ -272,6 +329,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.featureList = s.list;
       this.isId = this.featureList[0].id;
+      this.getVideoStatus();
       this.featurePagination = s.pagination;
       if (this.featureList.length > 0) {
         this.featureName = this.featureList[0].name;
@@ -293,6 +351,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.trailerList = s.list;
       this.isId = this.trailerList[0].id;
+      this.getVideoStatus();
       this.trailerPagination = s.pagination;
       if (this.trailerList.length > 0) {
         this.trailerName = this.trailerList[0].name;
@@ -314,6 +373,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.posterList = s.list;
       this.isId = this.posterList[0].id;
+      this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, null, '').subscribe(res => {
+      });
       this.trailerPagination = s.pagination;
       if (this.posterList.length > 0) {
         this.posterName = this.posterList[0].name;
@@ -333,6 +394,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.stillList = s.list;
       this.isId = this.stillList[0].id;
+      this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, null, '').subscribe(res => {
+      });
       this.stillPagination = s.pagination;
       if (this.stillList.length > 0) {
         this.stillName = this.stillList[0].name;
@@ -354,6 +417,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pdfPagination = s.pagination;
       if (this.pdfList.length > 0) {
         this.isId = this.pdfList[0].id;
+        this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, null, '').subscribe(res => {
+        });
         this.pdfName = this.pdfList[0].name;
         this.pdfSrc = this.pdfList[0].src;
         // this.pdfSrc = 'http://192.168.1.109:8000/media_files/720fa654-3d79-11e9-91a9-685b35a5b556.pdf';
@@ -656,8 +721,6 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.player.pause();
     this.publicityType = 'feature';
     this.getFeatureInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { featureIndex: this.featureIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   trailer() {
@@ -674,16 +737,12 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.player.pause();
     this.publicityType = 'poster';
     this.getPosterInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { posterIndex: this.posterIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
   still() {
     this.ishidden = true;
     this.player.pause();
     this.publicityType = 'still';
     this.getStillInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { stillIndex: this.stillIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   pdf() {
@@ -691,8 +750,6 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.player.pause();
     this.publicityType = 'pdf';
     this.getPdfInfo();
-    // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
-    // { pdfIndex: this.pdfIndex, publicityType: this.publicityType }], { relativeTo: this.route });
   }
 
   getTwoDimensionalCode() {

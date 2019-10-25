@@ -31,6 +31,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   companyName: '';
   token: '';
+  avatar: any;
+  id: number;
 
   constructor(
     public ability: ACLAbility,
@@ -55,6 +57,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
    this.companyName = JSON.parse(localStorage.getItem('_user')).company_name;
    this.token = JSON.parse(localStorage.getItem('_token')).token;
+   this.avatar = JSON.parse(localStorage.getItem('_user')).avatar;
+   this.id = JSON.parse(localStorage.getItem('_user')).id;
     this.langs = this.i18n.getLangs();
     this.auth.state$.subscribe(state => {
       this.isLoggedIn = state;
@@ -139,7 +143,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goBigData() {
-    window.open(`http://data.bctop.net?companyName=${this.companyName}&token=${this.token}`);
+    window.open(`http://data.bctop.net?companyName=${this.companyName}&token=${this.token}&avatar=${this.avatar}&ids=${this.id}`);
   }
 
 }
