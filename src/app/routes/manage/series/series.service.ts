@@ -479,7 +479,7 @@ export class SeriesService {
     });
   }
 
-  getKpgjInfo(id: number) {
-    return this.http.get<any>(`/api/v1/publicitys/${id}/viewlogs`);
+  getKpgjInfo(id: number, pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/publicitys/${id}/viewlogs?page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 }

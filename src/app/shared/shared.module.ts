@@ -96,7 +96,9 @@ const PIPES = [
   ChoreographySncPipe,
   DateRansformationPipe,
   DateRansformation1Pipe,
-  PublicitiesTypePipe
+  PublicitiesTypePipe,
+  TimeIntervalPipe,
+  IsTimeIntervalPipe
 ];
 // #endregion
 
@@ -114,6 +116,8 @@ import { ChoreographySncPipe } from './pipes/choreography-snc.pipe';
 import { DateRansformationPipe } from './pipes/date-ransformation.pipe';
 import { DateRansformation1Pipe } from './pipes/date-ransformation1.pipe';
 import { PublicitiesTypePipe } from './pipes/publicities-type.pipe';
+import { TimeIntervalPipe } from './pipes/time-interval.pipe';
+import { IsTimeIntervalPipe } from './pipes/is-time-interval.pipe';
 
 
 

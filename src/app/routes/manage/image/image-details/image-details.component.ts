@@ -281,7 +281,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.player.dispose();
-    clearInterval(this.destroyTimers);
+    // clearInterval(this.destroyTimers);
   }
 
   playerSource(src: string, poster?: string) {
@@ -292,7 +292,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.player.src('http://media.html5media.info/video.mp4');
     this.player.src(src);
     this.player.load();
-    this.listenVideoTime();
+    // this.listenVideoTime();
   }
 
   getSampleInfo() {
@@ -305,6 +305,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.sampleList = s.list;
       this.isId = this.sampleList[0].id;
+      this.publicityType = 'sample';
       this.getVideoStatus();
       this.giveVideoStatus();
       this.samplePagination = s.pagination;
@@ -329,6 +330,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.featureList = s.list;
       this.isId = this.featureList[0].id;
+      this.publicityType = 'feature';
       this.getVideoStatus();
       this.featurePagination = s.pagination;
       if (this.featureList.length > 0) {
@@ -351,6 +353,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.trailerList = s.list;
       this.isId = this.trailerList[0].id;
+      this.publicityType = 'trailer';
       this.getVideoStatus();
       this.trailerPagination = s.pagination;
       if (this.trailerList.length > 0) {
@@ -373,6 +376,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.posterList = s.list;
       this.isId = this.posterList[0].id;
+      this.publicityType = 'poster';
       this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, null, '').subscribe(res => {
       });
       this.trailerPagination = s.pagination;
@@ -394,6 +398,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     })).subscribe(s => {
       this.stillList = s.list;
       this.isId = this.stillList[0].id;
+      this.publicityType = 'still';
       this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, null, '').subscribe(res => {
       });
       this.stillPagination = s.pagination;
@@ -417,6 +422,7 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pdfPagination = s.pagination;
       if (this.pdfList.length > 0) {
         this.isId = this.pdfList[0].id;
+        this.publicityType = 'pdf';
         this.seriesService.addTrajectory(this.id, this.publicityType, this.isId, null, '').subscribe(res => {
         });
         this.pdfName = this.pdfList[0].name;
@@ -710,7 +716,6 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   sample() {
     this.ishidden = false;
     this.player.pause();
-    this.publicityType = 'sample';
     this.getSampleInfo();
     // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
     // { sampleIndex: this.sampleIndex, publicityType: this.publicityType }], { relativeTo: this.route });
@@ -719,14 +724,12 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   feature() {
     this.ishidden = false;
     this.player.pause();
-    this.publicityType = 'feature';
     this.getFeatureInfo();
   }
 
   trailer() {
     this.ishidden = false;
     this.player.pause();
-    this.publicityType = 'trailer';
     this.getTrailerInfo();
     // this.router.navigate([`/manage/series/publicity-details/${this.id}`,
     // { trailerIndex: this.trailerIndex, publicityType: this.publicityType }], { relativeTo: this.route });
@@ -735,20 +738,17 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   poster() {
     this.ishidden = true;
     this.player.pause();
-    this.publicityType = 'poster';
     this.getPosterInfo();
   }
   still() {
     this.ishidden = true;
     this.player.pause();
-    this.publicityType = 'still';
     this.getStillInfo();
   }
 
   pdf() {
     this.ishidden = true;
     this.player.pause();
-    this.publicityType = 'pdf';
     this.getPdfInfo();
   }
 

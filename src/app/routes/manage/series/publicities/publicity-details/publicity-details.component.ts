@@ -68,6 +68,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   posterPagination: PaginationDto;
   stillPagination: PaginationDto;
   pdfPagination: PaginationDto;
+  scrollPagination = { page: 1, page_size: 8 } as PaginationDto;
   sampleList = [];
   featureList = [];
   trailerList = [];
@@ -92,12 +93,9 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   isClear: boolean;
   status: string;
   realTimePlayback: number;
-  kpgjInfo  = [];
+  kpgjInfo = [];
+  data = [];
   fixationInfo: any; // 可能是用户信息
-  kpTimec: number;
-  kpTimeSFM: string;
-  kpTimeT: string;
-  kpTime: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -214,26 +212,25 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   kpgj() {
-    this.seriesService.getKpgjInfo(this.id).subscribe(result => {
-      this.kpgjInfo = result.list;
-      console.log(this.kpgjInfo);
-      const date = new Date();
-      const oldDate = new Date(result.list[0].view_logs[0].created_at);
-      // tslint:disable-next-line:max-line-length
-      this.kpTimeSFM = oldDate.getHours() + ':' + oldDate.getMinutes() + ':' + oldDate.getSeconds();
-      // tslint:disable-next-line:max-line-length
-      this.kpTimeT = oldDate.getFullYear() + '年' + (oldDate.getMonth() + 1) + '月' + oldDate.getDate() + '日';
-      this.kpTimec = date.getTime() - oldDate.getTime();
-      this.kpTime = Math.floor(this.kpTimec / 60);
+    this.seriesService.getKpgjInfo(this.id, this.scrollPagination).subscribe(result => {
+      this.kpgjInfo = [...this.kpgjInfo, ...result.list];
+      this.scrollPagination.count = result.pagination.count;
+      this.scrollPagination.pages = result.pagination.pages;
     });
+  }
+
+  scroll() {
+    if (this.scrollPagination.pages > this.scrollPagination.page) {
+      this.scrollPagination.page += 1;
+      this.kpgj();
+    }
   }
 
   ngAfterViewInit() {
     this.player = videojs('#video_player');
     this.player.width(800);
     this.player.height(470);
-    // this.player.load();
-    this.player.pause();
+    this.player.load();
   }
 
   nomenu(event) {

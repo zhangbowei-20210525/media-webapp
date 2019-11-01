@@ -172,6 +172,7 @@ export class NotifyComponent implements OnInit {
   }
 
   onSysScrollDown() {
+    console.log('44444432222');
     if (this.isSysLoaded && !this.isSysLoding && this.sysPagination.pages > this.sysPagination.page) {
       this.sysPagination.page += 1;
       this.fetchSysNotifys();
