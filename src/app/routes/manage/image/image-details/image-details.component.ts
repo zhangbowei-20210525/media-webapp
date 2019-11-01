@@ -252,19 +252,21 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.status = 'play';
       // tslint:disable-next-line:radix
       this.realTimePlayback = parseInt(this.player.currentTime());
+      this.giveVideoStatus();
     });
     this.player.on('ended', () => {
       this.isClear = true;
       this.status = 'stop';
       // tslint:disable-next-line:radix
       this.realTimePlayback = parseInt(this.player.currentTime());
+       this.giveVideoStatus();
     });
     this.player.on('pause', () => {
       this.isClear = true;
       this.status = 'stop';
-      this.giveVideoStatus();
       // tslint:disable-next-line:radix
       this.realTimePlayback = parseInt(this.player.currentTime());
+      this.giveVideoStatus();
     });
   }
 
@@ -306,6 +308,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sampleList = s.list;
       this.isId = this.sampleList[0].id;
       this.publicityType = 'sample';
+      this.realTimePlayback = 0;
+      this.status = 'play';
       this.getVideoStatus();
       this.giveVideoStatus();
       this.samplePagination = s.pagination;
@@ -331,6 +335,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.featureList = s.list;
       this.isId = this.featureList[0].id;
       this.publicityType = 'feature';
+      this.realTimePlayback = 0;
+      this.status = 'play';
       this.getVideoStatus();
       this.featurePagination = s.pagination;
       if (this.featureList.length > 0) {
@@ -354,6 +360,8 @@ export class ImageDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.trailerList = s.list;
       this.isId = this.trailerList[0].id;
       this.publicityType = 'trailer';
+      this.realTimePlayback = 0;
+      this.status = 'play';
       this.getVideoStatus();
       this.trailerPagination = s.pagination;
       if (this.trailerList.length > 0) {

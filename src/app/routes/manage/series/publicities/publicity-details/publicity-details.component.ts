@@ -212,6 +212,7 @@ export class PublicityDetailsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   kpgj() {
+    this.kpgjInfo = [];
     this.seriesService.getKpgjInfo(this.id, this.scrollPagination).subscribe(result => {
       this.kpgjInfo = [...this.kpgjInfo, ...result.list];
       this.scrollPagination.count = result.pagination.count;
