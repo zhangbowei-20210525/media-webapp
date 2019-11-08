@@ -1,0 +1,13 @@
+
+<!-- 微信小程序入口 -->
+<div nz-popover [nzContent]="contentTemplate" nzTooltipPlacement="left"
+  style="width: 60px;height: 76px;position: fixed;right: 20px;bottom: 200px;text-align: center;background-color: #FFFFFF;cursor:pointer;">
+  <i nz-icon nzType="qrcode" nzTheme="outline" style="font-size: 30px;margin-top: 14px;display: block;"></i>
+  <div style="font-size: 12px;color: #333333;margin-top: 7px;">小程序</div>
+</div>
+<ng-template #contentTemplate>
+  <div>
+    <img style='width:156px;height:156px' src="./assets/images/xcx.png">
+  </div>
+  <div style="font-size:12px;font-weight:500;color: #333333;text-align: center;margin-top: 9px;">微信扫一扫，使用小程序</div>
+</ng-template>

@@ -72,6 +72,8 @@ export class InfoComponent implements OnInit {
   dayData4: any;
   dayData5: any;
   tabId: number;
+  isHidden = true;
+  url: string;
 
   popover: any;
 
@@ -86,10 +88,17 @@ export class InfoComponent implements OnInit {
     this.m = new Date().getMonth() + 1;
     this.service.getTheatreList().subscribe(res => {
       this.tabs = res;
-      this.tabId = this.tabs[0].id;
       if (this.tabs.length > 0) {
+        this.tabId = this.tabs[0].id;
+        this.isHidden = false;
         this.getInfo();
       }
+    });
+  }
+  // 导出播表数据
+  export() {
+    this.service.exportInfo(this.y, this.m).subscribe(result => {
+      location.href = result.file_url;
     });
   }
 

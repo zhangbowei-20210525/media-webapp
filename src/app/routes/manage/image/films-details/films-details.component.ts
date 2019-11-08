@@ -1187,19 +1187,21 @@ export class FilmsDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.status = 'play';
       // tslint:disable-next-line:radix
       this.realTimePlayback = parseInt(this.player.currentTime());
+      this.giveVideoStatus(this.tabIndex);
     });
     this.player.on('ended', () => {
       this.isClear = true;
       this.status = 'stop';
       // tslint:disable-next-line:radix
       this.realTimePlayback = parseInt(this.player.currentTime());
+      this.giveVideoStatus(this.tabIndex);
     });
     this.player.on('pause', () => {
       this.isClear = true;
       this.status = 'stop';
-      this.giveVideoStatus(this.tabIndex);
       // tslint:disable-next-line:radix
       this.realTimePlayback = parseInt(this.player.currentTime());
+      this.giveVideoStatus(this.tabIndex);
     });
   }
 

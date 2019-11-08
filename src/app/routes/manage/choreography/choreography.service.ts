@@ -117,4 +117,8 @@ export class ChoreographyService {
     return this.http.get<any>(`/api/v1/editing/columns/${id}`);
   }
 
+  exportInfo(year: number, month: number) {
+    return this.http.get<any>(`/api/v1/editing/calendar/month/download?year=${year}&month=${month}`);
+  }
+
 }

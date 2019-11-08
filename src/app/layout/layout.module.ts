@@ -16,6 +16,7 @@ import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components
 import { ProcessComponent } from './header/components/process/process.component';
 import { EmployeesInvitedMessagesComponent } from './header/components/employees-invited-messages/employees-invited-messages.component';
 import { ReviewPeopleMessageComponent } from './header/components/review-people-message/review-people-message.component';
+import { EntranceComponent } from './entrance/entrance.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ReviewPeopleMessageComponent } from './header/components/review-people-
     SolicitationComponent,
     ProcessComponent,
     EmployeesInvitedMessagesComponent,
-    ReviewPeopleMessageComponent
+    ReviewPeopleMessageComponent,
+    EntranceComponent
   ],
   imports: [
     CommonModule,

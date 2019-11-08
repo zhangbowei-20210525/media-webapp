@@ -6,8 +6,6 @@ import { Util } from '@shared/util';
 })
 export class ChoreographyCalendarPipe implements PipeTransform {
 
-    a = 1;
-
     transform(date: any, info: any): any {
         if (info !== undefined) {
             if (info.events.some(f => Util.dateToString(date) === f.broadcast_date)) {

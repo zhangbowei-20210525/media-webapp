@@ -139,7 +139,7 @@ export class PublicityComponent implements OnInit {
         (materielType === 'trailer' && item.size < 3221225472) ||
         (materielType === 'poster' && item.size < 2097152) ||
         (materielType === 'still' && item.size < 2097152) ||
-        (materielType === 'pdf' && item.size < 2097152)
+        (materielType === 'pdf' && item.size < 20971520)
       ) {
         return this.uploader.enqueue({
           target: this.publicityId,
@@ -172,7 +172,7 @@ export class PublicityComponent implements OnInit {
           }
         });
       } else {
-        this.message.warning('所传文件大小超出指定范围（视频文件不大于3GB，图片、PDF不大于2MB）');
+        this.message.warning('所传文件大小超出指定范围（视频文件不大于3GB，图片、PDF不大于10MB）');
       }
     });
     // const listString = this.getListString(materielType);

@@ -1,269 +1,3 @@
-<!-- <div class="content-container theme-text">
-  <div class="left-view">
-    <div class="player-panel">
-      <div [hidden]="ishidden">
-        <div class="video-box">
-          <video id="video_player" (contextmenu)="nomenu($event)" class="video-js vjs-default-skin vjs-big-play-centered" type="application/x-mpegURL"
-            preload="none" data-setup="{}" controls autoplay>
-          </video>
-          </div> -->
-<!-- <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-            <span>{{publicityName}}：</span>
-            <span *ngIf="publicityType == 'sample'">{{sampleName}}</span>
-            <span *ngIf="publicityType == 'feature'">{{featureName}}</span>
-            <span *ngIf="publicityType == 'trailer'">{{trailerName}}</span>
-          </div> -->
-<!-- <span style="position:absolute;right: 30px"><a><i class="anticon anticon-share-alt text-info" nz-popover
-                [nzTitle]="titleTemplate" [nzContent]="contentTemplate" nzTrigger="click"></i></a></span> -->
-<!-- *ngIf ="languageVersion == 'zh-CN'" -->
-<!-- <div class="fixationInfo-info">
-                  <a (click)="getTwoDimensionalCode()">
-                    <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
-                      nzTrigger="click"></i>
-                  </a>
-                </div>
-        </div> -->
-<!-- <ng-template #titleTemplate> -->
-<!-- <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div> -->
-<!-- <div *ngIf ="languageVersion == 'en-US'" style="text-align: center;">{{ 'app.series.publicity-share-email' | translate }}</div> -->
-<!-- </ng-template> -->
-<!-- <ng-template #contentTemplate> -->
-<!-- <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
-          <div style="text-align: center;margin-top: 1.5rem" *ngIf ="languageVersion == 'zh-CN'" ><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
-          <div style="text-align: center;" *ngIf ="languageVersion == 'en-US'" >
-            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small" style="margin-top: 1.5rem">
-            <button nz-button nzType="primary"  nzSize="small" style="margin-top: 1.5rem" (click)="shareEmail()">Share</button>
-          </div>
-          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
-        </ng-template>
-      </div> -->
-<!-- <div *ngIf="publicityType == 'poster'">
-        <div class="video-box" style="position: relative;text-align: center;">
-          <img [src]="posterSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
-          <a>
-            <i class="anticon anticon-left-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="lastPoster()"></i>
-          </a>
-          <a>
-            <i class="anticon anticon-right-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="nextPoster()"></i>
-          </a>
-        </div>
-        <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-            <span>{{publicityName}}：</span>
-            <span>{{posterName}}</span>
-          </div>
-          <div class="fixationInfo-info">
-            <a (click)="getTwoDimensionalCode()">
-              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
-                nzTrigger="click"></i>
-            </a>
-          </div>
-        </div>
-        <ng-template #titleTemplate>
-          <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
-          <div *ngIf ="languageVersion == 'en-US'" style="text-align: center;">{{ 'app.series.publicity-share-email' | translate }}</div>
-        </ng-template>
-        <ng-template #contentTemplate>
-          <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
-          <div style="text-align: center;margin-top: 1.5rem" *ngIf ="languageVersion == 'zh-CN'" ><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
-          <div style="text-align: center;" *ngIf ="languageVersion == 'en-US'" >
-            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small" style="margin-top: 1.5rem">
-            <button nz-button nzType="primary"  nzSize="small" style="margin-top: 1.5rem" (click)="shareEmail()">Share</button>
-          </div>
-          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
-        </ng-template>
-      </div> -->
-
-<!-- <div *ngIf="publicityType == 'still'">
-        <div class="video-box" style="position: relative;text-align: center;">
-          <img [src]="stillSrc" style="width: auto; height: auto;max-width: 100%;max-height: 100%;" />
-          <a>
-            <i class="anticon anticon-left-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="lastStill()"></i>
-          </a>
-          <a>
-            <i class="anticon anticon-right-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="nextStill()"></i>
-          </a>
-        </div>
-        <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-            <span>{{publicityName}}：</span>
-            <span>{{stillName}}</span>
-          </div>
-          <div class="fixationInfo-info">
-            <a (click)="getTwoDimensionalCode()">
-              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
-                nzTrigger="click"></i>
-            </a>
-          </div>
-        </div>
-        <ng-template #titleTemplate>
-          <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
-          <div *ngIf ="languageVersion == 'en-US'" style="text-align: center;">{{ 'app.series.publicity-share-email' | translate }}</div>
-        </ng-template>
-        <ng-template #contentTemplate>
-          <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
-          <div style="text-align: center;margin-top: 1.5rem" *ngIf ="languageVersion == 'zh-CN'" ><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
-          <div style="text-align: center;" *ngIf ="languageVersion == 'en-US'" >
-            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small" style="margin-top: 1.5rem">
-            <button nz-button nzType="primary"  nzSize="small" style="margin-top: 1.5rem" (click)="shareEmail()">Share</button>
-          </div>
-          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
-        </ng-template>
-      </div> -->
-
-<!-- <div *ngIf="publicityType == 'pdf'">
-        <div class="video-box" style="position: relative;text-align: center; display: table-cell;vertical-align: middle;">
-          <pdf-viewer [src]="pdfSrc" [page]="pdfPage" [zoom]="0.6" [show-all]="false" [original-size]="true"></pdf-viewer>
-          <a>
-            <i class="anticon anticon-left-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;left: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="lastPdf()"></i>
-          </a>
-          <a>
-            <i class="anticon anticon-right-circle-o" style="z-index: 50;cursor:pointer;font-size: 25px;position: absolute;top:0px;bottom:0px;right: 0px;margin: auto;width: 50px; height: 50px;"
-              (click)="nextPdf()"></i>
-          </a>
-        </div>
-        <div class="video-title">
-          <div class="widthBisection" style="width:400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-            <span *ngIf="fixationInfo">{{publicityName}}：</span>
-            <span *ngIf="detail">{{pdfName}}</span>
-          </div>
-          <div class="fixationInfo-info">
-            <a (click)="getTwoDimensionalCode()">
-              <i class="anticon anticon-share-alt text-info" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"
-                nzTrigger="click"></i>
-            </a>
-          </div>
-        </div>
-        <ng-template #titleTemplate>
-          <div *ngIf ="languageVersion == 'zh-CN'" style="text-align: center;">微信扫码分享</div>
-          <div *ngIf ="languageVersion == 'en-US'" style="text-align: center;">{{ 'app.series.publicity-share-email' | translate }}</div>
-        </ng-template>
-        <ng-template #contentTemplate>
-          <div style="text-align: center;">{{ userinfo?.company?.name }}</div>
-          <div style="text-align: center;margin-top: 1.5rem" *ngIf ="languageVersion == 'zh-CN'" ><img src="{{twoDimensionalCode}}" style="width: 200px;height: 200px;"></div>
-          <div style="text-align: center;" *ngIf ="languageVersion == 'en-US'" >
-            <input nz-input placeholder="Please enter the email to share" [(ngModel)]="emailAddress" nzSize="small" style="margin-top: 1.5rem">
-            <button nz-button nzType="primary"  nzSize="small" style="margin-top: 1.5rem" (click)="shareEmail()">Share</button>
-          </div>
-          <div style="text-align: center;margin-top: 1.5rem">{{ seriesInfo?.name }}</div>
-        </ng-template>
-      </div> -->
-
-
-<!-- 
-      <nz-tabset [nzSelectedIndex]="tabIndex" (nzSelectChange)="tabSelectChange($event)">
-        <nz-tab [nzTitle]="'样片' + '(' +userinfo?.material?.sample + ')'" (nzClick)="sample()" [nzDisabled]="sampleDisabled">
-          <div class="program-panel">
-            <ul class="program-list">
-              <li *ngFor="let sample of sampleNum" (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
-                <div style="height: 100%; width: 100%;"><a>{{sample.displayText}}</a></div>
-              </li>
-            </ul>
-          </div>
-        </nz-tab>
-        <nz-tab  [nzTitle]="'片花' + '(' +userinfo?.material?.feature + ')'" (nzClick)="feature()" [nzDisabled]="featureDisabled">
-          <div class="program-panel">
-            <ul class="program-list">
-              <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
-                <div style="height: 100%; width: 100%;"><a>{{feature.displayText}}</a></div>
-              </li>
-            </ul>
-          </div>
-        </nz-tab>
-        <nz-tab [nzTitle]="'先导片' + '(' +userinfo?.material?.trailer + ')'" (nzClick)="trailer()" [nzDisabled]="trailerDisabled">
-          <div class="program-panel">
-            <ul class="program-list">
-              <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
-                <div style="height: 100%; width: 100%;"><a>{{trailer.displayText}}</a></div>
-              </li>
-            </ul>
-          </div>
-        </nz-tab>
-        <nz-tab [nzTitle]="'海报' + '(' +userinfo?.material?.poster + ')'" (nzClick)="poster()" [nzDisabled]="posterDisabled">
-          <div class="program-panel">
-            <ul class="program-list">
-              <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i)">
-                <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
-              </li>
-            </ul>
-          </div>
-        </nz-tab>
-        <nz-tab [nzTitle]="'剧照' + '(' +userinfo?.material?.still + ')'" (nzClick)="still()" [nzDisabled]="stillDisabled">
-          <div class="program-panel">
-            <ul class="program-list">
-              <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i)">
-                <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
-              </li>
-            </ul>
-          </div>
-
-        </nz-tab>
-        <nz-tab [nzTitle]="'PDF' + '(' +userinfo?.material?.pdf + ')'"  (nzClick)="pdf()" [nzDisabled]="pdfDisabled">
-          <div class="program-panel">
-            <ul class="program-list">
-              <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i)">
-                <div style="height: 100%; width: 100%;"><a>{{i + 1}}</a></div>
-              </li>
-            </ul>
-          </div>
-        </nz-tab>
-      </nz-tabset> -->
-<!-- </div>
-  </div> -->
-
-<!-- <div class="right-view">
-    <div style="display: inline-block;margin-top: 20px; margin-left: 20px; float: left; width: 38px; height: 38px;">
-      <nz-avatar nzIcon="anticon anticon-user" [nzSrc]="userinfo?.user?.avatar" style="width: 38px; height: 38px;"></nz-avatar>
-    </div>
-    <div style="display: inline-block;width: 270px;margin-top: 20px;margin-left: 12px">
-      <div style="font-size: 12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-        <span nz-tooltip [nzTitle]="fixationInfo?.area?.name">上传人：{{userinfo?.user?.nickname}}</span>
-      </div>
-      <div style="font-size: 12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-top: 5px">
-        <span>所属公司：{{userinfo?.company?.full_name}}</span>
-        <span *ngIf="userinfo?.company?.full_name == null">个人用户</span>
-      </div> -->
-<!-- </div> -->
-<!-- <div class="detail-tabs"> -->
-<!-- <nz-tabset> -->
-<!-- <nz-tab nzTitle="基本信息">
-          <div style="height: 600px;line-height: 26px;margin-left: 50px">
-          <div>节目名称：{{ seriesInfo?.name }}</div>
-          <div>集数：{{ seriesInfo?.episode }}</div>
-          <div>题材：{{ seriesInfo?.theme }}</div>
-          <div>语言：{{ seriesInfo?.language }}</div>
-          <div>节目别名：{{ seriesInfo?.nickname }}</div>
-          <div>发行时间：{{ seriesInfo?.release_date }}</div>
-          <div>监制：{{ seriesInfo?.supervisor }}</div>
-          <div>总制片人：{{ seriesInfo?.general_producer }}</div>
-          <div>节目类型：{{ seriesInfo?.program_type | seriesType }}</div>
-          <div>导演：{{ seriesInfo?.director }}</div>
-          <div>编剧：{{ seriesInfo?.screen_writer }}</div>
-          <div>出品人：{{ seriesInfo?.producer }}</div>
-          <div>主演：{{ seriesInfo?.protagonist }}</div>
-          <div>出品方：{{ seriesInfo?.product_company }}</div>
-          <div>简介：{{ seriesInfo?.introduction }}</div>
-          </div>
-        </nz-tab> -->
-<!-- <nz-tab nzTitle="关键帧">
-
-        </nz-tab>
-        <nz-tab nzTitle="图集">
-
-        </nz-tab> -->
-<!-- </nz-tabset> -->
-
-<!-- </div> -->
-<!-- </div> -->
-<!-- </div> -->
-
-
 <div class="content-container">
   <div class="publicity-details-left">
     <div [hidden]="ishidden">
@@ -431,9 +165,6 @@
         </a>
       </div> -->
 
-
-
-
       <div class="video-title">
         <div class="widthBisection">
           <span *ngIf="fixationInfo">{{seriesInfo?.name}}：</span>
@@ -472,7 +203,12 @@
           <ul class="program-list">
             <li *ngFor="let sample of sampleNum; let i = index"
               (click)="sampleNavigateToDetail(sample.displayText,sample.id)">
-              <div class="play-button" [ngClass]="{'selected': isId == sample.id}">{{sample.displayText}}</div>
+              <div class="play-button" [ngClass]="{'selected': isId == sample.id}" nz-popover
+                [nzContent]="contentTemplate1" nzPlacement="bottom">{{sample.displayText}}</div>
+              <ng-template #contentTemplate1>
+                <div style="font-size:12px;font-weight:500;color: #333333;text-align: center;">{{ sampleList[i].name }}
+                </div>
+              </ng-template>
             </li>
           </ul>
         </div>
@@ -481,9 +217,15 @@
         [nzDisabled]="featureDisabled">
         <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let feature of featureNum" (click)="featureNavigateToDetail(feature.displayText,feature.id)">
-              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == feature.id}">
+            <li *ngFor="let feature of featureNum; let i = index"
+              (click)="featureNavigateToDetail(feature.displayText,feature.id)">
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == feature.id}" nz-popover
+                [nzContent]="contentTemplate2" nzPlacement="bottom">
                 {{feature.displayText}}</div>
+              <ng-template #contentTemplate2>
+                <div style="font-size:12px;font-weight:500;color: #333333;text-align: center;">{{ featureList[i].name }}
+                </div>
+              </ng-template>
             </li>
           </ul>
         </div>
@@ -492,9 +234,15 @@
         [nzDisabled]="trailerDisabled">
         <div class="program-panel">
           <ul class="program-list">
-            <li *ngFor="let trailer of trailerNum" (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
-              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == trailer.id}">
+            <li *ngFor="let trailer of trailerNum; let i = index"
+              (click)="trailerNavigateToDetail(trailer.displayText,trailer.id)">
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == trailer.id}" nz-popover
+                [nzContent]="contentTemplate3" nzPlacement="bottom">
                 {{trailer.displayText}}</div>
+              <ng-template #contentTemplate3>
+                <div style="font-size:12px;font-weight:500;color: #333333;text-align: center;">
+                  {{ trailerList[i].name }}</div>
+              </ng-template>
             </li>
           </ul>
         </div>
@@ -504,7 +252,12 @@
         <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let poster of posterList;let i = index" (click)="posterNavigateToDetail(i, poster.id)">
-              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == poster.id}">{{i + 1}}</div>
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == poster.id}" nz-popover
+                [nzContent]="contentTemplate4" nzPlacement="bottom">{{i + 1}}</div>
+              <ng-template #contentTemplate4>
+                <div style="font-size:12px;font-weight:500;color: #333333;text-align: center;">{{ posterList[i].name }}
+                </div>
+              </ng-template>
             </li>
           </ul>
         </div>
@@ -513,7 +266,12 @@
         <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let still of stillList;let i = index" (click)="stillNavigateToDetail(i, still.id)">
-              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == still.id}">{{i + 1}}</div>
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == still.id}" nz-popover
+                [nzContent]="contentTemplate5" nzPlacement="bottom">{{i + 1}}</div>
+              <ng-template #contentTemplate5>
+                <div style="font-size:12px;font-weight:500;color: #333333;text-align: center;">{{ stillList[i].name }}
+                </div>
+              </ng-template>
             </li>
           </ul>
         </div>
@@ -523,7 +281,12 @@
         <div class="program-panel">
           <ul class="program-list">
             <li *ngFor="let pdf of pdfNum;let i = index" (click)="pdfNavigateToDetail(i, pdf.id)">
-              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == pdf.id}">{{i + 1}}</div>
+              <div style="height: 100%; width: 100%;" [ngClass]="{'selected': isId == pdf.id}" nz-popover
+                [nzContent]="contentTemplate6" nzPlacement="bottom">{{i + 1}}</div>
+              <ng-template #contentTemplate6>
+                <div style="font-size:12px;font-weight:500;color: #333333;text-align: center;">{{ pdfList[i].name }}
+                </div>
+              </ng-template>
             </li>
           </ul>
         </div>
@@ -576,9 +339,8 @@
           </div>
         </nz-tab>
         <nz-tab nzTitle="看片轨迹" (nzClick)="kpgj()">
-          <div style="height: 660px;overflow-y:scroll;" infinite-scroll
-        [scrollWindow]="false" infiniteScrollDistance="1" (scrolled)="scroll()"
-          >
+          <div style="height: 660px;overflow-y:scroll;" infinite-scroll [scrollWindow]="false"
+            infiniteScrollDistance="1" (scrolled)="scroll()">
             <nz-collapse nzAccordion [nzBordered]="false">
               <nz-collapse-panel [nzShowArrow]="false" *ngFor="let info of kpgjInfo" [nzHeader]="header"
                 [nzActive]="false">
@@ -622,10 +384,14 @@
                       <div>
                         <span>{{ info?.name }}</span>
                         <span style="float: right;color: #F5A623;font-size:12px;margin-right: 15px;">
-                          <span *ngIf="(info.view_logs[0].created_at | iti) < 3600">{{ info.view_logs[0].created_at  | ti }}分钟前观看过</span>
-                          <span *ngIf="(info.view_logs[0].created_at | iti) >= 3600 && (info.view_logs[0].created_at | iti) < 86400">{{ info.view_logs[0].created_at  | ti }}<span
+                          <span
+                            *ngIf="(info.view_logs[0].created_at | iti) < 3600">{{ info.view_logs[0].created_at  | ti }}分钟前观看过</span>
+                          <span
+                            *ngIf="(info.view_logs[0].created_at | iti) >= 3600 && (info.view_logs[0].created_at | iti) < 86400">{{ info.view_logs[0].created_at  | ti }}<span
                               style="margin-left: 5px;">观看过</span></span>
-                          <span *ngIf="(info.view_logs[0].created_at | iti) >= 86400">{{ info.view_logs[0].created_at  | ti }}<span style="margin-left: 5px;">观看过</span></span>
+                          <span
+                            *ngIf="(info.view_logs[0].created_at | iti) >= 86400">{{ info.view_logs[0].created_at  | ti }}<span
+                              style="margin-left: 5px;">观看过</span></span>
                         </span>
                       </div>
                       <div>{{ info?.company?.full_name }}</div>

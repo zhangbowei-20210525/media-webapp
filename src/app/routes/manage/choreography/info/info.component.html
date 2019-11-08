@@ -1,35 +1,9 @@
-<!-- <nz-table #table [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false" style="margin-top: 10px">
-            <thead>
-                <tr>
-                    <th nzWidth="150px" [nzAlign]="'center'">日期</th>
-                    <th  *ngFor="let data of table.data" [nzAlign]="'center'">
-                        <div>{{ data.theatreName }}</div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let data of events">
-                    <td [nzAlign]="'center'">
-                        <div>{{ data.week }}</div>
-                        <div>
-                            <span>{{ data.week | weekDay}}</span>
-                        </div>
-                    </td>
-
-                    <td *ngFor="let wd of w;let c = index" [nzAlign]="'center'">
-                        <ng-container *ngFor="let event of data.events; let i = index">
-                            <div *ngFor="let en of event.event">
-                                <div *ngIf="event.id == wd">
-                                    <div>{{ en.program_name}}</div>
-                                    <div>{{ en.episode_index}} ~ {{ en.episode_index + en.episode_num - 1}}集</div>
-                                </div>
-                            </div>
-                        </ng-container>
-                    </td>
-                </tr>
-            </tbody>
-        </nz-table> -->
-<nz-tabset [(nzSelectedIndex)]="selectedIndex">
+<nz-tabset [(nzSelectedIndex)]="selectedIndex" [nzTabBarExtraContent]="extraTemplate">
+  <ng-template #extraTemplate>
+    <!-- 导出日历播表信息 -->
+    <button [hidden]="isHidden" nz-button nzType="primary" style="margin-left: 20px;" (click)="export()"
+      nzSize="small"><i nz-icon nzType="upload" nzTheme="outline" style="font-size: 15px"></i><span>导出数据</span></button>
+  </ng-template>
   <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name" (nzClick)="onClick(tab.id)">
     <nz-calendar (nzSelectChange)="selectChange($event)" [(ngModel)]="date">
       <ul *nzDateCell="let date" class="events">
@@ -118,9 +92,8 @@
                 </div>
               </ng-template>
 
-              
-              <div class="event-box"
-                *ngIf="(date | cc:list1) == 1" (nzVisibleChange)="theatreChange($event, list1.tid)"
+
+              <div class="event-box" *ngIf="(date | cc:list1) == 1" (nzVisibleChange)="theatreChange($event, list1.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
                   {{ list1?.logo }}
@@ -130,82 +103,24 @@
                 </div>
               </div>
 
-            <div class="event-box"
-            *ngIf="(date | cc:list1) == 3" (nzVisibleChange)="theatreChange($event, list1.tid)"
-            [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
-            <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
-              {{ list1?.logo }}
-            </div>
-            <div class="event-content" [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
-              <span>{{ date | snc:list1 }}</span>
-            </div>
-          </div>
+              <div class="event-box" *ngIf="(date | cc:list1) == 3" (nzVisibleChange)="theatreChange($event, list1.tid)"
+                [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+                <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+                  {{ list1?.logo }}
+                </div>
+                <div class="event-content" [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
+                  <span>{{ date | snc:list1 }}</span>
+                </div>
+              </div>
 
-
-
-
-              <div *ngIf="(date | cc:list1) == 2"
-                (nzVisibleChange)="theatreChange($event, list1.tid)" class="event-box1"
+              <div *ngIf="(date | cc:list1) == 2" (nzVisibleChange)="theatreChange($event, list1.tid)"
+                class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ',' + a + ')'}">
-                <span class="event-content-c"
-                  [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}"></span>
+                <span class="event-content-c" [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}"></span>
               </div>
               <div *ngIf="(date | cc:list1) == 0" class="event-hidden-box"></div>
-              <!-- <ng-template #title1>
-                <div *ngIf="popover" style="font-size:14px;font-weight:500;"
-                  [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">
-                  {{ popover?.name }}（{{ popover?.time }}）</div>
-                <div *ngFor="let data of popover?.weeks" style="color:#999999;font-size:12px;font-weight:400;">
-                  <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    ~
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                  <div *ngIf="data.weekdays[0] == data.weekdays[data.weekdays.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                </div>
-              </ng-template>
-              <ng-template #contentTemplate1>
-                <div *ngFor="let data of popover?.series">
-                  <div style="margin-top: 10px">
-                    <span style="font-size: 6px"
-                      [ngStyle]="{'color': 'rgba(' + r1 + ',' + g1 + ',' + b1 + ')'}">●</span>
-                    <span
-                      style="margin-left: 10px;color:#333333;font-size:14px;font-weight:400;">{{ data?.program_name }}（共{{ data?.program_episode }}集）</span>
-                  </div>
-                  <div style="margin-top: 5px;margin-left: 20px;color:#999999;font-size:12px;font-weight:400;">
-                    {{  data?.broadcast_start_date | bd  }} |
-                    第{{ data?.start_episode }}
-                    ~ {{ data?.end_episode }}
-                    集
-                  </div>
-                </div>
-              </ng-template> -->
 
-
-              <div class="event-box"
-                *ngIf="(date | cc:list2) == 1" (nzVisibleChange)="theatreChange($event, list2.tid)"
+              <div class="event-box" *ngIf="(date | cc:list2) == 1" (nzVisibleChange)="theatreChange($event, list2.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
                   {{ list2?.logo }}
@@ -215,78 +130,25 @@
                 </div>
               </div>
 
-              <div class="event-box"
-              *ngIf="(date | cc:list2) == 3" (nzVisibleChange)="theatreChange($event, list2.tid)"
-              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
-              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
-                {{ list2?.logo }}
+              <div class="event-box" *ngIf="(date | cc:list2) == 3" (nzVisibleChange)="theatreChange($event, list2.tid)"
+                [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                  {{ list2?.logo }}
+                </div>
+                <div class="event-content" [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
+                  <span>{{ date | sn:list2 }}</span>
+                </div>
               </div>
-              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
-                <span>{{ date | sn:list2 }}</span>
-              </div>
-            </div>
 
-              
-              <div *ngIf="(date | cc:list2) == 2"
-                (nzVisibleChange)="theatreChange($event, list2.tid)" class="event-box1"
+
+              <div *ngIf="(date | cc:list2) == 2" (nzVisibleChange)="theatreChange($event, list2.tid)"
+                class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">{{ date | snc:list2 }}</span>
               </div>
               <div *ngIf="(date | cc:list2) == 0" class="event-hidden-box"></div>
-              <!-- <ng-template #title2>
-                <div *ngIf="popover" style="font-size:14px;font-weight:500;"
-                  [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">
-                  {{ popover?.name }}（{{ popover?.time }}）</div>
-                <div *ngFor="let data of popover?.weeks" style="color:#999999;font-size:12px;font-weight:400;">
-                  <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    ~
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                  <div *ngIf="data.weekdays[0] == data.weekdays[data.weekdays.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                </div>
-              </ng-template>
-              <ng-template #contentTemplate2>
-                <div *ngFor="let data of popover?.series">
-                  <div style="margin-top: 10px">
-                    <span style="font-size: 6px"
-                      [ngStyle]="{'color': 'rgba(' + r2 + ',' + g2 + ',' + b2 + ')'}">●</span>
-                    <span
-                      style="margin-left: 10px;color:#333333;font-size:14px;font-weight:400;">{{ data?.program_name }}（共{{ data?.program_episode }}集）</span>
-                  </div>
-                  <div style="margin-top: 5px;margin-left: 20px;color:#999999;font-size:12px;font-weight:400;">
-                    {{  data?.broadcast_start_date | bd  }} |
-                    第{{ data?.start_episode }}
-                    ~ {{ data?.end_episode }}
-                    集
-                  </div>
-                </div>
-              </ng-template> -->
-              <div class="event-box"
-                *ngIf="(date | cc:list3) == 1" (nzVisibleChange)="theatreChange($event, list3.tid)"
+              <div class="event-box" *ngIf="(date | cc:list3) == 1" (nzVisibleChange)="theatreChange($event, list3.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
                   {{ list3?.logo }}
@@ -296,78 +158,25 @@
                 </div>
               </div>
 
-              <div class="event-box"
-              *ngIf="(date | cc:list3) == 3" (nzVisibleChange)="theatreChange($event, list3.tid)"
-              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
-              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
-                {{ list3?.logo }}
+              <div class="event-box" *ngIf="(date | cc:list3) == 3" (nzVisibleChange)="theatreChange($event, list3.tid)"
+                [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                  {{ list3?.logo }}
+                </div>
+                <div class="event-content" [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
+                  <span>{{ date | sn:list3 }}</span>
+                </div>
               </div>
-              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
-                <span>{{ date | sn:list3 }}</span>
-              </div>
-            </div>
 
 
-              <div *ngIf="(date | cc:list3) == 2"
-                (nzVisibleChange)="theatreChange($event, list3.tid)" class="event-box1"
+              <div *ngIf="(date | cc:list3) == 2" (nzVisibleChange)="theatreChange($event, list3.tid)"
+                class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">{{ date | snc:list3 }}</span>
               </div>
               <div *ngIf="(date | cc:list3) == 0" class="event-hidden-box"></div>
-              <!-- <ng-template #title3>
-                <div *ngIf="popover" style="font-size:14px;font-weight:500;"
-                  [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">
-                  {{ popover?.name }}（{{ popover?.time }}）</div>
-                <div *ngFor="let data of popover?.weeks" style="color:#999999;font-size:12px;font-weight:400;">
-                  <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    ~
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                  <div *ngIf="data.weekdays[0] == data.weekdays[data.weekdays.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                </div>
-              </ng-template>
-              <ng-template #contentTemplate3>
-                <div *ngFor="let data of popover?.series">
-                  <div style="margin-top: 10px">
-                    <span style="font-size: 6px"
-                      [ngStyle]="{'color': 'rgba(' + r3 + ',' + g3 + ',' + b3 + ')'}">●</span>
-                    <span
-                      style="margin-left: 10px;color:#333333;font-size:14px;font-weight:400;">{{ data?.program_name }}（共{{ data?.program_episode }}集）</span>
-                  </div>
-                  <div style="margin-top: 5px;margin-left: 20px;color:#999999;font-size:12px;font-weight:400;">
-                    {{  data?.broadcast_start_date | bd  }} |
-                    第{{ data?.start_episode }}
-                    ~ {{ data?.end_episode }}
-                    集
-                  </div>
-                </div>
-              </ng-template> -->
-              <div class="event-box"
-                *ngIf="(date | cc:list4) == 1" (nzVisibleChange)="theatreChange($event, list4.tid)"
+              <div class="event-box" *ngIf="(date | cc:list4) == 1" (nzVisibleChange)="theatreChange($event, list4.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
                   {{ list4?.logo }}
@@ -379,78 +188,25 @@
 
 
 
-              <div class="event-box"
-              *ngIf="(date | cc:list4) == 3" (nzVisibleChange)="theatreChange($event, list4.tid)"
-              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
-              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
-                {{ list4?.logo }}
+              <div class="event-box" *ngIf="(date | cc:list4) == 3" (nzVisibleChange)="theatreChange($event, list4.tid)"
+                [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                  {{ list4?.logo }}
+                </div>
+                <div class="event-content" [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
+                  <span>{{ date | sn:list4 }}</span>
+                </div>
               </div>
-              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
-                <span>{{ date | sn:list4 }}</span>
-              </div>
-            </div>
 
 
-              <div *ngIf="(date | cc:list4) == 2"
-                (nzVisibleChange)="theatreChange($event, list4.tid)" class="event-box1"
+              <div *ngIf="(date | cc:list4) == 2" (nzVisibleChange)="theatreChange($event, list4.tid)"
+                class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">{{ date | snc:list4 }}</span>
               </div>
               <div *ngIf="(date | cc:list4) == 0" class="event-hidden-box"></div>
-              <!-- <ng-template #title4>
-                <div *ngIf="popover" style="font-size:14px;font-weight:500;"
-                  [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">
-                  {{ popover?.name }}（{{ popover?.time }}）</div>
-                <div *ngFor="let data of popover?.weeks" style="color:#999999;font-size:12px;font-weight:400;">
-                  <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    ~
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                  <div *ngIf="data.weekdays[0] == data.weekdays[data.weekdays.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                </div>
-              </ng-template>
-              <ng-template #contentTemplate4>
-                <div *ngFor="let data of popover?.series">
-                  <div style="margin-top: 10px">
-                    <span style="font-size: 6px"
-                      [ngStyle]="{'color': 'rgba(' + r4 + ',' + g4 + ',' + b4 + ')'}">●</span>
-                    <span
-                      style="margin-left: 10px;color:#333333;font-size:14px;font-weight:400;">{{ data?.program_name }}（共{{ data?.program_episode }}集）</span>
-                  </div>
-                  <div style="margin-top: 5px;margin-left: 20px;color:#999999;font-size:12px;font-weight:400;">
-                    {{  data?.broadcast_start_date | bd  }} |
-                    第{{ data?.start_episode }}
-                    ~ {{ data?.end_episode }}
-                    集
-                  </div>
-                </div>
-              </ng-template> -->
-              <div class="event-box"
-                *ngIf="(date | cc:list5) == 1" (nzVisibleChange)="theatreChange($event, list5.tid)"
+              <div class="event-box" *ngIf="(date | cc:list5) == 1" (nzVisibleChange)="theatreChange($event, list5.tid)"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
                 <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
                   {{ list5?.logo }}
@@ -460,78 +216,22 @@
                 </div>
               </div>
 
-              <div class="event-box"
-              *ngIf="(date | cc:list5) == 3" (nzVisibleChange)="theatreChange($event, list5.tid)"
-              [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
-              <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
-                {{ list5?.logo }}
+              <div class="event-box" *ngIf="(date | cc:list5) == 3" (nzVisibleChange)="theatreChange($event, list5.tid)"
+                [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')','border-left': '2px','border-left-style' : 'solid', 'border-left-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                <div class="event-logo" [ngStyle]="{'background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                  {{ list5?.logo }}
+                </div>
+                <div class="event-content" [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
+                  <span>{{ date | sn:list5 }}</span>
+                </div>
               </div>
-              <div class="event-content" [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
-                <span>{{ date | sn:list5 }}</span>
-              </div>
-            </div>
-
-
-
-
-              <div *ngIf="(date | cc:list5) == 2"
-                (nzVisibleChange)="theatreChange($event, list5.tid)" class="event-box1"
+              <div *ngIf="(date | cc:list5) == 2" (nzVisibleChange)="theatreChange($event, list5.tid)"
+                class="event-box1"
                 [ngStyle]="{'margin-top':'5px','background-color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ',' + a + ')'}">
                 <span class="event-content-c"
                   [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">{{ date | snc:list5 }}</span>
               </div>
               <div *ngIf="(date | cc:list5) == 0" class="event-hidden-box"></div>
-              <!-- <ng-template #title5>
-                <div *ngIf="popover" style="font-size:14px;font-weight:500;"
-                  [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">
-                  {{ popover?.name }}（{{ popover?.time }}）</div>
-                <div *ngFor="let data of popover?.weeks" style="color:#999999;font-size:12px;font-weight:400;">
-                  <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    ~
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[data.weekdays.length - 1] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                  <div *ngIf="data.weekdays[0] == data.weekdays[data.weekdays.length - 1]">
-                    <span *ngIf="data.weekdays[0] == 1">星期一</span>
-                    <span *ngIf="data.weekdays[0] == 2">星期二</span>
-                    <span *ngIf="data.weekdays[0] == 3">星期三</span>
-                    <span *ngIf="data.weekdays[0] == 4">星期四</span>
-                    <span *ngIf="data.weekdays[0] == 5">星期五</span>
-                    <span *ngIf="data.weekdays[0] == 6">星期六</span>
-                    <span *ngIf="data.weekdays[0] == 7">星期日</span>
-                    <span>（每天{{ data?.number }}集）</span>
-                  </div>
-                </div>
-              </ng-template>
-              <ng-template #contentTemplate5>
-                <div *ngFor="let data of popover?.series">
-                  <div style="margin-top: 10px">
-                    <span style="font-size: 6px"
-                      [ngStyle]="{'color': 'rgba(' + r5 + ',' + g5 + ',' + b5 + ')'}">●</span>
-                    <span
-                      style="margin-left: 10px;color:#333333;font-size:14px;font-weight:400;">{{ data?.program_name }}（共{{ data?.program_episode }}集）</span>
-                  </div>
-                  <div style="margin-top: 5px;margin-left: 20px;color:#999999;font-size:12px;font-weight:400;">
-                    {{  data?.broadcast_start_date | bd  }} |
-                    第{{ data?.start_episode }}
-                    ~ {{ data?.end_episode }}
-                    集
-                  </div>
-                </div>
-              </ng-template> -->
             </li>
           </ng-container>
         </ng-container>
