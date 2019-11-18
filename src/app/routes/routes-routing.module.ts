@@ -58,8 +58,14 @@ const routes: Routes = [
           },
           {
             path: 'dashboard',
-            canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.analysis.view] } },
-            component: DashboardComponent
+            // canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.analysis.view] } },
+            // component: DashboardComponent
+            canLoad: [ACLGuard],
+            data: {
+              guard: <ACLType>{ ability: [aclAbility.analysis.view] },
+              preload: true
+            },
+            loadChildren: './manage/dashboard/dashboard.module#DashboardModule',
           },
           {
             path: 'film-review',
@@ -175,7 +181,7 @@ const routes: Routes = [
   imports: [
     // 永远不要在特性路由模块中调用RouterModule.forRoot！
     RouterModule.forRoot(routes,
-      // 只预加载那些data.preload标志为true的路由
+      // 只预加载那些 data.preload 标志为 true 的路由
       { preloadingStrategy: SelectivePreloadingStrategy })
   ],
   // 把RouterModule添加到路由模块的exports中，

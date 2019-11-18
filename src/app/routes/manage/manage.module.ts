@@ -2,7 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManageComponent } from './manage.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 import { SharedModule } from '@shared';
 // import { LayoutModule } from 'app/layout/layout.module';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
@@ -30,7 +30,7 @@ import { MySmplesComponent } from './personal-center/my-callup/my-smples/my-smpl
 @NgModule({
   declarations: [
     ManageComponent,
-    DashboardComponent,
+    // DashboardComponent,
     PersonalCenterComponent,
     BrowseRecordComponent,
     PubAuthorizationReceiveComponent,
