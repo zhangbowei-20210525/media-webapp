@@ -47,7 +47,7 @@ export class ContractDetailsComponent implements OnInit {
         rights.push({
           index: index++,
           itemIndex: itemIndex,
-          pid: item.id,
+          pid: item.program_id,
           rid: right.id,
           project: item.program_name,
           contract_number: item.contract_number,
