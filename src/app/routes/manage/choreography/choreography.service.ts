@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpParams, HttpClientJsonpModule } from '@angular/common/http';
-import { ReactiveBase, PaginationResponseDto } from '@shared';
+import { ReactiveBase, PaginationResponseDto, PaginationDto } from '@shared';
 import { ReactiveSilder } from '@shared/reactive-form/reactive-slider';
 import { ReactiveSelect } from '@shared/reactive-form/reactive-select';
 
@@ -120,5 +120,15 @@ export class ChoreographyService {
   exportInfo(year: number, month: number) {
     return this.http.get<any>(`/api/v1/editing/calendar/month/download?year=${year}&month=${month}`);
   }
+
+  getAllChannel() {
+    return this.http.get<any>(`/api/v1/editing/channels/brief`);
+  }
+
+  getChannelDetails(id: number, pagination: PaginationDto) {
+    return this.http.get<any>(`/api/v1/editing/channels/${id}/columns?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
+
 
 }

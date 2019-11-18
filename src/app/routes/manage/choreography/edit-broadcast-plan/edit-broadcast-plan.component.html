@@ -1,12 +1,12 @@
-<nz-table #table nzBordered [nzShowPagination]="false" [nzTitle]="Header" [nzData]="theatres" [nzNoResult]="null">
+<nz-table #table nzBordered [nzShowPagination]="false" [nzTitle]="Header" [nzData]="data" [nzNoResult]="null">
   <thead>
     <tr>
       <th [nzAlign]="'center'" style="width: 100px;"></th>
-      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="theatres[0] == undefined; else theatre1">暂无剧场</th>
-      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="theatres[1] == undefined; else theatre2">暂无剧场</th>
-      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="theatres[2] == undefined; else theatre3">暂无剧场</th>
-      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="theatres[3] == undefined; else theatre4">暂无剧场</th>
-      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="theatres[4] == undefined; else theatre5">暂无剧场</th>
+      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="data[0] == undefined; else theatre1">暂无剧场</th>
+      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="data[1] == undefined; else theatre2">暂无剧场</th>
+      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="data[2] == undefined; else theatre3">暂无剧场</th>
+      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="data[3] == undefined; else theatre4">暂无剧场</th>
+      <th [nzAlign]="'center'" style="width: 202px;" *ngIf="data[4] == undefined; else theatre5">暂无剧场</th>
     </tr>
   </thead>
   <tbody>
@@ -334,9 +334,9 @@
 </nz-table>
 <ng-template #theatre1>
   <th [nzAlign]="'center'">
-    <div>{{ theatres[0]?.name }}</div>
+    <div>{{ data[0]?.name }}</div>
     <div style="font-size: 12px;margin-top: 20px">
-      <div *ngFor="let data of theatres[0].weekday_schedules">
+      <div *ngFor="let data of data[0].weekday_schedules">
         <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
           <span *ngIf="data.weekdays[0] == 1">星期一</span>
           <span *ngIf="data.weekdays[0] == 2">星期二</span>
@@ -374,9 +374,9 @@
 </ng-template>
 <ng-template #theatre2>
   <th [nzAlign]="'center'">
-    <div>{{ theatres[1]?.name }}</div>
+    <div>{{ data[1]?.name }}</div>
     <div style="font-size: 12px;margin-top: 20px">
-      <div *ngFor="let data of theatres[1].weekday_schedules">
+      <div *ngFor="let data of data[1].weekday_schedules">
         <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
           <span *ngIf="data.weekdays[0] == 1">星期一</span>
           <span *ngIf="data.weekdays[0] == 2">星期二</span>
@@ -414,9 +414,9 @@
 </ng-template>
 <ng-template #theatre3>
   <th [nzAlign]="'center'">
-    <div>{{ theatres[2]?.name }}</div>
+    <div>{{ data[2]?.name }}</div>
     <div style="font-size: 12px;margin-top: 20px">
-      <div *ngFor="let data of theatres[2].weekday_schedules">
+      <div *ngFor="let data of data[2].weekday_schedules">
         <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
           <span *ngIf="data.weekdays[0] == 1">星期一</span>
           <span *ngIf="data.weekdays[0] == 2">星期二</span>
@@ -454,9 +454,9 @@
 </ng-template>
 <ng-template #theatre4>
   <th [nzAlign]="'center'">
-    <div>{{ theatres[3]?.name }}</div>
+    <div>{{ data[3]?.name }}</div>
     <div style="font-size: 12px;margin-top: 20px">
-      <div *ngFor="let data of theatres[3].weekday_schedules">
+      <div *ngFor="let data of data[3].weekday_schedules">
         <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
           <span *ngIf="data.weekdays[0] == 1">星期一</span>
           <span *ngIf="data.weekdays[0] == 2">星期二</span>
@@ -494,9 +494,9 @@
 </ng-template>
 <ng-template #theatre5>
   <th [nzAlign]="'center'">
-    <div>{{ theatres[4]?.name }}</div>
+    <div>{{ data[4]?.name }}</div>
     <div style="font-size: 12px;margin-top: 20px">
-      <div *ngFor="let data of theatres[4].weekday_schedules">
+      <div *ngFor="let data of data[4].weekday_schedules">
         <div *ngIf="data?.weekdays[0] !== data?.weekdays[data?.weekdays?.length - 1]">
           <span *ngIf="data.weekdays[0] == 1">星期一</span>
           <span *ngIf="data.weekdays[0] == 2">星期二</span>
@@ -535,11 +535,16 @@
 <ng-template #Header>
   <!-- <button nz-button nzType="danger" nzSmall="small" style="float:right;" (click)="addRow()">清空编排</button> -->
   <!-- <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="10" [(ngModel)]="selectedIndex"></nz-input-number> -->
-  <nz-tabset [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="channelChange($event)">
-    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name">
-    </nz-tab>
+  <nz-tabset>
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name" (nzClick)="channelChange(tab.id)"></nz-tab>
   </nz-tabset>
 </ng-template>
+
+<nz-pagination style="margin-top: 20px;margin-bottom: 20px;float: right;"
+[(nzPageIndex)]="pagination.page" [nzTotal]="pagination.count"
+[nzPageSize]="pagination.page_size" (nzPageIndexChange)="pageChange($event)"
+></nz-pagination>
+
 <nz-divider nzText="预排清单"></nz-divider>
 <div cdkDropList #series="cdkDropList" [cdkDropListData]="seriesList"
   [cdkDropListConnectedTo]="[l1d1z, l2d1z, l3d1z, l4d1z, l5d1z, l1y1z, l2y1z, l3y1z, l4y1z, l5y1z, l1y2z, l2y2z, l3y2z, l4y2z, l5y2z]"
