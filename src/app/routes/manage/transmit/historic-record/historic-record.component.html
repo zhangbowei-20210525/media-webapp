@@ -4,34 +4,34 @@
       <nz-tab nzTitle="上载记录" (nzClick)="uploadRecord()">
         <div>
           <nz-table #basicTable [nzData]="uploadRecordList" [nzPageSize]="uploadRecordPagination?.page_size"
-            [nzFrontPagination]="false" [nzPageIndex]="uploadRecordPagination?.page" [nzTotal]="uploadRecordPagination?.count"
-            (nzPageIndexChange)="uploadRecordPageChange($event)">
+            [nzFrontPagination]="false" [nzPageIndex]="uploadRecordPagination?.page"
+            [nzTotal]="uploadRecordPagination?.count" (nzPageIndexChange)="uploadRecordPageChange($event)">
             <thead>
               <tr>
-                  <th style="text-align: center">#</th>
-                <th style="text-align: center">节目名称</th>
-                <th style="text-align: center">母带版本</th>
-                <th style="text-align: center">任务数量</th>
-                <th style="text-align: center">状态</th>
-                <th style="text-align: center">上传时间</th>
-                <th style="text-align: center">上传人</th>
-                <th style="text-align: center">上传进度</th>
+                <th [nzAlign]="'center'">#</th>
+                <th [nzAlign]="'center'">节目名称</th>
+                <th [nzAlign]="'center'">母带版本</th>
+                <th [nzAlign]="'center'">任务数量</th>
+                <th [nzAlign]="'center'">状态</th>
+                <th [nzAlign]="'center'">上传时间</th>
+                <th [nzAlign]="'center'">上传人</th>
+                <th [nzAlign]="'center'">上传进度</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of basicTable.data;let i = index">
-                  <td>{{ i + 1 + uploadRecordPagination.page * 10 - 10}}</td>
-                <td style="text-align: center">{{data.program_name}}</td>
-                <td style="text-align: center">{{data.source_name}}</td>
-                <td style="text-align: center">{{data.tasks_num}}</td>
-                <td style="text-align: center">
+                <td [nzAlign]="'center'">{{ i + 1 + uploadRecordPagination.page * 10 - 10}}</td>
+                <td [nzAlign]="'center'">{{data.program_name}}</td>
+                <td [nzAlign]="'center'">{{data.source_name}}</td>
+                <td [nzAlign]="'center'">{{data.tasks_num}}</td>
+                <td [nzAlign]="'center'">
                   <span *ngIf="data.status == 0">上载中</span>
                   <span *ngIf="data.status == 1">上载中</span>
                   <span *ngIf="data.status == 2">已完成</span>
                 </td>
-                <td style="text-align: center">{{data.created_at}}</td>
-                <td style="text-align: center">{{data.created_name}}</td>
-                <td style="text-align: center"  (click)="transmitSchedule(data.id)"><a>查看</a></td>
+                <td [nzAlign]="'center'">{{data.created_at}}</td>
+                <td [nzAlign]="'center'">{{data.created_name}}</td>
+                <td [nzAlign]="'center'" (click)="transmitSchedule(data.id)"><a>查看</a></td>
               </tr>
             </tbody>
           </nz-table>
@@ -40,34 +40,38 @@
       <nz-tab nzTitle="下载记录" (nzClick)="downloadRecord()">
         <div *ngIf="isDownloadRecordLoaded == true">
           <nz-table #basicTable [nzData]="downloadRecordList" [nzPageSize]="downloadRecordPagination?.page_size"
-            [nzFrontPagination]="false" [nzPageIndex]="downloadRecordPagination?.page" [nzTotal]="downloadRecordPagination?.count"
-            (nzPageIndexChange)="downloadRecordPageChange($event)">
+            [nzFrontPagination]="false" [nzPageIndex]="downloadRecordPagination?.page"
+            [nzTotal]="downloadRecordPagination?.count" (nzPageIndexChange)="downloadRecordPageChange($event)">
             <thead>
               <tr>
-                  <th style="text-align: center">#</th>
-                <th style="text-align: center">节目名称</th>
-                <th style="text-align: center">母带版本</th>
-                <th style="text-align: center">任务数量</th>
-                <th style="text-align: center">状态</th>
-                <th style="text-align: center">下载时间</th>
-                <th style="text-align: center">公司简称</th>
-                <th style="text-align: center">下载进度</th>
+                <th [nzAlign]="'center'">#</th>
+                <th [nzAlign]="'center'">节目名称</th>
+                <th [nzAlign]="'center'">母带版本</th>
+                <th [nzAlign]="'center'">任务数量</th>
+                <th [nzAlign]="'center'">状态</th>
+                <th [nzAlign]="'center'">下载时间</th>
+                <th [nzAlign]="'center'">下载公司(人)</th>
+                <th [nzAlign]="'center'">下载进度</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of basicTable.data;let i = index">
-                  <td>{{ i + 1 + downloadRecordPagination.page * 10 - 10}}</td>
-                <td style="text-align: center">{{data.program_name}}</td>
-                <td style="text-align: center">{{data.source_name}}</td>
-                <td style="text-align: center">{{data.tasks_num}}</td>
-                <td style="text-align: center">
+                <td [nzAlign]="'center'">{{ i + 1 + downloadRecordPagination.page * 10 - 10}}</td>
+                <td [nzAlign]="'center'">{{data.program_name}}</td>
+                <td [nzAlign]="'center'">{{data.source_name}}</td>
+                <td [nzAlign]="'center'">{{data.tasks_num}}</td>
+                <td [nzAlign]="'center'">
                   <span *ngIf="data.status == 0">下载中</span>
                   <span *ngIf="data.status == 1">下载中</span>
                   <span *ngIf="data.status == 2">已完成</span>
                 </td>
-                <td style="text-align: center">{{data.created_at}}</td>
-                <td style="text-align: center">{{data.company_name}}</td>
-                <td style="text-align: center"><a (click)="transmitSchedule(data.id)">查看</a></td>
+                <td [nzAlign]="'center'">{{data.created_at}}</td>
+                <td [nzAlign]="'center'">
+                  <span *ngIf="data.source_from == 'self'">我自己</span>
+                  <span *ngIf="data.source_from == 'inner'">{{data.created_name}}</span>
+                  <span *ngIf="data.source_from == 'outside'">{{data.company_full_name}}</span>
+                </td>
+                <td [nzAlign]="'center'"><a (click)="transmitSchedule(data.id)">查看</a></td>
               </tr>
             </tbody>
           </nz-table>
@@ -75,7 +79,7 @@
       </nz-tab>
     </nz-tabset>
     <ng-template #extraTemplate>
-        <button nz-button nzType="default" nzSize ="small" (click)="goBack()">返回</button>
-      </ng-template>
+      <button nz-button nzType="default" nzSize="small" (click)="goBack()">返回</button>
+    </ng-template>
   </div>
 </div>

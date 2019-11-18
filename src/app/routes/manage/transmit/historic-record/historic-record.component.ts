@@ -78,6 +78,7 @@ export class HistoricRecordComponent implements OnInit {
       this.isDownloadRecordLoaded = true;
     })).subscribe(res => {
       this.downloadRecordList = res.list;
+      console.log(this.downloadRecordList);
       this.downloadRecordPagination = res.pagination;
     });
   }
