@@ -4,6 +4,8 @@ import { IpManagementComponent } from './ip-management.component';
 import { AddIpComponent } from './add-ip/add-ip.component';
 import { IpDetailsComponent } from './ip-details/ip-details.component';
 import { ContractDetailsComponent } from './contract-details/contract-details.component';
+import { ACLGuard, ACLType } from '@delon/acl';
+import { aclAbility } from '@core/acl';
 
 
 
@@ -15,11 +17,8 @@ const routes: Routes = [
   {
     path: 'add-ip',
     component: AddIpComponent,
+    canActivate: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.ip.edit] } }
   },
-  // {
-  //   path: 'ip',
-  //   component: IpManagementComponent,
-  // },
   {
     path: 'd/:id',
     component: IpDetailsComponent,

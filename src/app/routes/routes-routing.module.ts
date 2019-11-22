@@ -90,6 +90,7 @@ const routes: Routes = [
           },
           {
             path: 'ip', loadChildren: './manage/ip-management/ip-management.module#IpManagementModule',
+            canLoad: [ACLGuard], data: { guard: <ACLType>{ ability: [aclAbility.ip.view] } }
           },
           {
             path: 'choreography', component: ChoreographyComponent,
