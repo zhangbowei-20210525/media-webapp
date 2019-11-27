@@ -1,33 +1,416 @@
-.passport {
-    // padding: 20px 0;
-    padding-top: 20px;
-    min-height: 100%;
-    // background-repeat: no-repeat;
-    // background-position: center;
-    // background-size: 100%;
+// .passport {
+//     // padding: 20px 0;
+//     padding-top: 20px;
+//     min-height: 100%;
+//     // background-repeat: no-repeat;
+//     // background-position: center;
+//     // background-size: 100%;
+// }
+
+// .passport-container {
+//     width: 368px;
+//     margin: 0 auto;
+// }
+
+// .top {
+//     margin-top: 50px;
+//     margin-bottom: 30px;
+// }
+
+// .login-component {
+//     flex: 1;
+// }
+
+// .logo-title {
+//     font-size: 28px;
+//     font-weight: bold;
+//     font-family: sans-serif;
+//     color: rgba(0, 0, 0, .65);
+// }
+
+// .desc {
+//     color: rgba(0,0,0,.45);
+// }
+
+
+
+
+//xxxxxxxxxxxxxxxxxxxxx
+
+
+ /* 通配设置 */
+ * {
+    margin: 0;
+    padding: 0;
 }
 
-.passport-container {
-    width: 368px;
+ul,
+ol {
+    list-style: none;
+}
+
+img {
+    display: block;
+}
+
+body {
+    font-family: Arial;
+}
+
+.clear:after {
+    content: "";
+    display: block;
+    clear: both
+}
+
+.container-fluid {
+    width: 100%;
+}
+
+.container {
+    width: 1200px;
     margin: 0 auto;
 }
 
-.top {
-    margin-top: 50px;
-    margin-bottom: 30px;
+.sign {
+    min-height: 798px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 60px;
 }
 
-.login-component {
-    flex: 1;
+.sign-content {
+    width: 580px;
+    height: 320px;
+    margin: 226px 40px 0 0;
+    color: #fff;
 }
 
-.logo-title {
-    font-size: 28px;
-    font-weight: bold;
-    font-family: sans-serif;
-    color: rgba(0, 0, 0, .65);
+.sign-content h2 {
+    margin-bottom: 50px;
+    font-size: 44px;
 }
 
-.desc {
-    color: rgba(0,0,0,.45);
+.sign-content p {
+    font-size: 20px;
+    line-height: 36px;
+}
+
+
+
+.login {
+    width: 414px;
+    height: 398px;
+    background: #fff;
+    margin-top: 160px;
+    border-radius: 4px;
+}
+
+/* 功能介绍模块 */
+.introduce {
+    min-height: 940px;
+}
+
+.area-title {
+    height: 100px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.area-title h1 {
+    color: #333;
+    font-weight: normal;
+}
+
+.area-title p {
+    font-size: 20px;
+    color: #999;
+    line-height: 34px;
+}
+
+.introduce-center-A {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.introduce-center-01 {
+    width: 370px;
+    height: 360px;
+    background: #fff;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0px 0px 10px 5px rgba(238, 238, 238, 1);
+}
+
+.introduce-center-01 img {
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.introduce-center-01 h2 {
+    font-size: 24px;
+    padding-bottom: 30px;
+    font-weight: normal;
+}
+
+.introduce-center-01 p {
+    margin: 0 30px;
+    font-size: 18px;
+    color: #656565;
+    text-align: center;
+    line-height: 30px;
+}
+
+.introduce-center-B {
+    margin-top: 45px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 我们的优势 */
+
+
+.strengths .pic {
+    margin-bottom: 60px;
+
+    
+}
+
+/* 我们的能解决什么问题 */
+.problems {
+    min-height: 1010px;
+}
+
+.area-title-03 {
+    height: 100px;
+    text-align: center;
+    padding-top: 90px;
+}
+
+.area-title-03 h1 {
+    color: #fff;
+    font-weight: normal;
+}
+
+.area-title-03 p {
+    font-size: 20px;
+    color: #fff;
+    line-height: 34px;
+}
+
+.box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.little-box-01 {
+    margin-top: 96px;
+}
+
+.little-box-01 .change {
+    width: 370px;
+    height: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: linear-gradient(to right, #d3e4b8, #b0daed);
+}
+
+.little-box-01-content {
+    width: 370px;
+    height: 560px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: #fff;
+}
+
+.little-box-title {
+    text-align: center;
+    height: 158px;
+    line-height: 2;
+    padding: 40px 0 0 0;
+}
+
+.little-box-title div {
+    font-size: 22px;
+    color: #85bca8;
+}
+
+.little-box-title h1 {
+    font-size: 36px;
+    color: #333;
+    font-weight: normal;
+    /* line-height: 36px; */
+}
+
+.content-list {
+    padding-top: 40px;
+}
+
+.line img {
+    margin: 0 auto;
+}
+
+.content-list {
+    padding-left: 48px;
+}
+
+.content-list-01 h3 {
+    color: #111;
+    padding-bottom: 20px;
+    font-weight: normal;
+}
+
+.content-list-01 .field {
+    padding-bottom: 36px;
+}
+
+.content-list-01 span {
+    color: #656565;
+}
+
+.little-box-02 {
+    margin-top: 70px;
+}
+
+.little-box-02 .change {
+    width: 370px;
+    height: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: linear-gradient(to right, #74dff0, #98eae4);
+}
+
+.little-box-02-content {
+    width: 370px;
+    height: 630px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: #fff;
+}
+
+.little-box-title .English {
+    font-size: 22px;
+    color: #6cd0d8;
+}
+
+.little-box-03 {
+    margin-top: 96px;
+}
+
+.little-box-03 .change {
+    width: 370px;
+    height: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: linear-gradient(to right, #c3c5f2, #eebecc);
+}
+
+.little-box-title .English02 {
+    font-size: 22px;
+    color: #ba9cc3;
+}
+
+.decorate{
+    width: 100%;
+}
+
+/* 满足客户的每一个需求 */
+.exhibition {
+    width: 100%;
+    height: 786px;
+    position: relative;
+}
+
+.exhibition .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.7;
+}
+
+.area-title-04 {
+    position: absolute;
+    padding: 80px 0 50px 0;
+    color: #fff;
+    text-align: center;
+}
+
+.area-title-04 h1 {
+    font-size: 36px;
+    font-weight: normal;
+}
+
+.area-title-04 p {
+    font-size: 20px;
+    line-height: 70px;
+}
+
+.exhibition .pic {
+    position: absolute;
+    bottom: 146px;
+    display: flex;
+    /* justify-content: space-around; */
+    height: 356px;
+}
+
+.exhibition .pic-01 {
+    margin-right: 25px;
+    padding-top: 76px;
+}
+
+.exhibition .pic-02 {
+    margin-right: 25px;
+}
+
+.exhibition .pic-03 {
+    padding-top: 76px;
+}
+
+/* 小程序 */
+.small .container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 60px;
+}
+
+.small-content {
+    padding-top: 80px;
+}
+
+.small-content .list {
+    padding-bottom: 50px;
+}
+
+.small-content .list h2 {
+    font-weight: normal;
+    font-size: 30px;
+    padding-bottom: 20px;
+}
+
+.small-content .list p {
+    font-size: 18px;
+    line-height: 34px;
+    text-indent: 2em;
+}
+
+.foot {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(to right, #6f98eb, #7d54ac);
+    text-align: center;
+    
+}
+.foot .container{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.foot .container span{
+    color: #fff;
+    font-size: 16px;  
+    line-height: 80px;  
 }

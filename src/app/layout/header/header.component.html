@@ -44,7 +44,7 @@
                   nzTitle="编辑频道栏目信息" nzPlacement="bottom"
                   nz-tooltip>{{ 'app.series.choreography' | translate }}</span></a>
             </li>
-            <li class="nav-item" app-vip="1">
+            <li class="nav-item" app-vip="1" acl [acl-ability]="ability.ip.view">
               <a [routerLinkActive]="'router-active'" [routerLink]="'/manage/ip'"><span
                   nzTitle="编辑IP信息" nzPlacement="bottom"
                   nz-tooltip>IP管理</span></a>
@@ -53,7 +53,7 @@
                 <a href="http://data.bctop.net/#/" target=_blank><span nzTitle="大数据"
                     nzPlacement="bottom" nz-tooltip>大数据</span></a>
               </li> -->
-              <li class="nav-item" acl [acl-ability]="ability.review.view" app-vip="1" (click)="goBigData()">
+              <li class="nav-item" app-vip="1" (click)="goBigData()">
                 <a ><span nzTitle="大数据相关信息"
                     nzPlacement="bottom" nz-tooltip >大数据</span></a>
               </li>
