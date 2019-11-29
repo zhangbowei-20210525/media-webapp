@@ -65,6 +65,24 @@ body {
 
 .container-fluid {
     width: 100%;
+    position: relative;
+}
+
+.xiangxia {
+    position: absolute;
+    top: 749px;
+    left: 813px;
+    width: 50px;
+    height: 20px;
+    cursor:pointer;
+    background-image: url(../../../assets/images/xiangxia.png);
+    background-repeat: no-repeat;
+    background-position-x: center;
+}
+
+.xiangxia:hover {
+    background-image: url(../../../assets/images/xiangxiah.png);
+    background-position-x: center;
 }
 
 .container {
@@ -88,9 +106,9 @@ body {
     color: #fff;
 }
 
-.sign-content h2 {
-    margin-bottom: 50px;
-    font-size: 44px;
+.sign-content span {
+    font-size: 46px;
+    margin-left: 20px;
 }
 
 .sign-content p {
@@ -102,7 +120,7 @@ body {
 
 .login {
     width: 414px;
-    height: 398px;
+    max-height: 398px;
     background: #fff;
     margin-top: 160px;
     border-radius: 4px;
@@ -138,7 +156,7 @@ body {
 
 .introduce-center-01 {
     width: 370px;
-    height: 360px;
+    // height: auto;
     background: #fff;
     border-radius: 4px;
     text-align: center;
@@ -371,13 +389,15 @@ body {
 }
 
 /* 小程序 */
-.small .container {
+.small {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding-top: 60px;
 }
 
 .small-content {
+    width:449px;
     padding-top: 80px;
 }
 
@@ -395,22 +415,4 @@ body {
     font-size: 18px;
     line-height: 34px;
     text-indent: 2em;
-}
-
-.foot {
-    width: 100%;
-    height: 80px;
-    background: linear-gradient(to right, #6f98eb, #7d54ac);
-    text-align: center;
-    
-}
-.foot .container{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-.foot .container span{
-    color: #fff;
-    font-size: 16px;  
-    line-height: 80px;  
 }

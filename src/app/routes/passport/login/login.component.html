@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 class="text-center">登录</h2>
   <router-outlet></router-outlet>
   <div class="d-flex justify-content-between align-items-center">
@@ -16,4 +16,18 @@
     </div>
     <span>切换登录方式</span>
   </div>
+</div> -->
+<div style="margin-top: 36px;">
+  <span [ngClass]="{'phone-login-active': method == 'phone','phone-login': method == 'wechat'}"
+    (click)="clickPL()">手机号登录</span>
+  <span [ngClass]="{'vx-login-active': method == 'wechat','vx-login': method == 'phone'}"
+    (click)="clickWL()">微信登录</span>
+</div>
+
+<div style="display: flex;width: 100%;height: 3px;justify-content:space-between;margin-top: 12px;">
+  <div [ngClass]="{'phone-login-select': method == 'phone','phone-login-unselect': method == 'wechat'}"></div>
+  <div [ngClass]="{'vx-login-select': method == 'wechat','phone-vx-unselect': method == 'phone'}"></div>
+</div>
+<div>
+  <router-outlet></router-outlet>
 </div>

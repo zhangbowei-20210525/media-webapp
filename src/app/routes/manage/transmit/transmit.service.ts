@@ -73,6 +73,10 @@ export class TransmitService {
 
   remoteDownloadTape(task_type: string, token: string, ids: number[]) {
     const id = this.getId(ids);
-    return this.http.post<any>(`/api/v1/hashlink/clients/tasks`, { task_type: task_type, token: token, ids: id});
+    return this.http.post<any>(`/api/v1/hashlink/clients/tasks`, { task_type: task_type, token: token, ids: id });
+  }
+
+  downloadClient() {
+    return this.http.get<any>(`/api/v1/hashlink/clients/versions/download`);
   }
 }
