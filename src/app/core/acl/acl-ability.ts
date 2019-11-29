@@ -11,6 +11,7 @@ export class ACLAbility {
     review: ReviewACLModule;
     editing: ACLModule;
     analysis: ACLModule;
+    ip: ACLModule;
 }
 
 export const aclAbility = <ACLAbility>{
@@ -105,11 +106,16 @@ export const aclAbility = <ACLAbility>{
         edit: null,
     },
     editing: <ACLModule>{
-      view: null,
-      edit: null
+        view: null,
+        edit: null
+    },
+    ip: <ACLModule>{
+        view: null,
+        edit: null,
+        del: null,
     },
     analysis: <ACLModule>{
-      view: null
+        view: null
     }
 };
 

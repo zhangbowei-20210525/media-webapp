@@ -24,7 +24,7 @@ export class TransmitComponent implements OnInit {
     private route: ActivatedRoute,
     private message: NzMessageService,
     private translate: TranslateService,
-    private seriesService: TransmitService,
+    private transmitService: TransmitService,
     private acl: ACLService
   ) {
     // console.log(this.router.url);
@@ -42,5 +42,12 @@ export class TransmitComponent implements OnInit {
 
   search() {
     this.router.navigate([this.router.url, { search: this.content }]);
+  }
+
+  downloadClient() {
+    this.transmitService.downloadClient().subscribe(result => {
+      console.log(result);
+      location.href = result.download_url;
+    });
   }
 }

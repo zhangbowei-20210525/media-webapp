@@ -50,7 +50,7 @@
             </td>
             <td [nzAlign]="'center'">{{ data.author }}</td>
             <td [nzAlign]="'center'" [attr.rowspan]="data.count" *ngIf="data.index == 0">
-              <a nz-popconfirm nzTitle="是否删除此IP所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid, i)"><i class="text-info"
+              <a acl [acl-ability]="ability.ip.del" nz-popconfirm nzTitle="是否删除此IP所有权利？" (nzOnConfirm)="deleteSeriesCopyright(data.pid, i)"><i class="text-info"
                   nz-icon type="delete" theme="outline"></i></a>
             </td>
           </tr>

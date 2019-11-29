@@ -101,17 +101,19 @@ export class PhoneLoginComponent implements OnInit {
       this.service.loginByPhone(this.phone.value, this.captcha.value, this.employeeInvitationId).pipe(finalize(() => {
         this.isLoggingIn = false;
       })).subscribe(result => {
+        this.message.success('登录成功');
+        this.login(result);
         // result.auth.company_full_name = null; // 测试
-        if (result.auth.company_full_name) {  // 登录成功
-          this.message.success('登录成功');
-          this.login(result);
-        } else {
-          this.stateStore.setState({
-            userInfo: result.auth,
-            token: result.token,
-          });
-          this.router.navigateByUrl('/passport/binding/company');
-        }
+        // if (result.auth.company_full_name) {  // 登录成功
+        //   this.message.success('登录成功');
+        //   this.login(result);
+        // } else {
+        //   this.stateStore.setState({
+        //     userInfo: result.auth,
+        //     token: result.token,
+        //   });
+        //   this.router.navigateByUrl('/passport/binding/company');
+        // }
       });
     }
   }

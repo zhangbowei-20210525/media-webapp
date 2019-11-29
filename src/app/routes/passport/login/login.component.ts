@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.method = 'phone';
     this.route.url.subscribe(urls => {
       const urlSegments = this.router.url.split('/');
       const lastUrl = urlSegments[urlSegments.length - 1];
@@ -29,6 +30,16 @@ export class LoginComponent implements OnInit {
         this.isOnlyPhoneMethod = this.route.firstChild.snapshot.paramMap.has('emp_invitation');
       }
     });
+  }
+
+  clickPL() {
+    this.method = 'phone';
+    this.router.navigate([`/passport/login/phone`]);
+  }
+
+  clickWL() {
+    this.method = 'wechat';
+    this.router.navigate([`/passport/login/wechat`]);
   }
 
 }

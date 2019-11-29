@@ -9,6 +9,7 @@ import { finalize } from 'rxjs/operators';
 import { RootTemplateDto } from './dtos';
 import { NzTreeNodeOptions } from 'ng-zorro-antd';
 import { fadeIn } from '@shared/animations';
+import { ACLAbility } from '@core/acl';
 
 @Component({
   selector: 'app-ip-management',
@@ -33,6 +34,7 @@ export class IpManagementComponent implements OnInit {
   rightTypeOption = ['改编权', '著作权'];
 
   constructor(
+    public ability: ACLAbility,
     private service: IpManagementService,
     private router: Router,
     private message: MessageService,

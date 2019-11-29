@@ -70,7 +70,7 @@
       </ng-template>
     </nz-tree> -->
     <span>权限：</span>
-    <nz-tree #permissionTree [nzData]="permissionNodes" nzCheckable="true">
+    <nz-tree #permissionTree  [nzCheckStrictly]="false" [nzData]="permissionNodes" nzCheckable="true">
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node">
           <span>{{ node.title }}</span>
