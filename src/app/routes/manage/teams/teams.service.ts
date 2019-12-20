@@ -81,4 +81,25 @@ export class TeamsService {
   getContacts(id: number) {
     return this.http.get<any>(`/api/v1/companies/connections/${id}/liaisons`);
   }
+
+  deleteInterconnection(id: number) {
+    return this.http.delete<any>(`/api/v1/companies/connections/${id}`);
+  }
+
+  // agreeInvitation(invited_company_id: number, invited_employee_id: number, remark: string) {
+  //   return this.http.post<any>('/api/v1/companies/connections/invitations', {
+  //     invited_company_id,
+  //     invited_employee_id,
+  //     remark
+  //   });
+  // }
+
+  switchAuthorization(id: number, status: boolean) {
+    return this.http.put<any>(`api/v1/companies/connections/liaisons/${id}/admin`, { status });
+  }
+
+  deleteEmployees(id: string[]) {
+    return this.http.delete<any>(`/api/v1/companies/connections/liaisons/${id}`);
+  }
+
 }

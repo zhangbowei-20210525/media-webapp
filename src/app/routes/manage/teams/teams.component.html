@@ -74,7 +74,7 @@
         <button nz-button nzType="primary" nzSize="small" *ngIf="typeSwitch == 'interconnectionEnterprises'"
           (click)="copyAddress()"><i nz-icon nzType="plus" nzTheme="outline"></i><span>添加互联企业</span></button>
         <!-- <button nz-button nzSize="small" [routerLink]="['/outside/ici', conInfo.id]"><span>临时邀请</span></button> -->
-        <button nz-button nzSize="small" (click)="importStaff()"><span>临时导入</span></button>
+        <!-- <button nz-button nzSize="small" (click)="importStaff()"><span>临时导入</span></button> -->
       </div>
       <nz-modal [(nzVisible)]="isVisible" [nzTitle]="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
         nzOkText="复制链接">
@@ -181,7 +181,7 @@
         <div class="structure" *ngIf="show == 'interconnection' && hasData1 == true">
           <span>
             <li class="interconnection" *ngFor="let data of internetCompanies" [class.active]="hlId == data.id"
-              (click)="inSelect(data.id)">
+              (click)="inSelect(data.id, data.status)">
               <i nz-icon type="link" theme="outline" style="font-size:12px;margin-left: 8px;vertical-align: super;"
                 *ngIf="data.status == active"></i>
               <i nz-icon type="link" theme="outline"
@@ -198,12 +198,51 @@
             </li>
           </span>
         </div>
-        <div class="employees" *ngIf="show == 'interconnection' && hasData1 == true" style="text-align: center;">
-          <img src="../../../../assets/images/scyq.png" style="width: 130px;height: 130px;margin-top:53px">
-          <div style="font-size:16px;color: #333333;font-weight:400;margin-top:29px">该企业解除了与您的互联邀请！</div>
-          <div style="margin-top:50px">
-            <button nz-button nzType="default" style="width:60px" (click)="deleteInterconnection()">删除</button>
-            <button nz-button nzType="primary" style="width:100px;margin-left: 20px;" (click)="reinvite()">重新邀请</button>
+        <div class="employees" *ngIf="show == 'interconnection' && hasData1 == true">
+          <div *ngIf="isInterconnection == false;">
+            <img src="../../../../assets/images/scyq.png" style="width: 130px;height: 130px;margin-top:53px;margin-left:346px;">
+            <div style="font-size:16px;color: #333333;font-weight:400;margin-top:29px;margin-left:302px;">该企业解除了与您的互联邀请！</div>
+            <div style="margin-top:50px;margin-left:321px;">
+              <button nz-button nzType="default" style="width:60px" (click)="deleteInterconnection()">删除</button>
+              <button nz-button nzType="primary" style="width:100px;margin-left: 20px;"
+                (click)="copyAddress()">重新邀请</button>
+          </div>
+        </div>
+
+
+<div *ngIf="isInterconnection == true;">
+          <div class="table-operations">
+            <!-- <button nz-button (click)="importStaff()">导入员工</button> -->
+            <button nz-button nzType="default" [disabled]="disabledButton"  (click)="deleteEmployees()">删除</button>
+          </div>
+            <nz-table #employeesTable [nzData]="interconnectionList" [nzSize]="'middle'">
+              <thead>
+                <tr>
+                  <th [nzAlign]="'center'" nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+                    [nzDisabled]="interconnectionList.length < 1" (nzCheckedChange)="checkAll($event)"></th>
+                  <th [nzAlign]="'center'">姓名</th>
+                  <th [nzAlign]="'center'">公司</th>
+                  <th [nzAlign]="'center'">职位</th>
+                  <th [nzAlign]="'center'">手机</th>
+                  <th [nzAlign]="'center'">授权</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of employeesTable.data, let i = index">
+                  <td [nzAlign]="'center'" nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"
+                    [nzDisabled]="data.disabled"></td>
+                  <td [nzAlign]="'center'"><a>{{ data?.employee?.outside_name }}</a>
+                    <nz-tag [nzColor]="'#FFBA61'" style="margin-left:8px;">管理员</nz-tag>
+                  </td>
+                  <td [nzAlign]="'center'">{{ data?.employee?.company?.full_name }}</td>
+                  <td [nzAlign]="'center'">{{ data?.employee?.outside_position }}</td>
+                  <td [nzAlign]="'center'">{{ data?.employee?.outside_phone }}</td>
+                  <td [nzAlign]="'center'">
+                    <nz-switch  *ngIf="data.from_type == 'inner'" [(ngModel)]="data.is_admin" nzSize="small" (ngModelChange)="switchAuthorization($event, data.id)"></nz-switch>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
           </div>
         </div>
       </div>

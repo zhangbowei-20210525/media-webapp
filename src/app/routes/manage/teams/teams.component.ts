@@ -43,6 +43,11 @@ export class TeamsComponent implements OnInit {
   hasData2 = false;
   interconnectionList = [];
   internetCompanies = [];
+  isInterconnection: boolean;
+
+  allChecked: boolean;
+  indeterminate: boolean;
+  disabledButton = true;
 
 
 
@@ -88,6 +93,12 @@ export class TeamsComponent implements OnInit {
         this.hasData1 = true;
         this.internetCompanies = result.list;
         this.hlId = result.list[0].id;
+        if (result.list[0].status === 'expired') {
+          this.isInterconnection = false;
+        }
+        if (result.list[0].status === 'active') {
+          this.isInterconnection = true;
+        }
         this.service.getContacts(this.hlId).subscribe(res => {
           this.interconnectionList = res.list;
           console.log(res);
@@ -96,13 +107,60 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  deleteInterconnection() {
-
+  switchAuthorization(event: any, id: number) {
+    this.service.switchAuthorization(id, event).subscribe(result => {
+      if (result.code === 0) {
+      } else {
+        this.message.error(result.message);
+        this.internetCompanyList();
+      }
+    });
   }
 
+  deleteEmployees() {
+    this.modal.confirm({
+      nzTitle: `确认删除已选中的员工？`,
+      nzOnOk: () => new Promise((resolve, reject) => {
+        this.service.deleteEmployees(this.interconnectionList.filter(value => value.checked).map(value => value.id))
+          .subscribe(result => {
+            this.message.success('删除成功');
+            this.internetCompanyList();
+            resolve();
+          }, error => {
+            reject(false);
+          });
+      })
+    });
+  }
 
-  inSelect(hlId: number) {
+  checkAll(value: boolean): void {
+    this.interconnectionList.forEach(data => data.checked = value);
+    this.refreshStatus();
+  }
+
+  refreshStatus(): void {
+    const allChecked = this.interconnectionList.length > 0 ? this.interconnectionList.every(value => value.checked === true) : false;
+    const allUnChecked = this.interconnectionList.every(value => !value.checked);
+    this.allChecked = allChecked;
+    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.disabledButton = !this.interconnectionList.some(value => value.checked);
+  }
+
+  deleteInterconnection() {
+    this.service.deleteInterconnection(this.hlId).subscribe(result => {
+      this.message.success('取消互联成功');
+      this.internetCompanyList();
+    });
+  }
+
+  inSelect(hlId: number, isInter: string) {
     this.hlId = hlId;
+    if (isInter === 'expired') {
+      this.isInterconnection = false;
+    }
+    if (isInter === 'active') {
+      this.isInterconnection = true;
+    }
     this.service.getContacts(this.hlId).subscribe(res => {
       this.interconnectionList = res.list;
     });
