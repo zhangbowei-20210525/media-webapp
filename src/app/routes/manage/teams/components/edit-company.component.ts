@@ -49,6 +49,9 @@ export class EditCompanyComponent implements OnInit {
       fullName: [this.fullName, [Validators.required]],
       introduction: [this.introduction],
     });
+
+    this.form.get('name').disable();
+    this.form.get('fullName').disable();
   }
 
   validation(): boolean {

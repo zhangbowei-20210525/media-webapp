@@ -49,6 +49,14 @@ export class EmployeeDetailsComponent implements OnInit {
   roleCheckOptions: { label: string, value: number, checked: boolean }[];
   employeeInvitationVisible = false;
 
+  insideName: string;
+  insidePhone: string;
+  outside_name: string;
+  outside_phone: string;
+  outside_position: string;
+  isEdit = false;
+  selectDepartmentIds = [];
+
   constructor(
     public ability: ACLAbility,
     private route: ActivatedRoute,
@@ -75,7 +83,13 @@ export class EmployeeDetailsComponent implements OnInit {
     this.service.getEmployeeDetails(this.employeeId)
       .pipe(finalize(() => this.isInfoLoading = false))
       .subscribe(result => {
+        console.log(result);
         this.employee = result;
+        this.insideName = this.employee.name;
+        this.insidePhone = this.employee.phone;
+        this.outside_name = this.employee.outside_name;
+        this.outside_phone = this.employee.outside_phone;
+        this.outside_position = this.employee.outside_position;
         if (result.role && result.role.length > 0) {
           this.selectedRole = { name: result.role } as RoleDto;
         }
@@ -112,6 +126,34 @@ export class EmployeeDetailsComponent implements OnInit {
     }
   }
 
+  editInfo() {
+    this.isEdit = true;
+    this.fetchEmployeeDetails();
+  }
+
+  saveInfo() {
+    this.modal.confirm({
+      nzTitle: '是否保存当前的修改信息？',
+      // nzContent: '<b>Some descriptions</b>',
+      nzOnOk: () => {
+        this.service.saveInfo(
+          this.employeeId,
+          this.insideName,
+          this.selectDepartmentIds,
+          this.outside_name,
+          this.outside_phone,
+          this.outside_position).subscribe(result => {
+            this.isEdit = false;
+          });
+      }
+    });
+  }
+
+  cancel() {
+    this.isEdit = false;
+    this.fetchEmployeeDetails();
+  }
+
   editEmployee() {
     this.modal.create({
       nzTitle: '编辑员工信息',
@@ -143,14 +185,19 @@ export class EmployeeDetailsComponent implements OnInit {
       nzWidth: 800,
       nzOnOk: (component: EmployeeDepartmentComponent) => new Promise((resolve, reject) => {
         if (component.finalCheckedKeys.length > 0) {
-          component.submit().subscribe(departments => {
-            this.message.success('修改成功');
-            this.employee.department = departments;
-            resolve();
-          }, error => {
-            this.message.error('修改失败');
-            reject(false);
+          const arr = [];
+          this.selectDepartmentIds = [];
+          component.submit().forEach(f => {
+            this.selectDepartmentIds.push(f.id);
           });
+          component.submit().map(m =>
+            arr.push({
+              id: m.id,
+              name: m.name
+            })
+          );
+          this.employee.department = arr;
+          resolve();
         } else {
           this.message.warning('至少选择一个部门');
           reject(false);

@@ -1,0 +1,67 @@
+<div>
+  <span style="font-size:16px;color: #31394D;font-weight:400;">来自</span>
+  <span style="font-size:16px;color: #4797F7;font-weight:bold;">{{ info?.company?.full_name }}</span>
+  <span style="font-size:16px;color: #31394D;font-weight:400;">的互联企业</span>
+</div>
+<div style="display: flex;width: 760px;height: 136px;border:1px solid #EEEEEE;margin-top: 30px;">
+  <div style="width: 309px;height: 136px;">
+    <div style="margin-left: 20px;">
+      <div style="font-size:14px;color: #333333;font-weight:400;margin-top: 17px;">{{ info?.company?.full_name }}</div>
+      <div style="display: flex;">
+        <div style="max-width: 150px;height: auto;" class="text-ellipsis">
+          <div style="height: 17px;margin-top: 12px;font-size:12px;color: #31394D;font-weight:400;">
+            姓<span style="margin-left: 24px;">名：</span><span>{{ info?.created_employee?.outside_name }}</span>
+          </div>
+          <div style="height: 17px;margin-top: 10px;font-size:12px;color: #31394D;font-weight:400;">
+            职<span style="margin-left: 24px;">位：</span><span>{{ info?.created_employee?.outside_position }}</span>
+          </div>
+          <div style="height: 17px;margin-top: 10px;font-size:12px;color: #31394D;font-weight:400;">
+            联系方式：<span>{{ info?.created_employee?.outside_phone }}</span>
+          </div>
+        </div>
+        <div style="width: 139px;height: 99px;">
+          <img src="./assets/images/wdxq.png"
+            style="width: 67px;height: 52px;margin-top: 24px;margin-right: 50px;float: right;">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="width: 142px;height: 136px;line-height: 136px;margin-left: 40px;"> 
+    <img src="./assets/images/glxq.png"
+    style="width: 22px;height: 22px;" *ngIf="isAgree == 0;">
+    <img src="./assets/images/ty.png"
+    style="width: 22px;height: 22px;" *ngIf="isAgree == 1;">
+    <img src="./assets/images/jj.png"
+    style="width: 22px;height: 22px;" *ngIf="isAgree == 2;">
+  </div>
+  <div style="width: 309px;height: 136px;">
+    <div style="margin-left: 20px;">
+      <div style="font-size:14px;color: #333333;font-weight:400;margin-top: 17px;">{{ info?.invited_company?.full_name }}</div>
+      <div style="display: flex;">
+        <div style="max-width: 150px;height: auto;" class="text-ellipsis">
+          <div style="height: 17px;margin-top: 12px;font-size:12px;color: #31394D;font-weight:400;">
+            姓<span style="margin-left: 24px;">名：</span><span>{{ info?.invited_employee?.outside_name }}</span>
+          </div>
+          <div style="height: 17px;margin-top: 10px;font-size:12px;color: #31394D;font-weight:400;">
+            职<span style="margin-left: 24px;">位：</span><span>{{ info?.invited_employee?.outside_position }}</span>
+          </div>
+          <div style="height: 17px;margin-top: 10px;font-size:12px;color: #31394D;font-weight:400;">
+            联系方式：<span>{{ info?.invited_employee?.outside_phone }}</span>
+          </div>
+        </div>
+        <div style="width: 139px;height: 99px;">
+          <img src="./assets/images/yqxq.png"
+            style="width: 67px;height: 52px;margin-top: 24px;margin-right: 50px;float: right;">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="margin-top: 20px;width: 100%;">
+  <span style="font-size:14px;color: #333333;font-weight:500;">备注：</span>
+  <span style="font-size:14px;color: #333333;font-weight:400;">{{ info?.remark }}</span>
+</div>
+<div style="width: 100%;margin-top: 80px;">
+  <button nz-button nzType="primary" style="float: right;margin-left: 20px;width: 100px;" (click)="auditOperation(true)" *ngIf="isClick == false">同意</button>
+  <button nz-button nzType="default" style="float: right;width: 60px;" (click)="auditOperation(false)" *ngIf="isClick == false">拒绝</button>
+</div>

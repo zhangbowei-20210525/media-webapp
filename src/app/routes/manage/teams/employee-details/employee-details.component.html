@@ -1,7 +1,82 @@
-<nz-tabset nzAnimated="false">
+<nz-tabset nzAnimated="false" [nzTabBarExtraContent]="extraTemplate">
+    <ng-template #extraTemplate>
+        <button nz-button nzType="default" nzSize="small" (click)="editInfo()" [disabled]="isEdit">编辑</button>
+      </ng-template>
   <nz-tab [nzTitle]="'基本信息'">
     <nz-skeleton [nzLoading]="isInfoLoading">
-      <h3>{{ employee?.name }}<button nz-button nzSize="small" style="margin-left: 1rem" (click)="editEmployee()"><i
+      <div [hidden] = "isEdit == false">
+        <div style="font-size: 14px;color: #333333;font-weight:500;">个人信息</div>
+        <div style="margin-top: 14px;">
+          <span>姓<span style="margin-left: 27px;">名</span>：</span>
+          <input nz-input placeholder="" [(ngModel)]="insideName" nzSize="small" style="width: 280px;"/>
+        </div>
+        <div style="margin-top: 12px;">
+          <span>手机号码：</span>
+          <input nz-input placeholder="" [(ngModel)]="insidePhone" nzSize="small" style="width: 280px;" [disabled]="true"/>
+        </div>
+        <div style="margin-top: 12px;">
+          <span>部<span style="margin-left: 27px;">门</span>：</span>
+          <nz-tag *ngFor="let department of employee?.department; let i = index;">
+              {{ department.name | truncate:20 }}
+            </nz-tag>
+            <nz-tag class="editable-tag" (click)="editDepartments()"
+              *aclIf="{ role: ['admin'], ability: [ability.company.employee.department] }">
+              <i nz-icon type="edit"></i> 修改部门
+            </nz-tag>
+        </div>
+        <div style="margin-top: 24px;font-size: 14px;color: #333333;font-weight:500;">对外名片</div>
+        <div style="margin-top: 14px;">
+          <span>姓<span style="margin-left: 27px;">名</span>：</span>
+          <input nz-input placeholder="" [(ngModel)]="outside_name" nzSize="small" style="width: 280px;"/>
+        </div>
+        <div style="margin-top: 12px;">
+          <span>手机号码：</span>
+          <input nz-input placeholder="" [(ngModel)]="outside_phone" nzSize="small" style="width: 280px;"/>
+        </div>
+        <div style="margin-top: 12px;">
+          <span>职<span style="margin-left: 27px;">位</span>：</span>
+          <input nz-input placeholder="" [(ngModel)]="outside_position" nzSize="small" style="width: 280px;"/>
+        </div>
+        <div style="margin-top: 30px;margin-bottom: 50px;">
+          <button nz-button nzType="default" nzSize="small" (click)="cancel()">取消</button>
+          <button nz-button nzType="primary" style="margin-left: 20px;" nzSize="small" (click)="saveInfo()">保存</button>
+        </div>
+      </div>
+
+      <div [hidden] = "isEdit == true">
+          <div style="font-size: 14px;color: #333333;font-weight:500;">个人信息</div>
+          <div style="margin-top: 14px;">
+            <span>姓<span style="margin-left: 27px;">名</span>：</span>
+            <span style="margin-left: 10px;">{{ insideName  }}</span>
+          </div>
+          <div style="margin-top: 12px;">
+            <span>手机号码：</span>
+            <span style="margin-left: 7px;">{{ insidePhone  }}</span>
+          </div>
+          <div style="margin-top: 12px;">
+            <span>部<span style="margin-left: 27px;">门</span>：</span>
+            <nz-tag style="margin-left: 7px;" *ngFor="let department of employee?.department; let i = index;">
+                {{ department.name | truncate:20 }}
+              </nz-tag>
+          </div>
+          <div style="margin-top: 24px;font-size: 14px;color: #333333;font-weight:500;">对外名片</div>
+          <div style="margin-top: 14px;">
+            <span>姓<span style="margin-left: 27px;">名</span>：</span>
+            <span style="margin-left: 10px;">{{ outside_name  }}</span>
+          </div>
+          <div style="margin-top: 12px;">
+            <span>手机号码：</span>
+            <span style="margin-left: 7px;">{{ outside_phone  }}</span>
+          </div>
+          <div style="margin-top: 12px;">
+            <span>职<span style="margin-left: 27px;">位</span>：</span>
+            <span style="margin-left: 10px;">{{ outside_position  }}</span>
+          </div>
+        </div>
+
+
+
+      <!-- <h3>{{ employee?.name }}<button nz-button nzSize="small" style="margin-left: 1rem" (click)="editEmployee()"><i
             nz-icon nzType="edit" nzTheme="outline"></i></button></h3>
       <p>{{ employee?.phone }}</p>
       <p>
@@ -12,7 +87,7 @@
           *aclIf="{ role: ['admin'], ability: [ability.company.employee.department] }">
           <i nz-icon type="edit"></i> 修改部门
         </nz-tag>
-      </p>
+      </p> -->
       <!-- <p>
         <button nz-button
         nz-popover
@@ -70,7 +145,7 @@
       </ng-template>
     </nz-tree> -->
     <span>权限：</span>
-    <nz-tree #permissionTree  [nzCheckStrictly]="false" [nzData]="permissionNodes" nzCheckable="true">
+    <nz-tree #permissionTree [nzCheckStrictly]="false" [nzData]="permissionNodes" nzCheckable="true">
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node">
           <span>{{ node.title }}</span>

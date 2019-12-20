@@ -131,7 +131,7 @@ export class TypeComponent implements OnInit {
       this.state = 'bd';
       this.downloadTape(id);
     }, err => {
-      this.message.success(this.translate.instant('global.start-client'));
+      this.message.warning(this.translate.instant('global.start-client'));
     });
   }
 

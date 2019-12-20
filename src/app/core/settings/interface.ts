@@ -30,6 +30,7 @@ export interface User {
   vip_level: number;
   /** Company vip expired for current user */
   vip_expired_at: string; // '2019-10-11 17:00:00'
+  outside_position: string;
 }
 
 export interface SettingsNotify {

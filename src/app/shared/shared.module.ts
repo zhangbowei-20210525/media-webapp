@@ -69,6 +69,19 @@ import { ArrayMapPipe } from './pipes/array-map.pipe';
 import { SourceFileStatusPipe } from './pipes/source-file-status.pipe';
 import { MaxNumberPipe } from './pipes/max-number.pipe';
 import { CeilPipe } from './pipes/ceil.pipe';
+import { WeekDayPipe } from './pipes/week-day.pipe';
+import { RightExpirePipe } from './pipes/right-expire.pipe';
+import { BroadcastDatePipe } from './pipes/broadcast-date.pipe';
+import { ChoreographyCalendarPipe } from './pipes/choreography-calendar.pipe';
+import { ChoreographySnPipe } from './pipes/choreography-sn.pipe';
+import { BroadcastDateTitlePipe } from './pipes/broadcast-date-title.pipe';
+import { ChoreographySncPipe } from './pipes/choreography-snc.pipe';
+import { DateRansformationPipe } from './pipes/date-ransformation.pipe';
+import { DateRansformation1Pipe } from './pipes/date-ransformation1.pipe';
+import { PublicitiesTypePipe } from './pipes/publicities-type.pipe';
+import { TimeIntervalPipe } from './pipes/time-interval.pipe';
+import { IsTimeIntervalPipe } from './pipes/is-time-interval.pipe';
+import { Base64HeadPipe } from './pipes/base64-head.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -98,7 +111,8 @@ const PIPES = [
   DateRansformation1Pipe,
   PublicitiesTypePipe,
   TimeIntervalPipe,
-  IsTimeIntervalPipe
+  IsTimeIntervalPipe,
+  Base64HeadPipe
 ];
 // #endregion
 
@@ -106,18 +120,6 @@ import { RouterModule } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { WeekDayPipe } from './pipes/week-day.pipe';
-import { RightExpirePipe } from './pipes/right-expire.pipe';
-import { BroadcastDatePipe } from './pipes/broadcast-date.pipe';
-import { ChoreographyCalendarPipe } from './pipes/choreography-calendar.pipe';
-import { ChoreographySnPipe } from './pipes/choreography-sn.pipe';
-import { BroadcastDateTitlePipe } from './pipes/broadcast-date-title.pipe';
-import { ChoreographySncPipe } from './pipes/choreography-snc.pipe';
-import { DateRansformationPipe } from './pipes/date-ransformation.pipe';
-import { DateRansformation1Pipe } from './pipes/date-ransformation1.pipe';
-import { PublicitiesTypePipe } from './pipes/publicities-type.pipe';
-import { TimeIntervalPipe } from './pipes/time-interval.pipe';
-import { IsTimeIntervalPipe } from './pipes/is-time-interval.pipe';
 
 
 

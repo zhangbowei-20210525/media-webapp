@@ -16,6 +16,7 @@ export class EmployeeDepartmentComponent implements OnInit {
 
   @Input() id: number;
   @ViewChild('departmentTree') departmentTreeCom: NzTreeComponent;
+  departments = [] as EmployeeDepartmentDto[];
   departmentNodes: NzTreeNodeOptions[];
   originCheckedKeys = [];
   finalCheckedKeys = [];
@@ -27,7 +28,7 @@ export class EmployeeDepartmentComponent implements OnInit {
 
   ngOnInit() {
     this.service.getEmployeeDepartments(this.id).subscribe(departments => {
-      this.departmentNodes = this.getNzTreeNodesByDepartments(departments);
+      this.departmentNodes = this.getNzTreeNodesByDepartments(this.departments = departments);
       this.finalCheckedKeys = this.originCheckedKeys = this.getOwnedDepartmentKeys(departments);
     });
   }
@@ -51,7 +52,10 @@ export class EmployeeDepartmentComponent implements OnInit {
   }
 
   submit() {
-    return this.service.updateEmployeeDepartments(this.id, this.finalCheckedKeys);
+    const finalCheckedDepartments = this.ts.recursionNodesMapArray(
+      this.departments, item => item, item => this.finalCheckedKeys.includes(item.id + ''));
+    return finalCheckedDepartments;
+    // return this.service.updateEmployeeDepartments(this.id, this.finalCheckedKeys);
   }
 
 }

@@ -1,0 +1,41 @@
+<div style="display: flex;">
+  <div style="height: 390px;width: 276px;">
+    <nz-tree style="width: 276px;" [nzData]="nodes" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+      <ng-template #contextTemplate>
+        <ul nz-menu nzInDropDown>
+          <li nz-menu-item (click)="selectDropdown()">Action 1</li>
+          <li nz-menu-item (click)="selectDropdown()">Action 2</li>
+        </ul>
+      </ng-template>
+      <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node" [class.active]="activedNode?.key === node.key">
+          <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)">
+            <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'" nzTheme="fill" style="color:#4797F7" (click)="openFolder(node)"></i>
+            <span class="folder-name">{{ node.title }}</span>
+          </span>
+          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)" css>
+            <img style="width: 17px;height: 17px;" src="./assets/images/yg.png">
+            <span class="file-name" (click)="selected()">{{ node.title }}</span>
+            <i nz-icon nzType="check" nzTheme="outline" *ngIf="isChecked == true" style="margin-left: 13px;color: #CDCDCD;"></i>
+            <!-- <span class="file-desc">modified by {{ node?.origin?.author | lowercase }}</span> -->
+          </span>
+        </span>
+      </ng-template>
+    </nz-tree>
+  </div>
+  <div style="height: 390px;width: 276px;border-left:1px solid #EEEEEE">
+    <div style="font-size:14px;color: #999999;font-weight:500;margin-left: 24px;">已选择的部门成员</div>
+    <ul style="margin-left: 24px;margin-top: 9px;">
+      <li style="margin-top: 5px;">
+        <img style="width: 17px;height: 17px;" src="./assets/images/yg.png">
+        <span style="margin-left: 6px;font-size:14px;color: #333333;font-weight:500;">Max</span>
+        <i nz-icon nzType="close" nzTheme="outline" style="float:right;color: #999999;margin-right: 7px;"></i>
+      </li>
+      <li style="margin-top: 5px;">
+        <img style="width: 17px;height: 17px;" src="./assets/images/yg.png">
+        <span style="margin-left: 6px;font-size:14px;color: #333333;font-weight:500;">Wihck</span>
+        <i nz-icon nzType="close" nzTheme="outline" style="float:right;color: #999999;margin-right: 7px;"></i>
+      </li>
+    </ul>
+  </div>
+</div>

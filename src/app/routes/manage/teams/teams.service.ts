@@ -48,7 +48,6 @@ export class TeamsService {
   }
 
   addAuthentication(data) {
-    console.log('ererer');
     return this.http.post<any>('/api/v1/companies/certifications', {
       full_name: data.full_name,
       name: data.name,
@@ -57,5 +56,29 @@ export class TeamsService {
       apply_phone: data.apply_phone,
       introduction: data.introduction,
     });
+  }
+
+  getInternetCompanyInvitationUrl() {
+    return this.http.get<any>('/api/v1/companies/connections/invitations/share');
+  }
+
+  getInterconnectionNotApprovedInfo() {
+    return this.http.get<any>('/api/v1/companies/connections/invitations');
+  }
+
+  isExamine() {
+    return this.http.get<any>('/api/v1/companies/connections/invitations/exists');
+  }
+
+  auditOperation(id: number, status: boolean) {
+    return this.http.post<any>(`/api/v1//companies/connections/invitations/${id}/result`, { status });
+  }
+
+  getInternetCompanies() {
+    return this.http.get<any>('/api/v1/companies/connections');
+  }
+
+  getContacts(id: number) {
+    return this.http.get<any>(`/api/v1/companies/connections/${id}/liaisons`);
   }
 }

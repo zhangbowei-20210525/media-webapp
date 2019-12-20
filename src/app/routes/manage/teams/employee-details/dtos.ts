@@ -11,6 +11,9 @@ export interface EmployeeDetailsDto {
     is_joined: boolean;
     department: EmployeeDepartmentDto[];
     role: string;
+    outside_name: string;
+    outside_phone: string;
+    outside_position: string;
 }
 
 export interface EmployeeDepartmentDto {

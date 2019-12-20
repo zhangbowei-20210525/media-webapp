@@ -24,24 +24,31 @@
             {{ currentCompany?.company_full_name }}
           </div>
           <!-- 认证标识以及入口 -->
-          <div  *ngIf="authInfo?.status == 1" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #4797F7;border-radius:10px;margin-left: 10px">
-              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
-              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证成功</span>
+          <div *ngIf="authInfo?.status == 1"
+            style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #4797F7;border-radius:10px;margin-left: 10px">
+            <span class="iconfont icon-renzheng" style="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+            <span style="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证成功</span>
           </div>
 
-          <div *ngIf="authInfo == null" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #D0D0D0;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
-              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
-              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">未认证...</span>
+          <div *ngIf="authInfo == null"
+            style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #D0D0D0;border-radius:10px;margin-left: 10px;cursor:pointer;"
+            (click)="authentication(authInfo)">
+            <span class="iconfont icon-renzheng" style="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+            <span style="color:#FFFFFF;font-size: 12px;margin-left: 4px">未认证...</span>
           </div>
 
-          <div  *ngIf="authInfo?.status == 0" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #FAAD14;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
-              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
-              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证中...</span>
+          <div *ngIf="authInfo?.status == 0"
+            style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #FAAD14;border-radius:10px;margin-left: 10px;cursor:pointer;"
+            (click)="authentication(authInfo)">
+            <span class="iconfont icon-renzheng" style="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+            <span style="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证中...</span>
           </div>
 
-          <div *ngIf="authInfo?.status == 2" style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #EF3F3F;border-radius:10px;margin-left: 10px;cursor:pointer;" (click)="authentication(authInfo)">
-              <span class="iconfont icon-renzheng" style ="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
-              <span style ="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证失败</span>
+          <div *ngIf="authInfo?.status == 2"
+            style="font-size: 14px;width: 82px;height: 20px;line-height: 20px;background-color: #EF3F3F;border-radius:10px;margin-left: 10px;cursor:pointer;"
+            (click)="authentication(authInfo)">
+            <span class="iconfont icon-renzheng" style="color:#FFFFFF;font-size: 13px;;padding-left: 7px"></span>
+            <span style="color:#FFFFFF;font-size: 12px;margin-left: 4px">认证失败</span>
           </div>
         </div>
         <p>{{ 'app.teams.company-abbreviation' | translate }}：{{ currentCompany?.company_name }}</p>
@@ -53,14 +60,45 @@
   <section class="block clearfix" *ngIf="!settings.user.is_default_company; else defaultCompany" acl="admin"
     [acl-ability]="ability.company.view">
     <div class="block-header">
-      <div class="block-title">{{ 'app.teams.department-manage' | translate }}</div>
+      <div class="block-title">
+        <span
+          [ngClass]="{'type-switch-select': typeSwitch == 'departmentManage','type-switch':typeSwitch == 'interconnectionEnterprises'}"
+          (click)="switch('dm')">{{ 'app.teams.department-manage' | translate }}</span>
+        <span
+          [ngClass]="{'type-switch-select': typeSwitch == 'interconnectionEnterprises','type-switch':typeSwitch == 'departmentManage'}"
+          class="type-switch" style="margin-left: 50px;" (click)="switch('ie')">互联企业</span>
+      </div>
       <div class="block-options">
         <!-- <button nz-button [routerLink]="'/manage/teams/roles'" acl="admin" [acl-ability]="ability.company.role"><i nz-icon type="setting"
             theme="outline"></i>{{ 'app.teams.option-role' | translate }}</button> -->
+        <button nz-button nzType="primary" nzSize="small" *ngIf="typeSwitch == 'interconnectionEnterprises'"
+          (click)="copyAddress()"><i nz-icon nzType="plus" nzTheme="outline"></i><span>添加互联企业</span></button>
+        <!-- <button nz-button nzSize="small" [routerLink]="['/outside/ici', conInfo.id]"><span>临时邀请</span></button> -->
+        <button nz-button nzSize="small" (click)="importStaff()"><span>临时导入</span></button>
       </div>
+      <nz-modal [(nzVisible)]="isVisible" [nzTitle]="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+        nzOkText="复制链接">
+        <nz-input-group [nzAddOnBefore]="nzAddOnBefore" [nzAddOnAfter]="nzAddOnAfter">
+          <input type="text" nz-input [(ngModel)]="invitationUrl" readonly="true" id="url" />
+        </nz-input-group>
+      </nz-modal>
+      <ng-template #nzAddOnBefore>
+        <span style="font-size:14px;font-weight:400;color: #999999;">链接</span>
+      </ng-template>
+      <ng-template #nzAddOnAfter>
+        <img style="width:20px;height: 20px;cursor: pointer;" src="../../../../assets/images/qrCode.png" nz-popover
+          [nzContent]="contentTemplate" nzPlacement="bottom">
+      </ng-template>
+      <ng-template #contentTemplate>
+        <img style="width: 200px;height: 200px;;font-size:14px;font-weight:400;color: #999999;"
+          [src]="invitationQRCode | base64:'png'">
+      </ng-template>
+      <ng-template #title>
+        <span style="font-size:18px;font-weight:500;color:#333333">互联企业邀请</span>
+      </ng-template>
     </div>
     <div class="block-content">
-      <div class="d-flex-row">
+      <div class="d-flex-row" *ngIf="typeSwitch == 'departmentManage'">
         <div class="structure">
           <nz-tree #treeCom nzDraggable="true" [nzData]="nodes" (nzClick)="activeNode($event)">
             <ng-template #nzTreeTemplate let-node>
@@ -90,36 +128,83 @@
           </nz-tree>
         </div>
         <div class="employees">
-          <!-- <div class="table-operations">
-            <button nz-button (click)="addEmployee()">添加成员</button>
-            <button nz-button [disabled]="disabledButton" (click)="deleteEmployees()">删除</button>
-          </div>
-          <nz-spin [nzSpinning]="isDatasetLoading" [nzDelay]="500" nzTip='Loading...'>
-            <nz-table #employeesTable [nzData]="dataset" [nzSize]="'middle'" [nzNoResult]="noResult">
-              <thead>
-                <tr>
-                  <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" [nzDisabled]="dataset.length < 1" (nzCheckedChange)="checkAll($event)"></th>
-                  <th>姓名</th>
-                  <th>部门</th>
-                  <th>手机</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let data of employeesTable.data">
-                  <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()" [nzDisabled]="data.disabled"></td>
-                  <td>{{data.name}}</td>
-                  <td>{{data.department}}</td>
-                  <td>{{data.phone}}</td>
-                </tr>
-              </tbody>
-            </nz-table>
-            <ng-template #noResult>
-              <app-empty></app-empty>
-            </ng-template>
-          </nz-spin> -->
           <router-outlet></router-outlet>
+        </div>
+      </div>
 
-          <!-- <app-empty></app-empty> -->
+
+      <div *ngIf="typeSwitch == 'interconnectionEnterprises' && hasData2 == true && show == 'interconnection'" style="width: 100%;height: 40px;background-color: #FFFBE6;line-height: 40px;margin-bottom: 24px;border-radius:4px;
+        border:1px solid #FFE58F;">
+        <i nz-icon nzType="exclamation-circle" nzTheme="fill"
+          style="color: #FFBF00;width: 14px;height: 14px;margin-left: 12px;"></i>
+        <span style="font-size:14px;color: #333333;font-weight:400;margin-left: 10px;">您有互联邀请待审核！</span>
+        <a style="font-size:14px;font-weight:400;float: right;margin-right: 12px;" (click)="switchList('unaudited')">去审核
+          <i nz-icon nzType="right" nzTheme="outline"></i>
+        </a>
+      </div>
+      <div *ngIf="typeSwitch == 'interconnectionEnterprises' && hasData2 == true && show == 'unaudited'" style="width: 100%;height: 40px;background-color: #F6FFED;line-height: 40px;margin-bottom: 24px;border-radius:4px;
+        border:1px solid #B7EB8F;">
+        <i nz-icon nzType="exclamation-circle" nzTheme="fill"
+          style="color: #52C41A;width: 14px;height: 14px;margin-left: 12px;"></i>
+        <span style="font-size:14px;color: #333333;font-weight:400;margin-left: 10px;">待审核列表！</span>
+        <a style="font-size:14px;font-weight:400;float: right;margin-right: 12px;"
+          (click)="switchList('interconnection')">返回
+          <i nz-icon nzType="right" nzTheme="outline"></i>
+        </a>
+      </div>
+      <div class="d-flex-row" *ngIf="typeSwitch == 'interconnectionEnterprises'">
+        <div style="height: 364px;width: 100%;text-align: center;" *ngIf="hasData1 == false && hasData2 == false ">
+          <div style="width: 100%;height: 130px;margin-top: 85px">
+            <img src="../../../../assets/images/gsyqk.png">
+          </div>
+          <div style="margin-top: 22px;font-size:14px;color: #999999;font-weight:500;">暂无互联企业</div>
+        </div>
+        <div class="structure" *ngIf="show == 'unaudited' && hasData2 == true">
+          <ul>
+            <li class="interconnection" *ngFor="let data of unauditedList" [class.active]="yqId == data.id"
+              (click)="select(data.id)">
+              <i nz-icon type="link" theme="outline" style="font-size:12px;margin-left: 8px;vertical-align: super;"></i>
+              <span class="folder-name text-ellipsis">{{ data?.company?.full_name }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="employees" *ngIf="show == 'unaudited' && hasData2 == true">
+          <app-unapproved-invitation-info [unapprovedInfo]="unauditedList" [yqId]="yqId">
+          </app-unapproved-invitation-info>
+        </div>
+
+
+
+
+
+
+        <div class="structure" *ngIf="show == 'interconnection' && hasData1 == true">
+          <span>
+            <li class="interconnection" *ngFor="let data of internetCompanies" [class.active]="hlId == data.id"
+              (click)="inSelect(data.id)">
+              <i nz-icon type="link" theme="outline" style="font-size:12px;margin-left: 8px;vertical-align: super;"
+                *ngIf="data.status == active"></i>
+              <i nz-icon type="link" theme="outline"
+                style="font-size:12px;margin-left: 8px;vertical-align: super;color: red;"
+                *ngIf="data.status == expired"></i>
+              <span class="folder-name text-ellipsis">{{ data?.connected_company?.full_name }}</span>
+              <nz-dropdown [nzTrigger]="'click'">
+                <span nz-dropdown class="link-operation"><i nz-icon type="ellipsis" theme="outline"></i></span>
+                <ul nz-menu>
+                  <li nz-menu-item (click)="deleteInterconnection()">
+                    移除互联</li>
+                </ul>
+              </nz-dropdown>
+            </li>
+          </span>
+        </div>
+        <div class="employees" *ngIf="show == 'interconnection' && hasData1 == true" style="text-align: center;">
+          <img src="../../../../assets/images/scyq.png" style="width: 130px;height: 130px;margin-top:53px">
+          <div style="font-size:16px;color: #333333;font-weight:400;margin-top:29px">该企业解除了与您的互联邀请！</div>
+          <div style="margin-top:50px">
+            <button nz-button nzType="default" style="width:60px" (click)="deleteInterconnection()">删除</button>
+            <button nz-button nzType="primary" style="width:100px;margin-left: 20px;" (click)="reinvite()">重新邀请</button>
+          </div>
         </div>
       </div>
     </div>
@@ -140,12 +225,12 @@
   </ng-template>
 
 
-<ng-template #target>
-  <span style="font-size: 18px;font-weight:500;color: #333333">企业认证</span>
+  <ng-template #target>
+    <span style="font-size: 18px;font-weight:500;color: #333333">企业认证</span>
     <span style="color: #EF3F3F;font-size:12px;margin-left: 14px;">
       <i nz-icon nzType="exclamation-circle" style="margin-right: 2px;" nzTheme="outline"></i>
       注：企业认证失败，请核对信息，重新提交！
     </span>
-</ng-template>
+  </ng-template>
 
 </div>

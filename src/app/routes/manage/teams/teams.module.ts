@@ -13,6 +13,8 @@ import { EditCompanyComponent } from './components/edit-company.component';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 import { EditEmployeeComponent } from './components/edit-employee.component';
 import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
+import { ImportStaffComponent } from './components/import-staff/import-staff.component';
+import { UnapprovedInvitationInfoComponent } from './unapproved-invitation-info/unapproved-invitation-info.component';
 
 @NgModule({
   declarations: [
@@ -26,12 +28,14 @@ import { EnterpriseCertificationComponent } from './components/enterprise-certif
     EmployeeDepartmentComponent,
     EditCompanyComponent,
     EditEmployeeComponent,
-    EnterpriseCertificationComponent
+    EnterpriseCertificationComponent,
+    ImportStaffComponent,
+    UnapprovedInvitationInfoComponent,
   ],
   imports: [
     CommonModule,
     TeamsRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   entryComponents: [
     AddDepartmentComponent,
@@ -39,7 +43,8 @@ import { EnterpriseCertificationComponent } from './components/enterprise-certif
     EmployeeDepartmentComponent,
     EditCompanyComponent,
     EditEmployeeComponent,
-    EnterpriseCertificationComponent
+    EnterpriseCertificationComponent,
+    ImportStaffComponent,
   ]
 })
 export class TeamsModule { }

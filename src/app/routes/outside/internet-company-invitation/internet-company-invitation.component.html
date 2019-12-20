@@ -1,0 +1,129 @@
+<div style="width: 100%;height: 100%;background-color: #509dff;">
+  <img src="./assets/images/bgyqh.png" style="float: right;">
+  <div style="margin: 0 auto;padding-top: 90px;width: 1200px;font-size:24px;font-weight:400;color: #FFFFFF;">
+    <span>互联企业</span>
+    <span style="margin-left: 10px;">|</span>
+    <span style="margin-left: 10px;">邀请函</span>
+  </div>
+  <div
+    style="margin: 40px auto 0 auto;background-image: url(./assets/images/xf.png);width: 1200px;height: 610px;background-repeat: no-repeat;">
+    <div style="padding-top: 60px;padding-left: 60px;">
+      <span style="color: #333333;font-size:30px;font-weight:400;">来自</span>
+      <span style="color: #F9966A;font-size:36px;font-weight:bold;">{{ icInfo?.company?.full_name }}</span>
+      <span style="color: #333333;font-size:30px;font-weight:400;">的互联邀请</span>
+    </div>
+    <div style="display: flex;margin-left: 60px;margin-top: 90px;align-items:center">
+      <div style="width: 460px;height: 180px;background-color: #F8F8F8;border-radius:12px;">
+        <div style="height: 22px;margin-top: 20px;margin-left: 20px;font-size:22px;color:#333333;font-weight:400;">
+          {{ icInfo?.company?.full_name }}</div>
+        <div style="display: flex">
+          <div style="margin-left: 18px;max-width: 212px;height: 118px;" class="text-ellipsis">
+            <div style="height: 17px;margin-top: 23px;font-size:18px;color: #666666;font-weight:400;">
+              姓<span style="margin-left: 36px;">名：</span><span>{{ icInfo?.outside_name }}</span>
+            </div>
+            <div style="height: 17px;margin-top: 16px;font-size:18px;color: #666666;font-weight:400;">
+              职<span style="margin-left: 36px;">位：</span><span>{{ icInfo?.outside_position }}</span>
+            </div>
+            <div style="height: 17px;margin-top: 16px;font-size:18px;color: #666666;font-weight:400;">
+              联系方式：<span>{{ icInfo?.outside_phone }}</span>
+            </div>
+          </div>
+          <div style="width: 230px;">
+            <img src="./assets/images/yqLogo.png"
+              style="width: 84px;height: 65px;margin-top: 39px;margin-right: 41px;float: right;">
+          </div>
+        </div>
+      </div>
+      <img src="./assets/images/gl.png" style="width:32px;height:32px;margin-left: 65px;">
+      <div style="width: 460px;height: 180px;margin-left: 62px;background-color: #F8F8F8;border-radius:12px;">
+        <div *ngIf="token && isAuthentication == 1" style="display: flex;">
+          <div class="text-ellipsis" nzTitle="bicInfo?.company_full_name" nzPlacement="top" nz-tooltip
+            style="height: 22px;max-width: 266px;line-height: 22px;margin-top: 20px;margin-left: 20px;font-size:22px;color:#333333;font-weight:400;">
+            <span>{{  bicInfo?.company_full_name }}</span>
+          </div>
+          <div  style="height: 22px;line-height: 22px;margin-top: 20px;"  >
+            <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'">
+              <a nz-dropdown>
+                <img src="./assets/images/qhgs.png" style="margin-left: 50px;">
+                <span style="font-size:16px;font-weight:400;margin-left: 5px;">切换公司</span></a>
+              <ul nz-menu>
+                <li nz-menu-item *ngFor="let cmp of companys">
+                  <a (click)="switchCompany(cmp.id, cmp.company_full_name)">{{ cmp.company_full_name }}</a>
+                </li>
+              </ul>
+            </nz-dropdown>
+          </div>
+        </div>
+
+        <div *ngIf="token && isAuthentication == 0">
+          <div class="text-ellipsis" nzTitle="bicInfo?.company_full_name" nzPlacement="top" nz-tooltip
+            style="height: 22px;max-width: 460px;line-height: 22px;margin-top: 20px;margin-left: 20px;font-size:22px;color:#333333;font-weight:400;">
+            <span>{{  bicInfo?.company_full_name }}</span>
+          </div>
+          <div style="display: flex;height: 118px;" *ngIf="token && isAuthentication == 2">
+            <div
+              style="margin-left: 20px;width: 260px;line-height: 118px;font-size:22px;color: #EC4A4A;font-weight:400;">
+              <span style="color: #EC4A4A;">认证中，请耐心等候！</span></div>
+            <div style="width: 180px;">
+              <img src="./assets/images/wdLogo.png"
+                style="width: 84px;height: 65px;margin-top: 39px;margin-right: 41px;float: right;">
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex" *ngIf="token && isAuthentication == 1">
+          <div style="margin-left: 18px;max-width: 212px;height: 118px;" class="text-ellipsis">
+            <div style="height: 17px;margin-top: 23px;font-size:18px;color: #666666;font-weight:400;">
+              姓<span style="margin-left: 36px;">名：</span><span>{{  bicInfo?.outside_name }}</span>
+            </div>
+            <div style="height: 17px;margin-top: 16px;font-size:18px;color: #666666;font-weight:400;">
+              职<span style="margin-left: 36px;">位：</span><span>{{  bicInfo?.outside_position }}</span>
+            </div>
+            <div style="height: 17px;margin-top: 16px;font-size:18px;color: #666666;font-weight:400;">
+              联系方式：<span>{{  bicInfo?.outside_phone }}</span>
+            </div>
+          </div>
+          <div style="width: 220px;">
+            <img src="./assets/images/wdLogo.png"
+              style="width: 84px;height: 65px;margin-top: 39px;margin-right: 41px;float: right;">
+          </div>
+        </div>
+        <div style="display: flex" *ngIf="token == undefined">
+          <div
+            style="margin-left: 20px;width: 210px;height: 180px;line-height: 180px;font-size:22px;color: #EC4A4A;font-weight:400;">
+            <span style="color: #EC4A4A;">尚未登录请先去登录</span></div>
+          <div style="width: 230px;">
+            <img src="./assets/images/wdLogo.png"
+              style="width: 84px;height: 65px;margin-top: 86px;margin-right: 41px;float: right;">
+          </div>
+        </div>
+        <div style="display: flex" *ngIf="token && isAuthentication == 2">
+          <div
+            style="margin-left: 20px;width: 260px;height: 180px;line-height: 180px;font-size:22px;color: #EC4A4A;font-weight:400;">
+            <span style="color: #EC4A4A;">尚未认证，请先去认证！</span></div>
+          <div style="width: 180px;">
+            <img src="./assets/images/wdLogo.png"
+              style="width: 84px;height: 65px;margin-top: 86px;margin-right: 41px;float: right;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height: 79px;" *ngIf="state == false"></div>
+    <div style="width: 100%;text-align: center;margin-top: 40px;font-size:26px;color:#F65F5F;font-weight:500;" *ngIf="state == true">互联邀请已提交，请等待邀请公司审核！</div>
+    <div style="margin-left: 60px;margin-top: 40px;">
+      <span *ngIf="token && isAuthentication == 1" style="font-size:20px;color: #333333;font-weight:400;">备注:</span>
+      <input *ngIf="token && isAuthentication == 1" nz-input placeholder="请输入备注内容" [(ngModel)]="remarks"
+        style="width: 860px;margin-left: 10px;" />
+      <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
+        *ngIf="token && isAuthentication == 1 && state == false" (click)="agree()">同意</button>
+      <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
+        (click)="login()" *ngIf="token == undefined">去登陆</button>
+      <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
+        [routerLink]="['/manage/teams']" *ngIf="token  && isAuthentication == 0">去查看</button>
+      <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
+      [routerLink]="['/manage/teams']" *ngIf="token && isAuthentication == 2">去认证</button>
+      <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
+      [routerLink]="['/manage/dashboard']" *ngIf="state == true">返回首页</button>
+    </div>
+  </div>
+</div>

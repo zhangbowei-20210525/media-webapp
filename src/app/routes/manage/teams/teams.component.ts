@@ -1,4 +1,4 @@
-import { finalize, reduce } from 'rxjs/operators';
+import { finalize, reduce, map } from 'rxjs/operators';
 import { DepartmentDto, CompanyDto } from './dtos';
 import { Component, OnInit, ViewChild, TemplateRef, Inject, ViewContainerRef } from '@angular/core';
 import { TeamsService } from './teams.service';
@@ -13,6 +13,7 @@ import { TreeService } from '@shared';
 import { ACLAbility } from '@core/acl';
 import { ACLService } from '@delon/acl';
 import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
+import { ImportStaffComponent } from './components/import-staff/import-staff.component';
 
 @Component({
   selector: 'app-teams',
@@ -29,6 +30,23 @@ export class TeamsComponent implements OnInit {
   activedNode: NzTreeNode;
   authInfo: any;
   conInfo: any;
+  typeSwitch: 'departmentManage' | 'interconnectionEnterprises';
+  isVisible = false;
+  invitationUrl: string;
+  invitationQRCode: string;
+  has_unprocessed: boolean;
+  unauditedList = [];
+  yqId: number;
+  hlId: number;
+  show = 'interconnection';
+  hasData1 = false;
+  hasData2 = false;
+  interconnectionList = [];
+  internetCompanies = [];
+
+
+
+
 
   @ViewChild('target') tt: string;
 
@@ -46,11 +64,14 @@ export class TeamsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.typeSwitch = 'departmentManage';
     this.fetchCompany();
     this.fetchCompanys();
     this.fetchDepartment();
     this.getAuthentication();
     this.getCompanyInfo();
+    this.getInterconnectionNotApprovedInfo();
+    this.internetCompanyList();
     // this.acl.removeAbility([this.ability.company.view]);
     // this.acl.set({ role: ['admin'] });
     // console.log('can', this.ability.company.view, this.acl.can(this.ability.company.view));
@@ -61,10 +82,119 @@ export class TeamsComponent implements OnInit {
     return this.activedNode ? this.activedNode.key : '';
   }
 
+  internetCompanyList() {
+    this.service.getInternetCompanies().subscribe(result => {
+      if (result.list.length > 0) {
+        this.hasData1 = true;
+        this.internetCompanies = result.list;
+        this.hlId = result.list[0].id;
+        this.service.getContacts(this.hlId).subscribe(res => {
+          this.interconnectionList = res.list;
+          console.log(res);
+        });
+      }
+    });
+  }
 
-/**
-    点击页面入口后，调用次方法，判断是否生成认证弹窗以及提示信息
-   */
+  deleteInterconnection() {
+
+  }
+
+
+  inSelect(hlId: number) {
+    this.hlId = hlId;
+    this.service.getContacts(this.hlId).subscribe(res => {
+      this.interconnectionList = res.list;
+    });
+  }
+
+  switchList(val: string) {
+    if (val === 'unaudited') {
+      this.getInterconnectionNotApprovedInfo();
+      this.show = 'unaudited';
+    }
+    if (val === 'interconnection') {
+      this.internetCompanyList();
+      this.show = 'interconnection';
+    }
+  }
+
+  getInterconnectionNotApprovedInfo() {
+    this.service.isExamine().subscribe(res => {
+      if (res.has_unprocessed === true) {
+        this.has_unprocessed = true;
+        this.hasData2 = true;
+        this.service.getInterconnectionNotApprovedInfo().subscribe(result => {
+          this.unauditedList = result.list;
+          this.yqId = result.list[0].id;
+        });
+      }
+    });
+  }
+
+  select(yqId: number) {
+    this.yqId = yqId;
+  }
+
+  switch(string: string) {
+    if (string === 'dm') {
+      this.typeSwitch = 'departmentManage';
+    }
+    if (string === 'ie') {
+      this.typeSwitch = 'interconnectionEnterprises';
+    }
+  }
+
+  importStaff() {
+    this.modal.create({
+      nzTitle: `导入同事进入互联企业`,
+      nzContent: ImportStaffComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 600,
+      nzOnOk: this.importStaffAgreed,
+      nzNoAnimation: true
+    });
+  }
+
+  importStaffAgreed = (component: ImportStaffComponent) => new Promise((resolve, reject) => {
+    // if (component.validation()) {
+    //   component.submit()
+    //     .subscribe(result => {
+    //       this.message.success(this.translate.instant('global.add-success'));
+    //       this.fetchPublicities();
+    //       resolve();
+    //     }, error => {
+    //       reject(false);
+    //     });
+    // } else {
+    //   reject(false);
+    // }
+  })
+
+  copyAddress() {
+    this.service.getInternetCompanyInvitationUrl().subscribe(result => {
+      this.invitationUrl = result.share_url;
+      this.invitationQRCode = result.wechat_qrcode;
+      this.isVisible = true;
+    });
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  handleOk(): void {
+    const input = document.getElementById('url') as HTMLInputElement;
+    input.select();
+    document.execCommand('copy');
+    this.message.success('复制成功');
+  }
+
+
+  /**
+      点击页面入口后，调用次方法，判断是否生成认证弹窗以及提示信息
+     */
   authentication(info: any) {
     if (info === null) {
       this.modal.create({
@@ -223,6 +353,7 @@ export class TeamsComponent implements OnInit {
       this.fetchDepartment();
       this.navigateToTeams();
       this.getAuthentication();
+      this.getInterconnectionNotApprovedInfo();
       this.message.success(`已切换到 ${companyName}`);
     });
   }

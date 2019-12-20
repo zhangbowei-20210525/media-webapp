@@ -47,4 +47,15 @@ export class EmployeeDetailsService {
   editEmployee(id: number, name: string/*, phone: string */) {
     return this.http.put<EmployeeDetailsDto>(`/api/v1/companies/employees/${id}`, { name/*, phone*/ });
   }
+
+  saveInfo(id: number, name: string, department_ids: any[], outside_name: string, outside_phone: string, outside_position: string) {
+    return this.http.put<any>(`/api/v1/companies/employees/${id}`, {
+      id: id,
+      name: name,
+      department_ids: department_ids,
+      outside_name: outside_name,
+      outside_phone: outside_phone,
+      outside_position: outside_position
+     });
+  }
 }
