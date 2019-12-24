@@ -207,6 +207,7 @@ export class TeamsComponent implements OnInit {
     this.modal.create({
       nzTitle: `导入同事进入互联企业`,
       nzContent: ImportStaffComponent,
+      nzComponentParams: { hlId: this.hlId },
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: 600,
@@ -216,18 +217,13 @@ export class TeamsComponent implements OnInit {
   }
 
   importStaffAgreed = (component: ImportStaffComponent) => new Promise((resolve, reject) => {
-    // if (component.validation()) {
-    //   component.submit()
-    //     .subscribe(result => {
-    //       this.message.success(this.translate.instant('global.add-success'));
-    //       this.fetchPublicities();
-    //       resolve();
-    //     }, error => {
-    //       reject(false);
-    //     });
-    // } else {
-    //   reject(false);
-    // }
+      component.submit().subscribe(result => {
+          this.message.success('导入成功');
+          this.internetCompanyList();
+          resolve();
+        }, error => {
+          reject(false);
+        });
   })
 
   copyAddress() {

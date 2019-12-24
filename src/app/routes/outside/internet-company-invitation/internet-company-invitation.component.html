@@ -117,7 +117,7 @@
       <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
         *ngIf="token && isAuthentication == 1 && state == false" (click)="agree()">同意</button>
       <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
-        (click)="login()" *ngIf="token == undefined">去登陆</button>
+        (click)="login()" *ngIf="token == undefined">去登录</button>
       <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"
         [routerLink]="['/manage/teams']" *ngIf="token  && isAuthentication == 0">去查看</button>
       <button nz-button nzType="primary" style="margin-right: 50px;border-radius:21px;width: 135px;float: right;"

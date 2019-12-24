@@ -231,8 +231,6 @@ export class AddIpComponent implements OnInit {
                 startDate = term[0];
                 endDate = term[1];
             }
-            console.log('33445');
-            console.log(this.projects);
             const list = this.projects.value.map(name => {
                 return {
                     originalAuthor: this.rightForm.get('originalAuthor').value,

@@ -1,5 +1,9 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzDropdownContextComponent, NzTreeNode, NzDropdownService, NzFormatEmitEvent } from 'ng-zorro-antd';
+import { Component, OnInit, TemplateRef, Input } from '@angular/core';
+// tslint:disable-next-line:max-line-length
+import { NzDropdownContextComponent, NzTreeNode, NzDropdownService, NzFormatEmitEvent, NzTreeNodeOptions, NzMessageService } from 'ng-zorro-antd';
+import { TeamsService } from '../../teams.service';
+import { TreeService } from '@shared';
+import { ImportStaffDto } from '../../dtos';
 
 @Component({
   selector: 'app-import-staff',
@@ -8,59 +12,56 @@ import { NzDropdownContextComponent, NzTreeNode, NzDropdownService, NzFormatEmit
 })
 export class ImportStaffComponent implements OnInit {
 
+  @Input() hlId: number;
+
   dropdown: NzDropdownContextComponent;
   // actived node
   activedNode: NzTreeNode;
-  isChecked = false;
-  nodes = [
-    {
-      title: 'parent 0',
-      key: '100',
-      author: 'NG ZORRO',
-      expanded: true,
-      children: [
-        { title: 'leaf 0-0', key: '1000', author: 'NG ZORRO', isLeaf: true },
-        { title: 'leaf 0-1', key: '1001', author: 'NG ZORRO', isLeaf: true }
-      ]
-    },
-    {
-      title: 'parent 1',
-      key: '101',
-      author: 'NG ZORRO',
-      children: [
-        { title: 'leaf 1-0', key: '1010', author: 'NG ZORRO', isLeaf: true },
-        { title: 'leaf 1-1', key: '1011', author: 'NG ZORRO', isLeaf: true }
-      ]
-    }
-  ];
+  nodes: NzTreeNodeOptions[];
+  staffKey: string;
+  selecteds = [];
 
-  constructor(private nzDropdownService: NzDropdownService
+  constructor(
+    private nzDropdownService: NzDropdownService,
+    private service: TeamsService,
+    private ts: TreeService,
+    private message: NzMessageService,
   ) { }
 
   ngOnInit() {
+    this.service.getStaffs().subscribe(result => {
+      this.setStaffNodes(result);
+    });
   }
 
-  selected() {
-    this.isChecked = true;
+  setStaffNodes(list: ImportStaffDto[]) {
+    this.nodes = this.ts.getNzTreeNodes(list, item => ({
+      title: item.name,
+      key: item.id,
+      isLeaf: item.is_leaf,
+    }));
+    console.log(this.nodes);
   }
 
+  select(key: string) {
+    const node = this.ts.recursionNodesMapArray(this.nodes, item => item, item => key === item.key && item.isLeaf === true)[0];
+    console.log(node);
 
-
-  openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
-    // do something if u want
-    if (data instanceof NzTreeNode) {
-      data.isExpanded = !data.isExpanded;
+    if (this.selecteds.some(s => s.id === node.key) === true) {
+      this.message.warning('该员工已添加导入列表');
     } else {
-      const node = data.node;
-      if (node) {
-        node.isExpanded = !node.isExpanded;
+      if (node.isLeaf === true) {
+        this.deleteSelected(key);
+        this.selecteds.push({
+          id: node.key,
+          name: node.title
+        });
       }
     }
   }
 
-  activeNode(data: NzFormatEmitEvent): void {
-    // tslint:disable-next-line:no-non-null-assertion
-    this.activedNode = data.node!;
+  deleteSelected(id: string) {
+    this.selecteds = this.selecteds.filter(f => f.id !== id);
   }
 
   contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
@@ -70,5 +71,13 @@ export class ImportStaffComponent implements OnInit {
   selectDropdown(): void {
     this.dropdown.close();
     // do something
+  }
+
+  submit() {
+    const ids = [];
+    this.selecteds.forEach(f => {
+      ids.push(f.id);
+    });
+   return this.service.importStaff(this.hlId, ids);
   }
 }

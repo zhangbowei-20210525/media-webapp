@@ -12,3 +12,12 @@ export interface DepartmentDto {
     name: string;
     children: DepartmentDto[];
 }
+
+export interface ImportStaffDto {
+    id: string;
+    name: string;
+    is_leaf: boolean;
+    selected: boolean;
+    isExpanded: boolean;
+    children: ImportStaffDto[];
+}

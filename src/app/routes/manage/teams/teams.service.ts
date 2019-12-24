@@ -71,7 +71,7 @@ export class TeamsService {
   }
 
   auditOperation(id: number, status: boolean) {
-    return this.http.post<any>(`/api/v1//companies/connections/invitations/${id}/result`, { status });
+    return this.http.post<any>(`/api/v1/companies/connections/invitations/${id}/result`, { status });
   }
 
   getInternetCompanies() {
@@ -102,4 +102,11 @@ export class TeamsService {
     return this.http.delete<any>(`/api/v1/companies/connections/liaisons/${id}`);
   }
 
+  getStaffs() {
+    return this.http.get<any>(`/api/v1/companies/departments/member_tree`);
+  }
+
+  importStaff(connection_id: number, employee_ids: string[]) {
+    return this.http.post<any>(`/api/v1/companies/connections/liaisons`, { connection_id, employee_ids });
+  }
 }

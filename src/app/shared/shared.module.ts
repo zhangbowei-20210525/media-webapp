@@ -82,6 +82,7 @@ import { PublicitiesTypePipe } from './pipes/publicities-type.pipe';
 import { TimeIntervalPipe } from './pipes/time-interval.pipe';
 import { IsTimeIntervalPipe } from './pipes/is-time-interval.pipe';
 import { Base64HeadPipe } from './pipes/base64-head.pipe';
+import { IncludesPipe } from './pipes/includes.pipe';
 
 const PIPES = [
   SeriesTypePipe,
@@ -112,7 +113,8 @@ const PIPES = [
   PublicitiesTypePipe,
   TimeIntervalPipe,
   IsTimeIntervalPipe,
-  Base64HeadPipe
+  Base64HeadPipe,
+  IncludesPipe
 ];
 // #endregion
 
