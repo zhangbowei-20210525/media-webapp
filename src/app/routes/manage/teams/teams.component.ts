@@ -1,19 +1,19 @@
-import { finalize, reduce, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { DepartmentDto, CompanyDto } from './dtos';
-import { Component, OnInit, ViewChild, TemplateRef, Inject, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TeamsService } from './teams.service';
 import { SettingsService, AuthService } from '@core';
 import { NzTreeNodeOptions, NzTreeNode, NzTreeComponent, NzFormatEmitEvent, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AddDepartmentComponent } from './components/add-department.component';
 import { AddCompanyComponent } from './components/add-company.component';
-import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EditCompanyComponent } from './components/edit-company.component';
 import { TreeService } from '@shared';
 import { ACLAbility } from '@core/acl';
 import { ACLService } from '@delon/acl';
 import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
 import { ImportStaffComponent } from './components/import-staff/import-staff.component';
+import { NotifyService } from 'app/layout/header/components/notify/notify.service';
 
 @Component({
   selector: 'app-teams',
@@ -22,39 +22,17 @@ import { ImportStaffComponent } from './components/import-staff/import-staff.com
 })
 export class TeamsComponent implements OnInit {
 
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
+  @ViewChild('target') tt: string;
+
   isCommpanyLoading: boolean;
   currentCompany: CompanyDto;
   companys: CompanyDto[];
-  nodes: NzTreeNodeOptions[];
-  activedNode: NzTreeNode;
   authInfo: any;
   conInfo: any;
-  typeSwitch: 'departmentManage' | 'interconnectionEnterprises';
   isVisible = false;
   invitationUrl: string;
   invitationQRCode: string;
-  has_unprocessed: boolean;
-  unauditedList = [];
-  yqId: number;
-  hlId: number;
-  show = 'interconnection';
-  hasData1 = false;
-  hasData2 = false;
-  interconnectionList = [];
-  internetCompanies = [];
-  isInterconnection: boolean;
-
-  allChecked: boolean;
-  indeterminate: boolean;
-  disabledButton = true;
-
-
-
-
-
-  @ViewChild('target') tt: string;
-
+  typeSwitch = 'departmentManage';
 
   constructor(
     public ability: ACLAbility,
@@ -64,134 +42,27 @@ export class TeamsComponent implements OnInit {
     private message: NzMessageService,
     private router: Router,
     private ts: TreeService,
-    private acl: ACLService,
-    private auth: AuthService
+    private auth: AuthService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.typeSwitch = 'departmentManage';
     this.fetchCompany();
     this.fetchCompanys();
-    this.fetchDepartment();
+    // this.fetchDepartment();
     this.getAuthentication();
     this.getCompanyInfo();
-    this.getInterconnectionNotApprovedInfo();
-    this.internetCompanyList();
+        this.route.firstChild.url.subscribe(url => {
+      console.log(url);
+      if (url[url.length - 1].path === 'interconnection-enterprises') {
+        this.typeSwitch = 'interconnectionEnterprises';
+      }
+    });
+    // this.getInterconnectionNotApprovedInfo();
+    // this.internetCompanyList();
+
     // this.acl.removeAbility([this.ability.company.view]);
     // this.acl.set({ role: ['admin'] });
-    // console.log('can', this.ability.company.view, this.acl.can(this.ability.company.view));
-    // console.log(this.acl.data);
-  }
-
-  get activedNodeKey() {
-    return this.activedNode ? this.activedNode.key : '';
-  }
-
-  internetCompanyList() {
-    this.service.getInternetCompanies().subscribe(result => {
-      if (result.list.length > 0) {
-        this.hasData1 = true;
-        this.internetCompanies = result.list;
-        this.hlId = result.list[0].id;
-        if (result.list[0].status === 'expired') {
-          this.isInterconnection = false;
-        }
-        if (result.list[0].status === 'active') {
-          this.isInterconnection = true;
-        }
-        this.service.getContacts(this.hlId).subscribe(res => {
-          this.interconnectionList = res.list;
-          console.log(res);
-        });
-      }
-    });
-  }
-
-  switchAuthorization(event: any, id: number) {
-    this.service.switchAuthorization(id, event).subscribe(result => {
-      if (result.code === 0) {
-      } else {
-        this.message.error(result.message);
-        this.internetCompanyList();
-      }
-    });
-  }
-
-  deleteEmployees() {
-    this.modal.confirm({
-      nzTitle: `确认删除已选中的员工？`,
-      nzOnOk: () => new Promise((resolve, reject) => {
-        this.service.deleteEmployees(this.interconnectionList.filter(value => value.checked).map(value => value.id))
-          .subscribe(result => {
-            this.message.success('删除成功');
-            this.internetCompanyList();
-            resolve();
-          }, error => {
-            reject(false);
-          });
-      })
-    });
-  }
-
-  checkAll(value: boolean): void {
-    this.interconnectionList.forEach(data => data.checked = value);
-    this.refreshStatus();
-  }
-
-  refreshStatus(): void {
-    const allChecked = this.interconnectionList.length > 0 ? this.interconnectionList.every(value => value.checked === true) : false;
-    const allUnChecked = this.interconnectionList.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-    this.disabledButton = !this.interconnectionList.some(value => value.checked);
-  }
-
-  deleteInterconnection() {
-    this.service.deleteInterconnection(this.hlId).subscribe(result => {
-      this.message.success('取消互联成功');
-      this.internetCompanyList();
-    });
-  }
-
-  inSelect(hlId: number, isInter: string) {
-    this.hlId = hlId;
-    if (isInter === 'expired') {
-      this.isInterconnection = false;
-    }
-    if (isInter === 'active') {
-      this.isInterconnection = true;
-    }
-    this.service.getContacts(this.hlId).subscribe(res => {
-      this.interconnectionList = res.list;
-    });
-  }
-
-  switchList(val: string) {
-    if (val === 'unaudited') {
-      this.getInterconnectionNotApprovedInfo();
-      this.show = 'unaudited';
-    }
-    if (val === 'interconnection') {
-      this.internetCompanyList();
-      this.show = 'interconnection';
-    }
-  }
-
-  getInterconnectionNotApprovedInfo() {
-    this.service.isExamine().subscribe(res => {
-      if (res.has_unprocessed === true) {
-        this.has_unprocessed = true;
-        this.hasData2 = true;
-        this.service.getInterconnectionNotApprovedInfo().subscribe(result => {
-          this.unauditedList = result.list;
-          this.yqId = result.list[0].id;
-        });
-      }
-    });
-  }
-
-  select(yqId: number) {
-    this.yqId = yqId;
   }
 
   switch(string: string) {
@@ -202,29 +73,6 @@ export class TeamsComponent implements OnInit {
       this.typeSwitch = 'interconnectionEnterprises';
     }
   }
-
-  importStaff() {
-    this.modal.create({
-      nzTitle: `导入同事进入互联企业`,
-      nzContent: ImportStaffComponent,
-      nzComponentParams: { hlId: this.hlId },
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: 600,
-      nzOnOk: this.importStaffAgreed,
-      nzNoAnimation: true
-    });
-  }
-
-  importStaffAgreed = (component: ImportStaffComponent) => new Promise((resolve, reject) => {
-      component.submit().subscribe(result => {
-          this.message.success('导入成功');
-          this.internetCompanyList();
-          resolve();
-        }, error => {
-          reject(false);
-        });
-  })
 
   copyAddress() {
     this.service.getInternetCompanyInvitationUrl().subscribe(result => {
@@ -317,12 +165,19 @@ export class TeamsComponent implements OnInit {
    * 跳转到团队页面
    */
   navigateToTeams() {
-    this.router.navigateByUrl(`/manage/teams`); // 必须后端存在默认部门
+    this.router.navigateByUrl(`/manage/teams`);
+    // this.route.firstChild.url.subscribe(url => {
+    //   console.log(url);
+    //   if (url[url.length - 1].path === 'department-management') {
+    //     this.router.navigateByUrl(`/manage/teams/department-management`);
+    //   } else if (url[url.length - 1].path === 'interconnection-enterprises') {
+    //     this.router.navigateByUrl(`/manage/teams/interconnection-enterprises`);
+    //   } else {
+    //     throw new Error('Unexpected URL');
+    //   }
+    // });
   }
 
-  navigateToEmployees() {
-    this.router.navigateByUrl(`/manage/teams/employees/${this.activedNodeKey}`); // 必须后端存在默认部门
-  }
 
   getCompanyInfo() {
     const { company_id, company_name, company_full_name, introduction, is_default_company, phone } = this.settings.user;
@@ -404,86 +259,12 @@ export class TeamsComponent implements OnInit {
         permissions: this.ts.recursionNodesMapArray(result.permissions, p => p.code, p => p.status)
       });
       this.getCompanyInfo();
-      this.fetchDepartment();
-      this.navigateToTeams();
       this.getAuthentication();
-      this.getInterconnectionNotApprovedInfo();
+      this.navigateToTeams();
+      // this.fetchDepartment();
+      // this.getInterconnectionNotApprovedInfo();
+      // this.internetCompanyList();
       this.message.success(`已切换到 ${companyName}`);
-    });
-  }
-
-  fetchDepartment() {
-    this.service.getDepartments().subscribe(departments => {
-      this.nodes = this.getNzTreeNodesByDepartments(departments);
-    });
-  }
-
-  getNzTreeNodesByDepartments(origins: DepartmentDto[]): NzTreeNodeOptions[] {
-    return this.ts.getNzTreeNodes(origins, item => ({
-      title: item.name,
-      key: item.id + '',
-      isLeaf: !!item.children && item.children.length < 1,
-      expanded: true
-    }));
-  }
-
-  activeNode(data: NzFormatEmitEvent) {
-    if (this.activedNode) {
-      // delete selectedNodeList(u can do anything u want)
-      this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode);
-    }
-    data.node.isSelected = true;
-    this.activedNode = data.node;
-    // add selectedNodeList
-    this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode);
-    this.navigateToEmployees();
-  }
-
-  addDepartment(key: string) {
-    this.modal.create({
-      nzTitle: '新增部门',
-      nzContent: AddDepartmentComponent,
-      nzComponentParams: { id: key },
-      nzWidth: 800,
-      nzOnOk: (component: AddDepartmentComponent) => new Promise((resolve) => {
-        if (component.validation()) {
-          component.submit().subscribe(result => {
-            this.message.success('新增成功');
-            this.addNode(key, {
-              title: component.departmentName.value,
-              key: result.id,
-              isLeaf: true,
-              expanded: true,
-              children: []
-            });
-            resolve();
-          }, error => {
-            this.message.error('新增失败');
-            resolve(false);
-          });
-        } else {
-          resolve(false);
-        }
-      })
-    });
-  }
-
-  deleteDepartment(key: string, name: string) {
-    this.modal.confirm({
-      nzTitle: `是否删除 ${name}`,
-      nzOnOk: () => new Promise((resolve, reject) => {
-        this.service.deleteDepartment(key).subscribe(result => {
-          this.message.success(`已删除 ${name}`);
-          this.treeCom.getTreeNodeByKey(key).remove();
-          // const deleted = this.removeNode(this.nodes, key);
-          // console.log(this.nodes);
-          // this.nodes = JSON.parse(JSON.stringify(this.nodes));
-          resolve();
-        }, error => {
-          this.message.success(error.message || '删除失败');
-          resolve();
-        });
-      })
     });
   }
 
@@ -507,18 +288,6 @@ export class TeamsComponent implements OnInit {
   //   }
   //   return added;
   // }
-
-  addNode(parentKey: string, options: NzTreeNodeOptions) {
-    return this.ts.recursionNodesFindBy(this.treeCom.getTreeNodes(), item => {
-      if (item.key === parentKey) {
-        item.isLeaf = false;
-        item.isExpanded = true;
-        item.addChildren([options]);
-        return true;
-      }
-      return false;
-    });
-  }
 
   // removeNode(nodes: NzTreeNodeOptions[], key: string) {
   //   this.ts.removeNode(nodes, (item, index) => {

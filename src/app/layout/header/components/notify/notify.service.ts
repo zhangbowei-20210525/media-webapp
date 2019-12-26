@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { PaginationResponseDto, PaginationDto } from '@shared';
 import { NotifyDto } from '../../dtos';
 
@@ -8,7 +8,7 @@ import { NotifyDto } from '../../dtos';
 })
 export class NotifyService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * 获取系统消息

@@ -15,6 +15,8 @@ import { EditEmployeeComponent } from './components/edit-employee.component';
 import { EnterpriseCertificationComponent } from './components/enterprise-certification/enterprise-certification.component';
 import { ImportStaffComponent } from './components/import-staff/import-staff.component';
 import { UnapprovedInvitationInfoComponent } from './unapproved-invitation-info/unapproved-invitation-info.component';
+import { DepartmentManagementComponent } from './department-management/department-management.component';
+import { InterconnectionEnterprisesComponent } from './interconnection-enterprises/interconnection-enterprises.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { UnapprovedInvitationInfoComponent } from './unapproved-invitation-info/
     EnterpriseCertificationComponent,
     ImportStaffComponent,
     UnapprovedInvitationInfoComponent,
+    DepartmentManagementComponent,
+    InterconnectionEnterprisesComponent,
   ],
   imports: [
     CommonModule,

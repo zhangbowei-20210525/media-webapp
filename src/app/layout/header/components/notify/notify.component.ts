@@ -137,7 +137,6 @@ export class NotifyComponent implements OnInit {
       }))
       .subscribe(result => {
         this.srcNotifys = [...this.srcNotifys, ...result.list];
-        console.log(this.srcNotifys);
         this.srcPagination.count = result.pagination.count;
         this.srcPagination.pages = result.pagination.pages;
       });
@@ -172,7 +171,6 @@ export class NotifyComponent implements OnInit {
   }
 
   onSysScrollDown() {
-    console.log('44444432222');
     if (this.isSysLoaded && !this.isSysLoding && this.sysPagination.pages > this.sysPagination.page) {
       this.sysPagination.page += 1;
       this.fetchSysNotifys();
@@ -218,7 +216,6 @@ export class NotifyComponent implements OnInit {
   //   this.type = type;
   //   if (type === 'PUB001') {
   //     this.service.getSharingInfo(this.related_id).subscribe(res => {
-  //       console.log(res);
   //       this.id = res.id;
   //       this.publicity = res.publicity;
   //       this.created_employee = res.created_employee;
@@ -228,10 +225,8 @@ export class NotifyComponent implements OnInit {
   //       this.validateForm.get('phone').setValue(res.liaison.phone);
   //       this.validateForm.get('phone').disable();
   //       this.service.getCompanyList().subscribe(cl => {
-  //         console.log(cl);
   //         this.companyList = cl;
   //         this.acceptCompany = res.company_full_name;
-  //         console.log(this.acceptCompany);
   //       });
   //     });
   //   }
@@ -240,7 +235,6 @@ export class NotifyComponent implements OnInit {
   messageShareDetails(title: string, created_at: string, content: string, id: number, type: string, info: any) {
     this.type = type;
     this.related_id = id;
-    console.log(type);
     if (type === 'PUB002') {
       this.service.getSolicitationInfo(id).subscribe(result => {
         if (result.expire_days < 0) {
@@ -261,6 +255,17 @@ export class NotifyComponent implements OnInit {
         });
       });
     }
+
+    if (type === 'SYS008') {
+      this.router.navigate([`/manage/teams/interconnection-enterprises`]);
+    }
+
+    if (type === 'SYS009') {}
+
+
+
+
+
     if (type === 'PUB001') {
       this.model.create({
         nzTitle: `${title}`,
@@ -279,7 +284,6 @@ export class NotifyComponent implements OnInit {
 
     if (type === 'SYS005') {
       this.service.getEmployeesInvitedInfo(id).subscribe(result => {
-        console.log(result);
         if (result.is_joined === false && result.is_delete === false) {
           this.model.create({
             nzTitle: `员工申请`,
@@ -313,7 +317,6 @@ export class NotifyComponent implements OnInit {
 
     if (type === 'SYS006') {
       this.service.getEmployeesInvitedInfo(id).subscribe(result => {
-        console.log(result);
         if (result.is_joined === false && result.is_delete === false) {
           this.model.create({
             nzTitle: `外部审片人申请`,
@@ -345,7 +348,7 @@ export class NotifyComponent implements OnInit {
       });
     }
 
-    if (type !== 'PUB001' && type !== 'PUB002' && type !== 'SYS005' && type !== 'SYS006') {
+    if (type !== 'PUB001' && type !== 'PUB002' && type !== 'SYS005' && type !== 'SYS006' &&  type !== 'SYS008') {
       this.ref = this.model.create({
         nzTitle: `${title}`,
         nzContent: SystemMessagesComponent,
@@ -449,8 +452,6 @@ export class NotifyComponent implements OnInit {
 
   // 获取母带授权信息
   messageDetails(title: string, created_at: string, content: string, id: number, idd: number, type: string, is_process: boolean) {
-    console.log('33355');
-    console.log(is_process);
     // this.visible = true;
     // this.drawerTitle = title;
     // this.drawerCreated_at = created_at;
@@ -618,7 +619,6 @@ export class NotifyComponent implements OnInit {
   // submit() {
   //   const status = true;
   //   if (this.typeId === undefined) {
-  //     console.log(this.typeId);
   //     this.typeId = '';
   //     // this.message.warning('您已拒绝请勿重复操作');
   //   }
@@ -639,12 +639,9 @@ export class NotifyComponent implements OnInit {
   }
   // 宣发分享接受
   // sharedSubmit() {
-  //   console.log(this.company);
   //   const status = true;
-  //   console.log(this.shareId === undefined);
   //   if (this.shareId === undefined) {
   //     this.shareId = '';
-  //     console.log(this.shareId);
   //   }
   //   this.service.getAccept(status, this.shareId, this.company, this.id).subscribe(res => {
   //     this.message.success(this.translate.instant('成功分享'));
@@ -664,7 +661,6 @@ export class NotifyComponent implements OnInit {
     }
   }
   onDisperChange(data) {
-    console.log(data);
     this.shareId = data;
     if (!!data) {
       this.isDisparShow = true;
@@ -673,7 +669,6 @@ export class NotifyComponent implements OnInit {
     }
   }
   onChoseCompany(data) {
-    console.log(data);
     this.typeId = data;
     if (!!data) {
       this.isChoseShow = true;

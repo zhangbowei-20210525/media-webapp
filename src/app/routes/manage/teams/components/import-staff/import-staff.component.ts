@@ -46,16 +46,14 @@ export class ImportStaffComponent implements OnInit {
   select(key: string) {
     const node = this.ts.recursionNodesMapArray(this.nodes, item => item, item => key === item.key && item.isLeaf === true)[0];
     console.log(node);
-
     if (this.selecteds.some(s => s.id === node.key) === true) {
       this.message.warning('该员工已添加导入列表');
     } else {
       if (node.isLeaf === true) {
-        this.deleteSelected(key);
-        this.selecteds.push({
+        this.selecteds = [ ...this.selecteds, {
           id: node.key,
           name: node.title
-        });
+        }];
       }
     }
   }
