@@ -210,12 +210,12 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/companies/search_by_phone?phone=${phone}`);
   }
 
-  addPubTape(id: number, newTape: { custom_name: string, liaison_name: string, liaison_phone: string, liaison_id: string }) {
-    return this.http.post<ResponseDto<number>>(`/api/v1/sources/${id}/publish_auth`, newTape);
+  addPubTape(source_id: number, connection_liaison_id) {
+    return this.http.post<ResponseDto<number>>(`/api/v1/sources/publish_auths`, { source_id, connection_liaison_id });
   }
 
   pubTapeList(id: number, pagination: PaginationDto) {
-    return this.http.get<any>(`/api/v1/sources/${id}/publish_auth?page=${pagination.page}&page_size=${pagination.page_size}`);
+    return this.http.get<any>(`/api/v1/sources/publish_auths?source_id=${id}&page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
   deletePubTape(id: number, auth_company_id: number) {
@@ -481,5 +481,13 @@ export class SeriesService {
 
   getKpgjInfo(id: number, pagination: PaginationDto) {
     return this.http.get<any>(`/api/v1/publicitys/${id}/viewlogs?page=${pagination.page}&page_size=${pagination.page_size}`);
+  }
+
+  getInternetCompanies() {
+    return this.http.get<any>('/api/v1/companies/connections');
+  }
+
+  getContactsInfo(id: number) {
+    return this.http.get<any>(`/api/v1/companies/connections/${id}/liaisons`);
   }
 }

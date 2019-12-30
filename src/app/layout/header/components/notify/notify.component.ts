@@ -256,6 +256,7 @@ export class NotifyComponent implements OnInit {
       });
     }
 
+    // 邀请企业 消息
     if (type === 'SYS008') {
       this.router.navigate([`/manage/teams/interconnection-enterprises`]);
     }
@@ -535,22 +536,22 @@ export class NotifyComponent implements OnInit {
         .subscribe(result => {
           resolve();
           setNotifyProcess();
-          // this.message.success(this.translate.instant('global.accept-authorization-successfully'));
-          this.model.confirm({
-            nzTitle: '授权已成功，是否切换到授权公司',
-            // nzContent: '<b>Some descriptions</b>',
-            nzOnOk: () => {
-              this.service.switchCompany(component.cid()).subscribe(res => {
-                this.auth.onLogin({
-                  token: res.token,
-                  userInfo: res.auth,
-                  permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
-                });
-                this.router.navigate([`/manage/transmit/type`]);
-                this.emitService.eventEmit.emit('noticeMessage');
-              });
-            }
-          });
+          this.message.success('已成功接收授权');
+          // this.model.confirm({
+          //   nzTitle: '授权已成功，是否切换到授权公司',
+          //   // nzContent: '<b>Some descriptions</b>',
+          //   nzOnOk: () => {
+          //     this.service.switchCompany(component.cid()).subscribe(res => {
+          //       this.auth.onLogin({
+          //         token: res.token,
+          //         userInfo: res.auth,
+          //         permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
+          //       });
+          //       this.router.navigate([`/manage/transmit/type`]);
+          //       this.emitService.eventEmit.emit('noticeMessage');
+          //     });
+          //   }
+          // });
         }, error => {
           reject(false);
         });

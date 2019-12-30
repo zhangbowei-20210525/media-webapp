@@ -33,17 +33,15 @@ export class AddPubTapeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.seriesService.getCompaniesName()
-    this.seriesService.getCompanyList().subscribe(res => {
-      this.filteredCompanyOptions = this.companyOptions = res;
+    this.seriesService.getInternetCompanies().subscribe(result => {
+      this.filteredCompanyOptions = result.list;
       this.validateForm = this.fb.group({
         company: [null, [Validators.required]],
         phone: [null, [Validators.required, Validators.pattern(/^[1][3,4,5,7,8][0-9]{9}$/)]],
         contact: [null, [Validators.required]],
       });
-      // setTimeout(() => {
-      //   this.companyInput.nativeElement.focus();
-      // }, 10);
+      this.validateForm.get('phone').disable();
+      this.validateForm.get('contact').disable();
     });
   }
 
@@ -59,25 +57,12 @@ export class AddPubTapeComponent implements OnInit {
     return form.valid;
   }
 
-  onCompanyInput(value: string) {
-    this.filteredCompanyOptions = this.companyOptions.filter(item => item.name.indexOf(value) >= 0);
-  }
-
   companyChange() {
-    const company = this.companyOptions.filter(f => f.name === this.validateForm.value['company']);
-    this.validateForm.get('contact').reset();
-    this.validateForm.get('phone').reset();
-    this.contactOptions = [];
-    this.phoneOptions = [];
-    if (company.length > 0) {
-      this.seriesService.getContacts(company[0].id).subscribe(res => {
-        this.contactInfo = res.list;
-        res.list.forEach(c => {
-          this.contactOptions.push(c.name);
-          this.phoneOptions.push(c.phone);
-        });
-      });
-    }
+    this.seriesService.getContactsInfo(this.validateForm.get('company').value).subscribe(res => {
+      this.contactOptions = res.list;
+      this.contactOptions = this.contactOptions.filter(f => f.from_type === 'outside');
+      this.validateForm.get('contact').enable();
+    });
   }
 
   onContactInput() {
@@ -89,41 +74,15 @@ export class AddPubTapeComponent implements OnInit {
   }
 
   contactChange() {
-    this.validateForm.get('phone').reset();
-    this.validateForm.get('phone').enable();
-    if (this.contactInfo !== undefined) {
-      const contact = this.contactInfo.filter(f => f.name === this.validateForm.value['contact']);
-      if (contact.length > 0) {
-        this.contactId = contact[0].id;
-        this.validateForm.get('phone').setValue(contact[0].phone);
-        this.validateForm.get('phone').disable();
-      }
-    }
+    // tslint:disable-next-line:max-line-length
+    this.validateForm.get('phone').setValue(this.contactOptions.filter(f => f.id === this.validateForm.get('contact').value)[0].employee.outside_phone);
+
   }
 
-  // phoneChange() {
-  //   console.log(this.validateForm.value['phone']);
-  // }
 
   submit(): Observable<any> {
-    const form = this.validateForm;
-    if (this.contactId === undefined) {
-      const data = {
-        custom_name: form.value['company'] || null,
-        liaison_name: form.value['contact'] || null,
-        liaison_phone: form.value['phone'] || null,
-        liaison_id: ''
-      };
-      return this.seriesService.addPubTape(this.id, data);
-    } else {
-      const data = {
-        custom_name: '',
-        liaison_name: '',
-        liaison_phone: '',
-        liaison_id: this.contactId + ''
-      };
-      return this.seriesService.addPubTape(this.id, data);
-    }
+      // tslint:disable-next-line:max-line-length
+      return this.seriesService.addPubTape(this.id, this.validateForm.get('contact').value);
   }
 
 }

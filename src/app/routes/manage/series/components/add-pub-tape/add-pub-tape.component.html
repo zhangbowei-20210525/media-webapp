@@ -1,15 +1,11 @@
 <div class="modal-panel" *ngIf="validateForm">
   <form nz-form [formGroup]="validateForm">
     <nz-form-item>
-      <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>公司</nz-form-label>
+      <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>互联企业</nz-form-label>
       <nz-form-control [nzSm]="21" [nzXs]="24">
-        <input placeholder="请选填公司" nz-input id="company" formControlName="company" #companyInput
-          (input)="onCompanyInput($event.target?.value)" (ngModelChange)="companyChange()" [nzAutocomplete]="autoCompanies" />
-        <nz-autocomplete nzBackfill #autoCompanies>
-          <nz-auto-option *ngFor="let option of filteredCompanyOptions" [nzValue]="option.name">
-            {{ option.name }}
-          </nz-auto-option>
-        </nz-autocomplete>
+        <nz-select nzShowSearch nzPlaceHolder="请选择互联企业" id="company" formControlName="company" (ngModelChange)="companyChange()">
+          <nz-option [nzLabel]="option?.connected_company?.full_name" [nzValue]="option?.id" *ngFor="let option of filteredCompanyOptions"></nz-option>
+        </nz-select>
         <nz-form-explain *ngIf="validateForm.get('company').dirty && validateForm.get('company').errors">请选填公司
         </nz-form-explain>
       </nz-form-control>
@@ -17,19 +13,15 @@
     <nz-form-item>
       <nz-form-label [nzSm]="3" nzRequired>联系人</nz-form-label>
       <nz-form-control [nzSm]="9">
-        <input placeholder="请选填联系人" nz-input id="contact" formControlName="contact" (ngModelChange)="contactChange()"
-          (input)="onContactInput()" [nzAutocomplete]="autoContacts" />
-        <nz-autocomplete nzBackfill #autoContacts>
-          <nz-auto-option *ngFor="let option of contactOptions" [nzValue]="option">
-            {{ option }}
-          </nz-auto-option>
-        </nz-autocomplete>
+        <nz-select nzShowSearch nzPlaceHolder="请选择联系人" id="contact" formControlName="contact" (ngModelChange)="contactChange()">
+          <nz-option [nzLabel]="option?.employee?.outside_name" [nzValue]="option?.id" *ngFor="let option of contactOptions"></nz-option>
+        </nz-select>
         <nz-form-explain *ngIf="validateForm.get('contact').dirty && validateForm.get('contact').errors">请选填联系人
         </nz-form-explain>
       </nz-form-control>
       <nz-form-label [nzSm]="3"nzRequired>手机号码</nz-form-label>
       <nz-form-control [nzSm]="9">
-        <input placeholder="请选填手机号码" nz-input id="phone" formControlName="phone"
+        <input nz-input id="phone" formControlName="phone"
           (input)="onPhoneInput()" [nzAutocomplete]="auto"/>
         <nz-autocomplete nzBackfill #auto>
           <nz-auto-option *ngFor="let option of phoneOptions" [nzValue]="option">
