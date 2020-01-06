@@ -16,6 +16,7 @@ import { TransmitScheduleComponent } from 'app/routes/manage/transmit/components
 import { ProcessComponent } from '../process/process.component';
 import { EmployeesInvitedMessagesComponent } from '../employees-invited-messages/employees-invited-messages.component';
 import { ReviewPeopleMessageComponent } from '../review-people-message/review-people-message.component';
+import { DeliveryCopyrightMessagesComponent } from '../delivery-copyright-messages/delivery-copyright-messages.component';
 
 @Component({
   selector: 'app-notify',
@@ -234,6 +235,8 @@ export class NotifyComponent implements OnInit {
 
   messageShareDetails(title: string, created_at: string, content: string, id: number, type: string, info: any) {
     this.type = type;
+    console.log('34343434');
+    console.log(type);
     this.related_id = id;
     if (type === 'PUB002') {
       this.service.getSolicitationInfo(id).subscribe(result => {
@@ -260,12 +263,6 @@ export class NotifyComponent implements OnInit {
     if (type === 'SYS008') {
       this.router.navigate([`/manage/teams/interconnection-enterprises`]);
     }
-
-    if (type === 'SYS009') {}
-
-
-
-
 
     if (type === 'PUB001') {
       this.model.create({
@@ -349,7 +346,7 @@ export class NotifyComponent implements OnInit {
       });
     }
 
-    if (type !== 'PUB001' && type !== 'PUB002' && type !== 'SYS005' && type !== 'SYS006' &&  type !== 'SYS008') {
+    if (type !== 'PUB001' && type !== 'PUB002' && type !== 'SYS005' && type !== 'SYS006' && type !== 'SYS008') {
       this.ref = this.model.create({
         nzTitle: `${title}`,
         nzContent: SystemMessagesComponent,
@@ -503,6 +500,39 @@ export class NotifyComponent implements OnInit {
         nzOkText: null,
         nzWidth: 800,
       });
+    } else if (type === 'SOU007') {
+      // 交付版权消息
+      if (is_process === true) {
+        this.ref = this.model.create({
+          nzTitle: `母带交付版权`,
+          nzContent: DeliveryCopyrightMessagesComponent,
+          nzComponentParams: { created_at: created_at, content: content, id: id, type: type, is_process: is_process },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzOkText: '确认',
+          nzCancelText: null,
+          nzWidth: 800,
+          // nzOnCancel: () => this.refused(),
+          nzOnOk: () => this.ref.close(),
+          nzNoAnimation: true
+        });
+      }
+
+      if (is_process === false) {
+        this.model.create({
+          nzTitle: `母带交付版权`,
+          nzContent: DeliveryCopyrightMessagesComponent,
+          nzComponentParams: { created_at: created_at, content: content, id: id, type: type, is_process: is_process },
+          nzMaskClosable: false,
+          nzClosable: false,
+          nzOkText: '确认接受',
+          nzCancelText: '拒绝',
+          nzWidth: 800,
+          nzOnCancel: () => this.dcRefused(),
+          nzOnOk: (c) => this.dcMessagesAgreed(c, idd),
+          nzNoAnimation: true
+        });
+      }
     } else {
       this.ref = this.model.create({
         nzTitle: `${title}`,
@@ -519,17 +549,29 @@ export class NotifyComponent implements OnInit {
     }
   }
 
+  dcRefused() {
+    const status = false;
+    if (this.type === 'SOU007') {
+      this.service.dcRefused(status, this.related_id).subscribe(res => {
+        this.message.warning('已拒绝其交付版权');
+      });
+    }
+  }
+
+  dcMessagesAgreed = (component: DeliveryCopyrightMessagesComponent, id: number) => new Promise((resolve, reject) => {
+    const status = true;
+    if (this.type === 'SOU007') {
+      this.service.dcRefused(status, this.related_id).subscribe(res => {
+        this.message.warning('已成功接受其版权');
+        resolve();
+      });
+    }
+
+  })
+
   showTapeMessagesAgreed = (component: TapeMessagesComponent, id: number) => new Promise((resolve, reject) => {
     const setNotifyProcess = () => {
-      //  this.srcNotifys.forEach(x => {
-      //     if (x.id === id) {
-      //       x.is_process = true;
-      //     }
-      //   });
       this.srcNotifys.find(item => item.id === id).is_process = true;
-      // if (notify) {
-      //   notify.is_process = true;
-      // }
     };
     if (component.show() === false) {
       component.submit()
@@ -537,21 +579,6 @@ export class NotifyComponent implements OnInit {
           resolve();
           setNotifyProcess();
           this.message.success('已成功接收授权');
-          // this.model.confirm({
-          //   nzTitle: '授权已成功，是否切换到授权公司',
-          //   // nzContent: '<b>Some descriptions</b>',
-          //   nzOnOk: () => {
-          //     this.service.switchCompany(component.cid()).subscribe(res => {
-          //       this.auth.onLogin({
-          //         token: res.token,
-          //         userInfo: res.auth,
-          //         permissions: this.ts.recursionNodesMapArray(res.permissions, p => p.code, p => p.status)
-          //       });
-          //       this.router.navigate([`/manage/transmit/type`]);
-          //       this.emitService.eventEmit.emit('noticeMessage');
-          //     });
-          //   }
-          // });
         }, error => {
           reject(false);
         });

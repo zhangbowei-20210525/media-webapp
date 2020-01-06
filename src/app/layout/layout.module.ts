@@ -17,6 +17,7 @@ import { ProcessComponent } from './header/components/process/process.component'
 import { EmployeesInvitedMessagesComponent } from './header/components/employees-invited-messages/employees-invited-messages.component';
 import { ReviewPeopleMessageComponent } from './header/components/review-people-message/review-people-message.component';
 import { EntranceComponent } from './entrance/entrance.component';
+import { DeliveryCopyrightMessagesComponent } from './header/components/delivery-copyright-messages/delivery-copyright-messages.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { EntranceComponent } from './entrance/entrance.component';
     ProcessComponent,
     EmployeesInvitedMessagesComponent,
     ReviewPeopleMessageComponent,
-    EntranceComponent
+    EntranceComponent,
+    DeliveryCopyrightMessagesComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { EntranceComponent } from './entrance/entrance.component';
     SolicitationComponent,
     ProcessComponent,
     EmployeesInvitedMessagesComponent,
-    ReviewPeopleMessageComponent
+    ReviewPeopleMessageComponent,
+    DeliveryCopyrightMessagesComponent
   ]
 })
 export class LayoutModule { }

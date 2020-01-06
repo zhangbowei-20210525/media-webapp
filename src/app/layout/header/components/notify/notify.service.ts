@@ -66,6 +66,12 @@ export class NotifyService {
     });
   }
 
+  dcRefused(status, id: number) {
+    return this.http.post<any>(`/api/v1/sources/right_transfers/${id}/result`, {
+      status,
+    });
+  }
+
   pubAuth(status, company_id, id: number) {
     return this.http.patch<any>(`/api/v1/sources/auth/receipt/${id}`, {
       status,
@@ -98,6 +104,11 @@ export class NotifyService {
 
   eimDetermine(id: number, result: boolean) {
     return this.http.post<any>(`/api/v1/companies/employees/${id}/application/result`, { result });
+  }
+
+
+  getDeliveryCopyrightInfo(id: number) {
+    return this.http.get<any>(`/api/v1/sources/right_transfers/${id}`);
   }
 
 

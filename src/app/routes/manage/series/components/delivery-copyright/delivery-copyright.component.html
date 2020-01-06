@@ -1,12 +1,12 @@
 <div class="modal-panel" *ngIf="validateForm">
   <form nz-form [formGroup]="validateForm">
     <nz-form-item>
-      <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>互联企业</nz-form-label>
+      <nz-form-label [nzSm]="3" [nzXs]="24" nzRequired>交付企业</nz-form-label>
       <nz-form-control [nzSm]="21" [nzXs]="24">
-        <nz-select nzShowSearch nzPlaceHolder="请选择互联企业" id="company" formControlName="company" (ngModelChange)="companyChange()">
+        <nz-select nzShowSearch nzPlaceHolder="请选择交付企业" id="company" formControlName="company" (ngModelChange)="companyChange()">
           <nz-option [nzLabel]="option?.connected_company?.full_name" [nzValue]="option?.id" *ngFor="let option of filteredCompanyOptions"></nz-option>
         </nz-select>
-        <nz-form-explain *ngIf="validateForm.get('company').dirty && validateForm.get('company').errors">请选择互联企业
+        <nz-form-explain *ngIf="validateForm.get('company').dirty && validateForm.get('company').errors">请选择交付企业
         </nz-form-explain>
       </nz-form-control>
     </nz-form-item>

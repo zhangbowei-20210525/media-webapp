@@ -1,0 +1,97 @@
+<div class="theme-title">版权信息</div>
+<div class="clearfix" style="background-color: #fff;border-radius: 2px;margin-bottom: 1.3rem;margin-left: 26px">
+  <div class="block-content">
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="12" class="text-ellipsis">
+        <span class="info-filed">版权公司</span>
+        <span>{{ authInfo?.company?.full_name }}</span>
+      </div>
+      <div nz-col nzSpan="12" class="text-ellipsis">
+        <span class="info-filed">联系人</span>
+        <span>{{ authInfo?.created_employee?.outside_name }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="12" class="text-ellipsis">
+        <span class="info-filed">手机号码</span>
+        <span>{{ authInfo?.created_employee?.outside_phone }}</span>
+      </div>
+
+      <div nz-col nzSpan="12" class="text-ellipsis">
+        <span class="info-filed">节目名称</span>
+        <span>{{ authInfo?.source?.program_name }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="12">
+        <span class="info-filed">母带版本</span>
+        <span>{{ authInfo?.source?.name }}</span>
+      </div>
+      <div nz-col nzSpan="12">
+        <span class="info-filed">集数</span>
+        <span>{{ authInfo?.source?.episode }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="12">
+        <span class="info-filed">语言</span>
+        <span *ngIf="authInfo?.source?.language == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+        <span *ngIf="authInfo?.source?.language == 'English'">{{ 'app.series.language-english' | translate }}</span>
+      </div>
+      <div nz-col nzSpan="12">
+        <span class="info-filed">字幕</span>
+        <span *ngIf="authInfo?.source?.subtitle == 'Chinese'">{{ 'app.series.language-chinese' | translate }}</span>
+        <span *ngIf="authInfo?.source?.subtitle == 'English'">{{ 'app.series.language-english' | translate }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="12">
+        <span class="info-filed">格式</span>
+        <span>{{ authInfo?.source?.format }}</span>
+      </div>
+      <div nz-col nzSpan="12">
+        <span class="info-filed">码率</span>
+        <span>{{ authInfo?.source?.bit_rate }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <!-- <span style="font-size: 14px;color: #D0021B">*</span> -->
+      <div nz-col nzSpan="12">
+        <span class="info-filed required">交付公司</span>
+        <span>{{ authInfo?.to_company?.full_name }}</span>
+      </div>
+      <div nz-col nzSpan="12">
+        <span class="info-filed required">交付人</span>
+        <span>{{ authInfo?.to_connection_liaison?.employee?.outside_name }}</span>
+      </div>
+    </div>
+    <div nz-row class="series-info-row">
+      <div nz-col nzSpan="12">
+        <span class="info-filed required">联系方式</span>
+        <span>{{ authInfo?.to_connection_liaison?.employee?.outside_phone }}</span>
+      </div>
+      <div nz-col nzSpan="12">
+        <!-- <span class="info-filed"></span>
+                <span></span> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="theme-title" *ngIf="isShow == false && is_process == false">确认被授权公司</div>
+  <div nz-row class="series-info-row" *ngIf="isShow == false && is_process == false">
+    <div nz-col nzSpan="12" style="margin-left: 26px">
+      <span class="info-filed required">公司</span>
+      <span>{{ authInfo?.auth_company_full_name }}</span>
+    </div>
+  </div>  -->
+<div class="theme-title" *ngIf="is_process == true && authInfo?.status == 1">版权交付结果</div>
+<div style="margin-left: 26px" *ngIf="is_process == true && authInfo?.receipt_status == 1">
+  <span><i nz-icon nzType="check-circle" nzTheme="fill" style="font-size: 22px;color:#4797F7"></i></span>
+  <span
+    style="margin-left: 10px;font-size:16px;color:#333333">已接受其版权！</span>
+</div>
+<div class="theme-title" *ngIf="is_process == true && authInfo?.status == 2">版权交付结果</div>
+<div style="margin-left: 26px" *ngIf="is_process == true && authInfo?.receipt_status == 2">
+  <span><i nz-icon nzType="close-circle" nzTheme="fill" style="font-size: 22px;color:#4797F7"></i></span>
+  <span style="margin-left: 10px;font-size:16px;color:#333333">该交付版权操作已被拒绝！</span>
+</div>

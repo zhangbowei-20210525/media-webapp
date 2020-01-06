@@ -218,8 +218,8 @@ export class SeriesService {
     return this.http.get<any>(`/api/v1/sources/publish_auths?source_id=${id}&page=${pagination.page}&page_size=${pagination.page_size}`);
   }
 
-  deletePubTape(id: number, auth_company_id: number) {
-    return this.http.delete<any>(`/api/v1/sources/${id}/publish_auth`, { params: { auth_company_id: auth_company_id as any } });
+  deletePubTape(id: number) {
+    return this.http.delete<any>(`/api/v1/sources/publish_auths/${id}`);
   }
 
   purchaseTapes(pagination: PaginationDto) {
@@ -489,5 +489,9 @@ export class SeriesService {
 
   getContactsInfo(id: number) {
     return this.http.get<any>(`/api/v1/companies/connections/${id}/liaisons`);
+  }
+
+  deliveryCopyright(source_id: number, connection_liaison_id) {
+    return this.http.post<any>(`/api/v1/sources/right_transfers`, { source_id, connection_liaison_id });
   }
 }

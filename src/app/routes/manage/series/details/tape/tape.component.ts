@@ -14,6 +14,7 @@ import { EditTapeInfoComponent } from '../../components/edit-tape-info/edit-tape
 import { ACLAbility } from '@core/acl';
 import { NotifiesPolling } from '@core/notifies';
 import { error } from '@angular/compiler/src/util';
+import { DeliveryCopyrightComponent } from '../../components/delivery-copyright/delivery-copyright.component';
 
 @Component({
   selector: 'app-tape',
@@ -65,8 +66,9 @@ export class TapeComponent implements OnInit, OnDestroy {
           if (this.isId === 0) {
             if (this.tapesList.length > 0) {
               this.isId = this.tapesList[0].id;
-              this.seriesService.getOnlineInfo(this.tapesList[0].id).subscribe(t =>
-                this.tapeDetailsInfo = t
+              this.seriesService.getOnlineInfo(this.tapesList[0].id).subscribe(t => {
+                  this.tapeDetailsInfo = t;
+                }
               );
               this.getTapeFileList();
             }
@@ -151,24 +153,27 @@ export class TapeComponent implements OnInit, OnDestroy {
       this.source_type = 'entity';
       // this.router.navigate([`/manage/series/d/${this.id}/tape`, { tapeId: id, source_type: 'entity' }]);
       this.isId = id;
-      this.seriesService.tapeFileList(id, this.tapeFilePagination).pipe(tap(x => {
-        // this.TapePage = x.pagination;
-        x.list.forEach(f => {
-          // this.getHash = f.hash;
-          // this.getIp = f.ip;
-          // console.log(f);
-          if (f.created_at) {
-            f.created_at = f.created_at.substring(0, 10);
-          }
-        });
-        this.isActive = x.list.every(item => {
-          console.log(item);
-          return item.local_file_status === '';
-        });
-      })).subscribe(x => {
-        this.tapeFileList = x.list;
-        this.tapeFilePagination = x.pagination;
+      this.seriesService.getOnlineInfo(this.isId).subscribe(t => {
+        this.tapeDetailsInfo = t;
       });
+      // this.seriesService.tapeFileList(id, this.tapeFilePagination).pipe(tap(x => {
+      //   // this.TapePage = x.pagination;
+      //   x.list.forEach(f => {
+      //     // this.getHash = f.hash;
+      //     // this.getIp = f.ip;
+      //     // console.log(f);
+      //     if (f.created_at) {
+      //       f.created_at = f.created_at.substring(0, 10);
+      //     }
+      //   });
+      //   this.isActive = x.list.every(item => {
+      //     console.log(item);
+      //     return item.local_file_status === '';
+      //   });
+      // })).subscribe(x => {
+      //   this.tapeFileList = x.list;
+      //   this.tapeFilePagination = x.pagination;
+      // });
     }
   }
 
@@ -221,7 +226,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   pubTape() {
     this.tab = 1;
     this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(res => {
-      this.pubTapeList = res.list;
+      this.pubTapeList = res;
       this.pubTapePagination = res.pagination;
     });
   }
@@ -229,7 +234,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   pubTapePageChange(page: number) {
     this.pubTapePagination.page = page;
     this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(res => {
-      this.pubTapeList = res.list;
+      this.pubTapeList = res;
       this.pubTapePagination = res.pagination;
     });
   }
@@ -246,7 +251,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
 
   deletePubTapeAgreed = (id: number, i: number) => new Promise((resolve) => {
-    this.seriesService.deletePubTape(this.isId, id).subscribe(res => {
+    this.seriesService.deletePubTape(id).subscribe(res => {
       this.message.success(this.translate.instant('global.delete-success'));
       if (this.pubTapePagination.pages === this.pubTapePagination.page) {
         if (this.pubTapePagination.page === 1) { } else {
@@ -256,7 +261,7 @@ export class TapeComponent implements OnInit, OnDestroy {
         }
       }
       this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
-        this.pubTapeList = p.list;
+        this.pubTapeList = p;
         this.pubTapePagination = p.pagination;
       });
       resolve();
@@ -285,7 +290,37 @@ export class TapeComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           this.message.success(this.translate.instant('global.add-success'));
           this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
-            this.pubTapeList = p.list;
+            this.pubTapeList = p;
+            this.pubTapePagination = p.pagination;
+          });
+          resolve();
+        }, err => {
+          reject(false);
+        });
+    } else {
+      reject(false);
+    }
+  })
+
+  deliveryCopyright() {
+    this.modalService.create({
+      nzTitle: '交付版权',
+      nzContent: DeliveryCopyrightComponent,
+      nzComponentParams: { id: this.isId },
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 800,
+      nzOnOk: this.deliveryCopyrightAgreed
+    });
+  }
+
+  deliveryCopyrightAgreed = (component: DeliveryCopyrightComponent) => new Promise((resolve, reject) => {
+    if (component.validation()) {
+      component.submit()
+        .subscribe(res => {
+          this.message.success(this.translate.instant('已成功交付版权'));
+          this.seriesService.pubTapeList(this.isId, this.pubTapePagination).subscribe(p => {
+            this.pubTapeList = p;
             this.pubTapePagination = p.pagination;
           });
           resolve();

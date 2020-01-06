@@ -37,6 +37,7 @@ import { ConfigMergeComponent } from './series-config/components/config-merge/co
 import { StMergeComponent } from './series-config/components/st-merge/st-merge.component';
 import { ItMergeComponent } from './series-config/components/it-merge/it-merge.component';
 import { TtMergeComponent } from './series-config/components/tt-merge/tt-merge.component';
+import { DeliveryCopyrightComponent } from './components/delivery-copyright/delivery-copyright.component';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { TtMergeComponent } from './series-config/components/tt-merge/tt-merge.c
     StMergeComponent,
     ItMergeComponent,
     TtMergeComponent,
+    DeliveryCopyrightComponent,
   ],
   imports: [
     CommonModule,
@@ -94,6 +96,7 @@ import { TtMergeComponent } from './series-config/components/tt-merge/tt-merge.c
     RelationImportFieldComponent,
     RightFilterComponent,
     PublicityFilmsComponent,
+    DeliveryCopyrightComponent,
   ]
 })
 export class SeriesModule { }

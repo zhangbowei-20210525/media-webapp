@@ -1,10 +1,6 @@
 <!-- <div style="font-size: 12px;font-weight: bold;margin-top: 10px">{{ created_at }}</div>
   <div style="font-size: 12px;margin-top: 5px;margin-bottom: 25px">{{ content }}</div> -->
-<div *ngIf="type === 'SOU005'" style="margin-left: 56px;">
-  <div style="width:640px;
-  height: auto;
-  border-radius:4px;
-  border:1px solid rgba(238,238,238,1);">
+<div *ngIf="type === 'SOU005'">
     <div class="theme-title">授权信息</div>
     <div class="clearfix" style="background-color: #fff;border-radius: 2px;margin-bottom: 1.3rem;margin-left: 26px">
       <div class="block-content">
@@ -84,7 +80,6 @@
         </div>
       </div>
     </div>
-  </div>
   <!-- <div class="theme-title" *ngIf="isShow == false && is_process == false">确认被授权公司</div>
   <div nz-row class="series-info-row" *ngIf="isShow == false && is_process == false">
     <div nz-col nzSpan="12" style="margin-left: 26px">
