@@ -1,12 +1,13 @@
-<nz-table #basicTable [nzData]="listOfData" [nzShowPagination]="false" [nzBordered]="true">
+<nz-table #basicTable [nzData]="listOfData" [nzShowPagination]="false" [nzBordered]="true" [nzPageSize]="pagination.page_size"
+[nzFrontPagination]="false" [nzPageIndex]="pagination.page" [nzTotal]="pagination.count" [nzScroll]="{ y: '885px' }">
   <thead>
     <tr>
-      <th>#</th>
-      <th>频道</th>
-      <th>剧场</th>
-      <th>首播日期</th>
-      <th>播出时间</th>
-      <th>操作</th>
+      <th nzWidth="79px">#</th>
+      <th nzWidth="167px">频道</th>
+      <th nzWidth="342px">剧场</th>
+      <th nzWidth="214px">首播日期</th>
+      <th nzWidth="173px">播出时间</th>
+      <th nzWidth="116px">操作</th>
     </tr>
   </thead>
   <tbody>

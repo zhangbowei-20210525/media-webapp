@@ -183,8 +183,8 @@
           <i nz-icon nzType="exclamation-circle" nzTheme="outline" style="margin-left: 20px;margin-top: 27px;font-size: 24px;color: #FAAD14;"></i>
         <span style="margin-left: 16px;font-size:16px;font-weight:500;color: #333333;">请注意!</span>
         </div>
-        <div style="margin-left: 60px;margin-top: 4px;font-size: 14px;color: #999999;">该母带文件已交付给某某公司！</div>
-        </div>
+        <div style="margin-left: 60px;margin-top: 4px;font-size: 14px;color: #999999;">该母带文件已交付给{{ pubTapeList?.right_transfer?.to_company?.full_name }}！</div>
+        </div> 
       </nz-tab>
     </nz-tabset>
     <ng-template #extraTemplate>

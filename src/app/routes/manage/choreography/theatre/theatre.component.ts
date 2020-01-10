@@ -4,6 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PaginationDto } from '@shared';
 
 @Component({
   selector: 'app-theatre',
@@ -15,6 +16,7 @@ export class TheatreComponent implements OnInit {
   listOfData = [];
   isLoaded = false;
   isLoading = false;
+  pagination = { page: 1, page_size: 10 } as PaginationDto;
 
   constructor(
     private service: ChoreographyService,
