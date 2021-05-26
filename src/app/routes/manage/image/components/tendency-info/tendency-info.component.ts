@@ -9,7 +9,7 @@ import { NzModalService, NzMessageService, NzModalRef} from 'ng-zorro-antd';
 export class TendencyInfoComponent implements OnInit {
   @Input() id: number;
   isloading = true;
-  source_data: 'onlineSave' | 'localSave' = 'localSave';
+  source_data: 'onlineSave' | 'localSave';
   checkedArrayIds = [];
   checkedIds: string;
   // id: any;
